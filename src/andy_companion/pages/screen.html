@@ -151,11 +151,11 @@
 
   // The page's own words, in the language chosen on the setup page.
   const UI = {
-    en: { next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
+    en: { nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
           kinds: { news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
                    check: "About that message", photo: "A photo", link: "From the link" } },
-    es: { next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
+    es: { nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
           kinds: { news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
                    whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace" } },
@@ -212,7 +212,7 @@
       text($("w-then"), b ? `${b.name}: ${b.temperature} ${b.short}` + (b.rain ? `, ${b.rain}% ${ui.rain}` : "") : "");
       $("w-alert").hidden = !(w.alerts && w.alerts.length);
       text($("w-alert"), (w.alerts && w.alerts[0]) || "");
-      text($("w-from"), `${ui.from} the National Weather Service`);
+      text($("w-from"), ui.nws);
     }
 
     // What Andy found: one card.

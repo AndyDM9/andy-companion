@@ -148,3 +148,27 @@ def test_andy_wakes_with_fixed_words_for_the_time_and_language():
     assert "When you wake, say exactly: Good morning! I'm Andy" in settings.instructions(NOW)
     settings.update(language="es")
     assert "say exactly: ¡Buenos días! Soy Andy" in settings.instructions(NOW)
+
+
+@pytest.mark.parametrize("en, es", [
+    ("Mostly Clear", "Mayormente despejado"),
+    ("Sunny then Slight Chance Showers And Thunderstorms", "Soleado, con leve posibilidad de chubascos y tormentas"),
+    ("Chance Rain Showers", "Posibilidad de chubascos"),
+    ("Thunderstorms Likely", "Probables tormentas"),
+    ("Partly Cloudy", "Parcialmente nublado"),
+    ("Blowing Dust", "Ver el pronóstico"),
+])
+def test_the_weather_in_spanish_is_built_from_its_parts(en, es):
+    from andy_companion import words
+
+    assert words.sky(en, "es") == es
+    assert words.sky(en, "en") == en
+
+
+def test_weather_periods_in_spanish():
+    from andy_companion import words
+
+    assert words.weather_period("Tonight", "es") == "Esta noche"
+    assert words.weather_period("Wednesday", "es") == "Miércoles"
+    assert words.weather_period("Wednesday Night", "es") == "Miércoles por la noche"
+    assert words.weather_period("Columbus Day", "es") == "Columbus Day"

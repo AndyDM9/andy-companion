@@ -86,3 +86,49 @@ def state_label(state: str, tool: str = "", language: str = "en", until: str = "
     if state == "working":
         return TOOL_DOING[lg].get(tool) or STATE[lg]["working"]
     return STATE[lg].get(state, STATE[lg]["ready"]).format(until=until)
+
+
+# The weather service writes English. For a Spanish screen, its period names and short forecasts are
+# put into Spanish from their parts, never guessed: anything unknown keeps a plain, general word.
+_PERIODS_ES = {"tonight": "Esta noche", "today": "Hoy", "this afternoon": "Esta tarde", "overnight": "Esta madrugada",
+               "this morning": "Esta mañana"}
+_DAYS_EN = [d.lower() for d in DAYS["en"]]
+
+
+def weather_period(name: str, language: str = "en") -> str:
+    if lang(language) != "es":
+        return name
+    key = " ".join(str(name).lower().split())
+    if key in _PERIODS_ES:
+        return _PERIODS_ES[key]
+    day, _, rest = key.partition(" ")
+    if day in _DAYS_EN:
+        es = DAYS["es"][_DAYS_EN.index(day)]
+        return es.capitalize() + (" por la noche" if rest == "night" else "")
+    return name
+
+
+def sky(short: str, language: str = "en") -> str:
+    """'Sunny then Slight Chance Showers And Thunderstorms' -> 'Soleado, con leve posibilidad de chubascos y tormentas'."""
+    if lang(language) != "es":
+        return short
+    s = " ".join(str(short).lower().split())
+    first = s.split(" then ")[0]
+    base = ""
+    for words_, es in (("mostly sunny", "Mayormente soleado"), ("partly sunny", "Parcialmente soleado"), ("sunny", "Soleado"),
+                       ("mostly clear", "Mayormente despejado"), ("partly cloudy", "Parcialmente nublado"),
+                       ("mostly cloudy", "Mayormente nublado"), ("clear", "Despejado"), ("cloudy", "Nublado"),
+                       ("fog", "Niebla"), ("haze", "Bruma"), ("windy", "Ventoso"), ("hot", "Caluroso")):
+        if words_ in first:
+            base = es
+            break
+    kinds = [es for en, es in (("showers", "chubascos"), ("thunderstorm", "tormentas"), ("rain", "lluvia"),
+                               ("drizzle", "llovizna")) if en in s]
+    if "showers" in s and "rain" in s and "rain showers" in s:
+        kinds = [k for k in kinds if k != "lluvia"]
+    if not kinds:
+        return base or "Ver el pronóstico"
+    how = ("leve posibilidad de " if "slight chance" in s else "posibilidad de " if "chance" in s else
+           "probables " if "likely" in s else "")
+    rain = how + " y ".join(kinds)
+    return f"{base}, con {rain}" if base else rain[0].upper() + rain[1:]

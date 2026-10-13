@@ -239,7 +239,14 @@ def weather_card(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
     if not _weather["busy"] and now - _weather["at"] >= WEATHER_EVERY_S:
         _weather["busy"] = True
         threading.Thread(target=_refresh_weather, name="andy-weather", daemon=True).start()
-    return _weather["card"]
+    card = _weather["card"]
+    language = settings.get().get("language", "en")
+    if card and language == "es":
+        from andy_companion import words
+
+        card = {**card, "periods": [{**p, "name": words.weather_period(p["name"], "es"), "short": words.sky(p["short"], "es")}
+                                    for p in card["periods"]]}
+    return card
 
 
 def today_plan(now: Optional[datetime] = None) -> Dict[str, Any]:

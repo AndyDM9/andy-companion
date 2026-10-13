@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (the weather on a Spanish screen)
+
+- On the founder's TV in Spanish the weather stayed English ("Tonight: Mostly Clear", "De the National
+  Weather Service"): the weather service writes English only. For Spanish, the period names
+  (`words.weather_period`: "Esta noche", "Miércoles por la noche") and the short forecast
+  (`words.sky`, built from its parts: "Soleado, con leve posibilidad de chubascos y tormentas") are
+  put into Spanish; anything unknown becomes "Ver el pronóstico", never a guess. "Del Servicio
+  Meteorológico Nacional". 10 tests. (Andy's language had been switched to Spanish by a request; it
+  is back to English.)
+
 ### Changed (Andy's TV, redesigned from the research)
 
 - **Layout:** the day stays the largest thing and gives way only when Andy shows something. Idle:
