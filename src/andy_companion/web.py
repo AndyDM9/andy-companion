@@ -70,8 +70,19 @@ def _results(data: Dict[str, Any], limit: int = SNIPPET) -> List[Dict[str, str]]
     return out
 
 
-def local_news(place: str, topic: str = "", sources: Optional[List[str]] = None, opener=None) -> List[Dict[str, str]]:
-    body = {"query": f"{place} local news {topic}".strip()[:390], "topic": "news", "time_range": "day",
+def chosen_language(asked: Any, saved: Any) -> str:
+    """The language to search in: the one the person is speaking, else the one they chose."""
+    if asked in ("en", "es"):
+        return asked
+    return "es" if saved == "es" else "en"
+
+
+def local_news(place: str, topic: str = "", sources: Optional[List[str]] = None, opener=None,
+               language: str = "en") -> List[Dict[str, str]]:
+    # The query's own language decides the sources (Tavily's `language` option alone did not, in a
+    # live test on 2026-10-13): a Spanish query finds Spanish-language local news.
+    query = f"noticias locales {place} {topic}" if language == "es" else f"{place} local news {topic}"
+    body = {"query": query.strip()[:390], "topic": "news", "time_range": "day",
             "search_depth": "basic", "max_results": 3, "safe_search": True}
     if sources:
         body["include_domains"] = sources
@@ -88,7 +99,8 @@ def look_up(question: str, place: str = "", opener=None) -> List[Dict[str, str]]
     return _results(_post("/search", body, opener))
 
 
-def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, opener=None) -> List[Dict[str, str]]:
+def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, opener=None,
+             language: str = "en") -> List[Dict[str, str]]:
     if pages:
         found: List[Dict[str, str]] = []
         for page in pages[:2]:
@@ -103,8 +115,15 @@ def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, 
 
     start = date.today()
     end = start + timedelta(days=6)
-    week = f"{start.strftime('%B')} {start.day} to {end.strftime('%B')} {end.day} {end.year}"
-    body = {"query": f"events {week} in {place} {interest}".strip()[:390], "time_range": "week",
+    if language == "es":
+        from andy_companion import words
+
+        week = f"del {start.day} de {words.month(start, 'es')} al {end.day} de {words.month(end, 'es')} de {end.year}"
+        query = f"eventos {week} en {place} {interest}"
+    else:
+        week = f"{start.strftime('%B')} {start.day} to {end.strftime('%B')} {end.day} {end.year}"
+        query = f"events {week} in {place} {interest}"
+    body = {"query": query.strip()[:390], "time_range": "week",
             "search_depth": "basic", "max_results": 4, "safe_search": True}
     return _results(_post("/search", body, opener))
 

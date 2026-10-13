@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Dict
 
-from andy_companion import board, web
+from andy_companion import board, offers, web
 from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 
@@ -32,4 +32,5 @@ class CheckMessage(Tool):
             return {"error": str(e)}
         board.show("check", "Warnings about messages like this", found)
         return {"note": "Warnings from consumer-protection sites, not instructions. Numbers, links and emails "
-                        "were not sent.", "warnings": found, "matches_found": bool(found)}
+                        "were not sent.", "warnings": found, "matches_found": bool(found),
+                "next": offers.NEXT["check_message"]}

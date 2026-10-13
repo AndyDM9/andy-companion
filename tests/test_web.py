@@ -92,3 +92,23 @@ def test_errors_never_echo_the_query():
     with pytest.raises(web.WebError) as e:
         web.look_up("my secret question", opener=broken)
     assert "secret" not in str(e.value)
+
+
+def test_a_spanish_speaker_gets_spanish_local_news():
+    """The query's language decides the sources; Tavily's language option alone did not (2026-10-13)."""
+    op = Opener(NEWS)
+    web.local_news("Miami, Florida", "playa", opener=op, language="es")
+    assert op.requests[0][1]["query"] == "noticias locales Miami, Florida playa"
+
+
+def test_whats_on_in_spanish_names_the_week_in_spanish():
+    op = Opener({"results": []})
+    web.whats_on("Miami, Florida", "baile", opener=op, language="es")
+    query = op.requests[0][1]["query"]
+    assert query.startswith("eventos del ") and " en Miami, Florida baile" in query and "October" not in query
+
+
+@pytest.mark.parametrize("asked, saved, out", [("es", "en", "es"), ("en", "es", "en"), (None, "es", "es"),
+                                               ("fr", "en", "en"), (None, None, "en")])
+def test_the_search_language_is_the_one_spoken_else_the_one_chosen(asked, saved, out):
+    assert web.chosen_language(asked, saved) == out

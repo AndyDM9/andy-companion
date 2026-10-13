@@ -14,13 +14,15 @@ class LocalNews(Tool):
     description = "When the person asks for the news, local news, or what's happening around here. Say two or three items in plain words, and always say each one's source by name, for example 'the local paper says'. Offer more only if they ask."
     parameters_schema = {
         "type": "object",
-        "properties": {"topic": {"type": "string", "description": "A subject they asked about, or empty for general local news."}},
+        "properties": {"topic": {"type": "string", "description": "A subject they asked about, or empty for general local news."},
+                       "language": {"type": "string", "enum": ["en", "es"], "description": "The language the person is speaking to you."}},
     }
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
         s = settings.get()
         try:
-            found = await asyncio.to_thread(lambda: web.local_news(s["place"] or "my area", kwargs.get("topic", ""), s["news_sources"]))
+            found = await asyncio.to_thread(lambda: web.local_news(s["place"] or "my area", kwargs.get("topic", ""), s["news_sources"],
+                                                                language=web.chosen_language(kwargs.get("language"), s["language"])))
         except web.WebError as e:
             return {"error": str(e)}
         board.show("news", "Local news", found)

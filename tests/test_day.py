@@ -12,6 +12,9 @@ NOW = datetime(2026, 10, 13, 8, 0)
 def data(tmp_path, monkeypatch):
     monkeypatch.setattr(reminders, "STORE", tmp_path / "reminders.json")
     monkeypatch.setattr(settings, "FILE", tmp_path / "settings.json")
+    from andy_companion import moments
+
+    monkeypatch.setattr(moments, "FILE", tmp_path / "moments.json")
     monkeypatch.setattr(speaker.board, "INBOX", tmp_path / "inbox.json")
     monkeypatch.setattr(speaker.chimes, "play", lambda name: None)
 

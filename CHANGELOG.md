@@ -5,6 +5,32 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (web answers that become actions, with a yes; Spanish searches; Andy knows what it remembers)
+
+- **Tavily answers lead somewhere, only with a yes** (`src/andy_companion/offers.py`): after what's
+  on, Andy offers a reminder before the event starts; after a look-up about something the person
+  plans to do, a reminder; after a scam check, a short note to family on the family page. Each
+  web tool returns its line as `next`, and nothing is set or shared until the person says yes.
+  The suite gives the model the same lines.
+- **Spanish searches:** a Spanish speaker's local news and what's on are searched in Spanish
+  ("noticias locales …", "eventos del 13 al 19 de octubre …"), which brings back Spanish-language
+  sources. A live test on 2026-10-13 showed Tavily's `language` option alone did not change the
+  results, and that `include_domains_mode: "prefer"` is accepted; the chosen papers are still tried
+  first, then widened. `local_news` and `whats_on` take a `language` (the one being spoken; else
+  the chosen one). 7 tests.
+- **What Andy remembers is in its instructions from the start of every conversation**
+  (`src/andy_companion/recall.py`), as Pollen's app does for facts: asked "What do you remember
+  about me?", Andy sometimes said "nothing" without looking. 1 test; `test_day.py` now isolates
+  the moments file.
+- The family page is one page for all the family: Andy no longer asks who a note is for.
+- **Suite 2026-10-13j, 52 cases:** act-1 (offers a reminder after what's on, does not set it) and
+  act-2 (sets it on a yes); moment-3 now judges the answer, and moment-4 checks Andy tells
+  everything it remembers. **Two more harness flaws fixed:** words said with a tool call ended the
+  turn before the tool answered (on the robot the person hears both); the stand-in scam warning
+  described one kind of scam and misled the lottery case. Result: **52, 52 and 51 of 52**
+  (`evals/results/2026-10-13-run24-andy-52-cases.json`). README, STATUS, the diagram, the hood page,
+  the submission draft and the video line updated.
+
 ### Added (set Andy up from a phone, and the person is told)
 
 - `/setup?s=<setup token>` (`src/andy_companion/setup_page.py`, `pages/setup.html`): a helper gives

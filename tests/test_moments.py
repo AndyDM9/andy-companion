@@ -78,3 +78,14 @@ def test_spoken_days():
     assert moments.spoken_day("2026-10-13", TUE) == "today"
     assert moments.spoken_day("2026-10-12", TUE) == "yesterday"
     assert moments.spoken_day("2026-10-16", TUE) == "Friday 16 October"
+
+
+def test_andy_starts_every_conversation_knowing_what_it_remembers():
+    """It sometimes said 'nothing' without looking (suite, 2026-10-13); now the list is in its instructions."""
+    from andy_companion import recall, settings
+
+    assert "No moments yet." in settings.instructions()
+    moments.add("Sofia's piano recital", "Thursday")
+    extra = settings.instructions()
+    assert "## WHAT YOU REMEMBER" in extra and "- Sofia's piano recital, " in extra
+    assert recall.block([("the plumber", "on Monday")]).endswith("- the plumber, on Monday")

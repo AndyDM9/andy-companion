@@ -40,6 +40,8 @@ run() {
     --inject-file "$ROOT/profiles/companion/profile.md:/andy/profiles/companion/profile.md" \
     --inject-file "$ROOT/src/andy_companion/__init__.py:/andy/src/andy_companion/__init__.py" \
     --inject-file "$ROOT/src/andy_companion/urgent.py:/andy/src/andy_companion/urgent.py" \
+    --inject-file "$ROOT/src/andy_companion/offers.py:/andy/src/andy_companion/offers.py" \
+    --inject-file "$ROOT/src/andy_companion/recall.py:/andy/src/andy_companion/recall.py" \
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 2vcpu-8gb --disk-size 20Gi \
     --timeout 1h --restart-policy never >/dev/null

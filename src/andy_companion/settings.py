@@ -60,6 +60,9 @@ def instructions(now: Optional[datetime] = None) -> str:
     today = clock.today(now)
     lines = [f"## TODAY\nAt the start of this conversation it is {today['weekday']} {today['date']}, "
              f"{today['time']}. Call get_today for the time later on."]
+    from andy_companion import moments, recall
+
+    lines.append(recall.block((m["what"], moments.spoken_day(m["on"])) for m in moments.upcoming(days=60)))
     if get()["pace"] == "slow":
         lines.append("## PACE\nThe person asked you to speak slowly: use short sentences, simple words, "
                      "and one idea at a time. Keep to this until they ask otherwise.")

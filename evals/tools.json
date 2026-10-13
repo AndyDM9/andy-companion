@@ -214,6 +214,14 @@
     "topic": {
      "type": "string",
      "description": "A subject they asked about, or empty for general local news."
+    },
+    "language": {
+     "type": "string",
+     "enum": [
+      "en",
+      "es"
+     ],
+     "description": "The language the person is speaking to you."
     }
    }
   },
@@ -242,6 +250,14 @@
     "interest": {
      "type": "string",
      "description": "What kind of thing they like, or empty."
+    },
+    "language": {
+     "type": "string",
+     "enum": [
+      "en",
+      "es"
+     ],
+     "description": "The language the person is speaking to you."
     }
    }
   },
