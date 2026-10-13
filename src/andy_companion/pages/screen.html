@@ -296,7 +296,8 @@
   let familyId = "";
   function showFamilyPhoto(fp) {
     const cap = $("family-cap"); cap.textContent = "";
-    cap.append(make("b", "", `${ui.from} ${fp.name || ui.family}`), ` · ${fp.when}` + (fp.caption ? ` · ${fp.caption}` : ""));
+    if (fp.sample) cap.append(fp.caption);       // a sample landscape: only its credit
+    else cap.append(make("b", "", `${ui.from} ${fp.name || ui.family}`), ` · ${fp.when}` + (fp.caption ? ` · ${fp.caption}` : ""));
     if (fp.photo === familyId) return;
     familyId = fp.photo;
     const img = $("family-img");

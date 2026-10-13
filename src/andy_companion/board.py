@@ -296,7 +296,7 @@ def idle_photo(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
     meta = _read(pick.with_suffix(".json"), {}) or {}
     when = datetime.fromtimestamp(meta.get("at") or pick.stat().st_mtime).strftime("%A")
     return {"photo": pick.stem, "name": _tidy(meta.get("name", ""), NAME_LEN), "caption": _tidy(meta.get("caption", ""), 140),
-            "when": when}
+            "when": when, "sample": bool(meta.get("sample"))}
 
 
 def show_photo(photo_id: str, name: str, caption: str = "", now: Optional[float] = None) -> None:
