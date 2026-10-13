@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andy</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* The page takes the colour of the time of day, so the room's screen says "evening" before
+     anyone reads a word. One typeface, made for people with low vision. */
+  :root {
+    --ground: #e6eef4; --ink: #142339; --soft: #4a5c73; --mark: #2f6f5e; --panel: #f6f9fb; --rule: #c9d6e0;
+  }
+  body[data-part="afternoon"] { --ground: #e7eee3; --ink: #1d2a1f; --soft: #4c5d4f; --mark: #2f6f5e; --panel: #f4f7f1; --rule: #cbd8c6; }
+  body[data-part="evening"]   { --ground: #24304f; --ink: #f3d78f; --soft: #c9cfe0; --mark: #f3d78f; --panel: #2d3a5c; --rule: #44527a; }
+  body[data-part="night"]     { --ground: #10172a; --ink: #aeb8cc; --soft: #7d889e; --mark: #c9b27a; --panel: #172038; --rule: #26314d; }
+  @media (prefers-reduced-motion: no-preference) { body { transition: background-color 2s, color 2s; } }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: "Atkinson Hyperlegible", "Verdana", sans-serif;
+    display: grid; grid-template-rows: auto 1fr; min-height: 100vh;
+    padding: 4vh 5vw;
+  }
+  .clock { padding-bottom: 3vh; border-bottom: 3px solid var(--rule); }
+  body.has-showing .day { font-size: clamp(56px, 9.5vw, 170px); }
+  body.has-showing .when { font-size: clamp(26px, 3.2vw, 56px); }
+  .day { font-size: clamp(64px, 15vw, 260px); font-weight: 700; line-height: .92; letter-spacing: -0.02em; margin: 0; }
+  .when { font-size: clamp(28px, 4.2vw, 72px); margin: 1.5vh 0 0; color: var(--soft); }
+  .when strong { color: var(--ink); font-weight: 700; }
+
+  .below { display: grid; grid-template-columns: 1fr; gap: 5vw; padding-top: 4vh; align-content: start; }
+  body.has-showing .below { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+
+  h2 { font-size: clamp(22px, 2.4vw, 40px); font-weight: 400; color: var(--soft); margin: 0 0 1.5vh; }
+  .plan { list-style: none; margin: 0; padding: 0; }
+  .plan li { display: grid; grid-template-columns: 7.5ch 1fr; gap: 1.2vw; align-items: baseline;
+             font-size: clamp(26px, 3.1vw, 54px); padding: 1.1vh 0; border-bottom: 1px solid var(--rule); }
+  .plan li:last-child { border-bottom: 0; }
+  .plan .t { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .plan li.done { color: var(--soft); text-decoration: line-through; text-decoration-thickness: 2px; }
+  .plan li.next { color: var(--ink); }
+  .plan li.next .t { color: var(--mark); }
+  .plan li.next::after { content: ""; }
+  .empty { font-size: clamp(26px, 3vw, 50px); color: var(--soft); margin: 0; }
+
+  .showing { background: var(--panel); border-left: 8px solid var(--mark); padding: 3vh 2.5vw; display: none; }
+  body.has-showing .showing { display: block; }
+  .showing h2 { color: var(--ink); font-weight: 700; }
+  .item { padding: 1.4vh 0; border-top: 1px solid var(--rule); }
+  .item:first-of-type { border-top: 0; }
+  .item .title { font-size: clamp(24px, 2.5vw, 44px); font-weight: 700; margin: 0; line-height: 1.2; }
+  .item .summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+                   font-size: clamp(20px, 1.9vw, 34px); margin: .6vh 0 0; line-height: 1.35; max-width: 60ch; }
+  .item .source { font-size: clamp(18px, 1.6vw, 28px); color: var(--soft); margin: .6vh 0 0; }
+
+  .offline { position: fixed; right: 2vw; bottom: 2vh; font-size: 20px; color: var(--soft); display: none; }
+  body.offline-on .offline { display: block; }
+</style>
+</head>
+<body data-part="morning">
+  <header class="clock" aria-live="polite">
+    <p class="day" id="day">&nbsp;</p>
+    <p class="when" id="when">&nbsp;</p>
+  </header>
+  <main class="below">
+    <section aria-labelledby="plan-h">
+      <h2 id="plan-h">Today</h2>
+      <ul class="plan" id="plan"></ul>
+      <p class="empty" id="empty" hidden>Nothing planned today. Ask Andy to remind you of something.</p>
+    </section>
+    <section class="showing" aria-live="polite" aria-labelledby="show-h">
+      <h2 id="show-h">&nbsp;</h2>
+      <div id="items"></div>
+    </section>
+  </main>
+  <p class="offline">Andy's screen is reconnecting…</p>
+<script>
+  const token = new URLSearchParams(location.search).get("t");
+  const $ = (id) => document.getElementById(id);
+  function text(el, value) { el.textContent = value; return el; }
+  function make(tag, cls, value) { const el = document.createElement(tag); if (cls) el.className = cls; return text(el, value || ""); }
+
+  function render(s) {
+    document.body.dataset.part = s.today.part_of_day;
+    text($("day"), s.today.weekday);
+    const when = $("when"); when.textContent = "";
+    when.append(s.today.part_of_day.charAt(0).toUpperCase() + s.today.part_of_day.slice(1) + ", ");
+    when.append(make("strong", "", clock12(s.today.time)));
+    when.append(", " + s.today.date.replace(/ \d{4}$/, ""));
+
+    const plan = $("plan"); plan.textContent = "";
+    let nextMarked = false;
+    for (const p of s.plan) {
+      const li = make("li", p.done ? "done" : "");
+      if (!p.done && !nextMarked) { li.classList.add("next"); nextMarked = true; }
+      li.append(make("span", "t", p.time), make("span", "w", p.what));
+      plan.append(li);
+    }
+    $("empty").hidden = s.plan.length > 0;
+
+    const showing = s.showing;
+    document.body.classList.toggle("has-showing", !!showing);
+    if (showing) {
+      text($("show-h"), showing.title);
+      const items = $("items"); items.textContent = "";
+      for (const it of showing.items.slice(0, 2)) {
+        const box = make("article", "item");
+        if (it.title) box.append(make("p", "title", it.title));
+        if (it.summary) box.append(make("p", "summary", it.summary));
+        if (it.source) box.append(make("p", "source", "From " + it.source));
+        items.append(box);
+      }
+    }
+  }
+  function clock12(hhmm) {
+    let [h, m] = hhmm.split(":").map(Number);
+    const ampm = h < 12 ? "am" : "pm"; h = h % 12 || 12;
+    return h + ":" + String(m).padStart(2, "0") + " " + ampm;
+  }
+  async function tick() {
+    try {
+      const r = await fetch("/api/screen?t=" + encodeURIComponent(token), { cache: "no-store" });
+      if (!r.ok) throw new Error(r.status);
+      render(await r.json());
+      document.body.classList.remove("offline-on");
+    } catch (e) { document.body.classList.add("offline-on"); }
+  }
+  tick(); setInterval(tick, 3000);
+</script>
+</body>
+</html>

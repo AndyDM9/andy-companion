@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes from home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #e7eee3; --ink: #1d2a1f; --soft: #52634f; --mark: #2f6f5e; --panel: #f7faf5; --rule: #cbd8c6; --error: #9b2c2c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #1a2420; --ink: #e8efe6; --soft: #a9b9a8; --mark: #8fd0b8; --panel: #212d28; --rule: #33443c; --error: #f2a3a3; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 19px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 6px; }
+  .lede { color: var(--soft); margin: 0 0 28px; }
+  h2 { font-size: 22px; margin: 32px 0 10px; }
+  .notes { list-style: none; padding: 0; margin: 0; }
+  .notes li { background: var(--panel); border-left: 6px solid var(--mark); padding: 14px 16px; margin-bottom: 10px; }
+  .notes .when { display: block; font-size: 15px; color: var(--soft); margin-top: 6px; }
+  .none { color: var(--soft); }
+  label { display: block; font-weight: 700; margin: 16px 0 6px; }
+  input, textarea { width: 100%; font: inherit; color: inherit; background: var(--panel); border: 2px solid var(--rule);
+                    padding: 12px; border-radius: 6px; }
+  textarea { min-height: 110px; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+  button { margin-top: 16px; font: inherit; font-weight: 700; color: var(--ground); background: var(--mark); border: 0;
+           padding: 13px 22px; border-radius: 6px; cursor: pointer; }
+  .hint { font-size: 16px; color: var(--soft); margin: 6px 0 0; }
+  .status { min-height: 1.5em; margin-top: 12px; }
+  .status.error { color: var(--error); }
+  .honest { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 16px; color: var(--soft); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <section id="who">
+    <h1>Notes from home</h1>
+    <p class="lede">See what's been shared with you, and send a message for Andy to pass on.</p>
+    <form id="name-form">
+      <label for="name">Your first name</label>
+      <input id="name" name="name" autocomplete="given-name" maxlength="40" required>
+      <p class="hint">Andy will tell them who looked, so they always know.</p>
+      <button type="submit">Open notes</button>
+    </form>
+  </section>
+
+  <section id="page" hidden>
+    <h1 id="hello">Notes from home</h1>
+    <p class="lede">Only what they chose to share appears here.</p>
+
+    <h2>Shared with you</h2>
+    <ul class="notes" id="notes"></ul>
+    <p class="none" id="none" hidden>Nothing has been shared yet. When they ask Andy to share something with family, it appears here.</p>
+
+    <h2>Send a message</h2>
+    <form id="msg-form">
+      <label for="text">Message for Andy to say</label>
+      <textarea id="text" maxlength="600" placeholder="Hi Mum, I'll call you at 6 tonight."></textarea>
+      <label for="link">A link to read (optional)</label>
+      <input id="link" type="url" inputmode="url" placeholder="https://">
+      <p class="hint">Andy says your message the next time it's a quiet moment, and can read a link aloud.</p>
+      <button type="submit">Send to Andy</button>
+      <p class="status" id="status" role="status"></p>
+    </form>
+
+    <p class="honest">They hear when you look at this page and when you send a message. Nothing here is a recording; Andy shares only what they ask it to.</p>
+  </section>
+</main>
+<script>
+  const key = new URLSearchParams(location.search).get("k");
+  const api = (path) => path + "?k=" + encodeURIComponent(key);
+  const $ = (id) => document.getElementById(id);
+  let name = "";
+  try { name = localStorage.getItem("andy-family-name") || ""; } catch (e) {}
+
+  async function post(path, body) {
+    const r = await fetch(api(path), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || "That didn't go through. Check your connection and try again.");
+    return data;
+  }
+  async function open() {
+    await post("/api/family/look", { name });
+    $("who").hidden = true; $("page").hidden = false;
+    $("hello").textContent = "Hello, " + name;
+    const r = await fetch(api("/api/family"), { cache: "no-store" });
+    const data = await r.json();
+    const list = $("notes"); list.textContent = "";
+    for (const s of data.shared) {
+      const li = document.createElement("li");
+      li.textContent = s.note;
+      const when = document.createElement("span"); when.className = "when"; when.textContent = s.when;
+      li.append(when); list.append(li);
+    }
+    $("none").hidden = data.shared.length > 0;
+  }
+  $("name-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    name = $("name").value.trim();
+    if (!name) return;
+    try { localStorage.setItem("andy-family-name", name); } catch (err) {}
+    open().catch((err) => alert(err.message));
+  });
+  $("msg-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = $("status"); status.className = "status";
+    const text = $("text").value.trim(), link = $("link").value.trim();
+    if (!text && !link) { status.textContent = "Write a message or add a link first."; status.className = "status error"; return; }
+    try {
+      await post("/api/family/message", { name, text, link });
+      status.textContent = "Sent. Andy will pass it on at the next quiet moment.";
+      $("text").value = ""; $("link").value = "";
+    } catch (err) { status.textContent = err.message; status.className = "status error"; }
+  });
+  if (name) open().catch(() => {});
+</script>
+</body>
+</html>

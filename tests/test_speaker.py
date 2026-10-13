@@ -27,6 +27,7 @@ class FakeHandler:
 def store(tmp_path, monkeypatch):
     monkeypatch.setattr(reminders, "STORE", tmp_path / "reminders.json")
     monkeypatch.setattr(speaker.settings, "FILE", tmp_path / "settings.json")
+    monkeypatch.setattr(speaker.board, "INBOX", tmp_path / "inbox.json")
     monkeypatch.setattr(speaker.chimes, "play", lambda name: chimed.append(name))
 
 

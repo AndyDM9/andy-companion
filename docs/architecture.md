@@ -38,6 +38,7 @@ quiet time ends, or when a reminder comes due.
 | `profiles/companion/` | Who Andy is, how it speaks, what it never does, which tools it may use | Contain any person's data |
 | `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
 | `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments | Store any frame, image or identity; send a picture anywhere |
+| `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, what the person shared, messages and looks from family | Show or share anything the person did not ask to share; log a URL or token |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
 | `web.py` | Tavily calls; cleaning web text into information; scrubbing messages before a scam check | Log a query or result; send numbers, links or emails from a message |
 | `dayplan.py`, `settings.py`, `volume.py`, `voice_controls.py` | Today's plan in fixed words; the person's pace and volume; exact spoken controls | Keep any transcript; let the model reword the plan |

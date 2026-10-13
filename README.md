@@ -30,6 +30,18 @@ microphone ─▶ NVIDIA Parakeet (speech-to-text, local GPU)
 - It is a robot, and it says so. It never speaks as, or imitates, a real person.
 - It never gives medicine doses or medical advice, and never asks for money or passwords.
 
+## Andy's screen and the family page
+
+A screen beside Andy shows the day in large type, today's reminders, and what Andy is talking
+about, with sources. Its colours follow the time of day.
+
+![Andy's screen in the afternoon](docs/images/screen-afternoon.png)
+
+Family see only what the person chose to share, can send Andy a message or a link, and the
+person always hears who looked.
+
+<img src="docs/images/family-page.png" alt="The family page on a phone" width="300">
+
 ## Measured on a Reachy Mini Lite (2026-10-13)
 
 | Step | Time |

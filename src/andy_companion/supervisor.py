@@ -25,7 +25,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from andy_companion import chimes, reminders, state, wake
+from andy_companion import chimes, reminders, screen_server, state, wake
 
 logger = logging.getLogger("andy.supervisor")
 ROOT = Path(__file__).resolve().parents[2]
@@ -91,6 +91,10 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
     if state.current()["mode"] != "awake" and wake_reason() is not None:
         state.awake()
+    try:
+        screen_server.serve()          # the screen and the family page stay up, asleep or awake
+    except OSError as e:
+        logger.warning("Andy's screen could not start (%s)", type(e).__name__)
     while True:
         mode = state.current()["mode"]
         if mode == "awake":

@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M7, Andy's screen and the family page)
+
+- **Andy's screen** (`/screen`, for a TV or monitor beside Andy): a day clock in Atkinson
+  Hyperlegible (made for low vision) whose colours follow the time of day (pale sky, sage,
+  lamp-lit indigo, dim night); today's reminders with the next one marked; and what Andy is
+  talking about (news, a look-up, what's on, scam warnings) with each source, cleared after 15
+  minutes. Fits a 1080p TV without scrolling; screenshots in `docs/images/`.
+- **The family page** (`/family`, for phones): only what the person asked Andy to share
+  (`share_with_family`, after a yes to the exact words); a box to send Andy a message or a link;
+  and the honest line that the person hears when family look. The speaker passes on messages and
+  "Anna looked at your notes at 3:10" at the next quiet moment, framed as data, after any due
+  reminder.
+- `screen_server.py` (standard library), started by the supervisor so it stays up asleep or
+  awake; random tokens per link (`scripts/settings.py links`, `new-family-link`); strict CSP,
+  no-store, no referrer, no request logging (URLs hold tokens). `board.py` keeps screen, shared,
+  inbox and tokens in owner-only files. 11 new tests, including real HTTP.
+
 ### Added (M6, eyes: reading)
 
 - **"Andy, read this letter for me"**: `reading.py` takes the sharpest of three camera frames,

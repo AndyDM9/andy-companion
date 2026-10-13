@@ -4,6 +4,8 @@
     python scripts/settings.py place "Springfield, Illinois"
     python scripts/settings.py news add sj-r.com          (a local paper's site)
     python scripts/settings.py events add https://library.example.org/events
+    python scripts/settings.py links                     (the screen and family page addresses)
+    python scripts/settings.py new-family-link           (the old family link stops working)
 
 Kept in Andy's own owner-only settings file on this computer, never in the repository.
 """
@@ -16,12 +18,29 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from andy_companion import settings  # noqa: E402
+from andy_companion import board, settings  # noqa: E402
 
 
 def main(argv: list[str]) -> int:
     if not argv or argv[0] == "show":
         print(json.dumps({k: v for k, v in settings.get().items() if k != "last_morning"}, indent=2))
+        return 0
+    if argv[0] in ("links", "new-family-link"):
+        import os
+        import socket
+
+        if argv[0] == "new-family-link":
+            board.new_family_link()
+        t = board.tokens()
+        port = os.environ.get("ANDY_SCREEN_PORT", "8090")
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("192.0.2.1", 9))          # no packet is sent; this finds the local address
+            host = s.getsockname()[0]
+        except OSError:
+            host = "localhost"
+        print(f"Screen (TV beside Andy): http://{host}:{port}/screen?t={t['screen']}")
+        print(f"Family page:             http://{host}:{port}/family?k={t['family']}")
         return 0
     if argv[0] == "place" and len(argv) == 2:
         settings.update(place=argv[1].strip()[:120])

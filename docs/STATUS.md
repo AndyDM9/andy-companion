@@ -14,7 +14,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | M4 | The day, the same way every time | ✅ Done 2026-10-13 | Verified on the robot: today's plan, slow pace and louder volume remembered, exact spoken controls |
 | M5 | Tavily | 🔨 Built, awaiting the live test | `local_news` (chosen local papers first, source named), `look_up`, `whats_on` (the city's calendar page, then a dated search), `read_link`, `check_message` (consumer-protection sites only; numbers, links and emails never sent). Live: news 5.9 s, look-up 1.4 s, events 3.3 s, link 0.2 s, scam check found FTC and AARP warnings. 140 tests |
 | M6 | Eyes | 🔨 In progress | Built, awaiting the live test: `read_letter` (sharpest of three frames, Tesseract on this computer, only the text reaches the model; a real Tesseract read passes in tests). To do: describing the camera picture with a Nemotron vision model on a Nebius Serverless Endpoint (needs a Nebius AI Cloud account) |
-| M7 | Family page | ⏳ | |
+| M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The screen (a day clock that takes the colour of the time of day; today's reminders, the next in green; what Andy is showing, with sources; fits a TV without scrolling) and the family page (only what the person shared; send Andy a message or a link; the person hears who looked). Private links with tokens; screenshots in `docs/images/`. 159 tests |
 | M8 | Proof | ⏳ | |
 | M9 | Ship | ⏳ | Repository private until then |
 | M10 | Video and submission | ⏳ | Registered on Devpost 2026-10-13 |
