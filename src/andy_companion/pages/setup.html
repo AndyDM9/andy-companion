@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up Andy</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* The family page's colours and type, so a helper sees one product. Every setting is a plain
+     question with its answer beside it; saving says exactly what Andy will tell the person. */
+  :root { --ground: #e7eee3; --ink: #1d2a1f; --soft: #52634f; --mark: #2f6f5e; --panel: #f7faf5; --rule: #cbd8c6; --error: #9b2c2c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #1a2420; --ink: #e8efe6; --soft: #a9b9a8; --mark: #8fd0b8; --panel: #212d28; --rule: #33443c; --error: #f2a3a3; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 19px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 6px; }
+  .lede { color: var(--soft); margin: 0 0 20px; }
+  fieldset { border: 0; border-top: 1px solid var(--rule); margin: 26px 0 0; padding: 18px 0 0; }
+  legend { font-size: 22px; font-weight: 700; padding: 0; }
+  label, .group { display: block; font-weight: 700; margin: 16px 0 6px; }
+  input[type=text], textarea { width: 100%; font: inherit; color: inherit; background: var(--panel);
+                               border: 2px solid var(--rule); padding: 12px; border-radius: 6px; }
+  textarea { min-height: 96px; resize: vertical; }
+  .choices { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .choices label { display: flex; align-items: center; gap: 10px; margin: 0; font-weight: 400; background: var(--panel);
+                   border: 2px solid var(--rule); border-radius: 6px; padding: 10px 14px; cursor: pointer; }
+  .choices input { width: 22px; height: 22px; accent-color: var(--mark); }
+  .choices label:has(input:checked) { border-color: var(--mark); font-weight: 700; }
+  input[type=range] { width: 100%; accent-color: var(--mark); height: 32px; }
+  .volume { display: flex; justify-content: space-between; color: var(--soft); font-size: 16px; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible, .choices label:has(input:focus-visible) {
+    outline: 3px solid var(--mark); outline-offset: 2px; }
+  button { margin-top: 18px; font: inherit; font-weight: 700; color: var(--ground); background: var(--mark); border: 0;
+           padding: 13px 22px; border-radius: 6px; cursor: pointer; }
+  button.quiet { background: transparent; color: var(--mark); border: 2px solid var(--mark); }
+  .hint { font-size: 16px; color: var(--soft); margin: 6px 0 0; }
+  .status { min-height: 1.5em; margin-top: 12px; }
+  .status.error { color: var(--error); }
+  .links { list-style: none; padding: 0; margin: 10px 0 0; }
+  .links li { background: var(--panel); border-left: 6px solid var(--mark); padding: 12px 14px; margin-bottom: 10px; }
+  .links strong { display: block; }
+  .links a { color: var(--mark); word-break: break-all; font-size: 16px; }
+  .honest { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 16px; color: var(--soft); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <section id="who">
+    <h1>Set up Andy</h1>
+    <p class="lede">Choose Andy's town, local news, language and voice.</p>
+    <form id="name-form">
+      <label for="name">Your first name</label>
+      <input type="text" id="name" autocomplete="given-name" maxlength="40" required>
+      <p class="hint">Andy tells them who changed what, so nothing changes behind their back.</p>
+      <button type="submit">Continue</button>
+    </form>
+  </section>
+
+  <form id="setup" hidden>
+    <h1>Set up Andy</h1>
+    <p class="lede">Change what you need, then save. Reminders, memories and what's shared stay theirs to set, by talking to Andy.</p>
+
+    <fieldset>
+      <legend>Where Andy lives</legend>
+      <label for="place">Town and state</label>
+      <input type="text" id="place" maxlength="120" placeholder="Harbor Bay, Florida">
+      <p class="hint">For local news, what's on, and opening hours nearby.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Local news and what's on</legend>
+      <label for="news">Local news sites Andy reads first</label>
+      <textarea id="news" placeholder="wlrn.org&#10;miamiherald.com"></textarea>
+      <p class="hint">One per line. Andy always says which site the news came from.</p>
+      <label for="events">Pages that list what's on</label>
+      <textarea id="events" placeholder="harborbay.example/events"></textarea>
+      <p class="hint">A library, a community centre or the town's calendar. One per line.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>How Andy speaks</legend>
+      <p class="group" id="lang-l">Language</p>
+      <div class="choices" role="radiogroup" aria-labelledby="lang-l">
+        <label><input type="radio" name="language" value="en"> English</label>
+        <label><input type="radio" name="language" value="es"> Español</label>
+      </div>
+      <p class="hint">Andy answers in whichever language it hears; this sets the screen and the daily plan.</p>
+      <p class="group" id="pace-l">Pace</p>
+      <div class="choices" role="radiogroup" aria-labelledby="pace-l">
+        <label><input type="radio" name="pace" value="normal"> Normal</label>
+        <label><input type="radio" name="pace" value="slow"> Slower</label>
+      </div>
+      <label for="volume">Volume <span id="volume-v"></span></label>
+      <input type="range" id="volume" min="10" max="100" step="5">
+      <div class="volume"><span>Quieter</span><span>Louder</span></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>The screen</legend>
+      <div class="choices">
+        <label><input type="checkbox" id="captions"> Show Andy's words on the screen (captions)</label>
+      </div>
+    </fieldset>
+
+    <button type="submit">Save</button>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+
+    <fieldset>
+      <legend>Links</legend>
+      <ul class="links">
+        <li><strong>Andy's screen</strong>Open on the TV or monitor beside Andy.<br><a id="l-screen" href="#"></a></li>
+        <li><strong>Family page</strong>Send to family. They see only what was shared, and Andy tells them who looked.<br><a id="l-family" href="#"></a></li>
+        <li><strong>Under the hood</strong>How fast each answer was, for the curious.<br><a id="l-hood" href="#"></a></li>
+      </ul>
+      <button type="button" class="quiet" id="new-family">Make a new family link</button>
+      <p class="hint">The old family link stops working for everyone who has it.</p>
+      <p class="status" id="link-status" role="status" aria-live="polite"></p>
+    </fieldset>
+
+    <p class="honest">Settings are kept on this computer only. This page works only on your home network, with this private link.</p>
+  </form>
+</main>
+<script>
+  const token = new URLSearchParams(location.search).get("s") || "";
+  const api = (path) => `${path}?s=${encodeURIComponent(token)}`;
+  const $ = (id) => document.getElementById(id);
+  let who = "";
+  let volumeTouched = false;
+  try { who = localStorage.getItem("andy-setup-name") || ""; } catch (e) {}
+
+  function fill(s) {
+    const v = s.settings;
+    $("place").value = v.place || "";
+    $("news").value = (v.news_sources || []).join("\n");
+    $("events").value = (v.events_pages || []).join("\n");
+    for (const r of document.querySelectorAll("input[name=language]")) r.checked = r.value === v.language;
+    for (const r of document.querySelectorAll("input[name=pace]")) r.checked = r.value === v.pace;
+    $("volume").value = v.volume == null ? 80 : v.volume;
+    $("volume-v").textContent = $("volume").value;
+    $("captions").checked = !!v.captions;
+    for (const k of ["screen", "family", "hood"]) {
+      const a = $("l-" + k);
+      a.href = s.links[k];
+      a.textContent = location.origin + s.links[k];
+    }
+  }
+
+  async function call(path, body) {
+    const r = await fetch(api(path), body === undefined ? { cache: "no-store" } :
+      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await r.json().catch(() => ({ error: "Andy's computer did not answer. Is it on?" }));
+    if (!r.ok) throw new Error(data.error || "Something went wrong; please try again.");
+    return data;
+  }
+
+  async function open() {
+    $("who").hidden = true;
+    $("setup").hidden = false;
+    try { fill(await call("/api/setup")); }
+    catch (e) { $("status").textContent = e.message; $("status").className = "status error"; }
+  }
+
+  $("name-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    who = $("name").value.trim();
+    if (!who) return;
+    try { localStorage.setItem("andy-setup-name", who); } catch (err) {}
+    open();
+  });
+  $("volume").addEventListener("input", () => { volumeTouched = true; $("volume-v").textContent = $("volume").value; });
+
+  $("setup").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = $("status");
+    status.className = "status";
+    status.textContent = "Saving…";
+    const pick = (name) => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
+    try {
+      const out = await call("/api/setup", { name: who, settings: {
+        place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
+        language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
+        ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
+      fill(out);
+      volumeTouched = false;
+      status.textContent = out.changed.length
+        ? `Saved. Andy will tell them that ${who} changed ${out.changed.join(", ")}.`
+        : "Nothing had changed.";
+    } catch (err) { status.textContent = err.message; status.className = "status error"; }
+  });
+
+  $("new-family").addEventListener("click", async () => {
+    if (!confirm("Make a new family link? The old one stops working for everyone who has it.")) return;
+    try { fill(await call("/api/setup/new-family-link", {})); $("link-status").textContent = "Done. Send the new family link to family."; }
+    catch (err) { $("link-status").textContent = err.message; }
+  });
+
+  if (who) { $("name").value = who; }
+</script>
+</body>
+</html>

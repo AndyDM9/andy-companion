@@ -31,6 +31,9 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   is talking about, and **live captions of what Andy says**. Its colours follow the time of day.
 - **Family, on your terms.** Family see only what you ask Andy to share, can send Andy a message
   or a link, and Andy always tells you who looked.
+- **Set up from a phone, never behind your back.** A helper sets the town, news sites, language
+  and voice on a setup page; Andy tells you who changed what, and you can ask it to change
+  anything back. Reminders, memories and what is shared stay yours, set by talking to Andy.
 
 What Andy never does: give medicine doses or medical advice, ask for money or passwords, claim to
 keep anyone safe, or keep recordings or transcripts.
@@ -89,9 +92,10 @@ Scorecards are in [evals/results/](evals/results/).
    `chmod 600` it. Turn on zero data retention in Token Factory's organisation settings.
 2. **Voice server.** `cd voice && uv sync && ./run.sh`
 3. **Robot side.** `cd robot && uv sync`, then from the repository root run `./scripts/andy`.
-4. **Your home.** `python scripts/settings.py place "Your town, State"`, then optionally
-   `news add yourlocalpaper.com`. `python scripts/settings.py links` prints the screen, family and
-   under-the-hood page addresses.
+4. **Your home.** `python scripts/settings.py links` prints four private addresses on your home
+   network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
+   language, pace, volume and captions. Open **the screen** on a TV, and send **the family page**
+   to family.
 5. **Optional: eyes.** With the [Nebius CLI](https://docs.nebius.com/cli), run
    `cloud/vision-endpoint.sh create`, then `status` until it is RUNNING. Run `stop` when you're
    done; a stopped endpoint costs nothing for compute.

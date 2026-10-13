@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (set Andy up from a phone, and the person is told)
+
+- `/setup?s=<setup token>` (`src/andy_companion/setup_page.py`, `pages/setup.html`): a helper gives
+  their first name, then sets the town, the local news sites, the what's-on pages, the language,
+  the pace, the volume and the captions, and finds the screen, family and under-the-hood links,
+  with a button for a new family link. Phone-first, in the family page's colours, light and dark.
+  Reminders, memories and what is shared are not on it: those stay the person's, set by talking.
+- **Nothing changes behind the person's back:** every saved change goes to Andy's inbox as a
+  `settings` notice, and at its next quiet moment Andy says who changed what ("Anna changed my
+  settings: the volume") and that the person can ask to change anything back. The page says the
+  same in its own voice ("how fast Andy speaks"). Saving what is already set tells nobody.
+- Checked values (web addresses one per line, up to 20; English or Spanish; normal or slow; volume
+  10–100), each refusal in plain words. A third private token, `setup`, added without changing the
+  existing screen and family links. `scripts/settings.py links` prints it. 13 tests; the volume
+  tests are blocked from reaching the robot's speaker (one earlier run had set the real robot to
+  70; restored to the saved 100). Screenshot with sample data: `docs/images/setup.png`.
+- For the design criterion ("a complete product, not a proof of concept") and the published
+  principle that the older adult decides what is collected and shared.
+
 ### Added (Andy shows it is thinking)
 
 - `src/andy_companion/body/thinking.py`: from the moment the person's words are understood until

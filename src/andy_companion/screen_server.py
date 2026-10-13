@@ -3,6 +3,7 @@
     /screen?t=<screen token>    the day clock, what's next, and what Andy is showing now
     /family?k=<family token>    what the person chose to share; send Andy a message or a link
     /hood?t=<screen token>      under the hood: how long each part of Andy's recent turns took
+    /setup?s=<setup token>      set Andy up: town, news sites, language, pace, volume, captions
 
 Links carry random tokens (board.tokens()); `scripts/settings.py links` prints them. Standard
 library only. Opening the family page tells the person who looked.
@@ -124,6 +125,15 @@ def family_state() -> Dict[str, Any]:
                        for s in reversed(board.shared())]}
 
 
+def setup_state() -> Dict[str, Any]:
+    from andy_companion import setup_page
+
+    t = board.tokens()
+    return {"settings": setup_page.state(),
+            "links": {"screen": f"/screen?t={t['screen']}", "family": f"/family?k={t['family']}",
+                      "hood": f"/hood?t={t['screen']}"}}
+
+
 def _ok(token: Optional[str], kind: str) -> bool:
     return bool(token) and hmac.compare_digest(token, board.tokens()[kind])
 
@@ -161,6 +171,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("hood.html")
         if url.path == "/api/hood" and _ok(q.get("t"), "screen"):
             return self._json(hood_state())
+        if url.path == "/setup" and _ok(q.get("s"), "setup"):
+            return self._page("setup.html")
+        if url.path == "/api/setup" and _ok(q.get("s"), "setup"):
+            return self._json(setup_state())
         if url.path == "/family" and _ok(q.get("k"), "family"):
             return self._page("family.html")
         if url.path == "/api/family" and _ok(q.get("k"), "family"):
@@ -190,6 +204,25 @@ class Handler(BaseHTTPRequestHandler):
             except (ValueError, TypeError, AttributeError):
                 return self._json({"error": "bad request"}, 400)
             return self._json({"ok": True})
+        if url.path.startswith("/api/setup") and _ok(q.get("s"), "setup"):
+            length = int(self.headers.get("Content-Length") or 0)
+            if length > MAX_BODY:
+                return self._json({"error": "That is too long."}, 413)
+            try:
+                data = json.loads(self.rfile.read(length) or b"{}")
+                if not isinstance(data, dict):
+                    raise ValueError("Something went wrong; please try again.")
+                from andy_companion import setup_page
+
+                if url.path == "/api/setup":
+                    changed = setup_page.apply(data.get("name", ""), data.get("settings") or {})
+                    return self._json({"ok": True, "changed": changed, **setup_state()})
+                if url.path == "/api/setup/new-family-link":
+                    board.new_family_link()
+                    return self._json({"ok": True, **setup_state()})
+            except ValueError as e:
+                return self._json({"error": str(e)}, 400)
+            return self._send(404, b"Not found", "text/plain")
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
         length = int(self.headers.get("Content-Length") or 0)

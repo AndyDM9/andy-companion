@@ -58,8 +58,10 @@ def _tidy(text: Any, limit: int = MAX_TEXT) -> str:
 
 def tokens() -> Dict[str, str]:
     data = _read(TOKENS, {})
-    if not data.get("screen") or not data.get("family"):
-        data = {"screen": secrets.token_urlsafe(12), "family": secrets.token_urlsafe(12)}
+    missing = [k for k in ("screen", "family", "setup") if not data.get(k)]
+    if missing:
+        for k in missing:                 # a new kind of link never changes the existing ones
+            data[k] = secrets.token_urlsafe(12)
         _write(TOKENS, data)
     return data
 
@@ -149,6 +151,14 @@ def looked(name: str, now: Optional[float] = None) -> None:
     recent = [e for e in _read(INBOX, []) if e["type"] == "look" and e["name"] == name and now - e["at"] < 3600]
     if not recent:
         _inbox_add({"type": "look", "name": name, "at": now})
+
+
+def settings_changed(name: str, what: List[str], now: Optional[float] = None) -> None:
+    """A helper changed Andy's settings on the setup page. The person hears who, and what."""
+    name = _tidy(name, NAME_LEN)
+    if not name or not what:
+        raise ValueError("A name and what changed are needed.")
+    _inbox_add({"type": "settings", "name": name, "what": [_tidy(w, 60) for w in what][:8], "at": now or time.time()})
 
 
 def next_for_person() -> Optional[Dict[str, Any]]:

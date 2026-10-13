@@ -47,6 +47,11 @@ def family_frame(entry: dict) -> str:
         return head + (f"Tell the person warmly that {name} sent a photo and it is on the screen beside you now"
                        + (f", with the words: {caption}" if caption else "") + ". Then call describe_photo with "
                        f"photo_id {entry.get('photo')} and say in one or two sentences what is in it.")
+    if entry.get("type") == "settings":
+        what = ", ".join(" ".join(str(w).split()).replace("[", "(").replace("]", ")") for w in entry.get("what", []))
+        return head.replace("through Andy's family page", "through Andy's setup page") + (
+            f"Tell the person in one or two short sentences that {name} changed your settings: {what}. "
+            "Say they can ask you to change anything back.")
     if entry.get("type") == "look":
         from datetime import datetime as _dt
         when = _dt.fromtimestamp(entry.get("at", 0)).strftime("%-I:%M %p").lower()
