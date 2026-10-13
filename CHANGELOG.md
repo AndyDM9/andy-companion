@@ -7,6 +7,9 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Added (running Andy like a product)
 
+- `docs/images/architecture.svg` (and a PNG for the video): the home, the computer's three parts,
+  the screen and family page, and the four Nebius and web services, with what each NVIDIA model
+  does; in the README and architecture doc. STATUS.md's M9 row fixed (an extra cell).
 - `scripts/doctor.py`: checks every part Andy needs and says what to fix: the private env file
   (owner-only), the Token Factory key (Nemotron reachable) and Tavily key (a real search), the
   voice server, the Reachy Mini daemon, the robot environment, Tesseract, the screen, Andy's

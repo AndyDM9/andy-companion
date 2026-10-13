@@ -35,6 +35,8 @@ keep anyone safe, or keep recordings or transcripts.
 
 ## How it uses NVIDIA and Nebius
 
+![How Andy works](docs/images/architecture.svg)
+
 | Part | Model or service | Where it runs |
 |---|---|---|
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |

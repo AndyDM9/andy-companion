@@ -2,6 +2,10 @@
 
 **Last updated 2026-10-13.**
 
+![How Andy works](images/architecture.svg)
+
+The text diagram below shows the voice path in detail.
+
 ```
             ┌──────────────────────── the home ────────────────────────┐
  person ──▶ │ Reachy Mini (mics, camera, head, antennas, body)         │
