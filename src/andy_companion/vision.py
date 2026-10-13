@@ -62,11 +62,17 @@ def describe(frame: Any, question: str = "", opener: Optional[Callable] = None) 
             data = json.loads(r.read())
         return " ".join(str(data["choices"][0]["message"]["content"]).split())[:800]
     except Exception as e:   # never echo the request: it holds the picture
+        if getattr(e, "code", None) in (404, 502, 503, 504):   # a stopped endpoint answers like this
+            raise VisionError("My eyes are switched off right now, so I can't see. They can be turned on "
+                              "from the computer.") from None
         raise VisionError(f"My eyes in the cloud did not answer ({type(e).__name__}).") from None
 
 
 def look(get_frame: Callable[[], Any], question: str = "", opener: Optional[Callable] = None) -> dict:
-    frame = reading.best_frame(get_frame)
+    try:
+        frame = reading.best_frame(get_frame)
+    except Exception:   # the camera itself failed: say so plainly, never crash the turn
+        return {"error": "My camera did not give a picture just now."}
     if frame is None:
         return {"error": "The camera did not give a picture."}
     try:

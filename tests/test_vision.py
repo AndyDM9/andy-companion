@@ -62,3 +62,24 @@ def test_never_sends_over_plain_http(monkeypatch):
     monkeypatch.setenv("ANDY_VISION_TOKEN", "secret-token")
     op = Opener()
     assert "secure" in vision.look(lambda: FRAME, opener=op)["error"] and op.requests == []
+
+
+def test_a_stopped_endpoint_is_said_plainly(monkeypatch):
+    import urllib.error
+
+    monkeypatch.setenv("ANDY_VISION_URL", "https://eyes.example")
+    monkeypatch.setenv("ANDY_VISION_TOKEN", "t")
+
+    def stopped(req, timeout=None):
+        raise urllib.error.HTTPError(req.full_url, 503, "Service Unavailable", {}, None)
+
+    import numpy as np
+    frame = np.zeros((48, 64, 3), dtype=np.uint8)
+    out = vision.look(lambda: frame, "what do you see", opener=stopped)
+    assert out == {"error": "My eyes are switched off right now, so I can't see. They can be turned on from the computer."}
+
+
+def test_a_broken_camera_never_crashes_the_turn():
+    def broken():
+        raise RuntimeError("camera pipeline")
+    assert vision.look(broken) == {"error": "My camera did not give a picture just now."}

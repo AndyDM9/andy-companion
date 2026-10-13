@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (the screen's caption and the eyes when switched off)
+
+- On the founder's TV the caption covered what Andy was showing. It now takes its own row at the
+  bottom of the screen; the page above shrinks instead of being hidden.
+- Asked to look while the eyes endpoint was stopped, the camera tool failed (the error itself is
+  kept out of the log) and Andy said "I'm having trouble getting a picture". Now a stopped endpoint
+  (404, 502, 503, 504) is said plainly ("My eyes are switched off right now, so I can't see. They
+  can be turned on from the computer."), and any camera failure becomes "My camera did not give a
+  picture just now" instead of a failed turn. 2 tests.
+
 ### Fixed (look into it, first try on the robot)
 
 - The founder's first "look into it" worked end to end (answer in about 44 s, said at the next quiet
