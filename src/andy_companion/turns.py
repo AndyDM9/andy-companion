@@ -97,6 +97,11 @@ def send(turn: Dict[str, Any], opener=None) -> None:
         pass   # the timings are a window for the curious, never a reason to stop
 
 
+def interrupted(seconds_left: float) -> None:
+    """The person talked over Andy and his voice stopped; tell the hood page how much was cut."""
+    threading.Thread(target=send, args=({"interrupt_ms": round(seconds_left * 1000)},), daemon=True).start()
+
+
 def install(handler_class=None, routine_class=None, clock: Optional[TurnClock] = None) -> bool:
     clock = clock or CLOCK
     if handler_class is None:

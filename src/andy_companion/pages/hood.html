@@ -62,6 +62,7 @@
         <li><span class="key" style="background: var(--gold)"></span>Hearing <b id="hear">–</b>: turn detection, then NVIDIA Parakeet on this computer</li>
         <li><span class="key" style="background: var(--reply)"></span>Reply <b id="reply">–</b>: NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, then the first words spoken</li>
         <li><span class="key" style="background: var(--tool)"></span>Tools Andy used, and where they ran</li>
+        <li id="talked-over" hidden>You talked over Andy <b id="talked-n">0</b>: each time he stopped at once and listened</li>
       </ul>
     </div>
   </section>
@@ -101,6 +102,9 @@
 
   function draw(s) {
     drawProof(s.proof);
+    const iv = s.interruptions || { count: 0 };
+    document.getElementById("talked-over").hidden = !iv.count;
+    document.getElementById("talked-n").textContent = iv.count === 1 ? "once" : `${iv.count} times`;
     const m = s.median || {};
     document.getElementById("big").innerHTML = m.total_ms == null ? "–" : (m.total_ms / 1000).toFixed(2) + "<small> s</small>";
     document.getElementById("hear").textContent = secs(m.hearing_ms);

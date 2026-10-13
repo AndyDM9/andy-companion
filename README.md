@@ -46,7 +46,7 @@ Each principle comes from published research, and each has something you can see
 
 | Principle | Source | What Andy does |
 |---|---|---|
-| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | About a second from your last word to Andy's first sound, shown live on the `/hood` page; you can talk over Andy; "slower", "louder", "be quiet for an hour" stick |
+| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | About a second from your last word to Andy's first sound, shown live on the `/hood` page; you can talk over Andy and he stops at once (counted on the same page); "slower", "louder", "be quiet for an hour" stick |
 | Support human contact, never replace it | Same study | Passes on family messages and photos; offers a note to family after a scam check; never says it replaces a visit |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
 | The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?"; shares only what you ask; tells you who looked and who changed a setting |

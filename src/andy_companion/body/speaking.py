@@ -28,6 +28,13 @@ def pushed(samples: int, rate: float, now: Optional[float] = None) -> None:
         _until = max(_until, now) + samples / rate
 
 
+def remaining(now: Optional[float] = None) -> float:
+    """Seconds of Andy's voice still to play."""
+    now = time.monotonic() if now is None else now
+    with _lock:
+        return max(0.0, _until - now)
+
+
 def cleared() -> None:
     global _until
     with _lock:

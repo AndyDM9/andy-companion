@@ -176,8 +176,17 @@ def track_speech_audio() -> bool:
     clear = LocalStream.clear_audio_queue
 
     def clear_and_note(self, *args, **kwargs):
+        left = speaking.remaining()
         speaking.cleared()
-        return clear(self, *args, **kwargs)
+        out = clear(self, *args, **kwargs)
+        if left > 0.3:                    # the person talked over Andy: he stops and listens
+            try:
+                from andy_companion import turns
+
+                turns.interrupted(left)
+            except Exception:
+                pass
+        return out
 
     push_and_note._andy_speaking = True
     MediaManager.push_audio_sample = push_and_note

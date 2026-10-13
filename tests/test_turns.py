@@ -14,6 +14,7 @@ def data(tmp_path, monkeypatch):
         monkeypatch.setattr(board, name, tmp_path / f"{name.lower()}.json")
     monkeypatch.setattr(settings, "FILE", tmp_path / "settings.json")
     screen_server._turns.clear()
+    screen_server._interrupts.clear()
 
 
 @pytest.fixture
@@ -175,3 +176,28 @@ def test_the_hood_shows_the_newest_suite_scorecard(tmp_path, monkeypatch):
     assert p == {"suite": "2026-10-13k", "per_run": [57, 56, 56], "total": 57, "judge": "Nemotron-3-Ultra-550b-a55b",
                  "ran": "2026-10-13", "ran_on": "this computer"}
     assert screen_server.proof(tmp_path / "missing") is None
+
+
+def test_talking_over_andy_shows_on_the_hood_page(server):
+    turns.send({"interrupt_ms": 2400})
+    turns.send({"interrupt_ms": 900, "text": "my words"})
+    s = hood(server)
+    assert s["interruptions"] == {"count": 2, "last_cut_ms": 900}
+    assert "my words" not in json.dumps(s)
+
+
+def test_a_bad_interruption_is_refused(server):
+    req = urllib.request.Request(f"{server}/api/turn?t={board.tokens()['screen']}", method="POST",
+                                 data=b'{"interrupt_ms": "lots"}')
+    with pytest.raises(urllib.error.HTTPError):
+        urllib.request.urlopen(req, timeout=5)
+
+
+def test_how_much_of_andys_voice_is_left():
+    from andy_companion.body import speaking
+
+    speaking.cleared()
+    speaking.pushed(48000, 16000, now=10.0)          # three seconds of voice pushed at t=10
+    assert speaking.remaining(now=11.0) == 2.0
+    speaking.cleared()
+    assert speaking.remaining(now=11.0) == 0.0

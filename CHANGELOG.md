@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (talking over Andy, shown on the hood page)
+
+- The founder asked to interrupt Andy instead of waiting for the end of a reply, as in his own
+  assistant. It already works: the voice server keeps listening while Andy speaks and cancels the
+  reply when the person starts talking (seen at 18:03: "speech during response: cancelled"), and
+  Pollen's app flushes the robot's speaker queue. What was missing was seeing it.
+- Each time the speaker is flushed while Andy still had more than 0.3 s to say, the hood page now
+  counts it: "You talked over Andy 3 times: each time he stopped at once and listened". Only the
+  number of milliseconds cut is kept, in memory (`turns.interrupted`, `speaking.remaining`,
+  `screen_server.add_interrupt`). The organisers name "interrupting the robot mid-sentence" as
+  something robotics judges look for. 3 tests; live-test step 3c.
+
 ### Fixed (Andy woke in silence)
 
 - The founder did not hear the new greeting. The logs showed the old one had been silent too (at

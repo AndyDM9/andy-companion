@@ -47,6 +47,21 @@ def caption(now: Optional[float] = None) -> str:
 _turns: "deque[Dict[str, Any]]" = deque(maxlen=40)
 
 
+# Times the person talked over Andy and he stopped: how much of his reply was cut. Memory only.
+_interrupts: "deque[Dict[str, int]]" = deque(maxlen=40)
+
+
+def add_interrupt(data: Dict[str, Any]) -> Dict[str, int]:
+    import time as _t
+
+    cut = _ms(data.get("interrupt_ms"))
+    if cut is None:
+        raise ValueError("bad interruption")
+    entry = {"at": int(_t.time()), "cut_ms": cut}
+    _interrupts.append(entry)
+    return entry
+
+
 def _ms(value: Any) -> Optional[int]:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
@@ -119,6 +134,8 @@ def hood_state() -> Dict[str, Any]:
         "turns": list(reversed(turns[-8:])),
         "count": len(turns),
         "proof": proof(),
+        "interruptions": {"count": len(_interrupts),
+                          "last_cut_ms": _interrupts[-1]["cut_ms"] if _interrupts else None},
         "median": {"hearing_ms": _median([t["hearing_ms"] for t in turns]),
                    "reply_ms": _median([t["reply_ms"] for t in plain]),
                    "total_ms": _median([t["total_ms"] for t in plain])},
@@ -235,6 +252,8 @@ class Handler(BaseHTTPRequestHandler):
                     raise ValueError("not an object")
                 if url.path == "/api/caption":
                     set_caption(data.get("text", ""))
+                elif "interrupt_ms" in data:
+                    add_interrupt(data)
                 else:
                     add_turn(data)
             except (ValueError, TypeError, AttributeError):
