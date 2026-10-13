@@ -66,7 +66,10 @@ def forecast(lat: float, lon: float, periods: int = 3, opener: Optional[Callable
     if not url or not str(url).startswith(NWS):
         raise WeatherError("The National Weather Service has no forecast for this place.")
     raw = (_get(url, opener).get("properties") or {}).get("periods") or []
-    items = [{"name": str(p.get("name", ""))[:40], "forecast": " ".join(str(p.get("detailedForecast", "")).split())[:300]}
+    items = [{"name": str(p.get("name", ""))[:40], "forecast": " ".join(str(p.get("detailedForecast", "")).split())[:300],
+              "short": " ".join(str(p.get("shortForecast", "")).split())[:80],
+              "temperature": (f"{p['temperature']}°" if isinstance(p.get("temperature"), (int, float)) else ""),
+              "rain": (p.get("probabilityOfPrecipitation") or {}).get("value")}
              for p in raw[:periods]]
     alerts: List[str] = []
     try:

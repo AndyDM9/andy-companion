@@ -208,11 +208,45 @@ HEADERS = {
 }
 
 
+# The weather tile on the screen: refreshed in the background every 30 minutes, never while a page waits.
+WEATHER_EVERY_S = 1800
+_weather: Dict[str, Any] = {"card": None, "at": 0.0, "busy": False}
+
+
+def _refresh_weather() -> None:
+    import time as _t
+    from andy_companion import weather
+
+    try:
+        spot = weather.where()
+        found = weather.forecast(spot["lat"], spot["lon"], periods=2)
+        _weather["card"] = {"periods": [{"name": p["name"], "temperature": p.get("temperature", ""), "short": p.get("short", ""),
+                                         "rain": p.get("rain")} for p in found["periods"]],
+                            "alerts": found["alerts"][:1], "source": "weather.gov"}
+    except Exception:
+        pass   # keep the last card; a stale forecast is replaced on the next try
+    finally:
+        _weather["at"], _weather["busy"] = _t.time(), False
+
+
+def weather_card(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
+    import time as _t
+    from andy_companion import settings
+
+    now = now if now is not None else _t.time()
+    if not settings.get().get("place"):
+        return None
+    if not _weather["busy"] and now - _weather["at"] >= WEATHER_EVERY_S:
+        _weather["busy"] = True
+        threading.Thread(target=_refresh_weather, name="andy-weather", daemon=True).start()
+    return _weather["card"]
+
+
 def today_plan(now: Optional[datetime] = None) -> Dict[str, Any]:
     now = now or datetime.now()
     items = [r for r in reminders.pending() if datetime.fromtimestamp(r["due"]).date() == now.date()]
     plan = [{"time": datetime.fromtimestamp(r["due"]).strftime("%-I:%M %p").lower(), "what": r["text"],
-             "done": r["due"] < now.timestamp()} for r in items]
+             "done": r["due"] < now.timestamp(), "due": int(r["due"])} for r in items]
     from andy_companion import settings
 
     return {"today": clock.today(now, settings.get().get("language", "en")), "hour": now.hour, "plan": plan}
@@ -224,6 +258,7 @@ def screen_state(now: Optional[datetime] = None) -> Dict[str, Any]:
     state = today_plan(now)
     state["showing"] = board.showing()
     state["caption"] = caption() if settings.get().get("captions", True) else ""
+    state["weather"] = weather_card()
     return state
 
 

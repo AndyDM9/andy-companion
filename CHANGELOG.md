@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (Andy's TV, redesigned from the research)
+
+- **Layout:** the day stays the largest thing and gives way only when Andy shows something. Idle:
+  "Next" and "Weather" side by side. Showing: they stack on the left and one card on the right holds
+  what Andy found: a kind ("What I found", "Local news"), the topic, up to three short items, and
+  "From" its sources. Finished reminders fade instead of being crossed out.
+- **Next** is the first reminder still to come, with how long until it ("7:44 pm · in 23 minutes");
+  the rest of today below it.
+- **Weather always in view:** the screen server refreshes the National Weather Service forecast every
+  30 minutes in the background (never while the page waits): the next period large ("79° Tonight:
+  Mostly Clear"), the one after small, an alert first. `weather.forecast` now also gives the
+  temperature, a short forecast and the chance of rain.
+- **Captions:** at most two lines, Andy's latest sentences, gone about 4 seconds after he stops
+  speaking (the research: two lines, short; it was up to 400 characters for 20 s).
+- **Contrast:** every text colour reaches 7:1 (WCAG AAA) against its background in all four parts
+  of the day; `tests/test_screen_design.py` keeps it so, and that the page never shows the person's
+  words. The colour fade runs only when the part of the day changes, not when the page opens.
+- The page's own words are in English or Spanish. Screenshots: `docs/images/tv-idle.png`,
+  `docs/images/tv-found.png`. 8 tests.
+
 ### Added (the screen says what Andy is doing; the hood page shows the live pipeline)
 
 - **From design research** (Echo Show, Nest Hub, ElliQ, MagicMirror², Home Assistant's voice pipeline,

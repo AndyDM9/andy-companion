@@ -7,7 +7,7 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
 
 > Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
 
-![Andy's screen in the afternoon](docs/images/screen-afternoon.png)
+![Andy's screen beside the robot: what it found, the next reminder, the weather, and Andy's words](docs/images/tv-found.png)
 
 ## What Andy does
 
@@ -35,8 +35,11 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   dated and with its sources named.
 - **Your pace and your volume.** "Please speak more slowly" and "speak up" stick.
 - **Quiet when you want it.** "Be quiet for an hour", "goodnight", and "Andy, wake up".
-- **A screen beside it.** A TV or monitor shows the day in large type, what's next, what Andy
-  is talking about, and **live captions of what Andy says**. Its colours follow the time of day.
+- **A screen beside it, readable from across the room.** A TV or monitor shows the day in large
+  type, what Andy is doing right now ("Listening for you", "Checking the weather", "Speaking"), the
+  next reminder with how long until it, the weather, what Andy found with its sources, and **two-line
+  captions of Andy's own words** (never yours). Its colours follow the time of day, and every text
+  colour reaches 7:1 contrast, tested.
 - **Family, on your terms.** Family see only what you ask Andy to share, can send Andy a message
   or a link, and Andy always tells you who looked.
 - **Set up from a phone, never behind your back.** A helper sets the town, news sites, language

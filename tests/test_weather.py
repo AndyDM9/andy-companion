@@ -83,3 +83,31 @@ def test_a_forecast_address_outside_the_weather_service_is_refused():
 def test_no_town_is_said_plainly():
     with pytest.raises(weather.WeatherError, match="setup page"):
         weather.where(full())
+
+
+def test_the_screen_gets_temperature_and_a_short_forecast():
+    op = full()
+    op.table["https://api.weather.gov/gridpoints/"] = {"properties": {"periods": [
+        {"name": "Tonight", "detailedForecast": "Mostly clear.", "shortForecast": "Mostly Clear", "temperature": 81,
+         "probabilityOfPrecipitation": {"value": 10}}]}}
+    p = weather.forecast(1, 2, opener=op)["periods"][0]
+    assert p["temperature"] == "81°" and p["short"] == "Mostly Clear" and p["rain"] == 10
+
+
+def test_the_weather_tile_refreshes_in_the_background_and_only_with_a_town(monkeypatch):
+    import time
+
+    from andy_companion import screen_server
+
+    screen_server._weather.update(card=None, at=0.0, busy=False)
+    assert screen_server.weather_card() is None                       # no town set yet
+    settings.update(place="Harbor Bay, Florida")
+    monkeypatch.setattr(weather, "where", lambda opener=None: {"lat": 1, "lon": 2})
+    monkeypatch.setattr(weather, "forecast", lambda lat, lon, periods=3, opener=None: {
+        "periods": [{"name": "Tonight", "temperature": "81°", "short": "Mostly Clear", "rain": 10}], "alerts": []})
+    screen_server.weather_card()                                      # starts the refresh; never waits for it
+    for _ in range(50):
+        if screen_server._weather["card"]:
+            break
+        time.sleep(0.01)
+    assert screen_server.weather_card()["periods"][0]["temperature"] == "81°"

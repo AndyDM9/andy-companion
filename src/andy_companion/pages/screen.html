@@ -9,15 +9,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* The page takes the colour of the time of day, so the room's screen says "evening" before
-     anyone reads a word. One typeface, made for people with low vision. */
+  /* Andy's screen, for a TV beside the robot, read from across the room by an older adult.
+     The page takes the colour of the time of day, so it says "evening" before anyone reads a word.
+     One typeface, made for low vision. The day is always the largest thing; it gives way only when
+     Andy shows something. Words for what Andy is doing; never the person's words.
+     Every text colour is at least 7:1 against its background (WCAG AAA), in every part of the day. */
   :root {
-    --ground: #e6eef4; --ink: #142339; --soft: #4a5c73; --mark: #2f6f5e; --panel: #f6f9fb; --rule: #c9d6e0;
+    --ground: #e6eef4; --ink: #142339; --soft: #3e4f66; --mark: #1c5244; --panel: #f6f9fb; --rule: #c9d6e0; --hush: #3c4c61;
   }
-  body[data-part="afternoon"] { --ground: #e7eee3; --ink: #1d2a1f; --soft: #4c5d4f; --mark: #2f6f5e; --panel: #f4f7f1; --rule: #cbd8c6; }
-  body[data-part="evening"]   { --ground: #24304f; --ink: #f3d78f; --soft: #c9cfe0; --mark: #f3d78f; --panel: #2d3a5c; --rule: #44527a; }
-  body[data-part="night"]     { --ground: #10172a; --ink: #aeb8cc; --soft: #7d889e; --mark: #c9b27a; --panel: #172038; --rule: #26314d; }
-  @media (prefers-reduced-motion: no-preference) { body { transition: background-color 2s, color 2s; } }
+  body[data-part="afternoon"] { --ground: #e7eee3; --ink: #1d2a1f; --soft: #3f4f42; --mark: #1c5244; --panel: #f4f7f1; --rule: #cbd8c6; --hush: #415243; }
+  body[data-part="evening"]   { --ground: #24304f; --ink: #f6dc96; --soft: #dde2ee; --mark: #f6dc96; --panel: #2d3a5c; --rule: #44527a; --hush: #c9d0e0; }
+  body[data-part="night"]     { --ground: #10172a; --ink: #c7cfdd; --soft: #a9b3c6; --mark: #d8c38c; --panel: #172038; --rule: #26314d; --hush: #a3adc1; }
+  body.ready { transition: background-color 2s, color 2s; }
+  @media (prefers-reduced-motion: reduce) { body.ready { transition: none; } }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; overflow: hidden; }
@@ -25,20 +29,26 @@
     background: var(--ground); color: var(--ink);
     font-family: "Atkinson Hyperlegible", "Verdana", sans-serif;
     display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100vh;
-    padding: 4vh 5vw;
+    padding: 4vh 5vw 3.5vh;
   }
-  .clock { padding-bottom: 3vh; border-bottom: 3px solid var(--rule);
-           display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3vw; align-items: start; }
-  .clock .day, .clock .when { grid-column: 1; }
 
-  /* What Andy is doing, in words: the one thing an older adult can't see otherwise. One calm colour
-     per state; a slow pulse only while Andy thinks or works, and none for people who turn motion off. */
+  /* The clock: day, then the part of the day, the time and the date. */
+  .clock { padding-bottom: 2.6vh; border-bottom: 3px solid var(--rule);
+           display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3vw; align-items: start; }
+  .day { grid-column: 1; font-size: clamp(64px, 14vw, 250px); font-weight: 700; line-height: .9; letter-spacing: -0.02em; margin: 0; }
+  .when { grid-column: 1; font-size: clamp(28px, 4vw, 70px); margin: 1.4vh 0 0; color: var(--soft); }
+  .when strong { color: var(--ink); font-weight: 700; }
+  body.has-showing .day { font-size: clamp(54px, 8.5vw, 150px); }
+  body.has-showing .when { font-size: clamp(24px, 2.9vw, 50px); }
+
+  /* What Andy is doing, in words. One calm colour per state; a slow pulse only while thinking or
+     working, and none for people who turn motion off. */
   .state { grid-column: 2; grid-row: 1 / span 2; justify-self: end; display: flex; align-items: center; gap: .6em;
-           margin: .4vh 0 0; padding: .45em .9em; border-radius: 999px; border: 2px solid var(--rule);
-           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); background: var(--panel); max-width: 34vw; }
-  .state .dot { flex: none; width: .7em; height: .7em; border-radius: 50%; background: var(--soft); }
+           margin: .4vh 0 0; padding: .45em .95em; border-radius: 999px; border: 2px solid var(--rule);
+           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); background: var(--panel); max-width: 36vw; }
+  .state .dot { flex: none; width: .7em; height: .7em; border-radius: 50%; background: var(--hush); }
   .state[data-state="hearing"] { border-color: var(--mark); }
-  .state[data-state="hearing"] .dot, .state[data-state="speaking"] .dot { background: var(--mark); }
+  .state[data-state="hearing"] .dot, .state[data-state="speaking"] .dot,
   .state[data-state="thinking"] .dot, .state[data-state="working"] .dot { background: var(--mark); }
   .state[data-state="quiet"], .state[data-state="asleep"], .state[data-state="away"] { color: var(--soft); }
   .state[data-state="quiet"] .dot, .state[data-state="asleep"] .dot { background: transparent; border: 2px solid var(--soft); }
@@ -46,45 +56,56 @@
     .state[data-state="thinking"] .dot, .state[data-state="working"] .dot { animation: breathe 1.6s ease-in-out infinite; }
   }
   @keyframes breathe { 50% { opacity: .25; } }
-  body.has-showing .day { font-size: clamp(56px, 9.5vw, 170px); }
-  body.has-showing .when { font-size: clamp(26px, 3.2vw, 56px); }
-  .day { font-size: clamp(64px, 15vw, 260px); font-weight: 700; line-height: .92; letter-spacing: -0.02em; margin: 0; }
-  .when { font-size: clamp(28px, 4.2vw, 72px); margin: 1.5vh 0 0; color: var(--soft); }
-  .when strong { color: var(--ink); font-weight: 700; }
 
-  .below { display: grid; grid-template-columns: 1fr; gap: 5vw; padding-top: 4vh; align-content: start; }
-  body.has-showing .below { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+  /* Below the clock: "Next" and the weather side by side; when Andy shows something they stack on
+     the left and what he found takes the right. */
+  .below { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4vw; padding-top: 3.5vh;
+           align-content: start; overflow: hidden; }
+  body.has-showing .below { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+  .side { display: contents; }
+  body.has-showing .side { display: flex; flex-direction: column; gap: 3vh; min-width: 0; }
+  .label { font-size: clamp(20px, 2vw, 34px); color: var(--soft); margin: 0 0 1vh; }
 
-  h2 { font-size: clamp(22px, 2.4vw, 40px); font-weight: 400; color: var(--soft); margin: 0 0 1.5vh; }
-  .plan { list-style: none; margin: 0; padding: 0; }
-  .plan li { display: grid; grid-template-columns: 7.5ch 1fr; gap: 1.2vw; align-items: baseline;
-             font-size: clamp(26px, 3.1vw, 54px); padding: 1.1vh 0; border-bottom: 1px solid var(--rule); }
-  .plan li:last-child { border-bottom: 0; }
-  .plan .t { font-weight: 700; font-variant-numeric: tabular-nums; }
-  .plan li.done { color: var(--soft); text-decoration: line-through; text-decoration-thickness: 2px; }
-  .plan li.next { color: var(--ink); }
-  .plan li.next .t { color: var(--mark); }
-  .plan li.next::after { content: ""; }
-  .empty { font-size: clamp(26px, 3vw, 50px); color: var(--soft); margin: 0; }
+  .next .what { font-size: clamp(32px, 3.6vw, 64px); font-weight: 700; margin: 0; line-height: 1.12; }
+  .next .at { font-size: clamp(24px, 2.6vw, 46px); margin: .8vh 0 0; color: var(--soft); font-variant-numeric: tabular-nums; }
+  .next .at strong { color: var(--mark); font-weight: 700; }
+  .later { list-style: none; margin: 2vh 0 0; padding: 0; }
+  .later li { display: grid; grid-template-columns: 7.5ch 1fr; gap: 1vw; font-size: clamp(20px, 2vw, 34px); padding: .6vh 0;
+              border-top: 1px solid var(--rule); color: var(--soft); }
+  .later li.done { opacity: .55; }
+  .later .t { font-variant-numeric: tabular-nums; }
+  .empty { font-size: clamp(24px, 2.6vw, 44px); color: var(--soft); margin: 0; line-height: 1.3; }
+  body.has-showing .next .what { font-size: clamp(26px, 2.7vw, 48px); }
+  body.has-showing .later { display: none; }
 
-  .showing { background: var(--panel); border-left: 8px solid var(--mark); padding: 3vh 2.5vw; display: none; }
-  body.has-showing .showing { display: block; }
-  .showing h2 { color: var(--ink); font-weight: 700; }
-  .item { padding: 1.4vh 0; border-top: 1px solid var(--rule); }
-  .item:first-of-type { border-top: 0; }
-  .item .title { font-size: clamp(24px, 2.5vw, 44px); font-weight: 700; margin: 0; line-height: 1.2; }
-  .item .summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-                   font-size: clamp(20px, 1.9vw, 34px); margin: .6vh 0 0; line-height: 1.35; max-width: 60ch; }
-  .item .source { font-size: clamp(18px, 1.6vw, 28px); color: var(--soft); margin: .6vh 0 0; }
+  .weather .now { display: flex; align-items: baseline; gap: 1.2vw; margin: 0; }
+  .weather .deg { font-size: clamp(48px, 5.5vw, 100px); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .weather .sky { font-size: clamp(24px, 2.5vw, 44px); line-height: 1.2; }
+  .weather .then { font-size: clamp(20px, 2vw, 34px); color: var(--soft); margin: 1.2vh 0 0; }
+  .weather .alert { font-size: clamp(20px, 2vw, 34px); margin: 1.2vh 0 0; padding: .5vh 1vw; border-left: 6px solid var(--mark); }
+  .weather .from { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 1vh 0 0; }
+  body.has-showing .weather .deg { font-size: clamp(36px, 3.6vw, 64px); }
+  body.has-showing .weather .then, body.has-showing .weather .from { display: none; }
 
-  .photo { display: block; max-width: 100%; max-height: 52vh; margin: 0 0 1.5vh; border-radius: 6px; object-fit: contain; }
-  /* The caption takes its own row at the bottom, so it never covers what Andy is showing. */
-  .below { overflow: hidden; }
-  .caption { margin: 2vh 0 0; padding: 1.6vh 2vw;
-             background: var(--ink); color: var(--ground); border-radius: 8px; font-size: clamp(26px, 3vw, 52px);
-             line-height: 1.3; display: none; }
-  body.has-caption .caption { display: block; }
-  body.has-caption .showing { overflow: hidden; }
+  /* What Andy found: one card, a kind, a topic, up to three short items, and where it came from. */
+  .found { display: none; background: var(--panel); border-left: 10px solid var(--mark); border-radius: 0 10px 10px 0;
+           padding: 3vh 2.6vw; min-width: 0; overflow: hidden; }
+  body.has-showing .found { display: block; }
+  .found .kind { font-size: clamp(18px, 1.7vw, 30px); color: var(--soft); margin: 0; }
+  .found h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.12; margin: .6vh 0 1.6vh; color: var(--ink); }
+  .item { padding: 1.2vh 0; border-top: 1px solid var(--rule); }
+  .item .title { font-size: clamp(22px, 2.2vw, 40px); font-weight: 700; margin: 0; line-height: 1.2; }
+  .item .summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+                   font-size: clamp(19px, 1.8vw, 32px); margin: .5vh 0 0; line-height: 1.35; color: var(--soft); }
+  .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
+  .photo { display: block; max-width: 100%; max-height: 50vh; margin: 0 0 1.5vh; border-radius: 8px; object-fit: contain; }
+
+  /* Captions: Andy's words only, two lines at most, gone a few seconds after he stops. */
+  .caption { margin: 2.4vh 0 0; padding: 1.4vh 2vw; background: var(--ink); color: var(--ground); border-radius: 10px;
+             font-size: clamp(26px, 2.9vw, 50px); line-height: 1.28; display: none;
+             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  body:not(.has-caption) .caption { display: none; }
+
   .offline { position: fixed; right: 2vw; bottom: 2vh; font-size: 20px; color: var(--soft); display: none; }
   body.offline-on .offline { display: block; }
 </style>
@@ -96,55 +117,110 @@
     <p class="state" id="state" data-state="away" role="status" aria-live="polite"><span class="dot"></span><span id="state-label"></span></p>
   </header>
   <main class="below">
-    <section aria-labelledby="plan-h">
-      <h2 id="plan-h">Today</h2>
-      <ul class="plan" id="plan"></ul>
-      <p class="empty" id="empty" hidden>Nothing planned today. Ask Andy to remind you of something.</p>
-    </section>
-    <section class="showing" aria-live="polite" aria-labelledby="show-h">
-      <h2 id="show-h">&nbsp;</h2>
+    <div class="side">
+      <section class="next" aria-labelledby="next-h">
+        <p class="label" id="next-h">Next</p>
+        <p class="what" id="next-what" hidden></p>
+        <p class="at" id="next-at" hidden></p>
+        <p class="empty" id="empty" hidden></p>
+        <ul class="later" id="later"></ul>
+      </section>
+      <section class="weather" id="weather" aria-labelledby="weather-h" hidden>
+        <p class="label" id="weather-h">Weather</p>
+        <p class="now"><span class="deg" id="w-deg"></span><span class="sky" id="w-sky"></span></p>
+        <p class="alert" id="w-alert" hidden></p>
+        <p class="then" id="w-then"></p>
+        <p class="from" id="w-from"></p>
+      </section>
+    </div>
+    <section class="found" aria-live="polite" aria-labelledby="found-h">
+      <p class="kind" id="found-kind"></p>
+      <h2 id="found-h">&nbsp;</h2>
       <div id="items"></div>
+      <p class="source" id="found-source" hidden></p>
     </section>
   </main>
   <p class="caption" id="caption" aria-live="polite"></p>
-  <p class="offline">Andy's screen is reconnecting…</p>
+  <p class="offline" id="offline">Andy's screen is reconnecting…</p>
 <script>
   const token = new URLSearchParams(location.search).get("t");
   const $ = (id) => document.getElementById(id);
   function text(el, value) { el.textContent = value; return el; }
   function make(tag, cls, value) { const el = document.createElement(tag); if (cls) el.className = cls; return text(el, value || ""); }
+  const cap1 = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  // The page's own words, in the language chosen on the setup page.
+  const UI = {
+    en: { next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
+          hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
+          kinds: { news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
+                   check: "About that message", photo: "A photo", link: "From the link" } },
+    es: { next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
+          hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
+          kinds: { news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
+                   whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace" } },
+  };
+  let ui = UI.en;
+
+  function until(due, nowS) {
+    const m = Math.round((due - nowS) / 60);
+    if (m <= 0) return ui.now;
+    if (m < 60) return `${ui.in} ${m} ${m === 1 ? ui.min : ui.mins}`;
+    const h = Math.floor(m / 60), r = m % 60;
+    const hs = `${h} ${h === 1 ? ui.hour : ui.hours}`;
+    return `${ui.in} ${hs}${r ? ` ${ui.and} ${r} ${r === 1 ? ui.min : ui.mins}` : ""}`;
+  }
 
   function render(s) {
     const shown = s.today.shown;
+    const es = shown.today === "Hoy";
+    ui = es ? UI.es : UI.en;
     document.body.dataset.part = s.today.part_of_day;
-    document.documentElement.lang = shown.today === "Hoy" ? "es" : "en";
-    text($("day"), shown.weekday.charAt(0).toUpperCase() + shown.weekday.slice(1));
+    document.documentElement.lang = es ? "es" : "en";
+    text($("day"), cap1(shown.weekday));
     const when = $("when"); when.textContent = "";
-    when.append(shown.part_of_day.charAt(0).toUpperCase() + shown.part_of_day.slice(1) + ", ");
-    when.append(make("strong", "", clock12(s.today.time)));
-    when.append(", " + shown.date);
-    text($("plan-h"), shown.today);
+    when.append(cap1(shown.part_of_day) + ", ", make("strong", "", clock12(s.today.time)), ", " + shown.date);
+    text($("next-h"), ui.next); text($("weather-h"), ui.weather); text($("offline"), ui.offline);
+
+    // Next: the first reminder still to come, with how long until it; the rest of today below it.
+    const nowS = Date.now() / 1000;
+    const coming = s.plan.filter((p) => !p.done);
+    const first = coming[0];
+    $("next-what").hidden = $("next-at").hidden = !first;
+    $("empty").hidden = !!first;
     text($("empty"), shown.empty);
-    window.FROM_WORD = shown.from;
-
-    const plan = $("plan"); plan.textContent = "";
-    let nextMarked = false;
-    for (const p of s.plan) {
-      const li = make("li", p.done ? "done" : "");
-      if (!p.done && !nextMarked) { li.classList.add("next"); nextMarked = true; }
-      li.append(make("span", "t", p.time), make("span", "w", p.what));
-      plan.append(li);
+    if (first) {
+      text($("next-what"), first.what);
+      const at = $("next-at"); at.textContent = "";
+      at.append(first.time + " · ", make("strong", "", until(first.due, nowS)));
     }
-    $("empty").hidden = s.plan.length > 0;
+    const later = $("later"); later.textContent = "";
+    for (const p of s.plan) {
+      if (p === first) continue;
+      const li = make("li", p.done ? "done" : "");
+      li.append(make("span", "t", p.time), make("span", "w", p.what));
+      later.append(li);
+    }
 
-    const cap = s.caption || "";
-    document.body.classList.toggle("has-caption", !!cap);
-    if ($("caption").textContent !== cap) $("caption").textContent = cap;
+    // The weather: the next period large, the one after small, an alert first if there is one.
+    const w = s.weather;
+    $("weather").hidden = !(w && w.periods && w.periods.length);
+    if (w && w.periods && w.periods.length) {
+      const [a, b] = w.periods;
+      text($("w-deg"), a.temperature || "");
+      text($("w-sky"), `${a.name}: ${a.short}`);
+      text($("w-then"), b ? `${b.name}: ${b.temperature} ${b.short}` + (b.rain ? `, ${b.rain}% ${ui.rain}` : "") : "");
+      $("w-alert").hidden = !(w.alerts && w.alerts.length);
+      text($("w-alert"), (w.alerts && w.alerts[0]) || "");
+      text($("w-from"), `${ui.from} the National Weather Service`);
+    }
 
+    // What Andy found: one card.
     const showing = s.showing;
     document.body.classList.toggle("has-showing", !!showing);
     if (showing) {
-      text($("show-h"), showing.title);
+      text($("found-kind"), ui.kinds[showing.kind] || "");
+      text($("found-h"), showing.title);
       const items = $("items"); items.textContent = "";
       if (showing.kind === "photo" && showing.photo) {
         const img = document.createElement("img");
@@ -152,14 +228,39 @@
         img.src = "/photo?t=" + encodeURIComponent(token) + "&id=" + encodeURIComponent(showing.photo);
         items.append(img);
       }
-      for (const it of showing.items.slice(0, 2)) {
+      const sources = [];
+      for (const it of showing.items) {
+        if (it.title === "Sources") { if (it.summary) sources.push(it.summary); continue; }
+        if (it.source && !sources.includes(it.source)) sources.push(it.source);
+        if (items.querySelectorAll(".item").length >= 3) continue;
         const box = make("article", "item");
         if (it.title) box.append(make("p", "title", it.title));
         if (it.summary) box.append(make("p", "summary", it.summary));
-        if (it.source) box.append(make("p", "source", (window.FROM_WORD || "From") + " " + it.source));
         items.append(box);
       }
+      $("found-source").hidden = !sources.length;
+      text($("found-source"), `${ui.from} ${sources.join(", ")}`);
     }
+
+    // Captions: Andy's latest words, at most two lines, gone a few seconds after he stops speaking.
+    const cap = latest(s.caption || "");
+    const showCap = !!cap && Date.now() - lastSpoke < 4000;
+    document.body.classList.toggle("has-caption", showCap);
+    if ($("caption").textContent !== cap) $("caption").textContent = cap;
+    // The colour fades only when the part of the day changes, never when the page first opens.
+    if (!document.body.classList.contains("ready")) setTimeout(() => document.body.classList.add("ready"), 500);
+  }
+
+  function latest(caption) {
+    // The last sentences that fit about two lines on a TV.
+    const parts = caption.match(/[^.!?¡¿]+[.!?]*/g) || [];
+    let out = "";
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const next = (parts[i].trim() + " " + out).trim();
+      if (out && next.length > 130) break;
+      out = next;
+    }
+    return out;
   }
   function clock12(hhmm) {
     let [h, m] = hhmm.split(":").map(Number);
@@ -174,22 +275,23 @@
       document.body.classList.remove("offline-on");
     } catch (e) { document.body.classList.add("offline-on"); }
   }
-  tick(); setInterval(tick, 1000);
 
   // The state strip changes in a moment, so it is asked for more often than the rest of the screen.
-  let lastState = "";
+  let lastState = "", lastSpoke = 0;
   async function stateTick() {
     try {
       const r = await fetch("/api/state?t=" + encodeURIComponent(token), { cache: "no-store" });
       if (!r.ok) return;
       const s = await r.json();
+      if (s.state === "speaking") lastSpoke = Date.now();
       const key = s.state + "|" + s.label;
       if (key === lastState) return;
       lastState = key;
       $("state").dataset.state = s.state;
       text($("state-label"), s.label);
-    } catch (e) { /* the screen's own reconnecting notice covers this */ }
+    } catch (e) { /* the reconnecting notice covers this */ }
   }
+  tick(); setInterval(tick, 1000);
   stateTick(); setInterval(stateTick, 400);
 </script>
 </body>
