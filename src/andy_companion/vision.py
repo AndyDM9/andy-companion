@@ -73,3 +73,19 @@ def look(get_frame: Callable[[], Any], question: str = "", opener: Optional[Call
         return {"description": describe(frame, question, opener)}
     except VisionError as e:
         return {"error": str(e)}
+
+
+def describe_photo(photo_id: str, opener: Optional[Callable] = None) -> dict:
+    """Describe a photo family sent (already on Andy's computer), with the same endpoint."""
+    import cv2
+
+    from andy_companion import board
+
+    path = board.photo_path(photo_id)
+    if path is None:
+        return {"error": "I can't find that photo any more."}
+    frame = cv2.imread(str(path), cv2.IMREAD_COLOR)
+    try:
+        return {"description": describe(frame, "This is a photo a family member sent.", opener)}
+    except VisionError as e:
+        return {"error": str(e)}

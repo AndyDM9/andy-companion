@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (photos from family)
+
+- **A photo from family, on Andy's screen, described by Andy**: the family page has "Send a
+  photo"; the photo is decoded and re-encoded as a plain JPEG (dropping hidden data such as the
+  place it was taken), at most 1600 px wide, owner-only, deleted after a week. At the next quiet
+  moment the photo goes on the screen beside Andy, Andy says who sent it and describes it with
+  Nemotron Nano VL (`describe_photo`). The screen serves photos only with the screen token. 5 tests.
+- The vision endpoint is live: 3.5 s per description; both of its addresses refuse requests
+  without the token.
+
 ### Added (continuity with consent)
 
 - **Moments** (`moments.py`): when the person mentions something with a day ("Sofia's recital is

@@ -92,6 +92,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("family.html")
         if url.path == "/api/family" and _ok(q.get("k"), "family"):
             return self._json(family_state())
+        if url.path == "/photo" and _ok(q.get("t"), "screen"):
+            path = board.photo_path(q.get("id", ""))
+            if path is not None:
+                return self._send(200, path.read_bytes(), "image/jpeg")
         return self._send(404, b"Not found", "text/plain")
 
     def do_POST(self) -> None:  # noqa: N802
@@ -100,12 +104,24 @@ class Handler(BaseHTTPRequestHandler):
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
         length = int(self.headers.get("Content-Length") or 0)
-        if length > MAX_BODY:
+        limit = board.MAX_PHOTO_BYTES * 4 // 3 + MAX_BODY if url.path == "/api/family/photo" else MAX_BODY
+        if length > limit:
             return self._json({"error": "That is too long."}, 413)
         try:
             data = json.loads(self.rfile.read(length) or b"{}")
             if url.path == "/api/family/look":
                 board.looked(data.get("name", ""))
+                return self._json({"ok": True})
+            if url.path == "/api/family/photo":
+                import base64
+
+                raw = str(data.get("image", ""))
+                raw = raw.split(",", 1)[1] if raw.startswith("data:") else raw
+                try:
+                    blob = base64.b64decode(raw, validate=True)
+                except ValueError:
+                    raise ValueError("That file is not a photo Andy can show.") from None
+                board.save_photo(data.get("name", ""), blob, data.get("caption", ""))
                 return self._json({"ok": True})
             if url.path == "/api/family/message":
                 board.family_message(data.get("name", ""), data.get("text", ""), data.get("link", ""))

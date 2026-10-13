@@ -15,6 +15,7 @@ from andy_companion import board, reminders, screen_server, speaker
 def data(tmp_path, monkeypatch):
     for name in ("SCREEN", "SHARED", "INBOX", "TOKENS"):
         monkeypatch.setattr(board, name, tmp_path / f"{name.lower()}.json")
+    monkeypatch.setattr(board, "PHOTOS", tmp_path / "photos")
     monkeypatch.setattr(reminders, "STORE", tmp_path / "reminders.json")
     monkeypatch.setattr(speaker.settings, "FILE", tmp_path / "settings.json")
     monkeypatch.setattr(speaker.chimes, "play", lambda name: None)
@@ -142,3 +143,56 @@ def test_the_family_page_tells_and_takes_messages(server):
     with pytest.raises(urllib.error.HTTPError) as e:
         post(server + f"/api/family/message?k={k}", {"name": "Anna"})
     assert e.value.code == 400
+
+
+def _png(w=640, h=480):
+    import cv2
+    import numpy as np
+    img = np.zeros((h, w, 3), np.uint8)
+    img[:, :, 1] = 180
+    return cv2.imencode(".png", img)[1].tobytes()
+
+
+def test_a_photo_is_re_encoded_kept_privately_and_offered_to_the_person():
+    out = board.save_photo("Anna", _png(2400, 1600), "Sofia at her recital")
+    path = board.photo_path(out["photo"])
+    data = path.read_bytes()
+    assert data[:3] == b"\xff\xd8\xff" and stat.S_IMODE(os.stat(path).st_mode) == 0o600
+    import cv2
+    import numpy as np
+    assert cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR).shape[1] == 1600
+    assert board.next_for_person()["type"] == "photo"
+
+
+def test_files_that_are_not_photos_are_refused():
+    with pytest.raises(ValueError):
+        board.save_photo("Anna", b"%PDF-1.4 not a photo")
+    assert board.photo_path("../../etc/passwd") is None
+
+
+def test_photos_are_deleted_after_a_week():
+    out = board.save_photo("Anna", _png())
+    path = board.photo_path(out["photo"])
+    old = path.stat().st_mtime - 8 * 86400
+    os.utime(path, (old, old))
+    assert board.tidy_photos() == 1 and board.photo_path(out["photo"]) is None
+
+
+def test_andy_puts_the_photo_on_the_screen_and_describes_it():
+    board.save_photo("Anna", _png(), "Sofia at her recital")
+    h = FakeHandler()
+    asyncio.run(speaker.tick(h, since=0, now_mono=100, now=datetime(2026, 10, 13, 14, 0), present=False))
+    assert "Anna sent a photo" in h.said[0] and "describe_photo" in h.said[0]
+    assert board.showing()["kind"] == "photo"
+
+
+def test_the_family_page_uploads_and_the_screen_serves_the_photo(server):
+    import base64
+    k, t = board.tokens()["family"], board.tokens()["screen"]
+    image = "data:image/png;base64," + base64.b64encode(_png()).decode()
+    assert post(server + f"/api/family/photo?k={k}", {"name": "Anna", "image": image, "caption": "Beach"})[0] == 200
+    photo = board.next_for_person()["photo"]
+    code, body, headers = get(server + f"/photo?t={t}&id={photo}")
+    assert code == 200 and headers["Content-Type"] == "image/jpeg" and body[:3] == b"\xff\xd8\xff"
+    with pytest.raises(urllib.error.HTTPError):
+        get(server + f"/photo?t={k}&id={photo}")

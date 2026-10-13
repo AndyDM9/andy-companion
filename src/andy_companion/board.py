@@ -25,6 +25,9 @@ SCREEN = DATA_DIR / "screen.json"
 SHARED = DATA_DIR / "shared.json"
 INBOX = DATA_DIR / "inbox.json"
 TOKENS = DATA_DIR / "tokens.json"
+PHOTOS = DATA_DIR / "photos"
+PHOTO_DAYS = 7
+MAX_PHOTO_BYTES = 8 * 1024 * 1024
 SHOW_FOR_S = 15 * 60
 MAX_SHARED = 30
 MAX_TEXT = 600
@@ -158,3 +161,58 @@ def delivered(entry: Dict[str, Any]) -> None:
     if entry in items:
         items.remove(entry)
         _write(INBOX, items)
+
+
+# --- photos from family ---------------------------------------------------------------------
+
+def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] = None) -> Dict[str, Any]:
+    """Keep a photo family sent: decoded and re-encoded as a plain JPEG (which drops hidden data such
+    as the place it was taken), at most 1600 pixels wide, deleted after PHOTO_DAYS."""
+    import cv2
+    import numpy as np
+
+    name, caption = _tidy(name, NAME_LEN), _tidy(caption, 140)
+    if not name:
+        raise ValueError("A name is needed.")
+    if not data or len(data) > MAX_PHOTO_BYTES:
+        raise ValueError("The photo must be smaller than 8 MB.")
+    img = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+    if img is None or min(img.shape[:2]) < 32:
+        raise ValueError("That file is not a photo Andy can show.")
+    h, w = img.shape[:2]
+    if w > 1600:
+        img = cv2.resize(img, (1600, int(h * 1600 / w)), interpolation=cv2.INTER_AREA)
+    ok, jpeg = cv2.imencode(".jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 88])
+    if not ok:
+        raise ValueError("The photo could not be prepared.")
+    PHOTOS.mkdir(parents=True, exist_ok=True, mode=0o700)
+    photo_id = secrets.token_hex(6)
+    path = PHOTOS / f"{photo_id}.jpg"
+    path.write_bytes(jpeg.tobytes())
+    os.chmod(path, 0o600)
+    now = now or time.time()
+    _inbox_add({"type": "photo", "name": name, "caption": caption, "photo": photo_id, "at": now})
+    tidy_photos(now)
+    return {"photo": photo_id}
+
+
+def photo_path(photo_id: str) -> Optional[Path]:
+    if not photo_id or not all(c in "0123456789abcdef" for c in photo_id) or len(photo_id) != 12:
+        return None
+    path = PHOTOS / f"{photo_id}.jpg"
+    return path if path.is_file() else None
+
+
+def tidy_photos(now: Optional[float] = None) -> int:
+    now = now or time.time()
+    gone = 0
+    for p in PHOTOS.glob("*.jpg") if PHOTOS.is_dir() else []:
+        if now - p.stat().st_mtime > PHOTO_DAYS * 86400:
+            p.unlink()
+            gone += 1
+    return gone
+
+
+def show_photo(photo_id: str, name: str, caption: str = "", now: Optional[float] = None) -> None:
+    _write(SCREEN, {"kind": "photo", "title": f"A photo from {_tidy(name, NAME_LEN)}", "photo": photo_id,
+                    "items": [{"summary": _tidy(caption, 140)}] if caption else [], "at": now or time.time()})

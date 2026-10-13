@@ -68,6 +68,17 @@
       <p class="status" id="status" role="status"></p>
     </form>
 
+    <h2>Send a photo</h2>
+    <form id="photo-form">
+      <label for="photo">A photo for the screen beside Andy</label>
+      <input id="photo" type="file" accept="image/*">
+      <label for="caption">A few words about it (optional)</label>
+      <input id="caption" maxlength="140" placeholder="Sofia at her recital">
+      <p class="hint">It shows on the screen, Andy tells them it's from you, and it is deleted after a week.</p>
+      <button type="submit">Send photo</button>
+      <p class="status" id="photo-status" role="status"></p>
+    </form>
+
     <p class="honest">They hear when you look at this page and when you send a message. Nothing here is a recording; Andy shares only what they ask it to.</p>
   </section>
 </main>
@@ -115,6 +126,20 @@
       await post("/api/family/message", { name, text, link });
       status.textContent = "Sent. Andy will pass it on at the next quiet moment.";
       $("text").value = ""; $("link").value = "";
+    } catch (err) { status.textContent = err.message; status.className = "status error"; }
+  });
+  $("photo-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = $("photo-status"); status.className = "status";
+    const file = $("photo").files[0];
+    if (!file) { status.textContent = "Choose a photo first."; status.className = "status error"; return; }
+    if (file.size > 8 * 1024 * 1024) { status.textContent = "That photo is over 8 MB. Choose a smaller one."; status.className = "status error"; return; }
+    const image = await new Promise((ok, fail) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = fail; r.readAsDataURL(file); });
+    try {
+      status.textContent = "Sending…";
+      await post("/api/family/photo", { name, image, caption: $("caption").value.trim() });
+      status.textContent = "Sent. It will show on Andy's screen at the next quiet moment.";
+      $("photo").value = ""; $("caption").value = "";
     } catch (err) { status.textContent = err.message; status.className = "status error"; }
   });
   if (name) open().catch(() => {});

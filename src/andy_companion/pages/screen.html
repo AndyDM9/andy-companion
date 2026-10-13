@@ -59,6 +59,7 @@
                    font-size: clamp(20px, 1.9vw, 34px); margin: .6vh 0 0; line-height: 1.35; max-width: 60ch; }
   .item .source { font-size: clamp(18px, 1.6vw, 28px); color: var(--soft); margin: .6vh 0 0; }
 
+  .photo { display: block; max-width: 100%; max-height: 52vh; margin: 0 0 1.5vh; border-radius: 6px; object-fit: contain; }
   .offline { position: fixed; right: 2vw; bottom: 2vh; font-size: 20px; color: var(--soft); display: none; }
   body.offline-on .offline { display: block; }
 </style>
@@ -109,6 +110,12 @@
     if (showing) {
       text($("show-h"), showing.title);
       const items = $("items"); items.textContent = "";
+      if (showing.kind === "photo" && showing.photo) {
+        const img = document.createElement("img");
+        img.className = "photo"; img.alt = showing.title;
+        img.src = "/photo?t=" + encodeURIComponent(token) + "&id=" + encodeURIComponent(showing.photo);
+        items.append(img);
+      }
       for (const it of showing.items.slice(0, 2)) {
         const box = make("article", "item");
         if (it.title) box.append(make("p", "title", it.title));
