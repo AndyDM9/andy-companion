@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M4, the day the same way every time)
+
+- **Today's plan, the same words every time**: `dayplan.py` builds it from the clock and the
+  reminders (the day, how many, each in time order, the next one); the `day_plan` tool tells
+  Andy to read it exactly. The speaker offers it once each morning (06:00–12:00) when someone
+  is around, after any due reminder.
+- **Pace and volume that stick**: `settings.py` (owner-only) keeps the person's pace and volume.
+  `set_pace` adds a "speak slowly" section, and today's date, to Andy's instructions at the
+  start of every conversation; `set_volume` changes the speaker through the Reachy Mini daemon
+  (`volume.py`) and is restored at start.
+- **Exact spoken controls**: `voice_controls.py` acts on "goodnight" and "be quiet for twenty
+  minutes" even if the model does not call the tool; only whole utterances, never questions or
+  negations; the transcript is looked at and dropped. 25 new tests.
+
 ### Added (M2, privacy floor)
 
 - **No conversation text in any log**: `privacy.py` redacts every log record Pollen's app

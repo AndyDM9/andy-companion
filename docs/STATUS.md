@@ -11,7 +11,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | M1 | Clock and reminders | ✅ Done 2026-10-13 | Verified on the robot: "Good afternoon" from the clock; a reminder set by voice, listed, and said unprompted when due |
 | M2 | Privacy floor | ✅ Done 2026-10-13 | Verified live: 0 conversation lines in the app log, tool arguments `[not logged]`, 0 transcript prints from the voice server; remember/forget write Andy's own owner-only `memory.json`. Tests: `tests/test_privacy.py` |
 | M3 | Body behaviours | 🔨 In progress | Done: face tracking from the greeting; no confirmation moves; looking at the person while speaking (gaze, verified in the log); body follow; seek by voice direction and look-around; person finder (YOLOX, frames never stored); calm idle moments; upward looks softened. 82 tests. Built 2026-10-13, awaiting the live test: chimes (a soft cue before each reminder, on waking and on sleep), quiet_for ("be quiet for an hour"), the offline wake phrase, and the supervisor that wakes Andy for a due reminder even while asleep or quiet. 99 tests |
-| M4 | The day, the same way every time | ⏳ | |
+| M4 | The day, the same way every time | 🔨 Built, awaiting the live test | `day_plan` (built by code, the same words every time); a morning plan once a day 06:00–12:00 when someone is here; `set_pace` (slow or normal, in Andy's instructions every session, with today's date); `set_volume` (louder, quieter or a level, through the robot daemon, restored at start); exact spoken controls for "goodnight" and "be quiet for …" that work without the model. 130 tests |
 | M5 | Tavily | ⏳ | Account and key ready; search tested |
 | M6 | Eyes | ⏳ | |
 | M7 | Family page | ⏳ | |

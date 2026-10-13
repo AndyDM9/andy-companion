@@ -35,6 +35,7 @@ quiet time ends, or when a reminder comes due.
 | `profiles/companion/` | Who Andy is, how it speaks, what it never does, which tools it may use | Contain any person's data |
 | `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
 | `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments | Store any frame, image or identity; send a picture anywhere |
+| `dayplan.py`, `settings.py`, `volume.py`, `voice_controls.py` | Today's plan in fixed words; the person's pace and volume; exact spoken controls | Keep any transcript; let the model reword the plan |
 | `supervisor.py`, `state.py`, `wake.py`, `chimes.py` | Awake, asleep and quiet; waking by phrase, time or due reminder; soft cues | Listen while the app is running; send or keep any audio |
 | Pollen's conversation app (dependency) | The robot connection, movement, tool calling | — (unmodified) |
 
@@ -43,6 +44,6 @@ quiet time ends, or when a reminder comes due.
 - Keys live in `~/.config/companion-hackathon/.env` (mode 600), outside the repository.
 - Nebius Token Factory runs with zero data retention switched on.
 - Nothing the person says is stored, except what they ask Andy to remember (`memory.json`) and
-  the reminders they set (`reminders.json`), both owner-only in `~/.local/share/andy-companion/`.
+  the reminders they set (`reminders.json`), and their pace and volume (`settings.json`), all owner-only in `~/.local/share/andy-companion/`.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
   and `voice/serve.py` silences the voice server's one transcript print.
