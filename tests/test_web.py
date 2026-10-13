@@ -60,6 +60,7 @@ def test_checking_a_message_sends_no_numbers_links_or_emails():
     assert "555" not in sent["query"] and "bob@" not in sent["query"] and "pay.me" not in sent["query"]
     assert "2,500" not in sent["query"] and "gift cards" in sent["query"]
     assert sent["include_domains"] == web.SCAM_SOURCES and found["source"] == "consumer.ftc.gov"
+    assert sent["search_depth"] == "advanced" and sent["safe_search"] is True
 
 
 def test_reading_a_link():

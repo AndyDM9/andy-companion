@@ -52,6 +52,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
 | `urgent.py` | The deterministic net: urgent medical words get 911, crisis words get 988, in English or Spanish, if Andy's reply missed it | Keep or log the words; claim to watch over anyone |
 | `guard.py` | The second look: the person's words checked by Nemotron 3.5 Content Safety on a Nebius endpoint, beside Andy's reply; 988 if self-harm was found and the reply missed it | Delay a reply; keep or log the words or the result; act on any category but self-harm |
+| `looking.py` | "Look into it": Tavily research streamed in the background, each step on the screen, the answer left for Andy to say; one at a time, ten a day | Log the question; act on the answer without a yes |
 | `weather.py` | The forecast and alerts for the town from the National Weather Service; the town's coordinates, looked up once | Send anything but the town and its coordinates |
 | `web.py` | Tavily calls; cleaning web text into information; scrubbing messages before a scam check | Log a query or result; send numbers, links or emails from a message |
 | `dayplan.py`, `settings.py`, `volume.py`, `voice_controls.py` | Today's plan in fixed words; the person's pace and volume; exact spoken controls | Keep any transcript; let the model reword the plan |

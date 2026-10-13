@@ -43,6 +43,10 @@ def install(screen: bool = False) -> None:
     captions.install()
     turns.install()
     volume.apply_saved()
+    if os.environ.get("TAVILY_API_KEY"):
+        import threading
+
+        threading.Thread(target=turns.tavily_usage_loop, name="andy-tavily-usage", daemon=True).start()
     if screen:
         from andy_companion import screen_server
         try:

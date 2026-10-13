@@ -74,6 +74,7 @@
     <p><strong>Hearing</strong>NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card</p>
     <p><strong>Thinking and tools</strong>NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention</p>
     <p><strong>Eyes</strong>NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked</p>
+    <p id="tavily"><strong>The web</strong>Tavily: search, extract, crawl and research, each source named aloud</p>
     <p><strong>A second look</strong>NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply</p>
     <p id="proof"><strong>Proof</strong>A conversation suite judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job</p>
   </section>
@@ -100,8 +101,20 @@
                     `${p.per_run.join(", ")} of ${p.total} in ${p.per_run.length} runs (${p.ran})`);
   }
 
+  function drawTavily(t) {
+    if (!t || t.used == null) return;
+    const el = document.getElementById("tavily");
+    const by = Object.entries(t.by || {}).filter(([, n]) => n > 0).map(([k, n]) => `${k} ${n}`).join(", ");
+    el.replaceChildren();
+    const head = document.createElement("strong");
+    head.textContent = "The web";
+    el.append(head, `Tavily: ${t.used}${t.limit ? " of " + t.limit.toLocaleString("en-US") : ""} credits this month` +
+                    (by ? ` (${by})` : "") + ", each source named aloud");
+  }
+
   function draw(s) {
     drawProof(s.proof);
+    drawTavily(s.tavily);
     const iv = s.interruptions || { count: 0 };
     document.getElementById("talked-over").hidden = !iv.count;
     document.getElementById("talked-n").textContent = iv.count === 1 ? "once" : `${iv.count} times`;

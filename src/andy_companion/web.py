@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import urllib.parse
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 from urllib.parse import urlparse
@@ -35,9 +36,13 @@ def _key() -> str:
     return key
 
 
-def _post(path: str, body: Dict[str, Any], opener: Optional[Callable] = None) -> Dict[str, Any]:
-    req = urllib.request.Request(API + path, method="POST", data=json.dumps(body).encode(),
-                                 headers={"Authorization": f"Bearer {_key()}", "Content-Type": "application/json"})
+def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] = None) -> Dict[str, Any]:
+    """POST body to Tavily, or GET when body is None."""
+    req = urllib.request.Request(API + path, method="POST" if body is not None else "GET",
+                                 data=json.dumps(body).encode() if body is not None else None,
+                                 headers={"Authorization": f"Bearer {_key()}", "Content-Type": "application/json",
+                                          # Tavily counts this product's use apart from any other (X-Project-ID).
+                                          "X-Project-ID": os.environ.get("TAVILY_PROJECT", "andy-companion")})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
             return json.loads(r.read())
@@ -87,6 +92,8 @@ def local_news(place: str, topic: str = "", sources: Optional[List[str]] = None,
     if sources:
         body["include_domains"] = sources
     found = _results(_post("/search", body, opener))
+    # Chosen papers only, then widen once. Tavily's include_domains_mode "prefer" (one call) did not put
+    # the chosen paper first in a live test on 2026-10-13, so "news from the papers you chose" keeps this.
     if not found and sources:          # the chosen papers had nothing today: widen once
         body.pop("include_domains")
         body["time_range"] = "week"
@@ -149,6 +156,126 @@ def scrub_message(text: str) -> str:
 
 def check_message(text: str, opener=None) -> List[Dict[str, str]]:
     query = f"scam warning {scrub_message(text)}".strip()
-    body = {"query": query[:390], "search_depth": "basic", "max_results": 4, "include_domains": SCAM_SOURCES,
+    # Advanced depth: on a prize-scam letter, basic found nothing and advanced found four exact AARP
+    # and FTC warnings (2026-10-13). It costs two credits instead of one; a scam check is worth it.
+    body = {"query": query[:390], "search_depth": "advanced", "max_results": 4, "include_domains": SCAM_SOURCES,
             "safe_search": True}
     return _results(_post("/search", body, opener))
+
+
+# --- look into it: Tavily research, for a question that needs more than one search ----------------
+
+RESEARCH_SCHEMA = {
+    "properties": {
+        "say": {"type": "string", "description": "The answer for an older adult, spoken aloud: two or three short, "
+                                                 "plain sentences, with dates where they matter. No lists, no links."},
+        "key_points": {"type": "array", "items": {"type": "string"},
+                       "description": "Up to four short facts to show on a screen, each under 15 words."},
+    },
+    "required": ["say", "key_points"],
+}
+
+
+def start_research(question: str, place: str = "", language: str = "en", opener=None) -> str:
+    """Start a Tavily research task to collect later (the fallback when streaming fails); returns its id."""
+    data = _post("/research", _research_body(question, place, language, False), opener)
+    rid = str(data.get("request_id", ""))
+    if not rid:
+        raise WebError("The research did not start.")
+    return rid
+
+
+def _research_body(question: str, place: str, language: str, stream: bool) -> Dict[str, Any]:
+    where = f" They live in {place}; prefer official and local sources for anything local." if place else ""
+    lang = " Answer in Spanish." if language == "es" else ""
+    task = (f"An older adult asked their home companion robot to look into this: {question.strip()[:600]}.{where} "
+            f"Find what is true and current, with dates.{lang}")
+    body = {"input": task, "model": "mini", "output_schema": RESEARCH_SCHEMA, "citation_format": "numbered",
+            "output_length": "short"}
+    if stream:
+        body["stream"] = True
+    return body
+
+
+def _answer(content: Any, sources: Any) -> Dict[str, Any]:
+    if isinstance(content, str):
+        try:
+            content = json.loads(content)
+        except ValueError:
+            content = {"say": content}
+    content = content if isinstance(content, dict) else {}
+    found = [{"title": clean(s.get("title"), 140), "source": source_name(s.get("url", "")), "url": s.get("url", "")}
+             for s in (sources or [])[:6] if isinstance(s, dict)]
+    return {"status": "completed", "say": clean(content.get("say", ""), 700),
+            "points": [clean(p, 160) for p in list(content.get("key_points") or [])[:4]], "sources": found}
+
+
+def stream_research(question: str, place: str = "", language: str = "en",
+                    on_step: Optional[Callable[[str, str], None]] = None, opener=None,
+                    timeout_s: float = 120) -> Dict[str, Any]:
+    """Tavily research as a stream, so each step can be shown while it happens:
+    on_step("planning"|"searching"|"reading"|"writing", detail). Returns the answer like research_result."""
+    req = urllib.request.Request(API + "/research", method="POST",
+                                 data=json.dumps(_research_body(question, place, language, True)).encode(),
+                                 headers={"Authorization": f"Bearer {_key()}", "Content-Type": "application/json",
+                                          "X-Project-ID": os.environ.get("TAVILY_PROJECT", "andy-companion")})
+    step = on_step or (lambda kind, detail: None)
+    content: Any = None
+    sources: Any = None
+    try:
+        with (opener or urllib.request.urlopen)(req, timeout=timeout_s) as r:
+            for raw in r:
+                line = raw.decode("utf-8", "replace").strip()
+                if not line.startswith("data:"):
+                    continue
+                try:
+                    delta = (json.loads(line[5:]).get("choices") or [{}])[0].get("delta") or {}
+                except ValueError:
+                    continue
+                calls = delta.get("tool_calls") or {}
+                for call in calls.get("tool_call") or []:
+                    name = str(call.get("name", ""))
+                    if name == "Planning":
+                        step("planning", "")
+                    elif name == "WebSearch":
+                        step("searching", str(len(call.get("queries") or [])))
+                    elif name == "Generating":
+                        step("writing", "")
+                for resp in calls.get("tool_response") or []:
+                    names = list(dict.fromkeys(source_name(s.get("url", "")) for s in resp.get("sources") or []
+                                               if isinstance(s, dict)))
+                    names = [n for n in names if n]
+                    if names:
+                        more = f" and {len(names) - 4} more" if len(names) > 4 else ""
+                        step("reading", ", ".join(names[:4]) + more)
+                if "content" in delta:
+                    content = delta["content"]
+                if "sources" in delta:
+                    sources = delta["sources"]
+    except WebError:
+        raise
+    except Exception as e:   # never echo the request: it holds what the person asked
+        raise WebError(f"The research did not finish ({type(e).__name__}).") from None
+    if content is None:
+        raise WebError("The research gave no answer.")
+    return _answer(content, sources)
+
+
+def research_result(request_id: str, opener=None) -> Dict[str, Any]:
+    """{"status": "pending"|"completed"|"failed", "say", "points", "sources"} for a research task."""
+    data = _post(f"/research/{urllib.parse.quote(request_id)}", None, opener)
+    status = str(data.get("status", "pending"))
+    if status != "completed":
+        return {"status": "failed" if status == "failed" else "pending"}
+    return _answer(data.get("content"), data.get("sources"))
+
+def usage(opener=None) -> Dict[str, Any]:
+    """This month's Tavily credits for the account, as numbers only (GET /usage; no credits used)."""
+    account = (_post("/usage", None, opener) or {}).get("account") or {}
+
+    def num(v):
+        return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+    return {"plan": str(account.get("current_plan", ""))[:40], "used": num(account.get("plan_usage")),
+            "limit": num(account.get("plan_limit")),
+            "by": {k: num(account.get(f"{k}_usage")) or 0 for k in ("search", "extract", "crawl", "map", "research")}}

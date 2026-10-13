@@ -161,6 +161,16 @@ def settings_changed(name: str, what: List[str], now: Optional[float] = None) ->
     _inbox_add({"type": "settings", "name": name, "what": [_tidy(w, 60) for w in what][:8], "at": now or time.time()})
 
 
+def research_ready(topic: str, say: str, points: List[str], sources: List[Dict[str, Any]], failed: bool = False,
+                   now: Optional[float] = None) -> None:
+    """An answer Andy looked into is ready to say (looking.py); kept until said, like a family message."""
+    _inbox_add({"type": "research", "topic": _tidy(topic, 120), "say": _tidy(say, 700),
+                "points": [_tidy(p, 160) for p in points[:4]],
+                "sources": [{"title": _tidy(s.get("title", ""), 140), "source": _tidy(s.get("source", ""), 60)}
+                            for s in sources[:6]],
+                "failed": bool(failed), "at": now or time.time()})
+
+
 def next_for_person() -> Optional[Dict[str, Any]]:
     items = _read(INBOX, [])
     return items[0] if items else None

@@ -5,6 +5,30 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (Tavily: "look into it for me", streamed; better scam checks; usage on the hood page)
+
+- **Research, from a deep look at the Best Use of Tavily prize** (its only condition: a runtime call to
+  the Tavily API; past winners used Tavily as the agent's live eyes in a multi-step flow that ends in
+  an action, with a person deciding).
+- **`look_into`** (`src/andy_companion/looking.py`, `web.stream_research`): for a question that needs
+  more than one search, Andy starts Tavily's research agent (`/research`, model mini, `output_schema`
+  for two spoken sentences and up to four key points, `output_length: short`, streamed) and carries
+  on. The TV shows each step as Tavily takes it (planning, the searches, the sites read, writing);
+  the answer waits in Andy's inbox and at the next quiet moment Andy says it, dated, with its sources
+  named, while the key points and sources show on the screen. One at a time (asking twice in one turn
+  counts once), ten a day. If the stream fails, the task is started again and collected when ready.
+  Live: "Is the farmers market still on this Saturday?" answered in 46 s from harborbayfl.gov ("not this
+  Saturday, October 17; first Saturday of each month, 9 to noon"). 8 tests; suite look-1 to look-3.
+- **Scam checks at advanced depth:** on a prize-scam letter, basic found nothing and advanced found
+  four exact AARP and FTC warnings.
+- **Every Tavily request carries `X-Project-ID: andy-companion`;** the app reads `GET /usage` every ten
+  minutes and the hood page shows this month's credits ("84 of 1,000 … search 79, extract 5"),
+  numbers only. 2 tests.
+- Local news keeps "your chosen papers first, then widen": `include_domains_mode: prefer` did not put
+  the chosen paper first in a live test.
+- Decision 0002 lists what is in use; README, submission draft, STATUS, architecture, live test (3e)
+  and two feedback notes updated.
+
 ### Added (the weather, from the National Weather Service)
 
 - `weather` tool and `src/andy_companion/weather.py` ([decision 0004](docs/decisions/0004-weather-from-the-national-weather-service.md)):

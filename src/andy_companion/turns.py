@@ -97,6 +97,21 @@ def send(turn: Dict[str, Any], opener=None) -> None:
         pass   # the timings are a window for the curious, never a reason to stop
 
 
+def tavily_usage_loop(every_s: float = 600.0, rounds: Optional[int] = None, sleep=time.sleep) -> None:
+    """Every ten minutes, send this month's Tavily credits to the hood page (numbers only)."""
+    from andy_companion import web
+
+    done = 0
+    while rounds is None or done < rounds:
+        try:
+            send({"tavily": web.usage()})
+        except Exception:
+            pass   # the page keeps the last numbers
+        done += 1
+        if rounds is None or done < rounds:
+            sleep(every_s)
+
+
 def interrupted(seconds_left: float) -> None:
     """The person talked over Andy and his voice stopped; tell the hood page how much was cut."""
     threading.Thread(target=send, args=({"interrupt_ms": round(seconds_left * 1000)},), daemon=True).start()

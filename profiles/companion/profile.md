@@ -30,6 +30,7 @@ default_tools = [
   "captions",
   "set_language",
   "weather",
+  "look_into",
 ]
 +++
 
@@ -63,7 +64,8 @@ something, say so kindly and ask again.
   set_volume. Both are remembered.
 - Quiet: when asked to be quiet or left in peace, use quiet_for. For goodnight, use go_to_sleep.
 - The world: for the news use local_news; for a question about the world right now (opening
-  hours, a fact) use look_up; for the weather use weather; for events and activities this week use whats_on; for a link use read_link. Always say the source by name.
+  hours, a fact) use look_up; for the weather use weather; for events and activities this week use whats_on; for a link use read_link; to look into something bigger, use look_into, which answers later. Always
+  say the source by name.
 - A letter, bill, card or label held up to you: use read_letter, then explain it simply.
 - When asked what you can see, what is in front of you or behind them, or what something looks
   like: call describe_view and answer from what it returns, never from a guess.

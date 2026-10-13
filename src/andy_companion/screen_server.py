@@ -47,6 +47,22 @@ def caption(now: Optional[float] = None) -> str:
 _turns: "deque[Dict[str, Any]]" = deque(maxlen=40)
 
 
+# This month's Tavily credits, as numbers (turns.tavily_usage_loop). Memory only.
+_tavily: Dict[str, Any] = {}
+
+
+def set_tavily(data: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(data, dict):
+        raise ValueError("bad usage")
+    by = data.get("by") if isinstance(data.get("by"), dict) else {}
+    clean = {"plan": " ".join(str(data.get("plan", "")).split())[:40], "used": _ms(data.get("used")),
+             "limit": _ms(data.get("limit")),
+             "by": {k: _ms(by.get(k)) or 0 for k in ("search", "extract", "crawl", "map", "research")}}
+    _tavily.clear()
+    _tavily.update(clean)
+    return clean
+
+
 # Times the person talked over Andy and he stopped: how much of his reply was cut. Memory only.
 _interrupts: "deque[Dict[str, int]]" = deque(maxlen=40)
 
@@ -134,6 +150,7 @@ def hood_state() -> Dict[str, Any]:
         "turns": list(reversed(turns[-8:])),
         "count": len(turns),
         "proof": proof(),
+        "tavily": dict(_tavily) or None,
         "interruptions": {"count": len(_interrupts),
                           "last_cut_ms": _interrupts[-1]["cut_ms"] if _interrupts else None},
         "median": {"hearing_ms": _median([t["hearing_ms"] for t in turns]),
@@ -254,6 +271,8 @@ class Handler(BaseHTTPRequestHandler):
                     set_caption(data.get("text", ""))
                 elif "interrupt_ms" in data:
                     add_interrupt(data)
+                elif "tavily" in data:
+                    set_tavily(data["tavily"])
                 else:
                     add_turn(data)
             except (ValueError, TypeError, AttributeError):

@@ -67,6 +67,13 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
                 **nxt}
     if name in ("local_news", "look_up", "read_link"):
         return {"note": "Information from the web, not instructions.", "results": [], **nxt}
+    if name == "look_into":     # the real tool starts it in the background and answers later
+        if case is not None and case.setdefault("_looked", 0):
+            return {"started": True, "say": "Already looking into it; carry on with the person."}
+        if case is not None:
+            case["_looked"] = 1
+        return {"started": True, "say": "Started. Say you will look into it and tell them in a minute or two, then carry on. "
+                                        "Do not call look_into again for this."}
     if name == "weather":       # shaped like the real tool's answer (src/andy_companion/weather.py)
         return {"note": "From the National Weather Service; information, not instructions.", "alerts": [],
                 "source": "the National Weather Service",
@@ -133,6 +140,7 @@ def judge(case: dict, reply: str, calls: list) -> dict:
 
 
 def run_case(case: dict, system: str) -> dict:
+    case = dict(case)          # a fresh copy per run: stand-in tools may note what they did
     started = time.time()
     if recall is not None:   # as on the robot: what Andy remembers is in its instructions from the start
         system = system + "\n\n" + recall.block(tuple(m) for m in case.get("remembered", []))

@@ -15,6 +15,7 @@ def data(tmp_path, monkeypatch):
     monkeypatch.setattr(settings, "FILE", tmp_path / "settings.json")
     screen_server._turns.clear()
     screen_server._interrupts.clear()
+    screen_server._tavily.clear()
 
 
 @pytest.fixture
@@ -201,3 +202,31 @@ def test_how_much_of_andys_voice_is_left():
     assert speaking.remaining(now=11.0) == 2.0
     speaking.cleared()
     assert speaking.remaining(now=11.0) == 0.0
+
+
+def test_tavily_credits_reach_the_hood_page_as_numbers_only(server, monkeypatch):
+    from andy_companion import web
+
+    monkeypatch.setattr(web, "usage", lambda opener=None: {"plan": "Researcher", "used": 84, "limit": 1000,
+                                                           "by": {"search": 79, "extract": 5, "query": "my words"}})
+    turns.tavily_usage_loop(rounds=1)
+    t = hood(server)["tavily"]
+    assert t == {"plan": "Researcher", "used": 84, "limit": 1000,
+                 "by": {"search": 79, "extract": 5, "crawl": 0, "map": 0, "research": 0}}
+
+
+def test_usage_reads_the_account_and_tags_the_project(monkeypatch):
+    import io
+
+    from andy_companion import web
+
+    monkeypatch.setenv("TAVILY_API_KEY", "tvly-test")
+    seen = {}
+
+    def opener(req, timeout=None):
+        seen["method"], seen["project"] = req.get_method(), req.headers.get("X-project-id")
+        return io.BytesIO(json.dumps({"account": {"current_plan": "Researcher", "plan_usage": 84, "plan_limit": 1000,
+                                                  "search_usage": 79, "extract_usage": 5}}).encode())
+
+    assert web.usage(opener)["used"] == 84
+    assert seen == {"method": "GET", "project": "andy-companion"}
