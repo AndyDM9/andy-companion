@@ -75,7 +75,7 @@ Each principle comes from published research, and each has something you can see
 | Eyes ("what do you see?") | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0 | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
-| The conversation suite | 57 spoken situations, 17 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
+| The conversation suite | 63 spoken situations, 17 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), and **research**, streamed, for "look into it for me"; safe search on; every request tagged `X-Project-ID`, credits shown on `/hood` | Tavily API |
 
 ## Measured (Reachy Mini Lite, 2026-10-13)
@@ -92,7 +92,7 @@ how long it took and where it ran. Numbers and tool names only, in memory; never
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 57 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. The model gets exactly the robot's 27 tools and their real descriptions ([evals/tools.json](evals/tools.json), written from the robot's code). **Latest, as a Nebius Serverless Job: 56, 56 and 55 of 57 in three runs** (57, 56 and 56 on this computer the same day). The scorecards, every failure with its reason, are in [evals/results/](evals/results/).
+**The conversation suite** ([evals/](evals/)): 63 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. The model gets exactly the robot's 27 tools and their real descriptions ([evals/tools.json](evals/tools.json), written from the robot's code). **Latest: 60, 61 and 62 of 63 in three runs on this computer; 56, 56 and 55 of 57 as a Nebius Serverless Job earlier the same day** (the final job run comes before submitting). The scorecards, every failure with its reason, are in [evals/results/](evals/results/).
 - **Baseline:** 27/36.
 - **After the fixes:** 35, 36 and 36 over three runs. The fixes were six profile weaknesses, plus three flawed cases fixed openly in the suite.
 - **An honest correction:** earlier runs scored 44 of 44, but gave the model 17 tools with shortened descriptions. With the real 27, the suite found that Andy said it had no camera, once invented a time, and that one case could never pass (a harness flaw). All three are fixed and recorded in [evals/suite.json](evals/suite.json).

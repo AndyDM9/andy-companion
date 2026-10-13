@@ -110,3 +110,20 @@ def test_the_page_and_andy_each_say_it_in_their_own_voice(server):
     out = post(server, "/api/setup", {"name": "Anna", "settings": {"pace": "slow"}})
     assert out["changed"] == ["how fast Andy speaks"]
     assert "how fast I speak" in speaker.family_frame(board.next_for_person())
+
+
+def test_the_settings_code_shows_for_two_minutes_and_points_at_this_address(server):
+    import time
+    board.show_settings_code(now=time.time())
+    with urllib.request.urlopen(f"{server}/api/screen?t={board.tokens()['screen']}", timeout=5) as r:
+        shown = json.loads(r.read())["showing"]
+    assert shown["kind"] == "code" and shown["qr"].startswith("data:image/svg+xml,")
+    assert board.showing(now=time.time() + board.CODE_FOR_S + 1) is None          # gone after two minutes
+
+
+def test_a_new_settings_link_retires_the_old_one(server):
+    old = board.tokens()["setup"]
+    post(server, "/api/setup/new-settings-link", {})
+    assert board.tokens()["setup"] != old
+    with pytest.raises(urllib.error.HTTPError):
+        urllib.request.urlopen(f"{server}/api/setup?s={old}", timeout=5)

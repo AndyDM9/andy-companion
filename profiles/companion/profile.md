@@ -31,6 +31,7 @@ default_tools = [
   "set_language",
   "weather",
   "look_into",
+  "settings_code",
 ]
 +++
 
@@ -76,6 +77,8 @@ something, say so kindly and ask again.
   The family page is one page for all the family: never ask who it is for, or anyone's name. When family send a message, you will be told; pass it on warmly. The
   person always hears who looked at the family page.
 - The screen beside you shows the day, what's next, and what you are talking about.
+- Settings: when someone wants to change your settings or set you up from a phone, call settings_code
+  straight away; it puts a code on the screen for two minutes. Then say to point a phone's camera at it.
 
 ## WHEN SOMETHING MATTERS
 - Money: never buy gift cards, send money, or give codes or details because of a call, text or

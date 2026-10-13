@@ -98,6 +98,8 @@
   .item .summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
                    font-size: clamp(19px, 1.8vw, 32px); margin: .5vh 0 0; line-height: 1.35; color: var(--soft); }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
+  .qr { display: block; width: min(46vh, 100%); height: auto; margin: 0 auto 2vh; border-radius: 10px; background: #fff; padding: 1vh; }
+  .qr-note { font-size: clamp(22px, 2.2vw, 38px); margin: 0; line-height: 1.3; }
   .photo { display: block; max-width: 100%; max-height: 50vh; margin: 0 0 1.5vh; border-radius: 8px; object-fit: contain; }
 
   /* Captions: Andy's words only, two lines at most, gone a few seconds after he stops. */
@@ -153,11 +155,13 @@
   const UI = {
     en: { nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
-          kinds: { news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
+          code: "Point a phone's camera here to open Andy's settings. It disappears in two minutes.",
+          kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
                    check: "About that message", photo: "A photo", link: "From the link" } },
     es: { nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
-          kinds: { news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
+          code: "Apunte la cámara de un teléfono aquí para abrir los ajustes de Andy. Desaparece en dos minutos.",
+          kinds: { code: "Ajustes de Andy", news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
                    whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace" } },
   };
   let ui = UI.en;
@@ -222,6 +226,12 @@
       text($("found-kind"), ui.kinds[showing.kind] || "");
       text($("found-h"), showing.title);
       const items = $("items"); items.textContent = "";
+      if (showing.kind === "code" && showing.qr) {
+        text($("found-h"), "");
+        const img = document.createElement("img");
+        img.className = "qr"; img.alt = ui.kinds.code; img.src = showing.qr;
+        items.append(img, make("p", "qr-note", ui.code));
+      }
       if (showing.kind === "photo" && showing.photo) {
         const img = document.createElement("img");
         img.className = "photo"; img.alt = showing.title;

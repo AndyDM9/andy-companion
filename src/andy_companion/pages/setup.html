@@ -139,6 +139,8 @@
       </ul>
       <button type="button" class="quiet" id="new-family">Make a new family link</button>
       <p class="hint">The old family link stops working for everyone who has it.</p>
+      <button type="button" class="quiet" id="new-settings">Make a new settings link</button>
+      <p class="hint">This page's link stops working. To open settings again, say "Andy, show the settings code".</p>
       <p class="status" id="link-status" role="status" aria-live="polite"></p>
     </fieldset>
 
@@ -286,6 +288,12 @@
       fill(out);
       text($("kept-status"), out.deleted.length ? `Deleted ${out.deleted.join(", ")}. Andy will tell them.` : "There was nothing to delete.");
     } catch (err) { text($("kept-status"), err.message); }
+  });
+
+  $("new-settings").addEventListener("click", async () => {
+    if (!confirm("Make a new settings link? This page stops working; open it again with \"Andy, show the settings code\".")) return;
+    try { await call("/api/setup/new-settings-link", {}); document.body.replaceChildren(text(document.createElement("p"), "Done. This link no longer works. Say \"Andy, show the settings code\" to open settings again.")); }
+    catch (err) { $("link-status").textContent = err.message; }
   });
 
   $("new-family").addEventListener("click", async () => {

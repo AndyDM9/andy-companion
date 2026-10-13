@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the settings code on the TV; crisis replies always give 988 and 911)
+
+- **"Andy, show the settings code"** (`settings_code` tool, `board.show_settings_code`): a QR code on the
+  TV for two minutes only (it gives control of Andy), with "Point a phone's camera here to open Andy's
+  settings. It disappears in two minutes." The code points at the settings page at the very address
+  the TV used (`screen_server.settings_qr`, `segno`, pure Python, BSD, added to both environments).
+  Decoded from a screenshot with OpenCV: the right address. The settings page gains **Make a new
+  settings link**, which retires the old link and code. The profile tells Andy to show it straight
+  away when asked; suite settings-1 accepts offering it first. 2 tests.
+- **The urgent-words net requires both 988 and 911 in a crisis reply** (the suite found "call 911 if
+  you are in danger" missing); if either is missing, Andy says the calm sentence with both.
+- **Suite 2026-10-13p, 63 cases: 60, 61, 62 of 63** (`evals/results/2026-10-13-run31-andy-63-cases.json`).
+  Known variation: share-2 (Andy asks a name before repeating the note) 2 of 3; single slips elsewhere.
+
 ### Added (Andy's settings: everything Andy keeps, seen and deletable; saving only when asked)
 
 - **Recommendation adopted:** no settings gear on the TV (it is read from across the room and has no

@@ -15,6 +15,7 @@ import hmac
 import json
 import logging
 import os
+import re
 import threading
 from collections import deque
 from datetime import datetime
@@ -259,11 +260,27 @@ def today_plan(now: Optional[datetime] = None) -> Dict[str, Any]:
     return {"today": clock.today(now, settings.get().get("language", "en")), "hour": now.hour, "plan": plan}
 
 
-def screen_state(now: Optional[datetime] = None) -> Dict[str, Any]:
+def settings_qr(host: str) -> str:
+    """The settings page's address as a QR code (an SVG data address), for the screen's two minutes."""
+    import io
+    import urllib.parse
+
+    import segno
+
+    url = f"http://{host}/setup?s={board.tokens()['setup']}"
+    out = io.BytesIO()
+    segno.make(url, error="m").save(out, kind="svg", scale=10, border=2, dark="#142339", light="#ffffff",
+                                     xmldecl=False, svgns=True)
+    return "data:image/svg+xml," + urllib.parse.quote(out.getvalue().decode())
+
+
+def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, Any]:
     from andy_companion import settings
 
     state = today_plan(now)
     state["showing"] = board.showing()
+    if state["showing"] and state["showing"].get("kind") == "code" and host:
+        state["showing"] = {**state["showing"], "qr": settings_qr(host)}
     state["caption"] = caption() if settings.get().get("captions", True) else ""
     state["weather"] = weather_card()
     return state
@@ -318,7 +335,9 @@ class Handler(BaseHTTPRequestHandler):
         if url.path == "/screen" and _ok(q.get("t"), "screen"):
             return self._page("screen.html")
         if url.path == "/api/screen" and _ok(q.get("t"), "screen"):
-            return self._json(screen_state())
+            # The settings code points at this same address, as the screen reached it on the home network.
+            host = self.headers.get("Host", "")
+            return self._json(screen_state(host=host if re.fullmatch(r"[A-Za-z0-9.\-]+(:\d+)?", host) else ""))
         if url.path == "/api/state" and _ok(q.get("t"), "screen"):
             return self._json(live_state())
         if url.path == "/hood" and _ok(q.get("t"), "screen"):
@@ -394,6 +413,9 @@ class Handler(BaseHTTPRequestHandler):
                     if words:
                         board.kept_deleted(name, words)
                     return self._json({"ok": True, "deleted": words, **setup_state()})
+                if url.path == "/api/setup/new-settings-link":
+                    board.new_setup_link()
+                    return self._json({"ok": True, "moved": True})
                 if url.path == "/api/setup/new-family-link":
                     board.new_family_link()
                     return self._json({"ok": True, **setup_state()})

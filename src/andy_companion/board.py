@@ -66,6 +66,14 @@ def tokens() -> Dict[str, str]:
     return data
 
 
+def new_setup_link() -> str:
+    """Make a new settings token, so an old settings link or code stops working."""
+    data = tokens()
+    data["setup"] = secrets.token_urlsafe(12)
+    _write(TOKENS, data)
+    return data["setup"]
+
+
 def new_family_link() -> str:
     """Make a new family token, so an old link stops working."""
     data = tokens()
@@ -88,10 +96,20 @@ def showing(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
     data = _read(SCREEN, None)
     if not data:
         return None
-    if (now or time.time()) - data.get("at", 0) > SHOW_FOR_S:
+    now = now or time.time()
+    if now - data.get("at", 0) > SHOW_FOR_S or (data.get("until") and now > data["until"]):
         clear_screen()
         return None
     return data
+
+
+CODE_FOR_S = 120
+
+
+def show_settings_code(now: Optional[float] = None) -> None:
+    """The settings QR code on the screen for two minutes only: the code gives control of Andy."""
+    now = now or time.time()
+    _write(SCREEN, {"kind": "code", "title": "Andy's settings", "items": [], "at": now, "until": now + CODE_FOR_S})
 
 
 def clear_screen() -> None:

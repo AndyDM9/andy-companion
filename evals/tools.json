@@ -471,5 +471,14 @@
    ]
   },
   "source": "andy"
+ },
+ {
+  "name": "settings_code",
+  "description": "When someone asks to see the settings code, or to set Andy up or change Andy's settings from a phone. Shows a code on the screen for two minutes: scanning it with a phone camera opens Andy's settings. Say that, and that the code disappears in two minutes.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  },
+  "source": "andy"
  }
 ]

@@ -104,11 +104,14 @@ SPANISH_REPLY = re.compile(r"\b(llame|llamar|llama|ahora|usted|alguien|cercano|a
 
 
 def needs_followup(reply: str, frame: str = FRAME) -> bool:
-    """True unless Andy's reply already named 911 (988 for crisis words), in Spanish when the person
-    spoke Spanish."""
+    """True unless Andy's reply already named 911 (for crisis words, 988 and 911), in Spanish when the
+    person spoke Spanish."""
     reply = str(reply)
-    named = SAID_988 if frame in (FRAME_CRISIS, FRAME_CRISIS_ES) else SAID_911
-    if not named.search(reply):
+    if frame in (FRAME_CRISIS, FRAME_CRISIS_ES):
+        # Both: 988 to talk with someone now, and 911 if they might be in danger (found missing in the suite).
+        if not (SAID_988.search(reply) and SAID_911.search(reply)):
+            return True
+    elif not SAID_911.search(reply):
         return True
     return frame in (FRAME_ES, FRAME_CRISIS_ES) and not SPANISH_REPLY.search(reply)
 

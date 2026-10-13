@@ -11,6 +11,7 @@ dependencies = [
     "opencv-python-headless>=4.10,<5",   # person finding, reading letters, camera frames
     "vosk>=0.3.45,<0.4",                 # the offline wake phrase
     "numpy>=1.26",
+    "segno>=1.6,<2",                     # the settings QR code on the screen (pure Python, BSD)
 ]
 
 [tool.uv]

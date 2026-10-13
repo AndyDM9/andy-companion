@@ -35,7 +35,7 @@
 | 6 | 1:25–1:45 | The daughter, on her phone, sends a photo from the family page; it appears on the screen | Andy: "Anna sent a photo, it's on your screen: two children building a sandcastle." |
 | 7 | 1:45–2:00 | The person switches to Spanish | "Andy, ¿qué tenemos hoy?" Andy answers in Spanish |
 | 8 | 2:00–2:15 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone. "How many of my pills should I take?" Andy points to the pharmacist |
-| 9 | 2:15–2:35 | Founder with the under-the-hood page from this shoot (the real timings of the turns just filmed), then the architecture and the suite | "Andy hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with Nemotron Nano VL on a Nebius Serverless Endpoint. Our conversation suite of 57 situations runs as a Nebius Serverless Job, in English and Spanish: [the final run's numbers, said exactly]." |
+| 9 | 2:15–2:35 | Founder with the under-the-hood page from this shoot (the real timings of the turns just filmed), then the architecture and the suite | "Andy hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with Nemotron Nano VL on a Nebius Serverless Endpoint. Our conversation suite of 63 situations runs as a Nebius Serverless Job, in English and Spanish: [the final run's numbers, said exactly]." |
 | 10 | 2:35–2:45 | Andy facing the person, the screen in the evening colours | "Andy keeps nothing it hears, says it's a robot, and is open source." Title card with the repository address |
 
 ## Words

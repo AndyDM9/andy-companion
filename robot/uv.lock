@@ -70,6 +70,7 @@ dependencies = [
     { name = "opencv-python-headless" },
     { name = "reachy-mini" },
     { name = "reachy-mini-conversation-app" },
+    { name = "segno" },
     { name = "vosk" },
 ]
 
@@ -79,6 +80,7 @@ requires-dist = [
     { name = "opencv-python-headless", specifier = ">=4.10,<5" },
     { name = "reachy-mini", specifier = "==1.12.0rc1" },
     { name = "reachy-mini-conversation-app", git = "https://github.com/pollen-robotics/reachy_mini_conversation_app?rev=v1.0.1" },
+    { name = "segno", specifier = ">=1.6,<2" },
     { name = "vosk", specifier = ">=0.3.45,<0.4" },
 ]
 
@@ -1408,6 +1410,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cd/8f/4c4aa60c43bf8ca2a2890e8c1b0d6def821aff0ca5486d48c62e29b42ed8/rustypot-1.12.0-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:49ab8ea3d0effe902ab62ffffc5c297af850cfa433be5a67d0b7f347b5eb91a9", size = 2458667, upload-time = "2026-10-13T13:25:56.335Z" },
     { url = "https://files.pythonhosted.org/packages/76/5f/4efd9def4ce30cc2bb60ee6633cc088a43cce53bc9c91b9c645c1e781e07/rustypot-1.12.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:df9abf8346bd5e9d08fb218002ba960af6834114bdd2780b93a9ad6199751014", size = 2580884, upload-time = "2026-10-13T13:26:04.658Z" },
     { url = "https://files.pythonhosted.org/packages/a4/1e/d07301962ff61afb9cc0843f95435ae95f5b93f279622921ad659ec1b25e/rustypot-1.12.0-cp312-cp312-win_amd64.whl", hash = "sha256:279158d1105002bf3851062942e8472d90bc56d065a9239a134c12dac3af6418", size = 2235034, upload-time = "2026-10-13T13:26:12.816Z" },
+]
+
+[[package]]
+name = "segno"
+version = "1.6.6"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/2e/b396f750c53f570055bf5a9fc1ace09bed2dff013c73b7afec5702a581ba/segno-1.6.6.tar.gz", hash = "sha256:e60933afc4b52137d323a4434c8340e0ce1e58cec71439e46680d4db188f11b3", size = 1628586, upload-time = "2025-03-12T22:12:53.324Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/02/12c73fd423eb9577b97fc1924966b929eff7074ae6b2e15dd3d30cb9e4ae/segno-1.6.6-py3-none-any.whl", hash = "sha256:28c7d081ed0cf935e0411293a465efd4d500704072cdb039778a2ab8736190c7", size = 76503, upload-time = "2025-03-12T22:12:48.106Z" },
 ]
 
 [[package]]

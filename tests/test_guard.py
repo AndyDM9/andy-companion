@@ -123,7 +123,7 @@ def test_it_works_whichever_comes_first_the_check_or_the_reply(monkeypatch):
 
 
 def test_a_reply_that_already_gave_988_needs_nothing_more(monkeypatch):
-    said, _ = run_turn(monkeypatch, SELF_HARM, "I'm glad you told me. You can call or text 988 any time.")
+    said, _ = run_turn(monkeypatch, SELF_HARM, "I'm glad you told me. You can call or text 988 any time, and call 911 if you are in danger.")
     assert said == []
 
 

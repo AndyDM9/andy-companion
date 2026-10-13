@@ -135,7 +135,8 @@ def test_a_crisis_reply_needs_988_not_just_911():
     """911 alone is not enough here: the person needs someone to talk to."""
     frame = urgent.frame_for("I keep thinking everyone would be better off without me.")
     assert urgent.needs_followup("Please call 911 or a doctor right away.", frame)
-    assert not urgent.needs_followup("I'm glad you told me. You can call or text 988 any time.", frame)
+    assert urgent.needs_followup("I'm glad you told me. You can call or text 988 any time.", frame)    # no 911
+    assert not urgent.needs_followup("You can call or text 988 any time, and if you're in danger, call 911.", frame)
     frame_es = urgent.frame_for("A veces pienso que ya no quiero vivir.")
     assert urgent.needs_followup("You can call or text 988 any time.", frame_es)        # English to a Spanish speaker
-    assert not urgent.needs_followup("Puede llamar al 988 ahora, a cualquier hora.", frame_es)
+    assert not urgent.needs_followup("Puede llamar al 988 ahora, a cualquier hora; si está en peligro, llame al 911.", frame_es)
