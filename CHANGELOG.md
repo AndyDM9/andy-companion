@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed
+
+- `screen_server.serve(port=0)` treated port 0 ("any free port") as unset and fell back to 8090,
+  so its tests clashed with a running Andy. The commit before this one went in with those three
+  tests failing; a pre-commit hook (`.githooks/pre-commit`: tests must pass, and no key-like
+  string may be staged) now blocks that. The test environment uses uv's own Python 3.12.
+
 ### Added (M7, Andy's screen and the family page)
 
 - **Andy's screen** (`/screen`, for a TV or monitor beside Andy): a day clock in Atkinson

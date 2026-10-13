@@ -116,8 +116,8 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def serve(host: Optional[str] = None, port: Optional[int] = None) -> ThreadingHTTPServer:
-    host = host or os.environ.get("ANDY_SCREEN_HOST", "0.0.0.0")
-    port = port or int(os.environ.get("ANDY_SCREEN_PORT", "8090"))
+    host = host if host is not None else os.environ.get("ANDY_SCREEN_HOST", "0.0.0.0")
+    port = port if port is not None else int(os.environ.get("ANDY_SCREEN_PORT", "8090"))
     httpd = ThreadingHTTPServer((host, port), Handler)
     threading.Thread(target=httpd.serve_forever, name="andy-screen", daemon=True).start()
     logger.info("Andy's screen is served on port %d", port)
