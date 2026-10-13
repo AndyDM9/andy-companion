@@ -74,7 +74,7 @@
     <p><strong>Thinking and tools</strong>NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention</p>
     <p><strong>Eyes</strong>NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked</p>
     <p><strong>A second look</strong>NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply</p>
-    <p><strong>Proof</strong>57 situations judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job</p>
+    <p id="proof"><strong>Proof</strong>A conversation suite judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job</p>
   </section>
 
 <script>
@@ -88,7 +88,19 @@
   const secs = (ms) => ms == null ? "–" : (ms / 1000).toFixed(ms < 10000 ? 2 : 1) + " s";
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
+  function drawProof(p) {
+    if (!p || !p.per_run) return;
+    const el = document.getElementById("proof");
+    const where = /Nebius/.test(p.ran_on) ? "on a Nebius Serverless Job" : "on " + p.ran_on;
+    el.replaceChildren();
+    const head = document.createElement("strong");
+    head.textContent = "Proof";
+    el.append(head, `${p.total} spoken situations, judged by NVIDIA ${p.judge.replace(/-/g, " ")}, ${where}: ` +
+                    `${p.per_run.join(", ")} of ${p.total} in ${p.per_run.length} runs (${p.ran})`);
+  }
+
   function draw(s) {
+    drawProof(s.proof);
     const m = s.median || {};
     document.getElementById("big").innerHTML = m.total_ms == null ? "–" : (m.total_ms / 1000).toFixed(2) + "<small> s</small>";
     document.getElementById("hear").textContent = secs(m.hearing_ms);

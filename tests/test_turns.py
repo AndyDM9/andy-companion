@@ -157,3 +157,21 @@ def test_the_hood_page_is_served(server):
     with urllib.request.urlopen(f"{server}/hood?t={board.tokens()['screen']}", timeout=5) as r:
         page = r.read().decode()
     assert "Under the hood" in page and "Nebius Token Factory" in page
+
+
+def test_the_hood_shows_the_newest_suite_scorecard(tmp_path, monkeypatch):
+    monkeypatch.setenv("TZ", "America/New_York")
+    import time
+    time.tzset()
+    (tmp_path / "old.json").write_text(json.dumps({"ran": "2026-10-12T10:00:00", "per_run": [40], "total": 44}))
+    (tmp_path / "new.json").write_text(json.dumps({"ran": "2026-10-13T18:00:00", "per_run": [57, 56, 56], "total": 57,
+                                                   "suite": "2026-10-13k", "judge": "nvidia/Nemotron-3-Ultra-550b-a55b"}))
+    (tmp_path / "other.json").write_text(json.dumps({"ran": "2026-10-14", "rows": []}))   # not a scorecard
+    (tmp_path / "broken.json").write_text("{")
+    # A job's naive time is UTC: 2026-10-13T20:00 UTC is 16:00 in Miami, older than the local 18:00 run.
+    (tmp_path / "job.json").write_text(json.dumps({"ran": "2026-10-13T20:00:00", "per_run": [33], "total": 36,
+                                                   "ran_on": "Nebius Serverless Job, cpu-d3 2vcpu-8gb"}))
+    p = screen_server.proof(tmp_path)
+    assert p == {"suite": "2026-10-13k", "per_run": [57, 56, 56], "total": 57, "judge": "Nemotron-3-Ultra-550b-a55b",
+                 "ran": "2026-10-13", "ran_on": "this computer"}
+    assert screen_server.proof(tmp_path / "missing") is None

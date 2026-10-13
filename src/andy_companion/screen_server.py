@@ -77,12 +77,48 @@ def _median(values: List[int]) -> Optional[int]:
     return values[mid] if len(values) % 2 else round((values[mid - 1] + values[mid]) / 2)
 
 
+RESULTS = Path(__file__).resolve().parents[2] / "evals" / "results"
+
+
+def _when(card: Dict[str, Any]) -> datetime:
+    """When a scorecard ran. Older ones carry no zone: a Nebius job's clock is UTC, this computer's is local."""
+    from datetime import timezone
+
+    t = datetime.fromisoformat(str(card["ran"]))
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc) if "Nebius" in str(card.get("ran_on", "")) else t.astimezone()
+    return t
+
+
+def proof(results: Path = RESULTS) -> Optional[Dict[str, Any]]:
+    """The newest conversation-suite scorecard, as numbers (none in an installed app without evals/)."""
+    best: Optional[Dict[str, Any]] = None
+    for path in sorted(results.glob("*.json")) if results.is_dir() else []:
+        try:
+            card = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(card, dict) or "per_run" not in card or "ran" not in card:
+            continue
+        try:
+            if best is None or _when(card) > _when(best):
+                best = card
+        except ValueError:
+            continue
+    if best is None:
+        return None
+    return {"suite": best.get("suite"), "per_run": best.get("per_run"), "total": best.get("total"),
+            "judge": str(best.get("judge", "")).split("/")[-1], "ran": _when(best).astimezone().strftime("%Y-%m-%d"),
+            "ran_on": best.get("ran_on", "this computer")}
+
+
 def hood_state() -> Dict[str, Any]:
     turns = list(_turns)
     plain = [t for t in turns if not t["tools"]]
     return {
         "turns": list(reversed(turns[-8:])),
         "count": len(turns),
+        "proof": proof(),
         "median": {"hearing_ms": _median([t["hearing_ms"] for t in turns]),
                    "reply_ms": _median([t["reply_ms"] for t in plain]),
                    "total_ms": _median([t["total_ms"] for t in plain])},

@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the suite's real result on the hood page) and fixed (the Nebius job)
+
+- The hood page's "Proof" line now reads the newest scorecard in `evals/results/` (`screen_server.proof`):
+  how many situations, each run's score, the judge, where it ran and the date, so the screen never
+  shows a stale number. Scorecards now record their time zone; older ones are read as UTC when a
+  Nebius job made them (its clock is UTC) and as local time otherwise. Found because a morning job
+  in UTC looked newer than this afternoon's local run. 1 test.
+- **The Nebius job would not start:** Nebius now refuses to inject an empty file, and the package's
+  `__init__.py` was empty (it ran at 14:16 the same day). It has a one-line docstring now.
+- A test that every module the suite imports is sent with the job and needs only the standard
+  library: a missing one would not fail the job, it would quietly run the suite without the net.
+
 ### Fixed (a greeting to someone else ended Andy's quiet spell)
 
 - **What happened:** Andy was quiet until 16:51 while the founder was in a meeting. At 16:03 the

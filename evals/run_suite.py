@@ -199,7 +199,7 @@ def main(argv=None) -> int:
         a = areas.setdefault(r["area"], [0, 0])
         a[0] += r["pass"]
         a[1] += 1
-    card = {"suite": suite["version"], "ran": datetime.now().isoformat(timespec="seconds"), "candidate": CANDIDATE,
+    card = {"suite": suite["version"], "ran": datetime.now().astimezone().isoformat(timespec="seconds"), "candidate": CANDIDATE,
             "judge": JUDGE, "measured": "Andy (model + urgent-words net)" if WITH_NET else "model alone", "passed": passed, "total": len(results), "per_run": per_run, "ever_failed": flaky,
             "areas": areas, "results": results,
             "failures_by_run": [[r for r in run if not r["pass"]] for run in runs]}
