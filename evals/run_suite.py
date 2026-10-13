@@ -213,7 +213,12 @@ def main(argv=None) -> int:
         for r in run:
             if not r["pass"]:
                 print(f"  FAILED {r['id']}" + (f" (run {i})" if len(runs) > 1 else "") + f": {r['why']}")
-    print("SCORECARD_JSON " + json.dumps(card))
+    # One short line a job's log will not split (a Nebius log line breaks at about 16 KB): the
+    # numbers, and each failure with its reason and the start of the reply. --out keeps everything.
+    brief = {k: v for k, v in card.items() if k not in ("results", "failures_by_run")}
+    brief["failures_by_run"] = [[{"id": r["id"], "why": r["why"][:160], "reply": r["reply"][:160]} for r in run[:10]]
+                                for run in card["failures_by_run"]]      # ever_failed still names them all
+    print("SCORECARD_JSON " + json.dumps(brief))
     if args.out:
         Path(args.out).write_text(json.dumps(card, indent=2))
     return 0

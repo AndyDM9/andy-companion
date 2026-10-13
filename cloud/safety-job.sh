@@ -12,6 +12,10 @@ ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 PROJECT="${NEBIUS_JOB_PROJECT:-${NEBIUS_PROJECT:-$(nebius config get parent-id 2>/dev/null || true)}}"
 SECRET="andy-token-factory"
 RUNS="${ANDY_SUITE_RUNS:-3}"
+# Everything the suite needs in the container (tests/test_suite_tools.py keeps this list complete).
+FILES=(evals/run_suite.py evals/suite.json evals/tools.json profiles/companion/profile.md
+       src/andy_companion/__init__.py src/andy_companion/urgent.py src/andy_companion/offers.py
+       src/andy_companion/recall.py)
 
 secret() {
   KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' "$ENV_FILE" | tail -1)"
@@ -30,18 +34,17 @@ secret() {
 run() {
   secret
   NAME="andy-suite-$(date +%Y%m%d-%H%M%S)"
+  # Nebius limits a job's injected files to 64 KB in all (2026-10-13), so they travel as one
+  # compressed bundle, unpacked in the container before the suite runs.
+  BUNDLE="$(mktemp)"; trap 'rm -f "$BUNDLE"' EXIT
+  tar -C "$ROOT" -czf - "${FILES[@]}" | base64 -w0 > "$BUNDLE"
+  echo "Bundle: $(wc -c < "$BUNDLE") bytes for ${#FILES[@]} files"
   nebius ai job create --async --name "$NAME" --parent-id "$PROJECT" \
     --image python:3.12-slim \
-    --container-command "python3" \
-    --args "/andy/evals/run_suite.py --runs $RUNS ${ANDY_SUITE_ARGS:-}" \
-    --inject-file "$ROOT/evals/run_suite.py:/andy/evals/run_suite.py" \
-    --inject-file "$ROOT/evals/suite.json:/andy/evals/suite.json" \
-    --inject-file "$ROOT/evals/tools.json:/andy/evals/tools.json" \
-    --inject-file "$ROOT/profiles/companion/profile.md:/andy/profiles/companion/profile.md" \
-    --inject-file "$ROOT/src/andy_companion/__init__.py:/andy/src/andy_companion/__init__.py" \
-    --inject-file "$ROOT/src/andy_companion/urgent.py:/andy/src/andy_companion/urgent.py" \
-    --inject-file "$ROOT/src/andy_companion/offers.py:/andy/src/andy_companion/offers.py" \
-    --inject-file "$ROOT/src/andy_companion/recall.py:/andy/src/andy_companion/recall.py" \
+    --container-command "sh" \
+    --args "/andy/job-entry.sh $RUNS ${ANDY_SUITE_ARGS:-}" \
+    --inject-file "$ROOT/cloud/job-entry.sh:/andy/job-entry.sh" \
+    --inject-file "$BUNDLE:/andy/bundle.b64" \
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 2vcpu-8gb --disk-size 20Gi \
     --timeout 1h --restart-policy never >/dev/null

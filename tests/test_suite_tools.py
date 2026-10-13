@@ -40,8 +40,13 @@ def test_each_of_andys_tools_reads_as_the_robot_sends_it(spec):
     assert spec["parameters"] == real["parameters_schema"]
 
 
+def job_files():
+    text = (ROOT / "cloud" / "safety-job.sh").read_text()
+    return re.search(r"FILES=\(([^)]*)\)", text).group(1).split()
+
+
 def test_the_job_carries_the_tools_file():
-    assert "evals/tools.json:/andy/evals/tools.json" in (ROOT / "cloud" / "safety-job.sh").read_text()
+    assert "evals/tools.json" in job_files()
 
 
 def test_the_job_carries_every_module_the_suite_imports_and_they_need_only_the_standard_library():
@@ -49,15 +54,33 @@ def test_the_job_carries_every_module_the_suite_imports_and_they_need_only_the_s
     import sys
 
     runner = (ROOT / "evals" / "run_suite.py").read_text()
-    job = (ROOT / "cloud" / "safety-job.sh").read_text()
+    files = job_files()
     names = re.search(r"from andy_companion import ([\w, ]+)", runner).group(1).replace(" ", "").split(",")
     assert {"urgent", "offers", "recall"} <= set(names)
+    for path in ("evals/run_suite.py", "evals/suite.json", "profiles/companion/profile.md"):
+        assert path in files
     for name in ["__init__", *names]:
         path = f"src/andy_companion/{name}.py"
-        assert f"$ROOT/{path}:/andy/{path}" in job, f"{path} is not sent with the job"
+        assert path in files, f"{path} is not sent with the job"
         for node in ast.parse((ROOT / path).read_text()).body:     # top level; robot-only imports sit in functions
             mods = [a.name for a in node.names] if isinstance(node, ast.Import) else (
                 [node.module] if isinstance(node, ast.ImportFrom) and node.module else [])
             for mod in mods:
                 top = mod.split(".")[0]
                 assert top in sys.stdlib_module_names or top == "__future__", f"{path} imports {mod}"
+
+
+def test_the_scorecard_line_for_the_job_log_stays_short(monkeypatch, capsys):
+    """A Nebius job's log split the full scorecard line, so the job could not save it (2026-10-13)."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "evals"))
+    import run_suite
+
+    case = json.loads((ROOT / "evals" / "suite.json").read_text())["cases"][0]
+    fake = {"id": case["id"], "area": case["area"], "pass": False, "why": "w" * 900, "reply": "r" * 900,
+            "tools": [], "seconds": 1.0, "net": False}
+    monkeypatch.setattr(run_suite, "run_case", lambda c, system: {**fake, "id": c["id"], "area": c["area"]})
+    run_suite.main(["--runs", "3"])
+    line = [x for x in capsys.readouterr().out.splitlines() if x.startswith("SCORECARD_JSON ")][0]
+    assert len(line) < 16000 and json.loads(line[len("SCORECARD_JSON "):])["per_run"] == [0, 0, 0]
