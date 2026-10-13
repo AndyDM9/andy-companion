@@ -8,7 +8,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | # | Milestone | State | Notes |
 |---|---|---|---|
 | M0 | Andy talks through Nemotron | ✅ Done 2026-10-13 | Measured below |
-| M1 | Clock and reminders | 🔨 In progress | |
+| M1 | Clock and reminders | 🔨 In progress | Clock verified on the robot; reminder tools and the unprompted speaker built and unit-tested; waiting for the live test of a due reminder |
 | M2 | Privacy floor | ⏳ Next | Found in the M0 test: both programs log conversation text; Pollen's `remember` writes inside its installed package |
 | M3 | Body behaviours | ⏳ | |
 | M4 | The day, the same way every time | ⏳ | |
@@ -38,6 +38,5 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 ## Open problems
 
-- Andy has no clock: it said "morning" at 12:50. (M1)
 - Conversation text appears in INFO logs of both the voice server and the app. (M2)
 - Pollen's `remember` stores `memory.v1.json` inside its installed package. (M2)

@@ -7,6 +7,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Added
 
+- **Clock and reminders (M1)**: `get_today` gives the day, date and time so Andy never guesses
+  (it said "morning" at 12:50 before; now "Good afternoon"); `set_reminder`, `list_reminders`
+  and `cancel_reminder` keep one-off or daily reminders in Andy's own owner-only store
+  (`~/.local/share/andy-companion/`); `speaker.py` says a due reminder unprompted once the
+  conversation is settled and idle, framed as data, and logs no reminder text.
+  `scripts/run_andy.py` starts Pollen's app with the speaker attached. 25 tests.
 - **The plan and the record**: `docs/PLAN.md` (goal, judging criteria, milestones M0–M10, the
   video, our words, risks), `docs/STATUS.md`, this changelog, `docs/decisions/`,
   `docs/submission-checklist.md`, `docs/architecture.md` and `CLAUDE.md`, so every change keeps

@@ -1,0 +1,30 @@
+"""The date and time in words Andy can say. Andy never guesses the day; it asks this."""
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Dict, Optional
+
+
+def part_of_day(now: datetime) -> str:
+    if 5 <= now.hour < 12:
+        return "morning"
+    if 12 <= now.hour < 17:
+        return "afternoon"
+    if 17 <= now.hour < 22:
+        return "evening"
+    return "night"
+
+
+def today(now: Optional[datetime] = None) -> Dict[str, str]:
+    now = now or datetime.now()
+    weekday = now.strftime("%A")
+    date = f"{now.day} {now.strftime('%B %Y')}"
+    time = now.strftime("%H:%M")
+    return {
+        "weekday": weekday,
+        "date": date,
+        "time": time,
+        "part_of_day": part_of_day(now),
+        "say": f"It is {weekday} {date}, and the time is {time}.",
+    }

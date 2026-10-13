@@ -11,4 +11,5 @@ export HF_REALTIME_CONNECTION_MODE=local
 export HF_REALTIME_WS_URL="${ANDY_VOICE_URL:-ws://127.0.0.1:8765/v1/realtime}"
 export REALTIME_TRANSCRIPTION_LANGUAGE=en
 cd "$ROOT"
-exec "$APP_PY" -m reachy_mini_conversation_app.main "$@"
+export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
+exec "$APP_PY" "$ROOT/scripts/run_andy.py" "$@"

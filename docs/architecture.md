@@ -8,6 +8,7 @@
             │      │ audio                     ▲ moves                 │
             │      ▼                           │                       │
             │ Pollen conversation app + profiles/companion + tools/    │
+            │   (scripts/run_andy.py attaches the reminder speaker)    │
             │      │ OpenAI Realtime protocol (ws://127.0.0.1:8765)    │
             │      ▼                                                   │
             │ voice/: speech-to-speech                                 │
@@ -24,7 +25,7 @@
 |---|---|---|
 | `voice/` | Hearing, end-of-turn detection, the model call, speaking | Store audio or text; hold keys in the repository |
 | `profiles/companion/` | Who Andy is, how it speaks, what it never does, which tools it may use | Contain any person's data |
-| `tools/` | The companion's own abilities (clock, reminders, …) | Move the robot except through the app's movement tools |
+| `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
 | Pollen's conversation app (dependency) | The robot connection, movement, tool calling | — (unmodified) |
 
 ## Data
