@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (Andy woke in silence)
+
+- The founder did not hear the new greeting. The logs showed the old one had been silent too (at
+  16:51 and 18:16): the greeting asked the model to turn on `head_tracking` first, the model returned
+  only that call, and its reply after the tool came back empty, so nothing was spoken. My harness
+  check had passed because there the model gave the words and the call together.
+- Face following is now switched on in code when movement starts (`body.attach.look_at_people_from_the_start`),
+  and the greeting is words only ("Call no tool"). Verified on the robot at 18:26: 4.4 s of speech
+  from the voice server, no tool call. The model can still turn following off and on when asked.
+  1 test.
+
 ### Changed (Andy's greeting: "your robot companion")
 
 - The founder asked for a greeting that carries the project's idea rather than "the home robot".

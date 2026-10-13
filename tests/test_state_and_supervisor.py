@@ -120,3 +120,13 @@ def test_a_greeting_heard_while_quiet_does_not_wake():
             return json.dumps({"text": "good morning andy"})
 
     assert wake.heard(iter([b"x"] * 20), Rec(), should_stop=lambda: False, triggers=wake.triggers_for("quiet")) is None
+
+
+def test_face_following_is_on_from_the_start_in_code():
+    """The greeting no longer asks the model for head_tracking: that left Andy waking in silence."""
+    import re
+    from pathlib import Path
+
+    profile = (Path(__file__).resolve().parents[1] / "profiles/companion/profile.md").read_text()
+    greeting = re.search(r'^greeting = "(.*)"$', profile, re.M).group(1)
+    assert "head_tracking" not in greeting and "Call no tool" in greeting

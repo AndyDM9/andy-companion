@@ -211,3 +211,27 @@ def install() -> None:
     follow_with_body()
     track_speech_audio()
     livelier_idle()
+    look_at_people_from_the_start()
+
+
+def look_at_people_from_the_start() -> bool:
+    """Follow faces as soon as movement starts, in code. The greeting used to ask the model to turn
+    head_tracking on first; it then returned only that call and its next reply came back empty, so
+    Andy woke in silence (2026-10-13). The model may still turn tracking off and on when asked."""
+    from reachy_mini_conversation_app import moves
+
+    start = moves.MovementManager.start
+    if getattr(start, "_andy_tracking", False):
+        return False
+
+    def start_and_follow(self, *args, **kwargs):
+        out = start(self, *args, **kwargs)
+        try:
+            self.set_head_tracking(True)
+        except Exception:
+            logger.warning("Could not turn face following on at start")
+        return out
+
+    start_and_follow._andy_tracking = True
+    moves.MovementManager.start = start_and_follow
+    return True
