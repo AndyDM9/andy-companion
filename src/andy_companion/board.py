@@ -16,6 +16,7 @@ import os
 import secrets
 import tempfile
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -231,15 +232,37 @@ def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] =
     ok, jpeg = cv2.imencode(".jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 88])
     if not ok:
         raise ValueError("The photo could not be prepared.")
-    PHOTOS.mkdir(parents=True, exist_ok=True, mode=0o700)
-    photo_id = secrets.token_hex(6)
-    path = PHOTOS / f"{photo_id}.jpg"
-    path.write_bytes(jpeg.tobytes())
-    os.chmod(path, 0o600)
     now = now or time.time()
+    photo_id = _store_photo(jpeg.tobytes(), {"name": name, "caption": caption, "at": now})
     _inbox_add({"type": "photo", "name": name, "caption": caption, "photo": photo_id, "at": now})
     tidy_photos(now)
     return {"photo": photo_id}
+
+
+def _store_photo(jpeg: bytes, meta: Dict[str, Any]) -> str:
+    """Keep a prepared JPEG, owner-only, with who sent it (for the idle screen)."""
+    PHOTOS.mkdir(parents=True, exist_ok=True, mode=0o700)
+    photo_id = secrets.token_hex(6)
+    path = PHOTOS / f"{photo_id}.jpg"
+    path.write_bytes(jpeg)
+    os.chmod(path, 0o600)
+    _write(PHOTOS / f"{photo_id}.json", meta)
+    return photo_id
+
+
+def add_sample_photo(jpeg: bytes, credit: str, now: Optional[float] = None) -> str:
+    """A sample landscape to see how the idle screen flows: marked as a sample, never announced."""
+    return _store_photo(jpeg, {"name": "Sample", "caption": _tidy(credit, 140), "at": now or time.time(), "sample": True})
+
+
+def remove_sample_photos() -> int:
+    gone = 0
+    for meta_path in PHOTOS.glob("*.json") if PHOTOS.is_dir() else []:
+        if (_read(meta_path, {}) or {}).get("sample"):
+            meta_path.with_suffix(".jpg").unlink(missing_ok=True)
+            meta_path.unlink(missing_ok=True)
+            gone += 1
+    return gone
 
 
 def photo_path(photo_id: str) -> Optional[Path]:
@@ -255,8 +278,25 @@ def tidy_photos(now: Optional[float] = None) -> int:
     for p in PHOTOS.glob("*.jpg") if PHOTOS.is_dir() else []:
         if now - p.stat().st_mtime > PHOTO_DAYS * 86400:
             p.unlink()
+            p.with_suffix(".json").unlink(missing_ok=True)
             gone += 1
     return gone
+
+
+IDLE_PHOTO_S = 180
+
+
+def idle_photo(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
+    """The family photo for the screen while Andy is idle: each kept photo in turn, three minutes each."""
+    now = time.time() if now is None else now
+    photos = sorted(PHOTOS.glob("*.jpg"), key=lambda p: p.stat().st_mtime) if PHOTOS.is_dir() else []
+    if not photos:
+        return None
+    pick = photos[int(now // IDLE_PHOTO_S) % len(photos)]
+    meta = _read(pick.with_suffix(".json"), {}) or {}
+    when = datetime.fromtimestamp(meta.get("at") or pick.stat().st_mtime).strftime("%A")
+    return {"photo": pick.stem, "name": _tidy(meta.get("name", ""), NAME_LEN), "caption": _tidy(meta.get("caption", ""), 140),
+            "when": when}
 
 
 def show_photo(photo_id: str, name: str, caption: str = "", now: Optional[float] = None) -> None:

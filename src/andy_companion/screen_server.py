@@ -283,6 +283,11 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
         state["showing"] = {**state["showing"], "qr": settings_qr(host)}
     state["caption"] = caption() if settings.get().get("captions", True) else ""
     state["weather"] = weather_card()
+    hour = (now or datetime.now()).hour
+    s = settings.get()
+    start, end = int(s.get("night_from", 21)), int(s.get("night_to", 7))
+    state["night"] = (start <= hour or hour < end) if start > end else (start <= hour < end)
+    state["idle_photo"] = board.idle_photo() if s.get("screen_photos", True) and not state["night"] else None
     return state
 
 

@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (family photos when Andy is idle; a calm night clock; sample landscapes)
+
+- **When Andy is idle**, the TV shows the photos family sent, one at a time, three minutes each, with a
+  slow cross-fade and no pan or zoom (Nest Hub's photo frame; WCAG on motion): "From Anna · Tuesday ·
+  At the beach". Who sent a photo and when is now kept beside it (`board._store_photo`), removed with
+  it. Off with "Show family photos when Andy is idle" on the settings page.
+- **At night** (the settings page's hours, 9 pm to 7 am by default) the TV shows only a calm clock: the
+  time large, the day and date under it, and Andy's words if he speaks. No photos at night.
+- **Sample landscapes** to see the flow: `scripts/settings.py sample-photos` adds six Unsplash
+  landscapes from Lorem Picsum (no people in them; two candidates with people were left out), each
+  credited, marked as a sample, never announced; `remove-sample-photos` takes them out.
+- Fixed: `board.idle_photo(now=0)` treated 0 as "no time given". 3 tests.
+
 ### Added (the settings code on the TV; crisis replies always give 988 and 911)
 
 - **"Andy, show the settings code"** (`settings_code` tool, `board.show_settings_code`): a QR code on the

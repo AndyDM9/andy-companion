@@ -77,6 +77,7 @@ def delete(kind: str, item_id: str) -> bool:
         if path is None:
             return False
         path.unlink(missing_ok=True)
+        path.with_suffix(".json").unlink(missing_ok=True)
         return True
     raise ValueError("Unknown kind of item.")
 

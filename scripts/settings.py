@@ -4,8 +4,10 @@
     python scripts/settings.py place "Springfield, Illinois"
     python scripts/settings.py news add sj-r.com          (a local paper's site)
     python scripts/settings.py events add https://library.example.org/events
-    python scripts/settings.py links                     (the screen, family, under-the-hood and setup addresses)
+    python scripts/settings.py links                     (the screen, family, under-the-hood and settings addresses)
     python scripts/settings.py new-family-link           (the old family link stops working)
+    python scripts/settings.py sample-photos             (six sample landscapes for the idle screen)
+    python scripts/settings.py remove-sample-photos
 
 Kept in Andy's own owner-only settings file on this computer, never in the repository.
 """
@@ -19,6 +21,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from andy_companion import board, settings  # noqa: E402
+
+
+SAMPLES = [(1016, "Philippe Wuyts"), (1018, "Andrew Ridley"), (1036, "Wolfgang Lutz"), (1039, "Andrew Coelho"),
+           (1043, "Christian Joudrey"), (1050, "Joseph Barrientos")]
 
 
 def main(argv: list[str]) -> int:
@@ -42,7 +48,19 @@ def main(argv: list[str]) -> int:
         print(f"Screen (TV beside Andy): http://{host}:{port}/screen?t={t['screen']}")
         print(f"Family page:             http://{host}:{port}/family?k={t['family']}")
         print(f"Under the hood:          http://{host}:{port}/hood?t={t['screen']}")
-        print(f"Set Andy up:             http://{host}:{port}/setup?s={t['setup']}")
+        print(f"Andy's settings:        http://{host}:{port}/setup?s={t['setup']}")
+        return 0
+    if argv[0] == "sample-photos":
+        # Landscapes from Lorem Picsum (Unsplash photos, free to use), with no people in them.
+        import urllib.request
+
+        for pid, author in SAMPLES:
+            with urllib.request.urlopen(f"https://picsum.photos/id/{pid}/1600/1067", timeout=30) as r:
+                board.add_sample_photo(r.read(), f"Sample photo by {author}, Unsplash")
+        print(f"Added {len(SAMPLES)} sample photos; they show when Andy is idle. Remove: settings.py remove-sample-photos")
+        return 0
+    if argv[0] == "remove-sample-photos":
+        print(f"Removed {board.remove_sample_photos()} sample photos.")
         return 0
     if argv[0] == "place" and len(argv) == 2:
         settings.update(place=argv[1].strip()[:120])

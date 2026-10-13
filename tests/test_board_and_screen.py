@@ -8,7 +8,7 @@ from datetime import datetime
 
 import pytest
 
-from andy_companion import board, reminders, screen_server, speaker
+from andy_companion import board, reminders, screen_server, settings, speaker
 
 
 @pytest.fixture(autouse=True)
@@ -196,3 +196,44 @@ def test_the_family_page_uploads_and_the_screen_serves_the_photo(server):
     assert code == 200 and headers["Content-Type"] == "image/jpeg" and body[:3] == b"\xff\xd8\xff"
     with pytest.raises(urllib.error.HTTPError):
         get(server + f"/photo?t={k}&id={photo}")
+
+
+def test_idle_photos_take_turns_and_say_who_sent_them(tmp_path, monkeypatch):
+    import time as _t
+
+    monkeypatch.setattr(board, "PHOTOS", tmp_path / "photos")
+    (tmp_path / "photos").mkdir()
+    for i, name in enumerate(("Anna", "Leo")):
+        pid = f"{i:012x}"
+        (tmp_path / "photos" / f"{pid}.jpg").write_bytes(b"jpeg")
+        board._write(tmp_path / "photos" / f"{pid}.json", {"name": name, "caption": "At the beach", "at": _t.time()})
+        os.utime(tmp_path / "photos" / f"{pid}.jpg", (1000 + i, 1000 + i))
+    first = board.idle_photo(now=0)
+    second = board.idle_photo(now=board.IDLE_PHOTO_S)
+    assert {first["name"], second["name"]} == {"Anna", "Leo"} and first["caption"] == "At the beach"
+    assert board.idle_photo(now=2 * board.IDLE_PHOTO_S)["photo"] == first["photo"]
+
+
+def test_night_hides_photos_and_settings_can_turn_them_off(tmp_path, monkeypatch):
+    from datetime import datetime
+
+    monkeypatch.setattr(board, "PHOTOS", tmp_path / "photos")
+    (tmp_path / "photos").mkdir()
+    (tmp_path / "photos" / "00000000000a.jpg").write_bytes(b"jpeg")
+    day = screen_server.screen_state(now=datetime(2026, 10, 13, 15, 0))
+    night = screen_server.screen_state(now=datetime(2026, 10, 13, 22, 30))
+    assert day["night"] is False and day["idle_photo"]["photo"] == "00000000000a"
+    assert night["night"] is True and night["idle_photo"] is None
+    settings.update(screen_photos=False)
+    assert screen_server.screen_state(now=datetime(2026, 10, 13, 15, 0))["idle_photo"] is None
+    settings.update(night_from=1, night_to=5)
+    assert screen_server.screen_state(now=datetime(2026, 10, 13, 22, 30))["night"] is False
+
+
+def test_sample_photos_are_never_announced_and_come_out_cleanly(tmp_path):
+    pid = board.add_sample_photo(b"jpeg", "Sample photo by Someone, Unsplash")
+    real = board._store_photo(b"jpeg", {"name": "Anna", "caption": "", "at": 1.0})
+    assert board.next_for_person() is None                          # no "a photo arrived" for samples
+    assert board.idle_photo(now=0)["photo"] in (pid, real)
+    assert board.remove_sample_photos() == 1
+    assert board.photo_path(pid) is None and board.photo_path(real) is not None
