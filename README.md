@@ -44,7 +44,7 @@ keep anyone safe, or keep recordings or transcripts.
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes ("what do you see?") | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0 | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
 | Judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
-| The conversation suite | 44 spoken situations, 16 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
+| The conversation suite | 49 spoken situations, 16 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
 | The web | Tavily search, extract, crawl (safe search on) | Tavily API |
 
 ## Measured (Reachy Mini Lite, 2026-10-13)
@@ -61,9 +61,10 @@ how long it took and where it ran. Numbers and tool names only, in memory; never
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 44 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. **Latest: 44 of 44 in three runs.**
+**The conversation suite** ([evals/](evals/)): 49 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. The model gets exactly the robot's 27 tools and their real descriptions ([evals/tools.json](evals/tools.json), written from the robot's code). **Latest: 49, 48 and 48 of 49 in three runs.**
 - **Baseline:** 27/36.
 - **After the fixes:** 35, 36 and 36 over three runs. The fixes were six profile weaknesses, plus three flawed cases fixed openly in the suite.
+- **An honest correction:** earlier runs scored 44 of 44, but gave the model 17 tools with shortened descriptions. With the real 27, the suite found that Andy said it had no camera, once invented a time, and that one case could never pass (a harness flaw). All three are fixed and recorded in [evals/suite.json](evals/suite.json).
 - **The urgent-words net:** a deterministic check under the model makes sure "my chest hurts" always gets "please call 911 now".
 
 Scorecards are in [evals/results/](evals/results/).

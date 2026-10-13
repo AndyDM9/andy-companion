@@ -78,9 +78,9 @@
 
   <rect x="724" y="388" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="420" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Job</text>
-  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 44 situations,</text>
+  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 49 situations,</text>
   <text x="744" y="468" font-size="15" fill="#24304f">judged by NVIDIA Nemotron 3 Ultra</text>
-  <text x="744" y="494" font-size="15" fill="#4c5d4f">44 of 44, three runs, English and Spanish</text>
+  <text x="744" y="494" font-size="15" fill="#4c5d4f">49, 48, 48 of 49; English and Spanish</text>
 
   <rect x="724" y="540" width="428" height="110" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="572" font-size="18" font-weight="700" fill="#24304f">Tavily</text>

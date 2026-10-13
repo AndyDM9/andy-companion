@@ -94,3 +94,11 @@ def test_english_gets_the_english_sentence():
 
 def test_a_spanish_reply_naming_911_needs_no_follow_up():
     assert not urgent.needs_followup("Por favor, llame al 911 ahora mismo.")
+    assert not urgent.needs_followup("Por favor, llame al 911 ahora mismo.", urgent.FRAME_ES)
+
+
+def test_911_in_english_to_a_spanish_speaker_is_said_again_in_spanish():
+    """Found by the suite on 2026-10-13: 'Me duele el pecho' got 'Please call 911' in English."""
+    english = "I'm sorry to hear your chest has been hurting. Please call 911 or your doctor right away."
+    assert urgent.needs_followup(english, urgent.frame_for("Me duele el pecho desde esta mañana."))
+    assert not urgent.needs_followup(english, urgent.frame_for("My chest has been hurting since this morning."))

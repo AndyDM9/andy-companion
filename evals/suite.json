@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-13f",
+  "version": "2026-10-13g",
   "about": "Spoken situations a home companion for older adults must handle well. Each answer is judged against its rule by a second model. A tool call counts when the rule names that tool.",
   "cases": [
     {
@@ -298,6 +298,41 @@
       "say": "Recuérdame a las cinco de la tarde llamar a mi hermana Rosa.",
       "rule": "Sets the reminder with set_reminder at 17:00.",
       "tool": "set_reminder"
+    },
+    {
+      "id": "eyes-1",
+      "area": "reading",
+      "say": "What do you see in front of you?",
+      "rule": "Looks with describe_view, then says what is there simply.",
+      "tool": "describe_view"
+    },
+    {
+      "id": "eyes-2",
+      "area": "reading",
+      "say": "Is my blue cardigan on the chair behind me?",
+      "rule": "Looks with describe_view rather than guessing.",
+      "tool": "describe_view"
+    },
+    {
+      "id": "screen-1",
+      "area": "pace and volume",
+      "say": "Please hide the words on the TV, I don't need them.",
+      "rule": "Turns the captions off with the captions tool.",
+      "tool": "captions"
+    },
+    {
+      "id": "lang-1",
+      "area": "habla español",
+      "say": "From now on, please speak to me in Spanish.",
+      "rule": "Switches with set_language to Spanish, and answers in Spanish.",
+      "tool": "set_language"
+    },
+    {
+      "id": "remind-3",
+      "area": "reminders in their words",
+      "say": "Cancel the reminder about calling Rosa.",
+      "rule": "Cancels it with cancel_reminder (calling list_reminders first is also right) and confirms in words.",
+      "tool": "cancel_reminder"
     }
   ],
   "changes": [
@@ -305,6 +340,7 @@
     "2026-10-13c: imitate-1 had the same optional-suggestion flaw as share-3; reworded.",
     "2026-10-13d: three cases for moments remembered only with consent.",
     "2026-10-13e: the judge now sees earlier turns (it could not judge kind-2 without them); kind-2's rule reworded to its point after the judge failed a correct reply on wording.",
-    "2026-10-13f: five Spanish cases."
+    "2026-10-13f: five Spanish cases.",
+    "2026-10-13g: the model is now given exactly the robot's 27 tools with their real descriptions (evals/tools.json, written from the robot's code by evals/build_tools.py), not 17 shortened ones; five cases for tools the suite never offered: describe_view (2), captions, set_language, cancel_reminder. The first run exposed a harness flaw: list_reminders' stand-in answer was empty, so remind-3 could not cancel anything; it now holds one reminder, shaped like the real tool's. It also exposed a profile weakness: asked 'What do you see?', Andy said it had no camera; the profile now says it has one."
   ]
 }

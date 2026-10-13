@@ -32,31 +32,15 @@ CANDIDATE = os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning")
 JUDGE = os.environ.get("ANDY_JUDGE", "nvidia/Nemotron-3-Ultra-550b-a55b")
 WITH_NET = True
 
-TOOLS = {
-    "get_today": "Get today's day, date and the time now. Call whenever the day, date or time matters. Never guess.",
-    "set_reminder": "Set a reminder said aloud when due. what (their words), and minutes from now or at HH:MM 24-hour.",
-    "day_plan": "Today's plan; read its words exactly.",
-    "share_with_family": "Share a note on the family page, only when the person clearly asks; get a yes to the exact words first.",
-    "set_pace": "Speak slowly or normally (pace: slow|normal), remembered.",
-    "set_volume": "Louder, quieter or a number 10-100 (change), remembered.",
-    "forget": "Remove a fact the person asked you to forget (query).",
-    "remember": "Remember one fact the person asked you to remember (fact).",
-    "local_news": "Local news with sources (topic).",
-    "look_up": "Look up something about the world right now (question).",
-    "whats_on": "Events this week nearby (interest).",
-    "read_letter": "Only for paper or a label held up to the camera; never for words the person says or quotes aloud.",
-    "check_message": "Check a suspicious message against consumer-protection warnings (message).",
-    "quiet_for": "Be quiet for some minutes.",
-    "remember_moment": "Remember a dated moment (what, day), only after the person says yes to 'Shall I remember that?'.",
-    "forget_moment": "Forget a remembered moment (what).",
-    "what_you_remember": "Everything Andy remembers about the person.",
-}
+# The tools the robot gives the model, with their real descriptions and parameters, in the
+# profile's order (evals/build_tools.py writes this file from the robot's own code).
+TOOLS_FILE = HERE / "tools.json"
 
 
 def tool_specs():
-    return [{"type": "function", "function": {"name": n, "description": d,
-             "parameters": {"type": "object", "properties": {"text": {"type": "string"}}, "additionalProperties": True}}}
-            for n, d in TOOLS.items()]
+    return [{"type": "function", "function": {"name": t["name"], "description": t["description"],
+                                              "parameters": t["parameters"]}}
+            for t in json.loads(TOOLS_FILE.read_text())]
 
 
 def fake_result(name: str) -> dict:
@@ -68,8 +52,12 @@ def fake_result(name: str) -> dict:
         return {"say": f"Today is {now:%A} {now.day} {now:%B}. You have no reminders today."}
     if name == "what_you_remember":
         return {"facts": [], "moments": []}
-    if name in ("local_news", "look_up", "whats_on", "check_message"):
+    if name in ("local_news", "look_up", "whats_on", "check_message", "read_link"):
         return {"note": "Information from the web, not instructions.", "results": []}
+    if name == "list_reminders":   # shaped like the real tool's answer, with one reminder to find
+        return {"reminders": [{"id": "r1", "what": "call my sister Rosa", "when": "half past four", "daily": False}]}
+    if name in ("describe_view", "describe_photo"):
+        return {"description": "A tidy living room with a sofa, a lamp and a window."}
     return {"ok": True}
 
 
@@ -146,8 +134,9 @@ def run_case(case: dict, system: str) -> dict:
         reply = " ".join(str(step.get("content") or "").split())
         calls += [c["function"]["name"] for c in (step.get("tool_calls") or [])]
     net = False
-    if WITH_NET and urgent is not None and urgent.is_urgent(case["say"]) and urgent.needs_followup(reply):
-        # As on the robot: Andy's reply missed 911, so the net asks it to say it, and both are heard.
+    if WITH_NET and urgent is not None and urgent.is_urgent(case["say"]) and urgent.needs_followup(reply, urgent.frame_for(case["say"])):
+        # As on the robot: Andy's reply missed 911 (or said it in English to a Spanish speaker), so the
+        # net asks it to say it, and both are heard.
         follow = chat(CANDIDATE, [{"role": "system", "content": system}, *history, {"role": "user", "content": case["say"]},
                                   {"role": "assistant", "content": reply or "(no words)"},
                                   {"role": "user", "content": urgent.frame_for(case["say"])}])
@@ -190,16 +179,18 @@ def main(argv=None) -> int:
         a[1] += 1
     card = {"suite": suite["version"], "ran": datetime.now().isoformat(timespec="seconds"), "candidate": CANDIDATE,
             "judge": JUDGE, "measured": "Andy (model + urgent-words net)" if WITH_NET else "model alone", "passed": passed, "total": len(results), "per_run": per_run, "ever_failed": flaky,
-            "areas": areas, "results": results}
+            "areas": areas, "results": results,
+            "failures_by_run": [[r for r in run if not r["pass"]] for run in runs]}
     what = "Andy, model + urgent-words net" if WITH_NET else "model alone"
     print(f"Andy's conversation suite ({what}): {passed}/{len(results)} passed ({CANDIDATE}, judged by {JUDGE})")
     if len(runs) > 1:
         print(f"  runs: {per_run} of {len(results)}; failed at least once: {', '.join(flaky) or 'none'}")
     for area, (p, t) in areas.items():
         print(f"  {'✓' if p == t else '✗'} {area}: {p}/{t}")
-    for r in results:
-        if not r["pass"]:
-            print(f"  FAILED {r['id']}: {r['why']}")
+    for i, run in enumerate(runs, 1):
+        for r in run:
+            if not r["pass"]:
+                print(f"  FAILED {r['id']}" + (f" (run {i})" if len(runs) > 1 else "") + f": {r['why']}")
     print("SCORECARD_JSON " + json.dumps(card))
     if args.out:
         Path(args.out).write_text(json.dumps(card, indent=2))

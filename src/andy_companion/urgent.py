@@ -52,8 +52,17 @@ def is_urgent(text: str) -> bool:
     return False
 
 
-def needs_followup(reply: str) -> bool:
-    return not SAID_911.search(str(reply))
+# Words a Spanish 911 sentence has and an English one does not, to hear which language Andy used.
+SPANISH_REPLY = re.compile(r"\b(llame|llamar|llama|ahora|usted|alguien|cercano|ayuda|emergencias|ambulancia|"
+                           r"m[eé]dico|por favor)\b", re.I)
+
+
+def needs_followup(reply: str, frame: str = FRAME) -> bool:
+    """True unless Andy's reply already named 911, in Spanish when the person spoke Spanish."""
+    reply = str(reply)
+    if not SAID_911.search(reply):
+        return True
+    return frame == FRAME_ES and not SPANISH_REPLY.search(reply)
 
 
 def install(handler_class=None) -> bool:
@@ -75,7 +84,7 @@ def install(handler_class=None) -> bool:
             return
         if role == "assistant" and getattr(self, "_andy_urgent_pending", False):
             frame, self._andy_urgent_pending = self._andy_urgent_pending, False
-            if needs_followup(text):
+            if needs_followup(text, frame):
                 try:
                     loop = asyncio.get_running_loop()
                 except RuntimeError:

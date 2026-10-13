@@ -36,6 +36,7 @@ run() {
     --args "/andy/evals/run_suite.py --runs $RUNS ${ANDY_SUITE_ARGS:-}" \
     --inject-file "$ROOT/evals/run_suite.py:/andy/evals/run_suite.py" \
     --inject-file "$ROOT/evals/suite.json:/andy/evals/suite.json" \
+    --inject-file "$ROOT/evals/tools.json:/andy/evals/tools.json" \
     --inject-file "$ROOT/profiles/companion/profile.md:/andy/profiles/companion/profile.md" \
     --inject-file "$ROOT/src/andy_companion/__init__.py:/andy/src/andy_companion/__init__.py" \
     --inject-file "$ROOT/src/andy_companion/urgent.py:/andy/src/andy_companion/urgent.py" \
