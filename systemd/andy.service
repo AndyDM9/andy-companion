@@ -1,0 +1,16 @@
+[Unit]
+Description=Andy, the home companion robot (supervisor: awake, asleep, quiet; screen and family page)
+After=andy-voice.service
+Wants=andy-voice.service
+
+[Service]
+Type=simple
+WorkingDirectory=@ROOT@
+ExecStart=@ROOT@/scripts/andy
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGINT
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=Andy's voice server (Parakeet, Nemotron on Nebius Token Factory, text-to-speech)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=@ROOT@/voice
+ExecStart=@ROOT@/voice/run.sh
+Restart=on-failure
+RestartSec=10
+# No conversation text is logged (voice/serve.py); keep the journal short anyway.
+LogRateLimitIntervalSec=30
+LogRateLimitBurst=200
+
+[Install]
+WantedBy=default.target

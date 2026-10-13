@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (running Andy like a product)
+
+- `scripts/doctor.py`: checks every part Andy needs and says what to fix: the private env file
+  (owner-only), the Token Factory key (Nemotron reachable) and Tavily key (a real search), the
+  voice server, the Reachy Mini daemon, the robot environment, Tesseract, the screen, Andy's
+  mode, and whether the vision endpoint is running (and costing) or stopped. 10 of 10 on the
+  founder's desktop.
+- `systemd/andy-voice.service`, `systemd/andy.service` and `scripts/install-services.sh`: Andy as
+  two user services that start at login and restart on failure. Installed only with `--enable`,
+  because only one program may drive the robot.
+
 ### Added (captions)
 
 - **Live captions on Andy's screen**: what Andy says appears in large, high-contrast text at the

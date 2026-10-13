@@ -84,7 +84,9 @@ Scorecards are in [evals/results/](evals/results/).
 5. **Optional: eyes.** With the [Nebius CLI](https://docs.nebius.com/cli), run
    `cloud/vision-endpoint.sh create`, then `status` until it is RUNNING. Run `stop` when you're
    done; a stopped endpoint costs nothing for compute.
-6. **Optional: the suite on Nebius.** `cloud/safety-job.sh run`, or locally
+6. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing.
+   To start Andy at login: `scripts/install-services.sh --enable`.
+7. **Optional: the suite on Nebius.** `cloud/safety-job.sh run`, or locally
    `uv run python evals/run_suite.py --runs 3`.
 
 Tests: `uv run pytest`, plus the robot-side tests with `PYTHONPATH=src robot/.venv/bin/python -m pytest tests`.
