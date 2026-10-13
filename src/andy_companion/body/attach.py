@@ -93,7 +93,8 @@ def seek_step(manager, now, head, tracking, head_world_yaw, move_playing):
 def follow_with_body() -> bool:
     """Wrap MovementManager's single send point with Andy's body behaviours. Off with
     ANDY_BODY_FOLLOW=off."""
-    from andy_companion.body import body_follow, gaze, idle, presence, seek
+    from andy_companion import turns
+    from andy_companion.body import body_follow, gaze, idle, presence, seek, thinking
 
     if not body_follow.ENABLED:
         return False
@@ -136,6 +137,10 @@ def follow_with_body() -> bool:
         if idle.enabled():
             flick = self.__dict__.setdefault("_andy_flick", idle.Flick(present=lambda: presence.recent(idle.PRESENT_WITHIN_S)))
             antennas = flick.step(now, (float(antennas[0]), float(antennas[1])), not move_owns_body and not listening)
+        if thinking.ENABLED:
+            thinker = self.__dict__.setdefault("_andy_thinking", thinking.Thinking())
+            antennas = thinker.step(now, (float(antennas[0]), float(antennas[1])),
+                                    turns.CLOCK.thinking() and not listening and not move_owns_body)
         head = gaze.soften_look_up(head)
         return send(self, head, antennas, follower.step(now, yaw, float(body_yaw), tracking, move_owns_body))
 

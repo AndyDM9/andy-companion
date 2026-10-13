@@ -34,6 +34,14 @@ class TurnClock:
         self.clock, self.wall = clock, wall
         self._reset()
 
+    running: int = 0                     # tools running now, whatever the turn
+
+    def thinking(self, longest_s: float = 20.0) -> bool:
+        """Andy is working on an answer: words understood and no sound yet, or a tool running."""
+        if self.running > 0:
+            return True
+        return self.heard is not None and self.first_sound is None and self.clock() - self.heard < longest_s
+
     def _reset(self) -> None:
         self.stopped: Optional[float] = None
         self.heard: Optional[float] = None
@@ -121,9 +129,11 @@ def install(handler_class=None, routine_class=None, clock: Optional[TurnClock] =
     @wraps(run)
     async def timed(self, *args, **kwargs):
         started = time.perf_counter()
+        clock.running += 1
         try:
             return await run(self, *args, **kwargs)
         finally:
+            clock.running = max(0, clock.running - 1)
             clock.tool(getattr(self, "tool_name", ""), time.perf_counter() - started)
 
     routine_class.__call__ = timed

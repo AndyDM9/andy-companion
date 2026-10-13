@@ -19,6 +19,7 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 | 1 | If Andy is quiet: "Andy, wake up" | A soft chime; Andy greets you | | |
 | 2 | "What day is it?" | The day and date; the screen agrees | | |
 | 3 | Watch **under the hood** after each turn | A new bar per turn; the big number around 1 s | | |
+| 3b | Ask "What's the local news?" and watch the antennas after you stop speaking | They lean slowly together until Andy speaks, and keep leaning while the search runs; no head movement. Too much or too little? (`ANDY_THINKING=off` turns it off) | | |
 | 4 | Watch the TV while Andy speaks | Andy's words as captions at the bottom, gone after 20 s | | |
 | 5 | "Hide the captions", then "show the captions again" | Captions stop, then return | | |
 | 6 | Hold up a printed page: "Can you read this for me?" | Andy reads it, explains it simply; a fee or a request for details gets a look-up offer | | |

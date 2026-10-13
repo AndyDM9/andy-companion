@@ -14,7 +14,8 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
 - **Speaks English and Spanish**, in whichever you speak to it; the day plan and the screen
   switch too.
 - **Talks, and keeps looking at you.** Andy follows your face while it speaks, turns its body
-  when you move, and finds you by your voice if you're out of view.
+  when you move, and finds you by your voice if you're out of view. While it thinks or looks
+  something up, its antennas lean slowly, so a pause never looks dead.
 - **Says it's a robot.** It never pretends to be a person, and never speaks as someone you know.
 - **Knows the day, and never guesses it.** "What's on today?" gets the same words every time,
   and each morning Andy offers the day's plan.

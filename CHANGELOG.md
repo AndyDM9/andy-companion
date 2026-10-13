@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (Andy shows it is thinking)
+
+- `src/andy_companion/body/thinking.py`: from the moment the person's words are understood until
+  Andy's first sound, and while a tool runs (a web search or a look through the camera takes 4–5
+  s), both antennas lean slowly together to one side and back, unlike breathing's mirrored sway.
+  Antennas only, never the head; peak speed about 0.75 rad/s, under the antennas' 2 rad/s; blended
+  in and out over half a second; never while the person speaks or one of Pollen's moves owns the
+  body. `ANDY_THINKING=off` turns it off. Driven by the same marks that time each turn
+  (`turns.TurnClock.thinking()`, which now also counts running tools). For the organisers' point
+  that a pause with nothing happening is what robot demos are judged on. 5 tests; awaiting the
+  look on the robot (live-test step 3b).
+
 ### Changed (the suite measures the real Andy: all 27 tools, as the robot sends them)
 
 - **The suite gave the model 17 of Andy's 27 tools, with shortened descriptions.** It now gives
