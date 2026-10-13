@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M3, body behaviours)
+
+- **Andy keeps looking at the person**: `src/andy_companion/body/` brings over the earlier
+  assistant's general-purpose body modules, rewritten without private links: `gaze` (keeps
+  following the face while Andy speaks, which Pollen's app pauses; softens upward looks),
+  `body_follow` (turns the body to face the person), `seek` (turns to the voice's direction,
+  looks around once when the face is lost), `person` (finds a person whose face is turned away,
+  with YOLOX on the CPU; frames are looked at and dropped), `idle` (calm moments in place of
+  Pollen's random dances and emotions), `speaking`, and `presence` (now one timestamp in memory,
+  never on disk). `body/attach.py` wraps Pollen's single movement send point; any failure falls
+  back to Pollen's own command. The phone-watch and focus-session parts stay behind. 57 body
+  tests come with them (82 in all; 5 need Pollen's app and skip without it).
+
 ### Changed
 
 - **No confirmation moves, face tracking from the start**: in the reminder test Andy confirmed
