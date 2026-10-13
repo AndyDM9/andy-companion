@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Under the hood</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Andy's evening colours. Each turn is one bar: the gold part is hearing, the pale part is the
+     reply, drawn to the same scale so a slow turn looks slow. Numbers only; no words are kept. */
+  :root { --ground: #24304f; --ink: #f6f1e3; --soft: #c9cfe0; --gold: #f3d78f; --reply: #9fb7e6;
+          --tool: #7fc4a8; --panel: #2d3a5c; --rule: #44527a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--ground); color: var(--ink); min-height: 100vh;
+         font-family: "Atkinson Hyperlegible", "Verdana", sans-serif; padding: 4vh 5vw; }
+  h1 { font-size: clamp(32px, 4vw, 64px); margin: 0; line-height: 1.05; }
+  .lede { color: var(--soft); font-size: clamp(17px, 1.6vw, 26px); margin: 1vh 0 0; max-width: 62ch; }
+
+  .headline { display: grid; grid-template-columns: auto 1fr; gap: 1vh 4vw; align-items: end;
+              padding: 3vh 0; border-bottom: 2px solid var(--rule); }
+  .big { font-size: clamp(72px, 11vw, 190px); font-weight: 700; line-height: .9; color: var(--gold);
+         font-variant-numeric: tabular-nums; margin: 0; }
+  .big small { font-size: .38em; font-weight: 400; color: var(--soft); }
+  .what { font-size: clamp(18px, 1.8vw, 30px); margin: 0 0 1vh; max-width: 30ch; }
+  .split { list-style: none; margin: 0; padding: 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--soft); }
+  .split li { margin: .5vh 0; }
+  .split b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .key { display: inline-block; width: .9em; height: .9em; border-radius: 2px; vertical-align: -0.1em; margin-right: .4em; }
+
+  .turns { list-style: none; margin: 3vh 0 0; padding: 0; }
+  .turn { display: grid; grid-template-columns: 9ch 1fr; column-gap: 2vw; row-gap: .15em; align-items: center; padding: 1vh 0;
+          border-bottom: 1px solid var(--rule); font-size: clamp(16px, 1.4vw, 24px); }
+  .turn .t { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+  .bar { display: flex; height: 1.1em; border-radius: 3px; overflow: hidden; background: var(--panel); }
+  .bar span { display: block; height: 100%; }
+  .tools { grid-column: 2; display: flex; flex-wrap: wrap; gap: .5em 1.2em; color: var(--soft); font-size: .85em; }
+  .tools b { color: var(--tool); font-weight: 700; }
+  .empty { color: var(--soft); font-size: clamp(20px, 2vw, 32px); margin: 4vh 0; }
+
+  .stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2vh 3vw;
+           margin-top: 3vh; padding-top: 2.5vh; border-top: 2px solid var(--rule); font-size: clamp(15px, 1.25vw, 21px); }
+  .stack p { margin: 0; color: var(--soft); line-height: 1.4; }
+  .stack strong { display: block; color: var(--ink); }
+  @media (max-width: 640px) { .headline { grid-template-columns: 1fr; } .turn { grid-template-columns: 7ch 1fr; } }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Under the hood</h1>
+    <p class="lede">How long Andy's last turns took, measured live on this robot. Only the numbers are kept, in memory, never the words.</p>
+  </header>
+
+  <section class="headline" aria-live="polite">
+    <p class="big" id="big">–</p>
+    <div>
+      <p class="what" id="what">From the end of your words to Andy's first sound, the middle of recent turns</p>
+      <ul class="split">
+        <li><span class="key" style="background: var(--gold)"></span>Hearing <b id="hear">–</b>: turn detection, then NVIDIA Parakeet on this computer</li>
+        <li><span class="key" style="background: var(--reply)"></span>Reply <b id="reply">–</b>: NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, then the first words spoken</li>
+        <li><span class="key" style="background: var(--tool)"></span>Tools Andy used, and where they ran</li>
+      </ul>
+    </div>
+  </section>
+
+  <ul class="turns" id="turns"></ul>
+  <p class="empty" id="empty">Talk to Andy, and each turn appears here.</p>
+
+  <section class="stack" aria-label="What runs where">
+    <p><strong>Hearing</strong>NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card</p>
+    <p><strong>Thinking and tools</strong>NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention</p>
+    <p><strong>Eyes</strong>NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked</p>
+    <p><strong>Proof</strong>44 situations judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job</p>
+  </section>
+
+<script>
+  const token = new URLSearchParams(location.search).get("t") || "";
+  const WHERE = {
+    local_news: "Tavily", look_up: "Tavily", whats_on: "Tavily", read_link: "Tavily", check_message: "Tavily",
+    describe_view: "Nemotron Nano VL on Nebius", describe_photo: "Nemotron Nano VL on Nebius",
+    read_letter: "Tesseract on this computer",
+  };
+  const secs = (ms) => ms == null ? "–" : (ms / 1000).toFixed(ms < 10000 ? 2 : 1) + " s";
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+  function draw(s) {
+    const m = s.median || {};
+    document.getElementById("big").innerHTML = m.total_ms == null ? "–" : (m.total_ms / 1000).toFixed(2) + "<small> s</small>";
+    document.getElementById("hear").textContent = secs(m.hearing_ms);
+    document.getElementById("reply").textContent = secs(m.reply_ms);
+    const list = document.getElementById("turns");
+    list.replaceChildren();
+    document.getElementById("empty").hidden = s.turns.length > 0;
+    const scale = Math.max(3000, ...s.turns.slice(0, 6).map(t => t.total_ms || 0));
+    for (const t of s.turns.slice(0, 6)) {
+      const li = el("li", "turn");
+      li.append(el("span", "t", secs(t.total_ms)));
+      const bar = el("div", "bar");
+      bar.setAttribute("role", "img");
+      bar.setAttribute("aria-label", `hearing ${secs(t.hearing_ms)}, reply ${secs(t.reply_ms)}`);
+      const h = el("span"); h.style.background = "var(--gold)"; h.style.width = ((t.hearing_ms || 0) / scale * 100) + "%";
+      const r = el("span"); r.style.background = t.tools.length ? "var(--tool)" : "var(--reply)"; r.style.width = (t.reply_ms / scale * 100) + "%";
+      bar.append(h, r);
+      li.append(bar);
+      if (t.tools.length) {
+        const tools = el("div", "tools");
+        for (const x of t.tools) {
+          const one = el("span");
+          one.append(el("b", null, x.name.replace(/_/g, " ")), ` ${secs(x.ms)}, ${WHERE[x.name] || "on this computer"}`);
+          tools.append(one);
+        }
+        li.append(el("span"), tools);
+      }
+      list.append(li);
+    }
+  }
+
+  async function tick() {
+    try {
+      const r = await fetch(`/api/hood?t=${encodeURIComponent(token)}`, { cache: "no-store" });
+      if (r.ok) draw(await r.json());
+    } catch (e) { /* the next tick tries again */ }
+  }
+  tick();
+  setInterval(tick, 2000);
+</script>
+</body>
+</html>

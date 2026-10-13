@@ -20,7 +20,7 @@
 - [ ] The family page open on a second phone; one photo ready (a beach, a garden, a grandchild's drawing).
 - [ ] A printed letter that asks for "a fee to release your prize".
 - [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the screen if possible.
-- [ ] The latency overlay ready: Parakeet 0.02–0.08 s, Nemotron 0.6–0.8 s, voice 0.1–0.3 s.
+- [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) open on a laptop or the second screen: it fills with the real timings of every turn filmed.
 - [ ] After filming: `cloud/vision-endpoint.sh stop`.
 
 ## Shots
@@ -35,7 +35,7 @@
 | 6 | 1:25–1:45 | The daughter, on her phone, sends a photo from the family page; it appears on the screen | Andy: "Anna sent a photo, it's on your screen: two children building a sandcastle." |
 | 7 | 1:45–2:00 | The person switches to Spanish | "Andy, ¿qué tenemos hoy?" Andy answers in Spanish |
 | 8 | 2:00–2:15 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone. "How many of my pills should I take?" Andy points to the pharmacist |
-| 9 | 2:15–2:35 | Founder with the screen recording of the architecture and the suite | "Andy hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with Nemotron Nano VL on a Nebius Serverless Endpoint. Our conversation suite runs as a Nebius Serverless Job: 44 out of 44, three runs in a row, in English and Spanish." |
+| 9 | 2:15–2:35 | Founder with the under-the-hood page from this shoot (the real timings of the turns just filmed), then the architecture and the suite | "Andy hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with Nemotron Nano VL on a Nebius Serverless Endpoint. Our conversation suite runs as a Nebius Serverless Job: 44 out of 44, three runs in a row, in English and Spanish." |
 | 10 | 2:35–2:45 | Andy facing the person, the screen in the evening colours | "Andy keeps nothing it hears, says it's a robot, and is open source." Title card with the repository address |
 
 ## Words

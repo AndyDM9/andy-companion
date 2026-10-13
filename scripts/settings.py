@@ -4,7 +4,7 @@
     python scripts/settings.py place "Springfield, Illinois"
     python scripts/settings.py news add sj-r.com          (a local paper's site)
     python scripts/settings.py events add https://library.example.org/events
-    python scripts/settings.py links                     (the screen and family page addresses)
+    python scripts/settings.py links                     (the screen, family and under-the-hood addresses)
     python scripts/settings.py new-family-link           (the old family link stops working)
 
 Kept in Andy's own owner-only settings file on this computer, never in the repository.
@@ -41,6 +41,7 @@ def main(argv: list[str]) -> int:
             host = "localhost"
         print(f"Screen (TV beside Andy): http://{host}:{port}/screen?t={t['screen']}")
         print(f"Family page:             http://{host}:{port}/family?k={t['family']}")
+        print(f"Under the hood:          http://{host}:{port}/hood?t={t['screen']}")
         return 0
     if argv[0] == "place" and len(argv) == 2:
         settings.update(place=argv[1].strip()[:120])

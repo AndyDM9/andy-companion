@@ -45,7 +45,7 @@
 
   <rect x="68" y="392" width="250" height="100" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
   <text x="84" y="420" font-size="16" font-weight="700" fill="#1d2a1f">Screen server</text>
-  <text x="84" y="444" font-size="15" fill="#1d2a1f">the day clock and captions</text>
+  <text x="84" y="444" font-size="15" fill="#1d2a1f">day clock, captions, timings</text>
   <text x="84" y="466" font-size="15" fill="#1d2a1f">the family page (tokens)</text>
   <line x1="340" y1="440" x2="320" y2="440" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>
 

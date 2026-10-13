@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (under the hood: every turn's timings, live)
+
+- `src/andy_companion/turns.py`: times each spoken turn from the activity marks Pollen's app
+  already makes (`_mark_activity`): the end of the person's words, Parakeet's words arriving, and
+  Andy's first sound. Each tool run is timed by name (`ToolCallRoutine`). A finished turn is sent
+  to the screen server as numbers and tool names only; never words, never tool arguments.
+- The screen server keeps the last 40 turns in memory, rebuilt from numbers and well-formed tool
+  names so nothing else can ride along, and serves `/hood?t=<screen token>`: the median from the
+  end of your words to Andy's first sound, split into hearing and reply, and the last six turns as
+  bars, each tool with its time and where it ran (Tavily, Nemotron Nano VL on Nebius, this
+  computer). Turns with tools are kept out of the median, so a slow web search does not hide a
+  fast conversation. `scripts/settings.py links` prints its address.
+- For the judging criterion "sub-second replies measured on screen" and video shot 9: the page
+  fills with the real timings of the turns being filmed. Screenshot with sample numbers:
+  `docs/images/hood.png`. Checked against Pollen's real handler and tool classes. 10 tests;
+  231 pass.
+
 ### Fixed (privacy: what the voice server heard reached its console)
 
 - speech-to-speech's Parakeet handler prints every transcript ("USER: ...") to the console through

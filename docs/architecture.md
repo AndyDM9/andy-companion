@@ -47,6 +47,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
 | `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments | Store any frame, image or identity; send a picture anywhere |
 | `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, what the person shared, messages and looks from family | Show or share anything the person did not ask to share; log a URL or token |
+| `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers and tool names |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
 | `web.py` | Tavily calls; cleaning web text into information; scrubbing messages before a scam check | Log a query or result; send numbers, links or emails from a message |
 | `dayplan.py`, `settings.py`, `volume.py`, `voice_controls.py` | Today's plan in fixed words; the person's pace and volume; exact spoken controls | Keep any transcript; let the model reword the plan |
@@ -60,5 +61,6 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 - Nothing the person says is stored, except what they ask Andy to remember (`memory.json`) and
   the reminders they set (`reminders.json`), and their pace and volume (`settings.json`), all owner-only in `~/.local/share/andy-companion/`.
 - Captions of Andy's own words live only in the screen server's memory, for 20 seconds.
+- Turn timings (numbers and tool names only) live only in the screen server's memory, last 40.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
-  and `voice/serve.py` silences the voice server's one transcript print.
+  and `voice/serve.py` silences the transcript prints of every console in the voice server.

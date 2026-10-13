@@ -55,6 +55,12 @@ keep anyone safe, or keep recordings or transcripts.
 | Nemotron 3.5 Lightning reply or tool call | 0.62–0.83 s |
 | Text-to-speech, first audio | 0.10–0.33 s |
 
+**Live, on the robot:** the screen server's `/hood` page shows every turn as it happens: from the
+end of your words to Andy's first sound, split into hearing and reply, with each tool Andy used,
+how long it took and where it ran. Numbers and tool names only, in memory; never the words.
+
+![Under the hood (sample turns)](docs/images/hood.png)
+
 **The conversation suite** ([evals/](evals/)): 44 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. **Latest: 44 of 44 in three runs.**
 - **Baseline:** 27/36.
 - **After the fixes:** 35, 36 and 36 over three runs. The fixes were six profile weaknesses, plus three flawed cases fixed openly in the suite.
@@ -82,8 +88,8 @@ Scorecards are in [evals/results/](evals/results/).
 2. **Voice server.** `cd voice && uv sync && ./run.sh`
 3. **Robot side.** `cd robot && uv sync`, then from the repository root run `./scripts/andy`.
 4. **Your home.** `python scripts/settings.py place "Your town, State"`, then optionally
-   `news add yourlocalpaper.com`. `python scripts/settings.py links` prints the screen and family
-   page addresses.
+   `news add yourlocalpaper.com`. `python scripts/settings.py links` prints the screen, family and
+   under-the-hood page addresses.
 5. **Optional: eyes.** With the [Nebius CLI](https://docs.nebius.com/cli), run
    `cloud/vision-endpoint.sh create`, then `status` until it is RUNNING. Run `stop` when you're
    done; a stopped endpoint costs nothing for compute.

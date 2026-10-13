@@ -2,6 +2,7 @@
 
     /screen?t=<screen token>    the day clock, what's next, and what Andy is showing now
     /family?k=<family token>    what the person chose to share; send Andy a message or a link
+    /hood?t=<screen token>      under the hood: how long each part of Andy's recent turns took
 
 Links carry random tokens (board.tokens()); `scripts/settings.py links` prints them. Standard
 library only. Opening the family page tells the person who looked.
@@ -14,10 +15,11 @@ import json
 import logging
 import os
 import threading
+from collections import deque
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 from urllib.parse import parse_qs, urlparse
 
 from andy_companion import board, clock, reminders
@@ -38,6 +40,54 @@ def set_caption(text: str, now: Optional[float] = None) -> None:
 def caption(now: Optional[float] = None) -> str:
     import time as _t
     return _caption["text"] if (now if now is not None else _t.time()) - _caption["at"] <= CAPTION_FOR_S else ""
+
+
+# Andy's recent turns as numbers and tool names only (turns.py), for /hood. Memory only.
+_turns: "deque[Dict[str, Any]]" = deque(maxlen=40)
+
+
+def _ms(value: Any) -> Optional[int]:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return int(value) if 0 <= value < 600_000 else None
+
+
+def add_turn(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Keep one turn, rebuilt from numbers and well-formed tool names so no words can ride along."""
+    import time as _t
+    from andy_companion.turns import TOOL_NAME
+
+    reply = _ms(data.get("reply_ms"))
+    if reply is None:
+        raise ValueError("bad turn")
+    tools = [{"name": t["name"], "ms": _ms(t.get("ms"))} for t in list(data.get("tools") or [])[:6]
+             if isinstance(t, dict) and TOOL_NAME.match(str(t.get("name", ""))) and _ms(t.get("ms")) is not None]
+    turn = {"at": int(_t.time()), "hearing_ms": _ms(data.get("hearing_ms")), "reply_ms": reply,
+            "total_ms": _ms(data.get("total_ms")) if _ms(data.get("total_ms")) is not None else reply, "tools": tools}
+    _turns.append(turn)
+    return turn
+
+
+def _median(values: List[int]) -> Optional[int]:
+    values = sorted(v for v in values if v is not None)
+    if not values:
+        return None
+    mid = len(values) // 2
+    return values[mid] if len(values) % 2 else round((values[mid - 1] + values[mid]) / 2)
+
+
+def hood_state() -> Dict[str, Any]:
+    turns = list(_turns)
+    plain = [t for t in turns if not t["tools"]]
+    return {
+        "turns": list(reversed(turns[-8:])),
+        "count": len(turns),
+        "median": {"hearing_ms": _median([t["hearing_ms"] for t in turns]),
+                   "reply_ms": _median([t["reply_ms"] for t in plain]),
+                   "total_ms": _median([t["total_ms"] for t in plain])},
+    }
+
+
 MAX_BODY = 4096
 HEADERS = {
     "Content-Security-Policy": ("default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' "
@@ -107,6 +157,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("screen.html")
         if url.path == "/api/screen" and _ok(q.get("t"), "screen"):
             return self._json(screen_state())
+        if url.path == "/hood" and _ok(q.get("t"), "screen"):
+            return self._page("hood.html")
+        if url.path == "/api/hood" and _ok(q.get("t"), "screen"):
+            return self._json(hood_state())
         if url.path == "/family" and _ok(q.get("k"), "family"):
             return self._page("family.html")
         if url.path == "/api/family" and _ok(q.get("k"), "family"):
@@ -120,14 +174,21 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:  # noqa: N802
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
-        if url.path == "/api/caption" and _ok(q.get("t"), "screen") and self.client_address[0] in ("127.0.0.1", "::1"):
+        local = self.client_address[0] in ("127.0.0.1", "::1")
+        if url.path in ("/api/caption", "/api/turn") and _ok(q.get("t"), "screen") and local:
             length = int(self.headers.get("Content-Length") or 0)
             if length > MAX_BODY:
                 return self._json({"error": "too long"}, 413)
             try:
-                set_caption(json.loads(self.rfile.read(length) or b"{}").get("text", ""))
-            except ValueError:
-                return self._json({"error": "bad caption"}, 400)
+                data = json.loads(self.rfile.read(length) or b"{}")
+                if not isinstance(data, dict):
+                    raise ValueError("not an object")
+                if url.path == "/api/caption":
+                    set_caption(data.get("text", ""))
+                else:
+                    add_turn(data)
+            except (ValueError, TypeError, AttributeError):
+                return self._json({"error": "bad request"}, 400)
             return self._json({"ok": True})
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
