@@ -86,6 +86,11 @@ def is_urgent(text: str) -> bool:
     return is_crisis(text) or _matches(URGENT, text)
 
 
+def crisis_frame_for(text: str) -> str:
+    """The crisis sentence in the person's language, for words found by the second look (guard.py)."""
+    return FRAME_CRISIS_ES if len(SPANISH.findall(str(text).lower())) >= 2 else FRAME_CRISIS
+
+
 def frame_for(text: str) -> str:
     spanish = len(SPANISH.findall(str(text).lower())) >= 2
     if is_crisis(text):

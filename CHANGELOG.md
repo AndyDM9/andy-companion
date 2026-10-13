@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (a second look: NVIDIA Nemotron 3.5 Content Safety on a Nebius endpoint)
+
+- `src/andy_companion/guard.py`: while Andy is already answering, the person's words also go to
+  NVIDIA Nemotron 3.5 Content Safety (4B, 12 languages including Spanish) on our own Nebius
+  Serverless Endpoint. If it finds suicide or self-harm in words the net does not know ("I've
+  been putting my pills aside for when I've had enough") and Andy's reply did not give 988, Andy
+  says the net's calm 988 sentence, in the person's language. Other categories are not acted on.
+  It runs beside the reply, never before it (no added delay), gives up after 4 s, sends only that
+  turn's words over HTTPS with the endpoint's token, keeps the answer in memory for the turn, and
+  without an endpoint Andy runs with the net alone. Its time shows on the hood page as "content
+  safety". 13 tests.
+- `cloud/guard-endpoint.sh` (create, start, stop, status, delete): vLLM 0.20.2, the newest the model
+  card supports, on one L40S, the token required by Nebius and by vLLM; vLLM logs no request text
+  unless asked (checked in its source). `scripts/run-robot.sh` passes `ANDY_GUARD_URL` and
+  `ANDY_GUARD_TOKEN` from the private env file. `urgent.crisis_frame_for` gives the crisis
+  sentence in the person's language.
+
 ### Added (when someone is in crisis: 988, every time, in English or Spanish)
 
 - **The gap:** the suite had no case for someone saying they don't want to live, and the net knew

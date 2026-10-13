@@ -18,7 +18,9 @@ if [ -f "$ENV_FILE" ]; then
   TAVILY_API_KEY="$(sed -n 's/^TAVILY_API_KEY=//p' "$ENV_FILE" | tail -1)"
   ANDY_VISION_URL="$(sed -n 's/^ANDY_VISION_URL=//p' "$ENV_FILE" | tail -1)"
   ANDY_VISION_TOKEN="$(sed -n 's/^ANDY_VISION_TOKEN=//p' "$ENV_FILE" | tail -1)"
-  export TAVILY_API_KEY ANDY_VISION_URL ANDY_VISION_TOKEN
+  ANDY_GUARD_URL="$(sed -n 's/^ANDY_GUARD_URL=//p' "$ENV_FILE" | tail -1)"
+  ANDY_GUARD_TOKEN="$(sed -n 's/^ANDY_GUARD_TOKEN=//p' "$ENV_FILE" | tail -1)"
+  export TAVILY_API_KEY ANDY_VISION_URL ANDY_VISION_TOKEN ANDY_GUARD_URL ANDY_GUARD_TOKEN
 fi
 export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
 exec "$APP_PY" "$ROOT/scripts/run_andy.py" "$@"
