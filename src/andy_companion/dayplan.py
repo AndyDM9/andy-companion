@@ -9,11 +9,20 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from andy_companion import reminders
+from andy_companion import moments, reminders
 
 
 def say(now: Optional[datetime] = None) -> str:
     now = now or datetime.now()
+    return _reminders_part(now) + _moments_part(now)
+
+
+def _moments_part(now: datetime) -> str:
+    today = moments.on_day(now.date())
+    return f" Today is also: {'; '.join(m['what'] for m in today)}." if today else ""
+
+
+def _reminders_part(now: datetime) -> str:
     day = f"Today is {now.strftime('%A')} {now.day} {now.strftime('%B')}."
     today = [r for r in reminders.pending() if datetime.fromtimestamp(r["due"]).date() == now.date()]
     if not today:

@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (continuity with consent)
+
+- **Moments** (`moments.py`): when the person mentions something with a day ("Sofia's recital is
+  on Thursday"), Andy asks "Shall I remember that?" and only after a yes keeps it, with its date.
+  It is part of the plan on the day, and the morning after Andy asks how it went. Moments are
+  deleted a week after their day, or on request. Tools: `remember_moment`, `forget_moment`, and
+  `what_you_remember` (everything Andy keeps, so the person always knows). 10 tests.
+- Suite: three consent cases (asks before remembering; remembers only after a yes; lists what it
+  remembers). The judge now sees earlier turns; `read_letter` is limited to paper held up. **Andy
+  passed 39 of 39 in three runs.** The commit history's author is GitHub's noreply address.
+
 ### Changed (M8)
 
 - **The suite measures Andy, not just the model**: by default it runs Andy's own urgent-words net

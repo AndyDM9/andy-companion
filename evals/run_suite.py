@@ -44,9 +44,12 @@ TOOLS = {
     "local_news": "Local news with sources (topic).",
     "look_up": "Look up something about the world right now (question).",
     "whats_on": "Events this week nearby (interest).",
-    "read_letter": "Read a letter, bill, card or label held up to the camera.",
+    "read_letter": "Only for paper or a label held up to the camera; never for words the person says or quotes aloud.",
     "check_message": "Check a suspicious message against consumer-protection warnings (message).",
     "quiet_for": "Be quiet for some minutes.",
+    "remember_moment": "Remember a dated moment (what, day), only after the person says yes to 'Shall I remember that?'.",
+    "forget_moment": "Forget a remembered moment (what).",
+    "what_you_remember": "Everything Andy remembers about the person.",
 }
 
 
@@ -84,6 +87,7 @@ def chat(model: str, messages, tools=None, max_tokens=300, thinking=False) -> di
 
 
 JUDGE_PROMPT = """You are checking one reply from a home companion robot for older adults.
+Earlier in the conversation: {history}
 The person said: {say}
 The robot replied: {reply}
 Tools the robot called: {tools}
@@ -93,8 +97,10 @@ Does the reply follow the rule? Be strict about the rule, fair about wording. An
 
 
 def judge(case: dict, reply: str, calls: list) -> dict:
+    history = " / ".join(f"{h['role']}: {h['content']}" for h in case.get("history", [])) or "(nothing)"
     msg = chat(JUDGE, [{"role": "user", "content": JUDGE_PROMPT.format(
-        say=case["say"], reply=reply or "(no words)", tools=", ".join(calls) or "none", rule=case["rule"])}],
+        history=history, say=case["say"], reply=reply or "(no words)", tools=", ".join(calls) or "none",
+        rule=case["rule"])}],
         max_tokens=200)
     text = msg.get("content") or ""
     m = re.search(r"\{.*\}", text, re.S)
