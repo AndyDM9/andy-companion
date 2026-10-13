@@ -20,6 +20,19 @@
   h1 { font-size: clamp(32px, 4vw, 64px); margin: 0; line-height: 1.05; }
   .lede { color: var(--soft); font-size: clamp(17px, 1.6vw, 26px); margin: 1vh 0 0; max-width: 62ch; }
 
+  /* The live pipeline: the stage Andy is in right now, lit; as Home Assistant's voice pipeline shows its stages. */
+  .pipeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1vw; margin: 3vh 0 0; }
+  .stage { border: 2px solid var(--rule); border-radius: 8px; padding: 1.4vh 1.2vw; background: var(--panel);
+           transition: border-color .15s, background-color .15s; }
+  .stage b { display: block; font-size: clamp(18px, 1.7vw, 30px); }
+  .stage span { display: block; color: var(--soft); font-size: clamp(13px, 1.05vw, 18px); margin-top: .3em; }
+  .stage em { display: block; font-style: normal; color: var(--gold); font-size: clamp(13px, 1.05vw, 18px); min-height: 1.3em; margin-top: .3em; }
+  .stage.on { border-color: var(--gold); background: #3a4670; }
+  .stage.on b { color: var(--gold); }
+  .now { margin: 1.2vh 0 0; color: var(--soft); font-size: clamp(15px, 1.2vw, 21px); }
+  .now b { color: var(--ink); }
+  @media (max-width: 640px) { .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
   .headline { display: grid; grid-template-columns: auto 1fr; gap: 1vh 4vw; align-items: end;
               padding: 3vh 0; border-bottom: 2px solid var(--rule); }
   .big { font-size: clamp(72px, 11vw, 190px); font-weight: 700; line-height: .9; color: var(--gold);
@@ -53,6 +66,14 @@
     <h1>Under the hood</h1>
     <p class="lede">How long Andy's last turns took, measured live on this robot. Only the numbers are kept, in memory, never the words.</p>
   </header>
+
+  <section class="pipeline" aria-label="What Andy is doing now">
+    <div class="stage" id="st-hear"><b>Hear</b><span>NVIDIA Parakeet, on this computer</span><em></em></div>
+    <div class="stage" id="st-think"><b>Think</b><span>NVIDIA Nemotron 3.5 Lightning, Nebius Token Factory</span><em></em></div>
+    <div class="stage" id="st-tools"><b>Tools</b><span>Tavily, the weather, the eyes, reminders</span><em id="st-tool"></em></div>
+    <div class="stage" id="st-speak"><b>Speak</b><span>Qwen3-TTS, on this computer</span><em></em></div>
+  </section>
+  <p class="now" aria-live="polite">Now: <b id="now-label">…</b></p>
 
   <section class="headline" aria-live="polite">
     <p class="big" id="big">–</p>
@@ -158,6 +179,19 @@
   }
   tick();
   setInterval(tick, 2000);
+
+  async function liveTick() {
+    try {
+      const r = await fetch(`/api/state?t=${encodeURIComponent(token)}`, { cache: "no-store" });
+      if (!r.ok) return;
+      const s = await r.json();
+      for (const k of ["hear", "think", "tools", "speak"]) document.getElementById("st-" + k).classList.toggle("on", s.stage === k);
+      document.getElementById("st-tool").textContent = s.state === "working" ? s.label : "";
+      document.getElementById("now-label").textContent = s.label;
+    } catch (e) { /* the next tick tries again */ }
+  }
+  liveTick();
+  setInterval(liveTick, 400);
 </script>
 </body>
 </html>

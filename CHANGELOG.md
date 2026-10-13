@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the screen says what Andy is doing; the hood page shows the live pipeline)
+
+- **From design research** (Echo Show, Nest Hub, ElliQ, MagicMirror², Home Assistant's voice pipeline,
+  LiveKit's agent states, WAI and Alexa guidance for screens at a distance): the biggest gap on Andy's
+  screen was that nothing showed whether Andy is listening, thinking or speaking.
+- `src/andy_companion/live.py`: Andy's state worked out about six times a second from the turn marks and
+  whether his voice is playing: ready, hearing, thinking, working (with the tool's name), speaking. Sent
+  to the screen server on change and every 5 s as a heartbeat; only the state and a tool name.
+- The screen server adds quiet and asleep from the supervisor's state file, and "away" when the app has
+  gone silent, and serves `/api/state` with words for the state in English or Spanish
+  (`words.STATE`, `words.TOOL_DOING`: "Looking that up", "Checking the weather", "Reading the letter").
+- **The TV** has a state strip at the top right: "Listening for you", "Hearing you", "Thinking",
+  "Checking the weather", "Speaking", "Quiet until 8:30 pm · say 'Andy, wake up'", "Asleep". One calm
+  colour each; a slow pulse only while thinking or working, none when motion is turned off.
+- **The hood page** has the live pipeline: Hear (Parakeet) → Think (Nemotron 3.5 Lightning) → Tools
+  (the tool named) → Speak (Qwen3-TTS), the current stage lit, refreshed every 0.4 s.
+- 6 tests. Screenshots: `docs/images/screen-state.png`, `docs/images/hood.png`.
+
 ### Fixed (the screen's caption and the eyes when switched off)
 
 - On the founder's TV the caption covered what Andy was showing. It now takes its own row at the

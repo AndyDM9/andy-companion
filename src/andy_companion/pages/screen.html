@@ -27,7 +27,25 @@
     display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100vh;
     padding: 4vh 5vw;
   }
-  .clock { padding-bottom: 3vh; border-bottom: 3px solid var(--rule); }
+  .clock { padding-bottom: 3vh; border-bottom: 3px solid var(--rule);
+           display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3vw; align-items: start; }
+  .clock .day, .clock .when { grid-column: 1; }
+
+  /* What Andy is doing, in words: the one thing an older adult can't see otherwise. One calm colour
+     per state; a slow pulse only while Andy thinks or works, and none for people who turn motion off. */
+  .state { grid-column: 2; grid-row: 1 / span 2; justify-self: end; display: flex; align-items: center; gap: .6em;
+           margin: .4vh 0 0; padding: .45em .9em; border-radius: 999px; border: 2px solid var(--rule);
+           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); background: var(--panel); max-width: 34vw; }
+  .state .dot { flex: none; width: .7em; height: .7em; border-radius: 50%; background: var(--soft); }
+  .state[data-state="hearing"] { border-color: var(--mark); }
+  .state[data-state="hearing"] .dot, .state[data-state="speaking"] .dot { background: var(--mark); }
+  .state[data-state="thinking"] .dot, .state[data-state="working"] .dot { background: var(--mark); }
+  .state[data-state="quiet"], .state[data-state="asleep"], .state[data-state="away"] { color: var(--soft); }
+  .state[data-state="quiet"] .dot, .state[data-state="asleep"] .dot { background: transparent; border: 2px solid var(--soft); }
+  @media (prefers-reduced-motion: no-preference) {
+    .state[data-state="thinking"] .dot, .state[data-state="working"] .dot { animation: breathe 1.6s ease-in-out infinite; }
+  }
+  @keyframes breathe { 50% { opacity: .25; } }
   body.has-showing .day { font-size: clamp(56px, 9.5vw, 170px); }
   body.has-showing .when { font-size: clamp(26px, 3.2vw, 56px); }
   .day { font-size: clamp(64px, 15vw, 260px); font-weight: 700; line-height: .92; letter-spacing: -0.02em; margin: 0; }
@@ -75,6 +93,7 @@
   <header class="clock" aria-live="polite">
     <p class="day" id="day">&nbsp;</p>
     <p class="when" id="when">&nbsp;</p>
+    <p class="state" id="state" data-state="away" role="status" aria-live="polite"><span class="dot"></span><span id="state-label"></span></p>
   </header>
   <main class="below">
     <section aria-labelledby="plan-h">
@@ -156,6 +175,22 @@
     } catch (e) { document.body.classList.add("offline-on"); }
   }
   tick(); setInterval(tick, 1000);
+
+  // The state strip changes in a moment, so it is asked for more often than the rest of the screen.
+  let lastState = "";
+  async function stateTick() {
+    try {
+      const r = await fetch("/api/state?t=" + encodeURIComponent(token), { cache: "no-store" });
+      if (!r.ok) return;
+      const s = await r.json();
+      const key = s.state + "|" + s.label;
+      if (key === lastState) return;
+      lastState = key;
+      $("state").dataset.state = s.state;
+      text($("state-label"), s.label);
+    } catch (e) { /* the screen's own reconnecting notice covers this */ }
+  }
+  stateTick(); setInterval(stateTick, 400);
 </script>
 </body>
 </html>

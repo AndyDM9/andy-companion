@@ -35,6 +35,8 @@ class TurnClock:
         self._reset()
 
     running: int = 0                     # tools running now, whatever the turn
+    current_tool: str = ""               # the newest of them, by name, for the screen's state strip
+    hearing: bool = False                # the person is speaking right now
 
     def thinking(self, longest_s: float = 20.0) -> bool:
         """Andy is working on an answer: words understood and no sound yet, or a tool running."""
@@ -56,11 +58,14 @@ class TurnClock:
         """Note one activity; returns the finished turn when Andy's reply ends."""
         now = self.clock()
         if reason == "user_speech_started":
+            self.hearing = True
             self._reset()
         elif reason == "user_speech_stopped":
+            self.hearing = False
             self._reset()
             self.stopped = now
         elif reason == "user_transcription_completed":
+            self.hearing = False
             self.heard = now
             self.first_sound = None
             self.tools = []
@@ -150,6 +155,7 @@ def install(handler_class=None, routine_class=None, clock: Optional[TurnClock] =
     async def timed(self, *args, **kwargs):
         started = time.perf_counter()
         clock.running += 1
+        clock.current_tool = str(getattr(self, "tool_name", ""))
         try:
             return await run(self, *args, **kwargs)
         finally:

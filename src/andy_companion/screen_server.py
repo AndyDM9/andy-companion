@@ -47,6 +47,44 @@ def caption(now: Optional[float] = None) -> str:
 _turns: "deque[Dict[str, Any]]" = deque(maxlen=40)
 
 
+# What Andy is doing right now (live.py), refreshed several times a second. Memory only.
+_live: Dict[str, Any] = {"state": "", "tool": "", "at": 0.0}
+LIVE_STALE_S = 12.0
+
+
+def set_live(data: Dict[str, Any], now: Optional[float] = None) -> None:
+    import time as _t
+    from andy_companion import live
+    from andy_companion.turns import TOOL_NAME
+
+    state = str(data.get("state", "")) if isinstance(data, dict) else ""
+    tool = str(data.get("tool", "")) if isinstance(data, dict) else ""
+    if state not in live.STATES or (tool and not TOOL_NAME.match(tool)):
+        raise ValueError("bad state")
+    _live.update(state=state, tool=tool, at=now if now is not None else _t.time())
+
+
+def live_state(now: Optional[float] = None) -> Dict[str, Any]:
+    """The state strip: quiet or asleep from the supervisor, else the app's live state, else 'away'."""
+    import time as _t
+    from andy_companion import settings, state, words
+
+    now = now if now is not None else _t.time()
+    language = settings.get().get("language", "en")
+    mode = state.current()
+    if mode["mode"] == "quiet":
+        until = datetime.fromtimestamp(mode["until"]).strftime("%-I:%M %p").lower() if mode.get("until") else ""
+        key, tool = "quiet", ""
+    elif mode["mode"] == "asleep":
+        key, tool, until = "asleep", "", ""
+    elif _live["state"] and now - float(_live["at"]) <= LIVE_STALE_S:
+        key, tool, until = _live["state"], _live["tool"], ""
+    else:
+        key, tool, until = "away", "", ""
+    stage = {"hearing": "hear", "thinking": "think", "working": "tools", "speaking": "speak"}.get(key, "")
+    return {"state": key, "tool": tool, "stage": stage, "label": words.state_label(key, tool, language, until)}
+
+
 # This month's Tavily credits, as numbers (turns.tavily_usage_loop). Memory only.
 _tavily: Dict[str, Any] = {}
 
@@ -237,6 +275,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("screen.html")
         if url.path == "/api/screen" and _ok(q.get("t"), "screen"):
             return self._json(screen_state())
+        if url.path == "/api/state" and _ok(q.get("t"), "screen"):
+            return self._json(live_state())
         if url.path == "/hood" and _ok(q.get("t"), "screen"):
             return self._page("hood.html")
         if url.path == "/api/hood" and _ok(q.get("t"), "screen"):
@@ -273,6 +313,8 @@ class Handler(BaseHTTPRequestHandler):
                     add_interrupt(data)
                 elif "tavily" in data:
                     set_tavily(data["tavily"])
+                elif "live" in data:
+                    set_live(data["live"])
                 else:
                     add_turn(data)
             except (ValueError, TypeError, AttributeError):

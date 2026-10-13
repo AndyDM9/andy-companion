@@ -53,3 +53,36 @@ def greeting(dt, language: str = "en") -> str:
         return f"¡{hello}! {INTRO['es']}"
     hello = {"morning": "Good morning", "afternoon": "Good afternoon", "evening": "Good evening", "night": "Hello"}[part]
     return f"{hello}! {INTRO['en']}"
+
+
+# What the screen's state strip says. Tools are named by what Andy is doing, never by their code name.
+STATE = {
+    "en": {"ready": "Listening for you", "hearing": "Hearing you", "thinking": "Thinking",
+           "speaking": "Speaking", "quiet": "Quiet until {until} · say “Andy, wake up”",
+           "asleep": "Asleep · say “Good morning, Andy”", "away": "Andy's voice is off", "working": "Working on it"},
+    "es": {"ready": "Escuchándole", "hearing": "Oyéndole", "thinking": "Pensando", "speaking": "Hablando",
+           "quiet": "En silencio hasta las {until} · diga “Andy, wake up”",
+           "asleep": "Dormido · diga “Good morning, Andy”", "away": "La voz de Andy está apagada",
+           "working": "Trabajando en ello"},
+}
+TOOL_DOING = {
+    "en": {"look_up": "Looking that up", "local_news": "Finding the local news", "whats_on": "Finding what's on",
+           "read_link": "Reading the link", "check_message": "Checking that message", "look_into": "Starting to look into it",
+           "weather": "Checking the weather", "describe_view": "Looking", "describe_photo": "Looking at the photo",
+           "read_letter": "Reading the letter", "set_reminder": "Setting a reminder", "cancel_reminder": "Cancelling a reminder",
+           "list_reminders": "Checking your reminders", "day_plan": "Getting today's plan", "get_today": "Checking the time",
+           "what_you_remember": "Checking what I remember", "share_with_family": "Sharing with family"},
+    "es": {"look_up": "Buscando", "local_news": "Buscando las noticias", "whats_on": "Buscando actividades",
+           "read_link": "Leyendo el enlace", "check_message": "Revisando ese mensaje", "look_into": "Empezando a investigarlo",
+           "weather": "Viendo el tiempo", "describe_view": "Mirando", "describe_photo": "Mirando la foto",
+           "read_letter": "Leyendo la carta", "set_reminder": "Poniendo un recordatorio", "cancel_reminder": "Quitando un recordatorio",
+           "list_reminders": "Viendo sus recordatorios", "day_plan": "Viendo el plan de hoy", "get_today": "Mirando la hora",
+           "what_you_remember": "Viendo lo que recuerdo", "share_with_family": "Compartiendo con la familia"},
+}
+
+
+def state_label(state: str, tool: str = "", language: str = "en", until: str = "") -> str:
+    lg = lang(language)
+    if state == "working":
+        return TOOL_DOING[lg].get(tool) or STATE[lg]["working"]
+    return STATE[lg].get(state, STATE[lg]["ready"]).format(until=until)
