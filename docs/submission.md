@@ -26,7 +26,7 @@ A screen beside it shows the day in large type and what Andy is talking about. F
 - **The web:** Tavily search, extract and crawl, with safe search.
 - **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body behaviours keep Andy looking at the person while it speaks.
 - **Safety under the model:** a deterministic urgent-words net makes sure "my chest hurts" (or "me duele el pecho") always gets "please call 911".
-- **Engineering:** 231 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
+- **Engineering:** 256 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
 
 ## Challenges
 
