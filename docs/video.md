@@ -27,7 +27,7 @@
 
 | # | Time | What we see | What is said |
 |---|---|---|---|
-| 1 | 0:00–0:12 | Morning light. Andy wakes, turns to the person, the screen glows "Tuesday" | Person: "Good morning, Andy." Andy greets them, gives the day's plan in the same words as every day, and asks "How was Sofia's recital yesterday?" |
+| 1 | 0:00–0:12 | Morning light. Andy wakes, turns to the person, the screen glows "Tuesday" | Person: "Good morning, Andy." Andy greets them ("Good morning! I'm Andy, your robot companion, here to help with your day."), gives the day's plan in the same words as every day, and asks "How was Sofia's recital yesterday?" |
 | 2 | 0:12–0:25 | Founder to camera, Andy behind | "This is Andy, a home companion robot for older adults who live at home, and the family who help. Everything you'll see is live." |
 | 3 | 0:25–0:45 | The person walks across the room while Andy talks; Andy's head and body follow | Person: "What's the local news?" Andy names two stories and their sources; they appear on the screen |
 | 4 | 0:45–1:05 | Andy's reminder chime; Andy says it unprompted | Andy: "It's time to call Rosa." Person: "Thank you, Andy." |

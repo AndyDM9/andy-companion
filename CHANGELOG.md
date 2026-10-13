@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (Andy's greeting: "your robot companion")
+
+- The founder asked for a greeting that carries the project's idea rather than "the home robot".
+  Andy now wakes with **"Good morning! I'm Andy, your robot companion, here to help with your
+  day."** ("¡Buenos días! Soy Andy, su compañero robot, para ayudarle con su día."): warm ("your
+  companion"), honest from the first sentence ("robot"), and saying what it is for without
+  promising to replace anyone.
+- Left to the model, the greeting mixed the two languages and once said "Buenos días" in the evening
+  (6 tries). So the words are made in code (`words.greeting`, `words.INTRO`) for the time of day and
+  the chosen language, put in Andy's instructions under GREETING, and said exactly: 6 of 6 word for
+  word, and quicker, with no clock call before speaking. A LANGUAGE line tells Andy the language
+  chosen on the setup page. 1 test.
+
 ### Changed (the suite runs on Nebius again; the dizziness rule made concrete)
 
 - **The job's files travel as one compressed bundle** (`cloud/safety-job.sh`, `cloud/job-entry.sh`):

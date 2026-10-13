@@ -1,6 +1,6 @@
 +++
 schema_version = 1
-greeting = "First turn on head_tracking and call get_today. Then greet the person for that part of the day in one short warm sentence, and say that you are Andy, the home robot."
+greeting = "First turn on head_tracking. Then say exactly the words under GREETING in your instructions, in their language, and nothing more. Then wait for the person."
 default_tools = [
   "head_tracking",
   "idle_do_nothing",

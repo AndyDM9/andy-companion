@@ -35,3 +35,21 @@ def weekday(dt, language: str = "en") -> str:
 
 def month(dt, language: str = "en") -> str:
     return MONTHS[lang(language)][dt.month - 1]
+
+
+# How Andy introduces itself on waking: warm ("your companion") and honest ("robot") in one line.
+INTRO = {"en": "I'm Andy, your robot companion, here to help with your day.",
+         "es": "Soy Andy, su compañero robot, para ayudarle con su día."}
+
+
+def greeting(dt, language: str = "en") -> str:
+    """The exact words Andy wakes with, for the time of day and the chosen language."""
+    from andy_companion.clock import part_of_day
+
+    part = part_of_day(dt)
+    if lang(language) == "es":
+        hello = {"morning": "Buenos días", "afternoon": "Buenas tardes",
+                 "evening": "Buenas tardes" if dt.hour < 20 else "Buenas noches", "night": "Buenas noches"}[part]
+        return f"¡{hello}! {INTRO['es']}"
+    hello = {"morning": "Good morning", "afternoon": "Good afternoon", "evening": "Good evening", "night": "Hello"}[part]
+    return f"{hello}! {INTRO['en']}"

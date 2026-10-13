@@ -131,3 +131,19 @@ def test_the_screen_words_follow_the_language():
     from andy_companion import clock
     shown = clock.today(datetime(2026, 10, 13, 15, 0), "es")["shown"]
     assert shown["weekday"] == "martes" and shown["today"] == "Hoy" and shown["part_of_day"] == "tarde"
+
+
+def test_andy_wakes_with_fixed_words_for_the_time_and_language():
+    """Left to the model, the greeting mixed languages and said 'Buenos días' in the evening."""
+    from datetime import datetime as dt
+
+    from andy_companion import words
+
+    assert words.greeting(dt(2026, 10, 13, 9), "en") == "Good morning! I'm Andy, your robot companion, here to help with your day."
+    assert words.greeting(dt(2026, 10, 13, 18), "en").startswith("Good evening!")
+    assert words.greeting(dt(2026, 10, 13, 15), "es") == "¡Buenas tardes! Soy Andy, su compañero robot, para ayudarle con su día."
+    assert words.greeting(dt(2026, 10, 13, 21), "es").startswith("¡Buenas noches!")
+    assert "robot" in words.INTRO["en"] and "robot" in words.INTRO["es"]       # honest from the first sentence
+    assert "When you wake, say exactly: Good morning! I'm Andy" in settings.instructions(NOW)
+    settings.update(language="es")
+    assert "say exactly: ¡Buenos días! Soy Andy" in settings.instructions(NOW)

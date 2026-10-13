@@ -63,6 +63,14 @@ def instructions(now: Optional[datetime] = None) -> str:
     from andy_companion import moments, recall
 
     lines.append(recall.block((m["what"], moments.spoken_day(m["on"])) for m in moments.upcoming(days=60)))
+    from andy_companion import words
+
+    language = get()["language"]
+    lines.append(f"## GREETING\nWhen you wake, say exactly: {words.greeting(now or datetime.now(), language)}")
+    if language == "es":
+        lines.append("## LANGUAGE\nThe person chose Spanish: answer in Spanish, unless they speak to you in English.")
+    else:
+        lines.append("## LANGUAGE\nThe person chose English: answer in the language they speak to you.")
     if get()["pace"] == "slow":
         lines.append("## PACE\nThe person asked you to speak slowly: use short sentences, simple words, "
                      "and one idea at a time. Keep to this until they ask otherwise.")
