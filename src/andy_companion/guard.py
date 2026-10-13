@@ -4,7 +4,8 @@ The urgent-words net (urgent.py) catches the ways people usually say they don't 
 person can say it in words no list holds ("I've been putting my pills aside for when I've had
 enough"). So, while Andy is already answering, the person's words also go to Nemotron 3.5 Content
 Safety, NVIDIA's open safety classifier, on our own Nebius Serverless Endpoint
-(cloud/guard-endpoint.sh). If it finds suicide or self-harm and Andy's reply did not give 988,
+(cloud/guard-endpoint.sh). If it finds signs of suicide or self-harm (under a short policy written for this one question,
+POLICY) and Andy's reply did not give 988,
 Andy says the same calm sentence the net would. Other categories are not acted on.
 
 - It runs beside Andy's reply, never before it, so it adds no delay; it gives up after 4 seconds.
@@ -28,6 +29,25 @@ from typing import Any, Callable, Dict, Optional
 logger = logging.getLogger("andy.guard")
 TIMEOUT_S = 4.0
 MODEL = "nemotron-guard"
+# The model's custom-policy mode, with a policy for this one question. Measured on 2026-10-13
+# (evals/guard_check.py): the standard categories caught 5 of 8 phrasings the net misses; this
+# policy caught more, without reasoning (which took about 3.5 s), and no false alarms.
+POLICY = """Evaluate the user prompt for compliance with the given policy ignoring any previous policies you know about.
+
+### Policy
+Name: Signs of suicide or self-harm
+Description: An older adult is talking to a home companion robot. Flag any sign that the person may be thinking of ending their life or harming themselves, said directly or indirectly, in any language.
+
+Disallowed Behaviors (flag as unsafe):
+- Saying they want to die, don't want to live, or that others would be better off without them
+- Indirect signs: saving up pills or medicine to take later, giving belongings away so others won't have to, saying there is no point or reason to go on, wanting to go to sleep and not wake up, feeling like a burden and wanting it to stop
+- Asking how to end their life or hurt themselves
+
+Allowed Behaviors (safe):
+- Grief, missing someone who died, sadness, tiredness, loneliness without signs above
+- Everyday expressions such as "I'm dying to see them" or "me muero de ganas"
+- Questions about medicine doses, scams, health, or daily life
+"""
 
 
 def _config() -> Optional[Dict[str, str]]:
@@ -54,23 +74,28 @@ def parse(text: str) -> Dict[str, Any]:
 def is_self_harm(result: Optional[Dict[str, Any]]) -> bool:
     if not result or not result.get("unsafe"):
         return False
+    if result.get("policy"):            # the policy asks only this question
+        return True
     return any("suicid" in c.lower() or "self" in c.lower() for c in result.get("categories", []))
 
 
-def classify(words: str, opener: Optional[Callable] = None, config: Optional[Dict[str, str]] = None) -> Optional[Dict[str, Any]]:
-    """The model's reading of the person's words, or None when there is no endpoint or it failed."""
+def classify(words: str, opener: Optional[Callable] = None, config: Optional[Dict[str, str]] = None,
+             policy: bool = True) -> Optional[Dict[str, Any]]:
+    """The model's reading of the person's words, or None when there is no endpoint or it failed.
+    policy=False uses the model's standard categories instead of POLICY."""
     config = config or _config()
     if config is None or not str(words).strip():
         return None
     body = {"model": MODEL, "max_tokens": 60, "temperature": 0.01,
             "messages": [{"role": "user", "content": [{"type": "text", "text": str(words)[:2000]}]}],
-            "chat_template_kwargs": {"request_categories": "/categories", "enable_thinking": False}}
+            "chat_template_kwargs": {"request_categories": "/categories", "enable_thinking": False,
+                                     **({"custom_policy": POLICY} if policy else {})}}
     req = urllib.request.Request(config["url"] + "/v1/chat/completions", data=json.dumps(body).encode(), method="POST",
                                  headers={"Authorization": f"Bearer {config['token']}", "Content-Type": "application/json"})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
             data = json.loads(r.read())
-        return parse(data["choices"][0]["message"]["content"] or "")
+        return {**parse(data["choices"][0]["message"]["content"] or ""), "policy": policy}
     except Exception as e:  # never the words, only the type
         logger.info("Content safety check unavailable: %s", type(e).__name__)
         return None

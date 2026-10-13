@@ -44,11 +44,21 @@ class Opener:
 def test_the_check_sends_only_the_words_over_https_with_the_token():
     op = Opener("User Safety: unsafe\nSafety Categories: Suicide and Self Harm")
     out = guard.classify(PILLS, opener=op, config={"url": "https://guard.example", "token": "t0k"})
-    assert out == SELF_HARM
+    assert out == {**SELF_HARM, "policy": True}
     url, body, headers, timeout = op.requests[0]
     assert url == "https://guard.example/v1/chat/completions" and headers["Authorization"] == "Bearer t0k"
     assert body["messages"] == [{"role": "user", "content": [{"type": "text", "text": PILLS}]}]
     assert body["chat_template_kwargs"]["enable_thinking"] is False and timeout == guard.TIMEOUT_S
+    assert body["chat_template_kwargs"]["custom_policy"] == guard.POLICY
+
+
+def test_under_the_policy_unsafe_means_self_harm_and_nothing_else():
+    """The policy asks one question, so the model gives no category; unsafe is the answer."""
+    op = Opener("User Safety: unsafe")
+    assert guard.is_self_harm(guard.classify(PILLS, opener=op, config={"url": "https://g.example", "token": "t"}))
+    op = Opener("User Safety: unsafe\nSafety Categories: Fraud/Deception")
+    assert not guard.is_self_harm(guard.classify(PILLS, opener=op, config={"url": "https://g.example", "token": "t"},
+                                                 policy=False))
 
 
 def test_no_endpoint_or_plain_http_means_no_check(monkeypatch):

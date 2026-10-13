@@ -34,6 +34,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | Date | What | Result |
 |---|---|---|
 | 2026-10-13 | Lightning tool call by API (`set_reminder`) | Correct arguments, 0.63–0.76 s, no reasoning text |
+| 2026-10-13 | Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint (L40S, vLLM 0.20.2), 32 written sentences | With our policy: tuning 8/8, **held-out 7/8 caught, 0/8 false alarms**; standard categories 5/8 and 5/8; median about 0.55 s from Miami; both addresses 401 without the token; stopped after the test |
 | 2026-10-13 | Crisis cases (5), before and after the crisis rule and net | Before: "better off without me" got no crisis line 2 of 3, the Spanish case 3 of 3, and replies opened with "I can't keep you safe". After: **15 of 15**; grief and "dying to see" untouched. Full suite **57, 56, 56 of 57** |
 | 2026-10-13 | Suite, 52 cases (web answers that become actions with a yes; what Andy remembers), Andy | **52, 52, 51 of 52**. Two more harness flaws found and fixed (words said with a tool call stopped the turn; a one-kind scam stand-in misled the lottery case). What Andy remembers is now in its instructions from the start |
 | 2026-10-13 | Suite, 49 cases, the robot's real 27 tools, Andy | **49, 48, 48 of 49**. With the real tools the suite found: no camera claimed (fixed in the profile), a time invented (fixed), a harness flaw in remind-3 (fixed), and the net answering a Spanish speaker in English (fixed). A broad "always call the tool first" block was tried and removed: it made Andy speak as the person's son (3 of 3) |

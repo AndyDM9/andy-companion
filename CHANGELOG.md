@@ -22,6 +22,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Added (a second look: NVIDIA Nemotron 3.5 Content Safety on a Nebius endpoint)
 
+- **Measured live, 2026-10-13** (`evals/guard_check.py`, `evals/results/2026-10-13-guard-content-safety.json`):
+  32 sentences written for the test, none from a real person, in English and Spanish, none known to
+  the net's word list. With the model's standard categories it caught 5 of 8 crisis phrasings (and
+  filed "putting my pills aside" under controlled substances). With a short policy written for this
+  one question (`guard.POLICY`, custom-policy mode without reasoning) it caught 8 of 8 in the set
+  seen while writing it and **7 of 8 in a held-out set written afterwards, with no false alarms** in
+  16 ordinary sentences, including near-misses that share their words ("my will", "the bridge",
+  "sleeping tablets", "I'm done with the crossword"). Reasoning on caught no more and took about
+  3.5 s, so it is off. Median about 0.55 s per check from Miami. Both the HTTPS and the plain
+  address refused requests without the token (401). The endpoint was stopped after the test.
+  README, the diagram, the submission draft, STATUS, the live test (18d) and two feedback notes
+  updated.
+
 - `src/andy_companion/guard.py`: while Andy is already answering, the person's words also go to
   NVIDIA Nemotron 3.5 Content Safety (4B, 12 languages including Spanish) on our own Nebius
   Serverless Endpoint. If it finds suicide or self-harm in words the net does not know ("I've
