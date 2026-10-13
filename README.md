@@ -44,7 +44,7 @@ microphone ─▶ NVIDIA Parakeet (speech-to-text, local GPU)
    data retention in your Token Factory organisation settings.
 2. Voice server: `cd voice && uv sync && ./run.sh`
 3. Robot: the Reachy Mini daemon running, then
-   `ANDY_APP_PYTHON=/path/to/python-with-reachy-mini-conversation-app ./scripts/run-robot.sh --no-camera`
+   `ANDY_APP_PYTHON=/path/to/python-with-reachy-mini-conversation-app ./scripts/run-robot.sh` (the camera is used only for face tracking)
 
 ## Licence
 
