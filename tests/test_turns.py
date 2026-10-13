@@ -229,4 +229,7 @@ def test_usage_reads_the_account_and_tags_the_project(monkeypatch):
                                                   "search_usage": 79, "extract_usage": 5}}).encode())
 
     assert web.usage(opener)["used"] == 84
-    assert seen == {"method": "GET", "project": "andy-companion"}
+    assert seen == {"method": "GET", "project": None}           # the account's month, not one project's
+    web.look_up("library hours", opener=lambda req, timeout=None: (seen.update(tag=req.headers.get("X-project-id"))
+                                                                    or io.BytesIO(b'{"results": []}')))
+    assert seen["tag"] == "andy-companion"                      # every search is tagged

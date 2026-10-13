@@ -36,13 +36,15 @@ def _key() -> str:
     return key
 
 
-def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] = None) -> Dict[str, Any]:
+def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] = None,
+          project: bool = True) -> Dict[str, Any]:
     """POST body to Tavily, or GET when body is None."""
+    headers = {"Authorization": f"Bearer {_key()}", "Content-Type": "application/json"}
+    if project:   # Tavily counts this product's use apart from any other (X-Project-ID)
+        headers["X-Project-ID"] = os.environ.get("TAVILY_PROJECT", "andy-companion")
     req = urllib.request.Request(API + path, method="POST" if body is not None else "GET",
                                  data=json.dumps(body).encode() if body is not None else None,
-                                 headers={"Authorization": f"Bearer {_key()}", "Content-Type": "application/json",
-                                          # Tavily counts this product's use apart from any other (X-Project-ID).
-                                          "X-Project-ID": os.environ.get("TAVILY_PROJECT", "andy-companion")})
+                                 headers=headers)
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
             return json.loads(r.read())
@@ -270,8 +272,9 @@ def research_result(request_id: str, opener=None) -> Dict[str, Any]:
     return _answer(data.get("content"), data.get("sources"))
 
 def usage(opener=None) -> Dict[str, Any]:
-    """This month's Tavily credits for the account, as numbers only (GET /usage; no credits used)."""
-    account = (_post("/usage", None, opener) or {}).get("account") or {}
+    """This month's Tavily credits for the account, as numbers only (GET /usage; no credits used).
+    Asked without X-Project-ID: with it, Tavily reports only that project's use (2026-10-13)."""
+    account = (_post("/usage", None, opener, project=False) or {}).get("account") or {}
 
     def num(v):
         return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None

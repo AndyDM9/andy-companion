@@ -21,7 +21,8 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   Saturday, October 17; first Saturday of each month, 9 to noon"). 8 tests; suite look-1 to look-3.
 - **Scam checks at advanced depth:** on a prize-scam letter, basic found nothing and advanced found
   four exact AARP and FTC warnings.
-- **Every Tavily request carries `X-Project-ID: andy-companion`;** the app reads `GET /usage` every ten
+- **Every Tavily request carries `X-Project-ID: andy-companion`;** the app reads `GET /usage` (without the
+  tag, which would narrow it to that project's use: found live) every ten
   minutes and the hood page shows this month's credits ("84 of 1,000 … search 79, extract 5"),
   numbers only. 2 tests.
 - Local news keeps "your chosen papers first, then widen": `include_domains_mode: prefer` did not put
