@@ -13,7 +13,7 @@ Andy is a small robot that talks with you and keeps looking at you while it does
 - It reminds you at the times you choose, in your words.
 - It reads a letter you hold up and explains it.
 - It looks things up and names the source.
-- It answers in English or Spanish.
+- It answers in English or Spanish, and its screen and day plan switch with it.
 
 A screen beside it shows the day in large type and what Andy is talking about. Family see only what you ask Andy to share, can send a message or a photo, and Andy always tells you who looked. When you mention something coming up, Andy asks "Shall I remember that?", and the morning after it asks how it went.
 
@@ -26,7 +26,7 @@ A screen beside it shows the day in large type and what Andy is talking about. F
 - **The web:** Tavily search, extract and crawl, with safe search.
 - **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body behaviours keep Andy looking at the person while it speaks.
 - **Safety under the model:** a deterministic urgent-words net makes sure "my chest hurts" (or "me duele el pecho") always gets "please call 911".
-- **Engineering:** 210 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
+- **Engineering:** 220 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
 
 ## Challenges
 

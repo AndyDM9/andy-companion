@@ -18,7 +18,7 @@ from andy_companion.reminders import DATA_DIR
 FILE = DATA_DIR / "settings.json"
 PACES = ("normal", "slow")
 DEFAULTS: Dict[str, Any] = {"pace": "normal", "volume": None, "last_morning": None,
-                            "place": None, "news_sources": [], "events_pages": [], "captions": True}
+                            "place": None, "news_sources": [], "events_pages": [], "captions": True, "language": "en"}
 STEP = 15
 
 
@@ -33,6 +33,8 @@ def get() -> Dict[str, Any]:
 def update(**changes: Any) -> Dict[str, Any]:
     if "pace" in changes and changes["pace"] not in PACES:
         raise ValueError("Pace is normal or slow.")
+    if "language" in changes and changes["language"] not in ("en", "es"):
+        raise ValueError("Language is en or es.")
     if "volume" in changes and changes["volume"] is not None and not 0 <= int(changes["volume"]) <= 100:
         raise ValueError("Volume is from 0 to 100.")
     data = {**get(), **changes}

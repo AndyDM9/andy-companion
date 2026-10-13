@@ -41,7 +41,7 @@ def test_one_reminder_reads_naturally():
 
 def test_settings_default_and_stick():
     assert settings.get() == {"pace": "normal", "volume": None, "last_morning": None, "place": None,
-                            "news_sources": [], "events_pages": [], "captions": True}
+                            "news_sources": [], "events_pages": [], "captions": True, "language": "en"}
     settings.update(pace="slow", volume=70)
     assert settings.get()["pace"] == "slow" and settings.get()["volume"] == 70
 
@@ -109,3 +109,22 @@ def test_no_morning_plan_before_six_or_with_nobody_around():
 ])
 def test_exact_spoken_controls(text, command):
     assert voice_controls.parse(text) == command
+
+
+def test_the_plan_in_spanish_uses_fixed_spanish_words():
+    reminders.add("llamar a Rosa", at="17:00", now=NOW)
+    plan = dayplan.say(datetime(2026, 10, 13, 9, 0), language="es")
+    assert plan == "Hoy es martes 13 de octubre. Tiene 1 recordatorio hoy: a las 17:00, llamar a Rosa."
+
+
+def test_language_setting_is_checked():
+    with pytest.raises(ValueError):
+        settings.update(language="fr")
+    settings.update(language="es")
+    assert "Hoy es" in dayplan.say(datetime(2026, 10, 13, 9, 0))
+
+
+def test_the_screen_words_follow_the_language():
+    from andy_companion import clock
+    shown = clock.today(datetime(2026, 10, 13, 15, 0), "es")["shown"]
+    assert shown["weekday"] == "martes" and shown["today"] == "Hoy" and shown["part_of_day"] == "tarde"

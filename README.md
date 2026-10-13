@@ -11,7 +11,8 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
 
 ## What Andy does
 
-- **Speaks English and Spanish**, in whichever you speak to it.
+- **Speaks English and Spanish**, in whichever you speak to it; the day plan and the screen
+  switch too.
 - **Talks, and keeps looking at you.** Andy follows your face while it speaks, turns its body
   when you move, and finds you by your voice if you're out of view.
 - **Says it's a robot.** It never pretends to be a person, and never speaks as someone you know.

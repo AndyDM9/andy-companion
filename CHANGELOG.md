@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the screen and the day plan in Spanish)
+
+- `src/andy_companion/words.py`: the fixed words Andy says and shows (days, months, parts of the
+  day, the day-plan sentences) in English and Spanish, so the day plan is the same every day in
+  either language: "Hoy es martes 13 de octubre. Tiene 1 recordatorio hoy: a las 17:00, llamar a
+  Rosa."
+- `dayplan.say()` and `clock.today()` take the language; `today()` now also returns the labels the
+  screen shows. The screen (`pages/screen.html`) shows the day, date, part of the day, "Hoy" and
+  "De" in Spanish, and sets the page language so a screen reader pronounces it right.
+- `tools/set_language.py` and a `language` setting ("en" or "es"): "from now on, speak Spanish" or
+  "en español, por favor" switches the screen and day plan; Andy already answered in the language
+  spoken. Screenshot: `docs/images/screen-spanish.png`. 3 tests; 220 pass.
+- STATUS.md's M6 and M8 rows corrected: the eyes endpoint is stopped when idle, and the suite is
+  44 situations, 44 of 44 in three runs.
+
 ### Added (a one-click Reachy Mini app)
 
 - `reachy_app/`: generated with Pollen's `reachy-mini-app-assistant` (as Pollen's guide requires),

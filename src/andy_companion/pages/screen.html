@@ -94,12 +94,17 @@
   function make(tag, cls, value) { const el = document.createElement(tag); if (cls) el.className = cls; return text(el, value || ""); }
 
   function render(s) {
+    const shown = s.today.shown;
     document.body.dataset.part = s.today.part_of_day;
-    text($("day"), s.today.weekday);
+    document.documentElement.lang = shown.today === "Hoy" ? "es" : "en";
+    text($("day"), shown.weekday.charAt(0).toUpperCase() + shown.weekday.slice(1));
     const when = $("when"); when.textContent = "";
-    when.append(s.today.part_of_day.charAt(0).toUpperCase() + s.today.part_of_day.slice(1) + ", ");
+    when.append(shown.part_of_day.charAt(0).toUpperCase() + shown.part_of_day.slice(1) + ", ");
     when.append(make("strong", "", clock12(s.today.time)));
-    when.append(", " + s.today.date.replace(/ \d{4}$/, ""));
+    when.append(", " + shown.date);
+    text($("plan-h"), shown.today);
+    text($("empty"), shown.empty);
+    window.FROM_WORD = shown.from;
 
     const plan = $("plan"); plan.textContent = "";
     let nextMarked = false;
@@ -130,7 +135,7 @@
         const box = make("article", "item");
         if (it.title) box.append(make("p", "title", it.title));
         if (it.summary) box.append(make("p", "summary", it.summary));
-        if (it.source) box.append(make("p", "source", "From " + it.source));
+        if (it.source) box.append(make("p", "source", (window.FROM_WORD || "From") + " " + it.source));
         items.append(box);
       }
     }

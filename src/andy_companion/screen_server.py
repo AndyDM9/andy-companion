@@ -54,7 +54,9 @@ def today_plan(now: Optional[datetime] = None) -> Dict[str, Any]:
     items = [r for r in reminders.pending() if datetime.fromtimestamp(r["due"]).date() == now.date()]
     plan = [{"time": datetime.fromtimestamp(r["due"]).strftime("%-I:%M %p").lower(), "what": r["text"],
              "done": r["due"] < now.timestamp()} for r in items]
-    return {"today": clock.today(now), "hour": now.hour, "plan": plan}
+    from andy_companion import settings
+
+    return {"today": clock.today(now, settings.get().get("language", "en")), "hour": now.hour, "plan": plan}
 
 
 def screen_state(now: Optional[datetime] = None) -> Dict[str, Any]:
