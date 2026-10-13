@@ -8,3 +8,4 @@ __pycache__/
 models/
 *.wav
 *.log
+evals/results/.job.log

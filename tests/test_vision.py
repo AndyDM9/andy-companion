@@ -22,7 +22,7 @@ class Opener:
 
 @pytest.fixture
 def endpoint(monkeypatch):
-    monkeypatch.setenv("ANDY_VISION_URL", "abc.endpoints.nebius.cloud")
+    monkeypatch.setenv("ANDY_VISION_URL", "https://abc.endpoints.nebius.cloud")
     monkeypatch.setenv("ANDY_VISION_TOKEN", "secret-token")
 
 
@@ -55,3 +55,10 @@ def test_large_pictures_are_made_smaller():
     import cv2
     small = cv2.imdecode(np.frombuffer(vision.jpeg(big), np.uint8), cv2.IMREAD_COLOR)
     assert small.shape[1] == 768
+
+
+def test_never_sends_over_plain_http(monkeypatch):
+    monkeypatch.setenv("ANDY_VISION_URL", "192.0.2.10:8000")
+    monkeypatch.setenv("ANDY_VISION_TOKEN", "secret-token")
+    op = Opener()
+    assert "secure" in vision.look(lambda: FRAME, opener=op)["error"] and op.requests == []

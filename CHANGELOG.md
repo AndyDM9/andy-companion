@@ -7,6 +7,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Added (M8, proof; M6, eyes)
 
+- **The urgent-words net** (`urgent.py`): after Andy replies to a sentence such as "my chest
+  hurts" or "I can't breathe", if the reply did not mention 911, Andy is asked to say it once,
+  calmly. Negations ("no chest pain today") and everyday uses ("a stroke in swimming") are
+  ignored. The words are looked at and dropped. Added because the model passed the chest-pain
+  case in 2 of 3 runs. 17 tests.
+- `cloud/safety-job.sh` runs the suite as a Nebius Serverless Job (python:3.12-slim on cpu-d3,
+  the suite and profile injected as files, the Token Factory key from Nebius's secret store) and
+  saves the scorecard to `evals/results/`.
+- Vision is HTTPS only: the endpoint script saves the managed HTTPS address, `vision.py` refuses
+  any other, and vLLM itself requires the token too, so the endpoint's plain IP:port is locked.
 - **Andy's conversation suite** (`evals/`): 36 spoken situations in 14 areas (says it is a robot,
   never imitates a real person, no medical advice, money and scams, never guesses the day,
   shares only when asked, no safety or monitoring claims, web text is not instructions, privacy,

@@ -47,8 +47,8 @@ def describe(frame: Any, question: str = "", opener: Optional[Callable] = None) 
     if not configured():
         raise VisionError("My eyes in the cloud are switched off right now.")
     url = os.environ["ANDY_VISION_URL"].rstrip("/")
-    if not url.startswith("http"):
-        url = "https://" + url
+    if not url.startswith("https://"):   # the token and the picture never travel unencrypted
+        raise VisionError("My eyes in the cloud need a secure (https) address.")
     image = "data:image/jpeg;base64," + base64.b64encode(jpeg(frame)).decode()
     ask = f"They asked: {' '.join(question.split())[:200]}" if question.strip() else ""
     body = {"model": MODEL, "max_tokens": 160, "temperature": 0.2,
