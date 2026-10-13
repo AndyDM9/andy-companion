@@ -1,11 +1,13 @@
 """Nothing the person says reaches a log line."""
 
 import logging
+from pathlib import Path
 
 import pytest
 
 from andy_companion import privacy
 
+ROOT = Path(__file__).resolve().parents[1]
 SECRET = "my daughter Sofia and my bank PIN"
 
 
@@ -91,3 +93,32 @@ def test_the_memory_store_is_andys_own_file(tmp_path, monkeypatch):
 ])
 def test_voice_server_transcript_prints_are_recognised(line, dropped):
     assert privacy.is_transcript_print(line) is dropped
+
+
+def _serve_module():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("andy_voice_serve", ROOT / "voice" / "serve.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_every_console_in_the_voice_server_drops_what_was_heard():
+    """The Parakeet handler has its own Console; a fix for two named modules missed it."""
+    printed = []
+
+    class Console:                      # stands in for rich.console.Console
+        def print(self, *args, **kwargs):
+            printed.append(args[0])
+
+    serve = _serve_module()
+    existing = Console()
+    serve.quiet_consoles(Console)
+    serve.quiet_consoles(Console)       # twice is harmless
+    later = Console()
+    for console in (existing, later):
+        console.print(f"[yellow]USER: {SECRET}")
+        console.print(f"[green]ASSISTANT: {SECRET}")
+        console.print("[green]Pipeline ready[/green]")
+    assert printed == ["[green]Pipeline ready[/green]"] * 2

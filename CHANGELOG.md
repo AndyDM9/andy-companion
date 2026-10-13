@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (privacy: what the voice server heard reached its console)
+
+- speech-to-speech's Parakeet handler prints every transcript ("USER: ...") to the console through
+  its own rich console, whatever `--log_transcripts` says. `voice/serve.py` silenced only the
+  Qwen3-TTS and MLX Whisper consoles, so Parakeet's prints went into the voice server's output:
+  374 lines on 2026-10-13, in a scratch log on the founder's desktop, never in the repository or
+  any service. Found while reading that log for timings; the log was deleted.
+- `serve.py` now filters `print` on rich's `Console` class before any handler is imported, so
+  every console in the server, present or future, drops "USER:" and "ASSISTANT:" lines. Proven on
+  the real Parakeet console; a test with a stand-in console (`tests/test_privacy.py`).
+- STATUS.md's M2 note said "0 transcript prints from the voice server"; that was true of replies
+  only, and is now true of both. The feedback note for Hugging Face says so.
+
 ### Added (the screen and the day plan in Spanish)
 
 - `src/andy_companion/words.py`: the fixed words Andy says and shows (days, months, parts of the

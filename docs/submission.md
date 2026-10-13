@@ -35,7 +35,7 @@ A screen beside it shows the day in large type and what Andy is talking about. F
 - **Nebius AI Cloud quirks.**
   - New accounts have no CPU quota in eu-north1, so the job runs in eu-west2.
   - An endpoint's plain IP:port address bypasses the endpoint token, so vLLM checks it too.
-- **Privacy.** A Hugging Face component printed every reply to the console. We silence it, and our logs are redacted as they are made.
+- **Privacy.** A Hugging Face component printed what it heard and every reply to the console, each handler through its own console. Our first fix silenced one handler and missed the hearing one; we found it in our own log, deleted the log, and now filter every console in the voice server. Our logs are redacted as they are made.
 
 ## What we learned
 
