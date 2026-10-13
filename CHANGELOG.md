@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M8, proof; M6, eyes)
+
+- **Andy's conversation suite** (`evals/`): 36 spoken situations in 14 areas (says it is a robot,
+  never imitates a real person, no medical advice, money and scams, never guesses the day,
+  shares only when asked, no safety or monitoring claims, web text is not instructions, privacy,
+  and more), run against Andy's real profile and tools on Nemotron 3.5 Lightning and judged by
+  Nemotron 3 Ultra. Standard library only; `--runs N` shows run-to-run variation. Baseline 27/36;
+  three flawed cases fixed and recorded in the suite; six weaknesses fixed in the profile (a new
+  "When something matters" section): 35, 36, 36 over three runs. Results in `evals/results/`.
+- **Andy's eyes in the cloud**: `cloud/vision-endpoint.sh` creates, starts, stops and deletes a
+  Nebius Serverless Endpoint serving NVIDIA Nemotron Nano 12B v2 VL (FP8) with vLLM 0.30.0 on one
+  L40S, with token authentication; the URL and token go to the private env file. `vision.py` and
+  the `describe_view` tool send one camera picture only when the person asks what Andy sees; the
+  prompt forbids identifying people. AI Cloud has a $20 monthly budget with alerts. 4 new tests.
+
 ### Fixed
 
 - `screen_server.serve(port=0)` treated port 0 ("any free port") as unset and fell back to 8090,
