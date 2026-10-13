@@ -1,0 +1,63 @@
+# Devpost submission (draft)
+
+Fill in the final name and links before submitting. Keep every sentence true and checkable in the repository.
+
+## Tagline
+
+A home companion robot for older adults who live at home, and the family who help. It runs on Reachy Mini with NVIDIA Nemotron on Nebius, and keeps nothing it hears.
+
+## What it does
+
+Andy is a small robot that talks with you and keeps looking at you while it does.
+- It knows the day and never guesses it.
+- It reminds you at the times you choose, in your words.
+- It reads a letter you hold up and explains it.
+- It looks things up and names the source.
+- It answers in English or Spanish.
+
+A screen beside it shows the day in large type and what Andy is talking about. Family see only what you ask Andy to share, can send a message or a photo, and Andy always tells you who looked. When you mention something coming up, Andy asks "Shall I remember that?", and the morning after it asks how it went.
+
+## How we built it
+
+- **Hearing:** NVIDIA Parakeet TDT 0.6B v3, running locally inside Hugging Face's speech-to-speech server.
+- **Conversation and tool calls:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, with zero data retention on. 0.6–0.8 s per reply, measured on the robot.
+- **Eyes:** NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint (one L40S, vLLM 0.30.0). 3.5 s per description, behind token authentication.
+- **Proof:** a conversation suite of 44 spoken situations, judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job. Andy passes 44/44 in three consecutive runs.
+- **The web:** Tavily search, extract and crawl, with safe search.
+- **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body behaviours keep Andy looking at the person while it speaks.
+- **Safety under the model:** a deterministic urgent-words net makes sure "my chest hurts" (or "me duele el pecho") always gets "please call 911".
+- **Engineering:** 210 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
+
+## Challenges
+
+- **Tool turns versus spoken turns.** The model sometimes called a tool and said nothing. The suite now finishes tool turns the way the robot does.
+- **Our own urgent-words net had a gap.** "My chest has been hurting" slipped past it. The suite found it; we fixed and tested it.
+- **Nebius AI Cloud quirks.**
+  - New accounts have no CPU quota in eu-north1, so the job runs in eu-west2.
+  - An endpoint's plain IP:port address bypasses the endpoint token, so vLLM checks it too.
+- **Privacy.** A Hugging Face component printed every reply to the console. We silence it, and our logs are redacted as they are made.
+
+## What we learned
+
+Measure the product, not just the model:
+- **The suite** runs Andy's real profile, tools and safety net.
+- **Every score is three runs**, because one lucky run proves nothing.
+- **Fixes are recorded openly**, including the flawed test cases we found and fixed.
+
+## What's next
+
+- A pilot with older adults and their families, with an ethics review.
+- More languages: Parakeet already hears 25.
+- A one-click Reachy Mini app on Hugging Face.
+
+## Built with
+
+nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini, hugging-face, python, opencv, tesseract, vosk
+
+## Feedback for Nebius, NVIDIA and the tools (mandatory)
+
+Write it from [feedback-notes.md](feedback-notes.md): one paragraph per product, each with what happened, why it mattered, and the change we suggest.
+
+## Prior work
+
+The project was built during the submission period (from 2026-10-13). It reuses general-purpose robot behaviour code its author wrote earlier in the same period (from 2026-10-05), rewritten for this project; see [decisions/0003-what-is-public.md](decisions/0003-what-is-public.md).

@@ -17,7 +17,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test (photos from family added) | The screen (a day clock that takes the colour of the time of day; today's reminders, the next in green; what Andy is showing, with sources; fits a TV without scrolling) and the family page (only what the person shared; send Andy a message or a link; the person hears who looked). Private links with tokens; screenshots in `docs/images/`. 159 tests |
 | M8 | Proof | 🔨 In progress | `evals/`: 36 spoken situations in 14 areas, Andy's real profile and tools, judged by Nemotron 3 Ultra. Baseline 27/36; after fixing 3 flawed cases and 6 profile weaknesses, 35, 36, 36 over three runs (`evals/results/`). To do: run it as a Nebius Serverless Job; a deterministic net for urgent words (chest pain passed 2 of 3) |
 | M9 | Ship | 🔨 In progress | Andy runs in its own robot environment (`robot/`, Pollen's app 1.0.1, no longer the earlier assistant's); README rewritten for judges (features, NVIDIA and Nebius use, measurements, privacy, setup). To do: fresh-clone setup check, history scan for keys, Reachy Mini app packaging, make the repository public after the name decision |
-| M10 | Video and submission | ⏳ | Registered on Devpost 2026-10-13 |
+| M10 | Video and submission | 🔨 Prepared | Registered on Devpost 2026-10-13. Shot list in `docs/video.md` (ten live shots, 2:45, words checked); draft Devpost texts in `docs/submission.md` |
 
 ## Accounts and keys
 

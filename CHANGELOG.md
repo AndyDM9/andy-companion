@@ -5,6 +5,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M10, preparation)
+
+- `docs/video.md`: ten live shots in 2:45, the checklist before filming, the words we use and
+  never use, and four vertical clips. `docs/submission.md`: draft Devpost texts (tagline, what
+  it does, how it was built, challenges, what we learned, built-with, prior work).
+
 ### Added (bilingual Andy)
 
 - **Andy answers in English or Spanish**, in the language the person speaks. Parakeet detects the
