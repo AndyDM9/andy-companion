@@ -13,7 +13,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | M3 | Body behaviours | ✅ Done 2026-10-13 | Verified by the founder on the robot: looking at the person while speaking, following when they move; sleep, quiet and wake; a due reminder wakes Andy |
 | M4 | The day, the same way every time | ✅ Done 2026-10-13 | Verified on the robot: today's plan, slow pace and louder volume remembered, exact spoken controls |
 | M5 | Tavily | 🔨 Built, awaiting the live test | `local_news` (chosen local papers first, source named), `look_up`, `whats_on` (the city's calendar page, then a dated search), `read_link`, `check_message` (consumer-protection sites only; numbers, links and emails never sent). Live: news 5.9 s, look-up 1.4 s, events 3.3 s, link 0.2 s, scam check found FTC and AARP warnings. 140 tests |
-| M6 | Eyes | ⏳ | |
+| M6 | Eyes | 🔨 In progress | Built, awaiting the live test: `read_letter` (sharpest of three frames, Tesseract on this computer, only the text reaches the model; a real Tesseract read passes in tests). To do: describing the camera picture with a Nemotron vision model on a Nebius Serverless Endpoint (needs a Nebius AI Cloud account) |
 | M7 | Family page | ⏳ | |
 | M8 | Proof | ⏳ | |
 | M9 | Ship | ⏳ | Repository private until then |

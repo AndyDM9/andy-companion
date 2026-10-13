@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M6, eyes: reading)
+
+- **"Andy, read this letter for me"**: `reading.py` takes the sharpest of three camera frames,
+  reads it with Tesseract on this computer (page layout mode for letters), and returns only the
+  text, with an "uncertain" flag and a kind request for more light or a steadier hold when needed.
+  The `read_letter` tool has Andy say who it's from, what it's about, and any date, amount or
+  thing to do; offer `check_message` when it asks for money or details; and never give medical
+  advice from a label. The picture never leaves the computer and nothing is kept. 8 new tests,
+  one a real Tesseract read.
+
 ### Added (M5, Tavily)
 
 - **The world, with every source named**: `web.py` calls Tavily's REST API (no extra packages):
