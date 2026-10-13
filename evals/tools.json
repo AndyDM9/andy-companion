@@ -229,7 +229,7 @@
  },
  {
   "name": "look_up",
-  "description": "For a question about the world right now that you cannot know yourself: opening hours, weather warnings, a fact in the news. Answer in one or two sentences and say the source by name. If the results do not answer it, say so.",
+  "description": "For a question about the world right now that you cannot know yourself: opening hours, a fact in the news (for the weather, use weather). Answer in one or two sentences and say the source by name. If the results do not answer it, say so.",
   "parameters": {
    "type": "object",
    "properties": {
@@ -435,6 +435,15 @@
    "required": [
     "language"
    ]
+  },
+  "source": "andy"
+ },
+ {
+  "name": "weather",
+  "description": "When the person asks about the weather, rain, heat, wind, or whether to take an umbrella or a coat. Answer in one or two plain sentences from the periods given, saying which day you mean (tonight, tomorrow), and say it is from the National Weather Service. If there is an alert, say it first, calmly. Never guess the weather.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
   },
   "source": "andy"
  }

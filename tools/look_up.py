@@ -1,4 +1,4 @@
-"""For a question about the world right now that you cannot know yourself: opening hours, weather warnings, a fact in the news."""
+"""For a question about the world right now that you cannot know yourself: opening hours, a fact in the news (for the weather, use weather)."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 class LookUp(Tool):
     name = "look_up"
-    description = "For a question about the world right now that you cannot know yourself: opening hours, weather warnings, a fact in the news. Answer in one or two sentences and say the source by name. If the results do not answer it, say so."
+    description = "For a question about the world right now that you cannot know yourself: opening hours, a fact in the news (for the weather, use weather). Answer in one or two sentences and say the source by name. If the results do not answer it, say so."
     parameters_schema = {
         "type": "object",
         "properties": {"question": {"type": "string", "description": "The question, in plain words."}},

@@ -27,6 +27,8 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   look it up if it asks for money or details.
 - **Looks things up, and names the source.** Local news from papers you choose, opening hours,
   what's on this week, a link someone sent, and whether a message looks like a known scam.
+- **The weather, from the National Weather Service.** "Do I need an umbrella tomorrow?" gets the
+  forecast for your town, the day named, and any official alert first.
 - **Your pace and your volume.** "Please speak more slowly" and "speak up" stick.
 - **Quiet when you want it.** "Be quiet for an hour", "goodnight", and "Andy, wake up".
 - **A screen beside it.** A TV or monitor shows the day in large type, what's next, what Andy

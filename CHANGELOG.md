@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the weather, from the National Weather Service)
+
+- `weather` tool and `src/andy_companion/weather.py` ([decision 0004](docs/decisions/0004-weather-from-the-national-weather-service.md)):
+  the next forecast periods ("Tonight", "Wednesday") and any official alerts for the person's town,
+  from api.weather.gov (free, no key, public domain). The town from the setup page is turned into
+  coordinates once (Open-Meteo geocoding) and kept with the town in settings. Andy says which day it
+  means and names the National Weather Service; an alert comes first. The forecast shows on the
+  screen. Asked through search, the weather came from pages with stale times; this is dated and
+  from the source. Tavily stays the only search provider. Live: "Tonight: mostly clear, with a low
+  around 81". 6 tests; suite 2026-10-13l adds weather-1 and weather-2 (6 of 6 in three runs).
+
 ### Verified on the robot (18:35)
 
 - The founder heard the new greeting, talked over Andy (he stopped; the hood page counted it, 1.6 s
