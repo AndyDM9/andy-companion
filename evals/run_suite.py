@@ -22,9 +22,15 @@ from datetime import datetime
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "src"))   # Andy's own urgent-words net, the same code the robot runs
+try:
+    from andy_companion import urgent
+except ImportError:  # pragma: no cover
+    urgent = None
 BASE = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
 CANDIDATE = os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning")
 JUDGE = os.environ.get("ANDY_JUDGE", "nvidia/Nemotron-3-Ultra-550b-a55b")
+WITH_NET = True
 
 TOOLS = {
     "get_today": "Get today's day, date and the time now. Call whenever the day, date or time matters. Never guess.",
@@ -107,6 +113,14 @@ def run_case(case: dict, system: str) -> dict:
     seconds = round(time.time() - started, 2)
     reply = " ".join(str(msg.get("content") or "").split())
     calls = [c["function"]["name"] for c in (msg.get("tool_calls") or [])]
+    net = False
+    if WITH_NET and urgent is not None and urgent.is_urgent(case["say"]) and urgent.needs_followup(reply):
+        # As on the robot: Andy's reply missed 911, so the net asks it to say it, and both are heard.
+        follow = chat(CANDIDATE, [{"role": "system", "content": system}, *history, {"role": "user", "content": case["say"]},
+                                  {"role": "assistant", "content": reply or "(no words)"},
+                                  {"role": "user", "content": urgent.FRAME}])
+        reply = (reply + " " + " ".join(str(follow.get("content") or "").split())).strip()
+        net = True
     if case.get("tool"):
         verdict = {"pass": case["tool"] in calls, "why": f"called {', '.join(calls) or 'no tool'}"}
     elif case.get("tool_ok") and case["tool_ok"] in calls:
@@ -114,7 +128,7 @@ def run_case(case: dict, system: str) -> dict:
     else:
         verdict = judge(case, reply, calls)
     return {"id": case["id"], "area": case["area"], "pass": verdict["pass"], "why": verdict["why"],
-            "reply": reply[:400], "tools": calls, "seconds": seconds}
+            "reply": reply[:400], "tools": calls, "seconds": seconds, "net": net}
 
 
 def main(argv=None) -> int:
@@ -123,7 +137,10 @@ def main(argv=None) -> int:
     ap.add_argument("--profile", default=str(HERE.parent / "profiles" / "companion" / "profile.md"))
     ap.add_argument("--out", default="")
     ap.add_argument("--runs", type=int, default=1, help="repeat the suite to show run-to-run variation")
+    ap.add_argument("--model-only", action="store_true", help="leave out Andy's urgent-words net")
     args = ap.parse_args(argv)
+    global WITH_NET
+    WITH_NET = not args.model_only and urgent is not None
     suite = json.loads(Path(args.suite).read_text())
     system = profile_prompt(Path(args.profile))
     runs = []
@@ -140,9 +157,10 @@ def main(argv=None) -> int:
         a[0] += r["pass"]
         a[1] += 1
     card = {"suite": suite["version"], "ran": datetime.now().isoformat(timespec="seconds"), "candidate": CANDIDATE,
-            "judge": JUDGE, "passed": passed, "total": len(results), "per_run": per_run, "ever_failed": flaky,
+            "judge": JUDGE, "measured": "Andy (model + urgent-words net)" if WITH_NET else "model alone", "passed": passed, "total": len(results), "per_run": per_run, "ever_failed": flaky,
             "areas": areas, "results": results}
-    print(f"Andy's conversation suite: {passed}/{len(results)} passed ({CANDIDATE}, judged by {JUDGE})")
+    what = "Andy, model + urgent-words net" if WITH_NET else "model alone"
+    print(f"Andy's conversation suite ({what}): {passed}/{len(results)} passed ({CANDIDATE}, judged by {JUDGE})")
     if len(runs) > 1:
         print(f"  runs: {per_run} of {len(results)}; failed at least once: {', '.join(flaky) or 'none'}")
     for area, (p, t) in areas.items():

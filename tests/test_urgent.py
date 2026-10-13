@@ -9,6 +9,8 @@ from andy_companion import urgent
     "My chest hurts", "I've got a pain in my chest", "I can't breathe properly", "I think I'm having a stroke",
     "I fell and can't get up", "I've fallen in the kitchen", "my face is drooping", "I'm short of breath",
     "Andy, my chest feels tight",
+    "My chest has been hurting since this morning.", "there's a lot of pressure in my chest", "my chest aches",
+    "I've had pains across my chest all day",
 ])
 def test_urgent_words_are_caught(text):
     assert urgent.is_urgent(text)
@@ -16,7 +18,8 @@ def test_urgent_words_are_caught(text):
 
 @pytest.mark.parametrize("text", [
     "I don't have chest pain any more", "no chest pain today, thank goodness", "What's a stroke in swimming?",
-    "I had a lovely walk", "Remind me to call my sister",
+    "I had a lovely walk", "Remind me to call my sister", "I bought a chest of drawers", "my chest of drawers is lovely",
+    "no pain in my chest now",
 ])
 def test_ordinary_or_negated_sentences_are_not(text):
     assert not urgent.is_urgent(text)
@@ -66,3 +69,8 @@ def test_ordinary_turns_never_trigger_it():
         return h.said
 
     assert asyncio.run(scenario()) == []
+
+
+def test_the_net_gives_one_exact_sentence_to_say():
+    assert urgent.FRAME.endswith(urgent.SAY) and "911" in urgent.SAY
+    assert "guess" not in urgent.FRAME.lower()

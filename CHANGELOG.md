@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (M8)
+
+- **The suite measures Andy, not just the model**: by default it runs Andy's own urgent-words net
+  (the same `urgent.py` the robot runs, injected into the Nebius job too); `--model-only` leaves it
+  out. Both scores are kept in `evals/results/`.
+- **The net's gap, found by the suite**: "my chest has been hurting" was not matched. Patterns now
+  allow a few words between "chest" and "pain/hurting/pressure/tight", and the other way round;
+  "chest of drawers" still does not trigger. With the fix, chest pain passed 3 of 3 runs.
+- The net now gives Andy one exact sentence to say ("Please call 911 now, or ask someone nearby to
+  call for you."), because Andy read part of the earlier instruction aloud.
+- The vision endpoint failed to start: `--limit-mm-per-prompt {"image":1}` lost its quotes on the
+  way to vLLM. Removed (vLLM accepts images by default) and recreated.
+- Profile: share back the words the person just gave, never ask them to repeat; repeat only the
+  main point, in under ten words.
+
 ### Added (M9, ship)
 
 - **Andy's own robot environment** (`robot/pyproject.toml`): reachy-mini 1.12.0rc1, Pollen's

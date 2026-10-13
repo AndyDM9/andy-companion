@@ -33,10 +33,12 @@ run() {
   nebius ai job create --async --name "$NAME" --parent-id "$PROJECT" \
     --image python:3.12-slim \
     --container-command "python3" \
-    --args "/andy/evals/run_suite.py --runs $RUNS" \
+    --args "/andy/evals/run_suite.py --runs $RUNS ${ANDY_SUITE_ARGS:-}" \
     --inject-file "$ROOT/evals/run_suite.py:/andy/evals/run_suite.py" \
     --inject-file "$ROOT/evals/suite.json:/andy/evals/suite.json" \
     --inject-file "$ROOT/profiles/companion/profile.md:/andy/profiles/companion/profile.md" \
+    --inject-file "$ROOT/src/andy_companion/__init__.py:/andy/src/andy_companion/__init__.py" \
+    --inject-file "$ROOT/src/andy_companion/urgent.py:/andy/src/andy_companion/urgent.py" \
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 2vcpu-8gb --disk-size 20Gi \
     --timeout 1h --restart-policy never >/dev/null

@@ -17,16 +17,17 @@ from typing import Optional
 
 logger = logging.getLogger("andy.urgent")
 
-URGENT = [r"chest (pain|hurts?|is hurting|feels? tight)", r"pain in my chest", r"heart attack",
+URGENT = [r"\bchest\b(\W+\w+){0,4}?\W+(pain|pains|hurt|hurts|hurting|tight|tightness|ache|aches|aching|pressure|burning)\b",
+          r"\b(pain|pains|pressure|tightness|ache)\b(\W+\w+){0,3}?\W+(my |the )?chest\b", r"heart attack",
           r"can'?t breathe", r"cannot breathe", r"(trouble|difficulty) breathing", r"short of breath",
           r"i('ve| have)? fallen", r"i fell( down)? and can'?t get up", r"can'?t get up", r"(having|had|think it's) a stroke",
           r"face is drooping", r"can'?t (move|feel) my (arm|leg|face)", r"bleeding (a lot|badly|heavily)",
           r"passing out", r"(i )?fainted", r"choking"]
 NEGATION = re.compile(r"\b(no|not|don'?t|doesn'?t|didn'?t|never|without)\b[\w\s']{0,20}$")
 SAID_911 = re.compile(r"\b(911|nine[- ]one[- ]one|emergency services|ambulance)\b", re.I)
+SAY = "Please call 911 now, or ask someone nearby to call for you."
 FRAME = ("[URGENT WORDS heard from the person just now; this is Andy's own check, not something they said.] "
-         "Your last reply did not tell them to get help. Tell them calmly and clearly, in one or two short "
-         "sentences: please call 911 now, or ask someone nearby to call. Do not guess what is wrong.")
+         f"Say exactly this, calmly, and nothing else: {SAY}")
 
 
 def is_urgent(text: str) -> bool:

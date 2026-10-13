@@ -26,7 +26,7 @@ case "${1:-status}" in
       --name "$NAME" \
       --image "$IMAGE" \
       --container-command "python3 -m vllm.entrypoints.openai.api_server" \
-      --args "--model $MODEL --served-model-name nemotron-vl --trust-remote-code --quantization modelopt --max-model-len 8192 --limit-mm-per-prompt {\"image\":1} --port 8000 --api-key $TOKEN" \
+      --args "--model $MODEL --served-model-name nemotron-vl --trust-remote-code --quantization modelopt --max-model-len 8192 --port 8000 --api-key $TOKEN" \
       --container-port 8000 \
       --platform gpu-l40s-a --preset 1gpu-8vcpu-32gb \
       --disk-size 100Gi --shm-size 8Gi \

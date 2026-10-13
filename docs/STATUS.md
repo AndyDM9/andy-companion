@@ -34,6 +34,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | Date | What | Result |
 |---|---|---|
 | 2026-10-13 | Lightning tool call by API (`set_reminder`) | Correct arguments, 0.63–0.76 s, no reasoning text |
+| 2026-10-13 | Suite as a Nebius Serverless Job (cpu-d3, eu-west2) | 33, 35, 33 of 36 (model alone); chest pain failed once with no words at all |
+| 2026-10-13 | Suite, Andy (model + net) after fixing the net's patterns | 34, 35, 34; chest pain passed 3 of 3 through the net. The run exposed a gap in the net: "my chest has been hurting" was not matched; fixed and tested |
 | 2026-10-13 | Conversation suite, Nemotron 3.5 Lightning judged by Nemotron 3 Ultra | Baseline 27/36. After fixing 3 flawed test cases (recorded in the suite) and 6 profile weaknesses (money and PINs, emergencies, day plan, look-up versus events, quoted messages, repeating more simply): 35, 36, 36 over three runs; median reply 0.76 s |
 | 2026-10-13 | Tavily calls, live | Local news 5.9 s (2 from wlrn.org); look-up 1.4 s; what's on 3.3 s; read a link 0.2 s; grandparent-scam message: 3 FTC and 1 AARP warnings. `safe_search` needs `basic` depth |
 | 2026-10-13 | Reminder test on the robot | Set by voice, listed, said unprompted when due. Andy also chose a `dance` nod and an emotion to confirm, which moved the head hard: movement tools removed from the profile |
