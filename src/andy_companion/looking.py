@@ -49,8 +49,8 @@ def start(question: str, place: str = "", language: str = "en", runner: Optional
         _state["count"] = int(_state["count"]) + 1
     thread = threading.Thread(target=runner or run, args=(question, place, language), name="andy-looking", daemon=True)
     thread.start()
-    return {"started": True, "say": "Started. Say you will look into it and tell them in a minute or two, then carry on. "
-                                    "Do not call look_into again for this."}
+    return {"started": True, "say": ("Started. Say you will look into it and tell them in a minute or two, then carry on. The answer comes"
+                                     " by itself: do not check on it (no task_status), do not search for it now, and do not call look_into again.")}
 
 
 STEPS = {"planning": "Planning what to look for", "searching": "Searching the web", "reading": "Reading",

@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (look into it, first try on the robot)
+
+- The founder's first "look into it" worked end to end (answer in about 44 s, said at the next quiet
+  moment, on the screen), but in the same turn Andy also called Pollen's `task_status` (which failed)
+  and ran `whats_on`, so it answered twice. The tool's reply now says the answer comes by itself:
+  no checking on it, no searching now, no second start. look-1 judges exactly that: 6 of 6.
+- The hood page names where `look_into` (Tavily research, answered later), `task_status` and
+  `weather` run, instead of "on this computer". A log line no longer calls a research answer
+  "family".
+
 ### Added (Tavily: "look into it for me", streamed; better scam checks; usage on the hood page)
 
 - **Research, from a deep look at the Best Use of Tavily prize** (its only condition: a runtime call to

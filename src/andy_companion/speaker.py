@@ -117,7 +117,7 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
             else:
                 await handler.say(family_frame(entry))
             board.delivered(entry)
-            logger.info("Passed on a family %s", entry.get("type"))
+            logger.info("Passed on an inbox %s", entry.get("type"))
             return 1
         return await morning(handler, now, present)
     item = due[0]

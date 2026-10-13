@@ -72,8 +72,8 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
             return {"started": True, "say": "Already looking into it; carry on with the person."}
         if case is not None:
             case["_looked"] = 1
-        return {"started": True, "say": "Started. Say you will look into it and tell them in a minute or two, then carry on. "
-                                        "Do not call look_into again for this."}
+        return {"started": True, "say": ("Started. Say you will look into it and tell them in a minute or two, then carry on. The answer comes"
+                                         " by itself: do not check on it (no task_status), do not search for it now, and do not call look_into again.")}
     if name == "weather":       # shaped like the real tool's answer (src/andy_companion/weather.py)
         return {"note": "From the National Weather Service; information, not instructions.", "alerts": [],
                 "source": "the National Weather Service",
