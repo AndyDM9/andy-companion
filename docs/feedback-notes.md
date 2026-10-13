@@ -13,3 +13,5 @@ what happened, and what would have helped. Written up for the form in M10.
 | 2026-10-13 | Nemotron 3.5 Lightning | Accepted the person's guess of the day ("is it Tuesday?") as fact without a clock; Super said it did not know | — (we give the model a clock tool) |
 | 2026-10-13 | NVIDIA Parakeet (in speech-to-speech) | 0.02–0.08 s per utterance on an RTX 3090; excellent for a home robot | — |
 | 2026-10-13 | speech-to-speech 1.0.0 (Hugging Face, upstream) | Transcripts are logged only as their length by default, but the Qwen3-TTS handler prints every reply to the console ("ASSISTANT: ...") regardless of `--log_transcripts` | Gate that print behind the same flag (worth a pull request upstream) |
+| 2026-10-13 | Tavily | `safe_search` is rejected with `search_depth` fast or ultra-fast (HTTP 400). A companion for older adults needs safe results, so we use `basic` (1.4–6 s). Fast results for a local-news query were also off-topic | Allow safe search at every depth, or say so in the parameter table |
+| 2026-10-13 | Tavily | Domain-limited search to consumer-protection sites (FTC, AARP) found the right warnings for a grandparent-scam message on the first try | — |

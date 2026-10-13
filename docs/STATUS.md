@@ -10,9 +10,9 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | M0 | Andy talks through Nemotron | ✅ Done 2026-10-13 | Measured below |
 | M1 | Clock and reminders | ✅ Done 2026-10-13 | Verified on the robot: "Good afternoon" from the clock; a reminder set by voice, listed, and said unprompted when due |
 | M2 | Privacy floor | ✅ Done 2026-10-13 | Verified live: 0 conversation lines in the app log, tool arguments `[not logged]`, 0 transcript prints from the voice server; remember/forget write Andy's own owner-only `memory.json`. Tests: `tests/test_privacy.py` |
-| M3 | Body behaviours | 🔨 In progress | Done: face tracking from the greeting; no confirmation moves; looking at the person while speaking (gaze, verified in the log); body follow; seek by voice direction and look-around; person finder (YOLOX, frames never stored); calm idle moments; upward looks softened. 82 tests. Built 2026-10-13, awaiting the live test: chimes (a soft cue before each reminder, on waking and on sleep), quiet_for ("be quiet for an hour"), the offline wake phrase, and the supervisor that wakes Andy for a due reminder even while asleep or quiet. 99 tests |
-| M4 | The day, the same way every time | 🔨 Built, awaiting the live test | `day_plan` (built by code, the same words every time); a morning plan once a day 06:00–12:00 when someone is here; `set_pace` (slow or normal, in Andy's instructions every session, with today's date); `set_volume` (louder, quieter or a level, through the robot daemon, restored at start); exact spoken controls for "goodnight" and "be quiet for …" that work without the model. 130 tests |
-| M5 | Tavily | ⏳ | Account and key ready; search tested |
+| M3 | Body behaviours | ✅ Done 2026-10-13 | Verified by the founder on the robot: looking at the person while speaking, following when they move; sleep, quiet and wake; a due reminder wakes Andy |
+| M4 | The day, the same way every time | ✅ Done 2026-10-13 | Verified on the robot: today's plan, slow pace and louder volume remembered, exact spoken controls |
+| M5 | Tavily | 🔨 Built, awaiting the live test | `local_news` (chosen local papers first, source named), `look_up`, `whats_on` (the city's calendar page, then a dated search), `read_link`, `check_message` (consumer-protection sites only; numbers, links and emails never sent). Live: news 5.9 s, look-up 1.4 s, events 3.3 s, link 0.2 s, scam check found FTC and AARP warnings. 140 tests |
 | M6 | Eyes | ⏳ | |
 | M7 | Family page | ⏳ | |
 | M8 | Proof | ⏳ | |
@@ -34,6 +34,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | Date | What | Result |
 |---|---|---|
 | 2026-10-13 | Lightning tool call by API (`set_reminder`) | Correct arguments, 0.63–0.76 s, no reasoning text |
+| 2026-10-13 | Tavily calls, live | Local news 5.9 s (2 from wlrn.org); look-up 1.4 s; what's on 3.3 s; read a link 0.2 s; grandparent-scam message: 3 FTC and 1 AARP warnings. `safe_search` needs `basic` depth |
 | 2026-10-13 | Reminder test on the robot | Set by voice, listed, said unprompted when due. Andy also chose a `dance` nod and an emotion to confirm, which moved the head hard: movement tools removed from the profile |
 | 2026-10-13 | On the Reachy Mini Lite, 9 spoken turns | Parakeet 0.02–0.08 s; Lightning 0.62–0.83 s; first audio 0.10–0.33 s; no errors; interruptions handled; nod, remember and forget worked |
 

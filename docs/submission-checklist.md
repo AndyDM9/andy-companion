@@ -39,4 +39,4 @@ only when it is true, in the same commit that makes it true.
 
 ## Bonus
 
-- [ ] Best Use of Tavily: a functional runtime call to the Tavily API in the product
+- [x] Best Use of Tavily: a functional runtime call to the Tavily API in the product (five tools; search, extract, crawl)

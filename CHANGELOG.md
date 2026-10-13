@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M5, Tavily)
+
+- **The world, with every source named**: `web.py` calls Tavily's REST API (no extra packages):
+  `local_news` (the family's chosen local papers first, widened once if they are quiet),
+  `look_up`, `whats_on` (the chosen events pages by crawl, then a dated search), `read_link`
+  (extract), and `check_message`, which looks a suspicious message up on consumer-protection
+  sites only (FTC, AARP, BBB, FBI IC3) after removing numbers, links and email addresses, and
+  never calls anything safe. All web text reaches the model as information, cleaned of
+  instruction-like phrases; no query or result is logged; errors never echo the query.
+- `scripts/settings.py` sets the home's place, news sources and events pages in Andy's own
+  settings file (never in the repository). The robot side now receives only the Tavily key.
+- Safe search is on everywhere, so searches use `basic` depth (Tavily rejects safe search with
+  `fast`). 10 new tests.
+
 ### Added (M4, the day the same way every time)
 
 - **Today's plan, the same words every time**: `dayplan.py` builds it from the clock and the

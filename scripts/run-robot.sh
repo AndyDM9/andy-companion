@@ -11,5 +11,11 @@ export HF_REALTIME_CONNECTION_MODE=local
 export HF_REALTIME_WS_URL="${ANDY_VOICE_URL:-ws://127.0.0.1:8765/v1/realtime}"
 export REALTIME_TRANSCRIPTION_LANGUAGE=en
 cd "$ROOT"
+# Only the web key reaches the robot side; the model key stays with the voice server.
+ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
+if [ -f "$ENV_FILE" ]; then
+  TAVILY_API_KEY="$(sed -n 's/^TAVILY_API_KEY=//p' "$ENV_FILE" | tail -1)"
+  export TAVILY_API_KEY
+fi
 export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
 exec "$APP_PY" "$ROOT/scripts/run_andy.py" "$@"
