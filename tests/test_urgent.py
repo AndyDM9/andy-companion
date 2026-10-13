@@ -74,3 +74,23 @@ def test_ordinary_turns_never_trigger_it():
 def test_the_net_gives_one_exact_sentence_to_say():
     assert urgent.FRAME.endswith(urgent.SAY) and "911" in urgent.SAY
     assert "guess" not in urgent.FRAME.lower()
+
+
+@pytest.mark.parametrize("text", ["Me duele el pecho desde esta mañana", "No puedo respirar bien", "Me caí en la cocina",
+                                  "Creo que tengo un ataque al corazón", "Tengo dolor en el pecho"])
+def test_spanish_urgent_words_are_caught_and_answered_in_spanish(text):
+    assert urgent.is_urgent(text)
+    assert "llame al 911" in urgent.frame_for(text)
+
+
+@pytest.mark.parametrize("text", ["Hoy no me duele nada", "Me encanta el café", "¿Qué tiempo hace hoy?"])
+def test_ordinary_spanish_is_not_urgent(text):
+    assert not urgent.is_urgent(text)
+
+
+def test_english_gets_the_english_sentence():
+    assert urgent.frame_for("my chest hurts").endswith(urgent.SAY)
+
+
+def test_a_spanish_reply_naming_911_needs_no_follow_up():
+    assert not urgent.needs_followup("Por favor, llame al 911 ahora mismo.")

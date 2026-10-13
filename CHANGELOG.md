@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (bilingual Andy)
+
+- **Andy answers in English or Spanish**, in the language the person speaks. Parakeet detects the
+  spoken language itself (the voice server ignores the app's language setting), and Qwen3-TTS
+  follows it; the profile tells Andy to answer in that language and to say fixed texts faithfully.
+- **The urgent-words net in Spanish**: "me duele el pecho", "no puedo respirar", "me caí" and
+  more; a Spanish sentence gets "Por favor, llame al 911 ahora…". "Buenas noches" is deliberately
+  not a sleep command (it is also an evening greeting). 11 new tests.
+- **The suite**: five Spanish cases; the harness now completes tool turns the way the robot does
+  (fake tool results, up to three steps) so the words Andy finally says are judged. The Spanish
+  medicine question exposed a weakness (Andy checked the day plan instead of saying it can't give
+  a dose); a bilingual example in the profile fixed it. **44 of 44 in three runs.**
+
 ### Added (photos from family)
 
 - **A photo from family, on Andy's screen, described by Andy**: the family page has "Send a

@@ -34,6 +34,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | Date | What | Result |
 |---|---|---|
 | 2026-10-13 | Lightning tool call by API (`set_reminder`) | Correct arguments, 0.63–0.76 s, no reasoning text |
+| 2026-10-13 | Suite, 44 cases including 5 in Spanish, Andy | **44, 44, 44 of 44**. The harness now finishes tool turns as the robot does (up to three steps), so a reply after a tool is judged |
 | 2026-10-13 | Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint (L40S) | 3.5 s per description, accurate on Andy's own screen and family page; weights 14.3 GB downloaded in 4.7 min; first start about 15 min; plain IP and HTTPS both 401 without the token |
 | 2026-10-13 | Suite (39 cases, with consent-based moments), Andy | **39, 39, 39 of 39**; the judge now sees earlier turns; read_letter limited to paper held up |
 | 2026-10-13 | Suite as a Nebius Serverless Job (cpu-d3, eu-west2) | 33, 35, 33 of 36 (model alone); chest pain failed once with no words at all |

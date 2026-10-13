@@ -22,12 +22,25 @@ URGENT = [r"\bchest\b(\W+\w+){0,4}?\W+(pain|pains|hurt|hurts|hurting|tight|tight
           r"can'?t breathe", r"cannot breathe", r"(trouble|difficulty) breathing", r"short of breath",
           r"i('ve| have)? fallen", r"i fell( down)? and can'?t get up", r"can'?t get up", r"(having|had|think it's) a stroke",
           r"face is drooping", r"can'?t (move|feel) my (arm|leg|face)", r"bleeding (a lot|badly|heavily)",
-          r"passing out", r"(i )?fainted", r"choking"]
+          r"passing out", r"(i )?fainted", r"choking",
+          # Spanish
+          r"\bme duele (mucho )?el pecho\b", r"dolor (en el|de) pecho", r"\bpecho\b(\W+\w+){0,3}?\W+(duele|apretado|presi[oó]n)",
+          r"no puedo respirar", r"me falta (el )?aire", r"\bme ca[ií]\b", r"me he ca[ií]do", r"no me puedo levantar",
+          r"ataque al coraz[oó]n", r"derrame( cerebral)?", r"me estoy ahogando", r"me desmay[eéó]"]
+SPANISH = re.compile(r"\b(me|el|la|los|las|no|que|tengo|un|una|al|del|en|mi|de|por|estoy|creo|ataque|dolor|puedo|pecho|"
+                     r"duele|ca[ií]|respirar|levantar|coraz[oó]n|ahogando|desmay\w*|cocina|ahora|mucho)\b")
 NEGATION = re.compile(r"\b(no|not|don'?t|doesn'?t|didn'?t|never|without)\b[\w\s']{0,20}$")
-SAID_911 = re.compile(r"\b(911|nine[- ]one[- ]one|emergency services|ambulance)\b", re.I)
+SAID_911 = re.compile(r"\b(911|nine[- ]one[- ]one|emergency services|ambulance|ambulancia|emergencias)\b", re.I)
 SAY = "Please call 911 now, or ask someone nearby to call for you."
+SAY_ES = "Por favor, llame al 911 ahora, o pida a alguien cercano que llame por usted."
 FRAME = ("[URGENT WORDS heard from the person just now; this is Andy's own check, not something they said.] "
          f"Say exactly this, calmly, and nothing else: {SAY}")
+FRAME_ES = ("[URGENT WORDS heard from the person just now, in Spanish; this is Andy's own check, not something they "
+            f"said.] Say exactly this, calmly, and nothing else: {SAY_ES}")
+
+
+def frame_for(text: str) -> str:
+    return FRAME_ES if len(SPANISH.findall(str(text).lower())) >= 2 else FRAME
 
 
 def is_urgent(text: str) -> bool:
@@ -58,28 +71,28 @@ def install(handler_class=None) -> bool:
         if not final:
             return
         if role == "user":
-            self._andy_urgent_pending = is_urgent(text)
+            self._andy_urgent_pending = frame_for(text) if is_urgent(text) else False
             return
         if role == "assistant" and getattr(self, "_andy_urgent_pending", False):
-            self._andy_urgent_pending = False
+            frame, self._andy_urgent_pending = self._andy_urgent_pending, False
             if needs_followup(text):
                 try:
                     loop = asyncio.get_running_loop()
                 except RuntimeError:
                     return
-                loop.create_task(_follow_up(self))
+                loop.create_task(_follow_up(self, frame))
 
     emit._andy_urgent = True
     handler_class._emit_transcript = emit
     return True
 
 
-async def _follow_up(handler) -> None:
+async def _follow_up(handler, frame: str = FRAME) -> None:
     done = getattr(handler, "_response_done_event", None)
     try:
         if done is not None:
             await asyncio.wait_for(done.wait(), timeout=20)
-        await handler.say(FRAME)
+        await handler.say(frame)
         logger.info("Urgent-words follow-up said")
     except Exception as e:  # never the words, only the type
         logger.warning("Urgent-words follow-up failed: %s", type(e).__name__)

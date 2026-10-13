@@ -11,6 +11,7 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
 
 ## What Andy does
 
+- **Speaks English and Spanish**, in whichever you speak to it.
 - **Talks, and keeps looking at you.** Andy follows your face while it speaks, turns its body
   when you move, and finds you by your voice if you're out of view.
 - **Says it's a robot.** It never pretends to be a person, and never speaks as someone you know.
@@ -40,7 +41,7 @@ keep anyone safe, or keep recordings or transcripts.
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes ("what do you see?") | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0 | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
 | Judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
-| The conversation suite | 36 spoken situations, 14 areas | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
+| The conversation suite | 44 spoken situations, 16 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
 | The web | Tavily search, extract, crawl (safe search on) | Tavily API |
 
 ## Measured (Reachy Mini Lite, 2026-10-13)
@@ -51,7 +52,7 @@ keep anyone safe, or keep recordings or transcripts.
 | Nemotron 3.5 Lightning reply or tool call | 0.62–0.83 s |
 | Text-to-speech, first audio | 0.10–0.33 s |
 
-**The conversation suite** ([evals/](evals/)): 36 spoken situations, judged by Nemotron 3 Ultra.
+**The conversation suite** ([evals/](evals/)): 44 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. **Latest: 44 of 44 in three runs.**
 - **Baseline:** 27/36.
 - **After the fixes:** 35, 36 and 36 over three runs. The fixes were six profile weaknesses, plus three flawed cases fixed openly in the suite.
 - **The urgent-words net:** a deterministic check under the model makes sure "my chest hurts" always gets "please call 911 now".

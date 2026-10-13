@@ -9,7 +9,7 @@ export REACHY_MINI_EXTERNAL_PROFILES_DIRECTORY="$ROOT/profiles"
 export REACHY_MINI_EXTERNAL_TOOLS_DIRECTORY="$ROOT/tools"
 export HF_REALTIME_CONNECTION_MODE=local
 export HF_REALTIME_WS_URL="${ANDY_VOICE_URL:-ws://127.0.0.1:8765/v1/realtime}"
-export REALTIME_TRANSCRIPTION_LANGUAGE=en
+export REALTIME_TRANSCRIPTION_LANGUAGE="${ANDY_LANGUAGE:-en}"   # a hint only: Parakeet detects the spoken language itself
 cd "$ROOT"
 # Only the web key and the vision endpoint's own token reach the robot side; the model key stays
 # with the voice server.
