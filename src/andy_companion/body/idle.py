@@ -3,7 +3,7 @@ and small antenna flicks in between.
 
 Pollen's app runs an idle action after 3 minutes without conversation, every 3 minutes: 60% nothing,
 otherwise a random dance, a random emotion from its curated list (which includes rage1, dying1 and
-scared1) or a 40-degree head turn. The launcher replaces that (scripts/run_andy.py,
+scared1) or a 40-degree head turn. The launcher replaces that (andy_companion.body.attach,
 `livelier_idle`) with a moment from MOMENTS: a look around, an attentive glance, a look up, a calm
 breath, or a yawn (likelier late at night or after a long quiet spell). Nothing during a focus
 session or when nobody has been seen for a while. The moves are Pollen's own recorded emotions,

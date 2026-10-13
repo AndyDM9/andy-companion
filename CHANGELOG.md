@@ -22,6 +22,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Added (M9, ship)
 
+- **Ready-to-publish checks**: gitleaks over all 16 commits found no keys; a fresh clone from
+  GitHub installs and passes its tests; leftover names of the earlier assistant removed from the
+  tree. The go-public checklist in `docs/submission-checklist.md` lists what is left (the commit
+  author address, the final name).
 - **Andy's own robot environment** (`robot/pyproject.toml`): reachy-mini 1.12.0rc1, Pollen's
   conversation app at its v1.0.1 tag, OpenCV and Vosk. `scripts/andy` and `run-robot.sh` use it
   by default. All 181 tests pass in it, and Andy now runs from it on the robot.

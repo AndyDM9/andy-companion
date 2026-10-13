@@ -18,6 +18,14 @@ only when it is true, in the same commit that makes it true.
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
 - [ ] No keys, secrets or personal data anywhere in the history
 
+## Before making the repository public
+
+- [x] No keys in the history (gitleaks: 16 commits, no leaks, 2026-10-13)
+- [x] A fresh clone installs and passes its tests (2026-10-13)
+- [x] No home address, phone number or private project names in the tree
+- [ ] Decide the commit author address (personal email, or GitHub's noreply address by rewriting history)
+- [ ] Final name and branding decided
+
 ## The video
 
 - [ ] Under three minutes

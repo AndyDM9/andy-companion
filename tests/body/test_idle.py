@@ -182,11 +182,11 @@ def test_the_launcher_replaces_pollens_idle_action(monkeypatch):
     pytest.importorskip("reachy_mini_conversation_app")
     from reachy_mini_conversation_app.conversation_handler import ConversationHandler
 
-    from andy_companion.body import attach as run_andy
+    from andy_companion.body import attach
     monkeypatch.setattr(ConversationHandler, "send_idle_signal", ConversationHandler.send_idle_signal)
     monkeypatch.setattr(ConversationHandler, "IDLE_BEHAVIOR_THRESHOLD_S", 180.0)
     monkeypatch.setattr(idle, "CADENCE", "calm")
-    assert run_andy.livelier_idle() and ConversationHandler.IDLE_BEHAVIOR_THRESHOLD_S == 300.0
+    assert attach.livelier_idle() and ConversationHandler.IDLE_BEHAVIOR_THRESHOLD_S == 300.0
     calls = []
 
     async def fake_moment(mm, idle_s, **kw):
@@ -202,9 +202,9 @@ def test_cadence_setting(monkeypatch, cadence, threshold):
     pytest.importorskip("reachy_mini_conversation_app")
     from reachy_mini_conversation_app.conversation_handler import ConversationHandler
 
-    from andy_companion.body import attach as run_andy
+    from andy_companion.body import attach
     monkeypatch.setattr(ConversationHandler, "send_idle_signal", ConversationHandler.send_idle_signal)
     monkeypatch.setattr(ConversationHandler, "IDLE_BEHAVIOR_THRESHOLD_S", 180.0)
     monkeypatch.setattr(idle, "CADENCE", cadence)
-    run_andy.livelier_idle()
+    attach.livelier_idle()
     assert ConversationHandler.IDLE_BEHAVIOR_THRESHOLD_S == threshold

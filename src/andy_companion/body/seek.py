@@ -4,7 +4,7 @@ Pollen's daemon-side tracking recentres the head 2 s after the face is lost and,
 weight, ignores head commands from the app; at weight 0 it stops detecting faces at all. So
 while seeking, tracking runs at a tiny weight (SEEK_WEIGHT): faces are still detected, and the
 app's head pose is what the robot follows. As soon as a face is seen again, full weight comes
-back and Pollen's tracking takes over. This all runs in the one control loop (run_andy.py
+back and Pollen's tracking takes over. This all runs in the one control loop (andy_companion.body.attach
 wraps MovementManager's send point), never as a second controller.
 
 On waking with nobody in view, it looks around once. Voice directions count only when the
