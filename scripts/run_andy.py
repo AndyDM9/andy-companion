@@ -1,6 +1,6 @@
-"""Start Pollen's conversation app with Andy's own additions attached: the body behaviours
-(looking at the person, body follow, seek, calm idle moments), the reminder and morning-plan speaker,
-exact spoken controls, the urgent-words net, the person's pace and volume, and the privacy floor (no conversation text in any log; Andy's own memory store)."""
+"""Start Pollen's conversation app with Andy's own additions attached (see andy_companion.app_mode):
+the body behaviours, the reminder and morning-plan speaker, exact spoken controls, the urgent-words
+net, captions, the person's pace and volume, and the privacy floor."""
 
 from __future__ import annotations
 
@@ -9,17 +9,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from andy_companion import captions, privacy, settings, speaker, urgent, voice_controls, volume  # noqa: E402
-from andy_companion.body import attach as body  # noqa: E402
+from andy_companion import app_mode  # noqa: E402
 
-privacy.install()
-body.install()
-speaker.attach()
-settings.install()
-voice_controls.install()
-urgent.install()
-captions.install()
-volume.apply_saved()
+app_mode.install()
 
 from reachy_mini_conversation_app.main import main  # noqa: E402
 

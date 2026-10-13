@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (a one-click Reachy Mini app)
+
+- `reachy_app/`: generated with Pollen's `reachy-mini-app-assistant` (as Pollen's guide requires),
+  then made Andy: `AndyCompanionApp` is Pollen's conversation app with all of Andy attached. Its
+  README carries the `reachy_mini_python_app` tag for the dashboard. Publishing to a Hugging Face
+  Space waits for the founder's Hugging Face account and for this repository to be public (the
+  app installs Andy from GitHub).
+- `src/andy_companion/app_mode.py`: one `install()` used by both the desktop launcher and the
+  dashboard app, so both run the same Andy; `scripts/run_andy.py` now uses it.
+- The package ships Andy's 21 tools and profile (`andy_companion/_data/`), and an optional
+  `robot` extra with everything the robot side needs. 2 tests.
+
 ### Added (running Andy like a product)
 
 - `docs/images/architecture.svg` (and a PNG for the video): the home, the computer's three parts,

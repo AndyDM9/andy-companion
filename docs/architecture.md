@@ -34,6 +34,10 @@ The text diagram below shows the voice path in detail.
 supervisor listens for a wake phrase (Vosk, offline), and wakes Andy when one is heard, when the
 quiet time ends, or when a reminder comes due.
 
+Two ways to run the same Andy, both through `andy_companion.app_mode.install()`: on a computer
+under the supervisor (`scripts/andy`), or as a Reachy Mini dashboard app (`reachy_app/`, no
+supervisor: no wake phrase; the dashboard starts and stops it).
+
 ## Parts, and what each owns
 
 | Part | Owns | Must not |

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "andy_companion_app"
+version = "0.1.0"
+description = "Andy: a home companion for older adults who live at home, and the family who help. NVIDIA Nemotron on Nebius."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "reachy-mini",
+    "reachy_mini_conversation_app @ git+https://github.com/pollen-robotics/reachy_mini_conversation_app@v1.0.1",
+    "andy-companion[robot] @ git+https://github.com/AndyDM9/andy-companion@main",
+]
+keywords = ["reachy-mini-app"]
+
+[project.entry-points."reachy_mini_apps"]
+andy_companion_app = "andy_companion_app.main:AndyCompanionApp"
+
+[tool.setuptools]
+package-dir = { "" = "." }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+andy_companion_app = ["**/*"]

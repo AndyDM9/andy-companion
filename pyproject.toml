@@ -6,6 +6,16 @@ license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = []
 
+[project.optional-dependencies]
+# Everything the robot side needs (the Reachy Mini dashboard app installs this).
+robot = [
+    "reachy-mini==1.12.0rc1",
+    "reachy_mini_conversation_app @ git+https://github.com/pollen-robotics/reachy_mini_conversation_app@v1.0.1",
+    "opencv-python-headless>=4.10,<5",
+    "vosk>=0.3.45,<0.4",
+    "numpy>=1.26",
+]
+
 [dependency-groups]
 dev = ["pytest>=8", "numpy>=1.26", "opencv-python-headless>=4.9"]
 
@@ -15,6 +25,14 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/andy_companion"]
+
+[tool.hatch.build.targets.wheel.force-include]
+# Andy's voice tools and profile travel with the package (andy_companion.app_mode.data_dir).
+"tools" = "andy_companion/_data/tools"
+"profiles" = "andy_companion/_data/profiles"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
