@@ -279,7 +279,9 @@ def setup_state() -> Dict[str, Any]:
     from andy_companion import setup_page
 
     t = board.tokens()
-    return {"settings": setup_page.state(),
+    from andy_companion import kept
+
+    return {"settings": setup_page.state(), "kept": kept.summary(), "now": live_state(), "tavily": dict(_tavily) or None,
             "links": {"screen": f"/screen?t={t['screen']}", "family": f"/family?k={t['family']}",
                       "hood": f"/hood?t={t['screen']}"}}
 
@@ -375,6 +377,23 @@ class Handler(BaseHTTPRequestHandler):
                 if url.path == "/api/setup":
                     changed = setup_page.apply(data.get("name", ""), data.get("settings") or {})
                     return self._json({"ok": True, "changed": changed, **setup_state()})
+                if url.path in ("/api/setup/delete", "/api/setup/delete-all"):
+                    from andy_companion import kept
+
+                    name = " ".join(str(data.get("name", "")).split())[:board.NAME_LEN]
+                    if not name:
+                        raise ValueError("Your first name is needed, so Andy can tell them who deleted it.")
+                    if url.path == "/api/setup/delete":
+                        kind = str(data.get("kind", ""))
+                        if not kept.delete(kind, str(data.get("id", ""))):
+                            raise ValueError("That was already gone.")
+                        counts = {kind: 1}
+                    else:
+                        counts = kept.delete_everything()
+                    words = kept.words_for(counts)
+                    if words:
+                        board.kept_deleted(name, words)
+                    return self._json({"ok": True, "deleted": words, **setup_state()})
                 if url.path == "/api/setup/new-family-link":
                     board.new_family_link()
                     return self._json({"ok": True, **setup_state()})

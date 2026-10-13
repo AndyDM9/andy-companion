@@ -19,7 +19,9 @@ from andy_companion import board, settings
 
 # What each setting is called when Andy tells the person about a change (Andy's own voice).
 NAMES = {"place": "the town", "news_sources": "the local news sites", "events_pages": "the pages for what's on",
-         "language": "the language", "pace": "how fast I speak", "volume": "the volume", "captions": "the captions"}
+         "language": "the language", "pace": "how fast I speak", "volume": "the volume", "captions": "the captions",
+         "screen_photos": "family photos on the screen", "night_from": "when the screen dims at night",
+         "night_to": "when the screen brightens in the morning"}
 # The same, as the helper's page says it.
 SHOWN = {**NAMES, "pace": "how fast Andy speaks"}
 SITE = re.compile(r"^(https?://)?([a-z0-9-]+\.)+[a-z]{2,}(/[^\s]*)?$", re.I)
@@ -74,6 +76,17 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
         out["volume"] = volume
     if "captions" in data:
         out["captions"] = bool(data["captions"])
+    if "screen_photos" in data:
+        out["screen_photos"] = bool(data["screen_photos"])
+    for key in ("night_from", "night_to"):
+        if key in data:
+            try:
+                hour = int(data[key])
+            except (TypeError, ValueError):
+                raise ValueError("Night hours are from 0 to 23.") from None
+            if not 0 <= hour <= 23:
+                raise ValueError("Night hours are from 0 to 23.")
+            out[key] = hour
     return out
 
 

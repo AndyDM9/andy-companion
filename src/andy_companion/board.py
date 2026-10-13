@@ -161,6 +161,14 @@ def settings_changed(name: str, what: List[str], now: Optional[float] = None) ->
     _inbox_add({"type": "settings", "name": name, "what": [_tidy(w, 60) for w in what][:8], "at": now or time.time()})
 
 
+def kept_deleted(name: str, what: List[str], now: Optional[float] = None) -> None:
+    """A helper deleted things Andy keeps, on the settings page. The person hears who, and what."""
+    name = _tidy(name, NAME_LEN)
+    if not name or not what:
+        raise ValueError("A name and what was deleted are needed.")
+    _inbox_add({"type": "deleted", "name": name, "what": [_tidy(w, 60) for w in what][:8], "at": now or time.time()})
+
+
 def research_ready(topic: str, say: str, points: List[str], sources: List[Dict[str, Any]], failed: bool = False,
                    now: Optional[float] = None) -> None:
     """An answer Andy looked into is ready to say (looking.py); kept until said, like a family message."""

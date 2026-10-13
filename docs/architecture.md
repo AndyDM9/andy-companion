@@ -49,6 +49,8 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, what the person shared, messages and looks from family | Show or share anything the person did not ask to share; log a URL or token |
 | `setup_page.py` (+ `/setup`) | What a helper may change from a phone (town, news sites, what's-on pages, language, pace, volume, captions), its checks, and telling the person who changed what | Change reminders, memories or what is shared; change anything without a name and a notice to the person |
 | `live.py` | What Andy is doing right now (ready, hearing, thinking, working with the tool's name, speaking), sent to the screen server on change | Send words or tool arguments |
+| `kept.py` | Everything Andy keeps about the person, listed and deletable from the settings page | Delete without a name and a notice to the person |
+| `consent.py` | Saving tools (`remember`, `remember_moment`) run only when the person's last words asked or said yes | Keep or log the words beyond the check |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers and tool names |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
 | `urgent.py` | The deterministic net: urgent medical words get 911, crisis words get 988, in English or Spanish, if Andy's reply missed it | Keep or log the words; claim to watch over anyone |

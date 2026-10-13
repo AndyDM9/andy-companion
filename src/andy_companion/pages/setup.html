@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Set up Andy</title>
+<title>Andy's settings</title>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +41,21 @@
   .hint { font-size: 16px; color: var(--soft); margin: 6px 0 0; }
   .status { min-height: 1.5em; margin-top: 12px; }
   .status.error { color: var(--error); }
+  .hours { display: flex; align-items: center; gap: 12px; }
+  select { font: inherit; color: inherit; background: var(--panel); border: 2px solid var(--rule); border-radius: 6px; padding: 10px; }
+  .kept-group { margin-top: 18px; }
+  .kept-group h3 { font-size: 18px; margin: 0 0 6px; }
+  .kept-list { list-style: none; padding: 0; margin: 0; }
+  .kept-list li { display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--panel);
+                  border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; }
+  .kept-list .t { min-width: 0; }
+  .kept-list .when { display: block; font-size: 15px; color: var(--soft); }
+  .kept-list button { margin: 0; padding: 8px 14px; flex: none; }
+  .none { color: var(--soft); font-size: 16px; margin: 4px 0 0; }
+  button.danger { border-color: var(--error); color: var(--error); }
+  .facts { list-style: none; padding: 0; margin: 8px 0 0; }
+  .facts li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+  .facts span { color: var(--soft); text-align: right; }
   .links { list-style: none; padding: 0; margin: 10px 0 0; }
   .links li { background: var(--panel); border-left: 6px solid var(--mark); padding: 12px 14px; margin-bottom: 10px; }
   .links strong { display: block; }
@@ -52,8 +67,8 @@
 <body>
 <main>
   <section id="who">
-    <h1>Set up Andy</h1>
-    <p class="lede">Choose Andy's town, local news, language and voice.</p>
+    <h1>Andy's settings</h1>
+    <p class="lede">Set Andy up, see everything Andy keeps, and delete any of it.</p>
     <form id="name-form">
       <label for="name">Your first name</label>
       <input type="text" id="name" autocomplete="given-name" maxlength="40" required>
@@ -63,8 +78,8 @@
   </section>
 
   <form id="setup" hidden>
-    <h1>Set up Andy</h1>
-    <p class="lede">Change what you need, then save. Reminders, memories and what's shared stay theirs to set, by talking to Andy.</p>
+    <h1>Andy's settings</h1>
+    <p class="lede">Change what you need, then save. Andy tells them about every change. They can also change most of this by talking to Andy.</p>
 
     <fieldset>
       <legend>Where Andy lives</legend>
@@ -105,7 +120,11 @@
       <legend>The screen</legend>
       <div class="choices">
         <label><input type="checkbox" id="captions"> Show Andy's words on the screen (captions)</label>
+        <label><input type="checkbox" id="screen_photos"> Show family photos when Andy is idle</label>
       </div>
+      <label for="night_from">Dim the screen at night</label>
+      <div class="hours"><select id="night_from"></select><span>until</span><select id="night_to"></select></div>
+      <p class="hint">At night the screen shows only a soft clock.</p>
     </fieldset>
 
     <button type="submit">Save</button>
@@ -123,6 +142,23 @@
       <p class="status" id="link-status" role="status" aria-live="polite"></p>
     </fieldset>
 
+    <fieldset>
+      <legend>What Andy keeps</legend>
+      <p class="hint">Everything Andy keeps about them, besides these settings. Deleting anything is told to them by Andy.</p>
+      <div id="kept"></div>
+      <button type="button" class="quiet danger" id="delete-all">Delete everything Andy keeps</button>
+      <p class="status" id="kept-status" role="status" aria-live="polite"></p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Andy now</legend>
+      <ul class="facts">
+        <li><strong>Doing</strong><span id="now-state">…</span></li>
+        <li><strong>Web searches (Tavily)</strong><span id="now-tavily">…</span></li>
+      </ul>
+      <p class="hint">Timings and the services behind Andy are on the under-the-hood page.</p>
+    </fieldset>
+
     <p class="honest">Settings are kept on this computer only. This page works only on your home network, with this private link.</p>
   </form>
 </main>
@@ -130,6 +166,44 @@
   const token = new URLSearchParams(location.search).get("s") || "";
   const api = (path) => `${path}?s=${encodeURIComponent(token)}`;
   const $ = (id) => document.getElementById(id);
+  const text = (el, v) => { el.textContent = v; return el; };
+  const hourName = (h) => h === 0 ? "midnight" : h === 12 ? "noon" : `${h % 12} ${h < 12 ? "am" : "pm"}`;
+  const KEPT = [["reminder", "Reminders"], ["moment", "Remembered moments"], ["fact", "Remembered facts"],
+                ["shared", "Shared with family"], ["photo", "Photos from family"]];
+
+  function renderKept(kept) {
+    const box = $("kept"); box.replaceChildren();
+    let total = 0;
+    for (const [kind, title] of KEPT) {
+      const items = kept[kind] || [];
+      total += items.length;
+      const group = document.createElement("section"); group.className = "kept-group";
+      group.append(text(document.createElement("h3"), `${title} (${items.length})`));
+      if (!items.length) { group.append(text(Object.assign(document.createElement("p"), { className: "none" }), "None.")); box.append(group); continue; }
+      const ul = document.createElement("ul"); ul.className = "kept-list";
+      for (const it of items) {
+        const li = document.createElement("li");
+        const t = document.createElement("span"); t.className = "t";
+        t.append(it.text, text(Object.assign(document.createElement("span"), { className: "when" }), it.when || ""));
+        const b = text(Object.assign(document.createElement("button"), { type: "button", className: "quiet" }), "Delete");
+        b.setAttribute("aria-label", `Delete ${it.text}`);
+        b.addEventListener("click", () => removeKept(kind, it.id, it.text));
+        li.append(t, b); ul.append(li);
+      }
+      group.append(ul); box.append(group);
+    }
+    $("delete-all").hidden = !total;
+  }
+
+  async function removeKept(kind, id, label) {
+    if (!confirm(`Delete "${label}"? Andy will tell them.`)) return;
+    try {
+      const out = await call("/api/setup/delete", { name: who, kind, id });
+      fill(out);
+      text($("kept-status"), `Deleted. Andy will tell them that ${who} deleted ${out.deleted.join(", ")}.`);
+    } catch (err) { text($("kept-status"), err.message); }
+  }
+
   let who = "";
   let volumeTouched = false;
   try { who = localStorage.getItem("andy-setup-name") || ""; } catch (e) {}
@@ -144,6 +218,16 @@
     $("volume").value = v.volume == null ? 80 : v.volume;
     $("volume-v").textContent = $("volume").value;
     $("captions").checked = !!v.captions;
+    $("screen_photos").checked = v.screen_photos !== false;
+    for (const id of ["night_from", "night_to"]) {
+      const sel = $(id);
+      if (!sel.options.length) for (let h = 0; h < 24; h++) sel.append(new Option(hourName(h), h));
+      sel.value = v[id];
+    }
+    renderKept(s.kept || {});
+    text($("now-state"), s.now ? s.now.label : "…");
+    const t = s.tavily;
+    text($("now-tavily"), t && t.used != null ? `${t.used} of ${t.limit || "?"} credits this month` : "not reported yet");
     for (const k of ["screen", "family", "hood"]) {
       const a = $("l-" + k);
       a.href = s.links[k];
@@ -185,6 +269,7 @@
       const out = await call("/api/setup", { name: who, settings: {
         place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
         language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
+        screen_photos: $("screen_photos").checked, night_from: Number($("night_from").value), night_to: Number($("night_to").value),
         ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
       fill(out);
       volumeTouched = false;
@@ -192,6 +277,15 @@
         ? `Saved. Andy will tell them that ${who} changed ${out.changed.join(", ")}.`
         : "Nothing had changed.";
     } catch (err) { status.textContent = err.message; status.className = "status error"; }
+  });
+
+  $("delete-all").addEventListener("click", async () => {
+    if (!confirm("Delete everything Andy keeps about them? This cannot be undone. Andy will tell them.")) return;
+    try {
+      const out = await call("/api/setup/delete-all", { name: who });
+      fill(out);
+      text($("kept-status"), out.deleted.length ? `Deleted ${out.deleted.join(", ")}. Andy will tell them.` : "There was nothing to delete.");
+    } catch (err) { text($("kept-status"), err.message); }
   });
 
   $("new-family").addEventListener("click", async () => {

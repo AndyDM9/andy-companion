@@ -42,6 +42,9 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   colour reaches 7:1 contrast, tested.
 - **Family, on your terms.** Family see only what you ask Andy to share, can send Andy a message
   or a link, and Andy always tells you who looked.
+- **Everything Andy keeps, on one page.** Helpers see every reminder, remembered moment and fact,
+  shared note and photo, and can delete any of it; Andy tells you who deleted what. Andy can save
+  something only after you ask or say yes, checked in code, not left to the model.
 - **Set up from a phone, never behind your back.** A helper sets the town, news sites, language
   and voice on a setup page; Andy tells you who changed what, and you can ask it to change
   anything back. Reminders, memories and what is shared stay yours, set by talking to Andy.

@@ -29,7 +29,7 @@ def configure_env() -> None:
 def install(screen: bool = False) -> None:
     """Attach Andy's additions. With screen=True also serve the screen and family page here
     (the dashboard app has no supervisor to do it)."""
-    from andy_companion import captions, guard, privacy, settings, speaker, turns, urgent, voice_controls, volume
+    from andy_companion import captions, consent, guard, privacy, settings, speaker, turns, urgent, voice_controls, volume
     from andy_companion.body import attach as body
 
     configure_env()
@@ -40,6 +40,7 @@ def install(screen: bool = False) -> None:
     voice_controls.install()
     urgent.install()
     guard.install()
+    consent.install()
     captions.install()
     turns.install()
     volume.apply_saved()

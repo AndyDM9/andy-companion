@@ -87,7 +87,7 @@ def test_the_setup_page_needs_its_own_token(server):
 
 def test_the_page_shows_the_links_and_a_new_family_link_replaces_the_old(server):
     with urllib.request.urlopen(f"{server}/setup?s={board.tokens()['setup']}", timeout=5) as r:
-        assert "Set up Andy" in r.read().decode()
+        assert "Andy's settings" in r.read().decode()
     old = board.tokens()["family"]
     out = post(server, "/api/setup/new-family-link", {})
     new = board.tokens()["family"]

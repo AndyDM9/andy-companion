@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (Andy's settings: everything Andy keeps, seen and deletable; saving only when asked)
+
+- **Recommendation adopted:** no settings gear on the TV (it is read from across the room and has no
+  keyboard); the person changes things by voice, and helpers use one Settings page on their phone, as
+  Echo Show, Nest Hub and ElliQ do. The setup page becomes **Andy's settings**.
+- **What Andy keeps** (`src/andy_companion/kept.py`): every reminder, remembered moment (including the
+  past week's, kept to ask after), remembered fact (Pollen's `remember`, in Andy's own file),
+  note shared with family and photo from family, each with a Delete button, and "Delete everything
+  Andy keeps". A helper's name is needed; Andy tells the person who deleted what ("Anna deleted from
+  what you keep: a reminder"). The research principle: the older adult decides what is kept.
+- **Found while building it:** Andy's memory held two facts nobody asked him to keep (Pollen's
+  `remember` used them from ordinary talk). **Consent gate** (`src/andy_companion/consent.py`): every
+  tool call passes it; `remember` and `remember_moment` run only if the person's last words asked
+  ("remember…", "don't forget…") or said yes ("yes", "please do", "sí", "claro"). The last words are
+  held in memory for this check only. The two facts are left for the founder to see and delete.
+- **The screen** section: family photos when idle (on or off) and night dimming hours (for the next
+  step). **Andy now:** what Andy is doing and this month's Tavily credits.
+- 11 tests (+ settings checks). Screenshot: `docs/images/settings-kept.png`.
+
 ### Fixed (the weather on a Spanish screen)
 
 - On the founder's TV in Spanish the weather stayed English ("Tonight: Mostly Clear", "De the National
