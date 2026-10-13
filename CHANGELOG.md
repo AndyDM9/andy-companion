@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (a live-test script)
+
+- `docs/live-test.md`: the 20 things built but not yet tried on the robot (captions, the hood
+  page, reading a letter, the eyes, family photos and messages, moments, a reminder without head
+  moves, Spanish, the urgent-words net in both languages, quiet and wake), with the exact words to
+  say, what should happen, and the endpoint started before and stopped after.
+
 ### Added (under the hood: every turn's timings, live)
 
 - `src/andy_companion/turns.py`: times each spoken turn from the activity marks Pollen's app

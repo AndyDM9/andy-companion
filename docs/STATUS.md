@@ -46,5 +46,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 ## Open problems
 
+The live test of everything built today is [live-test.md](live-test.md).
+
 
 - None open.
