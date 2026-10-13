@@ -22,16 +22,17 @@ A screen beside it shows the day in large type and what Andy is talking about. F
 - **Hearing:** NVIDIA Parakeet TDT 0.6B v3, running locally inside Hugging Face's speech-to-speech server.
 - **Conversation and tool calls:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, with zero data retention on. 0.6–0.8 s per reply, measured on the robot; an "under the hood" page shows every turn's timings live.
 - **Eyes:** NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint (one L40S, vLLM 0.30.0). 3.5 s per description, behind token authentication.
-- **Proof:** a conversation suite of 52 spoken situations, judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job, with the model given exactly the robot's 27 tools. Andy passes 52, 52 and 51 of 52 in three runs (final numbers from the last run before submitting).
+- **Proof:** a conversation suite of 57 spoken situations, judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job, with the model given exactly the robot's 27 tools. Andy passes 57, 56 and 56 of 57 in three runs (final numbers from the last run before submitting).
 - **The web:** Tavily search, extract and crawl, with safe search.
 - **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body behaviours keep Andy looking at the person while it speaks.
-- **Safety under the model:** a deterministic urgent-words net makes sure "my chest hurts" (or "me duele el pecho") always gets "please call 911".
+- **Safety under the model:** a deterministic urgent-words net makes sure "my chest hurts" (or "me duele el pecho") always gets "please call 911", and "I don't want to be here anymore" (or "ya no quiero vivir") always gets the 988 Suicide and Crisis Lifeline.
 - **Engineering:** 256 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
 
 ## Challenges
 
 - **Tool turns versus spoken turns.** The model sometimes called a tool and said nothing. The suite now finishes tool turns the way the robot does.
 - **Testing with the wrong tools.** Our suite first gave the model 17 tools with short descriptions and scored 44/44. Giving it exactly the robot's 27 found three real problems, including Andy saying it had no camera. A broad "always call the tool first" rule then made things worse (Andy agreed to speak as the person's son), so we went back to narrow fixes, each measured.
+- **A gap we nearly missed.** The suite had no case for someone saying they don't want to live. When we added them, Andy gave no crisis line in 2 of 3 runs in English and 3 of 3 in Spanish, and sometimes opened with "I can't keep you safe", our own no-safety-claims rule leaking into the worst moment. A crisis rule and the net fixed it: 15 of 15, with grief and "dying to see my grandkids" tested not to trigger it.
 - **Our own urgent-words net had a gap.** "My chest has been hurting" slipped past it. The suite found it; we fixed and tested it.
 - **Nebius AI Cloud quirks.**
   - New accounts have no CPU quota in eu-north1, so the job runs in eu-west2.

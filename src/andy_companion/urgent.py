@@ -1,10 +1,13 @@
 """A deterministic net under the model for urgent words.
 
 When the person says something like "my chest hurts" or "I can't breathe", Andy must tell them to
-call 911. The model does so most of the time; this makes it every time. After Andy's reply to such
-a sentence, if the reply did not mention 911, Andy is asked to say it once, calmly. The words are
-looked at and dropped; nothing is kept or logged. This is a prompt to call for help, not a promise
-to watch over anyone.
+call 911. When they say they don't want to live, or that everyone would be better off without
+them, Andy must give the 988 Suicide and Crisis Lifeline (call or text 988, any time, in English
+or Spanish; 911 if in danger now). The model does so most of the time; this makes it every time.
+After Andy's reply to such a sentence, if the reply did not name 911 (or 988), Andy is asked to say
+one exact sentence, calmly, in the person's language. The words are looked at and dropped;
+nothing is kept or logged. This is a prompt to reach help, not a promise to watch over anyone.
+988 is the United States' line; another country needs its own (CRISIS_LINE).
 """
 
 from __future__ import annotations
@@ -27,11 +30,29 @@ URGENT = [r"\bchest\b(\W+\w+){0,4}?\W+(pain|pains|hurt|hurts|hurting|tight|tight
           r"\bme duele (mucho )?el pecho\b", r"dolor (en el|de) pecho", r"\bpecho\b(\W+\w+){0,3}?\W+(duele|apretado|presi[oó]n)",
           r"no puedo respirar", r"me falta (el )?aire", r"\bme ca[ií]\b", r"me he ca[ií]do", r"no me puedo levantar",
           r"ataque al coraz[oó]n", r"derrame( cerebral)?", r"me estoy ahogando", r"me desmay[eéó]"]
+# Someone saying they do not want to live. Checked before the medical words; negations ("I don't
+# want to die") are left alone, and grief or "dying to see them" never match.
+CRISIS = [r"\b(want|wanna|wish) to die\b", r"\bwish i (was|were) dead\b", r"\bwish i wasn'?t (here|alive)\b",
+          r"\b(don'?t|do not) want to (live|be alive)\b", r"\b(don'?t|do not) want to be here (anymore|any more|any longer)\b",
+          r"\b(kill|hurt) myself\b", r"\b(end|take) my (own )?life\b", r"\bend it all\b",
+          r"\b(better off|be better) without me\b", r"\bno (reason|point) (in |to )?(living|going on|being alive)\b",
+          r"\bwhat'?s the point (of|in) (living|going on|being alive)\b",
+          r"\b(feel|feeling|felt|am|i'?m) suicidal\b", r"\bthinking (about|of) (suicide|killing myself|ending (it|my life))\b",
+          # Spanish
+          r"\b(me )?quiero morir(me)?\b", r"\bno quiero (seguir )?viviendo\b", r"\bno quiero vivir\b",
+          r"\bya no quiero estar aqu[ií]\b", r"\bquitarme la vida\b", r"\bmatarme\b", r"\bsuicidarme\b",
+          r"\bestar[ií]an mejor sin m[ií]\b"]
 SPANISH = re.compile(r"\b(me|el|la|los|las|no|que|tengo|un|una|al|del|en|mi|de|por|estoy|creo|ataque|dolor|puedo|pecho|"
-                     r"duele|ca[ií]|respirar|levantar|coraz[oó]n|ahogando|desmay\w*|cocina|ahora|mucho)\b")
+                     r"duele|ca[ií]|respirar|levantar|coraz[oó]n|ahogando|desmay\w*|cocina|ahora|mucho|quiero|vivir|"
+                     r"morir\w*|matarme|vida|sin|todos|estar[ií]an|pienso|veces|ya)\b")
 NEGATION = re.compile(r"\b(no|not|don'?t|doesn'?t|didn'?t|never|without)\b[\w\s']{0,20}$")
 SAID_911 = re.compile(r"\b(911|nine[- ]one[- ]one|emergency services|ambulance|ambulancia|emergencias)\b", re.I)
 SAY = "Please call 911 now, or ask someone nearby to call for you."
+CRISIS_LINE = "988"
+SAY_CRISIS = ("I'm really glad you told me. You can call or text 988 any time, day or night, to talk with someone "
+              "right now, and if you might be in danger, please call 911.")
+SAY_CRISIS_ES = ("Me alegra mucho que me lo haya dicho. Puede llamar o enviar un mensaje al 988 a cualquier hora, "
+                 "también en español, para hablar con alguien ahora mismo, y si está en peligro, llame al 911.")
 SAY_ES = "Por favor, llame al 911 ahora, o pida a alguien cercano que llame por usted."
 FRAME = ("[URGENT WORDS heard from the person just now; this is Andy's own check, not something they said.] "
          f"Say exactly this, calmly, and nothing else: {SAY}")
@@ -39,17 +60,37 @@ FRAME_ES = ("[URGENT WORDS heard from the person just now, in Spanish; this is A
             f"said.] Say exactly this, calmly, and nothing else: {SAY_ES}")
 
 
-def frame_for(text: str) -> str:
-    return FRAME_ES if len(SPANISH.findall(str(text).lower())) >= 2 else FRAME
+FRAME_CRISIS = ("[CRISIS WORDS heard from the person just now; this is Andy's own check, not something they said.] "
+                "Stay warm and keep talking with them. Say this, gently, and nothing else for now: " + SAY_CRISIS)
+FRAME_CRISIS_ES = ("[CRISIS WORDS heard from the person just now, in Spanish; this is Andy's own check, not something "
+                   "they said.] Stay warm and keep talking with them. Say this, gently, and nothing else for now: "
+                   + SAY_CRISIS_ES)
+SAID_988 = re.compile(r"\b988\b|nine[- ]eight[- ]eight|nueve[- ]ocho[- ]ocho", re.I)
 
 
-def is_urgent(text: str) -> bool:
+def _matches(patterns, text: str) -> bool:
     value = " ".join(str(text).lower().replace("’", "'").split())
-    for pattern in URGENT:
+    for pattern in patterns:
         for m in re.finditer(pattern, value):
             if not NEGATION.search(value[:m.start()]):
                 return True
     return False
+
+
+def is_crisis(text: str) -> bool:
+    return _matches(CRISIS, text)
+
+
+def is_urgent(text: str) -> bool:
+    """Medical urgent words or crisis words: either way the net checks Andy's reply."""
+    return is_crisis(text) or _matches(URGENT, text)
+
+
+def frame_for(text: str) -> str:
+    spanish = len(SPANISH.findall(str(text).lower())) >= 2
+    if is_crisis(text):
+        return FRAME_CRISIS_ES if spanish else FRAME_CRISIS
+    return FRAME_ES if spanish else FRAME
 
 
 # Words a Spanish 911 sentence has and an English one does not, to hear which language Andy used.
@@ -58,11 +99,13 @@ SPANISH_REPLY = re.compile(r"\b(llame|llamar|llama|ahora|usted|alguien|cercano|a
 
 
 def needs_followup(reply: str, frame: str = FRAME) -> bool:
-    """True unless Andy's reply already named 911, in Spanish when the person spoke Spanish."""
+    """True unless Andy's reply already named 911 (988 for crisis words), in Spanish when the person
+    spoke Spanish."""
     reply = str(reply)
-    if not SAID_911.search(reply):
+    named = SAID_988 if frame in (FRAME_CRISIS, FRAME_CRISIS_ES) else SAID_911
+    if not named.search(reply):
         return True
-    return frame == FRAME_ES and not SPANISH_REPLY.search(reply)
+    return frame in (FRAME_ES, FRAME_CRISIS_ES) and not SPANISH_REPLY.search(reply)
 
 
 def install(handler_class=None) -> bool:
