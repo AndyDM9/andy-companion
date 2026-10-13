@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from andy_companion import privacy, settings, speaker, urgent, voice_controls, volume  # noqa: E402
+from andy_companion import captions, privacy, settings, speaker, urgent, voice_controls, volume  # noqa: E402
 from andy_companion.body import attach as body  # noqa: E402
 
 privacy.install()
@@ -18,6 +18,7 @@ speaker.attach()
 settings.install()
 voice_controls.install()
 urgent.install()
+captions.install()
 volume.apply_saved()
 
 from reachy_mini_conversation_app.main import main  # noqa: E402

@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (captions)
+
+- **Live captions on Andy's screen**: what Andy says appears in large, high-contrast text at the
+  bottom of the TV for 20 seconds, for anyone hard of hearing. Only Andy's words, never the
+  person's. `captions.py` hooks Andy's finished replies and sends them to the screen server on
+  this computer (`/api/caption`, local connections with the screen token only), which keeps them
+  in memory; nothing is written to disk or logged. "Hide the captions" turns them off (`captions`
+  tool, remembered). The screen now refreshes every second. 5 tests; screenshot
+  `docs/images/screen-captions.png`.
+- Andy was put in quiet mode for 90 minutes while the founder was in a meeting near the robot.
+
 ### Added (M10, preparation)
 
 - `docs/video.md`: ten live shots in 2:45, the checklist before filming, the words we use and

@@ -27,6 +27,7 @@ default_tools = [
   "forget_moment",
   "what_you_remember",
   "describe_photo",
+  "captions",
 ]
 +++
 

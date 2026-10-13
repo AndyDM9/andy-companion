@@ -24,6 +24,20 @@ from andy_companion import board, clock, reminders
 
 logger = logging.getLogger("andy.screen")
 PAGES = Path(__file__).parent / "pages"
+CAPTION_FOR_S = 20.0
+# Andy's last spoken words, for the screen's captions. Memory only: never written to disk or logged.
+_caption: Dict[str, Any] = {"text": "", "at": 0.0}
+
+
+def set_caption(text: str, now: Optional[float] = None) -> None:
+    import time as _t
+    _caption["text"] = " ".join(str(text).split())[:400]
+    _caption["at"] = now if now is not None else _t.time()
+
+
+def caption(now: Optional[float] = None) -> str:
+    import time as _t
+    return _caption["text"] if (now if now is not None else _t.time()) - _caption["at"] <= CAPTION_FOR_S else ""
 MAX_BODY = 4096
 HEADERS = {
     "Content-Security-Policy": ("default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' "
@@ -44,8 +58,11 @@ def today_plan(now: Optional[datetime] = None) -> Dict[str, Any]:
 
 
 def screen_state(now: Optional[datetime] = None) -> Dict[str, Any]:
+    from andy_companion import settings
+
     state = today_plan(now)
     state["showing"] = board.showing()
+    state["caption"] = caption() if settings.get().get("captions", True) else ""
     return state
 
 
@@ -101,6 +118,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:  # noqa: N802
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
+        if url.path == "/api/caption" and _ok(q.get("t"), "screen") and self.client_address[0] in ("127.0.0.1", "::1"):
+            length = int(self.headers.get("Content-Length") or 0)
+            if length > MAX_BODY:
+                return self._json({"error": "too long"}, 413)
+            try:
+                set_caption(json.loads(self.rfile.read(length) or b"{}").get("text", ""))
+            except ValueError:
+                return self._json({"error": "bad caption"}, 400)
+            return self._json({"ok": True})
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
         length = int(self.headers.get("Content-Length") or 0)

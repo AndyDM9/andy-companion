@@ -18,7 +18,7 @@ from andy_companion.reminders import DATA_DIR
 FILE = DATA_DIR / "settings.json"
 PACES = ("normal", "slow")
 DEFAULTS: Dict[str, Any] = {"pace": "normal", "volume": None, "last_morning": None,
-                            "place": None, "news_sources": [], "events_pages": []}
+                            "place": None, "news_sources": [], "events_pages": [], "captions": True}
 STEP = 15
 
 

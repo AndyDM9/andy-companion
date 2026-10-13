@@ -41,7 +41,7 @@ def test_one_reminder_reads_naturally():
 
 def test_settings_default_and_stick():
     assert settings.get() == {"pace": "normal", "volume": None, "last_morning": None, "place": None,
-                            "news_sources": [], "events_pages": []}
+                            "news_sources": [], "events_pages": [], "captions": True}
     settings.update(pace="slow", volume=70)
     assert settings.get()["pace"] == "slow" and settings.get()["volume"] == 70
 

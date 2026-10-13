@@ -25,8 +25,8 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   what's on this week, a link someone sent, and whether a message looks like a known scam.
 - **Your pace and your volume.** "Please speak more slowly" and "speak up" stick.
 - **Quiet when you want it.** "Be quiet for an hour", "goodnight", and "Andy, wake up".
-- **A screen beside it.** A TV or monitor shows the day in large type, what's next, and what
-  Andy is talking about. Its colours follow the time of day.
+- **A screen beside it.** A TV or monitor shows the day in large type, what's next, what Andy
+  is talking about, and **live captions of what Andy says**. Its colours follow the time of day.
 - **Family, on your terms.** Family see only what you ask Andy to share, can send Andy a message
   or a link, and Andy always tells you who looked.
 

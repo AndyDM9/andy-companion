@@ -51,5 +51,6 @@ quiet time ends, or when a reminder comes due.
 - Nebius Token Factory runs with zero data retention switched on.
 - Nothing the person says is stored, except what they ask Andy to remember (`memory.json`) and
   the reminders they set (`reminders.json`), and their pace and volume (`settings.json`), all owner-only in `~/.local/share/andy-companion/`.
+- Captions of Andy's own words live only in the screen server's memory, for 20 seconds.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
   and `voice/serve.py` silences the voice server's one transcript print.
