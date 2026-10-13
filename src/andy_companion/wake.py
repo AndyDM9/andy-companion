@@ -28,16 +28,25 @@ MODEL_DIR = DATA_DIR / "models" / MODEL_NAME
 
 # The recogniser may only choose between these (or "[unk]"), so ordinary speech can't be
 # mistaken for a free-form match.
-TRIGGERS = ("andy wake up", "wake up andy", "hey andy wake up", "andy time to wake up",
-            "andy i'm back", "i'm back andy", "good morning andy", "andy good morning")
+WAKE_UP = ("andy wake up", "wake up andy", "hey andy wake up", "andy time to wake up")
+# Greetings wake Andy from sleep, where they are natural, but never end a quiet spell the person
+# asked for: "Good morning, Andy" said to someone else called Andy (on 2026-10-13, very likely the
+# founder, in a meeting near the robot) woke it 47 minutes early. Only "Andy, wake up" ends quiet.
+GREETINGS = ("andy i'm back", "i'm back andy", "good morning andy", "andy good morning")
+TRIGGERS = (*WAKE_UP, *GREETINGS)
 GRAMMAR = [*TRIGGERS, "andy", "wake up", "good morning", "[unk]"]
 
 RATE = 16000
 CHUNK = RATE // 10 * 2  # 0.1 s of 16-bit mono
 
 
-def is_trigger(text: str) -> bool:
-    return " ".join(text.lower().split()) in TRIGGERS
+def is_trigger(text: str, triggers=TRIGGERS) -> bool:
+    return " ".join(text.lower().split()) in triggers
+
+
+def triggers_for(mode: str):
+    """Asleep: any wake phrase. Quiet (the person asked for it): only an explicit wake-up."""
+    return WAKE_UP if mode == "quiet" else TRIGGERS
 
 
 def mic_source() -> Optional[str]:
@@ -79,13 +88,14 @@ def mic_chunks(source: str) -> Iterator[bytes]:
         proc.wait(timeout=5)
 
 
-def heard(chunks: Iterator[bytes], recognizer, should_stop: Callable[[], bool], check_every: int = 10) -> Optional[str]:
+def heard(chunks: Iterator[bytes], recognizer, should_stop: Callable[[], bool], check_every: int = 10,
+          triggers=TRIGGERS) -> Optional[str]:
     """Feed audio until a wake phrase is recognised ("phrase") or should_stop() says another reason
     to wake (or to stop listening) has come up (None)."""
     for i, data in enumerate(chunks):
         if i % check_every == 0 and should_stop():
             return None
-        if recognizer.AcceptWaveform(data) and is_trigger(json.loads(recognizer.Result()).get("text", "")):
+        if recognizer.AcceptWaveform(data) and is_trigger(json.loads(recognizer.Result()).get("text", ""), triggers):
             logger.info("Wake phrase heard")
             return "phrase"
     return None

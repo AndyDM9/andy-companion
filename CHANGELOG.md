@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (a greeting to someone else ended Andy's quiet spell)
+
+- **What happened:** Andy was quiet until 16:51 while the founder was in a meeting. At 16:03 the
+  wake listener heard a wake phrase and woke Andy, which then listened to the room for 25 minutes
+  and took three turns, two of them tool calls: `set_volume` (100 to 85) and `set_pace`. Nothing
+  heard was kept or logged, so the words are unknown. The volume was put back to 100 and Andy
+  back to quiet until 16:51.
+- **Why:** measured on 510 seconds of real read speech (73 LibriSpeech recordings), Vosk with
+  Andy's phrase list made **no** false wake phrases, so recognition is not the problem. The wake
+  phrases include greetings, "Good morning, Andy" and "I'm back, Andy", and the founder is called
+  Andy: in a meeting, someone very likely said one to him.
+- **Fix** (`wake.py`, `supervisor.py`): a quiet spell the person asked for ends only on an explicit
+  wake-up ("Andy, wake up", "wake up, Andy", "hey Andy, wake up", "Andy, time to wake up");
+  greetings still wake Andy from sleep, where they are natural. 2 tests.
+
 ### Added (a second look: NVIDIA Nemotron 3.5 Content Safety on a Nebius endpoint)
 
 - `src/andy_companion/guard.py`: while Andy is already answering, the person's words also go to

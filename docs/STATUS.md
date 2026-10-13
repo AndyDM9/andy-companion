@@ -49,6 +49,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 ## Open problems
 
+- The robot is named after the person most likely to be spoken to near it in this household (the founder). While quiet, only "Andy, wake up" ends it (fixed 2026-10-13); while awake, Andy still answers anyone in the room, so a call or meeting near the robot should be held with Andy quiet or asleep.
+
 The live test of everything built today is [live-test.md](live-test.md).
 
 

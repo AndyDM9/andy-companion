@@ -83,7 +83,9 @@ def wait_asleep() -> str:
         from vosk import KaldiRecognizer
 
         recognizer = KaldiRecognizer(model, wake.RATE, json.dumps(wake.GRAMMAR))
-        if wake.heard(wake.mic_chunks(source), recognizer, should_stop=lambda: wake_reason() is not None) == "phrase":
+        triggers = wake.triggers_for(state.current()["mode"])
+        if wake.heard(wake.mic_chunks(source), recognizer, should_stop=lambda: wake_reason() is not None,
+                      triggers=triggers) == "phrase":
             return "wake phrase"
 
 

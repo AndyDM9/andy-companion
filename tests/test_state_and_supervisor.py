@@ -100,3 +100,23 @@ def test_chimes_are_short_clean_wavs():
 def test_no_chime_unless_awake():
     state.asleep()
     assert chimes.play("reminder", opener=lambda *a, **k: (_ for _ in ()).throw(AssertionError("played"))) is False
+
+
+def test_only_an_explicit_wake_up_ends_a_quiet_spell():
+    """'Good morning, Andy' said to another Andy woke the robot early from quiet (2026-10-13)."""
+    assert wake.triggers_for("quiet") == wake.WAKE_UP
+    assert not wake.is_trigger("good morning andy", wake.triggers_for("quiet"))
+    assert not wake.is_trigger("i'm back andy", wake.triggers_for("quiet"))
+    assert wake.is_trigger("andy wake up", wake.triggers_for("quiet"))
+    assert wake.is_trigger("good morning andy", wake.triggers_for("asleep"))
+
+
+def test_a_greeting_heard_while_quiet_does_not_wake():
+    class Rec:
+        def AcceptWaveform(self, data):
+            return True
+
+        def Result(self):
+            return json.dumps({"text": "good morning andy"})
+
+    assert wake.heard(iter([b"x"] * 20), Rec(), should_stop=lambda: False, triggers=wake.triggers_for("quiet")) is None
