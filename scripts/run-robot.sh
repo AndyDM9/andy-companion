@@ -3,7 +3,7 @@
 # pointed at the local voice server. Needs the Reachy Mini daemon running.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-APP_PY="${ANDY_APP_PYTHON:?set ANDY_APP_PYTHON to the python of an environment with reachy-mini-conversation-app 1.0.1}"
+APP_PY="${ANDY_APP_PYTHON:-$ROOT/robot/.venv/bin/python}"   # cd robot && uv sync
 export REACHY_MINI_CUSTOM_PROFILE=companion
 export REACHY_MINI_EXTERNAL_PROFILES_DIRECTORY="$ROOT/profiles"
 export REACHY_MINI_EXTERNAL_TOOLS_DIRECTORY="$ROOT/tools"

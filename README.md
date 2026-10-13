@@ -1,64 +1,108 @@
 # Andy Companion
 
-An open-source home companion robot for older adults who live at home, and the family who
-help. It runs on a [Reachy Mini](https://huggingface.co/blog/reachy-mini), and its brain is
-NVIDIA Nemotron on [Nebius Token Factory](https://tokenfactory.nebius.com/).
+A small home robot for older adults who live at home, and the family who help. Andy runs on a
+Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It hears with NVIDIA
+Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with a Nemotron vision
+model on a Nebius Serverless Endpoint. It keeps nothing it hears.
 
-> Work in progress for the Nebius x NVIDIA Global AI Hackathon (Physical AI track), 2026.
-
-## How it works
-
-```
-microphone ─▶ NVIDIA Parakeet (speech-to-text, local GPU)
-          ─▶ NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory (reasoning and tool calls)
-          ─▶ text-to-speech (local GPU) ─▶ speaker
-                         │
-                         └─▶ tool calls ─▶ Reachy Mini head, antennas and body
-```
-
-- `voice/` runs [huggingface/speech-to-speech](https://github.com/huggingface/speech-to-speech)
-  in `serve` mode, which speaks the OpenAI Realtime protocol on `127.0.0.1:8765`.
-- `profiles/companion/` is the companion's profile for Pollen Robotics'
-  [reachy_mini_conversation_app](https://github.com/pollen-robotics/reachy_mini_conversation_app).
-- `tools/` holds the companion's own tools.
-
-## What Andy does, and never does
-
-- Reminders at the times you choose, in your words.
-- Remembers what you ask it to, and forgets what you ask it to.
-- Speaks at the pace and volume you choose.
-- It is a robot, and it says so. It never speaks as, or imitates, a real person.
-- It never gives medicine doses or medical advice, and never asks for money or passwords.
-
-## Andy's screen and the family page
-
-A screen beside Andy shows the day in large type, today's reminders, and what Andy is talking
-about, with sources. Its colours follow the time of day.
+> Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
 
 ![Andy's screen in the afternoon](docs/images/screen-afternoon.png)
 
-Family see only what the person chose to share, can send Andy a message or a link, and the
-person always hears who looked.
+## What Andy does
 
-<img src="docs/images/family-page.png" alt="The family page on a phone" width="300">
+- **Talks, and keeps looking at you.** Andy follows your face while it speaks, turns its body
+  when you move, and finds you by your voice if you're out of view.
+- **Says it's a robot.** It never pretends to be a person, and never speaks as someone you know.
+- **Knows the day, and never guesses it.** "What's on today?" gets the same words every time,
+  and each morning Andy offers the day's plan.
+- **Reminders at the times you choose, in your words.** One-off or daily. A reminder wakes Andy
+  if it is asleep, so none is missed.
+- **Reads a letter you hold up.** It reads it on the computer, explains it simply, and offers to
+  look it up if it asks for money or details.
+- **Looks things up, and names the source.** Local news from papers you choose, opening hours,
+  what's on this week, a link someone sent, and whether a message looks like a known scam.
+- **Your pace and your volume.** "Please speak more slowly" and "speak up" stick.
+- **Quiet when you want it.** "Be quiet for an hour", "goodnight", and "Andy, wake up".
+- **A screen beside it.** A TV or monitor shows the day in large type, what's next, and what
+  Andy is talking about. Its colours follow the time of day.
+- **Family, on your terms.** Family see only what you ask Andy to share, can send Andy a message
+  or a link, and Andy always tells you who looked.
 
-## Measured on a Reachy Mini Lite (2026-10-13)
+What Andy never does: give medicine doses or medical advice, ask for money or passwords, claim to
+keep anyone safe, or keep recordings or transcripts.
+
+## How it uses NVIDIA and Nebius
+
+| Part | Model or service | Where it runs |
+|---|---|---|
+| Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
+| Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
+| Eyes ("what do you see?") | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0 | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
+| Judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
+| The conversation suite | 36 spoken situations, 14 areas | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
+| The web | Tavily search, extract, crawl (safe search on) | Tavily API |
+
+## Measured (Reachy Mini Lite, 2026-10-13)
 
 | Step | Time |
 |---|---|
 | Parakeet speech-to-text | 0.02–0.08 s |
-| Nemotron 3.5 Lightning on Token Factory (reply or tool call) | 0.62–0.83 s |
-| Text-to-speech, first audio | 0.10–0.15 s |
+| Nemotron 3.5 Lightning reply or tool call | 0.62–0.83 s |
+| Text-to-speech, first audio | 0.10–0.33 s |
+
+**The conversation suite** ([evals/](evals/)): 36 spoken situations, judged by Nemotron 3 Ultra.
+- **Baseline:** 27/36.
+- **After the fixes:** 35, 36 and 36 over three runs. The fixes were six profile weaknesses, plus three flawed cases fixed openly in the suite.
+- **The urgent-words net:** a deterministic check under the model makes sure "my chest hurts" always gets "please call 911 now".
+
+Scorecards are in [evals/results/](evals/results/).
+
+## Privacy
+
+- No audio or transcript is kept or logged. Log records are redacted as they are made, and tests prove it.
+- Andy's only stored data are what you ask it to remember, your reminders and your settings, in owner-only files on the robot's computer.
+- Pictures stay on the computer, except when you ask "what do you see?". Then one picture goes over HTTPS to your own Nebius endpoint and is not kept.
+- Keys never enter this repository; a pre-commit hook blocks them.
 
 ## Setup
 
-1. Keys in `~/.config/companion-hackathon/.env` (see `.env.example`), mode 600. Turn on zero
-   data retention in your Token Factory organisation settings.
-2. Voice server: `cd voice && uv sync && ./run.sh`
-3. Robot: the Reachy Mini daemon running, then
-   `ANDY_APP_PYTHON=/path/to/python-with-reachy-mini-conversation-app-and-vosk ./scripts/andy`
-   (the camera is used only for face tracking)
+**You need:**
+- Ubuntu 24.04 with an NVIDIA GPU (8 GB or more) for the voice server;
+- a Reachy Mini with Pollen's daemon running ([Pollen's guide](https://huggingface.co/docs/reachy_mini));
+- `tesseract-ocr`, and [uv](https://docs.astral.sh/uv/);
+- a Nebius Token Factory key and a Tavily key.
+
+1. **Keys.** Copy `.env.example` to `~/.config/companion-hackathon/.env` and fill it in. Then
+   `chmod 600` it. Turn on zero data retention in Token Factory's organisation settings.
+2. **Voice server.** `cd voice && uv sync && ./run.sh`
+3. **Robot side.** `cd robot && uv sync`, then from the repository root run `./scripts/andy`.
+4. **Your home.** `python scripts/settings.py place "Your town, State"`, then optionally
+   `news add yourlocalpaper.com`. `python scripts/settings.py links` prints the screen and family
+   page addresses.
+5. **Optional: eyes.** With the [Nebius CLI](https://docs.nebius.com/cli), run
+   `cloud/vision-endpoint.sh create`, then `status` until it is RUNNING. Run `stop` when you're
+   done; a stopped endpoint costs nothing for compute.
+6. **Optional: the suite on Nebius.** `cloud/safety-job.sh run`, or locally
+   `uv run python evals/run_suite.py --runs 3`.
+
+Tests: `uv run pytest`, plus the robot-side tests with `PYTHONPATH=src robot/.venv/bin/python -m pytest tests`.
+
+## Repository
+
+| Path | What it is |
+|---|---|
+| `src/andy_companion/` | Andy's own code: clock, reminders, speaker, body behaviours, privacy, web, reading, vision, screen, supervisor |
+| `tools/` | The voice tools Andy can call |
+| `profiles/companion/` | Who Andy is and what it never does |
+| `voice/` | The voice server (Parakeet, Nemotron on Token Factory, text-to-speech) |
+| `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
+| `cloud/` | The Nebius Serverless Endpoint and Job scripts |
+| `evals/` | The conversation suite and its scorecards |
+| `docs/` | [Plan](docs/PLAN.md), [status](docs/STATUS.md), [architecture](docs/architecture.md), [decisions](docs/decisions/) |
 
 ## Licence
 
 Apache-2.0. See [LICENSE](LICENSE).
+- Pollen's conversation app and Hugging Face's speech-to-speech are Apache-2.0.
+- The NVIDIA models are under the NVIDIA Open Model License.

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Run Andy under its supervisor: awake, asleep or quiet, woken by voice, by time, or by a due reminder.
-#   ANDY_APP_PYTHON=/path/to/python ./scripts/andy
+#   ./scripts/andy        (after: cd robot && uv sync)
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-: "${ANDY_APP_PYTHON:?set ANDY_APP_PYTHON to the python of an environment with reachy-mini-conversation-app 1.0.1 and vosk}"
+ANDY_APP_PYTHON="${ANDY_APP_PYTHON:-$ROOT/robot/.venv/bin/python}"   # cd robot && uv sync
 export ANDY_APP_PYTHON PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
 exec "$ANDY_APP_PYTHON" -m andy_companion.supervisor "$@"

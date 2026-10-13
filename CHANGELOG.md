@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M9, ship)
+
+- **Andy's own robot environment** (`robot/pyproject.toml`): reachy-mini 1.12.0rc1, Pollen's
+  conversation app at its v1.0.1 tag, OpenCV and Vosk. `scripts/andy` and `run-robot.sh` use it
+  by default. All 181 tests pass in it, and Andy now runs from it on the robot.
+- **README for judges**: what Andy does and never does, exactly how each NVIDIA model and Nebius
+  product is used, measurements, the suite's scores, privacy, setup from a fresh clone, and the
+  repository's layout.
+
 ### Added (M8, proof; M6, eyes)
 
 - **The urgent-words net** (`urgent.py`): after Andy replies to a sentence such as "my chest

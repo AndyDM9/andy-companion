@@ -15,7 +15,7 @@ only when it is true, in the same commit that makes it true.
 - [x] Open-source licence file at the top level (Apache-2.0)
 - [ ] Licence visible in the repository's About section
 - [ ] README: setup instructions that work from a fresh clone
-- [ ] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
+- [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
 - [ ] No keys, secrets or personal data anywhere in the history
 
 ## The video

@@ -1,0 +1,20 @@
+[project]
+name = "andy-companion-robot"
+version = "0.1.0"
+description = "The robot side of Andy: Pollen's Reachy Mini conversation app plus Andy's tools and behaviours"
+# Reachy Mini's SDK supports Python 3.10 to 3.12.
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "reachy-mini==1.12.0rc1",
+    # Not on PyPI; pinned to its release tag.
+    "reachy_mini_conversation_app @ git+https://github.com/pollen-robotics/reachy_mini_conversation_app@v1.0.1",
+    "opencv-python-headless>=4.10,<5",   # person finding, reading letters, camera frames
+    "vosk>=0.3.45,<0.4",                 # the offline wake phrase
+    "numpy>=1.26",
+]
+
+[tool.uv]
+package = false
+
+[tool.hatch.metadata]
+allow-direct-references = true
