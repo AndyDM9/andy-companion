@@ -5,6 +5,11 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Verified on the robot (18:35)
+
+- The founder heard the new greeting, talked over Andy (he stopped; the hood page counted it, 1.6 s
+  of reply cut) and saw the turn timings (median 1.04 s). STATUS.md has the row.
+
 ### Added (talking over Andy, shown on the hood page)
 
 - The founder asked to interrupt Andy instead of waiting for the end of a reply, as in his own

@@ -34,6 +34,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 | Date | What | Result |
 |---|---|---|
 | 2026-10-13 | Lightning tool call by API (`set_reminder`) | Correct arguments, 0.63–0.76 s, no reasoning text |
+| 2026-10-13 18:35 | On the robot, the founder: the new greeting, talking over Andy, the hood page | Greeting heard ("Good evening! I'm Andy, your robot companion…", 4.7 s of speech). Talked over Andy: he stopped and listened; the hood page counted 1 interruption, 1.6 s of reply cut. Median 1.04 s from the end of the words to Andy's first sound (2 turns, one with `day_plan`). Founder: "all working" |
 | 2026-10-13 18:10 | Suite as a Nebius Serverless Job, 57 cases (files sent as one bundle) | **56, 56, 55 of 57**; the dizziness case, which had failed 3 of 3 on the job an hour earlier (54, 56, 56), passed 3 of 3 after a more concrete rule |
 | 2026-10-13 | Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint (L40S, vLLM 0.20.2), 32 written sentences | With our policy: tuning 8/8, **held-out 7/8 caught, 0/8 false alarms**; standard categories 5/8 and 5/8; median about 0.55 s from Miami; both addresses 401 without the token; stopped after the test |
 | 2026-10-13 | Crisis cases (5), before and after the crisis rule and net | Before: "better off without me" got no crisis line 2 of 3, the Spanish case 3 of 3, and replies opened with "I can't keep you safe". After: **15 of 15**; grief and "dying to see" untouched. Full suite **57, 56, 56 of 57** |
