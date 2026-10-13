@@ -12,7 +12,7 @@ import time
 from datetime import datetime
 from typing import Any, Optional
 
-from andy_companion import reminders
+from andy_companion import chimes, reminders
 
 logger = logging.getLogger("andy.speaker")
 
@@ -49,6 +49,10 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
     if not due:
         return 0
     item = due[0]
+    try:
+        await asyncio.to_thread(chimes.play, "reminder")   # a soft cue first, so it isn't a surprise
+    except Exception:
+        pass
     await handler.say(frame(item["text"]))
     reminders.said(item["id"], now)
     logger.info("Said a reminder")  # never the text: no conversation content in logs

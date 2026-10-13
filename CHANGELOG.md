@@ -7,6 +7,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Added (M3, body behaviours)
 
+- **Sleep, quiet, wake, and reminders that are never missed**: `scripts/andy` runs Andy under
+  `supervisor.py`. "Goodnight" (Pollen's `go_to_sleep`) puts Andy to sleep; the new `quiet_for`
+  tool rests it for 1 minute to a day. While asleep or quiet the supervisor listens offline with
+  Vosk for a few wake phrases only ("Andy, wake up", "good morning Andy"), and **wakes Andy by
+  itself when a reminder comes due or the quiet time ends**. `chimes.py` plays a soft cue
+  before each reminder and on waking and sleeping. `state.py` keeps awake/asleep/quiet in an
+  owner-only file. 17 new tests.
 - **Andy keeps looking at the person**: `src/andy_companion/body/` brings over the earlier
   assistant's general-purpose body modules, rewritten without private links: `gaze` (keeps
   following the face while Andy speaks, which Pollen's app pauses; softens upward looks),

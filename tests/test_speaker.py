@@ -26,6 +26,10 @@ class FakeHandler:
 @pytest.fixture
 def store(tmp_path, monkeypatch):
     monkeypatch.setattr(reminders, "STORE", tmp_path / "reminders.json")
+    monkeypatch.setattr(speaker.chimes, "play", lambda name: chimed.append(name))
+
+
+chimed = []
 
 
 def test_frame_marks_the_reminder_as_data_not_instructions():
@@ -53,6 +57,7 @@ def test_due_reminder_is_said_and_then_removed(store):
     assert said == 1
     assert "call my daughter" in h.said[0]
     assert reminders.pending() == []
+    assert chimed[-1] == "reminder"
 
 
 def test_nothing_is_said_while_busy_and_the_reminder_waits(store):
