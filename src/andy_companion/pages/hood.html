@@ -33,6 +33,17 @@
   .now b { color: var(--ink); }
   @media (max-width: 640px) { .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+  /* Health: one glance at everything Andy depends on; words and a colour, never colour alone. */
+  .health { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1vw; margin: 2.5vh 0 0; }
+  .tile { border: 2px solid var(--rule); border-radius: 8px; padding: 1.1vh 1vw; background: var(--panel); }
+  .tile b { display: flex; align-items: center; gap: .5em; font-size: clamp(15px, 1.2vw, 21px); }
+  .tile b::before { content: ""; width: .7em; height: .7em; border-radius: 50%; background: var(--soft); flex: none; }
+  .tile[data-status="ok"] b::before { background: var(--tool); }
+  .tile[data-status="warn"] { border-color: var(--gold); }
+  .tile[data-status="warn"] b::before { background: var(--gold); }
+  .tile[data-status="off"] b::before { background: transparent; border: 2px solid var(--soft); }
+  .tile span { display: block; color: var(--soft); font-size: clamp(13px, 1vw, 17px); margin-top: .3em; }
+
   .headline { display: grid; grid-template-columns: auto 1fr; gap: 1vh 4vw; align-items: end;
               padding: 3vh 0; border-bottom: 2px solid var(--rule); }
   .big { font-size: clamp(72px, 11vw, 190px); font-weight: 700; line-height: .9; color: var(--gold);
@@ -74,6 +85,7 @@
     <div class="stage" id="st-speak"><b>Speak</b><span>Qwen3-TTS, on this computer</span><em></em></div>
   </section>
   <p class="now" aria-live="polite">Now: <b id="now-label">…</b></p>
+  <section class="health" id="health" aria-label="Health"></section>
 
   <section class="headline" aria-live="polite">
     <p class="big" id="big">–</p>
@@ -134,14 +146,27 @@
                     (by ? ` (${by})` : "") + ", each source named aloud");
   }
 
+  function drawHealth(tiles) {
+    const box = document.getElementById("health");
+    box.replaceChildren();
+    for (const t of tiles || []) {
+      const el = document.createElement("div"); el.className = "tile"; el.dataset.status = t.status;
+      const b = document.createElement("b"); b.textContent = t.name;
+      const s = document.createElement("span"); s.textContent = t.detail;
+      el.append(b, s); box.append(el);
+    }
+  }
+
   function draw(s) {
     drawProof(s.proof);
+    drawHealth(s.health);
     drawTavily(s.tavily);
     const iv = s.interruptions || { count: 0 };
     document.getElementById("talked-over").hidden = !iv.count;
     document.getElementById("talked-n").textContent = iv.count === 1 ? "once" : `${iv.count} times`;
     const m = s.median || {};
-    document.getElementById("big").innerHTML = m.total_ms == null ? "–" : (m.total_ms / 1000).toFixed(2) + "<small> s</small>";
+    document.getElementById("big").innerHTML = m.total_ms == null ? "<small>waiting for a turn</small>"
+                                                                 : (m.total_ms / 1000).toFixed(2) + "<small> s</small>";
     document.getElementById("hear").textContent = secs(m.hearing_ms);
     document.getElementById("reply").textContent = secs(m.reply_ms);
     const list = document.getElementById("turns");

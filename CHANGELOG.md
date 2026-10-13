@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the hood page's health tiles)
+
+- `src/andy_companion/health.py`: one glance at everything Andy depends on, words and a colour
+  (never colour alone): the robot's daemon (state and version), the voice server, Andy (awake and
+  listening; quiet or asleep with the wake listener waiting; or awake but silent), the weather feed,
+  Tavily credits (a warning past 90%), and both Nebius endpoints, running ("it costs while on") or
+  stopped ("no cost"). Local checks every 30 s, Nebius every 5 minutes, in the background; nothing
+  reads a key or a word. Live: all well, Tavily 202 of 1,000, both endpoints stopped.
+- Before any turn, the big number says "waiting for a turn" instead of a dash.
+- 4 tests. Screenshot: `docs/images/hood-health.png`.
+
 ### Added (family photos when Andy is idle; a calm night clock; sample landscapes)
 
 - **When Andy is idle**, the TV shows the photos family sent, one at a time, three minutes each, with a

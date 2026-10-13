@@ -51,6 +51,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `live.py` | What Andy is doing right now (ready, hearing, thinking, working with the tool's name, speaking), sent to the screen server on change | Send words or tool arguments |
 | `kept.py` | Everything Andy keeps about the person, listed and deletable from the settings page | Delete without a name and a notice to the person |
 | `consent.py` | Saving tools (`remember`, `remember_moment`) run only when the person's last words asked or said yes | Keep or log the words beyond the check |
+| `health.py` | The hood page's health tiles: daemon, voice server, Andy's mode, weather, Tavily credits, Nebius endpoints | Read keys or words; hold up a page while checking |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers and tool names |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
 | `urgent.py` | The deterministic net: urgent medical words get 911, crisis words get 988, in English or Spanish, if Andy's reply missed it | Keep or log the words; claim to watch over anyone |

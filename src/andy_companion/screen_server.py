@@ -182,6 +182,12 @@ def proof(results: Path = RESULTS) -> Optional[Dict[str, Any]]:
             "ran_on": best.get("ran_on", "this computer")}
 
 
+def _health() -> List[Dict[str, str]]:
+    from andy_companion import health
+
+    return health.tiles(float(_live["at"]), _weather["card"], _tavily)
+
+
 def hood_state() -> Dict[str, Any]:
     turns = list(_turns)
     plain = [t for t in turns if not t["tools"]]
@@ -190,6 +196,7 @@ def hood_state() -> Dict[str, Any]:
         "count": len(turns),
         "proof": proof(),
         "tavily": dict(_tavily) or None,
+        "health": _health(),
         "interruptions": {"count": len(_interrupts),
                           "last_cut_ms": _interrupts[-1]["cut_ms"] if _interrupts else None},
         "median": {"hearing_ms": _median([t["hearing_ms"] for t in turns]),
