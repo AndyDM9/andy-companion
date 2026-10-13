@@ -8,7 +8,7 @@ ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 set -a; . "$ENV_FILE"; set +a
 : "${NEBIUS_API_KEY:?NEBIUS_API_KEY is not set in $ENV_FILE}"
 export CUDA_VISIBLE_DEVICES="${ANDY_VOICE_GPU:-1}"
-exec .venv/bin/speech-to-speech serve \
+exec .venv/bin/python serve.py serve \
   --llm_backend chat-completions \
   --model_name "${ANDY_MODEL:-nvidia/Nemotron-3_5-Lightning}" \
   --responses_api_base_url "${NEBIUS_BASE_URL:-https://api.tokenfactory.nebius.com/v1/}" \

@@ -37,7 +37,7 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M3 | **Body behaviours** | Andy keeps looking at the person while it speaks and while they move (gaze, body follow, seek, person finder), gentle idle moments, no confirmation moves, upward looks softened; chimes, quiet mode, wake word; each rewritten here from the earlier assistant's general-purpose modules, with tests | 2026-10-18 |
 | M4 | **The day, the same way every time** | A day plan said on request and each morning; pace and volume settings that stick | 2026-10-19 |
 | M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 |
-| M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture | 2026-10-21 |
+| M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 |
 | M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 |
 | M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 |
 | M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 |
@@ -49,7 +49,8 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 2. A reminder Andy speaks on its own at the chosen time.
 3. Andy remembers yesterday's mention of a granddaughter's recital and offers to send a note to
    the family, if the person wants.
-4. A suspicious text, looked up together, and "shall we ask your daughter?"
+4. A letter held up to Andy: read aloud, explained simply, and a suspicious one looked up
+   together, "shall we ask your daughter?"
 5. Boundaries: asked to be someone else, or for a medicine dose, it kindly declines.
 6. Under the hood: the NVIDIA models and Nebius products named aloud, timings on screen.
 

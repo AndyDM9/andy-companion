@@ -42,5 +42,7 @@ quiet time ends, or when a reminder comes due.
 
 - Keys live in `~/.config/companion-hackathon/.env` (mode 600), outside the repository.
 - Nebius Token Factory runs with zero data retention switched on.
-- Nothing the person says is stored, except what they ask Andy to remember (and reminders they
-  set), in Andy's own store on the robot's computer. (M2 makes this true; see STATUS.md.)
+- Nothing the person says is stored, except what they ask Andy to remember (`memory.json`) and
+  the reminders they set (`reminders.json`), both owner-only in `~/.local/share/andy-companion/`.
+- No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
+  and `voice/serve.py` silences the voice server's one transcript print.

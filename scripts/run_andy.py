@@ -1,5 +1,6 @@
 """Start Pollen's conversation app with Andy's own additions attached: the body behaviours
-(looking at the person, body follow, seek, calm idle moments) and the reminder speaker."""
+(looking at the person, body follow, seek, calm idle moments), the reminder speaker, and the
+privacy floor (no conversation text in any log; Andy's own memory store)."""
 
 from __future__ import annotations
 
@@ -8,9 +9,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from andy_companion import speaker  # noqa: E402
+from andy_companion import privacy, speaker  # noqa: E402
 from andy_companion.body import attach as body  # noqa: E402
 
+privacy.install()
 body.install()
 speaker.attach()
 

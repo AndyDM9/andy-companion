@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (M2, privacy floor)
+
+- **No conversation text in any log**: `privacy.py` redacts every log record Pollen's app
+  creates, at creation: spoken turns are dropped, tool arguments and tool errors become
+  `[not logged]`, remembered facts are never logged; tool names, timings and error types stay.
+  `voice/serve.py` starts speech-to-speech with its one unconditional transcript print
+  (Qwen3-TTS "ASSISTANT: ...") silenced. Verified on the robot: 0 conversation lines.
+- **Andy's own memory store**: Pollen's remember/forget now keep facts in
+  `~/.local/share/andy-companion/memory.json` (owner-only), not inside the installed package
+  where another app on the robot would share them. 12 new tests.
+- `docs/feedback-notes.md`: what we meet with Nebius, NVIDIA and the tools, for the mandatory
+  Devpost feedback (and the Most Valuable Feedback prize).
+- PLAN.md M6: "Andy, read this letter for me" (Tesseract on the computer, explained by
+  Nemotron, with a Tavily scam lookup).
+
 ### Added (M3, body behaviours)
 
 - **Sleep, quiet, wake, and reminders that are never missed**: `scripts/andy` runs Andy under
