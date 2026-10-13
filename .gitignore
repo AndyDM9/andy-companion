@@ -9,3 +9,4 @@ models/
 *.wav
 *.log
 evals/results/.job.log
+.pytest-tmp/
