@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the README's principles table)
+
+- "Built on what older adults have said they want": five published principles (fast replies and
+  controls the person can change; supporting human contact; never presenting as human; the older
+  adult deciding what is collected and shared; no ageist assumptions), each with its source and
+  what Andy visibly does.
+
 ### Added (web answers that become actions, with a yes; Spanish searches; Andy knows what it remembers)
 
 - **Tavily answers lead somewhere, only with a yes** (`src/andy_companion/offers.py`): after what's
