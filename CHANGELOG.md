@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (ready for the founder's clips and the final cut)
+
+- `scripts/draft_captions.py`: a draft SRT for the video from its own sound, split at pauses and
+  transcribed by NVIDIA Parakeet on this computer, two lines of 42 characters at most; Spanish lines marked,
+  and with `--translate` put into English by Nemotron 3.5 Lightning, marked "check". Tried on a clip of the
+  two urgent recordings: both transcribed word for word, the Spanish one translated.
+- `scripts/make_gif.sh`: a short clip as a small looping GIF with its own palette (founder action 6.17).
+
 ### Changed (Spanish news and events from Spanish pages)
 
 - For a Spanish speaker, local news and what's on now ask Tavily for Spanish pages only (`language` with

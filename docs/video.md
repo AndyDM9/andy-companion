@@ -71,7 +71,12 @@ a social clip, with English subtitles.
 ## After filming
 
 - [ ] Captions for the whole video as an SRT file (English throughout, the Spanish translated) uploaded
-      to YouTube; burned-in subtitles on any Spanish clip as well.
+      to YouTube; burned-in subtitles on any Spanish clip as well. A draft to start from:
+      `CUDA_VISIBLE_DEVICES=1 voice/.venv/bin/python scripts/draft_captions.py final-cut.mp4 --translate`
+      (Parakeet on this computer; Spanish lines put into English by Nemotron and marked "check"). Read
+      every line against the video before uploading.
+- [ ] GIFs for the README and the Devpost gallery from the robot clips:
+      `scripts/make_gif.sh clip.mp4 docs/images/<name>.gif [start] [seconds] [width]`.
 - [ ] YouTube: **Public**, **"No, it's not made for kids"** (that setting makes a video hard for judges
       to reach). The title names the project; the description has the repository link, and says "Built
       with Nebius Token Factory, NVIDIA Nemotron and Tavily", never "powered by" or "partnered with".
