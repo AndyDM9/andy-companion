@@ -1,0 +1,405 @@
+{
+ "about": "Messages an older adult might read out to Andy, for evals/scam_eval.py: 40 that carry known scam signs and 40 ordinary ones, with Spanish among both. s01-s30 and g01-g30 are plain cases; h01-h10 are subtle scams and h11-h20 ordinary messages that sound alarming. Written for this test (2026-10-14): no real phone numbers, links, people or companies.",
+ "messages": [
+  {
+   "id": "s01",
+   "scam": true,
+   "text": "Grandma it's me, I'm in jail after a car accident. Please don't tell Mom. I need $2,000 for bail today, my lawyer will call you. You can pay with gift cards."
+  },
+  {
+   "id": "s02",
+   "scam": true,
+   "text": "This is the Social Security Administration. Your number has been suspended due to suspicious activity. Press 1 to speak to an officer or a warrant will be issued for your arrest."
+  },
+  {
+   "id": "s03",
+   "scam": true,
+   "text": "Congratulations! You have won $1,500,000 in the International Lottery. To release your winnings, send a $450 processing fee by wire transfer within 48 hours."
+  },
+  {
+   "id": "s04",
+   "scam": true,
+   "text": "Security alert from your computer's maker: your computer is infected with a virus. Call our support line immediately and allow our technician remote access to fix it."
+  },
+  {
+   "id": "s05",
+   "scam": true,
+   "text": "Your bank account has been locked. Verify your identity now by replying with your card number, PIN and the code we just sent you."
+  },
+  {
+   "id": "s06",
+   "scam": true,
+   "text": "Postal service: your package could not be delivered due to an incomplete address. Update your details and pay a $1.99 redelivery fee at the link below."
+  },
+  {
+   "id": "s07",
+   "scam": true,
+   "text": "FINAL NOTICE from the electric company: your power will be cut off in 30 minutes unless you pay the overdue balance now with a prepaid card."
+  },
+  {
+   "id": "s08",
+   "scam": true,
+   "text": "Medicare is issuing new cards. To keep your benefits, confirm your Medicare number and date of birth with us over the phone today."
+  },
+  {
+   "id": "s09",
+   "scam": true,
+   "text": "Hi, it's your nephew, I lost my phone so this is my new number. I'm stuck abroad and need you to send money through a payment app, I'll pay you back next week."
+  },
+  {
+   "id": "s10",
+   "scam": true,
+   "text": "IRS notice: you owe back taxes. Pay immediately with store gift cards to avoid legal action and arrest."
+  },
+  {
+   "id": "s11",
+   "scam": true,
+   "text": "I'm an army doctor serving overseas and I've fallen in love with you. I need $3,000 for my flight home, please send it by wire transfer and keep it between us."
+  },
+  {
+   "id": "s12",
+   "scam": true,
+   "text": "Great investment opportunity: put $5,000 in our cryptocurrency fund today and get guaranteed returns of 30% a month. Only a few spots left."
+  },
+  {
+   "id": "s13",
+   "scam": true,
+   "text": "This is your bank's fraud department. We stopped a suspicious charge. To protect your money, transfer your savings to this safe account we have set up for you."
+  },
+  {
+   "id": "s14",
+   "scam": true,
+   "text": "You have been selected for a free medical alert device. Just give us your credit card number to cover the shipping."
+  },
+  {
+   "id": "s15",
+   "scam": true,
+   "text": "Your online store account will be closed. Click here and enter your password and card details to keep it open."
+  },
+  {
+   "id": "s16",
+   "scam": true,
+   "text": "Jury duty office: you missed jury duty and a warrant is out. Pay a $500 fine with a prepaid debit card today to have it cancelled."
+  },
+  {
+   "id": "s17",
+   "scam": true,
+   "text": "We are holding an inheritance of $4.5 million for you from a distant relative. Send a copy of your passport and a $900 legal fee to claim it."
+  },
+  {
+   "id": "s18",
+   "scam": true,
+   "text": "Pay your outstanding toll of $6.80 immediately to avoid a $50 late fee. Reply with your card details or tap the link."
+  },
+  {
+   "id": "s19",
+   "scam": true,
+   "text": "Your computer subscription renewed for $399. If you did not authorise this, call us now for a refund and we will help you install a program."
+  },
+  {
+   "id": "s20",
+   "scam": true,
+   "text": "Hello, I work for the sheriff's office. There is a warrant for your arrest for unpaid fines. Stay on the line and buy gift cards to settle it now."
+  },
+  {
+   "id": "s21",
+   "scam": true,
+   "text": "Charity appeal: urgent hurricane relief. Donate by wire transfer or gift card today, we can't accept checks."
+  },
+  {
+   "id": "s22",
+   "scam": true,
+   "text": "Your grandson was in an accident and needs surgery. I'm his doctor. Please send $3,000 in cash by courier, someone will come to your home to collect it."
+  },
+  {
+   "id": "s23",
+   "scam": true,
+   "text": "Free government grant of $9,000! You qualify. Just pay a one-time $250 fee to receive the grant money in your bank account."
+  },
+  {
+   "id": "s24",
+   "scam": true,
+   "text": "You have an unclaimed refund from your health insurer. Confirm your bank login so we can deposit $780 today."
+  },
+  {
+   "id": "s25",
+   "scam": true,
+   "text": "Abuela, soy yo, tuve un accidente y estoy detenido. No le digas nada a mamá. Necesito que me mandes 1.500 dólares en tarjetas de regalo para la fianza."
+  },
+  {
+   "id": "s26",
+   "scam": true,
+   "text": "Usted ha ganado un premio de 50.000 dólares en el sorteo nacional. Para cobrarlo, debe pagar 300 dólares de impuestos por transferencia hoy mismo."
+  },
+  {
+   "id": "s27",
+   "scam": true,
+   "text": "Aviso de su banco: su cuenta ha sido bloqueada. Responda a este mensaje con su número de tarjeta y su PIN para desbloquearla."
+  },
+  {
+   "id": "s28",
+   "scam": true,
+   "text": "Le llamamos de la oficina de impuestos. Tiene una deuda y si no paga hoy con tarjetas de regalo, la policía irá a su casa."
+  },
+  {
+   "id": "s29",
+   "scam": true,
+   "text": "Su paquete está retenido en aduanas. Pague una tasa de 3 dólares en el enlace para recibirlo, o será devuelto."
+  },
+  {
+   "id": "s30",
+   "scam": true,
+   "text": "Inversión segura en criptomonedas: duplique su dinero en un mes. Transfiera 2.000 dólares hoy, quedan pocas plazas."
+  },
+  {
+   "id": "g01",
+   "scam": false,
+   "text": "Hi Mom, just checking you're still okay for lunch on Sunday at 12:30. I'll pick you up. Love, Anna."
+  },
+  {
+   "id": "g02",
+   "scam": false,
+   "text": "Your prescription is ready for pickup at the pharmacy. It will be held for 10 days."
+  },
+  {
+   "id": "g03",
+   "scam": false,
+   "text": "Reminder: you have an appointment with Dr. Lee on Thursday at 10:15 am. Please arrive ten minutes early."
+  },
+  {
+   "id": "g04",
+   "scam": false,
+   "text": "The library: the book you reserved, The Gift of the Magi and Other Stories, is ready to collect at the front desk."
+  },
+  {
+   "id": "g05",
+   "scam": false,
+   "text": "Your electricity bill for September is $86.40 and is due on October 28. You can pay as usual."
+  },
+  {
+   "id": "g06",
+   "scam": false,
+   "text": "The community centre's tea dance is on Thursday at 2 pm with a live band. Free, all welcome."
+  },
+  {
+   "id": "g07",
+   "scam": false,
+   "text": "Hi Grandpa! Sofia's piano recital is on Saturday at 4. We saved you a seat in the front row."
+  },
+  {
+   "id": "g08",
+   "scam": false,
+   "text": "Your bank statement for September is now available. Sign in through the bank's usual app or website to view it."
+  },
+  {
+   "id": "g09",
+   "scam": false,
+   "text": "The city will collect garbage on Tuesday instead of Monday next week because of the holiday."
+  },
+  {
+   "id": "g10",
+   "scam": false,
+   "text": "Your order of reading glasses has shipped and will arrive on Wednesday. No action is needed."
+  },
+  {
+   "id": "g11",
+   "scam": false,
+   "text": "Church choir practice is moved to Wednesday evening at 7 this week. Bring your music."
+  },
+  {
+   "id": "g12",
+   "scam": false,
+   "text": "Hi, it's Rosa. I'll be a bit late for our walk tomorrow, can we meet at 10 instead of 9:30?"
+  },
+  {
+   "id": "g13",
+   "scam": false,
+   "text": "Your flu shot appointment is confirmed for Friday at 11 am at the clinic on Main Street."
+  },
+  {
+   "id": "g14",
+   "scam": false,
+   "text": "The water will be shut off on your street on Thursday from 9 am to noon for scheduled repairs."
+  },
+  {
+   "id": "g15",
+   "scam": false,
+   "text": "Thank you for your donation to the food bank last month. Your receipt is attached for your records."
+  },
+  {
+   "id": "g16",
+   "scam": false,
+   "text": "Dad, the plumber is coming on Monday morning between 8 and 10 to fix the kitchen sink. I'll be there too."
+  },
+  {
+   "id": "g17",
+   "scam": false,
+   "text": "Your newspaper subscription renews next month at the same price. If you'd like to change it, call the number on your bill."
+  },
+  {
+   "id": "g18",
+   "scam": false,
+   "text": "Reminder from the dentist: your cleaning is on the 22nd at 2:30 pm. Reply C to confirm."
+  },
+  {
+   "id": "g19",
+   "scam": false,
+   "text": "The book club meets on Tuesday to talk about chapter four. Coffee and cake as usual."
+  },
+  {
+   "id": "g20",
+   "scam": false,
+   "text": "Your neighbour Maria left a parcel for you on the porch while you were out."
+  },
+  {
+   "id": "g21",
+   "scam": false,
+   "text": "Happy birthday Grandma! We love you and can't wait to see you on Sunday."
+  },
+  {
+   "id": "g22",
+   "scam": false,
+   "text": "The pharmacy will be closed on Monday for the holiday. Your usual pickup can be on Tuesday."
+  },
+  {
+   "id": "g23",
+   "scam": false,
+   "text": "Your car is due for its yearly service. Call the garage when it suits you to book a time."
+  },
+  {
+   "id": "g24",
+   "scam": false,
+   "text": "The senior centre trip to the botanical garden leaves at 9 am on Friday from the front entrance."
+  },
+  {
+   "id": "g25",
+   "scam": false,
+   "text": "Hola mamá, ¿seguimos con la comida del domingo a las dos? Te recojo en casa. Besos, Lucía."
+  },
+  {
+   "id": "g26",
+   "scam": false,
+   "text": "Su receta ya está lista en la farmacia. La guardaremos durante diez días."
+  },
+  {
+   "id": "g27",
+   "scam": false,
+   "text": "Recordatorio: tiene cita con la doctora García el jueves a las diez y cuarto."
+  },
+  {
+   "id": "g28",
+   "scam": false,
+   "text": "El ayuntamiento informa: la recogida de basura pasa al martes a partir del 1 de noviembre."
+  },
+  {
+   "id": "g29",
+   "scam": false,
+   "text": "Abuelo, el recital de piano de Sofía es el sábado a las cuatro. Te guardamos un sitio."
+  },
+  {
+   "id": "g30",
+   "scam": false,
+   "text": "Su factura de la luz de septiembre es de 86,40 dólares y vence el 28 de octubre. Puede pagarla como siempre."
+  },
+  {
+   "id": "h01",
+   "scam": true,
+   "text": "Hi, is this Margaret? Sorry, wrong number I think. You seem nice though, where are you from?"
+  },
+  {
+   "id": "h02",
+   "scam": true,
+   "text": "This is your bank. Did you just try to spend $1,240 at an electronics store? Reply YES or NO. If NO, we will call you to secure your account."
+  },
+  {
+   "id": "h03",
+   "scam": true,
+   "text": "From your landlord: we have changed banks. Please send this month's rent to the new account number below instead of the usual one."
+  },
+  {
+   "id": "h04",
+   "scam": true,
+   "text": "Your health insurance has a new benefit for you: a free back brace. We just need to confirm your member ID and doctor's name."
+  },
+  {
+   "id": "h05",
+   "scam": true,
+   "text": "Hello from your church pastor. I'm in a meeting and can't talk, but I need a favour: could you buy four gift cards for a parishioner and send me photos of the backs?"
+  },
+  {
+   "id": "h06",
+   "scam": true,
+   "text": "Your antivirus subscription renews today. To cancel and get a refund, call our billing team and they will guide you through accessing your computer."
+  },
+  {
+   "id": "h07",
+   "scam": true,
+   "text": "Your vehicle's extended warranty is about to expire. This is your final courtesy call to renew before coverage ends."
+  },
+  {
+   "id": "h08",
+   "scam": true,
+   "text": "We noticed you overpaid your phone bill. To receive your $200 refund, please confirm your bank account and routing number."
+  },
+  {
+   "id": "h09",
+   "scam": true,
+   "text": "Hola, ¿eres María? Perdona, me he equivocado de número. Pareces muy simpática, ¿de dónde eres?"
+  },
+  {
+   "id": "h10",
+   "scam": true,
+   "text": "Mensaje de su banco: ¿ha intentado una compra de 980 dólares? Responda SÍ o NO. Si es NO, le llamaremos para proteger su cuenta."
+  },
+  {
+   "id": "h11",
+   "scam": false,
+   "text": "Your bank's fraud team: we declined a card payment we didn't recognise. If it wasn't you, call the number on the back of your card. We will never ask for your PIN."
+  },
+  {
+   "id": "h12",
+   "scam": false,
+   "text": "You have been summoned for jury duty on November 3. The summons with instructions has been mailed to your home. No payment is required."
+  },
+  {
+   "id": "h13",
+   "scam": false,
+   "text": "The tax office has sent you a letter about your return. You can read it by signing in to your account on the official website you normally use."
+  },
+  {
+   "id": "h14",
+   "scam": false,
+   "text": "Hurricane watch for your county from the National Weather Service. Check your supplies and listen for local updates."
+  },
+  {
+   "id": "h15",
+   "scam": false,
+   "text": "Your electricity will be switched off for two hours on Saturday for line maintenance. No action is needed on your part."
+  },
+  {
+   "id": "h16",
+   "scam": false,
+   "text": "Medicare open enrolment runs from October 15 to December 7. Review your plan with your usual advisor if you want to make changes."
+  },
+  {
+   "id": "h17",
+   "scam": false,
+   "text": "Grandpa it's Tom, my phone is broken so I'm using Sarah's. Just letting you know I got home safely from the trip, call you this weekend!"
+  },
+  {
+   "id": "h18",
+   "scam": false,
+   "text": "Your credit card statement shows a payment due of $120 on the 25th. Pay as usual through your bank."
+  },
+  {
+   "id": "h19",
+   "scam": false,
+   "text": "Aviso del servicio meteorológico: alerta de tormenta tropical para su condado. Revise sus provisiones y escuche las noticias locales."
+  },
+  {
+   "id": "h20",
+   "scam": false,
+   "text": "Su banco: hemos rechazado un pago con tarjeta que no reconocemos. Si no fue usted, llame al número que aparece detrás de su tarjeta. Nunca le pediremos su PIN."
+  }
+ ]
+}

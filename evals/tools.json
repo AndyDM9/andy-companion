@@ -282,7 +282,7 @@
  },
  {
   "name": "check_message",
-  "description": "When the person reads you a message, letter or call they are unsure about (money, prizes, a relative in trouble, a bank or government asking for details). Look it up against consumer-protection warnings. Then say gently what you found and its source. Never say a message is safe: say only whether it looks like a known kind of scam. Always suggest checking with family or someone they trust before replying, paying, or giving any details, and never to send money, gift cards or codes because of a message.",
+  "description": "When the person reads you a message, letter or call they are unsure about (money, prizes, a relative in trouble, a bank or government asking for details). Look it up against consumer-protection warnings. Then say gently what you found and its source. Never say a message is safe: say only whether it looks like a known kind of scam. Always suggest checking with family or someone they trust before replying, paying, or giving any details, and never to send money, gift cards or codes because of a message. Then follow 'say'.",
   "parameters": {
    "type": "object",
    "properties": {

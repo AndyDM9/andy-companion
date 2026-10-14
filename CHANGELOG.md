@@ -5,6 +5,38 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (does Tavily make the scam check better? measured; Andy's tool rebuilt on the answer)
+
+- **`evals/scam_eval.py`, `evals/scam_messages.json`:** 80 messages an older adult might read aloud.
+  40 carry known scam signs and 40 are ordinary, with Spanish among both; 20 are hard on purpose (subtle
+  scams such as a "wrong number" opener or a landlord's "new bank account", and ordinary messages that
+  sound alarming such as a real bank fraud alert). Each is judged by Nemotron alone and with Andy's real
+  Tavily check, with real calls.
+- **What the runs showed:**
+  - Asked one broad question with Tavily's warnings in hand, Nemotron 3.5 Lightning caught every scam,
+    including all 10 subtle ones (it missed 3 of those alone). But it flagged ordinary messages too:
+    6 of 40, rising to 11 and 14 in other wordings. Warnings exist for almost any topic, and it took the
+    topic as proof: a recital invitation became "computer access", and a neighbour's parcel a "wrong
+    number" opener.
+  - The answer is **two narrow questions** (`src/andy_companion/scamcheck.py`). First, the message's
+    own sign, with its words quoted and checked in code. Then, for each warning, "does the message use
+    the same trick, not merely the same topic?", answered by **Nemotron 3 Ultra**. In the run that used
+    it, **0 of 40 ordinary messages were flagged**, with 37 of 40 scams caught.
+  - Tavily's rate limit refused some searches in that run, so its Tavily numbers are not final. The
+    clean run waits for credits (below).
+  - Spanish messages are now searched in Spanish too, with consumidor.ftc.gov added: the English query
+    had found nothing for a Spanish grandchild scam.
+- **Andy's `check_message` tool now uses the same verdict as the test:**
+  - **On a sign:** it says the sign in plain words, the consumer-protection source that warns about it,
+    and "check with family first".
+  - **On none:** "no sign of a known kind of scam", with a calm card on the TV instead of a list of
+    warnings.
+  - **Without Tavily:** it still works, on the model's own verdict.
+- **The free Tavily plan's 1,000 monthly credits ran out** during these runs (about 160 credits each,
+  five runs while tuning), my mistake. Andy's web features wait for the Builder Program's $25 of Tavily
+  credit (founder action 6.3). The evaluation now runs only with `--spend`, after saying what it costs.
+- 4 tests (`tests/test_scamcheck.py`); the suite's stand-in follows the new tool.
+
 ### Added (keeping Andy answering: a watchdog, a turn cap, a live health check)
 
 - **`src/andy_companion/watchdog.py`**, for the ways Andy stopped answering on 2026-10-13:

@@ -19,8 +19,8 @@ from urllib.parse import urlparse
 API = "https://api.tavily.com"
 TIMEOUT_S = 12
 SNIPPET = 320
-SCAM_SOURCES = ["consumer.ftc.gov", "ftc.gov", "identitytheft.gov", "aarp.org", "bbb.org", "ic3.gov", "fbi.gov",
-                "usa.gov"]
+SCAM_SOURCES = ["consumer.ftc.gov", "consumidor.ftc.gov", "ftc.gov", "identitytheft.gov", "aarp.org", "bbb.org",
+                "ic3.gov", "fbi.gov", "usa.gov"]
 INJECTION = re.compile(r"(?i)(ignore (all |any |the )?(previous|prior|above) instructions|system prompt|you are now|"
                        r"disregard (your|the) rules)")
 
@@ -156,8 +156,14 @@ def scrub_message(text: str) -> str:
     return " ".join(value.split())[:300]
 
 
+SPANISH = re.compile(r"[ñ¿¡]|\b(que|usted|su|por favor|dinero|cuenta|para|necesito|tarjeta|abuel[oa])\b", re.I)
+
+
 def check_message(text: str, opener=None) -> List[Dict[str, str]]:
-    query = f"scam warning {scrub_message(text)}".strip()
+    # A Spanish message is searched in Spanish too, where the FTC's Spanish pages (consumidor.ftc.gov)
+    # answer: the English query found nothing for a Spanish grandchild scam (2026-10-14).
+    lead = "estafa aviso" if len(SPANISH.findall(str(text))) >= 2 else "scam warning"
+    query = f"{lead} {scrub_message(text)}".strip()
     # Advanced depth: on a prize-scam letter, basic found nothing and advanced found four exact AARP
     # and FTC warnings (2026-10-13). It costs two credits instead of one; a scam check is worth it.
     body = {"query": query[:390], "search_depth": "advanced", "max_results": 4, "include_domains": SCAM_SOURCES,
