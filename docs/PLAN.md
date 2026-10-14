@@ -60,7 +60,7 @@ innovation research) and the founder's test on the robot. The research is in [re
 | B4 | **Tavily `map` at setup**: find the town's events page from its website automatically | Tavily's fifth capability, in real use | 🔶 built and tested with stand-ins (`web.find_events_page`); the live check waits for Tavily credits, then the README and Devpost text name it |
 | B5 | **Greeting on arrival**: "Welcome back" when someone is seen after a long absence, at most every few hours, a setting to turn it off; speech only, no head movement | ElliQ and Lovot's most-liked behaviour | ✅ 2026-10-14 (`speaker.welcome_back`; greet-1 4 of 4) |
 | B6 | **The cost per household**, with dated prices, in the README and Devpost text | Potential impact: "what does it cost to run?" | ✅ 2026-10-14 ([cost.md](cost.md): about $2.30 a month) |
-| B7 | **NVIDIA Magpie TTS**, evaluated beside Qwen3-TTS: time to first audio, the Spanish voice; switched only if as fast and the founder approves | Every model in the speech loop NVIDIA's | ⬜ |
+| B7 | **NVIDIA Magpie TTS**, evaluated beside Qwen3-TTS: time to first audio, the Spanish voice; switched only if as fast and the founder approves | Every model in the speech loop NVIDIA's | ✅ evaluated 2026-10-14: **not switched**; a short sentence takes 0.6 to 0.8 s before any sound (no streaming) against 0.10 to 0.33 s now. Samples in `voice/magpie-eval/out/` for the founder to hear |
 | B8 | **The body language, safely**: test with the founder whether head motion during listening reaches the microphones; if so, move only while Andy speaks | Built and switched off on 2026-10-13 | ⬜ (needs the founder at the robot) |
 
 ### Cleanup (Claude)

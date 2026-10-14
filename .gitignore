@@ -10,3 +10,7 @@ models/
 *.log
 evals/results/.job.log
 .pytest-tmp/
+
+# Magpie TTS evaluation environment (large; rebuilt by voice/magpie-eval/setup.sh)
+voice/magpie-eval/.venv/
+voice/magpie-eval/out/

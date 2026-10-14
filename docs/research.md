@@ -90,7 +90,7 @@ sweeps the room, reads four views in parallel with Nemotron Nano VL, and points 
 
 | Option | What it would add | Status |
 |---|---|---|
-| Magpie TTS Multilingual 357M ([Hugging Face](https://huggingface.co/nvidia/magpie_tts_multilingual_357m)) | An NVIDIA voice, so every model in the speech loop is NVIDIA's | Evaluating ([PLAN](PLAN.md)) |
+| Magpie TTS Multilingual 357M ([Hugging Face](https://huggingface.co/nvidia/magpie_tts_multilingual_357m)) | An NVIDIA voice, so every model in the speech loop is NVIDIA's | **Measured 2026-10-14, not switched:** on an RTX 3090 it makes speech 2.5 times faster than real time, but whole sentences at once (no streaming), so Andy's first sound would come 0.6 to 2 s after the reply starts, against 0.10 to 0.33 s now (`voice/magpie-eval/`, [timings](../evals/results/magpie-eval-2026-10-14-0932.json)). Shorter phrases or TensorRT could close the gap later |
 | Nemotron 3.5 ASR Streaming 0.6B ([Hugging Face](https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b)) | 40 locales with language detection | Later; Parakeet works well |
 | Cosmos Reason 2 ([Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-2B)) | Physical reasoning, pointing, boxes | Later; Nano VL already finds things |
 | Llama Nemotron Embed and Rerank | Cross-lingual memory search | Later; invisible without a demo |

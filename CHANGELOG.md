@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Evaluated (NVIDIA Magpie TTS as Andy's voice; not switched)
+
+- `voice/magpie-eval/`: its own environment (NeMo from its main branch, as the model card says; `setup.sh`)
+  and `evaluate.py`, timing NVIDIA Magpie TTS Multilingual 357M on Andy's own sentences. Seven
+  sentences in English and Spanish, five voices, on the desktop's second RTX 3090, after a warm-up.
+- **Result** ([timings](evals/results/magpie-eval-2026-10-14-0932.json)): a short sentence takes 0.6 to
+  0.8 s to make, the greeting 1.8 s, about 2.5 times faster than real time. But it makes whole sentences
+  at once, so Andy's first sound would come that much later than now (Qwen3-TTS streams it in 0.10 to
+  0.33 s), doubling the second from your last word to Andy's voice.
+- By the rule set for it (switch only if as fast), **Andy keeps Qwen3-TTS** for the hackathon. Shorter
+  phrases, or NVIDIA's TensorRT acceleration, could close the gap later.
+- The audio samples are on the desktop (`voice/magpie-eval/out/`, not in git) for the founder to hear.
+- A feedback note: a streaming interface in NeMo, and the undeclared `peft` dependency.
+
 ### Changed (cleanup)
 
 - gitleaks over all 93 commits: no leaks. Four unused imports were removed; ruff's error and bug checks
