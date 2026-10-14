@@ -92,3 +92,18 @@ def test_the_voice_server_caps_a_turn():
     assert v._should_reopen_current_turn(0) is True
     v._speculative_audio_prefix = np.zeros(16000 * 41, dtype=np.float32)
     assert v._should_reopen_current_turn(0) is False             # a new turn instead
+
+
+def test_the_voice_server_takes_its_key_from_the_environment_never_the_command_line():
+    # A command line is readable by every process on this shared computer (`ps`); found 2026-10-14.
+    path = Path(__file__).resolve().parents[1] / "voice" / "serve.py"
+    spec = importlib.util.spec_from_file_location("andy_voice_serve_key", path)
+    serve = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(serve)
+    argv = ["speech-to-speech", "serve", "--responses_api_stream"]
+    assert serve.key_from_environment(argv, {"NEBIUS_API_KEY": "k"})[-2:] == ["--responses_api_api_key", "k"]
+    assert serve.key_from_environment(argv, {}) == argv
+    given = argv + ["--responses_api_api_key=x"]
+    assert serve.key_from_environment(given, {"NEBIUS_API_KEY": "k"}) == given
+    run = (path.parent / "run.sh").read_text()
+    assert "--responses_api_api_key" not in run and "export NEBIUS_API_KEY" in run

@@ -11,6 +11,10 @@ no limit on how long that goes on. On 2026-10-13, continuous speech near the rob
 5,000 characters while Andy waited to answer (every answer it began was cancelled by the next words),
 and each pause re-transcribed the whole turn. `cap_turns` stops reopening a turn once it holds
 MAX_TURN_S of audio: new speech starts a new turn instead (ANDY_MAX_TURN_S; 0 turns the cap off).
+
+The Token Factory key comes from the environment (NEBIUS_API_KEY, from run.sh's private .env file), never
+the command line: any process on this shared computer can read a command line (`ps`), but only this user
+can read a process's environment. `key_from_environment` adds it to the arguments inside this process.
 """
 
 from __future__ import annotations
@@ -61,6 +65,14 @@ def cap_turns(vad_class, max_turn_s: float = MAX_TURN_S) -> None:
     vad_class._should_reopen_current_turn = should_reopen
 
 
+def key_from_environment(argv: list, environ=os.environ) -> list:
+    """The arguments with the model key added from NEBIUS_API_KEY, unless one was given already."""
+    if any(a == "--responses_api_api_key" or a.startswith("--responses_api_api_key=") for a in argv):
+        return argv
+    key = environ.get("NEBIUS_API_KEY", "")
+    return argv + ["--responses_api_api_key", key] if key else argv
+
+
 if __name__ == "__main__":
     from rich.console import Console
 
@@ -71,4 +83,5 @@ if __name__ == "__main__":
     from speech_to_speech.cli import main
 
     sys.argv[0] = "speech-to-speech"
+    sys.argv = key_from_environment(sys.argv)
     sys.exit(main())

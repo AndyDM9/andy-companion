@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (the model key off the voice server's command line)
+
+- `voice/run.sh` passed the Token Factory key as a command-line argument, which every process on the shared
+  desktop can read (`ps`). It now reaches `voice/serve.py` through the environment (readable only by this
+  user), and `serve.py` adds it to its arguments inside the process. Takes effect the next time the voice
+  server starts. 1 more test.
+
 ### Fixed (the screen, from the founder's report)
 
 The founder saw no family photos, only the last sentence of what Andy said, and a time that "kept
