@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="Atkinson Hyperlegible, Verdana, sans-serif" role="img" aria-labelledby="t d">
   <title id="t">How Andy works</title>
-  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer, Parakeet hears, the voice server asks Nemotron, Andy's app adds its tools, body behaviours, privacy and the urgent-words net, and text-to-speech speaks. Nemotron 3.5 Lightning on Nebius Token Factory reasons and calls tools. Nemotron Nano VL on a Nebius Serverless Endpoint sees, only when asked, and Nemotron 3.5 Content Safety on a second endpoint takes a second look at the person's words for signs of crisis. The conversation suite runs as a Nebius Serverless Job judged by Nemotron 3 Ultra. Tavily brings the web. A screen beside Andy and a family page on a phone complete it.</desc>
+  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer, Parakeet hears, the voice server asks Nemotron, Andy's app adds its 34 tools (letters, stories, jokes, research), body behaviours including a glance at the screen, privacy and the urgent-words net, and text-to-speech speaks. Nemotron 3.5 Lightning on Nebius Token Factory reasons and calls tools. Nemotron Nano VL on a Nebius Serverless Endpoint sees, only when asked, and Nemotron 3.5 Content Safety on a second endpoint takes a second look at the person's words for signs of crisis. The conversation suite runs as a Nebius Serverless Job judged by Nemotron 3 Ultra. Tavily brings the web. A screen beside Andy and a family page on a phone complete it.</desc>
   <rect width="1200" height="700" fill="#f7faf8"/>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4c5d4f"/></marker>
@@ -32,26 +32,26 @@
 
   <rect x="342" y="262" width="274" height="230" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
   <text x="358" y="290" font-size="16" font-weight="700" fill="#1d2a1f">Andy's app</text>
-  <text x="358" y="314" font-size="15" fill="#1d2a1f">22 tools: day, reminders, moments,</text>
-  <text x="358" y="336" font-size="15" fill="#1d2a1f">news, letters, photos, family</text>
-  <text x="358" y="358" font-size="15" fill="#1d2a1f">body: looks at you, follows you</text>
+  <text x="358" y="314" font-size="15" fill="#1d2a1f">34 tools: day, reminders, letters,</text>
+  <text x="358" y="336" font-size="15" fill="#1d2a1f">news, stories, jokes, photos, family</text>
+  <text x="358" y="358" font-size="15" fill="#1d2a1f">body: follows you, glances at the TV</text>
   <text x="358" y="380" font-size="15" fill="#1d2a1f">urgent-words net (911, 988)</text>
   <text x="358" y="402" font-size="15" fill="#1d2a1f">privacy: nothing said is logged</text>
   <text x="358" y="424" font-size="15" fill="#1d2a1f">supervisor: asleep, quiet, wake</text>
-  <text x="358" y="446" font-size="15" fill="#1d2a1f">owner-only memory and reminders</text>
+  <text x="358" y="446" font-size="15" fill="#1d2a1f">in code: scam cards, consent</text>
   <text x="358" y="468" font-size="15" fill="#1d2a1f">English and Spanish</text>
   <line x1="466" y1="180" x2="466" y2="260" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
   <line x1="318" y1="316" x2="340" y2="316" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
 
   <rect x="68" y="392" width="250" height="100" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
   <text x="84" y="420" font-size="16" font-weight="700" fill="#1d2a1f">Screen server</text>
-  <text x="84" y="444" font-size="15" fill="#1d2a1f">day clock, captions, timings</text>
-  <text x="84" y="466" font-size="15" fill="#1d2a1f">the family page (tokens)</text>
+  <text x="84" y="444" font-size="15" fill="#1d2a1f">day, captions, cards, timings</text>
+  <text x="84" y="466" font-size="15" fill="#1d2a1f">family and settings pages</text>
   <line x1="340" y1="440" x2="320" y2="440" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>
 
   <rect x="48" y="540" width="280" height="110" rx="10" fill="#24304f"/>
   <text x="188" y="584" font-size="20" font-weight="700" text-anchor="middle" fill="#f3d78f">The screen beside Andy</text>
-  <text x="188" y="612" font-size="15" text-anchor="middle" fill="#c9cfe0">Tuesday, what's next, captions</text>
+  <text x="188" y="612" font-size="15" text-anchor="middle" fill="#c9cfe0">the day, what Andy found, captions</text>
   <line x1="150" y1="494" x2="150" y2="538" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>
 
   <rect x="356" y="540" width="280" height="110" rx="10" fill="#fff" stroke="#2f6f5e" stroke-width="2"/>
@@ -66,8 +66,8 @@
 
   <rect x="724" y="84" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="116" font-size="18" font-weight="700" fill="#24304f">Nebius Token Factory</text>
-  <text x="744" y="142" font-size="15" fill="#24304f">NVIDIA Nemotron 3.5 Lightning: conversation</text>
-  <text x="744" y="164" font-size="15" fill="#24304f">and tool calls, 0.6–0.8 s</text>
+  <text x="744" y="142" font-size="15" fill="#24304f">Nemotron 3.5 Lightning: talk, tools, structured</text>
+  <text x="744" y="164" font-size="15" fill="#24304f">output, 0.6–0.8 s; Nemotron 3 Ultra: hard questions</text>
   <text x="744" y="190" font-size="15" fill="#4c5d4f">zero data retention on</text>
 
   <rect x="724" y="236" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
@@ -78,14 +78,14 @@
 
   <rect x="724" y="388" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="420" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Job</text>
-  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 57 situations,</text>
+  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 80 situations,</text>
   <text x="744" y="468" font-size="15" fill="#24304f">judged by NVIDIA Nemotron 3 Ultra</text>
-  <text x="744" y="494" font-size="15" fill="#4c5d4f">56, 56, 55 of 57; English and Spanish</text>
+  <text x="744" y="494" font-size="15" fill="#4c5d4f">English and Spanish; every failure published</text>
 
   <rect x="724" y="540" width="428" height="110" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="572" font-size="18" font-weight="700" fill="#24304f">Tavily</text>
-  <text x="744" y="598" font-size="15" fill="#24304f">local news, look-ups, what's on, links,</text>
-  <text x="744" y="620" font-size="15" fill="#24304f">scam warnings; safe search; sources named</text>
+  <text x="744" y="598" font-size="15" fill="#24304f">news, look-ups, research streamed to the</text>
+  <text x="744" y="620" font-size="15" fill="#24304f">screen, links, what's on, scam warnings</text>
 
   <path d="M260 262 C 270 205, 600 200, 722 160" fill="none" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
   <line x1="636" y1="330" x2="722" y2="300" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>

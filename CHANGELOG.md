@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (the architecture picture, current)
+
+- `docs/images/architecture.svg` and `.png`: 34 tools (letters, stories, jokes), the glance at the
+  screen, the safety in code, Nemotron 3 Ultra and structured output on Token Factory, Tavily research
+  streamed to the screen, and the suite at 80 situations. Scores are left out of the picture, because
+  they go stale; the README has them. The PNG is rendered in Atkinson Hyperlegible, and every line was
+  checked to fit its box.
+
 ### Changed (the Devpost texts and the feedback, current)
 
 - `docs/submission.md` is rewritten in Devpost's sections (Inspiration, What it does, How we built it,
