@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the hackathon's Official Rules, rule by rule)
+
+- `docs/rules-compliance.md`: every rule (dates, eligibility, prizes, project and submission
+  requirements, testing, IP, publicity, privacy) with our status, evidence and the action, owner and
+  date for anything open. Checked against the live rules page on 2026-10-13.
+- **Found:** Miami is not one of the 20 City Winner cities, so that prize does not apply; the video must
+  carry no third-party trademarks or copyrighted material (no newspaper pages on screen, our own family
+  photos rather than the sample landscapes) and English subtitles for the Spanish moment; the settings
+  code is a private link, so make a new one after filming it; the submission cannot change after the
+  deadline, so the submitted commit will be tagged.
+- README: **Where Token Factory sped us up** and **Built during the hackathon** (both asked for by the
+  rules), and **Licences and credits** for every model, service and asset, with the attribution each
+  needs (Parakeet CC-BY-4.0, GeoNames CC-BY-4.0, the Gemma terms for Content Safety, the Unsplash
+  photographers). The submission checklist and `CLAUDE.md` point to the compliance file.
+
 ### Added (the hood page's health tiles)
 
 - `src/andy_companion/health.py`: one glance at everything Andy depends on, words and a colour

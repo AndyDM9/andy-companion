@@ -78,6 +78,19 @@ Each principle comes from published research, and each has something you can see
 | The conversation suite | 63 spoken situations, 17 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), and **research**, streamed, for "look into it for me"; safe search on; every request tagged `X-Project-ID`, credits shown on `/hood` | Tavily API |
 
+### Where Token Factory sped us up
+
+- **One key, every Nemotron model.** Andy talks with Nemotron 3.5 Lightning and the suite's judge is
+  Nemotron 3 Ultra, both through the same Token Factory API: trying a model is changing its name, and
+  the judge reads all 63 situations three times in a few minutes.
+- **No language-model GPU at home.** The desktop's graphics cards keep hearing and speaking local
+  (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, 0.6 to 0.8 s per reply, measured on the
+  robot.
+- **Zero data retention**, switched on in Token Factory, so a household's conversation is not kept by
+  the model service either.
+- **The same suite runs on Nebius AI Cloud** as a Serverless Job, and the eyes and the second look are
+  Serverless Endpoints started only when needed.
+
 ## Measured (Reachy Mini Lite, 2026-10-13)
 
 | Step | Time |
@@ -148,8 +161,33 @@ Tests: `uv run pytest`, plus the robot-side tests with `PYTHONPATH=src robot/.ve
 | `evals/` | The conversation suite and its scorecards |
 | `docs/` | [Plan](docs/PLAN.md), [status](docs/STATUS.md), [architecture](docs/architecture.md), [decisions](docs/decisions/) |
 
-## Licence
+## Built during the hackathon
 
-Apache-2.0. See [LICENSE](LICENSE).
-- Pollen's conversation app and Hugging Face's speech-to-speech are Apache-2.0.
-- The NVIDIA models are under the NVIDIA Open Model License.
+This project was created on 2026-10-13, inside the submission period (2026-08-26 to 2026-10-30).
+It reuses, rewritten for this project, general-purpose robot behaviour code its author wrote earlier in
+the same period (from 2026-10-05): looking at the person while speaking, turning toward a voice, the
+offline wake phrase. Everything else, from the companion's tools and safety layers to the screens, the
+suite and the Nebius deployments, was written for this entry; the changelog has every step.
+It builds on open source it does not copy: Pollen Robotics' conversation app (extended through its
+profile and tool hooks, not forked) and Hugging Face's speech-to-speech server.
+
+## Licences and credits
+
+This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own terms:
+
+| What | Licence or terms | Credit |
+|---|---|---|
+| NVIDIA Parakeet TDT 0.6B v3 (hearing) | CC-BY-4.0 | NVIDIA, [model card](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) |
+| NVIDIA Nemotron 3.5 Lightning and Nemotron 3 Ultra | Used through Nebius Token Factory under its terms; NVIDIA's model licences | NVIDIA, Nebius |
+| NVIDIA Nemotron Nano 12B v2 VL FP8 (eyes) | NVIDIA's open model licence ([model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-FP8)) | NVIDIA |
+| NVIDIA Nemotron 3.5 Content Safety (second look) | OpenMDW-1.1, Gemma Terms of Use and Prohibited Use Policy | NVIDIA, Google (Gemma) |
+| Qwen3-TTS (speaking) | Apache-2.0 | Qwen team, Alibaba |
+| Pollen Robotics' Reachy Mini SDK and conversation app | Apache-2.0 | Pollen Robotics |
+| Hugging Face speech-to-speech | Apache-2.0 | Hugging Face |
+| Vosk and its small English model (wake phrase) | Apache-2.0 | Alpha Cephei |
+| segno (the settings QR code) | BSD-3-Clause | Lars Heuer |
+| Tavily API (the web) | Tavily's terms of service | Tavily |
+| National Weather Service API (the weather) | US government work, public domain | NOAA / NWS |
+| Open-Meteo geocoding (the town's coordinates, once) | Free non-commercial use; data CC-BY-4.0 (GeoNames) | Open-Meteo, GeoNames |
+| Atkinson Hyperlegible (the screens' typeface) | SIL Open Font License, via Google Fonts | Braille Institute |
+| Sample landscapes (`scripts/settings.py sample-photos`, downloaded only on request, never in this repository) | Unsplash License, via Lorem Picsum | Each photographer, credited on screen |

@@ -24,3 +24,11 @@ sequentially). A milestone is done only when its "done when" in PLAN.md is true.
   enforces it (`git config core.hooksPath .githooks` once per clone).
 - **Only one program drives the robot at a time.** A test that runs Andy stops the other app first, and says so.
 - **This repository will be public.** Write nothing here about any company, brand plan or person that is not meant for the public.
+
+## The hackathon's rules
+
+Everything that touches the submission (README, video, Devpost texts, the repository's visibility and
+licence) is checked against [docs/rules-compliance.md](docs/rules-compliance.md) first, and that file
+is updated in the same commit. The video carries no music we do not own, no third-party logos or
+copyrighted material, English subtitles for anything not in English, and only real, working features.
+
