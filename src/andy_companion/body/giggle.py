@@ -23,17 +23,18 @@ WIGGLE_S = 1.0
 AMP_RAD = 0.1
 FREQ_HZ = 2.0
 
-_armed = {"at": None, "heard": False}
+_armed = {"at": None, "heard": False, "pushes": 0}
 
 
 def arm(now: Optional[float] = None) -> None:
     _armed["at"] = time.monotonic() if now is None else now
     _armed["heard"] = False
+    _armed["pushes"] = speaking.pushes()      # audio already queued ("Sure, here's one!") doesn't count
 
 
 class Giggle:
-    def __init__(self, clock=time.monotonic, talking=speaking.speaking) -> None:
-        self.clock, self.talking = clock, talking
+    def __init__(self, clock=time.monotonic, talking=speaking.speaking, pushes=speaking.pushes) -> None:
+        self.clock, self.talking, self.pushes = clock, talking, pushes
         self.start: Optional[float] = None
 
     def step(self, antennas: Tuple[float, float], free: bool) -> Tuple[float, float]:
@@ -41,8 +42,8 @@ class Giggle:
         if self.start is None and _armed["at"] is not None:
             if now - _armed["at"] > ARM_FOR_S:
                 _armed["at"] = None                       # the joke was never told aloud
-            elif self.talking(now):
-                _armed["heard"] = True
+            elif self.talking(now) and self.pushes() > _armed["pushes"]:
+                _armed["heard"] = True                    # the joke itself is playing
             elif _armed["heard"] and free:
                 self.start, _armed["at"] = now, None      # the punchline has just ended
         if self.start is None:

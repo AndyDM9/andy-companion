@@ -33,18 +33,8 @@ class ReadLetter(Tool):
         result = await asyncio.to_thread(reading.read, lambda: deps.reachy_mini.media.get_frame())
         if result.get("text"):
             result["note"] = "Text read on this computer from the page; the picture was not sent or kept."
-            try:
-                from andy_companion import letters, settings
+            from andy_companion import letters, settings
 
-                language = settings.get()["language"]
-                c = await asyncio.to_thread(letters.summarise, result["text"], language)
-                letters.show(c, language)
-                if c["warning"]:   # never read out a suspicious page's numbers (a scammer's phone, a "case number")
-                    result["text"] = letters.mask(result["text"])
-                result["on_screen"] = {k: c[k] for k in ("sender", "about", "to_do", "by_when", "amount", "caution") if c.get(k)}
-                result["screen_note"] = ("A large-print card of it is on the screen now; you may say 'It's on your screen too'. "
-                                         + ("Say the caution on the card plainly and kindly, and offer check_message. Numbers on a suspicious "
-                                            "page are hidden: never read them out, and don't read it word for word." if c["warning"] else ""))
-            except Exception:
-                pass   # no card; Andy still explains it
+            # The card, and the warning decided in code first (a failed card can't let a scam's numbers through).
+            result = await asyncio.to_thread(letters.for_andy, result, settings.get()["language"])
         return result

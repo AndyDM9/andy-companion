@@ -52,12 +52,17 @@ def test_a_riddle_comes_with_its_answer_and_a_kind_way_to_ask_it():
 def test_the_antennas_wiggle_once_the_punchline_has_been_said():
     t = [0.0]
     talking = [False]
-    g = giggle.Giggle(clock=lambda: t[0], talking=lambda now: talking[0])
+    pushed = [0]
+    g = giggle.Giggle(clock=lambda: t[0], talking=lambda now: talking[0], pushes=lambda: pushed[0])
+    giggle._armed["pushes"] = 0
     giggle.arm(now=0.0)
+    giggle._armed["pushes"] = 0
     out = []
     for i in range(400):                                    # 4 s at 100 Hz
         t[0] = i * 0.01
         talking[0] = 0.5 <= t[0] < 2.0                      # Andy says the joke from 0.5 s to 2 s
+        if talking[0]:
+            pushed[0] += 1                                   # its audio arrives as it plays
         out.append(g.step((-0.17, 0.17), True))
     moving = [i for i, p in enumerate(out) if p != (-0.17, 0.17)]
     assert moving and moving[0] * 0.01 >= 2.0               # only after the voice stops
@@ -118,3 +123,15 @@ def test_a_story_about_something_is_made_up_and_said_to_be():
     out = stories.make_up("a cat who loves the sea")
     assert out["make_up"] and "a cat who loves the sea" in out["how"] and "made it up" in out["how"]
     assert board.showing() is None                          # nothing from the shelf on the screen
+
+
+def test_audio_that_was_already_playing_when_the_joke_was_armed_doesn_t_count():
+    t = [0.0]
+    pushed = [5]                                             # "Sure, here's one!" already queued
+    g = giggle.Giggle(clock=lambda: t[0], talking=lambda now: True, pushes=lambda: pushed[0])
+    giggle._armed.update(at=0.0, heard=False, pushes=5)
+    g.step((0.0, 0.0), True)
+    assert not giggle._armed["heard"]                        # nothing new yet
+    pushed[0] = 6
+    g.step((0.0, 0.0), True)
+    assert giggle._armed["heard"]                            # the joke's own audio

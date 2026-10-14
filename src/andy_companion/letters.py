@@ -30,7 +30,7 @@ import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 
 MODEL = os.environ.get("ANDY_LETTER_MODEL", os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning"))
-TIMEOUT_S = 20
+TIMEOUT_S = 8                              # Andy's answer waits on it
 KINDS = ("letter", "bill", "card", "notice", "medicine", "label", "other")
 FIELDS = ("sender", "about", "to_do", "by_when", "amount", "caution")
 SCHEMA = {"type": "object", "additionalProperties": False, "required": ["kind", *FIELDS, "suspicious"],
@@ -188,3 +188,31 @@ def show(c: Dict[str, Any], language: str = "en", now: Optional[float] = None) -
     if c.get("amount") and not c.get("warning"):
         items.append({"title": lab["amount"], "summary": c["amount"]})
     board.show("letter", title, items, now=now)
+
+
+CARD_NOTE = "A large-print card of it is on the screen now; you may say 'It's on your screen too'. "
+WARN_NOTE = ("Say the caution plainly and kindly, and offer check_message. Numbers on a suspicious page are hidden: "
+             "never read them out, and don't read it word for word.")
+
+
+def for_andy(result: Dict[str, Any], language: str = "en", summariser: Optional[Callable] = None) -> Dict[str, Any]:
+    """What read_letter gives the model: the page's text, the card on the screen, and, decided in code
+    before the model and whatever the card does, the warning signs, with the page's numbers hidden."""
+    text = result.get("text") or ""
+    if not text:
+        return result
+    signs = warning_signs(text, "es" if language == "es" else "en")
+    if signs:
+        result["text"] = mask(text)
+        result["warning_signs"] = signs
+        result["screen_note"] = WARN_NOTE
+    try:
+        c = (summariser or summarise)(text, language)
+    except Exception:
+        return result                      # no card; Andy still explains it, and any warning stands
+    show(c, language)
+    if c["warning"]:
+        result["text"] = mask(text)
+    result["on_screen"] = {k: c[k] for k in ("sender", "about", "to_do", "by_when", "amount", "caution") if c.get(k)}
+    result["screen_note"] = CARD_NOTE + (WARN_NOTE if c["warning"] else "")
+    return result

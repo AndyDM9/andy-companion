@@ -39,6 +39,8 @@ def set_caption(text: str, now: Optional[float] = None) -> None:
     _caption["at"] = now if now is not None else _t.time()
 
 
+FONTS = {f"/fonts/atkinson-hyperlegible-{w}.woff2": f"fonts/atkinson-hyperlegible-{w}.woff2" for w in (400, 700)}
+
 # What Andy's camera saw when it found something ("where are my glasses?"), for the screen. Memory
 # only, for FRAME_FOR_S; never written to disk or logged. Posted by Andy's own process on this computer.
 FRAME_FOR_S = 120
@@ -228,8 +230,8 @@ def hood_state() -> Dict[str, Any]:
 
 MAX_BODY = 4096
 HEADERS = {
-    "Content-Security-Policy": ("default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' "
-                                "https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; "
+    "Content-Security-Policy": ("default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
+                                "font-src 'self'; connect-src 'self'; "
                                 "img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"),
     "Referrer-Policy": "no-referrer",
     "X-Content-Type-Options": "nosniff",
@@ -338,10 +340,35 @@ def setup_state() -> Dict[str, Any]:
 
 
 def _ok(token: Optional[str], kind: str) -> bool:
-    return bool(token) and hmac.compare_digest(token, board.tokens()[kind])
+    if not token:
+        return False
+    # Bytes, so a token with characters outside ASCII is simply wrong rather than an error.
+    return hmac.compare_digest(token.encode("utf-8", "replace"), board.tokens()[kind].encode())
+
+
+def _no_constant(name: str) -> None:
+    raise ValueError("That is not a number.")
+
+
+def _object(raw: bytes) -> dict:
+    """A request body as a JSON object; anything else (a list, NaN, Infinity) is a ValueError."""
+    data = json.loads(raw or b"{}", parse_constant=_no_constant)
+    if not isinstance(data, dict):
+        raise ValueError("Something went wrong; please try again.")
+    return data
 
 
 class Handler(BaseHTTPRequestHandler):
+    timeout = 10        # a connection that stalls is dropped, so it can't hold a thread forever
+
+    def _length(self) -> int:
+        """The body's declared length; -1 (refused by every caller's range check) if it isn't a sane number."""
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            return -1
+        return length if length >= 0 else -1
+
     server_version = "Andy"
     sys_version = ""
 
@@ -386,6 +413,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("family.html")
         if url.path == "/api/family" and _ok(q.get("k"), "family"):
             return self._json(family_state())
+        if url.path in FONTS:           # Andy's own copy of its typeface; no token, nothing private
+            return self._send(200, (PAGES / FONTS[url.path]).read_bytes(), "font/woff2")
         if url.path == "/frame" and _ok(q.get("t"), "screen"):
             data = frame()
             if data:
@@ -402,7 +431,7 @@ class Handler(BaseHTTPRequestHandler):
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         local = self.client_address[0] in ("127.0.0.1", "::1")
         if url.path == "/api/frame" and _ok(q.get("t"), "screen") and local:
-            length = int(self.headers.get("Content-Length") or 0)
+            length = self._length()
             if not 0 < length <= MAX_FRAME:
                 return self._json({"error": "too long"}, 413)
             data = self.rfile.read(length)
@@ -411,11 +440,11 @@ class Handler(BaseHTTPRequestHandler):
             set_frame(data)
             return self._json({"ok": True})
         if url.path in ("/api/caption", "/api/turn") and _ok(q.get("t"), "screen") and local:
-            length = int(self.headers.get("Content-Length") or 0)
-            if length > MAX_BODY:
+            length = self._length()
+            if not 0 <= length <= MAX_BODY:
                 return self._json({"error": "too long"}, 413)
             try:
-                data = json.loads(self.rfile.read(length) or b"{}")
+                data = _object(self.rfile.read(length))
                 if not isinstance(data, dict):
                     raise ValueError("not an object")
                 if url.path == "/api/caption":
@@ -428,15 +457,15 @@ class Handler(BaseHTTPRequestHandler):
                     set_live(data["live"])
                 else:
                     add_turn(data)
-            except (ValueError, TypeError, AttributeError):
+            except (ValueError, TypeError, AttributeError, OverflowError):
                 return self._json({"error": "bad request"}, 400)
             return self._json({"ok": True})
         if url.path.startswith("/api/setup") and _ok(q.get("s"), "setup"):
-            length = int(self.headers.get("Content-Length") or 0)
-            if length > MAX_BODY:
+            length = self._length()
+            if not 0 <= length <= MAX_BODY:
                 return self._json({"error": "That is too long."}, 413)
             try:
-                data = json.loads(self.rfile.read(length) or b"{}")
+                data = _object(self.rfile.read(length))
                 if not isinstance(data, dict):
                     raise ValueError("Something went wrong; please try again.")
                 from andy_companion import setup_page
@@ -472,15 +501,17 @@ class Handler(BaseHTTPRequestHandler):
                     return self._json({"ok": True, **setup_state()})
             except ValueError as e:
                 return self._json({"error": str(e)}, 400)
+            except (TypeError, AttributeError, OverflowError):
+                return self._json({"error": "Something went wrong; please try again."}, 400)
             return self._send(404, b"Not found", "text/plain")
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
-        length = int(self.headers.get("Content-Length") or 0)
+        length = self._length()
         limit = board.MAX_PHOTO_BYTES * 4 // 3 + MAX_BODY if url.path == "/api/family/photo" else MAX_BODY
-        if length > limit:
+        if not 0 <= length <= limit:
             return self._json({"error": "That is too long."}, 413)
         try:
-            data = json.loads(self.rfile.read(length) or b"{}")
+            data = _object(self.rfile.read(length))
             if url.path == "/api/family/look":
                 board.looked(data.get("name", ""))
                 return self._json({"ok": True})
@@ -500,7 +531,25 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"ok": True})
         except ValueError as e:
             return self._json({"error": str(e)}, 400)
+        except (TypeError, AttributeError, OverflowError):
+            return self._json({"error": "Something went wrong; please try again."}, 400)
         return self._send(404, b"Not found", "text/plain")
+
+
+def _housekeeping(every_s: float = 60.0, rounds: Optional[int] = None) -> None:
+    """Expired cards leave the screen file and photos over a week old are deleted, even when no TV is open
+    to ask for them (a letter card or a research question must never become a lasting record)."""
+    import time as _t
+
+    n = 0
+    while rounds is None or n < rounds:
+        n += 1
+        try:
+            board.showing()
+            board.tidy_photos()
+        except Exception:
+            logger.debug("screen housekeeping failed", exc_info=True)
+        _t.sleep(every_s)
 
 
 def serve(host: Optional[str] = None, port: Optional[int] = None) -> ThreadingHTTPServer:
@@ -508,5 +557,6 @@ def serve(host: Optional[str] = None, port: Optional[int] = None) -> ThreadingHT
     port = port if port is not None else int(os.environ.get("ANDY_SCREEN_PORT", "8090"))
     httpd = ThreadingHTTPServer((host, port), Handler)
     threading.Thread(target=httpd.serve_forever, name="andy-screen", daemon=True).start()
+    threading.Thread(target=_housekeeping, name="andy-screen-tidy", daemon=True).start()
     logger.info("Andy's screen is served on port %d", port)
     return httpd

@@ -88,7 +88,7 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
             return result
         board.research_ready(topic, "", [], [], failed=True)
         logger.info("Looking into a question did not finish")
-    except web.WebError as e:
+    except Exception as e:   # any failure is told, so the promised answer is never left hanging
         board.research_ready(topic, "", [], [], failed=True)
         logger.info("Looking into a question failed: %s", type(e).__name__)
     finally:

@@ -5,6 +5,52 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (a code, privacy and robustness review)
+
+An independent review of today's code (2026-10-13) found no critical problems; a fresh clone with an
+empty home folder installs and passes. What it found is fixed and tested (`tests/test_hardening.py`,
+10 tests):
+
+**High:**
+- **Pollen's settings server**, in Reachy Mini app mode, listened on the whole home network with no
+  login: anyone there could read the conversation as text and make Andy say anything. It now listens
+  on this computer only.
+- **A scam letter's numbers** reached the model if the letter card failed (a timeout, a missing key).
+  The warning signs are now checked in code before the card and whatever it does
+  (`letters.for_andy`), and the page's numbers hidden.
+- **The screen server** accepted a negative request length (it read until the client hung up) and
+  never timed out a stalled connection. Lengths are checked at both ends, and connections time out
+  after 10 s.
+
+**Medium:**
+- **Lost updates:** the family inbox and the settings are written by two processes, so a message, a
+  "who looked" notice or a helper's change could vanish. Both now take a file lock.
+- **Cards and photos expire even with no TV open:** a housekeeping thread in the screen server clears
+  expired cards and deletes photos over a week old. Before, a letter card could stay on disk until a
+  TV asked.
+- **The settings code makes a new setup link each time it is shown,** so a phone that saw an old code
+  has no way in.
+- **Pictures:** OpenCV refuses pictures over 40 megapixels before decoding them.
+- **Family links:** a link with spaces, brackets or no proper host is refused, so it can't carry an
+  instruction-like header into Andy's prompt.
+- **Research:** the research thread reports any failure, not only web errors, so "I'll tell you in a
+  minute" is always followed up.
+- **Shorter waits:** On this day remembers a failure for ten minutes, with shorter timeouts; the letter
+  card waits at most 8 s.
+
+**Low:**
+- **Bad input:** a token outside ASCII, a list body, NaN, Infinity, or a nonsense length now gets a 400
+  or 404 instead of a crash.
+- **The joke wiggle** counts only audio pushed after the joke was armed, so "Sure, here's one!" no
+  longer triggers it before the punchline.
+- **Andy's instructions** can no longer stop a conversation starting if a settings file is broken.
+- **Spoken times:** the English day plan says times as people say them ("at 2:30 pm", not "at 14:30");
+  Spanish keeps "a las 14:30".
+- **The typeface:** the TV, family, settings and hood pages load Atkinson Hyperlegible from Andy
+  itself, not Google Fonts, which told Google the household's address on every page load. The
+  security policy now allows fonts only from Andy. Checked in a browser: both weights load, and there
+  are no outside requests.
+
 ### Added (finding things, and body language from research)
 
 - **"Andy, where did I leave my glasses?"** (`src/andy_companion/finder.py`, `body/look.py`,

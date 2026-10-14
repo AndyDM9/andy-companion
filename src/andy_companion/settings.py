@@ -40,13 +40,15 @@ def update(**changes: Any) -> Dict[str, Any]:
         raise ValueError("Language is en or es.")
     if "volume" in changes and changes["volume"] is not None and not 0 <= int(changes["volume"]) <= 100:
         raise ValueError("Volume is from 0 to 100.")
-    data = {**get(), **changes}
-    FILE.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    fd, tmp = tempfile.mkstemp(dir=FILE.parent, suffix=".tmp")
-    with os.fdopen(fd, "w") as f:
-        json.dump(data, f)
-    os.chmod(tmp, 0o600)
-    os.replace(tmp, FILE)
+    from andy_companion import board
+
+    with board.locked(FILE):          # the setup page and the speaker both change settings
+        data = {**get(), **changes}
+        fd, tmp = tempfile.mkstemp(dir=FILE.parent, suffix=".tmp")
+        with os.fdopen(fd, "w") as f:
+            json.dump(data, f)
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, FILE)
     return data
 
 
@@ -96,7 +98,14 @@ def install() -> None:
         return
 
     def with_settings(*args, **kwargs) -> str:
-        return original(*args, **kwargs) + "\n\n" + instructions()
+        base = original(*args, **kwargs)
+        try:
+            return base + "\n\n" + instructions()
+        except Exception:      # a broken settings or moments file must never stop a conversation starting
+            import logging
+
+            logging.getLogger("andy.settings").warning("Andy's own instructions could not be added", exc_info=True)
+            return base
 
     with_settings._andy_settings = True
     hr.get_session_instructions = with_settings

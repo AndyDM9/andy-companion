@@ -22,6 +22,7 @@ FEED = {"selected": [
 def data(tmp_path, monkeypatch):
     monkeypatch.setattr(board, "SCREEN", tmp_path / "screen.json")
     onthisday._cache.clear()
+    onthisday._failed["at"] = -1e9
 
 
 def opener(seen=None):
@@ -57,6 +58,10 @@ def test_the_model_s_check_is_the_second_net_and_nothing_is_offered_without_it()
     with pytest.raises(onthisday.VetError):
         onthisday.today(date(2026, 10, 14), opener=opener(), vetter=broken)
     assert onthisday._cache == {}                            # nothing unchecked is kept for later
+    calls = []
+    with pytest.raises(onthisday.VetError):                  # and no second wait for ten minutes
+        onthisday.today(date(2026, 10, 14), opener=opener(calls), vetter=lambda e: e)
+    assert calls == []
 
 
 def test_the_check_asks_for_a_strict_schema_with_reasoning_off(monkeypatch):

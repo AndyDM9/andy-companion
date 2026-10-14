@@ -11,14 +11,18 @@ Small owner-only files in Andy's folder, read by the screen server (screen_serve
 
 from __future__ import annotations
 
+import contextlib
+import fcntl
+
 import json
+import re
 import os
 import secrets
 import tempfile
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Iterator
 
 from andy_companion.reminders import DATA_DIR
 
@@ -108,8 +112,10 @@ CODE_FOR_S = 120
 
 
 def show_settings_code(now: Optional[float] = None) -> None:
-    """The settings QR code on the screen for two minutes only: the code gives control of Andy."""
+    """The settings QR code on the screen for two minutes only: the code gives control of Andy. Each time it
+    is shown the setup link is made new, so a phone that saw an old code has no way in (review 2026-10-13)."""
     now = now or time.time()
+    new_setup_link()
     _write(SCREEN, {"kind": "code", "title": "Andy's settings", "items": [], "at": now, "until": now + CODE_FOR_S})
 
 
@@ -156,15 +162,31 @@ def unshare(note_id: str) -> bool:
 
 # --- what family send, and who looked -------------------------------------------------------
 
+@contextlib.contextmanager
+def locked(path: Path) -> Iterator[None]:
+    """One writer at a time for a file both of Andy's processes change (the screen server and the robot's
+    speaker both write the inbox): without it, one's read-change-write loses the other's (review 2026-10-13)."""
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    with open(path.with_suffix(".lock"), "a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock, fcntl.LOCK_UN)
+
+
 def _inbox_add(entry: Dict[str, Any]) -> None:
-    items = _read(INBOX, [])
-    _write(INBOX, (items + [entry])[-50:])
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        _write(INBOX, (items + [entry])[-50:])
 
 
 def family_message(name: str, text: str = "", link: str = "", now: Optional[float] = None) -> None:
     name, text, link = _tidy(name, NAME_LEN), _tidy(text), _tidy(link, 300)
     if not name or not (text or link):
         raise ValueError("A name and a message or link are needed.")
+    if link and (any(ch in link for ch in " []<>\"'") or not re.match(r"^https?://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(?::\d+)?(/|$)", link)):
+        raise ValueError("That link doesn't look right. Send a web address that starts with https://.")
     if link and not link.startswith(("http://", "https://")):
         raise ValueError("A link starts with http:// or https://.")
     _inbox_add({"type": "message", "name": name, "text": text, "link": link, "at": now or time.time()})
@@ -213,10 +235,11 @@ def next_for_person() -> Optional[Dict[str, Any]]:
 
 
 def delivered(entry: Dict[str, Any]) -> None:
-    items = _read(INBOX, [])
-    if entry in items:
-        items.remove(entry)
-        _write(INBOX, items)
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        if entry in items:
+            items.remove(entry)
+            _write(INBOX, items)
 
 
 # --- photos from family ---------------------------------------------------------------------
@@ -224,6 +247,7 @@ def delivered(entry: Dict[str, Any]) -> None:
 def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] = None) -> Dict[str, Any]:
     """Keep a photo family sent: decoded and re-encoded as a plain JPEG (which drops hidden data such
     as the place it was taken), at most 1600 pixels wide, deleted after PHOTO_DAYS."""
+    os.environ.setdefault("OPENCV_IO_MAX_IMAGE_PIXELS", str(40_000_000))   # set before cv2 loads
     import cv2
     import numpy as np
 

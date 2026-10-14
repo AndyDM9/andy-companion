@@ -31,10 +31,10 @@ def _reminders_part(now: datetime, w: dict, language: str) -> str:
     today = [r for r in reminders.pending() if datetime.fromtimestamp(r["due"]).date() == now.date()]
     if not today:
         return f"{day} {w['none']}"
-    items = "; ".join(w["item"].format(time=datetime.fromtimestamp(r["due"]).strftime("%H:%M"), text=r["text"]) for r in today)
+    items = "; ".join(w["item"].format(time=_clock(r["due"], words.lang(language)), text=r["text"]) for r in today)
     count = (w["count_one"] if len(today) == 1 else w["count"]).format(n=len(today), items=items)
     upcoming = [r for r in today if r["due"] >= now.timestamp()]
-    nxt = " " + w["next"].format(time=datetime.fromtimestamp(upcoming[0]["due"]).strftime("%H:%M")) if len(today) > 1 and upcoming else ""
+    nxt = " " + w["next"].format(time=_clock(upcoming[0]["due"], words.lang(language))) if len(today) > 1 and upcoming else ""
     return f"{day} {count}{nxt}"
 
 

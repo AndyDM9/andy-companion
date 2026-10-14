@@ -216,7 +216,7 @@ This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own ter
 | Tavily API (the web) | Tavily's terms of service | Tavily |
 | National Weather Service API (the weather) | US government work, public domain | NOAA / NWS |
 | Open-Meteo geocoding (the town's coordinates, once) | Free non-commercial use; data CC-BY-4.0 (GeoNames) | Open-Meteo, GeoNames |
-| Atkinson Hyperlegible (the screens' typeface) | SIL Open Font License, via Google Fonts | Braille Institute |
+| Atkinson Hyperlegible (the screens' typeface), bundled in `src/andy_companion/pages/fonts/` and served by Andy itself | SIL Open Font License (`fonts/OFL.txt`) | Braille Institute |
 | Wikipedia's On this day (fetched at runtime, never stored in this repository) | CC BY-SA 4.0 | "According to Wikipedia" said aloud; "Wikipedia (CC BY-SA 4.0)" on the screen |
 | The stories (`src/andy_companion/story_texts.json`): *The Aesop for Children* (1919), O. Henry's *The Four Million* (1906), Kipling's *Just So Stories* (1902) | Public domain in the United States; texts from Project Gutenberg with its header and licence removed, as its licence allows | The authors, named on screen as each story is read |
 | Sample landscapes (`scripts/settings.py sample-photos`, downloaded only on request, never in this repository) | Unsplash License, via Lorem Picsum | Each photographer, credited on screen |

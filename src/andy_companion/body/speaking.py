@@ -17,15 +17,22 @@ TAIL_S = 0.3                  # the speaker's own buffer after the last sample
 
 _lock = threading.Lock()
 _until = 0.0
+_pushes = 0                   # chunks pushed so far, so a listener can tell new audio from old
 
 
 def pushed(samples: int, rate: float, now: Optional[float] = None) -> None:
-    global _until
+    global _until, _pushes
     if rate <= 0 or samples <= 0:
         return
     now = time.monotonic() if now is None else now
     with _lock:
         _until = max(_until, now) + samples / rate
+        _pushes += 1
+
+
+def pushes() -> int:
+    with _lock:
+        return _pushes
 
 
 def remaining(now: Optional[float] = None) -> float:

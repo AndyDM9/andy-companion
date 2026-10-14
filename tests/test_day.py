@@ -27,8 +27,8 @@ def test_the_day_is_said_the_same_way_every_time():
     reminders.add("water the plants", at="17:00", now=NOW)
     reminders.add("call my daughter", at="14:30", now=NOW)
     first = dayplan.say(NOW)
-    assert first == ("Today is Tuesday 13 October. You have 2 reminders today: at 14:30, call my daughter; "
-                     "at 17:00, water the plants. The next one is at 14:30.")
+    assert first == ("Today is Tuesday 13 October. You have 2 reminders today: at 2:30 pm, call my daughter; "
+                     "at 5:00 pm, water the plants. The next one is at 2:30 pm.")   # times as people say them
     assert dayplan.say(NOW) == first
 
 
@@ -39,7 +39,7 @@ def test_tomorrows_reminders_are_not_today():
 
 def test_one_reminder_reads_naturally():
     reminders.add("call my daughter", at="14:30", now=NOW)
-    assert "You have 1 reminder today: at 14:30, call my daughter." in dayplan.say(NOW)
+    assert "You have 1 reminder today: at 2:30 pm, call my daughter." in dayplan.say(NOW)
 
 
 def test_settings_default_and_stick():

@@ -19,7 +19,9 @@ from andy_companion import app_mode
 
 
 class AndyCompanionApp(ReachyMiniApp):
-    custom_app_url = "http://0.0.0.0:7860/"     # Pollen's settings page, as in its own app
+    # Pollen's settings page, on this computer only: on 0.0.0.0 (Pollen's own default) anyone on the home
+    # network could read the conversation as text and make Andy say anything (review, 2026-10-13).
+    custom_app_url = "http://127.0.0.1:7860/"
     dont_start_webserver = False
 
     def run(self, reachy_mini: ReachyMini, stop_event: threading.Event) -> None:

@@ -28,7 +28,8 @@ from typing import Any, Callable, Dict, List, Optional
 
 FEED = "https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/{month:02d}/{day:02d}"
 USER_AGENT = "AndyCompanion/0.1 (https://github.com/AndyDM9/andy-companion)"
-TIMEOUT_S = 8
+TIMEOUT_S = 5
+RETRY_AFTER_S = 600                        # after a failure, don't make the person wait again for ten minutes
 PICK = 3
 YEARS = (1900, 2010)
 CREDIT = {"source": "Wikipedia", "licence": "CC BY-SA 4.0", "url": "https://en.wikipedia.org/wiki/Wikipedia:Selected_anniversaries"}
@@ -110,7 +111,7 @@ def vet(events: List[Dict[str, Any]], opener: Optional[Callable] = None) -> List
     req = urllib.request.Request(base + "/chat/completions", method="POST", data=json.dumps(body).encode(),
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
     try:
-        with (opener or urllib.request.urlopen)(req, timeout=20) as r:
+        with (opener or urllib.request.urlopen)(req, timeout=8) as r:
             keep = json.loads(json.loads(r.read())["choices"][0]["message"]["content"])["keep"]
     except Exception as e:
         raise VetError(type(e).__name__) from None
@@ -118,6 +119,7 @@ def vet(events: List[Dict[str, Any]], opener: Optional[Callable] = None) -> List
 
 
 _cache: Dict[str, List[Dict[str, Any]]] = {}
+_failed = {"at": -1e9}
 
 
 def today(day: Optional[date] = None, opener: Optional[Callable] = None, rng: Any = None,
@@ -125,8 +127,14 @@ def today(day: Optional[date] = None, opener: Optional[Callable] = None, rng: An
     day = day or date.today()
     key = day.isoformat()
     if key not in _cache:
-        shortlist = gentle(fetch(day, opener))
-        kept = (vetter or vet)(shortlist)          # VetError: nothing is offered, and nothing cached
+        if time.time() - _failed["at"] < RETRY_AFTER_S:
+            raise VetError("tried a moment ago")
+        try:
+            shortlist = gentle(fetch(day, opener))
+            kept = (vetter or vet)(shortlist)      # VetError: nothing is offered, and nothing cached
+        except Exception:
+            _failed["at"] = time.time()
+            raise
         _cache.clear()
         _cache[key] = kept
     found = list(_cache[key])
