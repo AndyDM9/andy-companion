@@ -11,7 +11,7 @@ video, the Devpost form, the repository) is checked against this file first.
 
 | What | When | Our plan |
 |---|---|---|
-| Submission period | 2026-08-26 09:00 PT to **2026-10-30 10:00 PT** | Submit by **2026-10-27**; the project started 2026-10-13, inside the period |
+| Submission period | 2026-08-26 09:00 PT to **2026-10-30 10:00 PT** | A complete draft submitted by **2026-10-22**, so Devpost's free eligibility check (for entries in at least a week before the deadline, by 2026-10-23 10:00 PT) can flag anything missing; edits continue after, final by **2026-10-27**. The project started 2026-10-13, inside the period |
 | Judging | 2026-12-01 to 2026-12-15 | Keep the repository, the robot and the README working through 2026-12-15 |
 | Winners | About 2027-01-11 | A winner's forms are due 10 business days after they are sent (W-9 for a US resident) |
 
@@ -49,10 +49,12 @@ video, the Devpost form, the repository) is checked against this file first.
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |
 | Video under three minutes | 🔶 | [video.md](video.md): 2:45 |
 | Video shows the project working on its device; Physical AI: **at least one minute of the robot operating** | 🔶 | Shots 1, 3 to 8 are the robot live |
-| Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-26 |
+| Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-26. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
+| The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
 | Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
 | All materials in English, or with an English translation | 🔶 | The Spanish moment in the video gets **English subtitles** |
 | Identify the track | ⬜ | Physical AI, on the form |
+| Sponsor names, not logos | ✅ | Nebius allows naming its products but not implying approval; NVIDIA and Nebius logos need written consent. We name the tools in words, use no logos, and say "built with", never "powered by" or "partnered with" (checked in the README, the app page and the Devpost texts, 2026-10-13) |
 | Feedback on Token Factory, AI Cloud and the NVIDIA tools | 🔶 | From [feedback-notes.md](feedback-notes.md) |
 | Original work, solely owned, no one else's rights infringed | ✅ | Our code; open source used under its licences and built upon (Pollen's app is extended, not copied); no the founder's company material |
 
@@ -74,4 +76,6 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## Kept current
 
-This file changes in the same commit as anything it describes. Last full check: 2026-10-13.
+This file changes in the same commit as anything it describes. Last full check: 2026-10-13, with a
+second look the same evening at the Devpost page, its updates, FAQ and forum (no amendments since the
+morning).

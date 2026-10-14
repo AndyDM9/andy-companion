@@ -130,13 +130,9 @@ hugging-face, python, opencv, tesseract, vosk, wikipedia
 
 ## Feedback for Nebius, NVIDIA and the tools (mandatory; the ten best win a prize)
 
-Write it from [feedback-notes.md](feedback-notes.md): one paragraph per product, each with what
-happened, why it mattered, and the change we suggest. Lead with the most useful:
-1. structured output needs thinking off;
-2. a judge model missing a hard constraint;
-3. the plain IP address bypassing the endpoint token;
-4. a default crisis line in every language;
-5. zero data retention off by default.
+The text is drafted in [feedback.md](feedback.md), product by product, in the shape the award is judged
+on: what we used it for, what worked, what needs work, the first working call, and whether we'd use it
+again. It comes from the dated notes in [feedback-notes.md](feedback-notes.md).
 
 ## Prior work
 

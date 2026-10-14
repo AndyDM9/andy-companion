@@ -50,6 +50,7 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | Now to 2026-10-23 | Build and measure: every new function with tests, a suite case and a live check | Claude, the founder testing | CHANGELOG, STATUS |
 | Any evening this week | The live test on the robot, 25 minutes | Founder | [live-test.md](live-test.md) |
 | About 2026-10-20 | The name decided after the trademark filing; the repository made public; the licence visible in About; the Hugging Face account and the Reachy Mini app published | Founder (Claude prepares) | [rules-compliance.md](rules-compliance.md), [submission-checklist.md](submission-checklist.md) |
+| 2026-10-22 | **A complete draft submitted** on Devpost, for its free eligibility check (entries in by 2026-10-23 10:00 PT); editing continues | Founder (texts ready in submission.md and feedback.md) | [submission-checklist.md](submission-checklist.md) |
 | 2026-10-23 | Feature freeze: only fixes after this | Both | STATUS |
 | 2026-10-23 | The final suite run as a Nebius Serverless Job; numbers into README and the form | Claude | `evals/results/` |
 | 2026-10-24 to 10-26 | Filming to the shot list (no music or logos, own photos, English subtitles); the video on YouTube, public | Founder | [video.md](video.md) |

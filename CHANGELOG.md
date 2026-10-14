@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (what's left for the rules, researched; the video and feedback ready)
+
+- **Research** (2026-10-13, Devpost's guidance, its judges' tips, and the hackathon's updates, FAQ and
+  forum): no amendments to the rules since the morning. It found Devpost's free eligibility check for
+  entries in at least a week early, so a complete draft is now due **2026-10-22** (PLAN, checklist,
+  compliance).
+- `docs/video.md`, rebuilt as a pitch:
+  - a live ten-second hook (the letter, the glance, **Be careful**);
+  - the problem and who it's for;
+  - one long unedited take with the hood page's timings in a corner, showing the Today card, **Tavily**
+    research live on the TV (the old shot list never showed Tavily, the bonus prize's sponsor), the
+    reminder, and the joke with its wiggle;
+  - Spanish with subtitles, then the stack named aloud.
+- Video rules added: captions as SRT, YouTube **Public** and "not made for kids", and never cutting out
+  a pause, since the project must "function as depicted".
+- `docs/feedback.md`: the full feedback text for the form, product by product, in the shape the Most
+  Valuable Feedback award is judged on.
+- Sponsor names, not logos: "built with", never "powered by". The README, app page and Devpost texts
+  were checked.
+
 ### Changed (the architecture picture, current)
 
 - `docs/images/architecture.svg` and `.png`: 34 tools (letters, stories, jokes), the glance at the
