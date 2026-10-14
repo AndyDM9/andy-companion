@@ -43,6 +43,20 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 |
 | M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 |
 
+## Road to October 30 (the deadline is 2026-10-30, 10:00 PT; we submit on 2026-10-27)
+
+| When | What | Who | Where it is tracked |
+|---|---|---|---|
+| Now to 2026-10-23 | Build and measure: every new function with tests, a suite case and a live check | Claude, the founder testing | CHANGELOG, STATUS |
+| Any evening this week | The live test on the robot, 25 minutes | Founder | [live-test.md](live-test.md) |
+| About 2026-10-20 | The name decided after the trademark filing; the repository made public; the licence visible in About; the Hugging Face account and the Reachy Mini app published | Founder (Claude prepares) | [rules-compliance.md](rules-compliance.md), [submission-checklist.md](submission-checklist.md) |
+| 2026-10-23 | Feature freeze: only fixes after this | Both | STATUS |
+| 2026-10-23 | The final suite run as a Nebius Serverless Job; numbers into README and the form | Claude | `evals/results/` |
+| 2026-10-24 to 10-26 | Filming to the shot list (no music or logos, own photos, English subtitles); the video on YouTube, public | Founder | [video.md](video.md) |
+| 2026-10-26 | The Devpost texts final, the feedback written up | Both | [submission.md](submission.md), [feedback-notes.md](feedback-notes.md) |
+| 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted | Founder | [submission-checklist.md](submission-checklist.md) |
+| 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | Founder | [rules-compliance.md](rules-compliance.md) |
+
 ## The video (draft)
 
 1. Morning: Andy wakes, greets, says the day and one local headline with its source.
