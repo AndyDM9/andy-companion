@@ -14,7 +14,8 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   understand "hoy", "mañana" and "el lunes"; letters are read in English and Spanish when Tesseract's Spanish
   data is installed. "Goodnight, Andy" with a comma now counts too (it didn't).
 - **A stop is a clean exit:** Ctrl-C or the service manager's SIGINT no longer ends the supervisor with a
-  traceback and a failure code. 3 tests.
+  traceback and a failure code. 3 tests. The service sends its stop to the supervisor only (`KillMode=mixed`),
+  which lets the app put the robot to sleep and shut down before it exits.
 
 ### Measured (the scam check, four ways, as Nebius Serverless Jobs)
 

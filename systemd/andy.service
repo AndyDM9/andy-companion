@@ -10,6 +10,9 @@ ExecStart=@ROOT@/scripts/andy
 Restart=on-failure
 RestartSec=10
 KillSignal=SIGINT
+# The stop goes to the supervisor only, which passes it to the app and waits for it to finish
+# (the app sleeps the robot first); anything left after TimeoutStopSec is killed.
+KillMode=mixed
 TimeoutStopSec=30
 
 [Install]
