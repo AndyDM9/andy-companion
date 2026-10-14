@@ -137,6 +137,54 @@ def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, 
     return _results(_post("/search", body, opener))
 
 
+# --- finding the town's events page: Tavily search, then map ----------------------------------------
+
+OFFICIAL = re.compile(r"\.(gov|us)$|\.(fl|ca|ny|tx)\.us$|city|town|village|county", re.I)
+EVENTS = re.compile(r"(calendar|events?|activities|things-to-do|whats-on|recreation|parks)", re.I)
+SKIP_PATH = re.compile(r"(\.pdf$|/login|/account|/search|/news/|/\d{4}/\d{2}/)", re.I)
+
+
+NOT_A_TOWN = re.compile(r"(trip|yelp|wikipedia|facebook|instagram|twitter|x\.com|youtube|linkedin|zillow|realtor|"
+                        r"expedia|booking|hotels|travel|visit|news|times|post|herald|patch|nextdoor|reddit|wiki)", re.I)
+
+
+def official_site(place: str, opener=None) -> Optional[str]:
+    """The town's own website: an official-looking result (.gov, .us, city, town) if there is one, else the first
+    that isn't a travel, review, social, news or encyclopedia site."""
+    body = {"query": f"{place} official city government website"[:390], "search_depth": "basic", "max_results": 5,
+            "safe_search": True}
+    # The address as found ("www." kept), so the map starts where the site really is.
+    hosts = [urlparse(str(r.get("url", ""))).netloc.lower() for r in _post("/search", body, opener).get("results", [])]
+    hosts = [h for h in hosts if h]
+    for h in hosts:
+        if OFFICIAL.search(h.split(":")[0]):
+            return "https://" + h
+    for h in hosts:
+        if not NOT_A_TOWN.search(h):
+            return "https://" + h
+    return None
+
+
+def map_site(url: str, instructions: str = "", opener=None) -> List[str]:
+    """Tavily map: the pages of a site, guided by instructions."""
+    body = {"url": url, "max_depth": 2, "max_breadth": 30, "limit": 60, "instructions": instructions[:200]}
+    return [str(u) for u in _post("/map", body, opener).get("results", []) if isinstance(u, str)]
+
+
+def find_events_page(place: str, opener=None) -> Optional[Dict[str, str]]:
+    """The town's events calendar, found from its official site with Tavily map, or None."""
+    site = official_site(place, opener)
+    if not site:
+        return None
+    pages = [u for u in map_site(site, "The calendar of community events and activities", opener)
+             if EVENTS.search(u) and not SKIP_PATH.search(u)]
+    if not pages:
+        return None
+    # Shortest first: the calendar's own page rather than one event on it.
+    page = min(pages, key=lambda u: (0 if re.search(r"calendar|events", u, re.I) else 1, len(u)))
+    return {"site": site, "page": page.rstrip("/")}
+
+
 def read_link(url: str, opener=None) -> Dict[str, str]:
     if urlparse(url).scheme not in ("http", "https"):
         raise WebError("That is not a web link.")

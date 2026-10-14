@@ -99,6 +99,8 @@
       <label for="events">Pages that list what's on</label>
       <textarea id="events" placeholder="harborbay.example/events"></textarea>
       <p class="hint">A library, a community centre or the town's calendar. One per line.</p>
+      <p class="hint" id="events-found" hidden>Found on the town's own website: <a id="events-found-link" href="#" rel="noopener"></a>
+        <button type="button" class="quiet" id="events-use">Use it</button></p>
     </fieldset>
 
     <fieldset>
@@ -249,6 +251,10 @@
     $("place").value = v.place || "";
     $("news").value = (v.news_sources || []).join("\n");
     $("events").value = (v.events_pages || []).join("\n");
+    const found = v.events_suggestion;
+    const showFound = !!(found && found.page && !(v.events_pages || []).length);
+    $("events-found").hidden = !showFound;
+    if (showFound) { const a = $("events-found-link"); a.href = found.page; text(a, found.page); }
     for (const r of document.querySelectorAll("input[name=language]")) r.checked = r.value === v.language;
     for (const r of document.querySelectorAll("input[name=pace]")) r.checked = r.value === v.pace;
     $("volume").value = v.volume == null ? 80 : v.volume;
@@ -340,6 +346,12 @@
   });
 
   for (const el of document.querySelectorAll("input[name=tv_side], #tv_far")) el.addEventListener("input", showFar);
+
+  $("events-use").addEventListener("click", () => {
+    $("events").value = $("events-found-link").textContent;
+    $("events-found").hidden = true;
+    text($("status"), "Added. Press Save to keep it.");
+  });
 
   $("tv-try").addEventListener("click", async () => {
     const status = $("tv-status");

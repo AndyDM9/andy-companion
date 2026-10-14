@@ -47,7 +47,7 @@ def test_settings_default_and_stick():
                             "news_sources": [], "events_pages": [], "captions": True, "language": "en",
                               "coords": None, "screen_photos": True, "night_from": 21, "night_to": 7,
                               "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
-                              "offers": True, "last_offer": None}
+                              "offers": True, "last_offer": None, "events_suggestion": None}
     settings.update(pace="slow", volume=70)
     assert settings.get()["pace"] == "slow" and settings.get()["volume"] == 70
 

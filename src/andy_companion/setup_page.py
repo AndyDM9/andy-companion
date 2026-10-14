@@ -32,7 +32,21 @@ MAX_SITES = 20
 
 def state() -> Dict[str, Any]:
     s = settings.get()
-    return {k: s[k] for k in NAMES}
+    out = {k: s[k] for k in NAMES}
+    out["events_suggestion"] = s.get("events_suggestion")
+    return out
+
+
+def suggest_events_page(place: str, finder=None) -> None:
+    """In the background after the town is set: the town's events calendar, found on its own website with
+    Tavily (a search, then map), offered on the setup page to add. Nothing is changed without the helper."""
+    try:
+        from andy_companion import web
+
+        found = (finder or web.find_events_page)(place)
+    except Exception:
+        found = None
+    settings.update(events_suggestion={**found, "for": place} if found else None)
 
 
 def _sites(value: Any) -> List[str]:
@@ -126,6 +140,10 @@ def apply(name: str, data: Dict[str, Any]) -> List[str]:
     settings.update(**changed)
     words = [NAMES[k] for k in NAMES if k in changed]
     board.settings_changed(name, words)
+    if changed.get("place") and not settings.get()["events_pages"]:
+        import threading
+
+        threading.Thread(target=suggest_events_page, args=(changed["place"],), daemon=True).start()
     if "volume" in changed:
         try:
             from andy_companion import volume
