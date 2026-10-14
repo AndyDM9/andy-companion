@@ -25,6 +25,13 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   and each morning Andy offers the day's plan.
 - **Reminders at the times you choose, in your words.** One-off or daily. A reminder wakes Andy
   if it is asleep, so none is missed.
+- **Good company, on any topic.** Andy keeps its turns short and asks one open question that picks up
+  your own words. It never asks "Do you remember…?", never corrects your story, never says "sweetie",
+  and takes "not now" for an answer. In Spanish it says *usted*. These rules come from research with
+  older adults and social robots, and the suite checks them. For something to talk about, **On this
+  day** gives a gentle thing from today's date in years gone by: from Wikipedia, credited, and checked
+  twice so it is never about war, disaster, politics or illness
+  ([decision 0006](docs/decisions/0006-on-this-day-from-wikipedia.md)).
 - **Jokes, riddles and stories.** Jokes and riddles come from a chosen set of gentle wordplay (nothing
   about age, memory, health or bodies, checked by a test), in English and Spanish, never repeated within
   a month; the antennas give a small wiggle after the punchline. Stories are real ones, read aloud a part
@@ -210,5 +217,6 @@ This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own ter
 | National Weather Service API (the weather) | US government work, public domain | NOAA / NWS |
 | Open-Meteo geocoding (the town's coordinates, once) | Free non-commercial use; data CC-BY-4.0 (GeoNames) | Open-Meteo, GeoNames |
 | Atkinson Hyperlegible (the screens' typeface) | SIL Open Font License, via Google Fonts | Braille Institute |
+| Wikipedia's On this day (fetched at runtime, never stored in this repository) | CC BY-SA 4.0 | "According to Wikipedia" said aloud; "Wikipedia (CC BY-SA 4.0)" on the screen |
 | The stories (`src/andy_companion/story_texts.json`): *The Aesop for Children* (1919), O. Henry's *The Four Million* (1906), Kipling's *Just So Stories* (1902) | Public domain in the United States; texts from Project Gutenberg with its header and licence removed, as its licence allows | The authors, named on screen as each story is read |
 | Sample landscapes (`scripts/settings.py sample-photos`, downloaded only on request, never in this repository) | Unsplash License, via Lorem Picsum | Each photographer, credited on screen |

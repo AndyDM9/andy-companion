@@ -34,6 +34,9 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 | 3n | "Tell me a joke" | A setup, a pause, the punchline, no explanation; when Andy's voice stops, both antennas wiggle for about a second. "Another one": a different joke | | |
 | 3o | "Tell me a story", then "Can you read me The Gift of the Magi?" and, at "Shall I go on?", "Not now" | A short fable first; the TV shows **Story time** with the title, author and part; Andy keeps the place. Next conversation, "Let's carry on with the story" goes on from part 2 | | |
 | 3p | "Make up a story about a cat who loves the sea" | A short gentle story, and Andy says it made it up | | |
+| 3q | "What happened on this day?" | One gentle thing with its year, "according to Wikipedia", then an open question about the time; the TV shows **On this day** with the date and "Wikipedia (CC BY-SA 4.0)" | | |
+| 3r | Talk about your past for a minute ("I grew up in…") | Short turns, one open question at a time that picks up your words; never "Do you remember"; "Not now" is taken at once | | |
+| 3s | (Afternoon, after two quiet hours with someone in the room) | Andy offers once a story, a bit of history or a riddle; "Not now" gets "Of course" and no second offer that day. The settings page can turn it off | | |
 | 3k | `cloud/vision-endpoint.sh` is not needed. Hold up a printed sample bill (a made-up company, an amount, a due date) and ask "Can you read this for me?" | Andy explains it; the TV shows "A bill from …", what it's about, "To do … by …" and the amount, and Andy glances at it. No account number on the screen | | |
 | 3l | Hold up the printed "fee to release your prize" letter | The TV shows **Be careful** first ("It says you won a prize… Don't call or pay yet. Check with family first."); no amount to pay; Andy says it kindly and offers to look it up | | |
 | 4 | Watch the TV while Andy speaks | Andy's words as captions at the bottom, gone after 20 s | | |

@@ -54,6 +54,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `health.py` | The hood page's health tiles: daemon, voice server, Andy's mode, weather, Tavily credits, Nebius endpoints | Read keys or words; hold up a page while checking |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers and tool names |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
+| `onthisday.py` | Today's date in years gone by from Wikipedia: gentle items only, by a word filter and then a Nemotron check (once a day, cached); credited on screen | Offer anything unchecked; send anything but the date |
 | `fun.py` | Jokes and riddles from a chosen set, never repeated within a month (`fun.json` holds joke numbers and times only) | Make up a joke; keep anything the person says |
 | `stories.py`, `story_texts.json` | Public-domain stories read a part at a time, with a bookmark for another day (`story.json`: which story, which part); a story about something in particular is the model's own, said to be made up | Recite a story from memory; keep anything the person says |
 | `body/giggle.py` | After a joke's punchline, a one-second antenna wiggle once Andy's voice stops | Move the head; move while the person speaks |

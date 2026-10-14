@@ -562,5 +562,22 @@
    ]
   },
   "source": "andy"
+ },
+ {
+  "name": "on_this_day",
+  "description": "When the person asks what happened on this day, wants something to talk about, or says yes when you offer a bit of history. Gives a few gentle things that happened on today's date in years gone by, from Wikipedia. language: the language you are speaking now. Then follow 'how'.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "language": {
+     "type": "string",
+     "enum": [
+      "en",
+      "es"
+     ]
+    }
+   }
+  },
+  "source": "andy"
  }
 ]

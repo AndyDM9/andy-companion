@@ -114,6 +114,19 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
                                                             "Mostly sunny, with a high near 86."}]}
     if name == "list_reminders":   # shaped like the real tool's answer, with one reminder to find
         return {"reminders": [{"id": "r1", "what": "call my sister Rosa", "when": "half past four", "daily": False}]}
+    if name == "on_this_day":   # shaped like andy_companion.onthisday.today
+        return {"events": [{"year": 1926, "text": "The first book featuring A. A. Milne's bear Winnie-the-Pooh was published."},
+                           {"year": 1968, "text": "The first live television broadcast by American astronauts in orbit is performed by the Apollo 7 crew."}],
+                "how": (("Answer in Spanish, with 'usted'. Begin with 'Según Wikipedia'. Choose one, the one most likely to "
+                         "interest them, and say it simply with its year, in a sentence or two, no list. Then ask one open "
+                         "question that invites a memory of the time, like '¿Cómo era aquella época para usted?' Never ask "
+                         "whether they remember it. Offer another only if they'd like one.")
+                        if (case or {}).get("_args", {}).get("language") == "es" else
+                        ("Begin with 'According to Wikipedia'. Choose one, the one most likely to interest them, and say it "
+                         "simply with its year, in a sentence or two, no list. Then ask one open question that invites a memory "
+                         "of the time, like 'What was that time like for you?' Never 'Do you remember…'. Offer another only if "
+                         "they'd like one.")),
+                "source": "Wikipedia", "licence": "CC BY-SA 4.0"}
     if name == "tell_joke":     # shaped like andy_companion.fun.pick
         args = (case or {}).get("_args", {})
         if args.get("kind") == "riddle":
@@ -142,7 +155,7 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
             return {"make_up": True, "about": args.get("about", ""),
                     "how": "Make up a short, gentle story about " + (args.get("about") or "something gentle") + " now (under two "
                            "minutes aloud: a beginning, a small happening, a warm ending; nothing frightening or sad) and tell it "
-                           "straight away. Say plainly that you made it up, for example 'Here's a little story I've made up for you.'"}
+                           "straight away. Say plainly that you made it up, for example 'Here's a little story I've made up for you.' Don't call story again for it."}
         if args.get("action") == "list":
             return {"stories": [{"title": "The Lion and the Mouse", "author": "Aesop", "minutes": 1},
                                 {"title": "The Gift of the Magi", "author": "O. Henry", "minutes": 15}],

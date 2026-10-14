@@ -32,6 +32,7 @@ class TurnClock:
 
     def __init__(self, clock: Callable[[], float] = time.perf_counter, wall: Callable[[], float] = time.time):
         self.clock, self.wall = clock, wall
+        self.last_voice = clock()          # the person last spoke (or Andy started), for quiet_for
         self._reset()
 
     running: int = 0                     # tools running now, whatever the turn
@@ -43,6 +44,10 @@ class TurnClock:
         if self.running > 0:
             return True
         return self.heard is not None and self.first_sound is None and self.clock() - self.heard < longest_s
+
+    def quiet_for(self) -> float:
+        """Seconds since the person last spoke to Andy (or since Andy started)."""
+        return self.clock() - self.last_voice
 
     def _reset(self) -> None:
         self.stopped: Optional[float] = None
@@ -59,6 +64,7 @@ class TurnClock:
         now = self.clock()
         if reason == "user_speech_started":
             self.hearing = True
+            self.last_voice = now
             self._reset()
         elif reason == "user_speech_stopped":
             self.hearing = False

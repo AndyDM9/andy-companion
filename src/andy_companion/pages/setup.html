@@ -114,6 +114,9 @@
       <label for="volume">Volume <span id="volume-v"></span></label>
       <input type="range" id="volume" min="10" max="100" step="5">
       <div class="volume"><span>Quieter</span><span>Louder</span></div>
+      <div class="choices">
+        <label><input type="checkbox" id="offers"> Once in the afternoon, Andy may offer a story, a riddle or a bit of history</label>
+      </div>
     </fieldset>
 
     <fieldset>
@@ -255,6 +258,7 @@
     for (const r of document.querySelectorAll("input[name=tv_height]")) r.checked = r.value === (v.tv_height || "level");
     $("tv_far").value = v.tv_yaw ? Math.abs(v.tv_yaw) : 45;
     $("tv_glance").checked = v.tv_glance !== false;
+    $("offers").checked = v.offers !== false;
     showFar();
     for (const id of ["night_from", "night_to"]) {
       const sel = $(id);
@@ -322,7 +326,7 @@
         place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
         language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
         screen_photos: $("screen_photos").checked, screen_calm: $("screen_calm").checked, night_from: Number($("night_from").value), night_to: Number($("night_to").value),
-        ...tvSettings(),
+        ...tvSettings(), offers: $("offers").checked,
         ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
       fill(out);
       volumeTouched = false;

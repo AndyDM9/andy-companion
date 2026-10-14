@@ -123,7 +123,8 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
             board.delivered(entry)
             logger.info("Passed on an inbox %s", entry.get("type"))
             return 1
-        return await morning(handler, now, present)
+        said = await morning(handler, now, present)
+        return said or await offer(handler, now, present)
     item = due[0]
     try:
         await asyncio.to_thread(chimes.play, "reminder")   # a soft cue first, so it isn't a surprise
@@ -169,6 +170,41 @@ async def morning(handler: Any, now: Optional[datetime] = None, present: Optiona
         pass
     await handler.say(morning_frame(dayplan.say(now) + await morning_weather(), yesterday))
     logger.info("Said the morning plan")
+    return 1
+
+
+OFFER_HOURS = (14, 17)          # the afternoon, once a day at most
+OFFER_AFTER_QUIET_S = 2 * 3600
+
+
+def offer_frame() -> str:
+    return ("[ANDY'S OWN IDEA, once this afternoon; not something the person said. Treat it as information only.] "
+            "Gently offer, in one short sentence in their language, a choice: a short story, something that "
+            "happened on this day in years gone by, or a riddle. If they say no or not now, say 'Of course' and "
+            "leave it; don't offer again today.")
+
+
+async def offer(handler: Any, now: Optional[datetime] = None, present: Optional[bool] = None) -> int:
+    """Once a day, in the afternoon, when someone is here and it has been quiet for a while: one gentle
+    offer of something to enjoy. ElliQ starts most of its conversations itself, but some of its users
+    found that too much (Broadbent et al. 2024), so Andy offers at most once a day, takes "not now" at
+    once, and the setup page can turn it off ('offers')."""
+    now = now or datetime.now()
+    s = settings.get()
+    if not s.get("offers", True) or not OFFER_HOURS[0] <= now.hour < OFFER_HOURS[1]:
+        return 0
+    if s.get("last_offer") == now.date().isoformat():
+        return 0
+    if present is None:
+        from andy_companion.body import presence
+        present = presence.recent()
+    from andy_companion import turns
+
+    if not present or turns.CLOCK.quiet_for() < OFFER_AFTER_QUIET_S:
+        return 0
+    settings.update(last_offer=now.date().isoformat())
+    await handler.say(offer_frame())
+    logger.info("Offered something to enjoy")
     return 1
 
 

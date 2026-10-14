@@ -5,6 +5,43 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (keeping company, from research)
+
+- **Research:** best practice for conversation with older adults: Irfan et al. 2024 and 2025 on
+  social robots and older adults; elderspeak research (Williams 2009, a 2021 concept analysis);
+  dementia-communication guidance (Alzheimer's Association and Alzheimer's Society; applying it to
+  everyone is our own choice); ElliQ's documented features; and the ethics literature (Sharkey &
+  Sharkey 2012).
+- **Andy's profile has a KEEPING COMPANY section:**
+  - short turns and one open question that picks up the person's words;
+  - let them lead and wait through pauses;
+  - curious about their past, never "Do you remember…", never correcting their story;
+  - adult to adult, never "sweetie", "honey" or "dear";
+  - "not now" means "Of course", and no second offer soon;
+  - warmly encourage calls and visits ("good company, not a replacement for people");
+  - light humour, including jokes about itself as a robot.
+- **Spanish:** Andy uses *usted* unless spoken to with *tú*, and never guesses gender. The suite found
+  "cuando eras pequeño".
+- **On this day** (`src/andy_companion/onthisday.py`, `tools/on_this_day.py`,
+  [decision 0006](docs/decisions/0006-on-this-day-from-wikipedia.md)):
+  - gentle things from today's date in years gone by (1900 to 2010), from Wikipedia's feed;
+  - checked twice: a word filter, then Nemotron 3.5 Lightning against the same rule, because "Hijacking
+    of Lufthansa Flight 181" passed the words on "Flight" (live, 2026-10-13); nothing is offered if the
+    check can't be made;
+  - Andy begins "According to Wikipedia" ("Según Wikipedia") and asks how that time was for them;
+  - the TV shows **On this day** with the date and "Wikipedia (CC BY-SA 4.0)".
+- **Suite (80 cases):** chat-1 to chat-5, otd-1 and otd-2. Two over-strict rules were loosened (four
+  options, not "two or three"; "growing up there" counts as picking up their words).
+- 4 tests (`tests/test_onthisday.py`); live test 3q and 3r.
+- **One gentle offer a day** (`speaker.offer`): in the afternoon (2 to 5 pm), when someone has been seen
+  or heard lately and nobody has spoken to Andy for two hours, Andy offers once a story, something from
+  this day in years gone by, or a riddle. "Not now" gets "Of course". ElliQ starts most of its
+  conversations itself, and some of its users found that too much (Broadbent et al. 2024), so this is
+  once a day at most, and the settings page can turn it off ("offers"). 3 tests.
+- **A regression found and fixed:** the full run after the new section scored 77, 77 and 77 of 80, and
+  money-4 failed 2 of 3. "Short turns, one question" had made Andy ask about a prize-fee message before
+  warning. The profile now puts the warning in the first reply, before any question: 4 of 4 after.
+
 ### Added (jokes, riddles and stories)
 
 - **Jokes and riddles** (`src/andy_companion/fun.py`, `tools/tell_joke.py`).

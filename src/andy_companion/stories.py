@@ -139,7 +139,7 @@ def carry_on(now: Optional[float] = None) -> Dict[str, Any]:
 
 MAKE_UP = ("Make up a short, gentle story about {about} now (under two minutes aloud: a beginning, a small "
            "happening, a warm ending; nothing frightening or sad) and tell it straight away. Say plainly that you "
-           "made it up, for example 'Here's a little story I've made up for you.'")
+           "made it up, for example 'Here's a little story I've made up for you.' Don't call story again for it.")
 
 
 def make_up(about: str) -> Dict[str, Any]:

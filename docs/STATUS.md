@@ -33,6 +33,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-13 22:30 | Suite, 80 cases (jokes, stories, keeping company, on this day), Andy, on this computer | **77, 77, 77 of 80**; money-4 regressed (a question before the scam warning), fixed: money, sharing and company areas 15, 15, 15, 14 of 15 after. The final Nebius Job run comes before submitting |
 | 2026-10-13 21:21 | Suite as a Nebius Serverless Job, 67 cases (three letter cases; tool cases judged on the reply; must-not-say words in code) | **64, 66, 66 of 67**; locally 64, 65, 67. share-2 failed 3 of 6 across both (Andy asked the person's name before sharing); after the profile said "theirs included", 1 failure in 11 runs. An example sentence in the profile was tried and removed: it made Andy offer to share unasked (share-1 failed 5 of 6) |
 | 2026-10-13 | Lightning tool call by API (`set_reminder`) | Correct arguments, 0.63–0.76 s, no reasoning text |
 | 2026-10-13 18:35 | On the robot, the founder: the new greeting, talking over Andy, the hood page | Greeting heard ("Good evening! I'm Andy, your robot companion…", 4.7 s of speech). Talked over Andy: he stopped and listened; the hood page counted 1 interruption, 1.6 s of reply cut. Median 1.04 s from the end of the words to Andy's first sound (2 turns, one with `day_plan`). Founder: "all working" |

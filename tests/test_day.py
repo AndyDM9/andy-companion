@@ -46,7 +46,8 @@ def test_settings_default_and_stick():
     assert settings.get() == {"pace": "normal", "volume": None, "last_morning": None, "place": None,
                             "news_sources": [], "events_pages": [], "captions": True, "language": "en",
                               "coords": None, "screen_photos": True, "night_from": 21, "night_to": 7,
-                              "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True}
+                              "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
+                              "offers": True, "last_offer": None}
     settings.update(pace="slow", volume=70)
     assert settings.get()["pace"] == "slow" and settings.get()["volume"] == 70
 
@@ -220,3 +221,41 @@ def test_the_card_in_spanish():
     reminders.add("llamar a Rosa", at="14:30", now=NOW)
     title, items = dayplan.card(NOW, "es")
     assert title == "Martes 13 de octubre" and items == [{"title": "14:30 · llamar a Rosa"}]
+
+
+def test_one_gentle_offer_in_the_afternoon_when_it_has_been_quiet(monkeypatch):
+    from andy_companion import turns
+
+    monkeypatch.setattr(turns.CLOCK, "quiet_for", lambda: 3 * 3600)
+    afternoon = datetime(2026, 10, 13, 15, 0)
+    h = FakeHandler()
+    settings.update(last_morning=afternoon.date().isoformat())          # the morning plan is done
+    assert asyncio.run(speaker.tick(h, since=0, now_mono=100, now=afternoon, present=True)) == 1
+    assert h.said[0].startswith("[ANDY'S OWN IDEA") and "Of course" in h.said[0]
+    assert asyncio.run(speaker.tick(h, since=0, now_mono=200, now=afternoon, present=True)) == 0   # once a day
+
+
+def test_no_offer_when_off_too_soon_after_talking_nobody_here_or_not_afternoon(monkeypatch):
+    from andy_companion import turns
+
+    afternoon = datetime(2026, 10, 13, 15, 0)
+    settings.update(last_morning=afternoon.date().isoformat())
+    h = FakeHandler()
+    monkeypatch.setattr(turns.CLOCK, "quiet_for", lambda: 600)           # they spoke ten minutes ago
+    assert asyncio.run(speaker.offer(h, afternoon, present=True)) == 0
+    monkeypatch.setattr(turns.CLOCK, "quiet_for", lambda: 3 * 3600)
+    assert asyncio.run(speaker.offer(h, afternoon, present=False)) == 0
+    assert asyncio.run(speaker.offer(h, datetime(2026, 10, 13, 19, 0), present=True)) == 0
+    settings.update(offers=False)
+    assert asyncio.run(speaker.offer(h, afternoon, present=True)) == 0 and h.said == []
+
+
+def test_the_quiet_clock_restarts_when_the_person_speaks():
+    from andy_companion import turns
+
+    t = [100.0]
+    clock = turns.TurnClock(clock=lambda: t[0])
+    t[0] = 5000.0
+    assert clock.quiet_for() == 4900.0
+    clock.mark("user_speech_started")
+    assert clock.quiet_for() == 0.0
