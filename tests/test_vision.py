@@ -83,3 +83,59 @@ def test_a_broken_camera_never_crashes_the_turn():
     def broken():
         raise RuntimeError("camera pipeline")
     assert vision.look(broken) == {"error": "My camera did not give a picture just now."}
+
+
+def test_a_stopped_endpoint_that_does_not_answer_is_said_at_once(endpoint, monkeypatch):
+    """Between demos the endpoint is stopped; a question must not wait the full read timeout for it."""
+    import urllib.request
+
+    def never(req, timeout=None):
+        raise AssertionError("no request to an endpoint that takes no connection")
+
+    monkeypatch.setattr(vision, "reachable", lambda url: False)
+    monkeypatch.setattr(urllib.request, "urlopen", never)
+    assert vision.look(lambda: FRAME) == {"error": vision.SWITCHED_OFF}
+
+
+def test_a_running_endpoint_keeps_its_long_read_timeout(endpoint, monkeypatch):
+    import urllib.request
+
+    waits = []
+
+    def running(req, timeout=None):
+        waits.append(timeout)
+        return io.BytesIO(json.dumps({"choices": [{"message": {"content": "A cup."}}]}).encode())
+
+    monkeypatch.setattr(vision, "reachable", lambda url: True)
+    monkeypatch.setattr(urllib.request, "urlopen", running)
+    assert vision.describe(FRAME) == "A cup." and waits == [vision.TIMEOUT_S]
+
+
+def test_reachable_only_connects_and_gives_up_quickly():
+    import socket
+
+    listening = socket.socket()
+    listening.bind(("127.0.0.1", 0))
+    listening.listen(1)
+    port = listening.getsockname()[1]
+    try:
+        assert vision.reachable(f"https://127.0.0.1:{port}")
+    finally:
+        listening.close()
+    assert not vision.reachable(f"https://127.0.0.1:{port}")          # nothing listening any more
+    seen = []
+
+    def slow(address, timeout=None):
+        seen.append((address, timeout))
+        raise TimeoutError
+    assert not vision.reachable("https://eyes.example", connect=slow)
+    assert seen == [(("eyes.example", 443), vision.CONNECT_S)] and vision.CONNECT_S <= 5
+
+
+def test_a_photo_that_cannot_be_read_is_said_plainly(tmp_path, monkeypatch):
+    from andy_companion import board
+
+    broken = tmp_path / "photo.jpg"
+    broken.write_bytes(b"not a picture")
+    monkeypatch.setattr(board, "photo_path", lambda photo_id: broken)
+    assert vision.describe_photo("p1", opener=Opener()) == {"error": "I couldn't open that photo."}

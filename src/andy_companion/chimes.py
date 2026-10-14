@@ -62,8 +62,15 @@ def play(name: str, opener=None, force: bool = False) -> bool:
     for the wake and sleep chimes themselves), or the daemon is away."""
     if name not in TUNES or (not force and state.current()["mode"] != "awake"):
         return False
+    return play_file(path(name), opener)
+
+
+def play_file(file: Path, opener=None) -> bool:
+    """Play a WAV on this computer on the robot's speaker, through the daemon (it reads the file by its
+    path). Whatever Andy's mode: the urgent-words recordings (urgent.py) use it too. False if the
+    daemon is away."""
     req = urllib.request.Request(DAEMON + "/api/media/play_sound", method="POST",
-                                 data=json.dumps({"file": str(path(name))}).encode(),
+                                 data=json.dumps({"file": str(Path(file).resolve())}).encode(),
                                  headers={"Content-Type": "application/json"})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=5):

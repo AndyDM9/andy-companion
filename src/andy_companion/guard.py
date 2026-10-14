@@ -28,6 +28,11 @@ from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger("andy.guard")
 TIMEOUT_S = 4.0
+# A stopped endpoint fails every turn; one line when it goes, one when it comes back, and a reminder every
+# QUIET_S while it stays away, rather than a line per turn.
+QUIET_S = 600.0
+_clock = time.monotonic
+_down_logged: Optional[float] = None   # when "unavailable" was last logged; None while the check answers
 MODEL = "nemotron-guard"
 # The model's custom-policy mode, with a policy for this one question. Measured on 2026-10-13
 # (evals/guard_check.py): the standard categories caught 5 of 8 phrasings the net misses; this
@@ -95,10 +100,27 @@ def classify(words: str, opener: Optional[Callable] = None, config: Optional[Dic
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
             data = json.loads(r.read())
-        return {**parse(data["choices"][0]["message"]["content"] or ""), "policy": policy}
+        out = {**parse(data["choices"][0]["message"]["content"] or ""), "policy": policy}
     except Exception as e:  # never the words, only the type
-        logger.info("Content safety check unavailable: %s", type(e).__name__)
+        _unavailable(type(e).__name__)
         return None
+    _available()
+    return out
+
+
+def _unavailable(reason: str) -> None:
+    global _down_logged
+    now = _clock()
+    if _down_logged is None or now - _down_logged >= QUIET_S:
+        _down_logged = now
+        logger.info("Content safety check unavailable: %s", reason)
+
+
+def _available() -> None:
+    global _down_logged
+    if _down_logged is not None:
+        _down_logged = None
+        logger.info("Content safety check answering again")
 
 
 class Turn:

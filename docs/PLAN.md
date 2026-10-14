@@ -63,6 +63,22 @@ innovation research) and the founder's test on the robot. The research is in [re
 | B7 | **NVIDIA Magpie TTS**, evaluated beside Qwen3-TTS: time to first audio, the Spanish voice; switched only if as fast and the founder approves | Every model in the speech loop NVIDIA's | ✅ evaluated 2026-10-14: **not switched**; a short sentence takes 0.6 to 0.8 s before any sound (no streaming) against 0.10 to 0.33 s now. Samples in `voice/magpie-eval/out/` for the founder to hear |
 | B8 | **The body language, safely**: test with the founder whether head motion during listening reaches the microphones; if so, move only while Andy speaks | Built and switched off on 2026-10-13 | ⬜ (needs the founder at the robot) |
 
+### Round 2 (Claude), from the audits and research of 2026-10-14
+
+A code and integration audit, a submission audit against the rules and criteria, and new research
+(competitors, judges, prizes) found what follows. One rule shapes the aim: a project wins **one Overall
+award, or one track award and one bonus award**, never both, so we build for the Grand Prize and the
+same work serves the Physical AI track and the Tavily bonus.
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B9 | **The audit's fixes:** the events finder's key in the supervisor; "what's on" falling back when a crawl fails; the urgent-words net (negations, and a spoken fallback when the model is down); consent asked for properly; "forget" deleting only what was meant; Andy never starting to speak over the person; secrets off every command line; the hood page's own token; endpoints that fail fast when stopped; the dashboard app's settings | Each could fail on camera or for a judge | ✅ 2026-10-14 (130 more tests); the new Nebius secret calls are proved at the next endpoint `create` |
+| B10 | **The scam evaluation, fair and repeated:** a third arm (Nemotron 3 Ultra without Tavily), three runs each as a Nebius Serverless Job, and about 20 new messages modelled on this month's consumer-protection alerts, where finding recent warnings should matter | Today's gain (39 against 36) mixes Tavily with a second model and is one run; a rival scam entry exists | ⬜ needs the founder's yes (about $3 to $6 of Tavily and Token Factory) |
+| B11 | **The finder measured:** about 25 recorded sweeps with known answers, run as a Nebius Serverless Job; accuracy and time to point | Robotics judges ask "how well does it work?"; Nebius presents Serverless Jobs for physical AI | ⬜ the founder records the sweeps (1.5 h) |
+| B12 | **"How Andy found this"** on the screen and `/hood`: which Tavily call, depth, credits, time and sources for each answer | Shows the Tavily judges the integration plainly | ⬜ |
+| B13 | **Privacy in four plain answers** (where it's heard, what's kept, who sees it, how to delete) in the README, the Devpost text and the video's last shot | The question every review of a home robot asks | ✅ 2026-10-14 (README, Devpost text, the video's last shot) |
+| B14 | **The Devpost text and video script rewritten:** the robot first, a dated problem line, "What's new here", finding the glasses as an uncut take, talking over Andy in the long take, Tavily named in the opening, Spanish moved to a social clip | The submission audit's weakest criterion was the idea's sharpness | ✅ 2026-10-14 |
+
 ### Cleanup (Claude)
 
 | # | Item | Status |
@@ -77,6 +93,9 @@ innovation research) and the founder's test on the robot. The research is in [re
 | When | What | Where |
 |---|---|---|
 | Now | The live test on the robot | [live-test.md](live-test.md) |
+| Now | **The body language test (B8)** with Claude watching the logs: the research says presence matters to at least one Physical AI judge | [live-test.md](live-test.md) 3u |
+| This week | **One real session** with a relative who agrees to it in writing: about 20 unscripted minutes, one real moment for the video if they're willing, no claims about outcomes | founder action 6.17 |
+| This week | Say yes or no to B10's spend (about $3 to $6) | |
 | Now | Photos and four 5-second clips of the real robot (the glance, following, finding glasses, the joke wiggle) | founder action 6.17 |
 | About 2026-10-20 | The name; the repository public, licence in About; a Hugging Face account; Claude publishes the app | [submission-checklist.md](submission-checklist.md) |
 | By 2026-10-22 | **A complete draft submitted** on Devpost (the early eligibility check) | [submission.md](submission.md), [feedback.md](feedback.md) |
@@ -84,16 +103,9 @@ innovation research) and the founder's test on the robot. The research is in [re
 | 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted; posts | [rules-compliance.md](rules-compliance.md) |
 | 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | |
 
-## The video (draft)
+## The video
 
-1. Morning: Andy wakes, greets, says the day and one local headline with its source.
-2. A reminder Andy speaks on its own at the chosen time.
-3. Andy remembers yesterday's mention of a granddaughter's recital and offers to send a note to
-   the family, if the person wants.
-4. A letter held up to Andy: read aloud, explained simply, and a suspicious one looked up
-   together, "shall we ask your daughter?"
-5. Boundaries: asked to be someone else, or for a medicine dose, it kindly declines.
-6. Under the hood: the NVIDIA models and Nebius products named aloud, timings on screen.
+The shot list, rules and checklist are in [video.md](video.md) (rewritten 2026-10-14).
 
 ## Words we use, and words we never use
 

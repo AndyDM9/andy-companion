@@ -11,7 +11,8 @@
 
 `health.json` holds counts and times only (never words): drops in the last minute, seconds since Andy
 last answered, restarts asked for. The health check (scripts/health.py) reads it. ANDY_WATCHDOG=off
-turns the restart off; the counting and the health file stay.
+turns the restart off; the counting and the health file stay. In the dashboard app, with no supervisor to
+start Andy again, the restart is never asked for: it is logged instead.
 """
 
 from __future__ import annotations
@@ -82,15 +83,19 @@ def take_request() -> Optional[str]:
 
 class Watchdog:
     def __init__(self, counter: DropCounter, clock: Callable[[], float] = time.monotonic,
-                 stop: Optional[Callable[[], None]] = None) -> None:
+                 stop: Optional[Callable[[], None]] = None, supervised: bool = True) -> None:
         self.counter, self.clock = counter, clock
+        # Only a supervisor starts the app again. The dashboard app (reachy_app/) has none: stopping it there
+        # would leave Andy off until someone pressed start, which is worse than a deaf spell, so it only logs.
+        self.supervised = supervised
+        self.told_unsupervised = False
         self.started = clock()
         self.stop = stop or (lambda: os.kill(os.getpid(), signal.SIGINT))   # Pollen's app stops cleanly on Ctrl+C
         self.asked = 0
         self.warned_unanswered = -1e9
 
     def check(self, now: Optional[float] = None) -> Optional[str]:
-        """One look; returns 'restart' or 'unanswered' when it acts."""
+        """One look; returns 'restart', 'unsupervised' (wanted, but only logged) or 'unanswered' when it acts."""
         from andy_companion import turns
 
         now = self.clock() if now is None else now
@@ -102,7 +107,13 @@ class Watchdog:
                             "restarts_asked": self.asked})
         except OSError:
             pass
-        if drops >= DROPS_PER_MIN and now - self.started >= GRACE_S and RESTART and not self.asked:
+        wants_restart = drops >= DROPS_PER_MIN and now - self.started >= GRACE_S and RESTART and not self.asked
+        if wants_restart and not self.supervised and not self.told_unsupervised:
+            self.told_unsupervised = True
+            logger.warning("Andy's app would restart (the microphone dropped audio %d times in a minute), but no "
+                           "supervisor runs it: restart it from the dashboard if Andy stops hearing", drops)
+            return "unsupervised"
+        if wants_restart and self.supervised:
             self.asked += 1
             reason = f"the microphone dropped audio {drops} times in a minute"
             logger.warning("Restarting Andy's app: %s", reason)
@@ -116,10 +127,10 @@ class Watchdog:
         return None
 
 
-def install() -> Watchdog:
+def install(supervised: bool = True) -> Watchdog:
     counter = DropCounter()
     logging.getLogger(AUDIO_LOGGER).addHandler(counter)
-    dog = Watchdog(counter)
+    dog = Watchdog(counter, supervised=supervised)
 
     def loop() -> None:
         while True:

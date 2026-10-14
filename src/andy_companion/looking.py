@@ -35,6 +35,8 @@ def start(question: str, place: str = "", language: str = "en", runner: Optional
     question = " ".join(str(question or "").split())
     if not question:
         return {"started": False, "say": "Ask what to look into."}
+    if not web.configured():   # never promise an answer that cannot come
+        return {"started": False, "say": "Say plainly that you can't look things up right now."}
     with _lock:
         if _state["day"] != _today():
             _state["day"], _state["count"] = _today(), 0
@@ -65,7 +67,8 @@ def show_progress(topic: str, done: list) -> None:
 def run(question: str, place: str = "", language: str = "en", opener=None,
         sleep: Callable[[float], None] = time.sleep, clock: Callable[[], float] = time.monotonic) -> Optional[Dict]:
     """Look into it, showing each step on the screen, and leave the answer (or a plain failure) in Andy's inbox.
-    Streams Tavily research; if the stream fails, starts it again and collects the answer when ready."""
+    Streams Tavily research; if the stream fails before the research begins, starts it again without
+    streaming and collects the answer when ready. Once it has begun, a second one would pay twice."""
     topic = question[:120]
     done: list = []
 
@@ -80,6 +83,8 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
         show_progress(topic, [("Starting", "")])
         try:
             result = web.stream_research(question, place, language, on_step, opener)
+        except web.ResearchCutOff:
+            result = None
         except web.WebError:
             result = _collect(question, place, language, opener, sleep, clock)
         if result and result.get("say"):

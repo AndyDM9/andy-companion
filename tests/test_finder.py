@@ -141,3 +141,17 @@ def test_the_screen_keeps_the_frame_in_memory_for_two_minutes():
             urllib.request.urlopen(f"{base}/frame?t=wrong", timeout=5)
     finally:
         httpd.shutdown()
+
+
+def test_a_stopped_endpoint_is_said_at_once_not_after_the_read_timeout(monkeypatch):
+    from andy_companion import vision
+
+    def never(req, timeout=None):
+        raise AssertionError("no request to an endpoint that takes no connection")
+
+    monkeypatch.setenv("ANDY_VISION_URL", "https://eyes.example")
+    monkeypatch.setenv("ANDY_VISION_TOKEN", "t")
+    monkeypatch.setattr(vision, "reachable", lambda url: False)
+    monkeypatch.setattr(urllib.request, "urlopen", never)
+    with pytest.raises(finder.FinderError, match="switched off"):
+        finder.ask(np.zeros((48, 64, 3), dtype=np.uint8), "glasses")

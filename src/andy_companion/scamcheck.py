@@ -1,14 +1,14 @@
 """Does a message carry the signs of a known kind of scam? Two narrow questions, not one broad one.
 
 Used by check_message (the tool Andy calls when someone reads a suspicious message aloud) and by the
-evaluation that measures it (evals/scam_eval.py), both with NVIDIA Nemotron 3.5 Lightning and strict
-schemas:
+evaluation that measures it (evals/scam_eval.py), both with strict schemas:
 
-1. **The message alone:** which sign of a known scam it shows, if any, quoting its words; code accepts a
-   sign only if the quoted words are in the message.
-2. **Each Tavily warning, one question:** does the message use the same trick this consumer-protection
-   warning describes (the same trick, not the same topic)? A match marks it, and names the source Andy
-   can say aloud ("the FTC warns about messages like this").
+1. **The message alone** (NVIDIA Nemotron 3.5 Lightning, MODEL): which sign of a known scam it shows, if
+   any, quoting its words; code accepts a sign only if the quoted words are in the message.
+2. **Each Tavily warning, one question** (NVIDIA Nemotron 3 Ultra, MATCH_MODEL, only when there are
+   warnings): does the message use the same trick this consumer-protection warning describes (the same
+   trick, not the same topic)? A match marks it, and names the source Andy can say aloud ("the FTC warns
+   about messages like this").
 
 A message shows scam signs if (1) says so or (2) finds a match. Why two narrow questions: on 2026-10-14,
 asked one broad question with the warnings in hand, the model took their topic as proof. A grandchild's

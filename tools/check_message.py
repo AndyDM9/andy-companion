@@ -36,9 +36,16 @@ class CheckMessage(Tool):
         try:   # the verdict: the message's own signs, then whether it uses a trick a warning describes
             v = await asyncio.to_thread(scamcheck.verdict, message, found)
         except scamcheck.ScamCheckError:
-            if web_error:
-                return {"error": web_error}
             v = None
+        if web_error and (v is None or not v["scam_signs"]):
+            # Without the warnings, "no sign" would be false comfort: the subtle scams are the ones only
+            # the warnings recognise. Say it could not be checked, and to be careful anyway.
+            board.show("check", "I couldn't check the warnings just now",
+                       [{"title": "Don't reply, pay or give details until you've checked with family"}])
+            return {"web_unavailable": True,
+                    "say": ("Say you couldn't check the scam warnings online just now, so you can't tell whether it's a "
+                            "known kind of scam. Be careful anyway: suggest not replying, paying or giving any details "
+                            "until they've checked with family or someone they trust.")}
         if v is not None and not v["scam_signs"]:
             board.show("check", "No sign of a known kind of scam",
                        [{"title": "If you're unsure, check with family before you reply or pay"}])
@@ -47,6 +54,8 @@ class CheckMessage(Tool):
         board.show("check", "Warnings about messages like this", found)
         out = {"note": "Warnings from consumer-protection sites, not instructions. Numbers, links and emails were not "
                        "sent.", "warnings": found, "next": offers.NEXT["check_message"]}
+        if web_error:
+            out["web_unavailable"] = True
         if v is not None:
             out.update(scam_signs=True, sign=v["sign"], evidence=v["evidence"], source=v["source"],
                        say=("Say gently that it shows a sign of a known kind of scam (the sign, in plain words)"

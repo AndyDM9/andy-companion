@@ -57,7 +57,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 - The robot is named after the person most likely to be spoken to near it in this household (the founder). While quiet, only "Andy, wake up" ends it (fixed 2026-10-13); while awake, Andy still answers anyone in the room, so a call or meeting near the robot should be held with Andy quiet or asleep.
 
+- The new way the endpoint scripts store their tokens (Nebius MysteryBox secrets, 2026-10-14) is tested
+  against a stand-in for the Nebius CLI only; the next `cloud/vision-endpoint.sh create` proves it. The
+  endpoints that exist were made the old way, with the token in their start arguments; recreating them
+  clears that.
+- The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
+- Spanish gaps: the wake phrases and spoken controls are English only, and letters are read in English
+  only.
+
 The live test of everything built today is [live-test.md](live-test.md).
-
-
-- None open.

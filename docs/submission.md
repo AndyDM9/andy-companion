@@ -2,17 +2,16 @@
 
 Fill in the final name and links before submitting. Every sentence must be true and checkable in the
 repository; numbers are from the run named beside them. Sections follow Devpost's project template.
-Last revised 2026-10-13; re-read against [rules-compliance.md](rules-compliance.md) before submitting.
+Last revised 2026-10-14; re-read against [rules-compliance.md](rules-compliance.md) before submitting.
 
 ## Tagline (under 200 characters)
 
-A home companion robot for older adults who live at home, and the family who help. Reachy Mini, NVIDIA
-Nemotron on Nebius, Tavily for the web. No recordings, no transcripts.
+A small robot that reads the letter in your hand and finds your glasses: a companion for older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius, and Tavily.
 
 ## Inspiration
 
-Most older adults want to keep living in their own homes, and their families want to help without
-taking over. Voice assistants answer questions, but they don't look at you, don't read the letter in
+Three in four US adults aged 50 and over want to keep living in their own homes (AARP's Home and
+Community Preferences Survey, December 2024), and their families want to help without taking over. Voice assistants answer questions, but they don't look at you, don't read the letter in
 your hand, and don't tell you which of your family looked at what you shared. We wanted a small robot
 that is honest about being a robot, useful every day, good company, and that keeps no recordings or
 transcripts: only what you ask it to keep.
@@ -24,6 +23,9 @@ follow you, its antennas lift while you speak and lean while it thinks.
 
 - **Your day, the same way every time.** The date (never guessed), reminders in your words said when
   they're due, the morning plan, and the weather from the National Weather Service.
+- **Finds things in the room.** "Where did I leave my glasses?" Andy sweeps the room, NVIDIA Nemotron
+  Nano VL on a Nebius Serverless Endpoint reads four views at once, and Andy points with its head; the TV
+  shows the picture it saw them in.
 - **Reads the letter you hold up.** It reads it on the computer, explains it, and shows it in large
   print on the screen. If a page asks for gift cards or rushes you, code (not the model) puts **Be
   careful** first: "Don't call or pay yet. Check with family first."
@@ -42,6 +44,28 @@ follow you, its antennas lift while you speak and lean while it thinks.
   changed what.
 - **English and Spanish**, in whichever you speak (with *usted*), and the screen switches too.
 
+## What's new here
+
+- **A language model that moves a robot's body to find things,** with nothing trained: Nemotron Nano VL
+  reads four views as structured output, and Andy turns its head to the one it chose.
+- **A scam check measured with and without the web:** on 80 messages read aloud, Tavily's
+  consumer-protection warnings plus a second look by Nemotron 3 Ultra caught 39 of 40 scams against 36,
+  with no ordinary message flagged.
+- **Rules below the model, in code:** a letter that asks for gift cards gets **Be careful** whatever the
+  model says, and its phone numbers are never read out.
+- **A spoken-conversation suite run as a Nebius Serverless Job,** judged by Nemotron 3 Ultra, with words
+  that must never be said checked in code beside the judge.
+- **No recordings and no transcripts,** by design: captions and timings live in memory only.
+
+## Privacy, in four answers
+
+- **Where is it heard?** Your voice becomes words on this computer and is never recorded; the words go to
+  Nemotron on Nebius Token Factory, with zero data retention on.
+- **What is kept?** Only what you ask Andy to keep (a reminder, a fact, a moment), on this computer.
+- **Who sees it?** Family see only what you ask Andy to share; Andy tells you who looked.
+- **How do I delete it?** Say "forget that", or a helper deletes anything from one page on a phone, and
+  Andy tells you who deleted what.
+
 ## How we built it
 
 - **Hearing:** NVIDIA Parakeet TDT 0.6B v3, locally, inside Hugging Face's speech-to-speech server;
@@ -52,7 +76,7 @@ follow you, its antennas lift while you speak and lean while it thinks.
   large-print screen cards and vets "On this day" items.
 - **Eyes, in the loop:** NVIDIA Nemotron Nano 12B v2 VL on a **Nebius Serverless Endpoint** (L40S, vLLM),
   behind token authentication. It describes a view in 3.5 s, and to find something Andy sweeps the room
-  and the model reads four views at once as structured output (seven frames in 3.9 s, live); Andy then
+  and the model reads four views at once as structured output (seven frames in 3.9 s in a live test of the model on its endpoint); Andy then
   points at it with its head.
 - **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second **Serverless Endpoint**, with a policy
   written for signs of crisis: on held-out phrasings our word list misses, it caught 7 of 8 with no

@@ -17,18 +17,14 @@ FILES=(evals/run_suite.py evals/suite.json evals/tools.json profiles/companion/p
        src/andy_companion/__init__.py src/andy_companion/urgent.py src/andy_companion/offers.py
        src/andy_companion/recall.py)
 
+# shellcheck source=cloud/secret.sh
+. "$ROOT/cloud/secret.sh"
+
 secret() {
   KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' "$ENV_FILE" | tail -1)"
   [ -n "$KEY" ] || { echo "No NEBIUS_API_KEY in $ENV_FILE" >&2; exit 1; }
-  PAYLOAD="$(python3 -c 'import json,sys; print(json.dumps([{"key": "NEBIUS_API_KEY", "string_value": sys.argv[1]}]))' "$KEY")"
-  if nebius mysterybox secret get-by-name --name "$SECRET" --parent-id "$PROJECT" >/dev/null 2>&1; then
-    echo "Secret $SECRET already stored."
-  else
-    nebius mysterybox secret create --name "$SECRET" --parent-id "$PROJECT" \
-      --description "Token Factory key for Andy's conversation suite" \
-      --secret-version-payload "$PAYLOAD" >/dev/null
-    echo "Secret $SECRET stored."
-  fi
+  # printf is a shell builtin, so the key travels on a pipe, never as an argument (store_secret, secret.sh).
+  printf '%s' "$KEY" | store_secret "$SECRET" NEBIUS_API_KEY "Token Factory key for Andy's conversation suite"
 }
 
 run() {

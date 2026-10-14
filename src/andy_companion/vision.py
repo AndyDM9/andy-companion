@@ -10,12 +10,17 @@ from __future__ import annotations
 import base64
 import json
 import os
+import socket
 import urllib.request
 from typing import Any, Callable, Optional
+from urllib.parse import urlparse
 
 from andy_companion import reading
 
 TIMEOUT_S = 40
+# Between demos the endpoint is stopped, and a stopped one may not answer at all: without this, a question
+# would wait the full TIMEOUT_S. A running endpoint connects in well under a second.
+CONNECT_S = 3.0
 MODEL = "nemotron-vl"
 PROMPT = ("You are the eyes of a home companion robot, talking to an older adult. Describe what is in "
           "this picture in two or three short, plain sentences, most important first. {ask} Never say "
@@ -29,6 +34,19 @@ class VisionError(Exception):
 
 def configured() -> bool:
     return bool(os.environ.get("ANDY_VISION_URL") and os.environ.get("ANDY_VISION_TOKEN"))
+
+
+def reachable(url: str, connect: Callable = socket.create_connection) -> bool:
+    """Whether the endpoint takes a connection within CONNECT_S. Only a connection: nothing is sent."""
+    parts = urlparse(url)
+    try:
+        connect((parts.hostname, parts.port or 443), timeout=CONNECT_S).close()
+    except (OSError, ValueError, TypeError):
+        return False
+    return True
+
+
+SWITCHED_OFF = "My eyes are switched off right now, so I can't see. They can be turned on from the computer."
 
 
 def jpeg(frame: Any, width: int = 768) -> bytes:
@@ -49,6 +67,8 @@ def describe(frame: Any, question: str = "", opener: Optional[Callable] = None) 
     url = os.environ["ANDY_VISION_URL"].rstrip("/")
     if not url.startswith("https://"):   # the token and the picture never travel unencrypted
         raise VisionError("My eyes in the cloud need a secure (https) address.")
+    if opener is None and not reachable(url):   # an opener is a test's stand-in for the network
+        raise VisionError(SWITCHED_OFF)
     image = "data:image/jpeg;base64," + base64.b64encode(jpeg(frame)).decode()
     ask = f"They asked: {' '.join(question.split())[:200]}" if question.strip() else ""
     body = {"model": MODEL, "max_tokens": 160, "temperature": 0.2,
@@ -63,8 +83,7 @@ def describe(frame: Any, question: str = "", opener: Optional[Callable] = None) 
         return " ".join(str(data["choices"][0]["message"]["content"]).split())[:800]
     except Exception as e:   # never echo the request: it holds the picture
         if getattr(e, "code", None) in (404, 502, 503, 504):   # a stopped endpoint answers like this
-            raise VisionError("My eyes are switched off right now, so I can't see. They can be turned on "
-                              "from the computer.") from None
+            raise VisionError(SWITCHED_OFF) from None
         raise VisionError(f"My eyes in the cloud did not answer ({type(e).__name__}).") from None
 
 
@@ -91,6 +110,8 @@ def describe_photo(photo_id: str, opener: Optional[Callable] = None) -> dict:
     if path is None:
         return {"error": "I can't find that photo any more."}
     frame = cv2.imread(str(path), cv2.IMREAD_COLOR)
+    if frame is None:   # imread gives None, not an error, for a file it cannot read
+        return {"error": "I couldn't open that photo."}
     try:
         return {"description": describe(frame, "This is a photo a family member sent.", opener)}
     except VisionError as e:

@@ -18,6 +18,46 @@ def data_dir(name: str) -> Path:
     return shipped if shipped.is_dir() else PACKAGE.parents[1] / name
 
 
+# What the app needs from the private env file: the same names scripts/run-robot.sh passes on, plus where
+# the voice server is. The dashboard app has no run-robot.sh, so it reads them here.
+APP_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "NEBIUS_API_KEY", "NEBIUS_BASE_URL", "ANDY_VISION_URL",
+            "ANDY_VISION_TOKEN", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "ANDY_VOICE_URL")
+# What the supervisor's own process needs: it hosts the screen server, whose setup page finds the town's
+# events calendar with Tavily (setup_page.suggest_events_page). The weather and the health tiles need no key.
+SUPERVISOR_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT")
+
+
+def env_file() -> Path:
+    return Path(os.environ.get("ANDY_ENV_FILE") or Path.home() / ".config" / "companion-hackathon" / ".env")
+
+
+def load_env(names, path=None) -> list:
+    """Copy the named variables from the private env file into this process, never replacing one already
+    set (the shell, or run-robot.sh, wins). Returns the names loaded; values are never logged or returned.
+    A missing or unreadable file loads nothing: Andy runs without the features that need a key."""
+    path = Path(path) if path is not None else env_file()
+    try:
+        lines = path.read_text().splitlines()
+    except (OSError, UnicodeDecodeError):
+        return []
+    found = {}
+    for line in lines:
+        line = line.strip()
+        if line.startswith("export "):
+            line = line[len("export "):].lstrip()
+        name, eq, value = line.partition("=")
+        if not eq or name not in names:
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        found[name] = value                  # the last line wins, as in run-robot.sh
+    loaded = [n for n, v in found.items() if v and n not in os.environ]
+    for n in loaded:
+        os.environ[n] = found[n]
+    return loaded
+
+
 def configure_env() -> None:
     os.environ.setdefault("REACHY_MINI_CUSTOM_PROFILE", "companion")
     os.environ.setdefault("REACHY_MINI_EXTERNAL_PROFILES_DIRECTORY", str(data_dir("profiles")))
@@ -28,10 +68,12 @@ def configure_env() -> None:
 
 def install(screen: bool = False) -> None:
     """Attach Andy's additions. With screen=True also serve the screen and family page here
-    (the dashboard app has no supervisor to do it)."""
+    (the dashboard app has no supervisor to do it). screen=True is how the dashboard app is told apart:
+    there is no supervisor there, so the watchdog only logs instead of asking for a restart."""
     from andy_companion import captions, consent, guard, privacy, settings, speaker, turns, urgent, voice_controls, volume
     from andy_companion.body import attach as body
 
+    load_env(APP_KEYS)        # before configure_env, which reads ANDY_VOICE_URL
     configure_env()
     privacy.install()
     body.install()
@@ -49,7 +91,7 @@ def install(screen: bool = False) -> None:
     state.install_sleep_tool()
     from andy_companion import watchdog
 
-    watchdog.install()
+    watchdog.install(supervised=not screen)
     import threading
 
     from andy_companion import live

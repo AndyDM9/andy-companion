@@ -5,6 +5,49 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (a code and integration audit, every high and medium finding)
+
+A read-only audit of the whole system found six high and eleven medium problems, none critical. All fixed,
+with 130 more tests (622; 629 in the robot's environment):
+- **The events finder never ran** under `scripts/andy`: the supervisor, which serves the setup page, had no
+  Tavily key. It now reads the env file for that key (never the model key, never logged).
+- **"What's on" failed** instead of falling back to a dated search when a crawl was slow or refused; each
+  crawl now falls through, with client timeouts above the server's.
+- **The urgent-words net:** a "not" cancelled the words up to 20 characters later, so "Not sure why but my
+  chest hurts" was missed; now a negation counts only when it governs the words directly. And if the model
+  can't be reached or leaves the number out, the 911 or crisis sentence plays from a recording on the robot
+  (`src/andy_companion/urgent_audio/`, made with Andy's own voice; `regenerate.py` remakes them).
+- **Consent:** "No, please do not remember that" was taken as a yes. A yes must now be the answer;
+  negations block a save; "remember" counts only as a request.
+- **Forgetting:** `forget("the")` deleted every moment containing "the". It now forgets exactly one match,
+  and asks which one when several match.
+- **Andy no longer starts a reminder or message while the person is speaking.**
+- **A failed scam lookup** no longer ends in a calm "no sign"; Andy says it couldn't check online.
+- **Secrets off every command line:** the suite job and both endpoint scripts pass tokens through
+  0600 files and Nebius secrets (`cloud/secret.sh`).
+- **The voice server defaults to GPU 0** for a judge with one GPU; `ANDY_VOICE_GPU` chooses.
+- **`/hood` has its own token,** so a shown hood link can't reach the screen or the settings code; the
+  settings QR uses the home-network address when the TV opened the screen at localhost.
+- **Stopped endpoints fail in 3 s** instead of stalling an answer for up to 40 s; the second look logs
+  once when it's off, not every turn.
+- **`look_into` can't pay twice,** and says plainly when it can't look things up.
+- **The dashboard app** reads the env file, and its watchdog logs instead of stopping an app no supervisor
+  would restart.
+- **Sleep and quiet:** a reminder that wakes Andy now returns it to sleep or the rest of the quiet once
+  said; a reminder already due waits 10 minutes after "goodnight".
+- The scam scorecard records both models; an unreadable photo gets a clear answer.
+
+### Changed (the Devpost text, the video and the plan, from the submission audit and new research)
+
+- **Devpost text:** a tagline that leads with what the robot does; a dated problem line (three in four US
+  adults 50 and over want to stay in their homes, AARP, December 2024); finding things in "What it does";
+  a "What's new here" section; privacy in four answers (also in the README).
+- **Video script rewritten:** Tavily named in the opening, finding the glasses as one uncut take, talking
+  over Andy in the long take, privacy in the last shot, Spanish moved to a social clip; 2:50.
+- **Plan, round 2** (B9 to B14): the fixes above, a fair repeated scam evaluation (needs the founder's
+  yes), the finder measured as a Nebius Job, "how Andy found this" on the screen. One rule shapes it: a
+  project wins one Overall award, or one track award and one bonus, never both.
+
 ### Changed (public words and numbers, from the submission audit)
 
 - `docs/research.md` no longer cites sources whose titles name a condition or a loneliness framing; the

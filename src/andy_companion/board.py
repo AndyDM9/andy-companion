@@ -59,11 +59,13 @@ def _tidy(text: Any, limit: int = MAX_TEXT) -> str:
     return " ".join(str(text or "").split())[:limit]
 
 
-# --- tokens: the screen link and the family link -------------------------------------------
+# --- tokens: the screen, family, settings and under-the-hood links ----------------------------
 
 def tokens() -> Dict[str, str]:
+    """One random token per link. The hood has its own (2026-10-14): with the screen's, a /hood link shared
+    for its timings would also read the screen's captions and reminders and could show the settings code."""
     data = _read(TOKENS, {})
-    missing = [k for k in ("screen", "family", "setup") if not data.get(k)]
+    missing = [k for k in ("screen", "family", "setup", "hood") if not data.get(k)]
     if missing:
         for k in missing:                 # a new kind of link never changes the existing ones
             data[k] = secrets.token_urlsafe(12)

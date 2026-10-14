@@ -11,8 +11,9 @@ export HF_REALTIME_CONNECTION_MODE=local
 export HF_REALTIME_WS_URL="${ANDY_VOICE_URL:-ws://127.0.0.1:8765/v1/realtime}"
 export REALTIME_TRANSCRIPTION_LANGUAGE="${ANDY_LANGUAGE:-en}"   # a hint only: Parakeet detects the spoken language itself
 cd "$ROOT"
-# Only the web key and the vision endpoint's own token reach the robot side; the model key stays
-# with the voice server.
+# Only these reach the robot side: the web key, the eyes' and the second look's endpoint addresses and
+# tokens, and the Token Factory key, which the app itself uses for the scam check, letters, On this day
+# and think_it_through. Nothing else in the env file is passed on.
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 if [ -f "$ENV_FILE" ]; then
   TAVILY_API_KEY="$(sed -n 's/^TAVILY_API_KEY=//p' "$ENV_FILE" | tail -1)"

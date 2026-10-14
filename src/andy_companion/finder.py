@@ -50,6 +50,9 @@ class FinderError(Exception):
     pass
 
 
+SWITCHED_OFF = "My eyes are switched off right now, so I can't look around."
+
+
 def tidy_what(what: Any) -> str:
     what = " ".join(str(what or "").split())[:60].strip(" .?!")
     return re.sub(r"^(my|the|a|an|his|her|their)\s+", "", what, flags=re.I) or "things"
@@ -64,6 +67,8 @@ def ask(frame: Any, what: str, opener: Optional[Callable] = None) -> Dict[str, A
     url = os.environ["ANDY_VISION_URL"].rstrip("/")
     if not url.startswith("https://"):
         raise FinderError("My eyes in the cloud need a secure (https) address.")
+    if opener is None and not vision.reachable(url):   # stopped between demos: say so now, not after TIMEOUT_S
+        raise FinderError(SWITCHED_OFF)
     image = "data:image/jpeg;base64," + base64.b64encode(vision.jpeg(frame)).decode()
     body = {"model": vision.MODEL, "max_tokens": 120, "temperature": 0,
             "messages": [{"role": "user", "content": [{"type": "text", "text": ASK.format(what=what)},
@@ -77,7 +82,7 @@ def ask(frame: Any, what: str, opener: Optional[Callable] = None) -> Dict[str, A
             text = str(json.loads(r.read())["choices"][0]["message"]["content"])
     except Exception as e:   # never echo the request: it holds the picture
         if getattr(e, "code", None) in (404, 502, 503, 504):
-            raise FinderError("My eyes are switched off right now, so I can't look around.") from None
+            raise FinderError(SWITCHED_OFF) from None
         raise FinderError(f"My eyes in the cloud did not answer ({type(e).__name__}).") from None
     return parse(text)
 

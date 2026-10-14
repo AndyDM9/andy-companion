@@ -23,7 +23,7 @@ puts **Be careful** first, and Andy never reads out the page's numbers.
 ![A letter on Andy's screen, with a warning (sample data)](docs/images/tv-letter.png)
 
 **"Where did I leave my glasses?"** Andy looks around the room. NVIDIA Nemotron Nano VL reads four views
-at once (3.9 s for seven frames in a live test), then Andy turns its head to point at them and says "I
+at once (3.9 s for seven frames in a live test of the model on its endpoint), then Andy turns its head to point at them and says "I
 think I see your glasses, on the table…". The TV shows the picture it saw them in, held in memory for two
 minutes and never saved.
 
@@ -150,6 +150,14 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 
 ## Privacy
 
+**In four answers:**
+- **Where is it heard?** Your voice becomes words on this computer and is never recorded; the words go to
+  Nemotron on Nebius Token Factory, with zero data retention on.
+- **What is kept?** Only what you ask Andy to keep (a reminder, a fact, a moment), on this computer.
+- **Who sees it?** Family see only what you ask Andy to share; Andy tells you who looked.
+- **How do I delete it?** Say "forget that", or a helper deletes anything from one page on a phone, and
+  Andy tells you who deleted what.
+
 - **No recordings or transcripts.** Andy's own log lines never contain what anyone says, and Pollen's
   app's log records are redacted as they are made, at the normal log level (`tests/test_privacy.py`).
 - **What Andy keeps,** in owner-only files on its own computer: reminders, facts and moments you asked it
@@ -179,24 +187,28 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 **You need:**
 - Ubuntu 24.04 with an NVIDIA GPU (8 GB or more) for the voice server;
 - a Reachy Mini with Pollen's daemon running ([Pollen's guide](https://huggingface.co/docs/reachy_mini));
-- `tesseract-ocr`, and [uv](https://docs.astral.sh/uv/);
+- `tesseract-ocr`, `pulseaudio-utils` (the wake listener uses `parec`), and [uv](https://docs.astral.sh/uv/);
 - a Nebius Token Factory key and a Tavily key.
 
 1. **Keys.** Copy `.env.example` to `~/.config/companion-hackathon/.env` and fill it in. Then
    `chmod 600` it. Turn on zero data retention in Token Factory's organisation settings.
-2. **Voice server.** `cd voice && uv sync && ./run.sh`
+2. **Voice server.** `cd voice && uv sync && ./run.sh`. It uses the first GPU; to use another, put
+   `ANDY_VOICE_GPU=1` (its number) in the env file.
 3. **Robot side.** `cd robot && uv sync`, then from the repository root run `./scripts/andy`.
 4. **Your home.** `python scripts/settings.py links` prints four private addresses on your home
    network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
    language, pace, volume and captions. Open **the screen** on a TV, and send **the family page**
-   to family.
+   to family. **Under the hood** has its own link, which opens only that page; the gear on the TV
+   opens it too.
 5. **Optional: eyes and the second look.** With the [Nebius CLI](https://docs.nebius.com/cli), run
    `cloud/vision-endpoint.sh create` (and `cloud/guard-endpoint.sh create`), then `status` until it is
-   RUNNING. Run `stop` when you're done; a stopped endpoint costs nothing for compute.
+   RUNNING. `create` keeps the endpoint's token in Nebius MysteryBox secrets, never on a command line.
+   Run `stop` when you're done; a stopped endpoint costs nothing for compute.
 6. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing.
    To start Andy at login: `scripts/install-services.sh --enable`.
 7. **Optional: the suite on Nebius.** `cloud/suite-job.sh run`, or locally
-   `uv run python evals/run_suite.py --runs 3`.
+   `set -a; . ~/.config/companion-hackathon/.env; set +a; uv run python evals/run_suite.py --runs 3`
+   (it reads `NEBIUS_API_KEY` from the environment).
 
 Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's environment:
 `uv run --project robot --with pytest python -m pytest tests`.

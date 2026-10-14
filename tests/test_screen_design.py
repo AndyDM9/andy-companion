@@ -102,7 +102,8 @@ def test_nothing_moves_when_a_card_a_photo_or_a_caption_comes_and_goes():
 
 
 def test_the_tv_has_a_gear_for_settings_and_under_the_hood_and_a_way_back():
-    assert 'id="gear"' in PAGE and "/api/screen/settings-code" in PAGE and "/hood?t=" in PAGE
+    # The hood link comes from /api/screen (the hood has its own token), not built from the screen's.
+    assert 'id="gear"' in PAGE and "/api/screen/settings-code" in PAGE and "data.links.hood" in PAGE
     assert re.search(r'gear: "Ajustes"', PAGE)                       # in Spanish too
     hood = (Path(__file__).resolve().parents[1] / "src/andy_companion/pages/hood.html").read_text()
     assert 'id="back"' in hood and '"Escape"' in hood and '"Backspace"' in hood

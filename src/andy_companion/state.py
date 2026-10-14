@@ -28,7 +28,8 @@ def _write(data: Dict[str, Any]) -> None:
 
 def current(now: Optional[datetime] = None) -> Dict[str, Any]:
     """{"mode": "awake" | "asleep" | "quiet", "until": timestamp or None}. An expired quiet reads
-    as quiet still; the supervisor ends it (so it can wake Andy)."""
+    as quiet still; the supervisor ends it (so it can wake Andy). Asleep and quiet also carry "since",
+    when they began; awake after a reminder woke Andy carries "return_to", the mode to go back to."""
     try:
         data = json.loads(FILE.read_text())
         if data.get("mode") in ("awake", "asleep", "quiet"):
@@ -41,17 +42,24 @@ def current(now: Optional[datetime] = None) -> Dict[str, Any]:
 def quiet_for(minutes: float, now: Optional[datetime] = None) -> datetime:
     if not 0 < float(minutes) <= MAX_QUIET_MIN:
         raise ValueError("Quiet can last from 1 minute to a day.")
-    until = (now or datetime.now()) + timedelta(minutes=float(minutes))
-    _write({"mode": "quiet", "until": until.timestamp()})
+    now = now or datetime.now()
+    until = now + timedelta(minutes=float(minutes))
+    quiet_until(until.timestamp(), now)
     return until
 
 
-def asleep() -> None:
-    _write({"mode": "asleep", "until": None})
+def quiet_until(until: float, now: Optional[datetime] = None) -> None:
+    _write({"mode": "quiet", "until": until, "since": (now or datetime.now()).timestamp()})
 
 
-def awake() -> None:
-    _write({"mode": "awake", "until": None})
+def asleep(now: Optional[datetime] = None) -> None:
+    _write({"mode": "asleep", "until": None, "since": (now or datetime.now()).timestamp()})
+
+
+def awake(return_to: Optional[Dict[str, Any]] = None) -> None:
+    """Awake. return_to (set only by the supervisor when a reminder wakes Andy) is the quiet or sleep to go
+    back to once the reminder is said; any later change of mode (goodnight, be quiet) replaces it."""
+    _write({"mode": "awake", "until": None, **({"return_to": return_to} if return_to else {})})
 
 
 def install_sleep_tool(tool_class=None) -> bool:

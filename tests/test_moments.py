@@ -89,3 +89,28 @@ def test_andy_starts_every_conversation_knowing_what_it_remembers():
     extra = settings.instructions()
     assert "## WHAT YOU REMEMBER" in extra and "- Sofia's piano recital, " in extra
     assert recall.block([("the plumber", "on Monday")]).endswith("- the plumber, on Monday")
+
+
+def test_forgetting_needs_words_that_point_to_one_moment():
+    """Found by the audit on 2026-10-14: forget("") forgot every moment, and forget("the") every one with "the"."""
+    moments.add("Sofia's piano recital", "Thursday", TUE)
+    moments.add("the plumber comes", "Friday", TUE)
+    moments.add("the dentist", "Friday", TUE)
+    for words in ("", "  ", "the", "a", "re", "the moment"):
+        assert moments.forget(words) == 0
+    assert moments.forget("cital") == 0                          # part of a word is not a word
+    assert len(moments._load()) == 3
+    assert moments.forget("Sofia") == 1                          # a whole word, even before "'s"
+    assert [m["what"] for m in moments._load()] == ["the plumber comes", "the dentist"]
+
+
+def test_when_several_moments_match_none_is_forgotten_and_andy_can_ask_which():
+    a = moments.add("lunch with Rosa", "Thursday", TUE)
+    b = moments.add("Rosa's birthday", "Friday", TUE)
+    out = moments.forget_one("Rosa", TUE)
+    assert out["forgotten"] == 0 and [w["id"] for w in out["which"]] == [a["id"], b["id"]]
+    assert out["which"][0] == {"id": a["id"], "what": "lunch with Rosa", "day": "Thursday 15 October"}
+    assert moments.forget("Rosa") == 0 and len(moments._load()) == 2
+    assert moments.forget_one(b["id"]) == {"forgotten": 1, "what": "Rosa's birthday"}       # then by its id
+    assert moments.forget_one("birthday")["forgotten"] == 0 and "say" in moments.forget_one("")
+    assert moments.remove(a["id"]) and not moments.remove(a["id"])

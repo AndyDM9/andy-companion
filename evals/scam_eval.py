@@ -98,7 +98,8 @@ def main() -> int:
     with_warnings = sum(1 for r in rows if r["scam"] and r["warnings"])
     hard = [r for r in rows if r["id"].startswith("h")]
     card = {"ran": datetime.now().astimezone().isoformat(timespec="seconds"), "model": MODEL,
-            "messages": len(rows), "alone": alone, "with_tavily": with_t,
+            # "alone" is the first model only; "with_tavily" adds Tavily's warnings and the second model's match.
+            "match_model": scamcheck.MATCH_MODEL, "messages": len(rows), "alone": alone, "with_tavily": with_t,
             "scams_with_warnings_found": with_warnings, "hard_alone": score(hard, "alone"),
             "hard_with_tavily": score(hard, "with_tavily"),
             "scam_verdicts_backed_by_a_named_source": backed, "of_scam_verdicts": len(scam_verdicts),

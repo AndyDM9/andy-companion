@@ -11,6 +11,11 @@ Awake: run the conversation app (scripts/run-robot.sh) and wait for it to stop.
 
 Asleep or quiet: listen for a wake phrase (offline), and wake Andy when one is heard, when a
 quiet spell ends, or when a reminder comes due, so a reminder is never missed because Andy slept.
+A reminder only borrows Andy: once it has been said and no one has talked with Andy for a minute,
+Andy goes back to sleep, or to what is left of the quiet spell (BackAfterReminder).
+
+The supervisor hosts the screen server, so it reads the keys the screen's own features need (the
+setup page's Tavily calendar search) from the private env file itself (app_mode.SUPERVISOR_KEYS).
 """
 
 from __future__ import annotations
@@ -24,13 +29,21 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from andy_companion import chimes, reminders, screen_server, state, wake
 
 logger = logging.getLogger("andy.supervisor")
 ROOT = Path(__file__).resolve().parents[2]
 RESTART_DELAY_S = 10.0
+# A reminder that was already due, but not yet said, when the person said goodnight (or "be quiet") does
+# not wake Andy straight back up: goodnight sticks for SETTLE_S. The reminder is not dropped, because a
+# reminder is never missed for sleep: after SETTLE_S it wakes Andy, is said, and Andy goes back to sleep.
+# A reminder that comes due after the goodnight wakes Andy at once, as before.
+SETTLE_S = 10 * 60
+# After a reminder woke Andy and was said: how long with no one talking with Andy before it goes back.
+RESUME_IDLE_S = 60.0
+POLL_S = 1.0
 
 
 def after_exit(mode: str, code: int, restart_asked: bool = False) -> str:
@@ -38,6 +51,15 @@ def after_exit(mode: str, code: int, restart_asked: bool = False) -> str:
     if code != 0 or restart_asked:
         return "restart"
     return "sleep" if mode == "awake" else "wait"
+
+
+def reminders_to_wake(now: Optional[datetime] = None) -> List[Dict[str, Any]]:
+    """The due reminders that may wake Andy now: all of them, except, for SETTLE_S after Andy went to sleep
+    or quiet, those that were already due by then."""
+    now = now or datetime.now()
+    since = state.current(now).get("since") or 0
+    settling = 0 <= now.timestamp() - since < SETTLE_S
+    return [r for r in reminders.due(now) if not (settling and r["due"] <= since)]
 
 
 def wake_reason(now: Optional[datetime] = None) -> Optional[str]:
@@ -48,15 +70,94 @@ def wake_reason(now: Optional[datetime] = None) -> Optional[str]:
         return "awake"
     if s["mode"] == "quiet" and s.get("until") and now.timestamp() >= s["until"]:
         return "quiet over"
-    if reminders.due(now):
+    if reminders_to_wake(now):
         return "reminder due"
     return None
 
 
-def run_app() -> int:
+def wake_up(reason: str, now: Optional[datetime] = None) -> None:
+    """Wake Andy. Woken for a reminder, Andy remembers the sleep or quiet it came from, to go back to."""
+    now = now or datetime.now()
+    s = state.current(now)
+    if reason == "reminder due" and s["mode"] in ("asleep", "quiet"):
+        ids = [r["id"] for r in reminders_to_wake(now)]
+        state.awake(return_to={"mode": s["mode"], "until": s.get("until"), "reminders": ids})
+    else:
+        state.awake()
+
+
+def go_back(back: Dict[str, Any], now: Optional[datetime] = None) -> str:
+    """Return to the sleep or quiet a reminder woke Andy from; a quiet spell that has ended by now is over."""
+    now = now or datetime.now()
+    until = back.get("until")
+    if back.get("mode") == "asleep":
+        state.asleep(now)
+        return "asleep"
+    if back.get("mode") == "quiet" and isinstance(until, (int, float)) and until > now.timestamp():
+        state.quiet_until(until, now)
+        return "quiet"
+    state.awake()
+    return "awake"
+
+
+class BackAfterReminder:
+    """Watches the app while it runs after a reminder woke Andy. When every reminder that woke it has been said
+    (deleted, or a daily one moved on) and no one has talked with Andy for RESUME_IDLE_S, it puts the mode back
+    and answers True, and the supervisor stops the app. Talking with Andy keeps it awake until the talk ends.
+    A goodnight or "be quiet" in the meantime replaces return_to; the person asked for the quiet or sleep the
+    reminder interrupted, and can end it with the wake phrase as usual."""
+
+    def __init__(self, clock: Callable[[], float] = time.time) -> None:
+        self.clock = clock
+        self.said_at: Optional[float] = None
+        self.busy_at = 0.0
+
+    def __call__(self) -> bool:
+        now = self.clock()
+        s = state.current()
+        back = s.get("return_to")
+        if s["mode"] != "awake" or not isinstance(back, dict):
+            self.said_at = None
+            return False
+        waiting = {r["id"] for r in reminders.due(datetime.fromtimestamp(now))}
+        if waiting & set(back.get("reminders") or []):
+            self.said_at = None
+            return False
+        if self.said_at is None:
+            self.said_at = now
+        live = screen_server._live            # the app's live state, reported to the screen in this process
+        if live["state"] not in ("", "ready") and now - float(live["at"]) <= screen_server.LIVE_STALE_S:
+            self.busy_at = now
+        if now - max(self.said_at, self.busy_at) < RESUME_IDLE_S:
+            return False
+        went = go_back(back, datetime.fromtimestamp(now))
+        logger.info("The reminder was said; back to %s", went)
+        return went != "awake"
+
+
+def run_app(should_stop: Optional[Callable[[], bool]] = None, poll_s: float = POLL_S) -> int:
+    """Run the app until it stops. When should_stop() answers True, stop it the way Ctrl+C does and return 0:
+    a stop the supervisor chose is never taken for a crash."""
     proc = subprocess.Popen([str(ROOT / "scripts" / "run-robot.sh"), *sys.argv[1:]])
     try:
-        return proc.wait()
+        while True:
+            try:
+                return proc.wait(timeout=poll_s if should_stop else None)
+            except subprocess.TimeoutExpired:
+                pass
+            try:
+                stop = should_stop is not None and should_stop()
+            except Exception:
+                logger.debug("supervisor check failed", exc_info=True)
+                stop = False
+            if stop:
+                proc.send_signal(signal.SIGINT)
+                try:
+                    proc.wait(timeout=30)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait()
+                return 0
     except KeyboardInterrupt:
         proc.send_signal(signal.SIGINT)
         proc.wait(timeout=30)
@@ -92,8 +193,13 @@ def wait_asleep() -> str:
 
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
-    if state.current()["mode"] != "awake" and wake_reason() is not None:
-        state.awake()
+    from andy_companion import app_mode
+
+    loaded = app_mode.load_env(app_mode.SUPERVISOR_KEYS)      # names only in the log, never values
+    logger.info("From the env file: %s", ", ".join(loaded) or "nothing new")
+    reason = wake_reason() if state.current()["mode"] != "awake" else None
+    if reason is not None:
+        wake_up(reason)
     try:
         screen_server.serve()          # the screen and the family page stay up, asleep or awake
     except OSError as e:
@@ -101,7 +207,7 @@ def main() -> int:
     while True:
         mode = state.current()["mode"]
         if mode == "awake":
-            code = run_app()
+            code = run_app(should_stop=BackAfterReminder())
             from andy_companion import watchdog
 
             why = watchdog.take_request()
@@ -116,7 +222,7 @@ def main() -> int:
             continue
         reason = wait_asleep()
         logger.info("Waking: %s", reason)
-        state.awake()
+        wake_up(reason)
         chimes.play("wake", force=True)
 
 

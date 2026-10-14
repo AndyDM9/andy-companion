@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import secrets
 import tempfile
 from datetime import date, timedelta
@@ -89,13 +90,50 @@ def upcoming(today: Optional[date] = None, days: int = 14) -> List[Dict[str, Any
                   key=lambda m: m["on"])
 
 
-def forget(text_or_id: str) -> int:
-    key = " ".join(str(text_or_id).lower().split())
+# Words too small to say which moment is meant: "forget the" must not forget everything with "the".
+SMALL_WORDS = {"the", "and", "for", "with", "about", "that", "this", "one", "moment", "thing", "remember", "forget",
+               "los", "las", "una", "del", "con", "por", "para", "que", "eso", "esto"}
+
+
+def matching(text_or_id: str) -> List[Dict[str, Any]]:
+    """The moments a few spoken words (or an id) point to. An exact id is that one moment; otherwise
+    the words must hold at least one word of three letters or more that is not a small word, and must
+    appear in the moment as whole words ("recital", "piano recital", "Sofia"). Nothing for "" or "the"."""
+    key = " ".join(str(text_or_id).lower().replace("’", "'").split())
     items = _load()
-    kept = [m for m in items if m["id"] != key and key not in m["what"].lower()]
-    if len(kept) != len(items):
-        _save(kept)
-    return len(items) - len(kept)
+    exact = [m for m in items if m["id"] == key]
+    if exact or not any(len(w) >= 3 and w not in SMALL_WORDS for w in re.findall(r"\w+", key)):
+        return exact
+    words = re.compile(r"(?<!\w)" + re.escape(key) + r"(?!\w)")
+    return [m for m in items if words.search(m["what"].lower().replace("’", "'"))]
+
+
+def remove(item_id: str) -> bool:
+    """Delete the one moment with this id (the settings page knows ids)."""
+    items = _load()
+    kept = [m for m in items if m["id"] != str(item_id)]
+    if len(kept) == len(items):
+        return False
+    _save(kept)
+    return True
+
+
+def forget(text_or_id: str) -> int:
+    """Forget the one moment the words point to; 1 if it was forgotten. 0 when none matches, or when
+    more than one does: nothing is deleted on a guess (forget_one says which ones, so Andy can ask)."""
+    found = matching(text_or_id)
+    return int(len(found) == 1 and remove(found[0]["id"]))
+
+
+def forget_one(text_or_id: str, today: Optional[date] = None) -> Dict[str, Any]:
+    """forget(), with what Andy needs to say: what was forgotten, or which moments to ask about."""
+    found = matching(text_or_id)
+    if len(found) == 1 and remove(found[0]["id"]):
+        return {"forgotten": 1, "what": found[0]["what"]}
+    if not found:
+        return {"forgotten": 0, "say": "No remembered moment matches those words. Ask which one they mean."}
+    return {"forgotten": 0, "which": [{"id": m["id"], "what": m["what"], "day": spoken_day(m["on"], today)} for m in found],
+            "say": "More than one moment matches. Ask which one they mean, then forget it by its id."}
 
 
 def spoken_day(on: str, today: Optional[date] = None) -> str:

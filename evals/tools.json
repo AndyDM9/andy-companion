@@ -361,13 +361,13 @@
  },
  {
   "name": "forget_moment",
-  "description": "When the person asks you to forget a moment you remembered (a visit, an event). Say what you forgot.",
+  "description": "When the person asks you to forget a moment you remembered (a visit, an event). Say what you forgot. If more than one moment matches, ask which one they mean, then call again with its id.",
   "parameters": {
    "type": "object",
    "properties": {
     "what": {
      "type": "string",
-     "description": "A word or two from the moment."
+     "description": "A few words from the moment, or its id."
     }
    },
    "required": [

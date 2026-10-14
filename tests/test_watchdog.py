@@ -107,3 +107,30 @@ def test_the_voice_server_takes_its_key_from_the_environment_never_the_command_l
     assert serve.key_from_environment(given, {"NEBIUS_API_KEY": "k"}) == given
     run = (path.parent / "run.sh").read_text()
     assert "--responses_api_api_key" not in run and "export NEBIUS_API_KEY" in run
+
+
+def test_without_a_supervisor_the_watchdog_only_logs(caplog):
+    """The dashboard app has no supervisor: stopping it would leave Andy off until someone pressed start."""
+    t = [70.0]
+    counter = watchdog.DropCounter(clock=lambda: t[0])
+    dog = watchdog.Watchdog(counter, clock=lambda: t[0], stop=lambda: pytest.fail("no stop without a supervisor"),
+                            supervised=False)
+    dog.started = 0.0
+    drop(counter, 25, 70.0)
+    with caplog.at_level(logging.WARNING, logger="andy.watchdog"):
+        assert dog.check(70.0) == "unsupervised"
+        assert dog.check(75.0) is None                                  # said once
+    assert "no supervisor" in caplog.text and not watchdog.REQUEST.exists()
+    assert json.loads(watchdog.HEALTH.read_text())["restarts_asked"] == 0
+
+
+def test_the_dashboard_app_s_watchdog_is_unsupervised():
+    source = (Path(__file__).resolve().parents[1] / "src" / "andy_companion" / "app_mode.py").read_text()
+    assert "watchdog.install(supervised=not screen)" in source
+
+
+def test_the_voice_server_uses_the_first_gpu_unless_told_otherwise():
+    """A judge's computer with one GPU has only GPU 0; the founder's sets ANDY_VOICE_GPU=1 in the env file."""
+    run = (Path(__file__).resolve().parents[1] / "voice" / "run.sh").read_text()
+    assert 'CUDA_VISIBLE_DEVICES="${ANDY_VOICE_GPU:-0}"' in run
+    assert run.index(". \"$ENV_FILE\"") < run.index("CUDA_VISIBLE_DEVICES")      # the env file can choose

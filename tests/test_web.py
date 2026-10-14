@@ -113,3 +113,36 @@ def test_whats_on_in_spanish_names_the_week_in_spanish():
                                                ("fr", "en", "en"), (None, None, "en")])
 def test_the_search_language_is_the_one_spoken_else_the_one_chosen(asked, saved, out):
     assert web.chosen_language(asked, saved) == out
+
+
+def test_a_crawl_that_fails_still_finds_the_week_by_search():
+    """A slow page or a site that refuses crawlers (403) once lost the whole answer (2026-10-14)."""
+    asked = []
+
+    def opener(req, timeout=None):
+        asked.append((req.full_url.rsplit("/", 1)[1], timeout))
+        if req.full_url.endswith("/crawl"):
+            raise OSError("403 Forbidden")
+        return io.BytesIO(json.dumps({"results": [{"title": "Tea dance Friday", "url": "https://www.harborbay.example/calendar",
+                                                   "content": "Tea dance, Friday 2pm"}]}).encode())
+
+    (item,) = web.whats_on("Harbor Bay", pages=["https://a.org/events", "https://b.org/events"], opener=opener)
+    assert item["title"] == "Tea dance Friday" and [p for p, _ in asked] == ["crawl", "crawl", "search"]
+
+
+def test_crawl_and_map_wait_a_little_longer_than_tavily_does():
+    waits = {}
+
+    def opener(req, timeout=None):
+        path = req.full_url.rsplit("/", 1)[1]
+        waits[path] = (timeout, json.loads(req.data).get("timeout"))
+        return io.BytesIO(json.dumps({"results": [{"url": "https://a.org/events/1", "raw_content": "Bingo"}]
+                                      if path == "crawl" else []}).encode())
+
+    web.whats_on("Harbor Bay", pages=["https://a.org/events"], opener=opener)
+    web.map_site("https://a.org", opener=opener)
+    web.look_up("pharmacy hours", opener=opener)
+    for path in ("crawl", "map"):
+        client, server = waits[path]
+        assert server == web.CRAWL_SERVER_S and server < client == web.CRAWL_TIMEOUT_S
+    assert waits["search"][0] == web.TIMEOUT_S

@@ -119,5 +119,7 @@ Its design, "Andy Glass", takes from Apple's Liquid Glass ([decision 0005](decis
 
 **Urgent words:** if you say something like "my chest hurts" or "I don't want to be here anymore", a
 check in code sees the words. If Andy's reply misses 911 (or the 988 Lifeline), Andy is told to say an
-exact sentence naming it. In the suite, every crisis case got its line, 15 of 15, in English and
-Spanish.
+exact sentence naming it. If the model can't be reached, or its answer still leaves the number out, Andy
+plays that sentence from a recording on the robot. A "not" only cancels the words it directly governs, so
+"not sure why, but my chest hurts" still counts. In the suite, every crisis case got its line, 15 of 15,
+in English and Spanish. The list is fixed: phrasings it doesn't hold are missed.

@@ -118,7 +118,7 @@ def test_install_times_turns_and_tools_without_arguments():
 
 
 def hood(server):
-    with urllib.request.urlopen(f"{server}/api/hood?t={board.tokens()['screen']}", timeout=5) as r:
+    with urllib.request.urlopen(f"{server}/api/hood?t={board.tokens()['hood']}", timeout=5) as r:
         return json.loads(r.read())
 
 
@@ -156,9 +156,44 @@ def test_a_bad_turn_is_refused(server):
 
 
 def test_the_hood_page_is_served(server):
-    with urllib.request.urlopen(f"{server}/hood?t={board.tokens()['screen']}", timeout=5) as r:
+    with urllib.request.urlopen(f"{server}/hood?t={board.tokens()['hood']}", timeout=5) as r:
         page = r.read().decode()
     assert "Under the hood" in page and "Nebius Token Factory" in page
+
+
+def test_the_hood_has_its_own_token_and_it_opens_nothing_else(server):
+    """A /hood link shared for its timings used to carry the screen's token, so it could read the captions and
+    reminders and put the settings code (full control of Andy) on the TV (review, 2026-10-14)."""
+    t = board.tokens()
+    assert t["hood"] != t["screen"]
+    for path in ("/hood", "/api/hood"):                                  # the screen's token no longer opens it
+        with pytest.raises(urllib.error.HTTPError) as e:
+            urllib.request.urlopen(f"{server}{path}?t={t['screen']}", timeout=5)
+        assert e.value.code == 404
+    for path in ("/screen", "/api/screen", "/frame", "/photo"):           # and the hood's opens only the hood
+        with pytest.raises(urllib.error.HTTPError):
+            urllib.request.urlopen(f"{server}{path}?t={t['hood']}", timeout=5)
+    for path in ("/api/screen/settings-code", "/api/caption", "/api/turn"):
+        req = urllib.request.Request(f"{server}{path}?t={t['hood']}", method="POST", data=b"{}")
+        with pytest.raises(urllib.error.HTTPError):
+            urllib.request.urlopen(req, timeout=5)
+    assert board.showing() is None
+    with urllib.request.urlopen(f"{server}/api/state?t={t['hood']}", timeout=5) as r:   # the hood's state strip
+        assert "label" in json.loads(r.read())
+
+
+def test_the_screen_learns_the_hood_link_and_the_hood_goes_back_only_to_the_screen(server):
+    t = board.tokens()
+    with urllib.request.urlopen(f"{server}/api/screen?t={t['screen']}", timeout=5) as r:
+        assert json.loads(r.read())["links"] == {"hood": f"/hood?t={t['hood']}"}
+    from pathlib import Path
+
+    pages = Path(__file__).resolve().parents[1] / "src" / "andy_companion" / "pages"
+    hood_page = (pages / "hood.html").read_text()
+    assert "/screen?t=" not in hood_page and "history.back()" in hood_page    # never the hood's token on /screen
+    assert 'id="back-row" hidden' in hood_page and 'params.get("from") === "screen"' in hood_page
+    screen_page = (pages / "screen.html").read_text()
+    assert 'hoodLink + "&from=screen"' in screen_page and "/hood?t=" not in screen_page
 
 
 def test_the_hood_shows_the_newest_suite_scorecard(tmp_path, monkeypatch):

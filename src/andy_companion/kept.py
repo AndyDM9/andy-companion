@@ -61,7 +61,7 @@ def delete(kind: str, item_id: str) -> bool:
     if kind == "reminder":
         return reminders.cancel(item_id)
     if kind == "moment":
-        return moments.forget(item_id) > 0
+        return moments.remove(item_id)          # by its exact id: never by words, which could match many
     if kind == "fact":
         facts = _facts()
         kept_facts = [f for f in facts if f["id"] != item_id]

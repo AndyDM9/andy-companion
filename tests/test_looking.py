@@ -131,3 +131,51 @@ def test_a_long_list_of_sites_is_shortened_for_the_screen():
         {"url": f"https://site{i}.org/x"} for i in range(7)]}]}}, {"content": DONE["content"]})
     web.stream_research("q", on_step=lambda k, d: steps.append((k, d)), opener=StreamOpener(many))
     assert steps == [("reading", "site0.org, site1.org, site2.org, site3.org and 3 more")]
+
+
+def test_without_a_key_andy_says_so_and_promises_nothing(monkeypatch):
+    monkeypatch.delenv("TAVILY_API_KEY")
+    ran = []
+    out = looking.start("the new bus routes", runner=lambda *a: ran.append(a))
+    assert out["started"] is False and "can't look things up" in out["say"]
+    assert ran == [] and looking._state["busy"] is False and looking._state["count"] == 0
+
+
+class CutStream:
+    """A stream that sends some steps, then breaks."""
+
+    def __init__(self, data):
+        self.lines = data.splitlines(keepends=True)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def __iter__(self):
+        yield from self.lines
+        raise OSError("connection reset")
+
+
+def test_a_stream_that_breaks_after_it_began_is_not_paid_for_twice():
+    calls = []
+
+    def opener(req, timeout=None):
+        calls.append(req.full_url)
+        if len(calls) > 1:
+            return io.BytesIO(json.dumps({"request_id": "r2"}).encode())
+        return CutStream(sse({"tool_calls": {"type": "tool_call", "tool_call": [{"name": "Planning"}]}}))
+
+    assert looking.run("the new bus routes", opener=opener, sleep=lambda s: None) is None
+    assert len(calls) == 1                                  # no second research task started
+    entry = board.next_for_person()
+    assert entry["failed"] and looking._state["busy"] is False
+
+
+def test_a_stream_that_never_began_falls_back_once():
+    with pytest.raises(web.ResearchCutOff):
+        web.stream_research("q", opener=lambda req, timeout=None: CutStream(sse({"tool_calls": {}})))
+    with pytest.raises(web.WebError) as e:
+        web.stream_research("q", opener=StreamOpener(OSError("refused")))
+    assert not isinstance(e.value, web.ResearchCutOff)

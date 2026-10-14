@@ -18,6 +18,10 @@ from urllib.parse import urlparse
 
 API = "https://api.tavily.com"
 TIMEOUT_S = 12
+# Crawl and map run up to their own server-side timeout (CRAWL_SERVER_S); the client waits a little longer,
+# or it would give up at TIMEOUT_S while Tavily was still working (and charging) for the answer.
+CRAWL_SERVER_S = 30
+CRAWL_TIMEOUT_S = 35
 SNIPPET = 320
 SCAM_SOURCES = ["consumer.ftc.gov", "consumidor.ftc.gov", "ftc.gov", "identitytheft.gov", "aarp.org", "bbb.org",
                 "ic3.gov", "fbi.gov", "usa.gov"]
@@ -29,6 +33,14 @@ class WebError(Exception):
     pass
 
 
+class ResearchCutOff(WebError):
+    """The research stream broke after the research had begun: starting it again would pay for it twice."""
+
+
+def configured() -> bool:
+    return bool(os.environ.get("TAVILY_API_KEY", ""))
+
+
 def _key() -> str:
     key = os.environ.get("TAVILY_API_KEY", "")
     if not key:
@@ -37,7 +49,7 @@ def _key() -> str:
 
 
 def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] = None,
-          project: bool = True) -> Dict[str, Any]:
+          project: bool = True, timeout: float = TIMEOUT_S) -> Dict[str, Any]:
     """POST body to Tavily, or GET when body is None."""
     headers = {"Authorization": f"Bearer {_key()}", "Content-Type": "application/json"}
     if project:   # Tavily counts this product's use apart from any other (X-Project-ID)
@@ -46,7 +58,7 @@ def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] 
                                  data=json.dumps(body).encode() if body is not None else None,
                                  headers=headers)
     try:
-        with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
+        with (opener or urllib.request.urlopen)(req, timeout=timeout) as r:
             return json.loads(r.read())
     except WebError:
         raise
@@ -113,8 +125,14 @@ def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, 
     if pages:
         found: List[Dict[str, str]] = []
         for page in pages[:2]:
-            data = _post("/crawl", {"url": page, "instructions": f"Events and activities this week {interest}".strip(),
-                                    "max_depth": 1, "limit": 8, "chunks_per_source": 2, "timeout": 30}, opener)
+            # A slow page, or a site that refuses crawlers (403), must not lose the answer: the dated
+            # search below still finds the week's events.
+            try:
+                data = _post("/crawl", {"url": page, "instructions": f"Events and activities this week {interest}".strip(),
+                                        "max_depth": 1, "limit": 8, "chunks_per_source": 2, "timeout": CRAWL_SERVER_S},
+                             opener, timeout=CRAWL_TIMEOUT_S)
+            except WebError:
+                continue
             for r in data.get("results", [])[:3]:
                 found.append({"title": clean(r.get("url"), 140), "source": source_name(r.get("url", "")),
                               "summary": clean(r.get("raw_content"), SNIPPET), "url": r.get("url", "")})
@@ -167,8 +185,10 @@ def official_site(place: str, opener=None) -> Optional[str]:
 
 def map_site(url: str, instructions: str = "", opener=None) -> List[str]:
     """Tavily map: the pages of a site, guided by instructions."""
-    body = {"url": url, "max_depth": 2, "max_breadth": 30, "limit": 60, "instructions": instructions[:200]}
-    return [str(u) for u in _post("/map", body, opener).get("results", []) if isinstance(u, str)]
+    body = {"url": url, "max_depth": 2, "max_breadth": 30, "limit": 60, "instructions": instructions[:200],
+            "timeout": CRAWL_SERVER_S}
+    return [str(u) for u in _post("/map", body, opener, timeout=CRAWL_TIMEOUT_S).get("results", [])
+            if isinstance(u, str)]
 
 
 def find_events_page(place: str, opener=None) -> Optional[Dict[str, str]]:
@@ -286,6 +306,7 @@ def stream_research(question: str, place: str = "", language: str = "en",
     step = on_step or (lambda kind, detail: None)
     content: Any = None
     sources: Any = None
+    began = False   # once Tavily has sent anything, the research is under way (and paid for)
     try:
         with (opener or urllib.request.urlopen)(req, timeout=timeout_s) as r:
             for raw in r:
@@ -296,6 +317,7 @@ def stream_research(question: str, place: str = "", language: str = "en",
                     delta = (json.loads(line[5:]).get("choices") or [{}])[0].get("delta") or {}
                 except ValueError:
                     continue
+                began = True
                 calls = delta.get("tool_calls") or {}
                 for call in calls.get("tool_call") or []:
                     name = str(call.get("name", ""))
@@ -319,9 +341,9 @@ def stream_research(question: str, place: str = "", language: str = "en",
     except WebError:
         raise
     except Exception as e:   # never echo the request: it holds what the person asked
-        raise WebError(f"The research did not finish ({type(e).__name__}).") from None
+        raise (ResearchCutOff if began else WebError)(f"The research did not finish ({type(e).__name__}).") from None
     if content is None:
-        raise WebError("The research gave no answer.")
+        raise (ResearchCutOff if began else WebError)("The research gave no answer.")
     return _answer(content, sources)
 
 

@@ -2,7 +2,7 @@
 
     /screen?t=<screen token>    the day clock, what's next, and what Andy is showing now
     /family?k=<family token>    what the person chose to share; send Andy a message or a link
-    /hood?t=<screen token>      under the hood: how long each part of Andy's recent turns took
+    /hood?t=<hood token>        under the hood: how long each part of Andy's recent turns took
     /setup?s=<setup token>      set Andy up: town, news sites, language, pace, volume, captions
 
 Links carry random tokens (board.tokens()); `scripts/settings.py links` prints them. Standard
@@ -304,10 +304,36 @@ def settings_qr(host: str) -> str:
     return "data:image/svg+xml," + urllib.parse.quote(out.getvalue().decode())
 
 
+LOOPBACK = re.compile(r"(localhost|127(\.\d{1,3}){3}|\[::1\])(:\d+)?", re.I)
+
+
+def lan_host() -> str:
+    """This computer's address on the home network, as `scripts/settings.py links` prints it."""
+    import socket
+
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("192.0.2.1", 9))          # no packet is sent; this finds the local address
+            return s.getsockname()[0]
+    except OSError:
+        return "localhost"
+
+
+def qr_host(host: str) -> str:
+    """Where the settings code should point: the address the screen was reached at, unless that is this
+    computer's own loopback (a TV browser on this computer), which a phone can't reach: then the home network's."""
+    if LOOPBACK.fullmatch(host):
+        port = host.rsplit(":", 1)[1] if re.search(r":\d+$", host) else ""
+        return lan_host() + (f":{port}" if port else "")
+    return host if re.fullmatch(r"[A-Za-z0-9.\-]+(:\d+)?", host) else ""
+
+
 def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, Any]:
     from andy_companion import settings
 
     state = today_plan(now)
+    # The gear menu's way to the hood page: the hood has its own token, which the screen learns here.
+    state["links"] = {"hood": f"/hood?t={board.tokens()['hood']}"}
     state["showing"] = board.showing()
     if state["showing"] and state["showing"].get("kind") == "code" and host:
         state["showing"] = {**state["showing"], "qr": settings_qr(host)}
@@ -337,7 +363,7 @@ def setup_state() -> Dict[str, Any]:
 
     return {"settings": setup_page.state(), "kept": kept.summary(), "now": live_state(), "tavily": dict(_tavily) or None,
             "links": {"screen": f"/screen?t={t['screen']}", "family": f"/family?k={t['family']}",
-                      "hood": f"/hood?t={t['screen']}"}}
+                      "hood": f"/hood?t={t['hood']}"}}
 
 
 def _ok(token: Optional[str], kind: str) -> bool:
@@ -398,13 +424,14 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("screen.html")
         if url.path == "/api/screen" and _ok(q.get("t"), "screen"):
             # The settings code points at this same address, as the screen reached it on the home network.
-            host = self.headers.get("Host", "")
-            return self._json(screen_state(host=host if re.fullmatch(r"[A-Za-z0-9.\-]+(:\d+)?", host) else ""))
-        if url.path == "/api/state" and _ok(q.get("t"), "screen"):
-            return self._json(live_state())
-        if url.path == "/hood" and _ok(q.get("t"), "screen"):
+            return self._json(screen_state(host=qr_host(self.headers.get("Host", ""))))
+        if url.path == "/api/state" and (_ok(q.get("t"), "screen") or _ok(q.get("t"), "hood")):
+            return self._json(live_state())      # the state strip, on both pages: a label, nothing private
+        # The hood takes only its own token: its link is the one shown to the curious, so it must not open
+        # the screen's captions and reminders, or the settings code (review, 2026-10-14).
+        if url.path == "/hood" and _ok(q.get("t"), "hood"):
             return self._page("hood.html")
-        if url.path == "/api/hood" and _ok(q.get("t"), "screen"):
+        if url.path == "/api/hood" and _ok(q.get("t"), "hood"):
             return self._json(hood_state())
         if url.path == "/setup" and _ok(q.get("s"), "setup"):
             return self._page("setup.html")

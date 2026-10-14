@@ -21,7 +21,7 @@ organisers' "How to build a winning project" update):
 **The organisers' tip:** "hardware reacting live to real-world input is where this track can really
 shine".
 
-**Target length:** 2:45. Andy's lines are never scripted; only the person's are planned. Robot shots are
+**Target length:** 2:50, never over 2:55 (time a rough cut). Andy's lines are never scripted; only the person's are planned. Robot shots are
 long, unedited takes.
 
 ## Before filming
@@ -35,6 +35,7 @@ long, unedited takes.
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) on a laptop in shot, or recorded
       at the same time for a corner inset: it shows the real timings of every turn filmed.
 - [ ] One reminder set for about 2 minutes into the long take ("call Rosa").
+- [ ] The glasses hidden by someone off camera just before shot 4; the vision endpoint answering.
 - [ ] Yesterday's moment set the day before: "Sofia's piano recital", with a yes.
 - [ ] The family page open on a second phone; **our own photo**, with the family's agreement (not a
       sample landscape).
@@ -48,23 +49,29 @@ long, unedited takes.
 
 ## Shots
 
+Rewritten 2026-10-14 from two audits and the research (the Devpost update's tip on live hardware, an
+uncut physical moment, Tavily named at the start, a dated problem line, privacy answered plainly).
+
 | # | Time | What we see | What is said |
 |---|---|---|---|
-| 1 | 0:00–0:10 | **The hook, live.** The person holds up the prize letter. Andy turns to the TV, where **Be careful** appears, then back to the person | Andy, live, in its own words, for example: "It asks for a fee to release a prize. Real organisations never do that. Don't pay yet; shall we check with Anna first?" Caption: "Andy, a home companion robot. Everything you see is live." |
-| 2 | 0:10–0:28 | The founder to camera, Andy behind | "Most older adults want to keep living in their own homes, and their families want to help without taking over. This is Andy, built on a Reachy Mini with NVIDIA Nemotron on Nebius Token Factory." |
-| 3 | 0:28–1:40 | **One long take, unedited, the hood page's timings in a corner.** (a) "What's on today?": the **Today** card, and Andy glances at it. (b) The person walks across the room asking "Could you look into whether the farmers market is on this Saturday?": Andy's head and body follow, and the TV shows **Tavily** research live (planning, searching, sources). (c) The reminder chime: "It's time to call Rosa." (d) "Tell me a joke": the punchline, then the antennas wiggle. (e) The research answer arrives: Andy tells it, naming the source | Only the person's lines are planned; Andy is live. Voice-over line if needed: "Every answer from the web comes through Tavily, with its sources named." |
-| 4 | 1:40–1:52 | The daughter, on her phone, sends a photo; it appears on the TV | Andy: "Anna sent a photo, it's on your screen…" and describes it |
-| 5 | 1:52–2:04 | Spanish, with **English subtitles** | "Andy, ¿qué pasó un día como hoy?" Andy answers in Spanish, "según Wikipedia", and asks how that time was for them |
-| 6 | 2:04–2:14 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone |
-| 7 | 2:14–2:36 | Founder with the hood page from this shoot, then the architecture picture and the suite's scorecard | "Andy hears with NVIDIA Parakeet and talks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**, which answers in under a second (the hood page shows the whole turn). Hard questions go to **Nemotron 3 Ultra**. It sees with **Nemotron Nano VL** on a **Nebius Serverless Endpoint**, and **Nemotron 3.5 Content Safety** gives a second look. To find things, it looks around the room and points. Our suite of 83 spoken situations runs as a **Nebius Serverless Job**: [the final run's numbers, exactly]." |
-| 8 | 2:36–2:45 | Andy facing the person, the TV in the evening colours | "Andy says it's a robot, keeps no recordings or transcripts, and is open source, as a Reachy Mini app." Title card: the repository address |
+| 1 | 0:00–0:18 | **The hook, live.** The person holds up the prize letter. Andy turns to the TV, where **Be careful** appears, then back to the person, and offers to look it up; "yes"; the TV shows the warning Tavily found | Andy, live, in its own words, for example: "It asks for a fee to release a prize. Real organisations never do that. Shall I look it up?" … "Consumer-protection warnings describe exactly this trick. Let's check with Anna before paying anything." Caption: "Andy, a home robot. Everything you see is live." |
+| 2 | 0:18–0:32 | The founder to camera, Andy behind | "Three in four Americans over fifty want to keep living in their own homes (a national survey, 2024), and their families want to help without taking over. This is Andy, a small robot built with NVIDIA Nemotron on Nebius Token Factory and Tavily search. A robot, not a speaker: it turns to you, looks at what you show it, and finds things in the room." |
+| 3 | 0:32–1:35 | **One long take, unedited, the hood page's timings in a corner.** (a) "What's on today?": the **Today** card, and Andy glances at it. (b) The person walks across the room asking "Could you look into whether the farmers market is on this Saturday?": Andy's head follows, and the TV shows **Tavily** research live (planning, searching, sources). (c) The reminder chime: "It's time to call Rosa." (d) Mid-answer, the person talks over Andy ("Andy, stop"): Andy stops at once and listens. (e) The research answer arrives: Andy tells it, naming the source | Only the person's lines are planned; Andy is live. Voice-over if needed: "Every answer from the web comes through Tavily, with its sources named." |
+| 4 | 1:35–2:00 | **Finding the glasses, one uncut take.** Someone off camera has hidden them; the TV clock is in shot. "Andy, where did I leave my glasses?" Andy sweeps the room, stops, points with its head; the TV shows the frame it found them in | Andy, live. Caption: "NVIDIA Nemotron Nano VL on a Nebius Serverless Endpoint, four views read at once." Never cut the pause while it looks |
+| 5 | 2:00–2:10 | The daughter, on her phone, sends a photo; it appears on the TV | Andy: "Anna sent a photo, it's on your screen…" and describes it |
+| 6 | 2:10–2:18 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone |
+| 7 | 2:18–2:38 | Founder with the hood page from this shoot, then the architecture picture and the suite's scorecard | "Andy hears with NVIDIA Parakeet and talks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**, which answers in under a second (the hood page shows the whole turn). Hard questions go to **Nemotron 3 Ultra**; **Nemotron 3.5 Content Safety** gives a second look. Our suite of [N] spoken situations runs as a **Nebius Serverless Job**: [the final run's numbers, exactly]." |
+| 8 | 2:38–2:52 | Andy facing the person, the TV in the evening colours; a card with four short lines | "Your voice becomes words on this computer and is never recorded; the words go to Nemotron on Nebius, which keeps none of them. Andy keeps only what you ask it to, family see only what you share, and you can delete any of it from your phone." Then: "Andy is open source." Title card: the repository address (and "a Reachy Mini app" only once it is published) |
 
-**At least one minute of the robot operating:** shots 1, 3, 4, 5 and 6, about 1:50 in all.
+**At least one minute of the robot operating:** shots 1, 3, 4, 5 and 6, about 2:05 in all.
+
+**Spanish** is no longer a shot (it cost 12 s and burned-in subtitles); it stays in the Devpost text and as
+a social clip, with English subtitles.
 
 ## After filming
 
 - [ ] Captions for the whole video as an SRT file (English throughout, the Spanish translated) uploaded
-      to YouTube; burned-in subtitles for shot 5 as well.
+      to YouTube; burned-in subtitles on any Spanish clip as well.
 - [ ] YouTube: **Public**, **"No, it's not made for kids"** (that setting makes a video hard for judges
       to reach). The title names the project; the description has the repository link, and says "Built
       with Nebius Token Factory, NVIDIA Nemotron and Tavily", never "powered by" or "partnered with".
@@ -81,7 +88,8 @@ We show what Andy does; we don't claim outcomes.
 
 ## Short clips for social media (15–45 s, vertical, captioned)
 
-1. Shot 1: the letter, the glance, **Be careful**.
-2. Shot 3(b): Andy following the person while Tavily research fills the TV.
-3. Shot 3(d): the joke and the antenna wiggle.
-4. Shot 5: Andy in Spanish.
+1. Shot 1: the letter, the glance, **Be careful**, the warning Tavily found.
+2. Shot 4: finding the glasses, uncut.
+3. Shot 3(b): Andy following the person while Tavily research fills the TV.
+4. Andy in Spanish ("¿qué pasó un día como hoy?"), with English subtitles.
+5. A joke and the antenna wiggle.

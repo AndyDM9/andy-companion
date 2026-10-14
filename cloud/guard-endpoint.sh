@@ -11,6 +11,7 @@
 #
 # Needs the Nebius CLI with a profile for an eu-north1 project (L40S is offered there).
 set -euo pipefail
+. "$(cd "$(dirname "$0")" && pwd)/secret.sh"
 NAME="${ANDY_GUARD_NAME:-andy-guard}"
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 MODEL="nvidia/Nemotron-3.5-Content-Safety"
@@ -24,16 +25,24 @@ save() { # key value: replace or add one line in the private env file
 case "${1:-status}" in
   create)
     TOKEN="$(openssl rand -hex 32)"
+    # The token never goes on a command line, where `ps` would show it: it is stored in MysteryBox (through
+    # a pipe, secret.sh), and the endpoint reads it from there twice: --token-secret for Nebius's own check
+    # at the HTTPS address, and VLLM_API_KEY, which vLLM reads in place of --api-key, for the plain IP:port.
+    if [ -z "${DRY_RUN:-}" ]; then
+      printf '%s' "$TOKEN" | store_secret "$NAME-auth" AUTH_TOKEN "Endpoint token for $NAME" replace
+      printf '%s' "$TOKEN" | store_secret "$NAME-vllm" VLLM_API_KEY "vLLM key for $NAME" replace
+    fi
     nebius ai endpoint create ${DRY_RUN:+--dry-run} --async \
       --name "$NAME" \
       --image "$IMAGE" \
       --container-command "python3 -m vllm.entrypoints.openai.api_server" \
-      --args "--model $MODEL --served-model-name nemotron-guard --max-model-len 4096 --port 8000 --api-key $TOKEN" \
+      --args "--model $MODEL --served-model-name nemotron-guard --max-model-len 4096 --port 8000" \
       --container-port 8000 \
       --platform gpu-l40s-a --preset 1gpu-8vcpu-32gb \
       --disk-size 100Gi --shm-size 8Gi \
       --public --on-demand \
-      --auth token --token "$TOKEN"
+      --env-secret "VLLM_API_KEY=$NAME-vllm" \
+      --auth token --token-secret "$NAME-auth"
     [ -n "${DRY_RUN:-}" ] && exit 0
     save ANDY_GUARD_TOKEN "$TOKEN"
     echo "Created. Run '$0 status' until it is RUNNING; the URL is saved when it is."

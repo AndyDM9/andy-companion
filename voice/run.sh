@@ -9,7 +9,9 @@ set -a; . "$ENV_FILE"; set +a
 : "${NEBIUS_API_KEY:?NEBIUS_API_KEY is not set in $ENV_FILE}"
 # The key reaches serve.py through the environment, never this command line, where `ps` would show it.
 export NEBIUS_API_KEY
-export CUDA_VISIBLE_DEVICES="${ANDY_VOICE_GPU:-1}"
+# The first GPU unless ANDY_VOICE_GPU (in the env file or the shell) picks another: a computer with one
+# GPU has only GPU 0, and asking for 1 there leaves the voice server with none.
+export CUDA_VISIBLE_DEVICES="${ANDY_VOICE_GPU:-0}"
 exec .venv/bin/python serve.py serve \
   --llm_backend chat-completions \
   --model_name "${ANDY_MODEL:-nvidia/Nemotron-3_5-Lightning}" \

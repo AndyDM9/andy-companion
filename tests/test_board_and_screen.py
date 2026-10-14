@@ -244,3 +244,39 @@ def test_sample_photos_are_never_announced_and_come_out_cleanly(tmp_path):
     assert board.idle_photo(now=0)["photo"] in (pid, real)
     assert board.remove_sample_photos() == 1
     assert board.photo_path(pid) is None and board.photo_path(real) is not None
+
+
+def test_existing_links_gain_a_hood_link_and_keep_their_own():
+    """Token files from before 2026-10-14 have no hood token: one is added, and no other link changes."""
+    board._write(board.TOKENS, {"screen": "S" * 16, "family": "F" * 16, "setup": "P" * 16})
+    t = board.tokens()
+    assert (t["screen"], t["family"], t["setup"]) == ("S" * 16, "F" * 16, "P" * 16)
+    assert len(t["hood"]) >= 16 and board.tokens()["hood"] == t["hood"]
+
+
+@pytest.mark.parametrize("host, expected", [
+    ("127.0.0.1:8090", "192.168.1.20:8090"),       # a TV browser on this computer: a phone can't use loopback
+    ("localhost:8090", "192.168.1.20:8090"),
+    ("LOCALHOST", "192.168.1.20"),
+    ("[::1]:8090", "192.168.1.20:8090"),
+    ("192.168.1.20:8090", "192.168.1.20:8090"),    # the TV reached Andy on the home network: that same address
+    ("andy.local:8090", "andy.local:8090"),
+    ("evil.example/x", ""),                        # a Host header that is not a plain host: no code at all
+])
+def test_the_settings_code_points_at_an_address_a_phone_can_open(monkeypatch, host, expected):
+    monkeypatch.setattr(screen_server, "lan_host", lambda: "192.168.1.20")
+    assert screen_server.qr_host(host) == expected
+
+
+def test_the_settings_code_on_a_tv_opened_at_localhost_uses_the_home_network_address(server, monkeypatch):
+    import urllib.parse
+
+    monkeypatch.setattr(screen_server, "lan_host", lambda: "192.168.1.20")
+    board.show_settings_code()
+    _, body, _ = get(server + f"/api/screen?t={board.tokens()['screen']}")
+    svg = urllib.parse.unquote(json.loads(body)["showing"]["qr"])
+    assert svg.startswith("data:image/svg+xml,")
+    seen = []
+    monkeypatch.setattr(screen_server, "settings_qr", lambda host: seen.append(host) or "data:image/svg+xml,")
+    get(server + f"/api/screen?t={board.tokens()['screen']}")
+    assert seen == [f"192.168.1.20:{server.rsplit(':', 1)[1]}"]

@@ -32,11 +32,15 @@ The text diagram below shows the voice path in detail.
 `scripts/andy` starts `supervisor.py`, which runs the app (`scripts/run-robot.sh` →
 `scripts/run_andy.py`) while Andy is awake. When Andy sleeps or is quiet, the app stops and the
 supervisor listens for a wake phrase (Vosk, offline), and wakes Andy when one is heard, when the
-quiet time ends, or when a reminder comes due.
+quiet time ends, or when a reminder comes due. A reminder wakes Andy only until it has been said and the
+talk is over (60 s with nobody speaking); then Andy goes back to sleep or to the rest of the quiet. For
+10 minutes after "goodnight" or "be quiet", a reminder already due but not yet said waits. The supervisor
+reads the Tavily key from the env file for the setup page's events finder (never the model key).
 
 Two ways to run the same Andy, both through `andy_companion.app_mode.install()`: on a computer
 under the supervisor (`scripts/andy`), or as a Reachy Mini dashboard app (`reachy_app/`, no
-supervisor: no wake phrase; the dashboard starts and stops it).
+supervisor: no wake phrase; the dashboard starts and stops it; it reads the env file itself, and its
+watchdog only logs).
 
 ## Parts, and what each owns
 

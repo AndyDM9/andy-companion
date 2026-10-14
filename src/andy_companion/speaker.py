@@ -91,10 +91,20 @@ def family_frame(entry: dict) -> str:
     return out
 
 
+# Speech that started longer ago than this without ending is a missed "stopped" mark, not a person
+# still talking (the voice server caps a turn at 40 s): Andy must not stay silent for good.
+HEARING_MAX_S = 60.0
+
+
 def busy(handler: Any, since: float, now: Optional[float] = None) -> Optional[str]:
     now = time.monotonic() if now is None else now
     if now - since < SETTLE_S:
         return "just started"
+    from andy_companion import turns
+
+    # Never start a reminder, the morning plan or a family message over the person mid-sentence.
+    if turns.CLOCK.hearing and turns.CLOCK.quiet_for() < HEARING_MAX_S:
+        return "listening"
     if getattr(handler, "_in_flight_tool_calls", None):
         return "tools running"
     done = getattr(handler, "_response_done_event", None)

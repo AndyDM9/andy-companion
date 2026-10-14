@@ -10,12 +10,13 @@ from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 class ForgetMoment(Tool):
     name = "forget_moment"
-    description = "When the person asks you to forget a moment you remembered (a visit, an event). Say what you forgot."
+    description = ("When the person asks you to forget a moment you remembered (a visit, an event). Say what you forgot. "
+                   "If more than one moment matches, ask which one they mean, then call again with its id.")
     parameters_schema = {
         "type": "object",
-        "properties": {"what": {"type": "string", "description": "A word or two from the moment."}},
+        "properties": {"what": {"type": "string", "description": "A few words from the moment, or its id."}},
         "required": ["what"],
     }
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
-        return {"forgotten": moments.forget(str(kwargs.get("what", "")))}
+        return moments.forget_one(str(kwargs.get("what", "")))      # never more than the one moment meant

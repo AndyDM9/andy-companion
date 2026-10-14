@@ -21,4 +21,5 @@ It hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Facto
 Nemotron Nano VL on a Nebius Serverless Endpoint.
 
 **Before installing:** Andy needs its voice server running on a computer with an NVIDIA GPU, and your
-own Nebius Token Factory and Tavily keys. Setup: https://github.com/AndyDM9/andy-companion
+own Nebius Token Factory and Tavily keys, in `~/.config/companion-hackathon/.env` (mode 600) on the
+computer that runs the app. Setup: https://github.com/AndyDM9/andy-companion

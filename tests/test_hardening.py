@@ -135,4 +135,5 @@ def test_go_to_sleep_after_be_quiet_means_asleep(tmp_path, monkeypatch):
     assert state.current()["mode"] == "quiet"
     assert state.install_sleep_tool(GoToSleep) and not state.install_sleep_tool(GoToSleep)
     assert asyncio.run(GoToSleep()(None)) == {"stopped": True}
-    assert state.current() == {"mode": "asleep", "until": None}      # stays asleep until woken
+    now = state.current()
+    assert now["mode"] == "asleep" and now["until"] is None              # stays asleep until woken

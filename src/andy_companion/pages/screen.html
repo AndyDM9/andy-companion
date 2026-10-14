@@ -539,7 +539,9 @@
     try {
       const r = await fetch("/api/screen?t=" + encodeURIComponent(token), { cache: "no-store" });
       if (!r.ok) throw new Error(r.status);
-      render(await r.json());
+      const data = await r.json();
+      if (data.links && data.links.hood) hoodLink = data.links.hood;
+      render(data);
       document.body.classList.remove("offline-on");
     } catch (e) { document.body.classList.add("offline-on"); }
   }
@@ -568,7 +570,9 @@
   }
   $("gear").addEventListener("click", () => openMenu(true));
   $("menu-close").addEventListener("click", () => openMenu(false));
-  $("menu-hood").addEventListener("click", () => { location.href = "/hood?t=" + encodeURIComponent(token); });
+  // The hood page has its own token, learned from /api/screen; "from=screen" lets its Back key come back here.
+  let hoodLink = "";
+  $("menu-hood").addEventListener("click", () => { if (hoodLink) location.href = hoodLink + "&from=screen"; });
   $("menu-code").addEventListener("click", async () => {
     try { await fetch("/api/screen/settings-code?t=" + encodeURIComponent(token), { method: "POST" }); } catch (e) {}
     openMenu(false);

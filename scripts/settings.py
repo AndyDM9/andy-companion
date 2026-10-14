@@ -33,21 +33,17 @@ def main(argv: list[str]) -> int:
         return 0
     if argv[0] in ("links", "new-family-link"):
         import os
-        import socket
+
+        from andy_companion import screen_server
 
         if argv[0] == "new-family-link":
             board.new_family_link()
         t = board.tokens()
         port = os.environ.get("ANDY_SCREEN_PORT", "8090")
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("192.0.2.1", 9))          # no packet is sent; this finds the local address
-            host = s.getsockname()[0]
-        except OSError:
-            host = "localhost"
+        host = screen_server.lan_host()          # the same address the TV's settings code uses
         print(f"Screen (TV beside Andy): http://{host}:{port}/screen?t={t['screen']}")
         print(f"Family page:             http://{host}:{port}/family?k={t['family']}")
-        print(f"Under the hood:          http://{host}:{port}/hood?t={t['screen']}")
+        print(f"Under the hood:          http://{host}:{port}/hood?t={t['hood']}")
         print(f"Andy's settings:        http://{host}:{port}/setup?s={t['setup']}")
         return 0
     if argv[0] == "sample-photos":

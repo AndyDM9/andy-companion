@@ -79,7 +79,7 @@
 </head>
 <body>
   <header>
-    <p class="back"><a id="back" href="#">← Back to Andy's screen</a></p>
+    <p class="back" id="back-row" hidden><a id="back" href="#">← Back to Andy's screen</a></p>
     <h1>Under the hood</h1>
     <p class="lede">What happens each time you talk to Andy: it hears you on this computer, thinks with NVIDIA Nemotron on Nebius, looks things up with Tavily, and speaks. Below, how long Andy's last turns took, measured live on this robot. Only the numbers are kept, in memory, never the words.</p>
   </header>
@@ -119,11 +119,18 @@
   </section>
 
 <script>
-  const token = new URLSearchParams(location.search).get("t") || "";
-  document.getElementById("back").href = "/screen?t=" + encodeURIComponent(token);
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || "";
+  // This page's token opens only this page, so the way back is the browser's own: shown only when Andy's
+  // screen opened this page (its gear menu adds from=screen); a link opened on its own has nowhere to go back to.
+  const fromScreen = params.get("from") === "screen" && history.length > 1;
+  if (fromScreen) {
+    document.getElementById("back-row").hidden = false;
+    document.getElementById("back").addEventListener("click", (e) => { e.preventDefault(); history.back(); });
+  }
   // A TV remote's Back key arrives as Escape or Backspace: it goes back to Andy's screen.
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" || e.key === "Backspace") { e.preventDefault(); location.href = document.getElementById("back").href; }
+    if (fromScreen && (e.key === "Escape" || e.key === "Backspace")) { e.preventDefault(); history.back(); }
   });
   const WHERE = {
     local_news: "Tavily", look_up: "Tavily", whats_on: "Tavily", read_link: "Tavily", check_message: "Tavily",

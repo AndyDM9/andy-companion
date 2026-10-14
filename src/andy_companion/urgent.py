@@ -3,19 +3,28 @@
 When the person says something like "my chest hurts" or "I can't breathe", Andy must tell them to
 call 911. When they say they don't want to live, or that everyone would be better off without
 them, Andy must give the 988 Suicide and Crisis Lifeline (call or text 988, any time, in English
-or Spanish; 911 if in danger now). The model does so most of the time; this makes it every time.
+or Spanish; 911 if in danger now). The model does so most of the time; this checks every reply.
 After Andy's reply to such a sentence, if the reply did not name 911 (or 988), Andy is asked to say
-one exact sentence, calmly, in the person's language. The words are looked at and dropped;
-nothing is kept or logged. This is a prompt to reach help, not a promise to watch over anyone.
-988 is the United States' line; another country needs its own (CRISIS_LINE).
-"""
+one exact sentence, calmly, in the person's language. If the model cannot be reached for that (its
+reply is speech-to-speech's "I'm having trouble responding" or never comes), or it still leaves the
+number out, the same sentence is played from a recording in Andy's voice (urgent_audio/), through the
+robot daemon like a chime, with no model involved.
 
+What this guarantees, and what it does not: the words are checked against the lists below, so a
+phrasing no list holds is missed (guard.py takes a second look for crisis words). The recording
+needs the robot daemon to be running; if it is not, nothing can reach the speaker and the failure is
+logged by type. The words are looked at and dropped; nothing is kept or logged. This is a prompt to
+reach help, not a promise to watch over anyone. 988 is the United States' line; another country
+needs its own (CRISIS_LINE).
+"""
 from __future__ import annotations
 
 import asyncio
 import logging
 import re
 from functools import wraps
+from pathlib import Path
+from typing import Callable, Optional
 
 logger = logging.getLogger("andy.urgent")
 
@@ -44,7 +53,27 @@ CRISIS = [r"\b(want|wanna|wish) to die\b", r"\bwish i (was|were) dead\b", r"\bwi
 SPANISH = re.compile(r"\b(me|el|la|los|las|no|que|tengo|un|una|al|del|en|mi|de|por|estoy|creo|ataque|dolor|puedo|pecho|"
                      r"duele|ca[ií]|respirar|levantar|coraz[oó]n|ahogando|desmay\w*|cocina|ahora|mucho|quiero|vivir|"
                      r"morir\w*|matarme|vida|sin|todos|estar[ií]an|pienso|veces|ya)\b")
-NEGATION = re.compile(r"\b(no|not|don'?t|doesn'?t|didn'?t|never|without)\b[\w\s']{0,20}$")
+# A negation counts only when it governs the matched words: "no chest pain", "I don't have chest
+# pain", "not having trouble breathing", "no me duele el pecho". Between the two there may be only a
+# few of these small words; anything else ("I never complain but my chest hurts", "not sure why, my
+# chest hurts", "I don't know why my chest hurts") leaves the urgent words standing. "can't" is not
+# a negation here: "I can't breathe" is the urgent words themselves. English "not" and "-n't" may govern through a verb ("I don't have", "I'm not having"); English "no"
+# only through a noun phrase ("no chest pain", "no more pressure"), so "No I can't breathe", an
+# answer with its comma lost, is not read as a denial. Spanish "no" governs the verb ("no tengo",
+# "no me duele", "no creo que sea un").
+BRIDGE_ES = (r"tengo|tiene|ten[ií]a|siento|hay|he|ha|me|ning[uú]n|ninguna|ya|m[aá]s|creo|que|sea|es|un|una|"
+             r"tanto|todav[ií]a")
+BRIDGE_EN = (r"i'm|im|i've|it's|is|am|are|was|have|has|had|having|got|get|getting|feel|feeling|felt|any|a|an|"
+             r"more|much|really|real|think|been|even|still")
+NEGATION = re.compile(rf"(\b(not|never|without|(do|does|did|is|was|are|have|has|had)n'?t)(\s+({BRIDGE_EN})\b){{0,4}}"
+                      rf"|\b(no|nunca|sin|ni)(\s+(any|more|much|real|{BRIDGE_ES})\b){{0,4}})\s*$")
+# Where a clause ends: punctuation, or a word that starts a new thought. A negation before one of
+# these is about something else.
+CLAUSE = re.compile(r"[,.;:!?…—–]|\s-\s|\b(but|and|though|although|however|yet|so|because|cause|then|except|"
+                    r"pero|y|aunque|sino|porque|pues|entonces)\b")
+# "I've never had chest pain like this": a comparison, not a denial.
+COMPARED = re.compile(r"^\W*(\w+\W+){0,3}?(like this|like that|this bad|this much|so bad|as bad|como (este|esta|esto)|"
+                      r"as[ií] de)\b")
 SAID_911 = re.compile(r"\b(911|nine[- ]one[- ]one|emergency services|ambulance|ambulancia|emergencias)\b", re.I)
 SAY = "Please call 911 now, or ask someone nearby to call for you."
 CRISIS_LINE = "988"
@@ -65,13 +94,34 @@ FRAME_CRISIS_ES = ("[CRISIS WORDS heard from the person just now, in Spanish; th
                    "they said.] Stay warm and keep talking with them. Say this, gently, and nothing else for now: "
                    + SAY_CRISIS_ES)
 SAID_988 = re.compile(r"\b988\b|nine[- ]eight[- ]eight|nueve[- ]ocho[- ]ocho", re.I)
+# The fixed sentences, recorded in Andy's voice (urgent_audio/regenerate.py), for when the model is away.
+RECORDED = Path(__file__).with_name("urgent_audio")
+RECORDINGS = {SAY: "call_911_en.wav", SAY_ES: "call_911_es.wav",
+              SAY_CRISIS: "crisis_en.wav", SAY_CRISIS_ES: "crisis_es.wav"}
+SENTENCE = {FRAME: SAY, FRAME_ES: SAY_ES, FRAME_CRISIS: SAY_CRISIS, FRAME_CRISIS_ES: SAY_CRISIS_ES}
+# What speech-to-speech says, instead of a reply, when Token Factory fails (PROVIDER_FAILURE_FALLBACK).
+MODEL_FAILED = re.compile(r"trouble responding right now", re.I)
+REPLY_WAIT_S = 15.0       # how long the model's follow-up may take before the recording plays instead
+
+
+def _negated(value: str, start: int, end: int) -> bool:
+    """True when a negation in the same clause directly governs the words at value[start:end]."""
+    before = value[:start]
+    cut = 0
+    for boundary in CLAUSE.finditer(before):
+        cut = boundary.end()
+    if not NEGATION.search(before[cut:]):
+        return False
+    after = value[end:]
+    stop = CLAUSE.search(after)
+    return not COMPARED.search(after[:stop.start()] if stop else after)
 
 
 def _matches(patterns, text: str) -> bool:
     value = " ".join(str(text).lower().replace("’", "'").split())
     for pattern in patterns:
         for m in re.finditer(pattern, value):
-            if not NEGATION.search(value[:m.start()]):
+            if not _negated(value, m.start(), m.end()):
                 return True
     return False
 
@@ -115,6 +165,26 @@ def needs_followup(reply: str, frame: str = FRAME) -> bool:
     return frame in (FRAME_ES, FRAME_CRISIS_ES) and not SPANISH_REPLY.search(reply)
 
 
+def model_failed(reply: Optional[str]) -> bool:
+    """True when a reply is no reply: nothing, or speech-to-speech's own words for a failed model call."""
+    return reply is None or not str(reply).strip() or bool(MODEL_FAILED.search(str(reply)))
+
+
+def recording_for(frame: str) -> Optional[Path]:
+    name = RECORDINGS.get(SENTENCE.get(frame, ""))
+    path = RECORDED / name if name else None
+    return path if path is not None and path.is_file() else None
+
+
+def play_recording(frame: str, opener=None) -> bool:
+    """Play the frame's sentence from its recording on the robot's speaker. False if there is no
+    recording or the daemon is away."""
+    from andy_companion import chimes
+
+    path = recording_for(frame)
+    return path is not None and chimes.play_file(path, opener)
+
+
 def install(handler_class=None) -> bool:
     if handler_class is None:
         from reachy_mini_conversation_app.conversation_handler import ConversationHandler
@@ -132,26 +202,69 @@ def install(handler_class=None) -> bool:
         if role == "user":
             self._andy_urgent_pending = frame_for(text) if is_urgent(text) else False
             return
-        if role == "assistant" and getattr(self, "_andy_urgent_pending", False):
+        if role != "assistant":
+            return
+        waiting = getattr(self, "_andy_urgent_reply", None)
+        if waiting is not None and not waiting.done():
+            waiting.set_result(str(text))          # the reply to the net's own follow-up
+        if getattr(self, "_andy_urgent_pending", False):
             frame, self._andy_urgent_pending = self._andy_urgent_pending, False
             if needs_followup(text, frame):
                 try:
                     loop = asyncio.get_running_loop()
                 except RuntimeError:
                     return
-                loop.create_task(_follow_up(self, frame))
+                loop.create_task(_follow_up(self, frame, reply=text))
 
     emit._andy_urgent = True
     handler_class._emit_transcript = emit
     return True
 
 
-async def _follow_up(handler, frame: str = FRAME) -> None:
+async def _settled(handler, timeout: float) -> None:
+    """Wait for Andy to finish speaking, so the sentence is not said over the end of a reply."""
     done = getattr(handler, "_response_done_event", None)
+    if done is not None:
+        await asyncio.wait_for(done.wait(), timeout=timeout)
+
+
+async def _play(handler, frame: str, play: Callable[[str], bool]) -> None:
     try:
-        if done is not None:
-            await asyncio.wait_for(done.wait(), timeout=20)
+        await _settled(handler, 10)
+    except Exception:
+        pass                                   # a stuck reply must not keep the sentence back
+    try:
+        played = await asyncio.to_thread(play, frame)
+    except Exception:
+        played = False
+    if played:
+        logger.info("Urgent-words sentence played from its recording")
+    else:
+        logger.warning("Urgent-words recording could not be played")
+
+
+async def _follow_up(handler, frame: str = FRAME, reply: Optional[str] = None,
+                     play: Optional[Callable[[str], bool]] = None, wait_s: Optional[float] = None) -> None:
+    """Have Andy say the frame's sentence. The model says it when it can; when it cannot (no session,
+    its failure words, no reply in wait_s) or its reply still leaves the number out, the recording
+    plays instead. `reply` is Andy's reply that missed the number, when known."""
+    play = play or play_recording
+    if model_failed(reply) and reply is not None:
+        # The model is failing right now: asking it again would only cost another failed round trip.
+        await _play(handler, frame, play)
+        return
+    answer: Optional[str] = None
+    try:
+        await _settled(handler, 20)
+        heard = asyncio.get_running_loop().create_future()
+        handler._andy_urgent_reply = heard
         await handler.say(frame)
-        logger.info("Urgent-words follow-up said")
+        answer = await asyncio.wait_for(heard, timeout=REPLY_WAIT_S if wait_s is None else wait_s)
     except Exception as e:  # never the words, only the type
-        logger.warning("Urgent-words follow-up failed: %s", type(e).__name__)
+        logger.warning("Urgent-words follow-up got no reply: %s", type(e).__name__)
+    finally:
+        handler._andy_urgent_reply = None
+    if model_failed(answer) or needs_followup(answer, frame):
+        await _play(handler, frame, play)
+    else:
+        logger.info("Urgent-words follow-up said")

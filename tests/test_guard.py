@@ -135,3 +135,35 @@ def test_other_categories_are_not_acted_on(monkeypatch):
 def test_words_the_net_knows_are_left_to_the_net(monkeypatch):
     said, checked = run_turn(monkeypatch, SELF_HARM, "That sounds hard.", words="I want to die.")
     assert checked == [] and said == []
+
+
+def test_a_stopped_endpoint_is_logged_once_not_every_turn(monkeypatch, caplog):
+    import logging
+
+    now = [0.0]
+    monkeypatch.setattr(guard, "_clock", lambda: now[0])
+    monkeypatch.setattr(guard, "_down_logged", None)
+    config = {"url": "https://g.example", "token": "t"}
+
+    def broken(req, timeout=None):
+        raise OSError("down")
+
+    def working(req, timeout=None):
+        return io.BytesIO(json.dumps({"choices": [{"message": {"content": "User Safety: safe"}}]}).encode())
+
+    def lines():
+        return [r.getMessage() for r in caplog.records if r.name == "andy.guard"]
+
+    with caplog.at_level(logging.INFO, logger="andy.guard"):
+        for _ in range(5):
+            assert guard.classify(PILLS, opener=broken, config=config) is None
+            now[0] += 30
+        assert lines() == ["Content safety check unavailable: OSError"]
+        now[0] += guard.QUIET_S                                   # still down ten minutes later: one reminder
+        guard.classify(PILLS, opener=broken, config=config)
+        assert len(lines()) == 2
+        guard.classify(PILLS, opener=working, config=config)      # back: said once
+        guard.classify(PILLS, opener=working, config=config)
+        guard.classify(PILLS, opener=broken, config=config)       # down again: said again at once
+        assert lines()[2:] == ["Content safety check answering again", "Content safety check unavailable: OSError"]
+    assert all("pills" not in line for line in lines())

@@ -48,7 +48,7 @@ def letter() -> None:
 
 
 def main() -> int:
-    board._write(board.TOKENS, {"screen": "demo-screen", "family": "demo-family", "setup": "demo-setup"})
+    board._write(board.TOKENS, {"screen": "demo-screen", "family": "demo-family", "setup": "demo-setup", "hood": "demo-hood"})
     state.awake()
     settings.update(place="Harbor Bay, Florida", night_from=23, night_to=6)
     reminders.add("Call Rosa", minutes=20)
@@ -65,7 +65,7 @@ def main() -> int:
     print(f"Andy's screen (open it full screen): {base}/screen?t=demo-screen")
     print(f"The family page:                     {base}/family?k=demo-family")
     print(f"The settings page:                   {base}/setup?s=demo-setup")
-    print(f"Under the hood:                      {base}/hood?t=demo-screen")
+    print(f"Under the hood:                      {base}/hood?t=demo-hood")
     print("Sample data only; Ctrl+C to stop.", flush=True)
     scenes = [("research", research), ("letter", letter), ("today", dayplan.show), ("story", lambda: stories.start("lion"))]
     try:

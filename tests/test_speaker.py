@@ -85,3 +85,30 @@ def test_one_reminder_per_tick(store):
     assert asyncio.run(speaker.tick(h, since=0, now_mono=100, now=datetime(2026, 10, 13, 12, 55))) == 1
     assert "first" in h.said[0]
     assert len(reminders.pending()) == 1
+
+
+def test_andy_never_starts_talking_while_the_person_is_speaking(store, monkeypatch):
+    """Found by the audit on 2026-10-14: a reminder could start in the middle of the person's sentence."""
+    from andy_companion import turns
+
+    clock = turns.TurnClock(clock=lambda: 100.0)
+    monkeypatch.setattr(turns, "CLOCK", clock)
+    reminders.add("take the bins out", minutes=1, now=NOW)
+    h = FakeHandler()
+    clock.mark("user_speech_started")
+    assert speaker.busy(h, since=0, now=1000) == "listening"
+    assert asyncio.run(speaker.tick(h, since=0, now_mono=1000, now=datetime(2026, 10, 13, 12, 52))) == 0 and h.said == []
+    clock.mark("user_speech_stopped")
+    assert speaker.busy(h, since=0, now=1000) is None
+    assert asyncio.run(speaker.tick(h, since=0, now_mono=1000, now=datetime(2026, 10, 13, 12, 52))) == 1
+
+
+def test_a_lost_speech_stopped_mark_does_not_silence_andy_for_good(monkeypatch):
+    from andy_companion import turns
+
+    now = [100.0]
+    clock = turns.TurnClock(clock=lambda: now[0])
+    monkeypatch.setattr(turns, "CLOCK", clock)
+    clock.mark("user_speech_started")
+    now[0] += speaker.HEARING_MAX_S + 1
+    assert speaker.busy(FakeHandler(), since=0, now=1000) is None
