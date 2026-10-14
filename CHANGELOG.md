@@ -21,7 +21,8 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   something new" on the TV for 20 s, and Andy looks at it. Until the place is set, Andy never glances.
   Settings `tv_yaw`, `tv_height`, `tv_glance`; Andy tells the person who changed them, as for any
   setting. 11 tests (`tests/test_glance.py`; the Pollen queue test runs in the robot's environment);
-  live test 3i and 3j.
+  live test 3i and 3j. **On the robot (founder, 2026-10-13):** the monitor on Andy's right; 60° was too
+  far, 35° was "perfect".
 
 ### Changed (Andy Glass: the screen's new look)
 
