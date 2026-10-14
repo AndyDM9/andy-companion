@@ -21,7 +21,7 @@ from andy_companion import board, settings
 NAMES = {"place": "the town", "news_sources": "the local news sites", "events_pages": "the pages for what's on",
          "language": "the language", "pace": "how fast I speak", "volume": "the volume", "captions": "the captions",
          "screen_photos": "family photos on the screen", "night_from": "when the screen dims at night",
-         "night_to": "when the screen brightens in the morning"}
+         "night_to": "when the screen brightens in the morning", "screen_calm": "the calm screen"}
 # The same, as the helper's page says it.
 SHOWN = {**NAMES, "pace": "how fast Andy speaks"}
 SITE = re.compile(r"^(https?://)?([a-z0-9-]+\.)+[a-z]{2,}(/[^\s]*)?$", re.I)
@@ -78,6 +78,8 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
         out["captions"] = bool(data["captions"])
     if "screen_photos" in data:
         out["screen_photos"] = bool(data["screen_photos"])
+    if "screen_calm" in data:
+        out["screen_calm"] = bool(data["screen_calm"])
     for key in ("night_from", "night_to"):
         if key in data:
             try:

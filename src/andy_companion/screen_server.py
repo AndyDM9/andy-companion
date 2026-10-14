@@ -295,6 +295,7 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     start, end = int(s.get("night_from", 21)), int(s.get("night_to", 7))
     state["night"] = (start <= hour or hour < end) if start > end else (start <= hour < end)
     state["idle_photo"] = board.idle_photo() if s.get("screen_photos", True) and not state["night"] else None
+    state["calm"] = bool(s.get("screen_calm", False))
     return state
 
 

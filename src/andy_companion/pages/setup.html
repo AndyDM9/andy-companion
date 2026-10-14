@@ -121,6 +121,7 @@
       <div class="choices">
         <label><input type="checkbox" id="captions"> Show Andy's words on the screen (captions)</label>
         <label><input type="checkbox" id="screen_photos"> Show family photos when Andy is idle</label>
+        <label><input type="checkbox" id="screen_calm"> Calm screen: no movement, no see-through panels</label>
       </div>
       <label for="night_from">Dim the screen at night</label>
       <div class="hours"><select id="night_from"></select><span>until</span><select id="night_to"></select></div>
@@ -221,6 +222,7 @@
     $("volume-v").textContent = $("volume").value;
     $("captions").checked = !!v.captions;
     $("screen_photos").checked = v.screen_photos !== false;
+    $("screen_calm").checked = !!v.screen_calm;
     for (const id of ["night_from", "night_to"]) {
       const sel = $(id);
       if (!sel.options.length) for (let h = 0; h < 24; h++) sel.append(new Option(hourName(h), h));
@@ -271,7 +273,7 @@
       const out = await call("/api/setup", { name: who, settings: {
         place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
         language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
-        screen_photos: $("screen_photos").checked, night_from: Number($("night_from").value), night_to: Number($("night_to").value),
+        screen_photos: $("screen_photos").checked, screen_calm: $("screen_calm").checked, night_from: Number($("night_from").value), night_to: Number($("night_to").value),
         ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
       fill(out);
       volumeTouched = false;

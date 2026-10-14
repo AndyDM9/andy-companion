@@ -9,19 +9,33 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* Andy's screen, for a TV beside the robot, read from across the room by an older adult.
-     The page takes the colour of the time of day, so it says "evening" before anyone reads a word.
-     One typeface, made for low vision. The day is always the largest thing; it gives way only when
-     Andy shows something. Words for what Andy is doing; never the person's words.
-     Every text colour is at least 7:1 against its background (WCAG AAA), in every part of the day. */
+  /* Andy's screen, "Andy Glass": for a TV beside the robot, read from across the room by an older adult.
+     A living scene (a slow aurora coloured by the time of day, or the family photo softly blurred) behind
+     frosted glass cards, after Apple's Liquid Glass, but with every text colour at 7:1 or more against
+     the worst case behind it (tests/test_screen_design.py), because legibility comes first.
+     Motion carries meaning: cards rise in, findings arrive line by line, the state orb breathes while
+     Andy listens or thinks. "Reduce motion", "reduce transparency" and the Calm screen setting give solid
+     panels and stillness. Words for what Andy is doing; never the person's words. */
   :root {
-    --ground: #e6eef4; --ink: #142339; --soft: #3e4f66; --mark: #1c5244; --panel: #f6f9fb; --rule: #c9d6e0; --hush: #3c4c61;
+    --ground: #dde8f2; --ink: #142339; --soft: #2f3f55; --mark: #1c5244; --panel: #f1f6fa; --rule: #c3d2df; --hush: #3c4c61;
+    --glass: rgba(255, 255, 255, .68); --edge: rgba(255, 255, 255, .85); --shine: rgba(255, 255, 255, .9);
+    --glow1: #ffd8b5; --glow2: #b9d5f4; --glow3: #c7ecd9; --glow-a: .75; --photo-a: .09; --orb: #1c5244; --shadow: rgba(40, 60, 90, .18);
   }
-  body[data-part="afternoon"] { --ground: #e7eee3; --ink: #1d2a1f; --soft: #3f4f42; --mark: #1c5244; --panel: #f4f7f1; --rule: #cbd8c6; --hush: #415243; }
-  body[data-part="evening"]   { --ground: #24304f; --ink: #f6dc96; --soft: #dde2ee; --mark: #f6dc96; --panel: #2d3a5c; --rule: #44527a; --hush: #c9d0e0; }
-  body[data-part="night"]     { --ground: #10172a; --ink: #c7cfdd; --soft: #a9b3c6; --mark: #d8c38c; --panel: #172038; --rule: #26314d; --hush: #a3adc1; }
-  body.ready { transition: background-color 2s, color 2s; }
-  @media (prefers-reduced-motion: reduce) { body.ready { transition: none; } }
+  body[data-part="afternoon"] {
+    --ground: #e1ebdc; --ink: #1d2a1f; --soft: #334335; --mark: #1c5244; --panel: #f2f6ef; --rule: #c7d5c1; --hush: #415243;
+    --glass: rgba(255, 255, 255, .66); --glow1: #fff0c0; --glow2: #c4e6c6; --glow3: #bcdff0; --orb: #1c5244;
+    --shadow: rgba(40, 70, 40, .16);
+  }
+  body[data-part="evening"] {
+    --ground: #1c2543; --ink: #f6dc96; --soft: #dde2ee; --mark: #f6dc96; --panel: #2b3658; --rule: #4a5784; --hush: #c9d0e0;
+    --glass: rgba(37, 48, 82, .66); --edge: rgba(255, 255, 255, .16); --shine: rgba(255, 255, 255, .22);
+    --glow1: #4a5fa8; --glow2: #7b4d86; --glow3: #a0662f; --glow-a: .38; --photo-a: .14; --orb: #f6dc96; --shadow: rgba(0, 0, 0, .35);
+  }
+  body[data-part="night"] {
+    --ground: #0b1020; --ink: #c7cfdd; --soft: #a9b3c6; --mark: #d8c38c; --panel: #151d36; --rule: #26314d; --hush: #a3adc1;
+    --glass: rgba(18, 25, 48, .72); --edge: rgba(255, 255, 255, .08); --shine: rgba(255, 255, 255, .1);
+    --glow1: #1e2c5a; --glow2: #2a2454; --glow3: #1d3b4a; --glow-a: .35; --photo-a: .09; --orb: #d8c38c; --shadow: rgba(0, 0, 0, .5);
+  }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; overflow: hidden; }
@@ -31,121 +45,165 @@
     display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100vh;
     padding: 4vh 5vw 3.5vh;
   }
+  body.ready { transition: background-color 2s, color 2s; }
+
+  /* The scene: three soft lights drifting very slowly, or the family photo, blurred. */
+  .scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .glow { position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%; opacity: var(--glow-a);
+          filter: blur(8vmax); transition: background-color 2s; }
+  .g1 { background: var(--glow1); left: -20vmax; top: -30vmax; }
+  .g2 { background: var(--glow2); right: -25vmax; top: 10vmax; }
+  .g3 { background: var(--glow3); left: 20vmax; bottom: -40vmax; }
+  .backdrop { position: absolute; inset: -6vmax; background-size: cover; background-position: center;
+              filter: blur(5vmax) saturate(1.2); opacity: 0; transition: opacity 1.6s ease; }
+  body.has-photo .backdrop { opacity: var(--photo-a); }
+  @media (prefers-reduced-motion: no-preference) {
+    body:not(.calm) .g1 { animation: drift1 95s ease-in-out infinite alternate; }
+    body:not(.calm) .g2 { animation: drift2 110s ease-in-out infinite alternate; }
+    body:not(.calm) .g3 { animation: drift3 125s ease-in-out infinite alternate; }
+  }
+  @keyframes drift1 { to { transform: translate(18vmax, 12vmax) scale(1.08); } }
+  @keyframes drift2 { to { transform: translate(-16vmax, 14vmax) scale(.94); } }
+  @keyframes drift3 { to { transform: translate(14vmax, -12vmax) scale(1.1); } }
+
+  /* Glass: frosted, a fine light edge, a highlight along the top. */
+  .glass { background: var(--glass); border: 1px solid var(--edge); border-radius: 28px;
+           box-shadow: inset 0 1px 0 var(--shine), 0 1.6vh 4vh var(--shadow);
+           -webkit-backdrop-filter: blur(28px) saturate(160%); backdrop-filter: blur(28px) saturate(160%); }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass { background: var(--panel); } }
+  @media (prefers-reduced-transparency: reduce) { .glass { background: var(--panel); backdrop-filter: none; } }
+  body.calm .glass { background: var(--panel); backdrop-filter: none; -webkit-backdrop-filter: none; }
 
   /* The clock: day, then the part of the day, the time and the date. */
-  .clock { padding-bottom: 2.6vh; border-bottom: 3px solid var(--rule);
-           display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3vw; align-items: start; }
-  .day { grid-column: 1; font-size: clamp(64px, 14vw, 250px); font-weight: 700; line-height: .9; letter-spacing: -0.02em; margin: 0; }
+  .clock { padding-bottom: 2.6vh; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3vw; align-items: start; }
+  .day { grid-column: 1; font-size: clamp(64px, 14vw, 250px); font-weight: 700; line-height: .9; letter-spacing: -0.025em; margin: 0; }
   .when { grid-column: 1; font-size: clamp(28px, 4vw, 70px); margin: 1.4vh 0 0; color: var(--soft); }
   .when strong { color: var(--ink); font-weight: 700; }
-  body.has-showing .day { font-size: clamp(54px, 8.5vw, 150px); }
-  body.has-showing .when { font-size: clamp(24px, 2.9vw, 50px); }
+  body.has-showing .day, body.has-photo .day { font-size: clamp(54px, 8.5vw, 150px); }
+  body.has-showing .when, body.has-photo .when { font-size: clamp(24px, 2.9vw, 50px); }
+  @media (prefers-reduced-motion: no-preference) { body.ready:not(.calm) .day, body.ready:not(.calm) .when { transition: font-size .6s cubic-bezier(.2, .8, .2, 1); } }
 
-  /* What Andy is doing, in words. One calm colour per state; a slow pulse only while thinking or
-     working, and none for people who turn motion off. */
-  .state { grid-column: 2; grid-row: 1 / span 2; justify-self: end; display: flex; align-items: center; gap: .6em;
-           margin: .4vh 0 0; padding: .45em .95em; border-radius: 999px; border: 2px solid var(--rule);
-           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); background: var(--panel); max-width: 36vw; }
-  .state .dot { flex: none; width: .7em; height: .7em; border-radius: 50%; background: var(--hush); }
-  .state[data-state="hearing"] { border-color: var(--mark); }
-  .state[data-state="hearing"] .dot, .state[data-state="speaking"] .dot,
-  .state[data-state="thinking"] .dot, .state[data-state="working"] .dot { background: var(--mark); }
+  /* What Andy is doing: a glass pill with an orb that breathes while Andy listens or thinks. */
+  .state { grid-column: 2; grid-row: 1 / span 2; justify-self: end; display: flex; align-items: center; gap: .65em;
+           margin: .4vh 0 0; padding: .5em 1.05em .5em .75em; border-radius: 999px;
+           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); max-width: 36vw; }
+  .orb { flex: none; width: .9em; height: .9em; border-radius: 50%; background: var(--hush); opacity: .7; position: relative; }
+  .state[data-state="ready"] .orb { background: radial-gradient(circle at 35% 30%, #fff8, transparent 55%), var(--orb); opacity: .55; }
+  .state[data-state="hearing"] .orb, .state[data-state="thinking"] .orb, .state[data-state="working"] .orb,
+  .state[data-state="speaking"] .orb { background: radial-gradient(circle at 35% 30%, #fff9, transparent 55%), var(--orb); opacity: 1;
+                                       box-shadow: 0 0 .8em var(--orb); }
   .state[data-state="quiet"], .state[data-state="asleep"], .state[data-state="away"] { color: var(--soft); }
-  .state[data-state="quiet"] .dot, .state[data-state="asleep"] .dot { background: transparent; border: 2px solid var(--soft); }
+  .state[data-state="quiet"] .orb, .state[data-state="asleep"] .orb { background: transparent; border: 2px solid var(--soft); box-shadow: none; }
   @media (prefers-reduced-motion: no-preference) {
-    .state[data-state="thinking"] .dot, .state[data-state="working"] .dot { animation: breathe 1.6s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="hearing"] .orb { animation: listen 1.1s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="thinking"] .orb, body:not(.calm) .state[data-state="working"] .orb { animation: breathe 1.6s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="speaking"] .orb::after { content: ""; position: absolute; inset: -.15em; border-radius: 50%;
+                                                                border: 2px solid var(--orb); animation: ring 1.4s ease-out infinite; }
+    body:not(.calm) #state-label { transition: opacity .25s; }
   }
-  @keyframes breathe { 50% { opacity: .25; } }
+  @keyframes breathe { 50% { opacity: .35; transform: scale(.85); } }
+  @keyframes listen { 50% { transform: scale(1.22); box-shadow: 0 0 1.4em var(--orb); } }
+  @keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(2.1); opacity: 0; } }
 
-  /* Below the clock: "Next" and the weather side by side; when Andy shows something they stack on
-     the left and what he found takes the right. */
-  .below { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4vw; padding-top: 3.5vh;
+  /* Below the clock: two glass cards side by side; when Andy shows something they stack on the left. */
+  .below { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.4vw; padding-top: 2vh;
            align-content: start; overflow: hidden; }
-  body.has-showing .below, body.has-photo .below { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+  body.has-showing .below, body.has-photo .below { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-content: stretch; }
   .side { display: contents; }
-  body.has-showing .side, body.has-photo .side { display: flex; flex-direction: column; gap: 3vh; min-width: 0; }
-  .label { font-size: clamp(20px, 2vw, 34px); color: var(--soft); margin: 0 0 1vh; }
+  body.has-showing .side, body.has-photo .side { display: flex; flex-direction: column; gap: 2.4vh; min-width: 0; }
+  .card { padding: 3vh 2.4vw; min-width: 0; }
+  .label { font-size: clamp(19px, 1.9vw, 32px); color: var(--soft); margin: 0 0 1vh; letter-spacing: .01em; }
 
   .next .what { font-size: clamp(32px, 3.6vw, 64px); font-weight: 700; margin: 0; line-height: 1.12; }
   .next .at { font-size: clamp(24px, 2.6vw, 46px); margin: .8vh 0 0; color: var(--soft); font-variant-numeric: tabular-nums; }
   .next .at strong { color: var(--mark); font-weight: 700; }
   .later { list-style: none; margin: 2vh 0 0; padding: 0; }
-  .later li { display: grid; grid-template-columns: 7.5ch 1fr; gap: 1vw; font-size: clamp(20px, 2vw, 34px); padding: .6vh 0;
+  .later li { display: grid; grid-template-columns: 7.5ch 1fr; gap: 1vw; font-size: clamp(20px, 2vw, 34px); padding: .7vh 0;
               border-top: 1px solid var(--rule); color: var(--soft); }
-  .later li.done { opacity: .55; }
+  .later li.done { opacity: .6; }
   .later .t { font-variant-numeric: tabular-nums; }
   .empty { font-size: clamp(24px, 2.6vw, 44px); color: var(--soft); margin: 0; line-height: 1.3; }
-  body.has-showing .next .what { font-size: clamp(26px, 2.7vw, 48px); }
-  body.has-showing .later { display: none; }
+  body.has-showing .next .what, body.has-photo .next .what { font-size: clamp(26px, 2.7vw, 48px); }
+  body.has-showing .later, body.has-photo .later { display: none; }
 
-  .weather .now { display: flex; align-items: baseline; gap: 1.2vw; margin: 0; }
+  .weather .now { display: flex; align-items: baseline; gap: 1.2vw; margin: 0; flex-wrap: wrap; }
   .weather .deg { font-size: clamp(48px, 5.5vw, 100px); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
   .weather .sky { font-size: clamp(24px, 2.5vw, 44px); line-height: 1.2; }
   .weather .then { font-size: clamp(20px, 2vw, 34px); color: var(--soft); margin: 1.2vh 0 0; }
-  .weather .alert { font-size: clamp(20px, 2vw, 34px); margin: 1.2vh 0 0; padding: .5vh 1vw; border-left: 6px solid var(--mark); }
+  .weather .alert { font-size: clamp(20px, 2vw, 34px); margin: 1.2vh 0 0; padding: .6vh 1vw; border-left: 6px solid var(--mark); }
   .weather .from { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 1vh 0 0; }
-  body.has-showing .weather .deg { font-size: clamp(36px, 3.6vw, 64px); }
-  body.has-showing .weather .then, body.has-showing .weather .from { display: none; }
+  body.has-showing .weather .deg, body.has-photo .weather .deg { font-size: clamp(36px, 3.6vw, 64px); }
+  body.has-showing .weather .then, body.has-showing .weather .from,
+  body.has-photo .weather .then, body.has-photo .weather .from { display: none; }
 
-  /* What Andy found: one card, a kind, a topic, up to three short items, and where it came from. */
-  .found { display: none; background: var(--panel); border-left: 10px solid var(--mark); border-radius: 0 10px 10px 0;
-           padding: 3vh 2.6vw; min-width: 0; overflow: hidden; }
+  /* What Andy found: one card that rises in; its lines arrive one after another. */
+  .found { display: none; padding: 3.2vh 2.6vw; overflow: hidden; }
   body.has-showing .found { display: block; }
   .found .kind { font-size: clamp(18px, 1.7vw, 30px); color: var(--soft); margin: 0; }
   .found h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.12; margin: .6vh 0 1.6vh; color: var(--ink); }
-  .item { padding: 1.2vh 0; border-top: 1px solid var(--rule); }
+  .item { padding: 1.3vh 0; border-top: 1px solid var(--rule); }
   .item .title { font-size: clamp(22px, 2.2vw, 40px); font-weight: 700; margin: 0; line-height: 1.2; }
   .item .summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
                    font-size: clamp(19px, 1.8vw, 32px); margin: .5vh 0 0; line-height: 1.35; color: var(--soft); }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
-  .qr { display: block; width: min(46vh, 100%); height: auto; margin: 0 auto 2vh; border-radius: 10px; background: #fff; padding: 1vh; }
+  .photo { display: block; max-width: 100%; max-height: 50vh; margin: 0 0 1.5vh; border-radius: 18px; object-fit: contain; }
+  .qr { display: block; width: min(44vh, 100%); height: auto; margin: 0 auto 2vh; border-radius: 18px; background: #fff; padding: 1vh; }
   .qr-note { font-size: clamp(22px, 2.2vw, 38px); margin: 0; line-height: 1.3; }
-  .photo { display: block; max-width: 100%; max-height: 50vh; margin: 0 0 1.5vh; border-radius: 8px; object-fit: contain; }
+  @media (prefers-reduced-motion: no-preference) {
+    body:not(.calm) .enter { animation: rise .6s cubic-bezier(.2, .8, .2, 1) both; }
+    body:not(.calm) .enter .item, body:not(.calm) .enter .source, body:not(.calm) .enter .qr, body:not(.calm) .enter .photo {
+      animation: rise .5s cubic-bezier(.2, .8, .2, 1) both; }
+    body:not(.calm) .enter .item:nth-of-type(1) { animation-delay: .18s; }
+    body:not(.calm) .enter .item:nth-of-type(2) { animation-delay: .3s; }
+    body:not(.calm) .enter .item:nth-of-type(3) { animation-delay: .42s; }
+    body:not(.calm) .enter .source { animation-delay: .55s; }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(2.4vh) scale(.985); } to { opacity: 1; transform: none; } }
 
-  /* When Andy is idle: a family photo, in turn, three minutes each; a slow cross-fade, no pan or zoom. */
-  .family { display: none; margin: 0; min-width: 0; min-height: 0; flex-direction: column; }
+  /* When Andy is idle: a family photo in a glass frame, three minutes each, a slow cross-fade. */
+  .family { display: none; margin: 0; min-width: 0; min-height: 0; flex-direction: column; padding: 1.6vh; }
   body.has-photo .family { display: flex; }
-  .family img { width: 100%; height: 100%; min-height: 0; flex: 1; object-fit: contain; object-position: center top;
-                border-radius: 10px; opacity: 1; }
-  @media (prefers-reduced-motion: no-preference) { .family img { transition: opacity 1.5s ease; } }
+  .family img { width: 100%; height: 100%; min-height: 0; flex: 1; object-fit: cover; border-radius: 20px; opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) { body:not(.calm) .family img { transition: opacity 1.5s ease; } }
   .family img.fading { opacity: 0; }
-  .family figcaption { font-size: clamp(20px, 2vw, 34px); color: var(--soft); margin: 1.2vh 0 0; }
+  .family figcaption { font-size: clamp(19px, 1.8vw, 32px); color: var(--soft); margin: 1.4vh .8vw .4vh; }
   .family figcaption b { color: var(--ink); font-weight: 700; }
-  body.has-photo .next .what { font-size: clamp(26px, 2.7vw, 48px); }
-  body.has-photo .later { display: none; }
 
   /* At night: only a calm clock (the time large, the day under it) and, if Andy speaks, his words. */
   body.is-night .below { display: none; }
-  body.is-night .clock { border-bottom: 0; align-self: center; }
+  body.is-night .clock { align-self: center; }
   body.is-night .day { font-size: clamp(80px, 16vw, 280px); font-variant-numeric: tabular-nums; }
   body.is-night { grid-template-rows: minmax(0, 1fr) auto auto; }
 
   /* Captions: Andy's words only, two lines at most, gone a few seconds after he stops. */
-  .caption { margin: 2.4vh 0 0; padding: 1.4vh 2vw; background: var(--ink); color: var(--ground); border-radius: 10px;
-             font-size: clamp(26px, 2.9vw, 50px); line-height: 1.28; display: none;
-             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .caption { margin: 2.2vh 0 0; padding: 1.5vh 2.2vw; background: var(--ink); color: var(--ground); border-radius: 22px;
+             font-size: clamp(26px, 2.9vw, 50px); line-height: 1.28;
+             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+             box-shadow: 0 1.6vh 4vh var(--shadow); }
   body:not(.has-caption) .caption { display: none; }
+  @media (prefers-reduced-motion: no-preference) { body:not(.calm).has-caption .caption { animation: rise .45s cubic-bezier(.2, .8, .2, 1) both; } }
 
   .offline { position: fixed; right: 2vw; bottom: 2vh; font-size: 20px; color: var(--soft); display: none; }
   body.offline-on .offline { display: block; }
 </style>
 </head>
 <body data-part="morning">
+  <div class="scene" aria-hidden="true"><span class="glow g1"></span><span class="glow g2"></span><span class="glow g3"></span><div class="backdrop" id="backdrop"></div></div>
   <header class="clock" aria-live="polite">
     <p class="day" id="day">&nbsp;</p>
     <p class="when" id="when">&nbsp;</p>
-    <p class="state" id="state" data-state="away" role="status" aria-live="polite"><span class="dot"></span><span id="state-label"></span></p>
+    <p class="state glass" id="state" data-state="away" role="status" aria-live="polite"><span class="orb"></span><span id="state-label"></span></p>
   </header>
   <main class="below">
     <div class="side">
-      <section class="next" aria-labelledby="next-h">
+      <section class="next card glass" aria-labelledby="next-h">
         <p class="label" id="next-h">Next</p>
         <p class="what" id="next-what" hidden></p>
         <p class="at" id="next-at" hidden></p>
         <p class="empty" id="empty" hidden></p>
         <ul class="later" id="later"></ul>
       </section>
-      <section class="weather" id="weather" aria-labelledby="weather-h" hidden>
+      <section class="weather card glass" id="weather" aria-labelledby="weather-h" hidden>
         <p class="label" id="weather-h">Weather</p>
         <p class="now"><span class="deg" id="w-deg"></span><span class="sky" id="w-sky"></span></p>
         <p class="alert" id="w-alert" hidden></p>
@@ -153,11 +211,11 @@
         <p class="from" id="w-from"></p>
       </section>
     </div>
-    <figure class="family" id="family" aria-live="polite">
+    <figure class="family glass" id="family" aria-live="polite">
       <img id="family-img" alt="">
       <figcaption id="family-cap"></figcaption>
     </figure>
-    <section class="found" aria-live="polite" aria-labelledby="found-h">
+    <section class="found glass" id="found" aria-live="polite" aria-labelledby="found-h">
       <p class="kind" id="found-kind"></p>
       <h2 id="found-h">&nbsp;</h2>
       <div id="items"></div>
@@ -204,6 +262,7 @@
     document.body.dataset.part = s.today.part_of_day;
     document.documentElement.lang = es ? "es" : "en";
     document.body.classList.toggle("is-night", !!s.night);
+    document.body.classList.toggle("calm", !!s.calm);
     const when = $("when"); when.textContent = "";
     if (s.night) {
       // The time is what someone looks for at night; the day and date sit quietly under it.
@@ -251,37 +310,49 @@
     // What Andy found: one card. Otherwise, when idle, a family photo.
     const showing = s.showing;
     document.body.classList.toggle("has-showing", !!showing);
+    if (!showing) foundKey = foundContent = "";
     const fp = !showing ? s.idle_photo : null;
     document.body.classList.toggle("has-photo", !!fp);
     if (fp) showFamilyPhoto(fp);
     if (showing) {
-      text($("found-kind"), ui.kinds[showing.kind] || "");
-      text($("found-h"), showing.title);
-      const items = $("items"); items.textContent = "";
-      if (showing.kind === "code" && showing.qr) {
-        text($("found-h"), "");
-        const img = document.createElement("img");
-        img.className = "qr"; img.alt = ui.kinds.code; img.src = showing.qr;
-        items.append(img, make("p", "qr-note", ui.code));
+      // A new finding rises in, its lines one after another. The card is rebuilt only when what it
+      // shows changes, so nothing flickers between refreshes.
+      const cardKey = showing.kind + "|" + showing.title;
+      const contentKey = cardKey + "|" + JSON.stringify(showing.items) + "|" + (showing.qr ? "qr" : "") + "|" + document.documentElement.lang;
+      if (cardKey !== foundKey) {
+        foundKey = cardKey;
+        const card = $("found"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
       }
-      if (showing.kind === "photo" && showing.photo) {
-        const img = document.createElement("img");
-        img.className = "photo"; img.alt = showing.title;
-        img.src = "/photo?t=" + encodeURIComponent(token) + "&id=" + encodeURIComponent(showing.photo);
-        items.append(img);
+      if (contentKey !== foundContent) {
+        foundContent = contentKey;
+        text($("found-kind"), ui.kinds[showing.kind] || "");
+        text($("found-h"), showing.title);
+        const items = $("items"); items.textContent = "";
+        if (showing.kind === "code" && showing.qr) {
+          text($("found-h"), "");
+          const img = document.createElement("img");
+          img.className = "qr"; img.alt = ui.kinds.code; img.src = showing.qr;
+          items.append(img, make("p", "qr-note", ui.code));
+        }
+        if (showing.kind === "photo" && showing.photo) {
+          const img = document.createElement("img");
+          img.className = "photo"; img.alt = showing.title;
+          img.src = "/photo?t=" + encodeURIComponent(token) + "&id=" + encodeURIComponent(showing.photo);
+          items.append(img);
+        }
+        const sources = [];
+        for (const it of showing.items) {
+          if (it.title === "Sources") { if (it.summary) sources.push(it.summary); continue; }
+          if (it.source && !sources.includes(it.source)) sources.push(it.source);
+          if (items.querySelectorAll(".item").length >= 3) continue;
+          const box = make("article", "item");
+          if (it.title) box.append(make("p", "title", it.title));
+          if (it.summary) box.append(make("p", "summary", it.summary));
+          items.append(box);
+        }
+        $("found-source").hidden = !sources.length;
+        text($("found-source"), `${ui.from} ${sources.join(", ")}`);
       }
-      const sources = [];
-      for (const it of showing.items) {
-        if (it.title === "Sources") { if (it.summary) sources.push(it.summary); continue; }
-        if (it.source && !sources.includes(it.source)) sources.push(it.source);
-        if (items.querySelectorAll(".item").length >= 3) continue;
-        const box = make("article", "item");
-        if (it.title) box.append(make("p", "title", it.title));
-        if (it.summary) box.append(make("p", "summary", it.summary));
-        items.append(box);
-      }
-      $("found-source").hidden = !sources.length;
-      text($("found-source"), `${ui.from} ${sources.join(", ")}`);
     }
 
     // Captions: Andy's latest words, at most two lines, gone a few seconds after he stops speaking.
@@ -293,7 +364,7 @@
     if (!document.body.classList.contains("ready")) setTimeout(() => document.body.classList.add("ready"), 500);
   }
 
-  let familyId = "";
+  let familyId = "", foundKey = "", foundContent = "";
   function showFamilyPhoto(fp) {
     const cap = $("family-cap"); cap.textContent = "";
     if (fp.sample) cap.append(fp.caption);       // a sample landscape: only its credit
@@ -303,6 +374,7 @@
     const img = $("family-img");
     const src = "/photo?t=" + encodeURIComponent(token) + "&id=" + encodeURIComponent(fp.photo);
     img.alt = fp.caption || (ui.from + " " + (fp.name || ui.family));
+    $("backdrop").style.backgroundImage = `url("${src}")`;       // the same photo, blurred, behind the glass
     if (!img.getAttribute("src")) { img.src = src; return; }
     img.classList.add("fading");
     setTimeout(() => { img.src = src; img.onload = () => img.classList.remove("fading"); }, 900);

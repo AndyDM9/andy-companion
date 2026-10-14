@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (Andy Glass: the screen's new look)
+
+- `pages/screen.html`: frosted glass panels (backdrop blur and saturation, a light edge and an inner
+  shine), after Apple's Liquid Glass, over a scene of three soft lights in the time of day's colours
+  that drift over 95 to 125 seconds; when a family photo shows, a blurred, faint copy of it tints the
+  room behind. The state strip has an orb that lifts while Andy hears, breathes while it thinks and
+  rings while it speaks. What Andy found rises in, its lines one after another; captions rise; the
+  night clock fades. Motion is slow on purpose: nothing flashes, nothing loops faster than a breath.
+- **Calm screen** (setup page, `screen_calm`): no movement and solid panels instead of glass. The same
+  happens on its own with the system's reduced-motion or reduced-transparency setting, and on a
+  browser without backdrop blur.
+- Fixed: the found card was rebuilt every second, which restarted its entrance and hid its lines; it
+  now rebuilds only when what it shows changes.
+- `tests/test_screen_design.py` now tests the worst case: every text colour over the plain ground,
+  over each light at full strength, over the worst photo (black on a light theme, white on a dark one)
+  at its faintness, then through the glass, and on the solid panel. All reach 7:1 (WCAG AAA). It also
+  checks the calm and reduced-transparency fallbacks and that the person's words are never shown.
+- Screenshots: `docs/images/tv-glass-idle.png`, `tv-glass-found.png`, `tv-glass-morning.png` (sample
+  data; no private links shown). The README's picture is now the glass screen.
+
 ### Added (think it through, with NVIDIA Nemotron 3 Ultra)
 
 - `think_it_through` (`src/andy_companion/deeper.py`): a decision or a hard question ("My daughter wants
