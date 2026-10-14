@@ -44,7 +44,7 @@ def speech_parts(video: Path, total_s: float) -> list:
     starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log)]
     ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
     parts, cursor = [], 0.0
-    for s, e in zip(starts, ends + [total_s] * (len(starts) - len(ends))):
+    for s, e in zip(starts, ends + [total_s] * (len(starts) - len(ends)), strict=True):
         if s - cursor > 0.3:
             parts.append((cursor, s))
         cursor = e
