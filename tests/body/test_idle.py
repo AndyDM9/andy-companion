@@ -1,9 +1,7 @@
 """Livelier idle: calm moments instead of Pollen's random ones, and antenna flicks (2026-10-07)."""
 
 import asyncio
-import importlib.util
 import random
-from pathlib import Path
 from types import SimpleNamespace
 
 import pytest

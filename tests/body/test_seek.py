@@ -3,7 +3,6 @@
 import math
 
 import numpy as np
-import pytest
 
 from andy_companion.body import seek
 from andy_companion.body.seek import SEEK_WEIGHT, Seek, voice_yaw
@@ -94,8 +93,6 @@ def test_never_switches_tracking_back_on():
 
 
 def test_launcher_steers_the_head_while_seeking():
-    import importlib.util
-    from pathlib import Path
 
     from andy_companion.body import attach as rj
 

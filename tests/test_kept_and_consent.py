@@ -5,7 +5,7 @@ import urllib.request
 
 import pytest
 
-from andy_companion import board, consent, kept, moments, privacy, reminders, screen_server, settings, speaker
+from andy_companion import board, consent, kept, moments, reminders, screen_server, settings, speaker
 
 
 @pytest.fixture(autouse=True)

@@ -71,8 +71,6 @@ def test_glides_back_to_centre_when_tracking_stops():
 
 def test_launcher_wraps_the_single_send_point():
     pytest.importorskip("reachy_mini_conversation_app")
-    import importlib.util
-    from pathlib import Path
     from reachy_mini_conversation_app import moves
 
     from andy_companion.body import attach as rj

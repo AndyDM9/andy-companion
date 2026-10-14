@@ -25,6 +25,8 @@ screen server (Playwright, 1920 × 1080 and 1280 × 720):
   way back, and the remote's Back key works on it. The QR code is a little smaller so its note fits at
   720p.
 - 5 more tests (491).
+- The family page has an empty icon like the others, so a browser logs no missing-file error; 11 unused
+  imports removed from the tests.
 
 ### Measured (the scam check and the events finder, live, with Tavily pay-as-you-go)
 
