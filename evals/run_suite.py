@@ -118,8 +118,8 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
         what = (case or {}).get("_args", {}).get("what", "glasses")
         return {"found": True, "what": what, "where": "on the side table by the lamp",
                 "say": f"I think I see your {what}, on the side table by the lamp.",
-                "how": ("You are pointing at it with your head now, and the picture is on the screen. Say 'say' as it "
-                        "is, then that it's on the screen too. Never say left or right: they may be facing you.")}
+                "how": ("You are pointing at it with your head now, and the picture is on the screen. Say exactly the words in 'say', 'I think' included, "
+                        "then that it's on the screen too. Never say left or right: they may be facing you.")}
     if name == "on_this_day":   # shaped like andy_companion.onthisday.today
         return {"events": [{"year": 1926, "text": "The first book featuring A. A. Milne's bear Winnie-the-Pooh was published."},
                            {"year": 1968, "text": "The first live television broadcast by American astronauts in orbit is performed by the Apollo 7 crew."}],

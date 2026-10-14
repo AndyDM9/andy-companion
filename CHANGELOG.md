@@ -5,6 +5,29 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (the suite as a Nebius Job, 81 cases; names; a demo for judges)
+
+- **The full suite as a Nebius Serverless Job** on all 81 cases (suite version x): **79, 79, 79 of 81**
+  (`evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json`).
+- **What the Job found, and the fixes:**
+  - think-1 failed 3 of 3: Andy asked a question instead of calling think_it_through, and called the
+    person "Andy" though they had never said their name. The profile now says to call it before asking
+    anything, and to use the person's name only if they have told it. That name may be Andy too: the
+    founder's is.
+  - find-1 sometimes dropped "I think": the finder now asks for its exact words.
+  - Afterwards: think-1 and the company cases 4 of 4 runs; find-1 8 of 8; name-1 ("my name is Andy
+    too!") 4 of 4.
+- `scripts/demo_screen.py`: Andy's real screen, family page and settings page on sample data, with no
+  robot, GPU or keys, for judges. It cycles what Andy found, a letter with a warning, the day's plan
+  and a story.
+- `docs/features.md`: the full feature list, moved out of the README, with the claims audit's
+  corrections (2026-10-13) applied:
+  - consent is checked in code for remembering;
+  - the urgent-words check is described exactly;
+  - On this day is "checked twice", not "never".
+- In the robot's own environment, all 477 tests pass, the robot-side ones included:
+  `uv run --project robot --with pytest python -m pytest tests`.
+
 ### Fixed (a code, privacy and robustness review)
 
 An independent review of today's code (2026-10-13) found no critical problems; a fresh clone with an

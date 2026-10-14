@@ -190,5 +190,5 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, po
     board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
     say = f"I think I see your {what}" + (f", {where}" if where else ", over there where I'm looking") + "."
     return {"found": True, "what": what, "where": where, "say": say,
-            "how": ("You are pointing at it with your head now, and the picture is on the screen. Say 'say' as it "
-                    "is, then that it's on the screen too. Never say left or right: they may be facing you.")}
+            "how": ("You are pointing at it with your head now, and the picture is on the screen. Say exactly the words in 'say', 'I think' included, "
+                    "then that it's on the screen too. Never say left or right: they may be facing you.")}
