@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Checked (a fresh copy, as a judge would install it)
+
+- Cloned from GitHub into an empty folder: the main environment, the robot's and the voice server's
+  installed from the README's steps; 634 tests pass (641 in the robot's environment); the voice environment
+  imports with CUDA; `scripts/doctor.py` runs; `scripts/demo_screen.py` serves the screen, family and
+  settings pages with no keys and an empty home folder. The README now says the first voice start
+  downloads its speech models, and how to run Andy as services.
+
 ### Changed (Andy runs as services; Spanish; a clean stop)
 
 - **Andy and its voice server run as user services** (`scripts/install-services.sh`; not started at login),

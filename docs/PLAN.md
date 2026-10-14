@@ -83,7 +83,7 @@ same work serves the Physical AI track and the Tavily bonus.
 
 | # | Item | Status |
 |---|---|---|
-| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 93 commits, no leaks (2026-10-14); the fresh clone from GitHub once public |
+| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 93 commits, no leaks (2026-10-14); a fresh clone of the private repository installs and passes (2026-10-14); again once public |
 | C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ✅ 2026-10-14 (four unused imports removed; ruff's error and bug checks pass) |
 | C3 | The final Nebius Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
 | C4 | Pin the Reachy Mini app's `andy-companion` dependency to the `hackathon-submission` tag | ⬜ (10-27) |

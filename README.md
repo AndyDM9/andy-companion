@@ -204,6 +204,9 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
    `chmod 600` it. Turn on zero data retention in Token Factory's organisation settings.
 2. **Voice server.** `cd voice && uv sync && ./run.sh`. It uses the first GPU; to use another, put
    `ANDY_VOICE_GPU=1` (its number) in the env file.
+   The first start downloads the speech models (NVIDIA Parakeet, Qwen3-TTS, the turn detector) from
+   Hugging Face, so it takes longer; later starts load them from the cache. To keep it running and
+   restart it on failure: `scripts/install-services.sh`, then `systemctl --user start andy-voice andy`.
 3. **Robot side.** `cd robot && uv sync`, then from the repository root run `./scripts/andy`.
 4. **Your home.** `python scripts/settings.py links` prints four private addresses on your home
    network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
