@@ -42,6 +42,9 @@ with its sources.
 - **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle
   jokes and riddles, public-domain stories read a part at a time, On this day from Wikipedia, and "help me
   think it through" with Nemotron 3 Ultra.
+- **Scam checks, measured:** with Tavily's consumer-protection warnings, Andy's check caught 39 of 40
+  scams (9 of 10 subtle ones, against 7 without Tavily) and flagged none of 40 ordinary messages, naming
+  its source for 38 of 39 ([evals/scam_eval.py](evals/scam_eval.py), 2026-10-14).
 - **The world, with sources:** local news from your own papers, look-ups, what's on, a link family sent,
   and scam checks, all through Tavily.
 - **Family, on your terms:** family see only what you share, Andy tells you who looked, and a helper sets
@@ -83,7 +86,7 @@ Each principle comes from published research, and each has something you can see
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
 | The conversation suite | 82 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
-| The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
+| The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
 
 ### Where Token Factory sped us up
 

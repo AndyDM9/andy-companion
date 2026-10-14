@@ -1,0 +1,1233 @@
+{
+ "ran": "2026-10-14T09:51:29-04:00",
+ "model": "nvidia/Nemotron-3_5-Lightning",
+ "messages": 80,
+ "alone": {
+  "scams_caught": 36,
+  "of_scams": 40,
+  "false_alarms": 0,
+  "of_ordinary": 40
+ },
+ "with_tavily": {
+  "scams_caught": 39,
+  "of_scams": 40,
+  "false_alarms": 0,
+  "of_ordinary": 40
+ },
+ "scams_with_warnings_found": 39,
+ "hard_alone": {
+  "scams_caught": 7,
+  "of_scams": 10,
+  "false_alarms": 0,
+  "of_ordinary": 10
+ },
+ "hard_with_tavily": {
+  "scams_caught": 9,
+  "of_scams": 10,
+  "false_alarms": 0,
+  "of_ordinary": 10
+ },
+ "scam_verdicts_backed_by_a_named_source": 38,
+ "of_scam_verdicts": 39,
+ "median_tavily_s": 3.08,
+ "rows": [
+  {
+   "id": "s01",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 0,
+   "sources": [],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.12
+  },
+  {
+   "id": "s02",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.77
+  },
+  {
+   "id": "s03",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "fbi.gov",
+    "ftc.gov"
+   ],
+   "cited": "fbi.gov",
+   "backed": true,
+   "tavily_s": 2.76
+  },
+  {
+   "id": "s04",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request for codes, passwords or account details",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "bbb.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "bbb.org",
+   "backed": true,
+   "tavily_s": 3.36
+  },
+  {
+   "id": "s05",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request for codes, passwords or account details",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.44
+  },
+  {
+   "id": "s06",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request to give someone access to a computer",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "bbb.org"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 2.72
+  },
+  {
+   "id": "s07",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "bbb.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 2.83
+  },
+  {
+   "id": "s08",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.87
+  },
+  {
+   "id": "s09",
+   "scam": true,
+   "alone": false,
+   "with_tavily": true,
+   "sign": "a kind of scam the warning describes",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.82
+  },
+  {
+   "id": "s10",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 2.16
+  },
+  {
+   "id": "s11",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.24
+  },
+  {
+   "id": "s12",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "fbi.gov",
+    "ic3.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.9
+  },
+  {
+   "id": "s13",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.74
+  },
+  {
+   "id": "s14",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "ftc.gov"
+   ],
+   "cited": "ftc.gov",
+   "backed": true,
+   "tavily_s": 4.3
+  },
+  {
+   "id": "s15",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request for codes, passwords or account details",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.92
+  },
+  {
+   "id": "s16",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "fbi.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.74
+  },
+  {
+   "id": "s17",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "payment by gift card, wire or crypto",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 4.1
+  },
+  {
+   "id": "s18",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "ic3.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.49
+  },
+  {
+   "id": "s19",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "ic3.gov"
+   ],
+   "cited": "ic3.gov",
+   "backed": true,
+   "tavily_s": 2.34
+  },
+  {
+   "id": "s20",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "fbi.gov"
+   ],
+   "cited": "fbi.gov",
+   "backed": true,
+   "tavily_s": 2.54
+  },
+  {
+   "id": "s21",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "fbi.gov",
+    "ftc.gov"
+   ],
+   "cited": "fbi.gov",
+   "backed": true,
+   "tavily_s": 2.75
+  },
+  {
+   "id": "s22",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "fbi.gov",
+    "ic3.gov"
+   ],
+   "cited": "fbi.gov",
+   "backed": true,
+   "tavily_s": 2.94
+  },
+  {
+   "id": "s23",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "payment by gift card, wire or crypto",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 4.09
+  },
+  {
+   "id": "s24",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request to give someone access to a computer",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 4.82
+  },
+  {
+   "id": "s25",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumidor.ftc.gov",
+    "usa.gov"
+   ],
+   "cited": "consumidor.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.67
+  },
+  {
+   "id": "s26",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "payment by gift card, wire or crypto",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 2.51
+  },
+  {
+   "id": "s27",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request for codes, passwords or account details",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 4.17
+  },
+  {
+   "id": "s28",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "consumidor.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.98
+  },
+  {
+   "id": "s29",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request to give someone access to a computer",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "consumidor.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.89
+  },
+  {
+   "id": "s30",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "consumidor.ftc.gov",
+    "fbi.gov"
+   ],
+   "cited": "consumidor.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.93
+  },
+  {
+   "id": "g01",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.78
+  },
+  {
+   "id": "g02",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.08
+  },
+  {
+   "id": "g03",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.95
+  },
+  {
+   "id": "g04",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.11
+  },
+  {
+   "id": "g05",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.83
+  },
+  {
+   "id": "g06",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "events.aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.69
+  },
+  {
+   "id": "g07",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 1,
+   "sources": [
+    "community.aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.77
+  },
+  {
+   "id": "g08",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.25
+  },
+  {
+   "id": "g09",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.05
+  },
+  {
+   "id": "g10",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.86
+  },
+  {
+   "id": "g11",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.82
+  },
+  {
+   "id": "g12",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.22
+  },
+  {
+   "id": "g13",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.06
+  },
+  {
+   "id": "g14",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.13
+  },
+  {
+   "id": "g15",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "fbi.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.0
+  },
+  {
+   "id": "g16",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.29
+  },
+  {
+   "id": "g17",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.44
+  },
+  {
+   "id": "g18",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.22
+  },
+  {
+   "id": "g19",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.06
+  },
+  {
+   "id": "g20",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.44
+  },
+  {
+   "id": "g21",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.18
+  },
+  {
+   "id": "g22",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.2
+  },
+  {
+   "id": "g23",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.86
+  },
+  {
+   "id": "g24",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "fbi.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.28
+  },
+  {
+   "id": "g25",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "createthegood.aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.32
+  },
+  {
+   "id": "g26",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 0,
+   "sources": [],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.65
+  },
+  {
+   "id": "g27",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "fbi.gov",
+    "ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.83
+  },
+  {
+   "id": "g28",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 2,
+   "sources": [
+    "aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.42
+  },
+  {
+   "id": "g29",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.4
+  },
+  {
+   "id": "g30",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.63
+  },
+  {
+   "id": "h01",
+   "scam": true,
+   "alone": false,
+   "with_tavily": true,
+   "sign": "a kind of scam the warning describes",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 4.28
+  },
+  {
+   "id": "h02",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request to give someone access to a computer",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "ftc.gov",
+   "backed": true,
+   "tavily_s": 3.41
+  },
+  {
+   "id": "h03",
+   "scam": true,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "bulkorder.ftc.gov",
+    "fbi.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.79
+  },
+  {
+   "id": "h04",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "bbb.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "ftc.gov",
+   "backed": true,
+   "tavily_s": 2.75
+  },
+  {
+   "id": "h05",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 4.05
+  },
+  {
+   "id": "h06",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 2.65
+  },
+  {
+   "id": "h07",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "pressure to act now",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 1.92
+  },
+  {
+   "id": "h08",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request for codes, passwords or account details",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "consumer.ftc.gov",
+   "backed": true,
+   "tavily_s": 3.36
+  },
+  {
+   "id": "h09",
+   "scam": true,
+   "alone": false,
+   "with_tavily": true,
+   "sign": "a kind of scam the warning describes",
+   "warnings": 4,
+   "sources": [
+    "aarp.org"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 3.02
+  },
+  {
+   "id": "h10",
+   "scam": true,
+   "alone": true,
+   "with_tavily": true,
+   "sign": "a request to give someone access to a computer",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "aarp.org",
+   "backed": true,
+   "tavily_s": 3.14
+  },
+  {
+   "id": "h11",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.96
+  },
+  {
+   "id": "h12",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov",
+    "fbi.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.67
+  },
+  {
+   "id": "h13",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.08
+  },
+  {
+   "id": "h14",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov",
+    "ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 4.79
+  },
+  {
+   "id": "h15",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "bbb.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.76
+  },
+  {
+   "id": "h16",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.39
+  },
+  {
+   "id": "h17",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.47
+  },
+  {
+   "id": "h18",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumer.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 2.71
+  },
+  {
+   "id": "h19",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.97
+  },
+  {
+   "id": "h20",
+   "scam": false,
+   "alone": false,
+   "with_tavily": false,
+   "sign": "none",
+   "warnings": 4,
+   "sources": [
+    "aarp.org",
+    "consumidor.ftc.gov"
+   ],
+   "cited": "",
+   "backed": false,
+   "tavily_s": 3.38
+  }
+ ]
+}

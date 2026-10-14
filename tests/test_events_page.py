@@ -47,3 +47,13 @@ def test_setting_the_town_offers_the_page_without_changing_anything():
     assert setup_page.state()["events_suggestion"]["for"] == "Harbor Bay, Florida"
     setup_page.suggest_events_page("Somewhere", finder=lambda place: (_ for _ in ()).throw(web.WebError("x")))
     assert settings.get()["events_suggestion"] is None
+
+
+def test_a_site_that_refuses_the_map_is_searched_within_instead():
+    opener, sent = tavily([
+        {"results": [{"url": "https://www.harborbayfl.gov/"}]},
+        {"base_url": "https://www.harborbayfl.gov", "results": []},                       # the site refuses crawlers
+        {"results": [{"url": "https://www.harborbayfl.gov/Parks-Recreation/Events"}, {"url": "https://www.harborbayfl.gov/news/2026/10/x"}]}])
+    found = web.find_events_page("Harbor Bay, Florida", opener)
+    assert found == {"site": "https://www.harborbayfl.gov", "page": "https://www.harborbayfl.gov/Parks-Recreation/Events"}
+    assert [s[0] for s in sent] == ["search", "map", "search"] and sent[2][1]["include_domains"] == ["harborbayfl.gov"]

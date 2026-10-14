@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Measured (the scam check and the events finder, live, with Tavily pay-as-you-go)
+
+- **The scam-check evaluation, a clean run with real calls** (`evals/results/scam-eval-2026-10-14-0951.json`):
+  - **Nemotron alone:** 36 of 40 scams caught (7 of 10 subtle ones), 0 of 40 ordinary messages flagged.
+  - **With Tavily:** **39 of 40** (9 of 10 subtle ones), still **0 of 40 flagged**, and 38 of 39 scam
+    verdicts name the consumer-protection source Andy says aloud.
+  - Median search 3.1 s.
+  - This is the "make the Tavily bonus undeniable" item; the README and the Devpost text carry it.
+- **The events finder, live:** for Harbor Bay it found the official site (harborbayfl.gov) in 1.3 s.
+  The site refuses crawlers (403; Tavily map came back empty), so the finder now falls back to a Tavily
+  search within the town's own site, which found **harborbayfl.gov/Parks-Recreation/Events** in 3.8 s. 1 more
+  test.
+- Tavily now appears **five ways** in the Devpost text: search, extract, crawl, map, research.
+
 ### Evaluated (NVIDIA Magpie TTS as Andy's voice; not switched)
 
 - `voice/magpie-eval/`: its own environment (NeMo from its main branch, as the model card says; `setup.sh`)

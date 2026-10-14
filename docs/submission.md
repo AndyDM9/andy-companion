@@ -62,12 +62,19 @@ follow you, its antennas lift while you speak and lean while it thinks.
   Tool cases are judged on what Andy says, and words that must never be said are checked in code. Latest
   Job: 79, 79 and 79 of 81 (2026-10-13), every run's scorecard and failures in the repository.
   *[Replace with the final Job run's numbers before submitting.]*
-- **Tavily, four ways:**
+- **Tavily, five ways:**
   - **search:** local news from the person's own papers; scam checks at advanced depth, on
     consumer-protection sites only, with numbers removed first;
   - **extract:** links family send;
   - **crawl:** what's on this week;
+  - **map:** at setup, the town's events calendar found on its own website (with a search within the
+    site when the site refuses crawlers);
   - **research, streamed:** "look into it", step by step on the screen.
+- **Measured: does Tavily make the scam check better?** On 80 messages read aloud (40 with scam signs,
+  40 ordinary, 20 hard on purpose), with real calls: Nemotron alone caught 36 of 40 scams; with Tavily,
+  **39 of 40, and 9 of the 10 subtle ones against 7**, with **no ordinary message flagged** either way, and
+  38 of 39 scam verdicts naming the consumer-protection source Andy says aloud
+  (`evals/scam_eval.py`, 2026-10-14).
 
   Andy offers an action from an answer (a reminder, a note to family) and waits for a yes; the suite
   judges it.
