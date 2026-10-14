@@ -5,6 +5,39 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (jokes, riddles and stories)
+
+- **Jokes and riddles** (`src/andy_companion/fun.py`, `tools/tell_joke.py`).
+  - A chosen set of gentle wordplay: 32 jokes and 14 riddles in English, 14 and 7 in Spanish. Andy uses
+    it rather than making jokes up.
+  - Nothing about age, memory, health, bodies, death or spouses. A test checks the topics, and it caught
+    two that slipped past me (a bear "with no teeth", a candle "short when old"). A Spanish one whose
+    pun also reads "let's enjoy it while we can" was taken out too.
+  - None repeats within 30 days; only joke numbers and times are kept.
+  - Riddles are for guessing together: a wrong guess gets the answer gently, never a correction.
+- **A wiggle after the punchline** (`src/andy_companion/body/giggle.py`): once Andy's voice stops, both
+  antennas tilt side to side together for about a second (peak about 1.3 rad/s). Antennas only, and
+  never while the person speaks.
+- **Stories** (`src/andy_companion/stories.py`, `story_texts.json`, `tools/story.py`).
+  - Nine public-domain stories: six of Aesop's fables (*The Aesop for Children*, 1919), O. Henry's *The
+    Gift of the Magi* (1906), and Kipling's *How the Whale Got His Throat* and *How the Camel Got His
+    Hump* (1902). Taken from Project Gutenberg, with its header and illustration notes removed.
+  - A long story is read in parts of about 220 words, each ending on a paragraph, with "Shall I go
+    on?". The bookmark lets "carry on with the story" work another day, and Andy's instructions mention
+    a story in progress.
+  - "Tell me a story" starts a short fable, a different one each time.
+  - A story about something in particular is made up by the model and said to be made up (`make_up`).
+  - The TV shows **Story time** with the title, author, book and part.
+  - An Andersen collection was left out: its translator isn't named, so the translation's age couldn't
+    be checked.
+- **The suite, 73 cases:** joke-1, joke-2, riddle-1, story-1, story-2 and story-3, 18 of 18 after fixes.
+  They found that Andy recited the next part of *The Gift of the Magi* from the model's own memory, with
+  misquotes. The profile and tool now say the words always come from the tool, and story-2 now carries
+  the earlier tool call, as the robot's conversation does. They also found that a request for a story
+  about a cat reached for the shelf, which led to `make_up`. The stand-ins now answer each call's
+  arguments.
+- 13 tests (`tests/test_fun.py`); live test 3n to 3p.
+
 ### Changed (the suite: 67 cases, judged more strictly; a fresh run on Nebius)
 
 - **Three letter cases** (letter-2, letter-3, letter-4): a scam letter, a bill and a medicine label.

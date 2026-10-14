@@ -73,6 +73,13 @@ def instructions(now: Optional[datetime] = None) -> str:
         lines.append("## LANGUAGE\nThe person chose Spanish: answer in Spanish, unless they speak to you in English.")
     else:
         lines.append("## LANGUAGE\nThe person chose English: answer in the language they speak to you.")
+    from andy_companion import stories
+
+    reading = stories.open_story()
+    if reading:
+        lines.append(f"## A STORY IN PROGRESS\nLast time you were reading \"{reading['title']}\" together and stopped "
+                     f"before part {reading['next']} of {reading['of']}. If they'd like to carry on, use story "
+                     "with action carry_on. Mention it only if it fits the moment.")
     if get()["pace"] == "slow":
         lines.append("## PACE\nThe person asked you to speak slowly: use short sentences, simple words, "
                      "and one idea at a time. Keep to this until they ask otherwise.")

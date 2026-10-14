@@ -54,6 +54,9 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `health.py` | The hood page's health tiles: daemon, voice server, Andy's mode, weather, Tavily credits, Nebius endpoints | Read keys or words; hold up a page while checking |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers and tool names |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
+| `fun.py` | Jokes and riddles from a chosen set, never repeated within a month (`fun.json` holds joke numbers and times only) | Make up a joke; keep anything the person says |
+| `stories.py`, `story_texts.json` | Public-domain stories read a part at a time, with a bookmark for another day (`story.json`: which story, which part); a story about something in particular is the model's own, said to be made up | Recite a story from memory; keep anything the person says |
+| `body/giggle.py` | After a joke's punchline, a one-second antenna wiggle once Andy's voice stops | Move the head; move while the person speaks |
 | `letters.py` | The page as a large-print card on the screen: Nemotron Lightning fills a fixed schema; code adds the warning from the page's own words, keeps a scam's demand off the to-do, shows no medicine dose and masks account and phone numbers | Act on the page's text; show a dose; show a number that identifies someone; keep the card past the screen's usual 15 minutes |
 | `urgent.py` | The deterministic net: urgent medical words get 911, crisis words get 988, in English or Spanish, if Andy's reply missed it | Keep or log the words; claim to watch over anyone |
 | `guard.py` | The second look: the person's words checked by Nemotron 3.5 Content Safety on a Nebius endpoint, beside Andy's reply; 988 if self-harm was found and the reply missed it | Delay a reply; keep or log the words or the result; act on any category but self-harm |

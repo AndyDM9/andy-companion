@@ -7,7 +7,8 @@ it lets Andy, on each control tick:
 - turn the body to face a person who has moved (body_follow);
 - hand the head over to a calm idle moment and take it back (idle);
 - soften upward looks (gaze);
-- glance at the TV when something new shows on it (glance).
+- glance at the TV when something new shows on it (glance);
+- a small antenna wiggle after a joke's punchline (giggle).
 
 Anything of ours that fails falls back to Pollen's own command, so movement never stops.
 """
@@ -95,7 +96,7 @@ def follow_with_body() -> bool:
     """Wrap MovementManager's single send point with Andy's body behaviours. Off with
     ANDY_BODY_FOLLOW=off."""
     from andy_companion import turns
-    from andy_companion.body import body_follow, gaze, glance, idle, listening as ears, presence, seek, thinking
+    from andy_companion.body import body_follow, gaze, giggle, glance, idle, listening as ears, presence, seek, thinking
 
     if not body_follow.ENABLED:
         return False
@@ -147,6 +148,9 @@ def follow_with_body() -> bool:
             thinker = self.__dict__.setdefault("_andy_thinking", thinking.Thinking())
             antennas = thinker.step(now, (float(antennas[0]), float(antennas[1])),
                                     turns.CLOCK.thinking() and not listening and not move_owns_body)
+        if giggle.ENABLED:
+            giggler = self.__dict__.setdefault("_andy_giggle", giggle.Giggle())
+            antennas = giggler.step((float(antennas[0]), float(antennas[1])), not listening and not move_owns_body)
         head = gaze.soften_look_up(head)
         return send(self, head, antennas, follower.step(now, yaw, float(body_yaw), tracking, move_owns_body))
 

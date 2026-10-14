@@ -25,6 +25,12 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   and each morning Andy offers the day's plan.
 - **Reminders at the times you choose, in your words.** One-off or daily. A reminder wakes Andy
   if it is asleep, so none is missed.
+- **Jokes, riddles and stories.** Jokes and riddles come from a chosen set of gentle wordplay (nothing
+  about age, memory, health or bodies, checked by a test), in English and Spanish, never repeated within
+  a month; the antennas give a small wiggle after the punchline. Stories are real ones, read aloud a part
+  at a time with "Shall I go on?": Aesop's fables, O. Henry's *The Gift of the Magi* and Kipling's *Just
+  So Stories*, all public domain. Andy keeps your place for another day, and says so when it makes a
+  story up instead.
 - **Reads a letter you hold up.** It reads it on the computer, explains it simply, and offers to
   look it up if it asks for money or details. The screen shows it in large print: who it's from,
   what it's about, what to do and by when. When a page asks for gift cards, threatens arrest or rushes
@@ -204,4 +210,5 @@ This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own ter
 | National Weather Service API (the weather) | US government work, public domain | NOAA / NWS |
 | Open-Meteo geocoding (the town's coordinates, once) | Free non-commercial use; data CC-BY-4.0 (GeoNames) | Open-Meteo, GeoNames |
 | Atkinson Hyperlegible (the screens' typeface) | SIL Open Font License, via Google Fonts | Braille Institute |
+| The stories (`src/andy_companion/story_texts.json`): *The Aesop for Children* (1919), O. Henry's *The Four Million* (1906), Kipling's *Just So Stories* (1902) | Public domain in the United States; texts from Project Gutenberg with its header and licence removed, as its licence allows | The authors, named on screen as each story is read |
 | Sample landscapes (`scripts/settings.py sample-photos`, downloaded only on request, never in this repository) | Unsplash License, via Lorem Picsum | Each photographer, credited on screen |

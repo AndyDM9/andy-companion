@@ -114,6 +114,46 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
                                                             "Mostly sunny, with a high near 86."}]}
     if name == "list_reminders":   # shaped like the real tool's answer, with one reminder to find
         return {"reminders": [{"id": "r1", "what": "call my sister Rosa", "when": "half past four", "daily": False}]}
+    if name == "tell_joke":     # shaped like andy_companion.fun.pick
+        args = (case or {}).get("_args", {})
+        if args.get("kind") == "riddle":
+            return {"riddle": "What has keys but can't open a single lock?", "answer": "A piano.",
+                    "how": "Ask the riddle and let them guess; there's no hurry. Whatever they say, be warm: a right guess "
+                           "gets a cheer, a wrong one gets the answer gently, never a correction. If they say 'tell me', give the answer."}
+        if args.get("language") == "es":
+            return {"setup": "¿Por qué el libro de matemáticas estaba triste?", "punchline": "Porque tenía muchos problemas.",
+                    "how": "Tell it in your own voice: the setup, a short pause, then the punchline, word for word. Don't "
+                           "explain it or laugh at it yourself. Then let them react, and enjoy it with them. One at a time; tell another only if they ask."}
+        return {"setup": "Why did the scarecrow win an award?", "punchline": "Because he was outstanding in his field.",
+                "how": "Tell it in your own voice: the setup, a short pause, then the punchline, word for word. Don't "
+                       "explain it or laugh at it yourself. Then let them react, and enjoy it with them. One at a time; tell another only if they ask."}
+    if name == "story":         # shaped like andy_companion.stories (part 2 of the O. Henry when carrying on)
+        args = (case or {}).get("_args", {})
+        how = ("Read 'text' aloud exactly as written, word for word, at an easy pace, with feeling but no voices or "
+               "sound effects. Say the title and author first only when 'part' is 1. Afterwards: if there is more, ask "
+               "'Shall I go on?' and wait; if they want to stop, say you'll keep their place. At the end, let the story "
+               "settle; you might ask what they thought of it.")
+        if args.get("action") == "carry_on":
+            return {"title": "The Gift of the Magi", "author": "O. Henry", "from": "The Four Million, 1906", "part": 2,
+                    "of": 10, "more": True, "how": how,
+                    "text": "There was a pier-glass between the windows of the room. Della stood by the window and looked "
+                            "out dully at a gray cat walking a gray fence in a gray backyard."}
+        if args.get("action") == "make_up":
+            return {"make_up": True, "about": args.get("about", ""),
+                    "how": "Make up a short, gentle story about " + (args.get("about") or "something gentle") + " now (under two "
+                           "minutes aloud: a beginning, a small happening, a warm ending; nothing frightening or sad) and tell it "
+                           "straight away. Say plainly that you made it up, for example 'Here's a little story I've made up for you.'"}
+        if args.get("action") == "list":
+            return {"stories": [{"title": "The Lion and the Mouse", "author": "Aesop", "minutes": 1},
+                                {"title": "The Gift of the Magi", "author": "O. Henry", "minutes": 15}],
+                    "say": "Offer two or three, with how long each takes."}
+        return {"title": "The Lion and the Mouse", "author": "Aesop", "from": "The Aesop for Children, 1919", "part": 1,
+                "of": 1, "more": False, "how": how,
+                "text": "A Lion lay asleep in the forest, his great head resting on his paws. A timid little Mouse came upon "
+                        "him unexpectedly, and in her fright and haste to get away, ran across the Lion's nose. Roused from his "
+                        "nap, the Lion laid his huge paw angrily on the tiny creature. \"Spare me!\" begged the poor Mouse. "
+                        "\"Please let me go and some day I will surely repay you.\" The Lion was much amused to think that a "
+                        "Mouse could ever help him. But he was generous and finally let the Mouse go. A kindness is never wasted."}
     if name == "read_letter":   # shaped like the real tool's answer, with the card it puts on the screen
         page = (case or {}).get("page", "bill")
         return dict(LETTERS[page])
@@ -196,6 +236,10 @@ def run_case(case: dict, system: str) -> dict:
             break
         convo.append({"role": "assistant", "content": step.get("content") or "", "tool_calls": step["tool_calls"]})
         for c in step["tool_calls"]:
+            try:
+                case["_args"] = json.loads(c["function"].get("arguments") or "{}")
+            except ValueError:
+                case["_args"] = {}
             convo.append({"role": "tool", "tool_call_id": c.get("id", ""),
                           "content": json.dumps(fake_result(c["function"]["name"], case))})
         step = chat(CANDIDATE, convo, tools=tool_specs())

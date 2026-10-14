@@ -505,5 +505,62 @@
    ]
   },
   "source": "andy"
+ },
+ {
+  "name": "tell_joke",
+  "description": "When the person asks for a joke, something funny, or a riddle, or says yes when you offer one. Never make up a joke yourself: use this, so it is always a kind one. kind: 'joke' or 'riddle'. language: the language you are speaking now. Then follow 'how'.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "kind": {
+     "type": "string",
+     "enum": [
+      "joke",
+      "riddle"
+     ]
+    },
+    "language": {
+     "type": "string",
+     "enum": [
+      "en",
+      "es"
+     ]
+    }
+   },
+   "required": [
+    "kind"
+   ]
+  },
+  "source": "andy"
+ },
+ {
+  "name": "story",
+  "description": "When the person asks for a story, to hear one, or to carry on with one. action: 'start' for a new story (title if they named one, else leave it out for a short fable), 'carry_on' after 'Shall I go on?' gets a yes or when they want to continue the one they were in, 'list' when they ask which stories you have, 'make_up' when they ask for a story about something in particular (about: what). Then follow 'how'. Never recite a story, or its next part, from memory: the words always come from this tool. The stories are in English; for a Spanish speaker, offer to retell one in Spanish in your own words and say it's retold.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "action": {
+     "type": "string",
+     "enum": [
+      "start",
+      "carry_on",
+      "list",
+      "make_up"
+     ]
+    },
+    "title": {
+     "type": "string",
+     "description": "The story they asked for, if any."
+    },
+    "about": {
+     "type": "string",
+     "description": "For make_up: what the story should be about."
+    }
+   },
+   "required": [
+    "action"
+   ]
+  },
+  "source": "andy"
  }
 ]
