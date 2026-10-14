@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (listening ears)
+
+- `src/andy_companion/body/listening.py`: while the person speaks, both antennas lift a little, mirrored,
+  and hold still; they settle when the person stops (half a second each way, under 1 rad/s). It sits on
+  top of Pollen's freeze of the antennas during speech, so nothing moves while it holds. Antennas only.
+  `ANDY_LISTENING=off` turns it off; `ANDY_LISTENING_SIGN=-1` flips it if the antennas go down on a
+  robot. With the thinking lean, the robot now shows hearing, thinking and speaking. 1 test; live test 3g.
+
 ### Added (the weather in the morning plan)
 
 - The morning plan ends with one sentence of weather in fixed words, English or Spanish

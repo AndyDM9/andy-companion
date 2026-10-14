@@ -94,7 +94,7 @@ def follow_with_body() -> bool:
     """Wrap MovementManager's single send point with Andy's body behaviours. Off with
     ANDY_BODY_FOLLOW=off."""
     from andy_companion import turns
-    from andy_companion.body import body_follow, gaze, idle, presence, seek, thinking
+    from andy_companion.body import body_follow, gaze, idle, listening as ears, presence, seek, thinking
 
     if not body_follow.ENABLED:
         return False
@@ -137,6 +137,9 @@ def follow_with_body() -> bool:
         if idle.enabled():
             flick = self.__dict__.setdefault("_andy_flick", idle.Flick(present=lambda: presence.recent(idle.PRESENT_WITHIN_S)))
             antennas = flick.step(now, (float(antennas[0]), float(antennas[1])), not move_owns_body and not listening)
+        if ears.ENABLED:
+            ear = self.__dict__.setdefault("_andy_ears", ears.Listening())
+            antennas = ear.step(now, (float(antennas[0]), float(antennas[1])), listening and not move_owns_body)
         if thinking.ENABLED:
             thinker = self.__dict__.setdefault("_andy_thinking", thinking.Thinking())
             antennas = thinker.step(now, (float(antennas[0]), float(antennas[1])),

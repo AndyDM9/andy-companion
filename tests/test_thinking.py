@@ -72,3 +72,18 @@ def test_a_running_tool_is_thinking_even_after_andy_spoke():
     clock.mark("assistant_audio_delta")                 # "Let me look."
     asyncio.run(Routine()(None))
     assert seen == [True] and clock.running == 0 and not clock.thinking()
+
+
+def test_listening_ears_lift_mirrored_hold_still_and_settle():
+    from andy_companion.body import listening
+
+    ears = listening.Listening()
+    out, now = run(ears, 0.0, 2.0, True)
+    back, _ = run(ears, now, 1.0, False)
+    poses = out + back
+    steps = [max(abs(a[0] - b[0]), abs(a[1] - b[1])) for a, b in zip(poses, poses[1:])]
+    assert max(steps) / TICK < 1.0                                    # gentle
+    held = out[-20:]
+    assert len(set(held)) == 1                                        # no motion while it holds
+    assert abs((held[0][0] + 0.17) + (held[0][1] - 0.17)) < 1e-9      # mirrored
+    assert abs(held[0][1] - 0.17) > 0.2 and back[-1] == (-0.17, 0.17)
