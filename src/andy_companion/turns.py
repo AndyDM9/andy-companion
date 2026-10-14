@@ -33,6 +33,7 @@ class TurnClock:
     def __init__(self, clock: Callable[[], float] = time.perf_counter, wall: Callable[[], float] = time.time):
         self.clock, self.wall = clock, wall
         self.last_voice = clock()          # the person last spoke (or Andy started), for quiet_for
+        self.unanswered_since: Optional[float] = None   # first speech since Andy last answered
         self._reset()
 
     running: int = 0                     # tools running now, whatever the turn
@@ -44,6 +45,12 @@ class TurnClock:
         if self.running > 0:
             return True
         return self.heard is not None and self.first_sound is None and self.clock() - self.heard < longest_s
+
+    def unanswered_for(self) -> Optional[float]:
+        """Seconds the person has been heard with no answer from Andy (watchdog), or None."""
+        if self.unanswered_since is None or self.clock() - self.last_voice > 30.0:
+            return None                    # nobody has spoken for a while: nothing waiting
+        return self.clock() - self.unanswered_since
 
     def quiet_for(self) -> float:
         """Seconds since the person last spoke to Andy (or since Andy started)."""
@@ -65,6 +72,8 @@ class TurnClock:
         if reason == "user_speech_started":
             self.hearing = True
             self.last_voice = now
+            if self.unanswered_since is None:
+                self.unanswered_since = now
             self._reset()
         elif reason == "user_speech_stopped":
             self.hearing = False
@@ -76,6 +85,7 @@ class TurnClock:
             self.first_sound = None
             self.tools = []
         elif reason == "assistant_audio_delta":
+            self.unanswered_since = None       # Andy is answering
             if self.heard is not None and self.first_sound is None:
                 self.first_sound = now
         elif reason == "assistant_transcript_done":

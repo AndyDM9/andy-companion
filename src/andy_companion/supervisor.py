@@ -6,7 +6,8 @@ Awake: run the conversation app (scripts/run-robot.sh) and wait for it to stop.
 - It stopped itself (exit 0) with the mode still awake: the person said goodnight (go_to_sleep);
   Andy is now asleep.
 - It stopped itself while the mode is quiet: quiet_for asked it to.
-- It crashed: start it again after a short pause.
+- It crashed, or its watchdog asked for a restart (andy_companion.watchdog): start it again after a
+  short pause, and log why.
 
 Asleep or quiet: listen for a wake phrase (offline), and wake Andy when one is heard, when a
 quiet spell ends, or when a reminder comes due, so a reminder is never missed because Andy slept.
@@ -32,9 +33,9 @@ ROOT = Path(__file__).resolve().parents[2]
 RESTART_DELAY_S = 10.0
 
 
-def after_exit(mode: str, code: int) -> str:
+def after_exit(mode: str, code: int, restart_asked: bool = False) -> str:
     """What to do when the app stops: "sleep", "wait" (already quiet or asleep) or "restart"."""
-    if code != 0:
+    if code != 0 or restart_asked:
         return "restart"
     return "sleep" if mode == "awake" else "wait"
 
@@ -101,8 +102,11 @@ def main() -> int:
         mode = state.current()["mode"]
         if mode == "awake":
             code = run_app()
-            action = after_exit(state.current()["mode"], code)
-            logger.info("App stopped (code %s): %s", code, action)
+            from andy_companion import watchdog
+
+            why = watchdog.take_request()
+            action = after_exit(state.current()["mode"], code, restart_asked=why is not None)
+            logger.info("App stopped (code %s): %s%s", code, action, f" ({why})" if why else "")
             if action == "restart":
                 time.sleep(RESTART_DELAY_S)
                 continue

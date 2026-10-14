@@ -54,8 +54,8 @@ innovation research) and the founder's test on the robot. The research is in [re
 
 | # | Item | Why | Status |
 |---|---|---|---|
-| B1 | **A watchdog** in the supervisor: if one turn keeps reopening (a TV, a radio) or the microphone keeps dropping audio, restart Andy's app and log why; cap one turn's continuous speech | On 2026-10-13 Andy stopped answering in exactly these ways | ⬜ |
-| B2 | **A health check**, one command before filming or a demo: the voice server, the robot, both endpoints, Token Factory, Tavily, the screen, a test turn; green or red in plain words | Nothing should fail on camera that a minute's check would have caught | ⬜ |
+| B1 | **A watchdog** in the supervisor: if one turn keeps reopening (a TV, a radio) or the microphone keeps dropping audio, restart Andy's app and log why; cap one turn's continuous speech | On 2026-10-13 Andy stopped answering in exactly these ways | ✅ 2026-10-14 (`watchdog.py`, `voice/serve.py` turn cap) |
+| B2 | **A health check**, one command before filming or a demo: the voice server, the robot, both endpoints, Token Factory, Tavily, the screen, a test turn; green or red in plain words | Nothing should fail on camera that a minute's check would have caught | ✅ 2026-10-14 (`scripts/doctor.py --live`) |
 | B3 | **A scam-check evaluation with real Tavily calls**: about 30 scam messages and 30 genuine ones, warnings found with and without Tavily, run as a Nebius Job; published | Makes the Tavily bonus undeniable (the review's ask) | ⬜ |
 | B4 | **Tavily `map` at setup**: find the town's events page from its website automatically | Tavily's fifth capability, in real use | ⬜ |
 | B5 | **Greeting on arrival**: "Welcome back" when someone is seen after a long absence, at most every few hours, a setting to turn it off; speech only, no head movement | ElliQ and Lovot's most-liked behaviour | ⬜ |

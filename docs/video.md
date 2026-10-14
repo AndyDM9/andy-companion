@@ -26,6 +26,7 @@ long, unedited takes.
 
 ## Before filming
 
+- [ ] **`robot/.venv/bin/python scripts/doctor.py --live` says "Ready to film."** (both endpoints answer, Nemotron replies quickly, no audio drops, nothing talking over Andy, the computer not overloaded, the screen's place set).
 - [ ] `cloud/vision-endpoint.sh start` and `cloud/guard-endpoint.sh start` about 25 minutes before;
       `status` shows RUNNING and the model answers (the first start loads weights for about 8 minutes
       more); then restart `scripts/andy`.

@@ -47,6 +47,9 @@ def install(screen: bool = False) -> None:
     from andy_companion import state
 
     state.install_sleep_tool()
+    from andy_companion import watchdog
+
+    watchdog.install()
     import threading
 
     from andy_companion import live

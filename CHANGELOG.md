@@ -5,6 +5,32 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (keeping Andy answering: a watchdog, a turn cap, a live health check)
+
+- **`src/andy_companion/watchdog.py`**, for the ways Andy stopped answering on 2026-10-13:
+  - When the robot's microphone pipeline drops audio 20 or more times in a minute (after the first
+    minute), the app asks the supervisor for a restart (a marker file with the reason) and stops itself
+    cleanly. The supervisor restarts it and logs why. Before, that state lasted until someone restarted
+    Andy by hand, and every transcript came back empty.
+  - Speech heard for two minutes with no answer is logged once, with the likely cause ("a TV or radio
+    nearby?"). A restart wouldn't help, so none is made.
+  - `health.json` keeps counts and times only.
+  - `ANDY_WATCHDOG=off` turns the restart off.
+- **The voice server caps a turn** (`voice/serve.py`, `cap_turns`): a turn holding 40 s of audio is no
+  longer reopened, and new speech starts a new turn. On 2026-10-13 one turn grew past 5,000 characters,
+  re-transcribed at every pause, while Andy waited to answer. Checked on the real voice-server class.
+- **`scripts/doctor.py --live`,** to run before filming or a demo:
+  - both Nebius endpoints' models answering (not just RUNNING);
+  - a timed short reply from Nemotron 3.5 Lightning (0.56 s at first run);
+  - Andy's app running;
+  - the watchdog's health (audio drops, unanswered speech);
+  - the computer's load;
+  - the screen's place set.
+
+  It ends with "Ready to film." or what to fix. The video checklist starts with it.
+- The supervisor's `after_exit` restarts when the watchdog asked, whatever the exit code; the turn clock
+  knows how long the person has gone unanswered. 5 tests (`tests/test_watchdog.py`).
+
 ### Added (the research, saved; the plan to the deadline)
 
 - `docs/research.md` sets out what Andy is built on, with sources and what we took or left out:

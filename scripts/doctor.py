@@ -1,9 +1,13 @@
 """Check every part Andy needs, and say plainly what to fix.
 
-    python scripts/doctor.py
+    python scripts/doctor.py           the setup
+    python scripts/doctor.py --live    and, before filming or a demo, that everything answers now
 
 Reads the keys from the private env file without printing them. Makes one tiny request to Token
-Factory and to Tavily to prove the keys work (a fraction of a cent).
+Factory and to Tavily to prove the keys work (a fraction of a cent). --live also asks both Nebius
+endpoints' models to answer, times one short reply from Nemotron, and reads Andy's own health file
+(andy_companion.watchdog: audio drops, unanswered speech; counts only), because on 2026-10-13 Andy
+stopped answering in ways a minute's check would have shown.
 """
 
 from __future__ import annotations
@@ -114,9 +118,71 @@ def main() -> int:
     else:
         check("Eyes (Nebius endpoint)", True, "not set up (optional): cloud/vision-endpoint.sh create")
 
+    if "--live" in sys.argv:
+        live(e)
+
     bad = [r for r in results if not r[1]]
     print(f"\n{len(results) - len(bad)} of {len(results)} checks passed." + ("" if not bad else " Fix the ✗ lines above."))
+    if "--live" in sys.argv:
+        print("Ready to film." if not bad else "Not ready to film yet.")
     return 1 if bad else 0
+
+
+def live(e: dict) -> None:
+    """Everything answering now: the checks to run a few minutes before filming or a demo."""
+    import time
+
+    print("\nLive:")
+    for name, url_key, token_key, fix in (
+            ("Eyes answer", "ANDY_VISION_URL", "ANDY_VISION_TOKEN", "cloud/vision-endpoint.sh start; the model loads about 8 minutes after RUNNING"),
+            ("Second look answers", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "cloud/guard-endpoint.sh start")):
+        url, token = e.get(url_key, ""), e.get(token_key, "")
+        if not url:
+            check(name, True, "not set up (optional)")
+            continue
+        try:
+            code, _ = http(url.rstrip("/") + "/v1/models", headers={"Authorization": f"Bearer {token}"}, timeout=8)
+            check(name, code == 200, "the model answers")
+        except Exception as err:
+            check(name, False, getattr(err, "code", type(err).__name__), fix)
+
+    key = e.get("NEBIUS_API_KEY", "")
+    if key:
+        base = e.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
+        body = {"model": "nvidia/Nemotron-3_5-Lightning", "max_tokens": 8, "temperature": 0,
+                "chat_template_kwargs": {"enable_thinking": False},
+                "messages": [{"role": "user", "content": "Say: ready."}]}
+        t = time.time()
+        try:
+            http(base + "/chat/completions", body, {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}, timeout=15)
+            took = time.time() - t
+            check("Nemotron replies quickly", took < 1.5, f"{took:.2f} s for a short reply",
+                  "Token Factory is slow right now; try again in a few minutes")
+        except Exception as err:
+            check("Nemotron replies quickly", False, type(err).__name__, "check the key and the network")
+
+    from andy_companion import settings, watchdog
+    running = subprocess.run(["pgrep", "-f", "scripts/run_andy.py"], capture_output=True).returncode == 0
+    check("Andy's app running", running, "", "./scripts/andy, and say \"Andy, wake up\" if it is asleep")
+    try:
+        h = json.loads(watchdog.HEALTH.read_text())
+        age = time.time() - h.get("at", 0)
+        fresh = age < 30
+        check("Microphone audio", fresh and h.get("drops_last_min", 0) == 0,
+              f"{h.get('drops_last_min', 0)} drops in the last minute" + ("" if fresh else f" (health {age:.0f} s old)"),
+              "close heavy programs on this computer, then restart Andy")
+        check("Nothing talking over Andy", not h.get("unanswered_s"),
+              "" if not h.get("unanswered_s") else f"speech without an answer for {h['unanswered_s']} s",
+              "turn off a TV, radio or video near the robot")
+    except (OSError, ValueError):
+        check("Microphone audio", False, "no health file yet", "start Andy (./scripts/andy) and wait a few seconds")
+
+    load = os.getloadavg()[0]
+    cores = os.cpu_count() or 1
+    check("Computer not overloaded", load < cores * 0.6, f"load {load:.1f} on {cores} cores",
+          "close or pause heavy programs before filming (on 2026-10-13 a busy computer made the microphone drop audio)")
+    check("Screen's place set (the glance)", settings.get().get("tv_yaw") is not None, "",
+          "settings page → Where the screen is → Save and show me")
 
 
 if __name__ == "__main__":
