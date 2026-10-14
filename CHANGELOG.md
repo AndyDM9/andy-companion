@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (the town's events page, found with Tavily map)
+
+- When a helper sets the town on the settings page and has no events pages yet, Andy looks for the
+  town's own website in the background (a Tavily search, preferring .gov, .us, city or town addresses,
+  and never a travel, review, social or news site). It maps the site with **Tavily map** ("the calendar
+  of community events and activities") and offers the calendar page on the settings page under "Found
+  on the town's own website", with a **Use it** button. Nothing changes until the helper saves.
+  (`web.official_site`, `map_site`, `find_events_page`; `setup_page.suggest_events_page`;
+  `events_suggestion` in the settings.)
+- A test caught that a real town site (harborbay.example) has no ".gov" or "city" in its address, so plain
+  addresses are accepted when nothing official-looking is found.
+- 3 tests (`tests/test_events_page.py`). The live check waits for Tavily credits (founder action 6.3).
+
 ### Added (does Tavily make the scam check better? measured; Andy's tool rebuilt on the answer)
 
 - **`evals/scam_eval.py`, `evals/scam_messages.json`:** 80 messages an older adult might read aloud.
