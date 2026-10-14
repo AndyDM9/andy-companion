@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (the Devpost texts and the feedback, current)
+
+- `docs/submission.md` is rewritten in Devpost's sections (Inspiration, What it does, How we built it,
+  Challenges, Accomplishments, What we learned, What's next, Built with) for everything built so far.
+  It now covers Nemotron 3 Ultra, structured output, the glance, the letter card, keeping company, and
+  the Reachy Mini app. Its challenges are today's: the judge that passed a scam's phone number, the
+  lenient suite, a story recited from memory, and the hijacking that passed a word list.
+- `docs/feedback-notes.md` has seven new notes for the mandatory feedback (and the Most Valuable
+  Feedback prize):
+  - structured output works only with thinking off;
+  - Lightning put a scam's demand in a to-do;
+  - Lightning recited a story from memory;
+  - Lightning defaults to *tú* in Spanish;
+  - the Ultra judge missed a hard constraint;
+  - Ultra's 2.1 s second opinion;
+  - Lightning as the second net after a word filter.
+
 ### Added (keeping company, from research)
 
 - **Research:** best practice for conversation with older adults: Irfan et al. 2024 and 2025 on

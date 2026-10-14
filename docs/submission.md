@@ -1,66 +1,145 @@
 # Devpost submission (draft)
 
-Fill in the final name and links before submitting. Keep every sentence true and checkable in the repository.
+Fill in the final name and links before submitting. Every sentence must be true and checkable in the
+repository; numbers are from the run named beside them. Sections follow Devpost's project template.
+Last revised 2026-10-13; re-read against [rules-compliance.md](rules-compliance.md) before submitting.
 
-## Tagline
+## Tagline (under 200 characters)
 
-A home companion robot for older adults who live at home, and the family who help. It runs on Reachy Mini with NVIDIA Nemotron on Nebius, and keeps nothing it hears.
+A home companion robot for older adults who live at home, and the family who help. Reachy Mini, NVIDIA
+Nemotron on Nebius, Tavily for the web. It keeps nothing it hears.
+
+## Inspiration
+
+Most older adults want to keep living in their own homes, and their families want to help without
+taking over. Voice assistants answer questions, but they don't look at you, don't read the letter in
+your hand, and don't tell you which of your family looked at what you shared. We wanted a small robot
+that is honest about being a robot, useful every day, good company, and that keeps nothing it hears.
 
 ## What it does
 
-Andy is a small robot that talks with you and keeps looking at you while it does.
-- It knows the day and never guesses it.
-- It reminds you at the times you choose, in your words.
-- It reads a letter you hold up and explains it.
-- It looks things up and names the source.
-- It answers in English or Spanish, and its screen and day plan switch with it.
+Andy is a Reachy Mini that talks with you and keeps looking at you while it does: its head and body
+follow you, its antennas lift while you speak and lean while it thinks.
 
-A screen beside it shows the day in large type and what Andy is talking about. Family see only what you ask Andy to share, can send a message or a photo, and Andy always tells you who looked. When you mention something coming up, Andy asks "Shall I remember that?", and the morning after it asks how it went.
+- **Your day, the same way every time.** The date (never guessed), reminders in your words said when
+  they're due, the morning plan, and the weather from the National Weather Service.
+- **Reads the letter you hold up.** It reads it on the computer, explains it, and shows it in large
+  print on the screen. If a page asks for gift cards or rushes you, code (not the model) puts **Be
+  careful** first: "Don't call or pay yet. Check with family first."
+- **Looks things up and names the source, through Tavily.** "Look into whether the farmers market is on
+  Saturday" runs a Tavily research task while you carry on. The screen shows its planning and sources
+  live, and Andy tells you the dated answer when it's ready.
+- **Good company.** Andy follows research with older adults: short turns and open questions about your
+  life, never "Do you remember…?". It also has gentle jokes and riddles (its antennas wiggle after the
+  punchline), real public-domain stories read a part at a time with "Shall I go on?", and "On this day"
+  from Wikipedia. Hard decisions are thought through with Nemotron 3 Ultra.
+- **Shows you where to look.** A TV beside Andy shows the day, what Andy is doing and what it found,
+  with captions of its own words. When something new appears, Andy turns its head to the screen and
+  back to you.
+- **Family, on your terms.** Family see only what you ask Andy to share, and can send a message or a
+  photo. Andy tells you who looked. A helper can change settings from a phone, and Andy tells you who
+  changed what.
+- **English and Spanish**, in whichever you speak (with *usted*), and the screen switches too.
 
 ## How we built it
 
-- **Hearing:** NVIDIA Parakeet TDT 0.6B v3, running locally inside Hugging Face's speech-to-speech server.
-- **Conversation and tool calls:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, with zero data retention on. 0.6–0.8 s per reply, measured on the robot; an "under the hood" page shows every turn's timings live.
-- **Eyes:** NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint (one L40S, vLLM 0.30.0). 3.5 s per description, behind token authentication.
-- **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second Nebius Serverless Endpoint checks the person's words beside each reply, with a policy written for signs of crisis. On held-out phrasings our word list misses, it caught 7 of 8 with no false alarms, in about 0.55 s.
-- **Proof:** a conversation suite of 63 spoken situations, judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job, with the model given exactly the robot's 27 tools. Andy passes 60, 61 and 62 of 63 in three runs (56, 56, 55 of 57 on the Nebius job earlier); each run's failures are published with the judge's reason (final numbers from the last run before submitting).
-- **The web, all through Tavily:** search for local news in the person's own papers and language, quick look-ups and scam checks (advanced depth, consumer-protection sites only, numbers and links removed first); extract for links family send; crawl for what's on; and **research, streamed**, for "look into it for me": the TV shows Tavily's planning, searches and sources live, and Andy speaks a short dated answer when it is ready. Every answer leads to an action only after a spoken yes (a reminder, a note to family). Requests are tagged `X-Project-ID`; this month's credits show on the hood page.
-- **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body behaviours keep Andy looking at the person while it speaks.
-- **Safety under the model:** a deterministic urgent-words net makes sure "my chest hurts" (or "me duele el pecho") always gets "please call 911", and "I don't want to be here anymore" (or "ya no quiero vivir") always gets the 988 Suicide and Crisis Lifeline.
-- **Engineering:** 256 tests, a pre-commit hook that blocks failing tests and keys, and every decision recorded.
+- **Hearing:** NVIDIA Parakeet TDT 0.6B v3, locally, inside Hugging Face's speech-to-speech server;
+  0.02–0.08 s per utterance.
+- **Conversation and 34 tools:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory (zero data
+  retention on), 0.6–0.8 s per reply measured on the robot. **NVIDIA Nemotron 3 Ultra** for hard
+  questions (2.1 s) and as the suite's judge. Lightning's **structured output** turns letters into
+  safe screen cards and vets "On this day" items.
+- **Eyes:** NVIDIA Nemotron Nano 12B v2 VL on a **Nebius Serverless Endpoint** (L40S, vLLM), 3.5 s per
+  description, behind token authentication.
+- **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second **Serverless Endpoint**, with a policy
+  written for signs of crisis: on held-out phrasings our word list misses, it caught 7 of 8 with no
+  false alarms, in about 0.55 s.
+- **Proof:** a conversation suite of 80 spoken situations in 19 areas, English and Spanish, run as a
+  **Nebius Serverless Job** and judged by Nemotron 3 Ultra. The model gets exactly the robot's tools.
+  Tool cases are judged on what Andy says, and words that must never be said are checked in code.
+  Every run's failures are published with the judge's reason.
+  *[Final numbers from the last Job run before submitting.]*
+- **Tavily, five ways:**
+  - **search:** local news from the person's own papers; scam checks at advanced depth, on
+    consumer-protection sites only, with numbers removed first;
+  - **extract:** links family send;
+  - **crawl:** what's on this week;
+  - **research, streamed:** "look into it", step by step on the screen;
+  - every answer leads to an action only after a spoken yes.
+- **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body
+  behaviours make Andy follow your face while it speaks, turn its body to you, find you by voice, glance
+  at the screen, and move its antennas. It is packaged as a Reachy Mini app that passes Pollen's own
+  checker.
+- **The screen:** "Andy Glass", after Apple's Liquid Glass. Every text colour reaches 7:1 (WCAG AAA)
+  against the worst case behind it, tested; a calm mode removes motion and transparency.
+- **Safety under the model:**
+  - A deterministic urgent-words net: "my chest hurts" always gets 911, and "I don't want to be here
+    anymore" always gets the 988 Lifeline, in English and Spanish.
+  - Consent in code before anything is remembered.
+- **Engineering:** 447 tests, a pre-commit hook that blocks failing tests and keys, and every decision
+  recorded in the repository.
 
-## Challenges
+## Challenges we ran into
 
-- **Tool turns versus spoken turns.** The model sometimes called a tool and said nothing. The suite now finishes tool turns the way the robot does.
-- **Testing with the wrong tools.** Our suite first gave the model 17 tools with short descriptions and scored 44/44. Giving it exactly the robot's 27 found three real problems, including Andy saying it had no camera. A broad "always call the tool first" rule then made things worse (Andy agreed to speak as the person's son), so we went back to narrow fixes, each measured.
-- **A gap we nearly missed.** The suite had no case for someone saying they don't want to live. When we added them, Andy gave no crisis line in 2 of 3 runs in English and 3 of 3 in Spanish, and sometimes opened with "I can't keep you safe", our own no-safety-claims rule leaking into the worst moment. A crisis rule and the net fixed it: 15 of 15, with grief and "dying to see my grandkids" tested not to trigger it.
-- **Our own urgent-words net had a gap.** "My chest has been hurting" slipped past it. The suite found it; we fixed and tested it.
-- **Nebius AI Cloud quirks.**
-  - New accounts have no CPU quota in eu-north1, so the job runs in eu-west2.
-  - An endpoint's plain IP:port address bypasses the endpoint token, so vLLM checks it too.
-- **Privacy.** A Hugging Face component printed what it heard and every reply to the console, each handler through its own console. Our first fix silenced one handler and missed the hearing one; we found it in our own log, deleted the log, and now filter every console in the voice server. Our logs are redacted as they are made.
+- **The judge passed a reply it should have failed.** The rule said "doesn't read out the phone number";
+  Andy read out a scam letter's number, and the judge passed it. Words that must never be said are now
+  checked in code, and Andy never sees a suspicious page's numbers.
+- **Our suite was quietly lenient.** A case that named a tool passed as soon as the tool was called,
+  and its rule was never judged. We closed the gap, and the stricter suite found real problems at once.
+- **The model's own memory.** Asked to carry on *The Gift of the Magi*, Lightning recited the next part
+  from memory, with misquotes. Stories now always come from the text.
+- **A word list always leaks.** "Hijacking of Lufthansa Flight 181" passed our gentle-topics filter on
+  the word "Flight". Now a Nemotron check follows the word list, and if it can't run, nothing is offered.
+- **A gap we nearly missed.** At first Andy gave no crisis line to "everyone would be better off
+  without me" in 2 of 3 runs, and in 3 of 3 in Spanish. After a crisis rule and the net: 15 of 15, with
+  grief and "dying to see my grandkids" tested not to trigger it.
+- **Privacy in someone else's code.** A speech-to-speech component printed what it heard to the
+  console, through a second console our first fix missed. We found it in our own log, deleted the log,
+  and now filter every console.
+- **Nebius AI Cloud quirks.** There was no CPU quota for new accounts in eu-north1, and an endpoint's
+  plain IP address bypassed its token. Both are worked around and written up in our feedback.
+
+## Accomplishments that we're proud of
+
+- Everything in the video is live, on a real robot, and every number has a scorecard in the
+  repository.
+- A safety layer that doesn't depend on the model, beside a model that is measured.
+- An honest companion: it says it is a robot, never speaks as anyone, asks before it remembers, never
+  shares without a yes, and makes no claims we haven't measured.
 
 ## What we learned
 
-Measure the product, not just the model:
-- **The suite** runs Andy's real profile, tools and safety net.
-- **Every score is three runs**, because one lucky run proves nothing.
-- **Fixes are recorded openly**, including the flawed test cases we found and fixed.
+- **Measure the product, not just the model:** Andy's real profile, tools and safety net, three runs
+  each, failures published.
+- **Put hard rules in code and judgment in the model.** That covers scam warnings, numbers on a screen,
+  stories from the text, and consent before memory.
+- **Make it look current and keep it readable.** Glass looks good until text sits on it, so the screen
+  is tested against its worst case.
 
 ## What's next
 
 - A pilot with older adults and their families, with an ethics review.
 - More languages: Parakeet already hears 25.
-- A one-click Reachy Mini app on Hugging Face.
+- Publishing Andy as a one-click Reachy Mini app on Hugging Face.
 
 ## Built with
 
-nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini, hugging-face, python, opencv, tesseract, vosk
+nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron,
+nemotron-3-ultra, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini,
+hugging-face, python, opencv, tesseract, vosk, wikipedia
 
-## Feedback for Nebius, NVIDIA and the tools (mandatory)
+## Feedback for Nebius, NVIDIA and the tools (mandatory; the ten best win a prize)
 
-Write it from [feedback-notes.md](feedback-notes.md): one paragraph per product, each with what happened, why it mattered, and the change we suggest.
+Write it from [feedback-notes.md](feedback-notes.md): one paragraph per product, each with what
+happened, why it mattered, and the change we suggest. Lead with the most useful:
+1. structured output needs thinking off;
+2. a judge model missing a hard constraint;
+3. the plain IP address bypassing the endpoint token;
+4. a default crisis line in every language;
+5. zero data retention off by default.
 
 ## Prior work
 
-The project was built during the submission period (from 2026-10-13). It reuses general-purpose robot behaviour code its author wrote earlier in the same period (from 2026-10-05), rewritten for this project; see [decisions/0003-what-is-public.md](decisions/0003-what-is-public.md).
+The project was built during the submission period (from 2026-10-13). It reuses general-purpose robot
+behaviour code its author wrote earlier in the same period (from 2026-10-05), rewritten for this
+project; see [decisions/0003-what-is-public.md](decisions/0003-what-is-public.md).
