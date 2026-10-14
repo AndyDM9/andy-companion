@@ -26,7 +26,9 @@ long, unedited takes.
 
 ## Before filming
 
-- [ ] `cloud/vision-endpoint.sh start` about 20 minutes before; `status` shows RUNNING.
+- [ ] `cloud/vision-endpoint.sh start` and `cloud/guard-endpoint.sh start` about 25 minutes before;
+      `status` shows RUNNING and the model answers (the first start loads weights for about 8 minutes
+      more); then restart `scripts/andy`.
 - [ ] The voice server and `scripts/andy` are running. Andy's screen is on the TV beside the robot, and
       the screen's place is set (it glances there).
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) on a laptop in shot, or recorded
@@ -53,8 +55,8 @@ long, unedited takes.
 | 4 | 1:40–1:52 | The daughter, on her phone, sends a photo; it appears on the TV | Andy: "Anna sent a photo, it's on your screen…" and describes it |
 | 5 | 1:52–2:04 | Spanish, with **English subtitles** | "Andy, ¿qué pasó un día como hoy?" Andy answers in Spanish, "según Wikipedia", and asks how that time was for them |
 | 6 | 2:04–2:14 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone |
-| 7 | 2:14–2:36 | Founder with the hood page from this shoot, then the architecture picture and the suite's scorecard | "Andy hears with NVIDIA Parakeet and talks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**, under a second a turn. Hard questions go to **Nemotron 3 Ultra**. It sees with **Nemotron Nano VL** on a **Nebius Serverless Endpoint**, and **Nemotron Content Safety** gives a second look. Our suite of 80 spoken situations runs as a **Nebius Serverless Job**: [the final run's numbers, exactly]." |
-| 8 | 2:36–2:46 | Andy facing the person, the TV in the evening colours | "Andy says it's a robot, keeps nothing it hears, and is open source, as a Reachy Mini app." Title card: the repository address |
+| 7 | 2:14–2:36 | Founder with the hood page from this shoot, then the architecture picture and the suite's scorecard | "Andy hears with NVIDIA Parakeet and talks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**, replying in under a second. Hard questions go to **Nemotron 3 Ultra**. It sees with **Nemotron Nano VL** on a **Nebius Serverless Endpoint**, and **Nemotron 3.5 Content Safety** gives a second look. To find things, it looks around the room and points. Our suite of 82 spoken situations runs as a **Nebius Serverless Job**: [the final run's numbers, exactly]." |
+| 8 | 2:36–2:45 | Andy facing the person, the TV in the evening colours | "Andy says it's a robot, keeps no recordings or transcripts, and is open source, as a Reachy Mini app." Title card: the repository address |
 
 **At least one minute of the robot operating:** shots 1, 3, 4, 5 and 6, about 1:50 in all.
 

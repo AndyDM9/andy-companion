@@ -23,8 +23,8 @@ The text diagram below shows the voice path in detail.
                             ▼ HTTPS, zero data retention
               Nebius Token Factory: NVIDIA Nemotron 3.5 Lightning
 
- tools/ (local_news, look_up, whats_on, read_link, check_message)
-      ──▶ HTTPS ──▶ Tavily (search, extract, crawl); safe search on
+ tools/ (local_news, look_up, whats_on, read_link, check_message, look_into)
+      ──▶ HTTPS ──▶ Tavily (search, extract, crawl, research); safe search on every search
 ```
 
 ## Running
@@ -58,7 +58,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `fun.py` | Jokes and riddles from a chosen set, never repeated within a month (`fun.json` holds joke numbers and times only) | Make up a joke; keep anything the person says |
 | `stories.py`, `story_texts.json` | Public-domain stories read a part at a time, with a bookmark for another day (`story.json`: which story, which part); a story about something in particular is the model's own, said to be made up | Recite a story from memory; keep anything the person says |
 | `body/giggle.py` | After a joke's punchline, a one-second antenna wiggle once Andy's voice stops | Move the head; move while the person speaks |
-| `letters.py` | The page as a large-print card on the screen: Nemotron Lightning fills a fixed schema; code adds the warning from the page's own words, keeps a scam's demand off the to-do, shows no medicine dose and masks account and phone numbers | Act on the page's text; show a dose; show a number that identifies someone; keep the card past the screen's usual 15 minutes |
+| `letters.py` | The page as a large-print card on the screen: Nemotron 3.5 Lightning fills a fixed schema; code adds the warning from the page's own words, keeps a scam's demand off the to-do, shows no medicine dose and masks account and phone numbers | Act on the page's text; show a dose; show a number that identifies someone; keep the card past the screen's usual 15 minutes |
 | `urgent.py` | The deterministic net: urgent medical words get 911, crisis words get 988, in English or Spanish, if Andy's reply missed it | Keep or log the words; claim to watch over anyone |
 | `guard.py` | The second look: the person's words checked by Nemotron 3.5 Content Safety on a Nebius endpoint, beside Andy's reply; 988 if self-harm was found and the reply missed it | Delay a reply; keep or log the words or the result; act on any category but self-harm |
 | `looking.py` | "Look into it": Tavily research streamed in the background, each step on the screen, the answer left for Andy to say; one at a time, ten a day | Log the question; act on the answer without a yes |
@@ -66,14 +66,18 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `web.py` | Tavily calls; cleaning web text into information; scrubbing messages before a scam check | Log a query or result; send numbers, links or emails from a message |
 | `dayplan.py`, `settings.py`, `volume.py`, `voice_controls.py` | Today's plan in fixed words; the person's pace and volume; exact spoken controls | Keep any transcript; let the model reword the plan |
 | `supervisor.py`, `state.py`, `wake.py`, `chimes.py` | Awake, asleep and quiet; waking by phrase, time or due reminder; soft cues | Listen while the app is running; send or keep any audio |
-| Pollen's conversation app (dependency) | The robot connection, movement, tool calling | — (unmodified) |
+| Pollen's conversation app (dependency) | The robot connection, movement, tool calling | — (not forked, files unmodified; Andy hooks in at start through `app_mode.install`, wrapping a few of its methods) |
 
 ## Data
 
 - Keys live in `~/.config/companion-hackathon/.env` (mode 600), outside the repository.
 - Nebius Token Factory runs with zero data retention switched on.
-- Nothing the person says is stored, except what they ask Andy to remember (`memory.json`) and
-  the reminders they set (`reminders.json`), and their pace and volume (`settings.json`), all owner-only in `~/.local/share/andy-companion/`.
+- No recording or transcript is stored. Owner-only in `~/.local/share/andy-companion/`: what the person
+  asks Andy to remember (`memory.json`, `moments.json`, moments for 7 days), their reminders
+  (`reminders.json`), notes shared with family (`shared.json`), family messages and research answers
+  waiting to be said (`inbox.json`), family photos (`photos/`, 7 days), settings (`settings.json`), the
+  story bookmark (`story.json`) and joke numbers (`fun.json`). The card on the screen (`screen.json`) is
+  cleared when it expires, by a housekeeping thread, whether or not a TV is open.
 - Captions of Andy's own words live only in the screen server's memory, for 20 seconds.
 - Turn timings (numbers and tool names only) live only in the screen server's memory, last 40.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,

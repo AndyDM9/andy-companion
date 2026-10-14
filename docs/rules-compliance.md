@@ -33,7 +33,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | A working application that runs on Nebius Token Factory or AI Cloud | ✅ | Every turn calls the Token Factory inference API (Nemotron 3.5 Lightning); AI Cloud runs two Serverless Endpoints (eyes, second look) and a Serverless Job (the suite) |
 | Uses at least one NVIDIA open model | ✅ | Parakeet TDT 0.6B v3, Nemotron 3.5 Lightning, Nemotron Nano 12B v2 VL, Nemotron 3.5 Content Safety, Nemotron 3 Ultra (judge) |
 | Fits the Physical AI track: an embodied agent that senses and acts, coordinated through an agent runtime; Serverless Jobs for evaluation, Serverless Endpoints for real-time inference | ✅ | A Reachy Mini that hears, sees, follows a face, turns, speaks; Pollen's conversation app as the agent runtime; the suite as a Serverless Job; vision and content safety as Serverless Endpoints |
-| Installs and runs consistently, and works as shown and described | 🔶 | Fresh-clone install checked 2026-10-13; `scripts/doctor.py`; the live test (`docs/live-test.md`) before filming; the video shows only what works |
+| Installs and runs consistently, and works as shown and described | 🔶 | Fresh-clone install checked 2026-10-13 (again by the code review, with an empty home folder); re-check before going public; `scripts/doctor.py`; the live test (`docs/live-test.md`) before filming; the video shows only what works |
 | New, or significantly updated during the period, with an explanation | ✅ | Created 2026-10-13; the README's "Built during the hackathon" says what reuses the author's own earlier code (from 2026-10-05, also inside the period) |
 | Authorised to use every third-party SDK, API and data | ✅ | The README's "Licences and credits" lists each with its terms and the attribution it requires |
 
@@ -48,7 +48,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | README with setup instructions and how to run it | ✅ | README "Setup" |
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |
 | Video under three minutes | 🔶 | [video.md](video.md): 2:45 |
-| Video shows the project working on its device; Physical AI: **at least one minute of the robot operating** | 🔶 | Shots 1, 3 to 8 are the robot live |
+| Video shows the project working on its device; Physical AI: **at least one minute of the robot operating** | 🔶 | Shots 1, 3, 4, 5 and 6 are the robot live, about 1:50 ([video.md](video.md)) |
 | Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-26. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
 | The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
 | Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
@@ -72,7 +72,7 @@ video, the Devpost form, the repository) is checked against this file first.
 |---|---|---|
 | The sponsor and Devpost may use the entrants' name, likeness and voice for three years | ✅ | Accepted by entering; anyone else in the video agrees in writing first |
 | No personal data in submission materials | 🔶 | No real addresses, phone numbers or private links in the video. **The settings code is a private link: after filming it, press "Make a new settings link".** Family photos only with the family's agreement |
-| No harmful code | ✅ | Tests, a pre-commit check for keys, gitleaks over the history |
+| No harmful code | ✅ | Tests, a pre-commit check for key-like strings, an independent code and privacy review (2026-10-13, every finding fixed); gitleaks over every commit to be re-run before going public |
 
 ## Kept current
 

@@ -1,83 +1,59 @@
 # Andy Companion
 
-A small home robot for older adults who live at home, and the family who help. Andy runs on a
+**A small home robot for older adults who live at home, and the family who help.** Andy runs on a
 Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It hears with NVIDIA
-Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with a Nemotron vision
-model on a Nebius Serverless Endpoint. It keeps nothing it hears.
+Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory in under a second, sees with Nemotron Nano
+VL on a Nebius Serverless Endpoint, and looks things up with Tavily. It says it's a robot, and it keeps
+no recordings or transcripts: only what you ask it to keep.
 
 > Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
 
-![Andy's screen beside the robot: what it found, the next reminder, the weather, and Andy's words](docs/images/tv-glass-found.png)
+<!-- Founder: the video link and a photo or GIF of Andy beside the TV go here before submitting. -->
+
+**Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
+shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
+in your hand. Ask where your glasses are, and it looks around the room and points at them with its head.
+
+## Three moments
+
+**"Can you read this for me?"** You hold up a letter. Andy reads it on this computer and explains it,
+and the TV shows it in large print. If the page asks for gift cards or rushes you, code (not the model)
+puts **Be careful** first, and Andy never reads out the page's numbers.
+
+![A letter on Andy's screen, with a warning (sample data)](docs/images/tv-letter.png)
+
+**"Where did I leave my glasses?"** Andy looks around the room. NVIDIA Nemotron Nano VL reads four views
+at once (3.9 s for seven frames in a live test), then Andy turns its head to point at them and says "I
+think I see your glasses, on the table…". The TV shows the picture it saw them in, held in memory for two
+minutes and never saved.
+
+**"Could you look into whether the farmers market is on this Saturday?"** Andy starts Tavily's research
+agent and carries on talking. The TV shows each step as it happens, and Andy tells you the dated answer
+with its sources.
+
+![Andy's screen: what it found, the next reminder, the weather, and its own words (sample data)](docs/images/tv-glass-found.png)
 
 ## What Andy does
 
-- **Speaks English and Spanish**, in whichever you speak to it; the day plan and the screen
-  switch too.
-- **Talks, and keeps looking at you.** Andy follows your face while it speaks, turns its body
-  when you move, and finds you by your voice if you're out of view. While you speak, its
-  antennas lift and hold, like a listener; while it thinks or looks something up, they lean slowly, so a
-  pause never looks dead. When it puts something new on the screen, it turns to look at it for a moment
-  and back to you, so your eyes follow (once the screen's place is set on the settings page).
-- **Says it's a robot, from the first word.** It wakes with "Good morning! I'm Andy, your robot companion, here to
-  help with your day." ("Soy Andy, su compañero robot…" in Spanish). It never pretends to be a person, and never
-  speaks as someone you know.
-- **Knows the day, and never guesses it.** "What's on today?" gets the same words every time,
-  and each morning Andy offers the day's plan.
-- **Reminders at the times you choose, in your words.** One-off or daily. A reminder wakes Andy
-  if it is asleep, so none is missed.
-- **Good company, on any topic.** Andy keeps its turns short and asks one open question that picks up
-  your own words. It never asks "Do you remember…?", never corrects your story, never says "sweetie",
-  and takes "not now" for an answer. In Spanish it says *usted*. These rules come from research with
-  older adults and social robots, and the suite checks them. For something to talk about, **On this
-  day** gives a gentle thing from today's date in years gone by: from Wikipedia, credited, and checked
-  twice so it is never about war, disaster, politics or illness
-  ([decision 0006](docs/decisions/0006-on-this-day-from-wikipedia.md)).
-- **Jokes, riddles and stories.** Jokes and riddles come from a chosen set of gentle wordplay (nothing
-  about age, memory, health or bodies, checked by a test), in English and Spanish, never repeated within
-  a month; the antennas give a small wiggle after the punchline. Stories are real ones, read aloud a part
-  at a time with "Shall I go on?": Aesop's fables, O. Henry's *The Gift of the Magi* and Kipling's *Just
-  So Stories*, all public domain. Andy keeps your place for another day, and says so when it makes a
-  story up instead.
-- **Reads a letter you hold up.** It reads it on the computer, explains it simply, and offers to
-  look it up if it asks for money or details. The screen shows it in large print: who it's from,
-  what it's about, what to do and by when. When a page asks for gift cards, threatens arrest or rushes
-  you, code (not the model) puts "Be careful" first, never shows the page's demand as a thing to do,
-  and says "Don't call or pay yet. Check with family first." It shows no dose from a medicine label and
-  hides account and phone numbers.
+- **Talks and keeps looking at you**, in English or Spanish, with body language from research: its
+  antennas lift while you speak and lean while it thinks, it glances away while thinking, and its head
+  tilts when it asks you something.
+- **Your day:** the date (never guessed), reminders in your own words, the morning plan, and the weather
+  from the National Weather Service.
+- **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle
+  jokes and riddles, public-domain stories read a part at a time, On this day from Wikipedia, and "help me
+  think it through" with Nemotron 3 Ultra.
+- **The world, with sources:** local news from your own papers, look-ups, what's on, a link family sent,
+  and scam checks, all through Tavily.
+- **Family, on your terms:** family see only what you share, Andy tells you who looked, and a helper sets
+  Andy up from a phone, with Andy telling you who changed what.
+- **A screen beside it**, readable from across the room, with captions of Andy's own words and every
+  text colour at 7:1 contrast, tested.
 
-  ![A letter on Andy's screen, with a warning (sample)](docs/images/tv-letter.png)
-- **Looks things up, and names the source.** Local news from papers you choose, opening hours,
-  what's on this week, a link someone sent, and whether a message looks like a known scam.
-- **The weather, from the National Weather Service.** "Do I need an umbrella tomorrow?" gets the
-  forecast for your town, the day named, and any official alert first.
-- **"Help me think it through."** A decision or a hard question goes to the bigger NVIDIA Nemotron 3 Ultra,
-  which answers in about two seconds: what matters, both sides, and who could help you decide.
-- **"Look into it for me."** For a bigger question ("Is the farmers market still on this Saturday?"),
-  Andy starts Tavily's research agent and carries on talking; the TV shows each step as it happens
-  (planning, searching, the sites it reads), and at the next quiet moment Andy tells you the answer,
-  dated and with its sources named.
-- **Your pace and your volume.** "Please speak more slowly" and "speak up" stick.
-- **Quiet when you want it.** "Be quiet for an hour", "goodnight", and "Andy, wake up".
-- **A screen beside it, readable from across the room.** A TV or monitor shows the day in large
-  type, what Andy is doing right now ("Listening for you", "Checking the weather", "Speaking"), the
-  next reminder with how long until it, the weather, what Andy found with its sources, and **two-line
-  captions of Andy's own words** (never yours). Its colours follow the time of day, behind frosted
-  glass panels after Apple's Liquid Glass, their edges lit from where the sun would be, and slow light
-  that drifts over minutes, not seconds ([design decision 0005](docs/decisions/0005-the-screen-s-design-andy-glass.md)); a small orb breathes while Andy
-  thinks and rings while it speaks. Every text colour reaches 7:1 contrast against the worst case,
-  tested, and the screen goes fully still and solid for anyone whose TV or eyes prefer it ("Calm
-  screen" in the settings, or the system's reduced-motion setting).
-- **Family, on your terms.** Family see only what you ask Andy to share, can send Andy a message
-  or a link, and Andy always tells you who looked.
-- **Everything Andy keeps, on one page.** Helpers see every reminder, remembered moment and fact,
-  shared note and photo, and can delete any of it; Andy tells you who deleted what. Andy can save
-  something only after you ask or say yes, checked in code, not left to the model.
-- **Set up from a phone, never behind your back.** A helper sets the town, news sites, language
-  and voice on a setup page; Andy tells you who changed what, and you can ask it to change
-  anything back. Reminders, memories and what is shared stay yours, set by talking to Andy.
+Everything, in full: [docs/features.md](docs/features.md).
 
-What Andy never does: give medicine doses or medical advice, ask for money or passwords, claim to
-keep anyone safe, or keep recordings or transcripts.
+**What Andy never does:** give medicine doses or medical advice, ask for money or passwords, claim to keep
+anyone safe, speak as a real person, or keep recordings or transcripts.
 
 ## Built on what older adults have said they want
 
@@ -85,11 +61,11 @@ Each principle comes from published research, and each has something you can see
 
 | Principle | Source | What Andy does |
 |---|---|---|
-| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | About a second from your last word to Andy's first sound, shown live on the `/hood` page; you can talk over Andy and he stops at once (counted on the same page); "slower", "louder", "be quiet for an hour" stick |
-| Support human contact, never replace it | Same study | Passes on family messages and photos; offers a note to family after a scam check; never says it replaces a visit |
+| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | About a second from your last word to Andy's first sound, shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
+| Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
-| The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?"; shares only what you ask; tells you who looked and who changed a setting |
-| No ageist assumptions | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793) | Plain words, never baby talk; no claims about anyone's health or mind; English and Spanish |
+| The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
+| No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); elderspeak research | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
 
 ## How it uses NVIDIA and Nebius
 
@@ -99,24 +75,25 @@ Each principle comes from published research, and each has something you can see
 |---|---|---|
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
-| Eyes ("what do you see?") | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0 | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
+| Eyes: "what do you see?" and finding things in the room | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0, structured output | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
-| The conversation suite | 67 spoken situations, 17 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
-| The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), and **research**, streamed, for "look into it for me"; safe search on; every request tagged `X-Project-ID`, credits shown on `/hood` | Tavily API |
+| Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
+| The conversation suite | 82 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
+| The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
 
 ### Where Token Factory sped us up
 
 - **One key, every Nemotron model.** Andy talks with Nemotron 3.5 Lightning and the suite's judge is
   Nemotron 3 Ultra, both through the same Token Factory API: trying a model is changing its name, and
-  the judge reads all 63 situations three times in a few minutes.
+  the judge reads all 81 situations three times in a few minutes.
 - **No language-model GPU at home.** The desktop's graphics cards keep hearing and speaking local
   (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, 0.6 to 0.8 s per reply, measured on the
   robot.
 - **Zero data retention**, switched on in Token Factory, so a household's conversation is not kept by
   the model service either.
 - **The same suite runs on Nebius AI Cloud** as a Serverless Job, and the eyes and the second look are
-  Serverless Endpoints started only when needed.
+  Serverless Endpoints we start when needed and stop after; stopped, they cost nothing for compute.
 
 ## Measured (Reachy Mini Lite, 2026-10-13)
 
@@ -132,22 +109,61 @@ how long it took and where it ran. Numbers and tool names only, in memory; never
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 67 spoken situations in English and Spanish, judged by Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what Andy says with its answer is judged too, and words that must never be said (a scam letter's phone number) are checked in code, not by the judge. **Latest: 64, 66 and 66 of 67 as a Nebius Serverless Job (2026-10-13, 21:21), and 64, 65 and 67 of 67 on this computer**; the case that failed most (Andy asking for the person's name before sharing with family) was then fixed: 0 failures in the next 6 runs (the final job run comes before submitting). The scorecards, every failure with its reason, are in [evals/results/](evals/results/).
-- **Baseline:** 27/36.
-- **After the fixes:** 35, 36 and 36 over three runs. The fixes were six profile weaknesses, plus three flawed cases fixed openly in the suite.
-- **An honest correction:** earlier runs scored 44 of 44, but gave the model 17 tools with shortened descriptions. With the real 27, the suite found that Andy said it had no camera, once invented a time, and that one case could never pass (a harness flaw). All three are fixed and recorded in [evals/suite.json](evals/suite.json).
-- **The urgent-words net:** a deterministic check under the model makes sure "my chest hurts" always gets "please call 911 now", and that "I don't want to be here anymore" always gets the 988 Suicide and Crisis Lifeline, in English or Spanish. Grief and everyday phrases ("I'm dying to see my grandkids") are tested not to trigger it.
-- **The second look** ([evals/guard_check.py](evals/guard_check.py)): on crisis phrasings the net's word list does not know, Nemotron 3.5 Content Safety with our policy caught **7 of 8 held-out sentences with no false alarms** in 8 ordinary ones that share their words ("my will", "the bridge", "sleeping tablets"), in about 0.55 s, beside Andy's reply. With its standard categories it caught 5 of 8.
-- **Before the crisis rule, measured:** "everyone would be better off without me" got no crisis line in 2 of 3 runs, and the Spanish case in 3 of 3. After: 15 of 15.
+**The conversation suite** ([evals/](evals/)): 82 spoken situations in 19 areas, English and Spanish,
+judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
+([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
+Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
+are checked in code, not by the judge.
 
-Scorecards are in [evals/results/](evals/results/).
+- **Latest, as a Nebius Serverless Job: 79, 79 and 79 of 81** (2026-10-13, 23:03;
+  [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)). The one case that
+  failed every run (think-1) was then fixed, and a case for a person also called Andy added. The final
+  Job run comes before submitting.
+- **Baseline:** 27 of 36, before any fixes.
+- **What the suite has found**, each fixed and recorded in [evals/suite.json](evals/suite.json):
+  - Andy said it had no camera, and once invented a time;
+  - no crisis line in 2 of 3 runs for "everyone would be better off without me" (15 of 15 after);
+  - a judge that passed a reply reading out a scam's phone number, and a harness that never judged the
+    rules of tool cases;
+  - a story recited from the model's memory;
+  - a scam warning delayed by a follow-up question.
+- **Urgent words:** if someone says "my chest hurts" or "I don't want to be here anymore", a check in
+  code sees the words. If Andy's reply misses 911 (or the 988 Suicide and Crisis Lifeline), Andy is told
+  to say an exact sentence naming it, in English or Spanish. Grief and everyday phrases ("I'm dying to
+  see my grandkids") are tested not to trigger it.
+- **The second look** ([evals/guard_check.py](evals/guard_check.py)): on crisis phrasings the word list
+  doesn't know, Nemotron 3.5 Content Safety with our policy caught **7 of 8 held-out sentences with no
+  false alarms** in 8 ordinary ones that share their words ("my will", "the bridge", "sleeping tablets"),
+  in about 0.55 s. With its standard categories it caught 5 of 8.
+
+Every suite run's scorecard, each failure with the judge's reason, is in [evals/results/](evals/results/);
+timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 
 ## Privacy
 
-- No audio or transcript is kept or logged. Log records are redacted as they are made, and tests prove it.
-- Andy's only stored data are what you ask it to remember, your reminders and your settings, in owner-only files on the robot's computer.
-- Pictures stay on the computer, except when you ask "what do you see?". Then one picture goes over HTTPS to your own Nebius endpoint and is not kept.
-- Keys never enter this repository; a pre-commit hook blocks them.
+- **No recordings or transcripts.** Andy's own log lines never contain what anyone says, and Pollen's
+  app's log records are redacted as they are made, at the normal log level (`tests/test_privacy.py`).
+- **What Andy keeps,** in owner-only files on its own computer: reminders, facts and moments you asked it
+  to remember (moments for 7 days), notes you shared with family, messages and photos family sent
+  (photos for 7 days), your settings, a story bookmark, and joke numbers. A question you asked Andy to
+  look into is kept until Andy tells you the answer. A helper can see and delete everything on one
+  page, and Andy tells you who deleted what.
+- **What leaves the house,** only as each feature needs it:
+  - your words to Nebius Token Factory (zero data retention on), and to your own Content Safety
+    endpoint;
+  - searches to Tavily, with scam-check messages' numbers and links removed first;
+  - a camera picture to your own Nebius endpoint only when you ask "what do you see?", ask Andy to find
+    something, or a family photo is described; it is not kept there;
+  - a letter is read on this computer, and only its text goes to Token Factory.
+- **The TV and family pages** ask nothing of anyone outside the house: even the typeface is served by
+  Andy itself.
+- **Keys never enter this repository;** a pre-commit hook blocks key-like strings.
+
+## Try it without a robot
+
+- **The screen and pages, on sample data:** `uv sync && uv run python scripts/demo_screen.py`, then open
+  the addresses it prints. No robot, GPU or keys.
+- **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
 
 ## Setup
 
@@ -165,15 +181,16 @@ Scorecards are in [evals/results/](evals/results/).
    network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
    language, pace, volume and captions. Open **the screen** on a TV, and send **the family page**
    to family.
-5. **Optional: eyes.** With the [Nebius CLI](https://docs.nebius.com/cli), run
-   `cloud/vision-endpoint.sh create`, then `status` until it is RUNNING. Run `stop` when you're
-   done; a stopped endpoint costs nothing for compute.
+5. **Optional: eyes and the second look.** With the [Nebius CLI](https://docs.nebius.com/cli), run
+   `cloud/vision-endpoint.sh create` (and `cloud/guard-endpoint.sh create`), then `status` until it is
+   RUNNING. Run `stop` when you're done; a stopped endpoint costs nothing for compute.
 6. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing.
    To start Andy at login: `scripts/install-services.sh --enable`.
 7. **Optional: the suite on Nebius.** `cloud/safety-job.sh run`, or locally
    `uv run python evals/run_suite.py --runs 3`.
 
-Tests: `uv run pytest`, plus the robot-side tests with `PYTHONPATH=src robot/.venv/bin/python -m pytest tests`.
+Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's environment:
+`uv run --project robot --with pytest python -m pytest tests`.
 
 ## Repository
 
@@ -193,10 +210,11 @@ Tests: `uv run pytest`, plus the robot-side tests with `PYTHONPATH=src robot/.ve
 This project was created on 2026-10-13, inside the submission period (2026-08-26 to 2026-10-30).
 It reuses, rewritten for this project, general-purpose robot behaviour code its author wrote earlier in
 the same period (from 2026-10-05): looking at the person while speaking, turning toward a voice, the
-offline wake phrase. Everything else, from the companion's tools and safety layers to the screens, the
+offline wake phrase. Everything else, from the companion's tools and the rules in code to the screens, the
 suite and the Nebius deployments, was written for this entry; the changelog has every step.
 It builds on open source it does not copy: Pollen Robotics' conversation app (extended through its
-profile and tool hooks, not forked) and Hugging Face's speech-to-speech server.
+profile, its tool folder and runtime hooks installed at start, `app_mode.install`; not forked, its files
+unmodified) and Hugging Face's speech-to-speech server.
 
 ## Licences and credits
 

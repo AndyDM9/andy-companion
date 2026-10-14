@@ -5,6 +5,35 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (every public claim checked against its evidence; the README's first screen)
+
+An independent audit (2026-10-13) checked every number and claim in the README, the Devpost texts, the
+feedback, the video plan, the app page and the records against the code, tests and scorecards. All of
+it is corrected:
+
+- **"It keeps nothing it hears" was not true as written:** Andy keeps reminders, facts and moments you
+  ask for. Everywhere it now reads "no recordings or transcripts: only what you ask it to keep". The
+  README's privacy section lists everything Andy keeps and everything that leaves the house, by feature.
+- **Stale numbers** (63, 67 or 80 situations; 27 or 34 tools) now say 82 situations in 19 areas and 35
+  tools. The latest Nebius Job's 79, 79, 79 of 81 is quoted with its scorecard. An empty scorecard file
+  is removed, and its numbers are no longer quoted.
+- **Urgent words are described exactly:** the words are seen in code; if Andy's reply misses 911 or
+  988, Andy is told to say an exact sentence naming it. Not "always gets".
+- **"Safety"** was taken out of our own texts ("rules in code").
+- **Overclaims:**
+  - consent is checked in code for remembering (sharing is judged in the suite);
+  - "Tavily, four ways", not five;
+  - each choice is recorded in `docs/decisions/`, not "every decision";
+  - "25 European languages";
+  - endpoints are stopped by us, not "when idle";
+  - Pollen's app is hooked at start, its files unmodified.
+- **The README's first screen,** after a judge's-eye review: what Andy is, why a robot and not a smart
+  speaker, three moments (the letter, finding glasses, Tavily research), then a short list. The full
+  list is in `docs/features.md`.
+- **New "Try it without a robot" section:** the sample-data demo, and the suite with only a Token
+  Factory key.
+- **The architecture picture** says 82 situations.
+
 ### Changed (the suite as a Nebius Job, 81 cases; names; a demo for judges)
 
 - **The full suite as a Nebius Serverless Job** on all 81 cases (suite version x): **79, 79, 79 of 81**

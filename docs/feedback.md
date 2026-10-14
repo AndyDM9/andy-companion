@@ -16,24 +16,24 @@ cards and content vetting.
   at 0.6 to 0.8 s, Ultra for a hard question at 2.1 s.
 - Strict `json_schema` output was exact in under a second.
 **Needs work:**
-- **Zero data retention is off by default**, and we found it only in the legal guide. For anything that
-  touches personal conversation, the choice deserves a plain line at sign-up.
+- **Zero data retention is off by default.** It is offered at sign-up, but without saying why it matters
+  for personal conversation; we understood it only from the legal guide.
 - **Structured output is silently ignored when thinking is on.** The same request returned free-text
   reasoning instead of the schema. An error, or a note in the structured-output guide, would save
   people hours.
 - Time to first token, per model, with thinking on and off, isn't published. It decides whether a
   spoken robot feels alive.
 **First call:** the OpenAI-compatible API worked with Hugging Face's speech-to-speech server's chat-completions backend as it was, by changing only the base URL, key and model name.
-**Again?** Yes. It's the reason Andy answers in under a second.
+**Again?** Yes. It's the reason Andy's replies take under a second.
 
 ## NVIDIA Nemotron 3.5 Lightning
 
 **Used for:** Andy's voice conversation with tool calls, in English and Spanish.
 **Worked:** correct tool calls in 0.62 to 0.83 s with thinking off; fast enough that a robot feels
 immediate.
-**Needs work**, each measured with a suite of 80 spoken situations:
+**Needs work**, each found by our conversation suite (now 82 spoken situations):
 - **Tool choice changes with the size of the tool list:** with 17 tools it always called the clock;
-  with 34 it once invented a time.
+  with the robot's real 27 it once invented a time.
 - **Persona rules weaken after tool results:** a broad "call tools first" rule led it to agree to speak
   as the user's son.
 - **No default crisis line:** without a rule it gave none for "everyone would be better off without me"
@@ -43,7 +43,7 @@ immediate.
 - **Register in Spanish:** it used *tú*, and guessed the listener's gender, with an older adult until
   told to use *usted*.
 - **Adversarial pages:** filling a structured card from a scam letter, it put the scam's own demand in
-  "to do". Safety had to move into code.
+  "to do". The decision had to move into code.
 
 A model card section on tool-list size, register in other languages, and a default crisis line would
 help every builder of a voice assistant.
@@ -86,13 +86,14 @@ crisis, on a Nebius Serverless Endpoint.
 ## NVIDIA Parakeet TDT 0.6B v3
 
 **Used for:** speech to text, locally, in Hugging Face's speech-to-speech server.
-**Worked:** 0.02 to 0.08 s per utterance on an RTX 3090, in English and Spanish. Excellent for a home robot.
+**Worked:** 0.02 to 0.08 s per utterance on the desktop's GPU. Excellent for a home robot.
 **Again?** Yes.
 
 ## Nebius AI Cloud (Serverless Endpoints and Jobs)
 
 **Used for:** two endpoints (eyes, content safety) and a CPU job that runs the whole conversation suite.
-**Worked:** the job runs our suite and leaves a scorecard; endpoints stop when idle, so cost stays small.
+**Worked:** the job runs our whole suite (81 cases, three runs, about four minutes) and leaves a
+scorecard; we stop the endpoints between uses, and stopped they cost nothing for compute.
 **Needs work:**
 - **An endpoint's plain IP:port reaches the container directly and bypasses the endpoint token.** Mark the
   HTTPS address as the one to use, and say the IP:port isn't covered.

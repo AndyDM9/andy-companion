@@ -7,14 +7,15 @@ Last revised 2026-10-13; re-read against [rules-compliance.md](rules-compliance.
 ## Tagline (under 200 characters)
 
 A home companion robot for older adults who live at home, and the family who help. Reachy Mini, NVIDIA
-Nemotron on Nebius, Tavily for the web. It keeps nothing it hears.
+Nemotron on Nebius, Tavily for the web. No recordings, no transcripts.
 
 ## Inspiration
 
 Most older adults want to keep living in their own homes, and their families want to help without
 taking over. Voice assistants answer questions, but they don't look at you, don't read the letter in
 your hand, and don't tell you which of your family looked at what you shared. We wanted a small robot
-that is honest about being a robot, useful every day, good company, and that keeps nothing it hears.
+that is honest about being a robot, useful every day, good company, and that keeps no recordings or
+transcripts: only what you ask it to keep.
 
 ## What it does
 
@@ -45,39 +46,46 @@ follow you, its antennas lift while you speak and lean while it thinks.
 
 - **Hearing:** NVIDIA Parakeet TDT 0.6B v3, locally, inside Hugging Face's speech-to-speech server;
   0.02–0.08 s per utterance.
-- **Conversation and 34 tools:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory (zero data
+- **Conversation and 35 tools:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory (zero data
   retention on), 0.6–0.8 s per reply measured on the robot. **NVIDIA Nemotron 3 Ultra** for hard
   questions (2.1 s) and as the suite's judge. Lightning's **structured output** turns letters into
-  safe screen cards and vets "On this day" items.
-- **Eyes:** NVIDIA Nemotron Nano 12B v2 VL on a **Nebius Serverless Endpoint** (L40S, vLLM), 3.5 s per
-  description, behind token authentication.
+  large-print screen cards and vets "On this day" items.
+- **Eyes, in the loop:** NVIDIA Nemotron Nano 12B v2 VL on a **Nebius Serverless Endpoint** (L40S, vLLM),
+  behind token authentication. It describes a view in 3.5 s, and to find something Andy sweeps the room
+  and the model reads four views at once as structured output (seven frames in 3.9 s, live); Andy then
+  points at it with its head.
 - **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second **Serverless Endpoint**, with a policy
   written for signs of crisis: on held-out phrasings our word list misses, it caught 7 of 8 with no
   false alarms, in about 0.55 s.
-- **Proof:** a conversation suite of 80 spoken situations in 19 areas, English and Spanish, run as a
+- **Proof:** a conversation suite of 82 spoken situations in 19 areas, English and Spanish, run as a
   **Nebius Serverless Job** and judged by Nemotron 3 Ultra. The model gets exactly the robot's tools.
-  Tool cases are judged on what Andy says, and words that must never be said are checked in code.
-  Every run's failures are published with the judge's reason.
-  *[Final numbers from the last Job run before submitting.]*
-- **Tavily, five ways:**
+  Tool cases are judged on what Andy says, and words that must never be said are checked in code. Latest
+  Job: 79, 79 and 79 of 81 (2026-10-13), every run's scorecard and failures in the repository.
+  *[Replace with the final Job run's numbers before submitting.]*
+- **Tavily, four ways:**
   - **search:** local news from the person's own papers; scam checks at advanced depth, on
     consumer-protection sites only, with numbers removed first;
   - **extract:** links family send;
   - **crawl:** what's on this week;
-  - **research, streamed:** "look into it", step by step on the screen;
-  - every answer leads to an action only after a spoken yes.
+  - **research, streamed:** "look into it", step by step on the screen.
+
+  Andy offers an action from an answer (a reminder, a note to family) and waits for a yes; the suite
+  judges it.
 - **The robot:** Pollen's Reachy Mini conversation app, extended without forking. Our own body
   behaviours make Andy follow your face while it speaks, turn its body to you, find you by voice, glance
   at the screen, and move its antennas. It is packaged as a Reachy Mini app that passes Pollen's own
   checker.
 - **The screen:** "Andy Glass", after Apple's Liquid Glass. Every text colour reaches 7:1 (WCAG AAA)
   against the worst case behind it, tested; a calm mode removes motion and transparency.
-- **Safety under the model:**
-  - A deterministic urgent-words net: "my chest hurts" always gets 911, and "I don't want to be here
-    anymore" always gets the 988 Lifeline, in English and Spanish.
-  - Consent in code before anything is remembered.
-- **Engineering:** 447 tests, a pre-commit hook that blocks failing tests and keys, and every decision
-  recorded in the repository.
+- **Rules in code, under the model:**
+  - **Urgent words:** a check in code sees words like "my chest hurts" or "I don't want to be here
+    anymore". If Andy's reply misses 911 (or the 988 Lifeline), Andy is told to say an exact sentence
+    naming it, in English and Spanish.
+  - **Consent:** checked in code before anything is remembered.
+  - **Scam pages:** warnings decided from the page's own words.
+- **Engineering:** 477 tests, a pre-commit hook that blocks failing tests and key-like strings, an
+  independent code and privacy review with every finding fixed and tested, and each choice between
+  alternatives recorded in `docs/decisions/`.
 
 ## Challenges we ran into
 
@@ -101,15 +109,15 @@ follow you, its antennas lift while you speak and lean while it thinks.
 
 ## Accomplishments that we're proud of
 
-- Everything in the video is live, on a real robot, and every number has a scorecard in the
-  repository.
-- A safety layer that doesn't depend on the model, beside a model that is measured.
-- An honest companion: it says it is a robot, never speaks as anyone, asks before it remembers, never
-  shares without a yes, and makes no claims we haven't measured.
+- Everything in the video is live, on a real robot. Every suite number has a scorecard in the
+  repository, and every timing is a dated measurement.
+- Hard rules in code that don't depend on the model, beside a model that is measured.
+- An honest companion: it says it is a robot, never speaks as anyone, asks before it remembers and
+  before it shares, and claims only what the repository shows.
 
 ## What we learned
 
-- **Measure the product, not just the model:** Andy's real profile, tools and safety net, three runs
+- **Measure the product, not just the model:** Andy's real profile, tools and urgent-words check, three runs
   each, failures published.
 - **Put hard rules in code and judgment in the model.** That covers scam warnings, numbers on a screen,
   stories from the text, and consent before memory.
@@ -119,13 +127,13 @@ follow you, its antennas lift while you speak and lean while it thinks.
 ## What's next
 
 - A pilot with older adults and their families, with an ethics review.
-- More languages: Parakeet already hears 25.
+- More languages: Parakeet already hears 25 European languages.
 - Publishing Andy as a one-click Reachy Mini app on Hugging Face.
 
 ## Built with
 
 nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron,
-nemotron-3-ultra, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini,
+nemotron-3.5-lightning, nemotron-3-ultra, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini,
 hugging-face, python, opencv, tesseract, vosk, wikipedia
 
 ## Feedback for Nebius, NVIDIA and the tools (mandatory; the ten best win a prize)

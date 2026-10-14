@@ -6,7 +6,7 @@ Tavily, with a companion robot that a judge would want in their own parent's hom
 **Deadline:** submissions close **2026-10-30, 10:00 PT**. We submit by **2026-10-27**.
 
 **One sentence:** Andy is a small home robot for older adults who live at home, and the family
-who help. It runs on a Reachy Mini, its brain is NVIDIA Nemotron on Nebius, and it keeps nothing
+who help. It runs on a Reachy Mini, its brain is NVIDIA Nemotron on Nebius, and it keeps no recordings or transcripts of what
 it hears.
 
 Live progress is in [STATUS.md](STATUS.md). Every change is in [CHANGELOG.md](../CHANGELOG.md).
