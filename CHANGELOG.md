@@ -5,6 +5,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Changed (Spanish news and events from Spanish pages)
+
+- For a Spanish speaker, local news and what's on now ask Tavily for Spanish pages only (`language` with
+  `filter_by_language`, added by Tavily in August 2026), then once without the filter if none are found.
+  Live: three Spanish local headlines for Miami in 2.6 s, 1 credit. 1 test.
+
 ### Checked (a fresh copy, as a judge would install it)
 
 - Cloned from GitHub into an empty folder: the main environment, the robot's and the voice server's

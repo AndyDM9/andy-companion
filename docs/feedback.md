@@ -154,8 +154,9 @@ research, streamed to the TV step by step.
   needs safe results at every speed.
 - With `include_domains`, `basic` depth found nothing for a classic prize-scam letter where `advanced`
   found four exact warnings; the docs could say when depth matters.
-- `language` alone didn't change English results, and `include_domains_mode: "prefer"` didn't put the
-  chosen site first.
+- `language` alone didn't change English results (2026-10-13); `filter_by_language` (August 2026) does
+  exactly what a Spanish speaker needs: Spanish local news, three of three, in one call (2026-10-14).
+  `include_domains_mode: "prefer"` didn't put the chosen site first.
 - Research latency (12 to 57 s for a mini task) isn't documented.
 - `map` came back empty for a town site that refuses crawlers; saying so in the response, rather than an
   empty list, would help.

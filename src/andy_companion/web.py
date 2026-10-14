@@ -138,22 +138,33 @@ def chosen_language(asked: Any, saved: Any) -> str:
     return "es" if saved == "es" else "en"
 
 
+def _search(body: Dict[str, Any], language: str, opener=None) -> List[Dict[str, str]]:
+    """A search; for Spanish, Spanish pages only first (Tavily's `language` with `filter_by_language`,
+    August 2026), then once without the filter if none were found, so a town with little Spanish news still
+    gets an answer."""
+    if language != "es":
+        return _results(_post("/search", body, opener))
+    found = _results(_post("/search", {**body, "language": "es", "filter_by_language": True}, opener))
+    return found or _results(_post("/search", {**body, "language": "es"}, opener))
+
+
 def local_news(place: str, topic: str = "", sources: Optional[List[str]] = None, opener=None,
                language: str = "en") -> List[Dict[str, str]]:
     # The query's own language decides the sources (Tavily's `language` option alone did not, in a
-    # live test on 2026-10-13): a Spanish query finds Spanish-language local news.
+    # live test on 2026-10-13): a Spanish query finds Spanish-language local news; `_search` adds the
+    # strict language filter Tavily added in August 2026.
     query = f"noticias locales {place} {topic}" if language == "es" else f"{place} local news {topic}"
     body = {"query": query.strip()[:390], "topic": "news", "time_range": "day",
             "search_depth": "basic", "max_results": 3, "safe_search": True}
     if sources:
         body["include_domains"] = sources
-    found = _results(_post("/search", body, opener))
+    found = _search(body, language, opener)
     # Chosen papers only, then widen once. Tavily's include_domains_mode "prefer" (one call) did not put
     # the chosen paper first in a live test on 2026-10-13, so "news from the papers you chose" keeps this.
     if not found and sources:          # the chosen papers had nothing today: widen once
         body.pop("include_domains")
         body["time_range"] = "week"
-        found = _results(_post("/search", body, opener))
+        found = _search(body, language, opener)
     return found
 
 
@@ -194,7 +205,7 @@ def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, 
         query = f"events {week} in {place} {interest}"
     body = {"query": query.strip()[:390], "time_range": "week",
             "search_depth": "basic", "max_results": 4, "safe_search": True}
-    return _results(_post("/search", body, opener))
+    return _search(body, language, opener)
 
 
 # --- finding the town's events page: Tavily search, then map ----------------------------------------

@@ -103,10 +103,21 @@ def test_a_spanish_speaker_gets_spanish_local_news():
 
 
 def test_whats_on_in_spanish_names_the_week_in_spanish():
-    op = Opener({"results": []})
+    op = Opener({"results": []}, {"results": []})
     web.whats_on("Miami, Florida", "baile", opener=op, language="es")
     query = op.requests[0][1]["query"]
     assert query.startswith("eventos del ") and " en Miami, Florida baile" in query and "October" not in query
+
+
+def test_spanish_pages_first_then_any_language_once():
+    op = Opener({"results": []}, NEWS)
+    found = web.whats_on("Miami, Florida", opener=op, language="es")
+    first, second = op.requests[0][1], op.requests[1][1]
+    assert first["language"] == "es" and first["filter_by_language"] is True
+    assert second["language"] == "es" and "filter_by_language" not in second and found
+    op = Opener(NEWS)
+    web.look_up("library hours", opener=op)                     # English: one call, no language filter
+    assert "filter_by_language" not in op.requests[0][1] and len(op.requests) == 1
 
 
 @pytest.mark.parametrize("asked, saved, out", [("es", "en", "es"), ("en", "es", "en"), (None, "es", "es"),
