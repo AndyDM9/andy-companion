@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import io
 import math
+import functools
 import os
 import shutil
 import subprocess
@@ -84,6 +85,17 @@ def parse_tsv(text: str) -> Dict[str, Any]:
             "partial": partial, "uncertain": not words or partial or len(good) < 0.8 * len(words)}
 
 
+
+@functools.lru_cache(maxsize=4)
+def languages(program: str) -> str:
+    """English, and Spanish too when its Tesseract data is installed (tesseract-ocr-spa): a letter in Spanish
+    reads properly, and English pages read the same."""
+    try:
+        listed = subprocess.run([program, "--list-langs"], capture_output=True, timeout=10).stdout.decode()
+    except (OSError, subprocess.TimeoutExpired):
+        return "eng"
+    return "eng+spa" if "spa" in listed.split() else "eng"
+
 def ocr(frame: np.ndarray, runner: Callable = subprocess.run) -> Dict[str, Any]:
     import cv2
 
@@ -97,7 +109,7 @@ def ocr(frame: np.ndarray, runner: Callable = subprocess.run) -> Dict[str, Any]:
     if not ok:
         return {"error": "The picture could not be prepared for reading."}
     try:
-        done = runner([program, "stdin", "stdout", "-l", "eng", "--psm", "4", "tsv"], input=encoded.tobytes(),
+        done = runner([program, "stdin", "stdout", "-l", languages(program), "--psm", "4", "tsv"], input=encoded.tobytes(),
                       capture_output=True, timeout=OCR_TIMEOUT_S, env={**os.environ, "OMP_THREAD_LIMIT": "2"})
     except (OSError, subprocess.TimeoutExpired):
         return {"error": "Reading took too long. Try holding it closer and steadier."}

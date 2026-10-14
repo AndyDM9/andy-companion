@@ -114,3 +114,12 @@ def test_when_several_moments_match_none_is_forgotten_and_andy_can_ask_which():
     assert moments.forget_one(b["id"]) == {"forgotten": 1, "what": "Rosa's birthday"}       # then by its id
     assert moments.forget_one("birthday")["forgotten"] == 0 and "say" in moments.forget_one("")
     assert moments.remove(a["id"]) and not moments.remove(a["id"])
+
+
+def test_a_day_said_in_spanish_is_understood():
+    from datetime import date
+    wed = date(2026, 10, 14)
+    assert moments.parse_day("hoy", wed) == wed and moments.parse_day("mañana", wed) == date(2026, 10, 15)
+    assert moments.parse_day("el lunes", wed) == date(2026, 10, 19)
+    assert moments.parse_day("el próximo miércoles", wed) == date(2026, 10, 21)
+    assert moments.parse_day("on Friday", wed) == date(2026, 10, 16)

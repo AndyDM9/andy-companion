@@ -196,7 +196,8 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 **You need:**
 - Ubuntu 24.04 with an NVIDIA GPU (8 GB or more) for the voice server;
 - a Reachy Mini with Pollen's daemon running ([Pollen's guide](https://huggingface.co/docs/reachy_mini));
-- `tesseract-ocr`, `pulseaudio-utils` (the wake listener uses `parec`), and [uv](https://docs.astral.sh/uv/);
+- `tesseract-ocr` (and `tesseract-ocr-spa` for letters in Spanish), `pulseaudio-utils` (the wake listener
+  uses `parec`), and [uv](https://docs.astral.sh/uv/);
 - a Nebius Token Factory key and a Tavily key.
 
 1. **Keys.** Copy `.env.example` to `~/.config/companion-hackathon/.env` and fill it in. Then

@@ -77,3 +77,17 @@ def test_reads_a_real_letter_with_tesseract():
     out = reading.read(lambda: letter, runner=subprocess.run, sleep=lambda s: None)
     text = out["text"].upper()
     assert "WATER" in text and "OCTOBER" in text
+
+
+def test_letters_are_read_in_spanish_too_when_its_data_is_installed(monkeypatch):
+    import subprocess as sp
+    from andy_companion import reading as rd
+
+    class Done:
+        def __init__(self, out): self.stdout = out.encode()
+    rd.languages.cache_clear()
+    monkeypatch.setattr(sp, "run", lambda *a, **k: Done("List of available languages (3):\neng\nosd\nspa\n"))
+    assert rd.languages("/usr/bin/tesseract-a") == "eng+spa"
+    monkeypatch.setattr(sp, "run", lambda *a, **k: Done("List of available languages (2):\neng\nosd\n"))
+    assert rd.languages("/usr/bin/tesseract-b") == "eng"
+    rd.languages.cache_clear()

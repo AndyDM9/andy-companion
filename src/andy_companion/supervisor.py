@@ -160,7 +160,11 @@ def run_app(should_stop: Optional[Callable[[], bool]] = None, poll_s: float = PO
                 return 0
     except KeyboardInterrupt:
         proc.send_signal(signal.SIGINT)
-        proc.wait(timeout=30)
+        try:
+            proc.wait(timeout=30)
+        except (KeyboardInterrupt, subprocess.TimeoutExpired):   # a second stop signal, or a stuck app
+            proc.kill()
+            proc.wait()
         raise
 
 
@@ -226,6 +230,16 @@ def main() -> int:
         chimes.play("wake", force=True)
 
 
+def stopped() -> int:
+    """A stop asked for (Ctrl-C, or the service manager's SIGINT) is a clean exit, not a failure, so
+    `systemctl --user stop andy` leaves the service stopped rather than failed."""
+    logger.info("Stopped")
+    return 0
+
+
 if __name__ == "__main__":
     os.environ.setdefault("PYTHONUNBUFFERED", "1")
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except KeyboardInterrupt:
+        sys.exit(stopped())

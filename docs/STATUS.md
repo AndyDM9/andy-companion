@@ -33,6 +33,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-14 12:25 | Andy and the voice server as user services (`andy.service`, `andy-voice.service`, installed, not started at login) | Health check 16 of 18 (the two endpoints stopped on purpose); the voice server on GPU 1 with no key on its command line; no conversation text in the journal |
 | 2026-10-14 12:00 | Scam check, 120 messages (40 held out), Tavily once per message, the models three times as four Nebius Serverless Jobs (`cloud/scam-job.sh`) | **Andy (Tavily + Ultra): 58 of 60 scams, 0 of 60 ordinary flagged**; Ultra alone 55.7, 0; Lightning alone 53.3, 0; Tavily + Lightning 60, but 24 flagged. Held out: 19 of 20 against 18. Source named in 170 of 174. Missed: a landlord's changed bank account, and a name-only text ("Margaret?"). 17 Ultra-alone answers stalled in its JSON (feedback) |
 | 2026-10-13 23:03 | Suite as a Nebius Serverless Job, 81 cases (version x) | **79, 79, 79 of 81**; think-1 failed 3 of 3 (asked instead of calling think_it_through; called the person "Andy" unprompted), fixed: 4 of 4 after, with name-1 added |
 | 2026-10-13 22:30 | Suite, 80 cases (jokes, stories, keeping company, on this day), Andy, on this computer | **77, 77, 77 of 80**; money-4 regressed (a question before the scam warning), fixed: money, sharing and company areas 15, 15, 15, 14 of 15 after. The final Nebius Job run comes before submitting |
@@ -63,7 +64,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
   endpoints that exist were made the old way, with the token in their start arguments; recreating them
   clears that.
 - The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
-- Spanish gaps: the wake phrases and spoken controls are English only, and letters are read in English
-  only.
+- Spanish gaps: waking Andy from sleep is English only (the offline listener's model); letters in Spanish
+  need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
 The live test of everything built today is [live-test.md](live-test.md).

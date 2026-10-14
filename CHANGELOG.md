@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Changed (Andy runs as services; Spanish; a clean stop)
+
+- **Andy and its voice server run as user services** (`scripts/install-services.sh`; not started at login),
+  so they restart on failure and keep running whoever started them. The voice server restarted this way
+  holds no key on its command line. The journal was checked: timings and token counts only, no words.
+- **Spanish:** "buenas noches" and "silencio por una hora" (or "media hora") are spoken controls; saved days
+  understand "hoy", "mañana" and "el lunes"; letters are read in English and Spanish when Tesseract's Spanish
+  data is installed. "Goodnight, Andy" with a comma now counts too (it didn't).
+- **A stop is a clean exit:** Ctrl-C or the service manager's SIGINT no longer ends the supervisor with a
+  traceback and a failure code. 3 tests.
+
 ### Measured (the scam check, four ways, as Nebius Serverless Jobs)
 
 - **120 messages** (40 new ones written after the check was frozen, modelled on consumer-protection

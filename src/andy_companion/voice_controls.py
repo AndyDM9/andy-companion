@@ -16,7 +16,14 @@ from typing import Optional, Tuple
 logger = logging.getLogger("andy.voice_controls")
 
 NUMBERS = {"one": 1, "two": 2, "three": 3, "five": 5, "ten": 10, "fifteen": 15, "twenty": 20,
-           "thirty": 30, "forty five": 45, "sixty": 60, "an": 1, "a": 1, "half an": 0.5}
+           "thirty": 30, "forty five": 45, "sixty": 60, "an": 1, "a": 1, "half an": 0.5,
+           # Spanish, as Parakeet writes it ("media hora" is half an hour)
+           "un": 1, "una": 1, "dos": 2, "tres": 3, "cinco": 5, "diez": 10, "quince": 15, "veinte": 20,
+           "treinta": 30, "cuarenta y cinco": 45, "sesenta": 60, "media": 0.5}
+SLEEP = {"goodnight", "good night", "go to sleep", "go to sleep now", "goodnight andy", "good night andy",
+         "buenas noches", "buenas noches andy", "a dormir", "vete a dormir", "a dormir andy"}
+QUIET = {"be quiet", "stay quiet", "quiet please", "quiet", "silencio", "silencio por favor", "quédate callado",
+         "quédate en silencio"}
 
 
 def parse(text: str) -> Optional[Tuple[str, dict]]:
@@ -24,20 +31,24 @@ def parse(text: str) -> Optional[Tuple[str, dict]]:
         return None
     value = " ".join(text.lower().replace("’", "'").split()).strip(" .!,")
     value = re.sub(r"^(?:hey )?andy[, ]+", "", value)
-    value = re.sub(r"^please ", "", value)
-    value = re.sub(r",? please$", "", value).strip(" .!,")
-    if value in {"goodnight", "good night", "go to sleep", "go to sleep now", "goodnight andy", "good night andy"}:
+    value = re.sub(r"^(?:please|por favor) ", "", value)
+    value = re.sub(r",? (?:please|por favor)$", "", value).strip(" .!,¡")
+    value = re.sub(r",? andy$", "", value).strip(" .!,¡")       # "Goodnight, Andy" / "Buenas noches, Andy"
+    if value in SLEEP:
         return "go_to_sleep", {}
-    if value in {"be quiet", "stay quiet", "quiet please", "quiet"}:
+    if value in QUIET:
         return "quiet_for", {"minutes": 60}
-    match = re.fullmatch(r"(?:be quiet|stay quiet|quiet) for (\d+|half an|forty five|[a-z]+) (minutes?|hours?)", value)
+    match = (re.fullmatch(r"(?:be quiet|stay quiet|quiet) for (\d+|half an|forty five|[a-z]+) (minutes?|hours?)", value)
+             or re.fullmatch(r"(?:silencio|quédate callado|quédate en silencio) (?:por|durante) "
+                             r"(\d+|cuarenta y cinco|[a-z]+) (minutos?|horas?)", value)
+             or re.fullmatch(r"(?:silencio|quédate callado|quédate en silencio) (?:por|durante) (media) (hora)", value))
     if not match:
         return None
     number, unit = match.groups()
     amount = float(number) if number.isdigit() else NUMBERS.get(number)
     if amount is None:
         return None
-    minutes = int(amount * (60 if unit.startswith("hour") else 1))
+    minutes = int(amount * (60 if unit.startswith(("hour", "hora")) else 1))
     return ("quiet_for", {"minutes": minutes}) if 1 <= minutes <= 24 * 60 else None
 
 

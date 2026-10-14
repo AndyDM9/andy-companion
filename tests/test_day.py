@@ -296,3 +296,16 @@ def test_no_welcome_at_night_too_soon_after_starting_or_when_off(monkeypatch):
     settings.update(greet_arrival=False)
     arrive(day.timestamp())
     assert asyncio.run(speaker.welcome_back(h, day, since=0.0, now_mono=3600.0)) == 0 and h.said == []
+
+
+def test_spoken_controls_in_spanish():
+    from andy_companion import voice_controls
+    parse = voice_controls.parse
+    assert parse("Buenas noches, Andy") == ("go_to_sleep", {})
+    assert parse("Andy, a dormir") == ("go_to_sleep", {})
+    assert parse("Silencio, por favor") == ("quiet_for", {"minutes": 60})
+    assert parse("Silencio por una hora") == ("quiet_for", {"minutes": 60})
+    assert parse("Silencio durante veinte minutos") == ("quiet_for", {"minutes": 20})
+    assert parse("Quédate en silencio por media hora") == ("quiet_for", {"minutes": 30})
+    assert parse("¿Por qué dijiste buenas noches?") is None             # a question is never a control
+    assert parse("No te quedes en silencio") is None

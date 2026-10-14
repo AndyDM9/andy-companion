@@ -43,14 +43,17 @@ def _save(items: List[Dict[str, Any]]) -> None:
 def parse_day(value: str, today: Optional[date] = None) -> date:
     today = today or date.today()
     v = " ".join(str(value).lower().split())
-    if v in ("today", ""):
+    if v in ("today", "", "hoy"):
         return today
-    if v == "tomorrow":
+    if v in ("tomorrow", "mañana"):
         return today + timedelta(days=1)
     names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-    if v.removeprefix("on ").removeprefix("next ") in names:
-        ahead = (names.index(v.removeprefix("on ").removeprefix("next ")) - today.weekday()) % 7
-        return today + timedelta(days=ahead or 7)
+    nombres = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+    day = re.sub(r"^(?:on |next |el próximo |el |este |próximo )", "", v)
+    for week in (names, nombres):
+        if day in week:
+            ahead = (week.index(day) - today.weekday()) % 7
+            return today + timedelta(days=ahead or 7)
     try:
         return date.fromisoformat(v)
     except ValueError:
