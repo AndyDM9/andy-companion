@@ -28,6 +28,8 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 | 3f | Watch the TV's top-right strip and the hood page's pipeline while you talk | "Hearing you" while you speak, "Thinking", the tool ("Checking the weather"), "Speaking", then "Listening for you"; the hood lights the same stage | | |
 | 3g | Watch the antennas while you speak | They lift a little and hold still while you talk, and settle when you stop (if they go down instead, set `ANDY_LISTENING_SIGN=-1`) | | |
 | 3h | "My daughter wants me to move closer to her. Can you help me think it through?" | The strip says "Thinking it through"; a balanced answer with both sides and who could help; the hood names Nemotron 3 Ultra | | |
+| 3i | On the settings page, under "Where the screen is", choose the side and how far round, then **Save and show me** | The TV shows "Andy looks here…"; within a second or two Andy turns its head to the screen, its antennas perk up, it holds about a second and a half and turns back to you. Wrong place? Change the direction and try again | | |
+| 3j | Then ask "What's the local news?" | When the news appears on the TV Andy glances at it and back while it speaks; asking again within 20 s gives no second glance | | |
 | 4 | Watch the TV while Andy speaks | Andy's words as captions at the bottom, gone after 20 s | | |
 | 5 | "Hide the captions", then "show the captions again" | Captions stop, then return | | |
 | 6 | Hold up a printed page: "Can you read this for me?" | Andy reads it, explains it simply; a fee or a request for details gets a look-up offer | | |

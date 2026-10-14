@@ -13,7 +13,7 @@ The text diagram below shows the voice path in detail.
             │      ▼                           │                       │
             │ Pollen conversation app + profiles/companion + tools/    │
             │   (scripts/run_andy.py attaches the reminder speaker and │
-            │    body/: gaze, body follow, seek, person, idle)         │
+            │    body/: gaze, follow, seek, person, idle, glance)      │
             │      │ OpenAI Realtime protocol (ws://127.0.0.1:8765)    │
             │      ▼                                                   │
             │ voice/: speech-to-speech                                 │
@@ -45,7 +45,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
 | `voice/` | Hearing, end-of-turn detection, the model call, speaking | Store audio or text; hold keys in the repository |
 | `profiles/companion/` | Who Andy is, how it speaks, what it never does, which tools it may use | Contain any person's data |
 | `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
-| `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments, the antennas' thinking lean | Store any frame, image or identity; send a picture anywhere |
+| `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments, the antennas' thinking lean, a glance at the TV when something new shows on it (`glance.py`: only once the screen's place is set, never while the person speaks) | Store any frame, image or identity; send a picture anywhere |
 | `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, how it looks (the time of day's colours, glass or the calm screen), what the person shared, messages and looks from family | Show or share anything the person did not ask to share; log a URL or token |
 | `setup_page.py` (+ `/setup`) | What a helper may change from a phone (town, news sites, what's-on pages, language, pace, volume, captions), its checks, and telling the person who changed what | Change reminders, memories or what is shared; change anything without a name and a notice to the person |
 | `live.py` | What Andy is doing right now (ready, hearing, thinking, working with the tool's name, speaking), sent to the screen server on change | Send words or tool arguments |

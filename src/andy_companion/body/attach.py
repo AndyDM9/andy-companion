@@ -6,7 +6,8 @@ it lets Andy, on each control tick:
 - keep looking at the person while Andy speaks (gaze: Pollen pauses tracking during a reply);
 - turn the body to face a person who has moved (body_follow);
 - hand the head over to a calm idle moment and take it back (idle);
-- soften upward looks (gaze).
+- soften upward looks (gaze);
+- glance at the TV when something new shows on it (glance).
 
 Anything of ours that fails falls back to Pollen's own command, so movement never stops.
 """
@@ -94,7 +95,7 @@ def follow_with_body() -> bool:
     """Wrap MovementManager's single send point with Andy's body behaviours. Off with
     ANDY_BODY_FOLLOW=off."""
     from andy_companion import turns
-    from andy_companion.body import body_follow, gaze, idle, listening as ears, presence, seek, thinking
+    from andy_companion.body import body_follow, gaze, glance, idle, listening as ears, presence, seek, thinking
 
     if not body_follow.ENABLED:
         return False
@@ -125,6 +126,8 @@ def follow_with_body() -> bool:
         tracking = bool(getattr(self, "_head_tracking", False))
         listening = bool(getattr(self, "_is_listening", False))
         yaw = follower.read_head_yaw(now, self.current_robot.get_current_head_pose) if tracking else None
+        if glance.ENABLED:
+            glance.step(self, now, antennas, listening=listening, move_playing=move_owns_body, tracking=tracking)
         # Andy's own head moves (idle moments): give the head back before seek, so seek's weight
         # wins on that tick; take it after seek, whose stand-down would undo it.
         idle.release_step(self, now)
@@ -149,6 +152,7 @@ def follow_with_body() -> bool:
 
     issue_with_body_follow._andy_body_follow = True
     moves.MovementManager._issue_control_command = issue_with_body_follow
+    glance.watch()
     return True
 
 

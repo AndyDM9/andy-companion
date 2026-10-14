@@ -113,6 +113,15 @@ def show_settings_code(now: Optional[float] = None) -> None:
     _write(SCREEN, {"kind": "code", "title": "Andy's settings", "items": [], "at": now, "until": now + CODE_FOR_S})
 
 
+CHECK_FOR_S = 20
+
+
+def show_screen_check(now: Optional[float] = None) -> None:
+    """A card for checking where the screen is: Andy glances at it when it appears (body.glance)."""
+    now = now or time.time()
+    _write(SCREEN, {"kind": "where", "title": "Andy looks here", "items": [], "at": now, "until": now + CHECK_FOR_S})
+
+
 def clear_screen() -> None:
     try:
         SCREEN.unlink()

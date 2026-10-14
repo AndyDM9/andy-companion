@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (Andy glances at the screen)
+
+- `src/andy_companion/body/glance.py`: when something new appears on the TV (a finding, the news, the
+  weather, a family photo, the settings code), Andy turns its head to the screen, holds about a second
+  and a half with its antennas perked, and turns back to exactly where it was looking, so the person's
+  eyes follow it there. ElliQ does this with its own screen. Minimum-jerk motion, peak 1.5 rad/s; the
+  body stays put. It is a move of Andy's own through Pollen's queue, so face following lets go and
+  takes the head back as it does for idle moments. Never while the person speaks (it waits up to 6 s,
+  then lets it go), never during another move, asleep, quiet, with face following off or with nobody
+  around; at most once in 20 s; a research card's progress steps don't count as new. A thread reads
+  the screen and the settings twice a second, so the control loop reads no files. `ANDY_GLANCE=off`.
+- The settings page's **Where the screen is**: the side as Andy sees it, how far round (10° to 120°),
+  above, level or below, and on or off; **Save and show me** puts "Andy looks here when it shows you
+  something new" on the TV for 20 s, and Andy looks at it. Until the place is set, Andy never glances.
+  Settings `tv_yaw`, `tv_height`, `tv_glance`; Andy tells the person who changed them, as for any
+  setting. 11 tests (`tests/test_glance.py`; the Pollen queue test runs in the robot's environment);
+  live test 3i and 3j.
+
 ### Changed (Andy Glass: the screen's new look)
 
 - `pages/screen.html`: frosted glass panels (backdrop blur and saturation, a light edge and an inner

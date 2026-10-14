@@ -128,6 +128,33 @@
       <p class="hint">At night the screen shows only a soft clock.</p>
     </fieldset>
 
+    <fieldset>
+      <legend>Where the screen is</legend>
+      <p class="hint">When Andy puts something new on the screen, it turns to look at it for a moment, so
+        your eyes follow. Left and right as Andy sees them: stand behind Andy and look the way it looks.</p>
+      <p class="group" id="tv-side-l">The screen is</p>
+      <div class="choices" role="radiogroup" aria-labelledby="tv-side-l">
+        <label><input type="radio" name="tv_side" value="none"> Not set (Andy won't look)</label>
+        <label><input type="radio" name="tv_side" value="left"> To Andy's left</label>
+        <label><input type="radio" name="tv_side" value="ahead"> Straight ahead</label>
+        <label><input type="radio" name="tv_side" value="right"> To Andy's right</label>
+      </div>
+      <label for="tv_far">How far round <span id="tv_far-v"></span></label>
+      <input type="range" id="tv_far" min="10" max="120" step="5">
+      <div class="volume"><span>A little</span><span>Beside Andy</span></div>
+      <p class="group" id="tv-height-l">Height</p>
+      <div class="choices" role="radiogroup" aria-labelledby="tv-height-l">
+        <label><input type="radio" name="tv_height" value="above"> Above Andy's eyes</label>
+        <label><input type="radio" name="tv_height" value="level"> About level</label>
+        <label><input type="radio" name="tv_height" value="below"> Below</label>
+      </div>
+      <div class="choices">
+        <label><input type="checkbox" id="tv_glance"> Look at the screen when showing something</label>
+      </div>
+      <button type="button" class="quiet" id="tv-try">Save and show me</button>
+      <p class="status" id="tv-status" role="status" aria-live="polite"></p>
+    </fieldset>
+
     <button type="submit">Save</button>
     <p class="status" id="status" role="status" aria-live="polite"></p>
 
@@ -223,6 +250,12 @@
     $("captions").checked = !!v.captions;
     $("screen_photos").checked = v.screen_photos !== false;
     $("screen_calm").checked = !!v.screen_calm;
+    const side = v.tv_yaw == null ? "none" : v.tv_yaw > 0 ? "left" : v.tv_yaw < 0 ? "right" : "ahead";
+    for (const r of document.querySelectorAll("input[name=tv_side]")) r.checked = r.value === side;
+    for (const r of document.querySelectorAll("input[name=tv_height]")) r.checked = r.value === (v.tv_height || "level");
+    $("tv_far").value = v.tv_yaw ? Math.abs(v.tv_yaw) : 45;
+    $("tv_glance").checked = v.tv_glance !== false;
+    showFar();
     for (const id of ["night_from", "night_to"]) {
       const sel = $(id);
       if (!sel.options.length) for (let h = 0; h < 24; h++) sel.append(new Option(hourName(h), h));
@@ -237,6 +270,21 @@
       a.href = s.links[k];
       a.textContent = location.origin + s.links[k];
     }
+  }
+
+  function showFar() {
+    const side = (document.querySelector("input[name=tv_side]:checked") || {}).value;
+    const sideways = side === "left" || side === "right";
+    $("tv_far").disabled = !sideways;
+    $("tv_far-v").textContent = sideways ? `${$("tv_far").value}°` : "";
+  }
+
+  function tvSettings() {
+    const side = (document.querySelector("input[name=tv_side]:checked") || {}).value || "none";
+    const far = Number($("tv_far").value);
+    return { tv_yaw: side === "none" ? null : side === "ahead" ? 0 : side === "left" ? far : -far,
+             tv_height: (document.querySelector("input[name=tv_height]:checked") || {}).value || "level",
+             tv_glance: $("tv_glance").checked };
   }
 
   async function call(path, body) {
@@ -274,6 +322,7 @@
         place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
         language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
         screen_photos: $("screen_photos").checked, screen_calm: $("screen_calm").checked, night_from: Number($("night_from").value), night_to: Number($("night_to").value),
+        ...tvSettings(),
         ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
       fill(out);
       volumeTouched = false;
@@ -281,6 +330,22 @@
         ? `Saved. Andy will tell them that ${who} changed ${out.changed.join(", ")}.`
         : "Nothing had changed.";
     } catch (err) { status.textContent = err.message; status.className = "status error"; }
+  });
+
+  for (const el of document.querySelectorAll("input[name=tv_side], #tv_far")) el.addEventListener("input", showFar);
+
+  $("tv-try").addEventListener("click", async () => {
+    const status = $("tv-status");
+    const tv = tvSettings();
+    if (tv.tv_yaw === null) { text(status, "Choose where the screen is first."); return; }
+    if (!tv.tv_glance) { text(status, "Tick \"Look at the screen when showing something\" first."); return; }
+    text(status, "Saving…");
+    try {
+      fill(await call("/api/setup", { name: who, settings: tv }));
+      fill(await call("/api/setup/show-screen", {}));
+      text(status, "Watch Andy: it looks at the screen in a moment (if someone is with it and it isn't resting). " +
+                   "If it looked somewhere else, change the direction and try again.");
+    } catch (err) { text(status, err.message); }
   });
 
   $("delete-all").addEventListener("click", async () => {

@@ -426,6 +426,9 @@ class Handler(BaseHTTPRequestHandler):
                     if words:
                         board.kept_deleted(name, words)
                     return self._json({"ok": True, "deleted": words, **setup_state()})
+                if url.path == "/api/setup/show-screen":
+                    board.show_screen_check()
+                    return self._json({"ok": True, **setup_state()})
                 if url.path == "/api/setup/new-settings-link":
                     board.new_setup_link()
                     return self._json({"ok": True, "moved": True})
