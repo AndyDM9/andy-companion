@@ -26,7 +26,13 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
 - **Reminders at the times you choose, in your words.** One-off or daily. A reminder wakes Andy
   if it is asleep, so none is missed.
 - **Reads a letter you hold up.** It reads it on the computer, explains it simply, and offers to
-  look it up if it asks for money or details.
+  look it up if it asks for money or details. The screen shows it in large print: who it's from,
+  what it's about, what to do and by when. When a page asks for gift cards, threatens arrest or rushes
+  you, code (not the model) puts "Be careful" first, never shows the page's demand as a thing to do,
+  and says "Don't call or pay yet. Check with family first." It shows no dose from a medicine label and
+  hides account and phone numbers.
+
+  ![A letter on Andy's screen, with a warning (sample)](docs/images/tv-letter.png)
 - **Looks things up, and names the source.** Local news from papers you choose, opening hours,
   what's on this week, a link someone sent, and whether a message looks like a known scam.
 - **The weather, from the National Weather Service.** "Do I need an umbrella tomorrow?" gets the

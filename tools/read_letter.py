@@ -9,6 +9,9 @@ from andy_companion import reading
 from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 
+# The large-print card on the screen: andy_companion.letters.
+
+
 class ReadLetter(Tool):
     name = "read_letter"
     description = (
@@ -30,4 +33,15 @@ class ReadLetter(Tool):
         result = await asyncio.to_thread(reading.read, lambda: deps.reachy_mini.media.get_frame())
         if result.get("text"):
             result["note"] = "Text read on this computer from the page; the picture was not sent or kept."
+            try:
+                from andy_companion import letters, settings
+
+                language = settings.get()["language"]
+                c = await asyncio.to_thread(letters.summarise, result["text"], language)
+                letters.show(c, language)
+                result["on_screen"] = {k: c[k] for k in ("sender", "about", "to_do", "by_when", "amount", "caution") if c.get(k)}
+                result["screen_note"] = ("A large-print card of it is on the screen now; you may say 'It's on your screen too'. "
+                                         + ("Say the caution on the card plainly and kindly, and offer check_message." if c["warning"] else ""))
+            except Exception:
+                pass   # no card; Andy still explains it
         return result

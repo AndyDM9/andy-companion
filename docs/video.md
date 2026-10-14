@@ -21,7 +21,7 @@ Every rule and how we meet it: [rules-compliance.md](rules-compliance.md).
 - [ ] One reminder set for about 3 minutes into the shoot ("call Rosa").
 - [ ] Yesterday's moment set the day before: "Sofia's piano recital", with a yes.
 - [ ] The family page open on a second phone; one photo ready (a beach, a garden, a grandchild's drawing).
-- [ ] A printed letter that asks for "a fee to release your prize".
+- [ ] A printed letter that asks for "a fee to release your prize", from a **made-up sender** (no real agency, bank or company name: the rules allow no third-party trademarks); the TV shows it as a "Be careful" card.
 - [ ] No music; no third-party logos in shot (cover any on mugs, books, screens); the browser tabs and links not visible.
 - [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the screen if possible.
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) open on a laptop or the second screen: it fills with the real timings of every turn filmed.

@@ -87,7 +87,7 @@ def new_family_link() -> str:
 
 def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float] = None) -> None:
     """Put something on the screen beside Andy, for SHOW_FOR_S."""
-    clean_items = [{k: _tidy(v, 300) for k, v in item.items() if k in ("title", "source", "summary", "when", "published")}
+    clean_items = [{k: _tidy(v, 300) for k, v in item.items() if k in ("title", "source", "summary", "when", "published", "tone")}
                    for item in items[:4]]
     _write(SCREEN, {"kind": _tidy(kind, 20), "title": _tidy(title, 80), "items": clean_items,
                     "at": now or time.time()})

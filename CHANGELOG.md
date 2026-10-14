@@ -5,6 +5,31 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (a letter on the screen, in large print)
+
+- `src/andy_companion/letters.py`: when Andy reads a page held up to it, the text also goes to
+  Nemotron 3.5 Lightning with a **strict JSON schema** (structured output, reasoning off). It returns
+  what kind of page it is, who it's from, what it's about, what to do, by when and how much. The TV
+  shows that as a card ("A bill from FPL · Electric bill · To do: Pay the bill by October 28 ·
+  $86.40"), and Andy glances at it. Live on five sample pages it took 0.73 to 0.97 s: a bill, a scam
+  letter, a prescription label, a birthday card, and a town notice in Spanish.
+- **What is safe to show is decided in code, not by the model:**
+  - **Warning signs** are found in the page's own words (gift cards, money transfers, crypto, threats
+    of arrest or a cut-off, "act now", passwords or numbers, prizes) as well as by the model. The card
+    then puts **Be careful** first: "It asks for gift cards and threatens arrest. Real banks and
+    agencies never do that. Don't call or pay yet. Check with family first." The page's demand is never
+    shown as a to-do, no amount to pay is shown, and its claim reads "It says: …". In the live test the
+    model had put the scam's own demand ("call … and pay $500 with gift cards") in `to_do`; code
+    replaced it.
+  - **Medicine:** no dose on the screen, only "Questions about a medicine? Ask your pharmacist or
+    doctor."
+  - **Numbers:** account, phone and reference numbers are masked; years and amounts stay.
+  - **Language:** English or Spanish, following the screen's language.
+- `tools/read_letter.py` returns what the card shows, so what Andy says matches it. If the card can't
+  be made, Andy still explains the page.
+- The TV's warning has the same calm mark as a weather alert: a bar, never a red flash. 9 tests
+  (`tests/test_letters.py`); live test 3k and 3l; README picture `docs/images/tv-letter.png` (sample).
+
 ### Changed (Andy Glass, refined from Apple's own guidance)
 
 - Researched Apple's Liquid Glass at the source: the Human Interface Guidelines, two WWDC25 talks,
