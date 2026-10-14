@@ -31,17 +31,17 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 
 | # | Milestone | Done when | Target |
 |---|---|---|---|
-| M0 | **Andy talks through Nemotron** | Voice server with Parakeet and Nemotron Lightning; Andy answers on the robot | 2026-10-13 ✅ |
-| M1 | **Clock and reminders** | Andy knows the date and time; sets, lists and cancels reminders by voice; speaks a reminder when it is due, unprompted; tests pass | 2026-10-15 |
-| M2 | **Privacy floor** | No conversation text in any log; Andy's memory in its own store; nothing stored except what the person asks | 2026-10-16 |
-| M3 | **Body behaviours** | Andy keeps looking at the person while it speaks and while they move (gaze, body follow, seek, person finder), gentle idle moments, no confirmation moves, upward looks softened; chimes, quiet mode, wake word; each rewritten here from the earlier assistant's general-purpose modules, with tests | 2026-10-18 |
-| M4 | **The day, the same way every time** | A day plan said on request and each morning; pace and volume settings that stick | 2026-10-19 |
-| M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 |
-| M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 |
-| M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 |
-| M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 |
-| M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 |
-| M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 |
+| M0 | **Andy talks through Nemotron** | Voice server with Parakeet and Nemotron Lightning; Andy answers on the robot | 2026-10-13 ✅ · ✅ done 2026-10-13 |
+| M1 | **Clock and reminders** | Andy knows the date and time; sets, lists and cancels reminders by voice; speaks a reminder when it is due, unprompted; tests pass | 2026-10-15 · ✅ done 2026-10-13 |
+| M2 | **Privacy floor** | No conversation text in any log; Andy's memory in its own store; nothing stored except what the person asks | 2026-10-16 · ✅ done 2026-10-13 |
+| M3 | **Body behaviours** | Andy keeps looking at the person while it speaks and while they move (gaze, body follow, seek, person finder), gentle idle moments, no confirmation moves, upward looks softened; chimes, quiet mode, wake word; each rewritten here from the earlier assistant's general-purpose modules, with tests | 2026-10-18 · ✅ done 2026-10-13 |
+| M4 | **The day, the same way every time** | A day plan said on request and each morning; pace and volume settings that stick | 2026-10-19 · ✅ done 2026-10-13 |
+| M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 · 🔶 built; live test, and Tavily credits (founder 6.3) |
+| M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 · 🔶 built, finding things tested on the live model; live test on the robot |
+| M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 · 🔶 built; live test |
+| M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; Nebius Job 79/79/79 of 81; final run 2026-10-23 |
+| M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 · 🔶 app ready; repository public about 2026-10-20 |
+| M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 · 🔶 texts ready; filming 2026-10-24 to 10-26 |
 
 ## Road to October 30 (the deadline is 2026-10-30, 10:00 PT; a complete draft by 2026-10-22, final by 2026-10-27)
 
@@ -67,8 +67,8 @@ innovation research) and the founder's test on the robot. The research is in [re
 
 | # | Item | Status |
 |---|---|---|
-| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | ⬜ |
-| C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ⬜ |
+| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 93 commits, no leaks (2026-10-14); the fresh clone from GitHub once public |
+| C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ✅ 2026-10-14 (four unused imports removed; ruff's error and bug checks pass) |
 | C3 | The final Nebius Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
 | C4 | Pin the Reachy Mini app's `andy-companion` dependency to the `hackathon-submission` tag | ⬜ (10-27) |
 

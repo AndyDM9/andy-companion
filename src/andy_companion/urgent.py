@@ -16,7 +16,6 @@ import asyncio
 import logging
 import re
 from functools import wraps
-from typing import Optional
 
 logger = logging.getLogger("andy.urgent")
 

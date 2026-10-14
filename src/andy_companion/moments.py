@@ -12,7 +12,7 @@ import json
 import os
 import secrets
 import tempfile
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Any, Dict, List, Optional
 
 from andy_companion.reminders import DATA_DIR

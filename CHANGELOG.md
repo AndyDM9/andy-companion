@@ -5,6 +5,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Changed (cleanup)
+
+- gitleaks over all 93 commits: no leaks. Four unused imports were removed; ruff's error and bug checks
+  (F, E9, B) pass over `src`, `tools`, `scripts`, `evals` and the voice wrapper.
+- Each milestone in `docs/PLAN.md` shows its real state.
+
 ### Added (what Andy costs to run)
 
 - **`docs/cost.md`:** about **$2.30 a month** for one household's conversation, help and web lookups at
