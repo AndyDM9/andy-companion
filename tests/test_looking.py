@@ -87,9 +87,12 @@ class StreamOpener:
 
 def test_the_research_streams_and_each_step_shows_on_the_screen(monkeypatch):
     shown = []
-    monkeypatch.setattr(board, "show", lambda kind, title, items, now=None: shown.append((title, [i["title"] for i in items])))
+    hows = []
+    monkeypatch.setattr(board, "show", lambda kind, title, items, now=None, how=None: (
+        shown.append((title, [i["title"] for i in items])), hows.append(how)))
     op = StreamOpener(STREAM)
     out = looking.run("the new bus routes", opener=op, sleep=lambda s: None)
+    assert hows[-1]["calls"] == ["research"] and hows[-1]["seconds"] >= 0      # how it is being found, so far
     assert out["status"] == "completed" and op.bodies[0]["stream"] is True and looking._state["busy"] is False
     assert shown[-1] == ("Looking into: the new bus routes",
                          ["Planning what to look for", "Searching the web", "Reading", "Writing the answer"])

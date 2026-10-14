@@ -1,24 +1,30 @@
-"""Does Tavily make Andy's scam check better? A measured answer, with real Tavily calls.
+"""Does Tavily make Andy's scam check better, and is it Tavily or a bigger model? Measured with real calls.
 
-    uv run python evals/scam_eval.py --spend      (needs NEBIUS_API_KEY and TAVILY_API_KEY)
+    uv run python evals/scam_eval.py --lookup --spend     Tavily, once per message: the warnings are saved
+    uv run python evals/scam_eval.py --warnings FILE --runs 3      the models only, no Tavily
+    cloud/scam-job.sh FILE                      the same as four Nebius Serverless Jobs, a quarter of the
+                                                messages each (a job's request may hold 64 KB), merged
 
-It spends about 160 Tavily credits a run (80 advanced searches), so it runs only with --spend. On
-2026-10-14, five runs while tuning used up the free plan's 1,000 a month: check the balance first.
+Each of the 120 messages in scam_messages.json is judged four ways, with strict JSON schemas and the same code
+as Andy's tool (andy_companion.scamcheck: the model names the sign it sees and quotes the message's words for
+it, and code accepts the sign only if those words are in the message):
 
-Each of the 80 messages in scam_messages.json (40 carrying known scam signs, 40 ordinary, Spanish
-among both; 20 of them hard on purpose) is judged two ways by NVIDIA Nemotron 3.5 Lightning on Token Factory, with a strict JSON
-schema:
+- **lightning:** NVIDIA Nemotron 3.5 Lightning, the message alone;
+- **ultra:** NVIDIA Nemotron 3 Ultra, the message alone: is a bigger model enough without the web?
+- **tavily_lightning:** Lightning, then Tavily's consumer-protection warnings matched by Lightning: what Tavily
+  adds with the model held the same;
+- **tavily_ultra:** Andy's real check: Lightning, then the warnings matched by Ultra.
 
-- **alone:** the message only;
-- **with Tavily:** Andy's real check first (andy_companion.web.check_message: numbers, links and
-  emails removed, then an advanced Tavily search of consumer-protection sites), and the model judges
-  with those warnings in hand, naming the source it relied on.
+The warnings come from andy_companion.web.check_message (numbers, links and emails removed, then an advanced
+Tavily search of consumer-protection sites), fetched once per message and saved (`--lookup`, about 240 credits
+for 120 messages, so it runs only with --spend; on 2026-10-14 five runs while tuning used up a month's free
+credits). The models then run as many times as asked against the same warnings, so the runs measure the models'
+variation and the Tavily calls are paid once.
 
-Both use andy_companion.scamcheck, as Andy's tool does: the model names the sign it sees and quotes the
-message's words for it, and code accepts the sign only if those words are in the message. It reports, for
-each: scams caught, ordinary messages wrongly flagged, and, with Tavily, how many scam
-verdicts are backed by a named consumer-protection source (what Andy can say aloud: "the FTC warns
-about this"). About 160 Tavily credits a run (advanced depth). The scorecard goes to evals/results/.
+The messages: s, g and h (80) were written while the check was built; r and o (40) were added after it was
+frozen, modelled on warnings published July to October 2026, so they are held out. Each arm reports scams
+caught and ordinary messages flagged, overall, for the subtle ones (h) and for the held-out ones (r, o), as the
+mean and range over runs, plus how many of the full check's scam verdicts name the source Andy says aloud.
 """
 
 from __future__ import annotations
@@ -34,86 +40,167 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "src"))
 
-from andy_companion import web  # noqa: E402
-
 from andy_companion import scamcheck  # noqa: E402
 
-MODEL = scamcheck.MODEL
+LIGHTNING, ULTRA = scamcheck.MODEL, scamcheck.MATCH_MODEL
+ARMS = {"lightning": (LIGHTNING, None, False), "ultra": (ULTRA, None, False),
+        "tavily_lightning": (LIGHTNING, LIGHTNING, True), "tavily_ultra": (LIGHTNING, ULTRA, True)}
+GROUPS = {"all": lambda m: True, "subtle (h)": lambda m: m["id"].startswith("h"),
+          "held out (r, o)": lambda m: bool(m.get("recent"))}
 
 
-def judge(message: str, warnings=None) -> dict:
-    for attempt in range(3):
-        try:
-            return scamcheck.verdict(message, warnings)
-        except scamcheck.ScamCheckError:
-            if attempt == 2:
-                raise
-            time.sleep(2 * (attempt + 1))
-    return {}
+def messages() -> list:
+    return json.loads((HERE / "scam_messages.json").read_text())["messages"]
 
 
-def one(m: dict) -> dict:
-    alone = judge(m["text"])
+def lookup(m: dict) -> dict:
+    from andy_companion import web
+
     t = time.time()
-    warnings = []
-    for attempt in range(4):           # the free plan limits bursts (HTTP 429): wait and try again
+    for attempt in range(4):           # bursts can meet HTTP 429: wait and try again
         try:
-            warnings = web.check_message(m["text"])
-            break
+            return {"id": m["id"], "warnings": web.check_message(m["text"]), "tavily_s": round(time.time() - t, 2)}
         except web.WebError:
             time.sleep(8 * (attempt + 1))
-    tavily_s = time.time() - t
-    with_tavily = judge(m["text"], warnings)
-    sources = {w.get("source", "") for w in warnings}
-    cited = str(with_tavily.get("source", "")).strip()
-    backed = bool(cited) and any(cited.lower() in s.lower() or s.lower() in cited.lower() for s in sources if s)
-    return {"id": m["id"], "scam": m["scam"], "alone": bool(alone.get("scam_signs")),
-            "with_tavily": bool(with_tavily.get("scam_signs")), "sign": with_tavily.get("sign"),
-            "warnings": len(warnings), "sources": sorted(s for s in sources if s), "cited": cited, "backed": backed,
-            "tavily_s": round(tavily_s, 2)}
+    return {"id": m["id"], "warnings": [], "tavily_s": round(time.time() - t, 2), "failed": True}
 
 
-def score(rows, key):
-    scams = [r for r in rows if r["scam"]]
-    ordinary = [r for r in rows if not r["scam"]]
-    caught = sum(r[key] for r in scams)
-    false_alarms = sum(r[key] for r in ordinary)
-    return {"scams_caught": caught, "of_scams": len(scams), "false_alarms": false_alarms, "of_ordinary": len(ordinary)}
+def judge(m: dict, warnings: list, arm: str) -> dict:
+    model, match_model, with_web = ARMS[arm]
+    for attempt in range(3):
+        try:
+            v = scamcheck.verdict(m["text"], warnings if with_web else None, model=model,
+                                  match_model=match_model or ULTRA)
+            return {"flagged": bool(v.get("scam_signs")), "source": v.get("source", "")}
+        except scamcheck.ScamCheckError:
+            time.sleep(2 * (attempt + 1))
+    return {"flagged": False, "source": "", "error": True}
+
+
+def score(rows: list, msgs: dict, arm: str, group) -> dict:
+    chosen = [r for r in rows if group(msgs[r["id"]])]
+    scams = [r for r in chosen if msgs[r["id"]]["scam"]]
+    ordinary = [r for r in chosen if not msgs[r["id"]]["scam"]]
+    return {"caught": sum(r[arm]["flagged"] for r in scams), "of_scams": len(scams),
+            "flagged": sum(r[arm]["flagged"] for r in ordinary), "of_ordinary": len(ordinary)}
+
+
+def one_run(msgs: list, warnings: dict, workers: int = 4) -> list:
+    def row(m):
+        w = warnings.get(m["id"], [])
+        return {"id": m["id"], **{arm: judge(m, w, arm) for arm in ARMS}}
+    with cf.ThreadPoolExecutor(max_workers=workers) as pool:
+        return list(pool.map(row, msgs))
+
+
+def summary(runs: list, msgs: list, warnings: dict) -> dict:
+    by_id = {m["id"]: m for m in msgs}
+    out = {}
+    for arm in ARMS:
+        out[arm] = {}
+        for gname, group in GROUPS.items():
+            per_run = [score(rows, by_id, arm, group) for rows in runs]
+            caught = [s["caught"] for s in per_run]
+            flagged = [s["flagged"] for s in per_run]
+            out[arm][gname] = {"of_scams": per_run[0]["of_scams"], "of_ordinary": per_run[0]["of_ordinary"],
+                               "caught_mean": round(sum(caught) / len(caught), 2), "caught_range": [min(caught), max(caught)],
+                               "flagged_mean": round(sum(flagged) / len(flagged), 2), "flagged_range": [min(flagged), max(flagged)]}
+    full = [r["tavily_ultra"] for rows in runs for r in rows if by_id[r["id"]]["scam"] and r["tavily_ultra"]["flagged"]]
+    out["full_check_scam_verdicts_naming_a_source"] = [sum(1 for v in full if v["source"]), len(full)]
+    out["scams_with_warnings_found"] = [sum(1 for m in msgs if m["scam"] and warnings.get(m["id"])),
+                                        sum(1 for m in msgs if m["scam"])]
+    return out
+
+
+def show(card: dict) -> None:
+    names = {"lightning": "Lightning alone", "ultra": "Ultra alone", "tavily_lightning": "Tavily + Lightning",
+             "tavily_ultra": "Tavily + Ultra (Andy)"}
+    print(f"Scam check, {card['messages']} messages, {card['runs']} runs (mean, range):")
+    for gname in GROUPS:
+        print(f"  {gname}")
+        for arm, label in names.items():
+            s = card["summary"][arm][gname]
+            print(f"    {label:22} caught {s['caught_mean']:>5}/{s['of_scams']} {s['caught_range']}, "
+                  f"ordinary flagged {s['flagged_mean']:>4}/{s['of_ordinary']} {s['flagged_range']}")
+    named, of = card["summary"]["full_check_scam_verdicts_naming_a_source"]
+    found, scams = card["summary"]["scams_with_warnings_found"]
+    print(f"  Andy's check named a consumer-protection source in {named} of {of} scam verdicts; "
+          f"Tavily found warnings for {found} of {scams} scams")
 
 
 def main() -> int:
-    if not (os.environ.get("NEBIUS_API_KEY") and os.environ.get("TAVILY_API_KEY")):
-        print("Needs NEBIUS_API_KEY and TAVILY_API_KEY.")
+    args = sys.argv[1:]
+    if not os.environ.get("NEBIUS_API_KEY") and "--lookup" not in args and "--merge" not in args:
+        print("Needs NEBIUS_API_KEY.")
         return 2
-    if "--spend" not in sys.argv:
-        print("This run uses about 160 Tavily credits (80 searches at advanced depth). Check the balance, then run "
-              "again with --spend.")
+    msgs = messages()
+    results = HERE / "results"
+    if "--lookup" in args:
+        if not os.environ.get("TAVILY_API_KEY"):
+            print("Needs TAVILY_API_KEY.")
+            return 2
+        if "--spend" not in args:
+            print(f"This makes {len(msgs)} advanced Tavily searches (about {2 * len(msgs)} credits). Check the balance, "
+                  "then run again with --spend.")
+            return 2
+        with cf.ThreadPoolExecutor(max_workers=2) as pool:      # gentle on Tavily's rate limit
+            found = list(pool.map(lookup, msgs))
+        out = results / f"scam-warnings-{datetime.now():%Y-%m-%d-%H%M}.json"
+        out.write_text(json.dumps({"fetched": datetime.now().astimezone().isoformat(timespec="seconds"),
+                                   "messages": found}, indent=1, ensure_ascii=False))
+        failed = sum(1 for f in found if f.get("failed"))
+        print(f"Warnings for {len(found)} messages ({failed} lookups failed), median search "
+              f"{sorted(f['tavily_s'] for f in found)[len(found) // 2]} s: {out}")
+        return 0
+    if "--merge" in args:
+        return merge([Path(a) for a in args[args.index("--merge") + 1:]], msgs)
+    if "--warnings" not in args:
+        print(__doc__)
         return 2
-    data = json.loads((HERE / "scam_messages.json").read_text())
-    with cf.ThreadPoolExecutor(max_workers=2) as pool:   # gentle on Tavily's rate limit
-        rows = list(pool.map(one, data["messages"]))
-    alone, with_t = score(rows, "alone"), score(rows, "with_tavily")
-    scam_verdicts = [r for r in rows if r["scam"] and r["with_tavily"]]
-    backed = sum(r["backed"] for r in scam_verdicts)
-    with_warnings = sum(1 for r in rows if r["scam"] and r["warnings"])
-    hard = [r for r in rows if r["id"].startswith("h")]
-    card = {"ran": datetime.now().astimezone().isoformat(timespec="seconds"), "model": MODEL,
-            # "alone" is the first model only; "with_tavily" adds Tavily's warnings and the second model's match.
-            "match_model": scamcheck.MATCH_MODEL, "messages": len(rows), "alone": alone, "with_tavily": with_t,
-            "scams_with_warnings_found": with_warnings, "hard_alone": score(hard, "alone"),
-            "hard_with_tavily": score(hard, "with_tavily"),
-            "scam_verdicts_backed_by_a_named_source": backed, "of_scam_verdicts": len(scam_verdicts),
-            "median_tavily_s": sorted(r["tavily_s"] for r in rows)[len(rows) // 2], "rows": rows}
-    out = HERE / "results" / f"scam-eval-{datetime.now():%Y-%m-%d-%H%M}.json"
+    if "--part" in args:                              # "1/2": every second message, from the first
+        k, n_parts = (int(x) for x in args[args.index("--part") + 1].split("/"))
+        msgs = msgs[k - 1::n_parts]
+    wfile = Path(args[args.index("--warnings") + 1])
+    warnings = {f["id"]: f["warnings"] for f in json.loads(wfile.read_text())["messages"]}
+    n = int(args[args.index("--runs") + 1]) if "--runs" in args else 1
+    started = time.time()
+    runs = [one_run(msgs, warnings) for _ in range(n)]
+    card = {"ran": datetime.now().astimezone().isoformat(timespec="seconds"), "models": {"lightning": LIGHTNING, "ultra": ULTRA},
+            "warnings_file": wfile.name, "messages": len(msgs), "runs": n, "minutes": round((time.time() - started) / 60, 1),
+            "errors": sum(1 for rows in runs for r in rows for arm in ARMS if r[arm].get("error")),
+            "warnings_found": {m["id"]: len(warnings.get(m["id"], [])) for m in msgs},
+            "summary": summary(runs, msgs, warnings), "rows": runs}
+    show(card)
+    if os.environ.get("ANDY_IN_JOB"):
+        # A job's log cuts lines at 16,384 characters and may not keep their order (2026-10-14), so the
+        # scorecard goes out in short numbered chunks that cloud/scam-job.sh puts back together.
+        text = json.dumps(card, ensure_ascii=False)
+        chunks = [text[i:i + 4000] for i in range(0, len(text), 4000)]
+        for i, chunk in enumerate(chunks, 1):
+            print(f"SCORECARD_CHUNK {i}/{len(chunks)} {chunk}", flush=True)
+    else:
+        out = results / f"scam-eval-{datetime.now():%Y-%m-%d-%H%M}.json"
+        out.write_text(json.dumps(card, indent=1, ensure_ascii=False))
+        print(f"Scorecard: {out}")
+    return 0
+
+
+def merge(cards: list, msgs: list) -> int:
+    """One scorecard from the parts' scorecards (the same runs, different messages)."""
+    parts = [json.loads(c.read_text()) for c in cards]
+    runs = [sum((p["rows"][i] for p in parts), []) for i in range(min(p["runs"] for p in parts))]
+    seen = {r["id"] for r in runs[0]}
+    msgs = [m for m in msgs if m["id"] in seen]
+    warnings = {}
+    for p in parts:
+        warnings.update(p.get("warnings_found", {}))
+    card = {**{k: parts[0][k] for k in ("ran", "models", "warnings_file")}, "messages": len(msgs), "runs": len(runs),
+            "minutes": max(p["minutes"] for p in parts), "errors": sum(p["errors"] for p in parts),
+            "ran_on": parts[0].get("ran_on", ""), "jobs": [p.get("job", "") for p in parts],
+            "summary": summary(runs, msgs, {k: [1] * v for k, v in warnings.items()}), "rows": runs}
+    show(card)
+    out = HERE / "results" / f"scam-eval-{datetime.now():%Y-%m-%d-%H%M}-nebius-jobs.json"
     out.write_text(json.dumps(card, indent=1, ensure_ascii=False))
-    print(f"Scam check, {len(rows)} messages ({MODEL}):")
-    for name, s in (("alone", alone), ("with Tavily", with_t)):
-        print(f"  {name:12} scams caught {s['scams_caught']}/{s['of_scams']}, ordinary flagged {s['false_alarms']}/{s['of_ordinary']}")
-    for name, key in (("hard, alone", "hard_alone"), ("hard, Tavily", "hard_with_tavily")):
-        h = card[key]
-        print(f"  {name:12} scams caught {h['scams_caught']}/{h['of_scams']}, ordinary flagged {h['false_alarms']}/{h['of_ordinary']}")
-    print(f"  with Tavily, warnings found for {with_warnings}/{alone['of_scams']} scams; {backed}/{len(scam_verdicts)} scam verdicts "
-          f"name a consumer-protection source; median search {card['median_tavily_s']} s")
     print(f"Scorecard: {out}")
     return 0
 

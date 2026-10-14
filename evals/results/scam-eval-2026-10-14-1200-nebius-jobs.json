@@ -1,0 +1,7070 @@
+{
+ "ran": "2026-10-14T15:52:05+00:00",
+ "models": {
+  "lightning": "nvidia/Nemotron-3_5-Lightning",
+  "ultra": "nvidia/Nemotron-3-Ultra-550b-a55b"
+ },
+ "warnings_file": "scam-warnings-2026-10-14-1144.json",
+ "messages": 120,
+ "runs": 3,
+ "minutes": 2.7,
+ "errors": 17,
+ "ran_on": "Nebius Serverless Job, cpu-d3 2vcpu-8gb",
+ "jobs": [
+  "andy-scam-20261014-114642-1",
+  "andy-scam-20261014-114642-2",
+  "andy-scam-20261014-114642-3",
+  "andy-scam-20261014-114642-4"
+ ],
+ "summary": {
+  "lightning": {
+   "all": {
+    "of_scams": 60,
+    "of_ordinary": 60,
+    "caught_mean": 53.33,
+    "caught_range": [
+     53,
+     54
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   },
+   "subtle (h)": {
+    "of_scams": 10,
+    "of_ordinary": 10,
+    "caught_mean": 7.0,
+    "caught_range": [
+     7,
+     7
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   },
+   "held out (r, o)": {
+    "of_scams": 20,
+    "of_ordinary": 20,
+    "caught_mean": 18.0,
+    "caught_range": [
+     18,
+     18
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   }
+  },
+  "ultra": {
+   "all": {
+    "of_scams": 60,
+    "of_ordinary": 60,
+    "caught_mean": 55.67,
+    "caught_range": [
+     55,
+     56
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   },
+   "subtle (h)": {
+    "of_scams": 10,
+    "of_ordinary": 10,
+    "caught_mean": 8.0,
+    "caught_range": [
+     8,
+     8
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   },
+   "held out (r, o)": {
+    "of_scams": 20,
+    "of_ordinary": 20,
+    "caught_mean": 18.0,
+    "caught_range": [
+     18,
+     18
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   }
+  },
+  "tavily_lightning": {
+   "all": {
+    "of_scams": 60,
+    "of_ordinary": 60,
+    "caught_mean": 60.0,
+    "caught_range": [
+     60,
+     60
+    ],
+    "flagged_mean": 24.0,
+    "flagged_range": [
+     22,
+     26
+    ]
+   },
+   "subtle (h)": {
+    "of_scams": 10,
+    "of_ordinary": 10,
+    "caught_mean": 10.0,
+    "caught_range": [
+     10,
+     10
+    ],
+    "flagged_mean": 3.33,
+    "flagged_range": [
+     3,
+     4
+    ]
+   },
+   "held out (r, o)": {
+    "of_scams": 20,
+    "of_ordinary": 20,
+    "caught_mean": 20.0,
+    "caught_range": [
+     20,
+     20
+    ],
+    "flagged_mean": 11.67,
+    "flagged_range": [
+     11,
+     12
+    ]
+   }
+  },
+  "tavily_ultra": {
+   "all": {
+    "of_scams": 60,
+    "of_ordinary": 60,
+    "caught_mean": 58.0,
+    "caught_range": [
+     58,
+     58
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   },
+   "subtle (h)": {
+    "of_scams": 10,
+    "of_ordinary": 10,
+    "caught_mean": 9.0,
+    "caught_range": [
+     9,
+     9
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   },
+   "held out (r, o)": {
+    "of_scams": 20,
+    "of_ordinary": 20,
+    "caught_mean": 19.0,
+    "caught_range": [
+     19,
+     19
+    ],
+    "flagged_mean": 0.0,
+    "flagged_range": [
+     0,
+     0
+    ]
+   }
+  },
+  "full_check_scam_verdicts_naming_a_source": [
+   170,
+   174
+  ],
+  "scams_with_warnings_found": [
+   59,
+   60
+  ]
+ },
+ "rows": [
+  [
+   {
+    "id": "s01",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": ""
+    }
+   },
+   {
+    "id": "s05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s13",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s17",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s21",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "s25",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "s29",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g23",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g27",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r01",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r09",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r13",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "r17",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "o01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s14",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "s18",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s22",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "s26",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s30",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g04",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g08",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g24",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g28",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "h10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r14",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "r18",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ic3.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ic3.gov"
+    }
+   },
+   {
+    "id": "o02",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o06",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o10",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s03",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s07",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s11",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s15",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s19",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ic3.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ic3.gov"
+    }
+   },
+   {
+    "id": "s23",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s27",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "g01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g21",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g25",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g29",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h07",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r03",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r11",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r15",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r19",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "o03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s12",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s16",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s20",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s24",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s28",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g02",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g06",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g10",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g22",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g26",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g30",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "h08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "h12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "r08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "r12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r16",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "r20",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "o04",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o08",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   }
+  ],
+  [
+   {
+    "id": "s01",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": ""
+    }
+   },
+   {
+    "id": "s05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s13",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s17",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s21",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "s25",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "s29",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g23",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g27",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r01",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r09",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r13",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "r17",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "o01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s14",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "s18",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s22",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "s26",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s30",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g04",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g08",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g24",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g28",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "h10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r14",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "r18",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ic3.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": ""
+    }
+   },
+   {
+    "id": "o02",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o06",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o10",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s03",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s07",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s11",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s15",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s19",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ic3.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ic3.gov"
+    }
+   },
+   {
+    "id": "s23",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s27",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "g01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g21",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g25",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g29",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h07",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r03",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r11",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r15",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r19",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "o03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s12",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s16",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s20",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s24",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s28",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g02",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g06",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g10",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g22",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g26",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g30",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "h08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "h12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "r08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "r12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r16",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "r20",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "o04",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o08",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   }
+  ],
+  [
+   {
+    "id": "s01",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": ""
+    }
+   },
+   {
+    "id": "s05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s13",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s17",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s21",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "s25",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "s29",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g23",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g27",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r01",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r05",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r09",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r13",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "r17",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "o01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s14",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "s18",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s22",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "s26",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s30",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g04",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g08",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g24",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g28",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "h10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r02",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r06",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r10",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r14",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "r18",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ic3.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ic3.gov"
+    }
+   },
+   {
+    "id": "o02",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o06",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o10",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s03",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s07",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "s11",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s15",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s19",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ic3.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ic3.gov"
+    }
+   },
+   {
+    "id": "s23",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s27",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "g01",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g05",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g09",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g13",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g17",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g21",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g25",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g29",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h07",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "h11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r03",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r11",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r15",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r19",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "o03",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o07",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o11",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o15",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o19",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "s04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "bbb.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "bbb.org"
+    }
+   },
+   {
+    "id": "s08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s12",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s16",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s20",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s24",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "s28",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumidor.ftc.gov"
+    }
+   },
+   {
+    "id": "g02",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g06",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g10",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g14",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g18",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g22",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g26",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "g30",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "h08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "h12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "h20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "r04",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "aarp.org"
+    }
+   },
+   {
+    "id": "r08",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "ftc.gov"
+    }
+   },
+   {
+    "id": "r12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "r16",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "fbi.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "fbi.gov"
+    }
+   },
+   {
+    "id": "r20",
+    "lightning": {
+     "flagged": true,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": true,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    }
+   },
+   {
+    "id": "o04",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o08",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "consumer.ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o12",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": "",
+     "error": true
+    },
+    "tavily_lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o16",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "ftc.gov"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   },
+   {
+    "id": "o20",
+    "lightning": {
+     "flagged": false,
+     "source": ""
+    },
+    "ultra": {
+     "flagged": false,
+     "source": ""
+    },
+    "tavily_lightning": {
+     "flagged": true,
+     "source": "aarp.org"
+    },
+    "tavily_ultra": {
+     "flagged": false,
+     "source": ""
+    }
+   }
+  ]
+ ]
+}

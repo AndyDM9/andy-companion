@@ -42,11 +42,20 @@ with its sources.
 - **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle
   jokes and riddles, public-domain stories read a part at a time, On this day from Wikipedia, and "help me
   think it through" with Nemotron 3 Ultra.
-- **Scam checks, measured:** Andy's full check (Tavily's consumer-protection warnings, then Nemotron 3
-  Ultra comparing the message with each warning) caught 39 of 40 scams (9 of 10 subtle ones) against 36
-  (7 subtle) for Nemotron 3.5 Lightning alone, flagged none of 40 ordinary messages, and named its source
-  for 38 of 39. One run, on messages written while the check was built
-  ([evals/scam_eval.py](evals/scam_eval.py), 2026-10-14).
+- **Scam checks, measured on Nebius** (120 messages read aloud, 60 scams and 60 ordinary; 40 of them
+  written after the check was frozen, from this autumn's consumer-protection warnings; three runs as Nebius
+  Serverless Jobs, 2026-10-14, [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)):
+
+  | | Scams caught (of 60) | Ordinary flagged (of 60) |
+  |---|---|---|
+  | Nemotron 3.5 Lightning alone | 53.3 | 0 |
+  | Nemotron 3 Ultra alone, no web | 55.7 | 0 |
+  | Tavily's warnings, matched by Lightning | 60 | 24 |
+  | **Andy: Tavily's warnings, matched by Ultra** | **58** | **0** |
+
+  Tavily's warnings let every scam be caught, but only a strong model tells the same trick from the same
+  topic. Andy named the consumer-protection source it relied on in 170 of 174 scam verdicts; on the 20
+  held-out scams it caught 19, against 18 for either model alone.
 - **The world, with sources:** local news from your own papers, look-ups, what's on, a link family sent,
   and scam checks, all through Tavily.
 - **Family, on your terms:** family see only what you share, Andy tells you who looked, and a helper sets

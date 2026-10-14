@@ -14,6 +14,10 @@ Privacy: the frames go only to the person's own endpoint and are not kept there.
 TV lives in the screen server's memory for two minutes (screen_server.FRAME_FOR_S) and is never
 written to disk. The model is told never to describe people. Nothing is logged but whether it was
 found.
+
+Measuring it (PLAN B11): only when ANDY_FINDER_RECORD names a folder, each try is kept there for scoring by
+evals/finder_eval.py: the four views, what the model said of each, the view Andy chose and the times. It is
+off by default and meant for the founder's own test sessions; delete the folder after scoring.
 """
 
 from __future__ import annotations
@@ -112,6 +116,32 @@ def best(results: List[Dict[str, Any]]) -> Optional[int]:
     return min(seen, key=lambda i: abs(results[i]["x"] - 0.5)) if seen else None
 
 
+def record(what: str, frames: List[Any], results: List[Dict[str, Any]], chosen: Optional[int],
+           seconds: Dict[str, float], folder: Optional[str] = None) -> Optional[str]:
+    """Keep one try for scoring, only when ANDY_FINDER_RECORD names a folder. Returns the try's folder."""
+    import time
+    from pathlib import Path
+
+    folder = folder or os.environ.get("ANDY_FINDER_RECORD", "")
+    if not folder:
+        return None
+    try:
+        from andy_companion import vision
+
+        out = Path(folder).expanduser() / time.strftime("try-%Y%m%d-%H%M%S")
+        out.mkdir(parents=True, exist_ok=True)
+        os.chmod(out, 0o700)
+        for i, f in enumerate(frames):
+            if f is not None:
+                (out / f"view-{i}.jpg").write_bytes(vision.jpeg(f))
+        (out / "try.json").write_text(json.dumps({"what": what, "sweep_deg": list(SWEEP_DEG), "results": results,
+                                                  "chosen": chosen, "seconds": seconds}, indent=1))
+        return str(out)
+    except Exception as e:   # recording is a help for measuring, never a reason to fail the person
+        logger.info("finder: could not record the try (%s)", type(e).__name__)
+        return None
+
+
 def post_frame(jpeg: bytes, opener: Optional[Callable] = None) -> None:
     """The frame to the screen server's memory (this computer only), for the TV."""
     from andy_companion import board, captions
@@ -177,14 +207,17 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, po
             return {"error": str(a)}
     results = [a if isinstance(a, dict) else dict(nothing) for a in answers]
     i = best(results)
+    looked_s = clock() - start
     logger.info("finder: %s", "found" if i is not None else "not found")
     if i is None:
+        record(what, frames, results, None, {"to_answer": round(looked_s, 2)})
         return {"found": False, "what": what, "looked": len(frames),
                 "how": (f"Say kindly that you looked around but couldn't see their {what} from where you are. "
                         "Offer to look again if they move something or hold it nearer, or suggest one likely "
                         "place to check. No guessing.")}
     yaw = target_yaw(math.radians(SWEEP_DEG[i]), results[i]["x"])
     manager.queue_move(queueable(look.HoldLook(robot.get_current_head_pose(), antennas, yaw, pitch, POINT_HOLD_S)))
+    record(what, frames, results, i, {"to_answer": round(looked_s, 2), "to_point": round(clock() - start, 2)})
     try:
         from andy_companion import vision
 

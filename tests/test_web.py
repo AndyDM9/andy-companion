@@ -146,3 +146,20 @@ def test_crawl_and_map_wait_a_little_longer_than_tavily_does():
         client, server = waits[path]
         assert server == web.CRAWL_SERVER_S and server < client == web.CRAWL_TIMEOUT_S
     assert waits["search"][0] == web.TIMEOUT_S
+
+
+def test_how_andy_found_it_names_each_call_its_depth_time_and_credits():
+    op = Opener({**NEWS, "usage": {"credits": 1}}, {**NEWS, "usage": {"credits": 1}})
+    found, how = web.traced(lambda: web.local_news("Harbor Bay", sources=["quietpaper.com"], opener=op) and
+                            web.look_up("library hours", opener=op))
+    assert found and how["calls"] == ["search", "search"] and how["depth"] == "basic"
+    assert how["credits"] == 2 and how["seconds"] >= 0
+    assert all(body["include_usage"] is True for _, body, _ in op.requests)
+    assert "library" not in json.dumps(how)                       # names and numbers only, never the query
+
+
+def test_calls_outside_a_trace_note_nothing_and_unknown_credits_stay_unknown():
+    web.look_up("x", opener=Opener(NEWS))                          # no trace running: nothing kept
+    found, how = web.traced(lambda: web.look_up("x", opener=Opener(NEWS)))
+    assert how["credits"] is None and how["calls"] == ["search"]
+    assert web.traced(lambda: [])[1] == {}

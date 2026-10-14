@@ -1,3 +1,4 @@
+from pathlib import Path
 import asyncio
 import json
 import os
@@ -280,3 +281,14 @@ def test_the_settings_code_on_a_tv_opened_at_localhost_uses_the_home_network_add
     monkeypatch.setattr(screen_server, "settings_qr", lambda host: seen.append(host) or "data:image/svg+xml,")
     get(server + f"/api/screen?t={board.tokens()['screen']}")
     assert seen == [f"192.168.1.20:{server.rsplit(':', 1)[1]}"]
+
+
+def test_a_card_says_how_it_was_found_in_names_and_numbers_only():
+    board.show("look_up", "What I found", [{"title": "Open till 6", "source": "library.org"}], now=1000,
+               how={"calls": ["search"], "depth": "basic", "credits": 1, "seconds": 1.42, "query": "secret words"})
+    shown = board.showing(now=1001)
+    assert shown["how"] == {"calls": ["search"], "depth": "basic", "credits": 1, "seconds": 1.42}
+    board.show("news", "Local news", [], now=1000)
+    assert "how" not in board.showing(now=1001)
+    page = (Path(__file__).resolve().parents[1] / "src/andy_companion/pages/screen.html").read_text()
+    assert 'id="found-how"' in page and 'how: "Found with Tavily"' in page and 'how: "Encontrado con Tavily"' in page

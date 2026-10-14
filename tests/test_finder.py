@@ -155,3 +155,29 @@ def test_a_stopped_endpoint_is_said_at_once_not_after_the_read_timeout(monkeypat
     monkeypatch.setattr(urllib.request, "urlopen", never)
     with pytest.raises(finder.FinderError, match="switched off"):
         finder.ask(np.zeros((48, 64, 3), dtype=np.uint8), "glasses")
+
+
+def test_a_try_is_kept_only_when_asked_and_scored_against_the_persons_labels(tmp_path, monkeypatch):
+    import importlib.util
+    import numpy as np
+    from pathlib import Path
+
+    frames = [np.zeros((8, 8, 3), dtype=np.uint8)] * 4
+    results = [{"seen": False, "x": 0.5, "where": ""}, {"seen": True, "x": 0.4, "where": "on the table"},
+               {"seen": False, "x": 0.5, "where": ""}, {"seen": False, "x": 0.5, "where": ""}]
+    monkeypatch.delenv("ANDY_FINDER_RECORD", raising=False)
+    assert finder.record("glasses", frames, results, 1, {"to_point": 4.2}) is None        # off by default
+    kept = Path(finder.record("glasses", frames, results, 1, {"to_point": 4.2}, folder=str(tmp_path)))
+    assert sorted(p.name for p in kept.iterdir()) == ["try.json", "view-0.jpg", "view-1.jpg", "view-2.jpg", "view-3.jpg"]
+    assert oct(kept.stat().st_mode & 0o777) == "0o700"
+
+    spec = importlib.util.spec_from_file_location("finder_eval", Path(finder.__file__).parents[2] / "evals" / "finder_eval.py")
+    ev = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ev)
+    (tmp_path / "labels.csv").write_text(f"{kept.name},1 2\n")
+    card = ev.score(ev.tries(tmp_path), ev.labels(tmp_path))
+    assert card["in_sight"] == {"tries": 1, "right": 1, "wrong_view": 0, "missed": 0}
+    assert card["median_to_point_s"] == 4.2
+    (tmp_path / "labels.csv").write_text(f"{kept.name},none\n")
+    assert ev.score(ev.tries(tmp_path), ev.labels(tmp_path))["out_of_sight"]["pointed_at_nothing"] == 1
+    assert "view-1.jpg" in ev.sheet(tmp_path).read_text()

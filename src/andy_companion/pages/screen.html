@@ -286,6 +286,7 @@
       <h2 id="found-h">&nbsp;</h2>
       <div id="items"></div>
       <p class="source" id="found-source" hidden></p>
+      <p class="source how" id="found-how" hidden></p>
     </section>
   </main>
   <p class="caption" id="caption" aria-live="polite"></p>
@@ -305,7 +306,9 @@
 
   // The page's own words, in the language chosen on the setup page.
   const UI = {
-    en: { family: "family", nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
+    en: { how: "Found with Tavily", howSoFar: "so far", credit: "credit", credits: "credits", and: "and",
+          calls: { search: "search", extract: "extract", crawl: "crawl", map: "map", research: "research" },
+          family: "family", nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
           code: "Point a phone's camera here to open Andy's settings. It disappears in two minutes.",
           gear: "Settings", menu: "Andy's settings", menuCode: "Show the settings code", menuCodeHint: "Point a phone's camera at it to change Andy's settings",
@@ -313,7 +316,9 @@
           kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
                    check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says", today: "Today", story: "Story time", on_this_day: "On this day", seen: "What I see" },
           where: "Andy looks here when it shows you something new." },
-    es: { family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
+    es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", credit: "crédito", credits: "créditos", and: "y",
+          calls: { search: "búsqueda", extract: "extracción", crawl: "rastreo", map: "mapa", research: "investigación" },
+          family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
           code: "Apunte la cámara de un teléfono aquí para abrir los ajustes de Andy. Desaparece en dos minutos.",
           gear: "Ajustes", menu: "Ajustes de Andy", menuCode: "Mostrar el código de ajustes", menuCodeHint: "Apunte la cámara de un teléfono para cambiar los ajustes de Andy",
@@ -441,6 +446,9 @@
         }
         $("found-source").hidden = !sources.length;
         text($("found-source"), `${ui.from} ${sources.join(", ")}`);
+        const how = howLine(showing);
+        $("found-how").hidden = !how;
+        text($("found-how"), how);
       }
     }
 
@@ -529,6 +537,19 @@
       t -= lasts;
     }
     return capPages[capPages.length - 1] || "";
+  }
+  // "How Andy found this": which Tavily calls, their depth, the time and the credits Tavily reported.
+  function howLine(showing) {
+    const h = showing.how;
+    if (!h || !h.calls || !h.calls.length) return "";
+    const names = [...new Set(h.calls)].map((c) => ui.calls[c] || c);
+    const what = names.length > 1 ? names.slice(0, -1).join(", ") + ` ${ui.and} ` + names[names.length - 1] : names[0];
+    const lang = document.documentElement.lang || "en";
+    const secs = Number(h.seconds || 0).toLocaleString(lang, { maximumFractionDigits: 1 }) + " s";
+    const parts = [`${ui.how}: ${what}` + (h.depth ? ` (${h.depth})` : ""),
+                   showing.kind === "research" ? `${secs} ${ui.howSoFar}` : secs];
+    if (typeof h.credits === "number") parts.push(`${h.credits} ${h.credits === 1 ? ui.credit : ui.credits}`);
+    return parts.join(", ");
   }
   function clock12(hhmm) {
     let [h, m] = hhmm.split(":").map(Number);

@@ -89,6 +89,10 @@ pace, laid over the foot of the screen like a TV's subtitles. When something new
 head to look at it, and back to you. A card stays five minutes, then the family photos come back. The
 clock keeps one size, so nothing on the screen moves when a card, a photo or a caption comes and goes.
 
+Under what Andy found on the web, a small line says how: which Tavily call, its depth, the time and the
+credits Tavily reported ("Found with Tavily: search (basic), 1.4 s, 1 credit"), and for research, the time
+so far.
+
 A **Settings** button with a gear, top right, works with a mouse or the TV's remote (arrow keys, OK, Back).
 It offers **Show the settings code** (the QR code for a phone, for two minutes) and **Under the hood**
 (how fast Andy answers and what it uses, live, with a way back to the screen).

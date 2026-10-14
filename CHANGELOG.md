@@ -5,6 +5,33 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Measured (the scam check, four ways, as Nebius Serverless Jobs)
+
+- **120 messages** (40 new ones written after the check was frozen, modelled on consumer-protection
+  warnings from July to October 2026: law-enforcement and fund-recovery impersonation, "move your money to
+  keep it safe", Medicare cards at open enrollment, a name-only text, toll notices, gold couriers; and 20
+  ordinary messages on the same topics). Tavily searched once per message (240 credits); the models ran
+  three times, as four Nebius Serverless Jobs, two at a time (`cloud/scam-job.sh`).
+- **Andy's check (Tavily's warnings matched by Nemotron 3 Ultra): 58 of 60 scams, none of 60 ordinary
+  messages flagged.** Ultra alone, no web: 55.7; Lightning alone: 53.3 (both none flagged). Tavily's
+  warnings matched by Lightning: all 60, but 24 ordinary messages flagged: the web finds the trick, the
+  stronger model tells the trick from the topic. Held out: 19 of 20 against 18. Source named in 170 of 174.
+- What this replaced: one run of 80 messages that mixed Tavily with the second model. `scam_eval.py` now
+  takes `--lookup --spend` (Tavily once, saved), `--warnings FILE --runs N` (the models only) and
+  `--merge`; `scamcheck.verdict` takes its two models as parameters. 5 tests.
+- Met on the way, in the feedback: Nemotron 3 Ultra's strict JSON sometimes stalls in blank space (17 of
+  360 first-step answers); a job's request may hold 64 KB with its files; a new account runs two VMs at
+  once; a job's log cuts lines at 16,384 characters and may reorder them.
+
+### Added ("how Andy found this", and the finder measured)
+
+- **Under what Andy found on the web, the TV says how:** "Found with Tavily: search (basic), 1.4 s,
+  1 credit" (in Spanish too), from `include_usage` on each call; for research, the time so far. Names and
+  numbers only. A look-up's heading is now the question asked. 3 tests.
+- **The finder, measured from real tries:** with `ANDY_FINDER_RECORD` set (off by default), each try keeps
+  its four views, what the model said, Andy's choice and the times; `evals/finder_eval.py` makes a contact
+  sheet to label and scores right, wrong view, missed and time to point (live test 3t2). 1 test.
+
 ### Fixed (a code and integration audit, every high and medium finding)
 
 A read-only audit of the whole system found six high and eleven medium problems, none critical. All fixed,

@@ -48,9 +48,11 @@ follow you, its antennas lift while you speak and lean while it thinks.
 
 - **A language model that moves a robot's body to find things,** with nothing trained: Nemotron Nano VL
   reads four views as structured output, and Andy turns its head to the one it chose.
-- **A scam check measured with and without the web:** on 80 messages read aloud, Tavily's
-  consumer-protection warnings plus a second look by Nemotron 3 Ultra caught 39 of 40 scams against 36,
-  with no ordinary message flagged.
+- **A scam check measured four ways, on Nebius:** on 120 messages read aloud, three runs as Nebius
+  Serverless Jobs, Tavily's consumer-protection warnings matched by Nemotron 3 Ultra caught 58 of 60
+  scams with no ordinary message flagged, against 55.7 for Ultra without the web and 53.3 for Lightning.
+  Matched by the smaller model, the same warnings flagged 24 ordinary messages: the web finds the
+  trick, and the stronger model tells the trick from the topic.
 - **Rules below the model, in code:** a letter that asks for gift cards gets **Be careful** whatever the
   model says, and its phone numbers are never read out.
 - **A spoken-conversation suite run as a Nebius Serverless Job,** judged by Nemotron 3 Ultra, with words
@@ -94,12 +96,15 @@ follow you, its antennas lift while you speak and lean while it thinks.
   - **map:** at setup, the town's events calendar found on its own website (with a search within the
     site when the site refuses crawlers);
   - **research, streamed:** "look into it", step by step on the screen.
-- **Measured: does Tavily make the scam check better?** On 80 messages read aloud (40 with scam signs,
-  40 ordinary, 20 hard on purpose), with real calls: Nemotron 3.5 Lightning alone caught 36 of 40 scams; Andy's full check, which adds
-  Tavily's consumer-protection warnings and Nemotron 3 Ultra comparing the message with each one, caught
-  **39 of 40, and 9 of the 10 subtle ones against 7**, with **no ordinary message flagged** either way, and
-  38 of 39 scam verdicts naming the consumer-protection source Andy says aloud
-  (`evals/scam_eval.py`, 2026-10-14; one run, on messages written while the check was built).
+- **Measured: what does Tavily add to the scam check?** 120 messages read aloud (60 with scam signs, 60
+  ordinary; 40 written after the check was frozen, modelled on consumer-protection warnings from July to
+  October 2026). Tavily searched once per message; the models ran three times, as Nebius Serverless Jobs
+  (`cloud/scam-job.sh`, `evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json`):
+  - Nemotron 3.5 Lightning alone: 53.3 of 60 scams, no ordinary message flagged;
+  - Nemotron 3 Ultra alone, no web: 55.7, none flagged;
+  - Tavily's warnings matched by Lightning: 60, but 24 ordinary messages flagged;
+  - **Andy's check, Tavily's warnings matched by Ultra: 58 of 60, none flagged**, and the source named in
+    170 of 174 scam verdicts; on the 20 held-out scams, 19 against 18 for either model alone.
 
   Andy offers an action from an answer (a reminder, a note to family) and waits for a yes; the suite
   judges it.

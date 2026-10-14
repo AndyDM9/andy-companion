@@ -11,6 +11,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import threading
+import time
 import urllib.parse
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
@@ -48,9 +50,47 @@ def _key() -> str:
     return key
 
 
+# "How Andy found this": while a tool runs inside traced(), each Tavily call notes what it was, its depth,
+# the credits Tavily says it used (include_usage) and how long it took. Names and numbers only, never the query.
+_TRAIL = threading.local()
+USAGE_PATHS = ("/search", "/extract", "/crawl", "/map")
+
+
+def traced(fn: Callable[[], Any]) -> Any:
+    """Run fn; return (its result, how it was found), for the screen's card (board.show(..., how=...))."""
+    _TRAIL.calls = []
+    try:
+        out = fn()
+    finally:
+        calls, _TRAIL.calls = _TRAIL.calls, None
+    return out, how(calls)
+
+
+def how(calls: List[Dict[str, Any]]) -> Dict[str, Any]:
+    if not calls:
+        return {}
+    credits = [c["credits"] for c in calls if c.get("credits") is not None]
+    return {"calls": [c["call"] for c in calls][:4], "depth": next((c["depth"] for c in calls if c.get("depth")), ""),
+            "credits": sum(credits) if credits else None, "seconds": round(sum(c["seconds"] for c in calls), 1)}
+
+
+def _note(path: str, body: Optional[Dict[str, Any]], data: Dict[str, Any], seconds: float) -> None:
+    calls = getattr(_TRAIL, "calls", None)
+    if calls is None:
+        return
+    usage = data.get("usage") if isinstance(data, dict) else None
+    credits = usage.get("credits") if isinstance(usage, dict) else None
+    calls.append({"call": path.strip("/").split("/")[0], "seconds": seconds,
+                  "depth": str((body or {}).get("search_depth") or (body or {}).get("extract_depth") or ""),
+                  "credits": credits if isinstance(credits, (int, float)) else None})
+
+
 def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] = None,
           project: bool = True, timeout: float = TIMEOUT_S) -> Dict[str, Any]:
     """POST body to Tavily, or GET when body is None."""
+    if body is not None and path in USAGE_PATHS:
+        body = {**body, "include_usage": True}      # the credits each call used, for "how Andy found this"
+    started = time.monotonic()
     headers = {"Authorization": f"Bearer {_key()}", "Content-Type": "application/json"}
     if project:   # Tavily counts this product's use apart from any other (X-Project-ID)
         headers["X-Project-ID"] = os.environ.get("TAVILY_PROJECT", "andy-companion")
@@ -59,7 +99,9 @@ def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] 
                                  headers=headers)
     try:
         with (opener or urllib.request.urlopen)(req, timeout=timeout) as r:
-            return json.loads(r.read())
+            data = json.loads(r.read())
+        _note(path, body, data, time.monotonic() - started)
+        return data
     except WebError:
         raise
     except Exception as e:   # never echo the request: it holds what the person said

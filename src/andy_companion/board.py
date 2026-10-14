@@ -91,12 +91,19 @@ def new_family_link() -> str:
 
 # --- the screen -------------------------------------------------------------------------------
 
-def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float] = None) -> None:
-    """Put something on the screen beside Andy, for SHOW_FOR_S."""
+def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float] = None,
+         how: Optional[Dict[str, Any]] = None) -> None:
+    """Put something on the screen beside Andy, for SHOW_FOR_S. `how`: how it was found (web.traced), names
+    and numbers only, shown in small type under the sources."""
     clean_items = [{k: _tidy(v, 300) for k, v in item.items() if k in ("title", "source", "summary", "when", "published", "tone")}
                    for item in items[:4]]
-    _write(SCREEN, {"kind": _tidy(kind, 20), "title": _tidy(title, 80), "items": clean_items,
-                    "at": now or time.time()})
+    card = {"kind": _tidy(kind, 20), "title": _tidy(title, 80), "items": clean_items, "at": now or time.time()}
+    if how:
+        credits = how.get("credits")
+        card["how"] = {"calls": [_tidy(c, 12) for c in how.get("calls", [])][:4], "depth": _tidy(how.get("depth", ""), 12),
+                       "credits": credits if isinstance(credits, (int, float)) else None,
+                       "seconds": float(how.get("seconds") or 0)}
+    _write(SCREEN, card)
 
 
 def showing(now: Optional[float] = None) -> Optional[Dict[str, Any]]:

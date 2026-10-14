@@ -92,16 +92,18 @@ def _ask(system: str, content: str, schema: Dict[str, Any], opener: Optional[Cal
     return raw if isinstance(raw, dict) else {}
 
 
-def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opener: Optional[Callable] = None) -> Dict[str, Any]:
-    """The message's own signs, then whether it uses a trick a warning describes."""
+def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opener: Optional[Callable] = None,
+            model: str = MODEL, match_model: str = MATCH_MODEL) -> Dict[str, Any]:
+    """The message's own signs, then whether it uses a trick a warning describes. The evaluation swaps the
+    models (`model`, `match_model`) to tell what Tavily adds from what a bigger model adds."""
     message = str(message)[:2000]
-    out = grounded(_ask(BRIEF, f"Message: {message}", SCHEMA, opener), message)
+    out = grounded(_ask(BRIEF, f"Message: {message}", SCHEMA, opener, model), message)
     out["matched"] = []
     warnings = [w for w in warnings or [] if w.get("summary") or w.get("title")][:6]
     if warnings:
         listing = "\n".join(f"{i}. ({w.get('source', '')}) {w.get('title', '')}: {w.get('summary', '')}"
                             for i, w in enumerate(warnings, 1))
-        got = _ask(MATCH, f"Message: {message}\n\nWarnings:\n{listing}", MATCH_SCHEMA, opener, MATCH_MODEL)
+        got = _ask(MATCH, f"Message: {message}\n\nWarnings:\n{listing}", MATCH_SCHEMA, opener, match_model)
         hits = sorted({int(i) for i in got.get("matches", []) if isinstance(i, int) and 1 <= i <= len(warnings)})
         out["matched"] = [warnings[i - 1].get("source", "") for i in hits]
         if hits:

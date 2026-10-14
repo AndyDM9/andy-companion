@@ -59,9 +59,10 @@ STEPS = {"planning": "Planning what to look for", "searching": "Searching the we
          "writing": "Writing the answer"}
 
 
-def show_progress(topic: str, done: list) -> None:
-    """On the screen beside Andy, each step as Tavily takes it."""
-    board.show("research", f"Looking into: {topic}", [{"title": t, "summary": d} for t, d in done[-4:]])
+def show_progress(topic: str, done: list, seconds: float = 0.0) -> None:
+    """On the screen beside Andy, each step as Tavily takes it, and how long it has taken so far."""
+    board.show("research", f"Looking into: {topic}", [{"title": t, "summary": d} for t, d in done[-4:]],
+               how={"calls": ["research"], "depth": "mini", "seconds": round(seconds, 1)})
 
 
 def run(question: str, place: str = "", language: str = "en", opener=None,
@@ -71,13 +72,14 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
     streaming and collects the answer when ready. Once it has begun, a second one would pay twice."""
     topic = question[:120]
     done: list = []
+    began = clock()
 
     def on_step(kind: str, detail: str) -> None:
         if kind == "searching":
             done.append((STEPS[kind], f"{detail} searches" if detail and detail != "0" else ""))
         else:
             done.append((STEPS[kind], detail))
-        show_progress(topic, done)
+        show_progress(topic, done, clock() - began)
 
     try:
         show_progress(topic, [("Starting", "")])

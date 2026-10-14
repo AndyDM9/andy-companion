@@ -58,7 +58,10 @@ came back instead); with thinking off it returned exactly the schema in 0.73 to 
 "think it through" for decisions.
 **Worked:** reliable judgments with reasons we could act on; balanced, short answers in 2.1 s.
 **Needs work:** as a judge it passed a reply that read out a scam letter's phone number, although the
-rule said not to. Evaluation guidance should say to check hard constraints deterministically beside an
+rule said not to. With a strict `json_schema` (thinking off), it sometimes stops after a field and writes
+blank space until `max_tokens` instead of the remaining required field: 17 of 360 answers in our scam
+evaluation, the same messages each run (2026-10-14). A guard in the decoder, or a note in the docs, would
+help. Evaluation guidance should say to check hard constraints deterministically beside an
 LLM judge.
 **First call:** the same key and endpoint as Lightning, only the model name changed, so routing hard turns
 to Ultra was one line.
@@ -124,6 +127,11 @@ scorecard; we stop the endpoints between uses, and stopped they cost nothing for
   ResourceExhausted. We moved it to eu-west2.
 - **Jobs accept at most 64 KB of injected files.** We ship a compressed bundle.
 - **AI Cloud bills separately from Token Factory.** That means a second card and a top-up.
+- **A job's whole request may hold 64 KB, and a new account may run two VMs at once.** Our scam evaluation
+  needed four parts, two at a time; a third job at once failed with QuotaExceeded. The Jobs guide should
+  say both.
+- **A job's log cuts lines at 16,384 characters and may return them out of order,** so a long result
+  printed on one line comes back broken; we print it in numbered chunks.
 **First call:** the endpoint took about 15 minutes to first start (14 GB of weights). The job worked once
 it was in the right region.
 **Again?** Yes, for evaluation above all.
@@ -138,8 +146,8 @@ research, streamed to the TV step by step.
   arrive as they happen, so the screen shows progress while the robot waits; `output_schema` gave
   exactly the two spoken sentences we asked for.
 - A search limited to consumer-protection sites found the right warning for a grandparent-scam message on
-  the first try. Measured on 80 messages, Andy's check with Tavily's warnings caught 39 of 40 scams
-  against 36 without, and flagged no ordinary message.
+  the first try. Measured on 120 messages (three runs), Tavily's warnings matched by Nemotron 3 Ultra
+  caught 58 of 60 scams with no false alarm, against 55.7 for Ultra without the web.
 - The usage API lets the robot show credits used on its own status page.
 **Needs work:**
 - `safe_search` is rejected with the fast and ultra-fast depths (HTTP 400); a product for older adults
