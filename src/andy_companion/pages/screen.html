@@ -276,13 +276,13 @@
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
           code: "Point a phone's camera here to open Andy's settings. It disappears in two minutes.",
           kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
-                   check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says" },
+                   check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says", today: "Today" },
           where: "Andy looks here when it shows you something new." },
     es: { family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
           code: "Apunte la cámara de un teléfono aquí para abrir los ajustes de Andy. Desaparece en dos minutos.",
           kinds: { code: "Ajustes de Andy", news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
-                   whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace", where: "La pantalla de Andy", letter: "Lo que dice la página" },
+                   whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace", where: "La pantalla de Andy", letter: "Lo que dice la página", today: "Hoy" },
           where: "Andy mira aquí cuando le muestra algo nuevo." },
   };
   let ui = UI.en;
@@ -386,7 +386,7 @@
         for (const it of showing.items) {
           if (it.title === "Sources") { if (it.summary) sources.push(it.summary); continue; }
           if (it.source && !sources.includes(it.source)) sources.push(it.source);
-          if (items.querySelectorAll(".item").length >= 3) continue;
+          if (items.querySelectorAll(".item").length >= (showing.kind === "today" ? 4 : 3)) continue;   // a day's lines are short
           const box = make("article", it.tone === "caution" ? "item caution" : "item");
           if (it.title) box.append(make("p", "title", it.title));
           if (it.summary) box.append(make("p", "summary", it.summary));

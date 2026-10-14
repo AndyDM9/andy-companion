@@ -163,6 +163,10 @@ async def morning(handler: Any, now: Optional[datetime] = None, present: Optiona
     moments.tidy(now.date())
     from datetime import timedelta
     yesterday = "; ".join(m["what"] for m in moments.on_day(now.date() - timedelta(days=1)))
+    try:
+        dayplan.show(now)                      # the same plan on the screen as Andy says it
+    except Exception:
+        pass
     await handler.say(morning_frame(dayplan.say(now) + await morning_weather(), yesterday))
     logger.info("Said the morning plan")
     return 1

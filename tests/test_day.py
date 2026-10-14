@@ -187,3 +187,36 @@ def test_the_morning_plan_has_the_weather_in_fixed_words(period, lang, line):
     from andy_companion import dayplan
 
     assert dayplan.weather_line(period, lang) == line
+
+
+def test_the_plan_is_on_the_screen_too(monkeypatch, tmp_path):
+    monkeypatch.setattr(speaker.board, "SCREEN", tmp_path / "screen.json")
+    from andy_companion import moments
+
+    reminders.add("water the plants", at="17:00", now=NOW)
+    reminders.add("call my daughter", at="14:30", now=NOW)
+    moments.add("Sofia's piano recital", "today", today=NOW.date())
+    title, items = dayplan.card(NOW)
+    assert title == "Tuesday 13 October"
+    assert items == [{"title": "2:30 pm · call my daughter"}, {"title": "5:00 pm · water the plants"},
+                     {"title": "Also today", "summary": "Sofia's piano recital"}]
+    h = FakeHandler()
+    asyncio.run(speaker.tick(h, since=0, now_mono=100, now=NOW, present=True))
+    shown = speaker.board.showing()
+    assert shown["kind"] == "today" and shown["items"][0]["title"].endswith("call my daughter")
+
+
+def test_a_full_day_fits_the_card_and_says_how_many_more():
+    for at in ("09:00", "10:00", "11:00", "12:00", "13:00"):
+        reminders.add(f"thing at {at}", at=at, now=NOW)
+    _, items = dayplan.card(NOW)
+    assert [i["title"] for i in items] == ["9:00 am · thing at 09:00", "10:00 am · thing at 10:00",
+                                           "11:00 am · thing at 11:00", "And 2 more today"]
+    _, items = dayplan.card(datetime(2026, 10, 13, 13, 30))
+    assert items == [{"title": "No more reminders today."}]
+
+
+def test_the_card_in_spanish():
+    reminders.add("llamar a Rosa", at="14:30", now=NOW)
+    title, items = dayplan.card(NOW, "es")
+    assert title == "Martes 13 de octubre" and items == [{"title": "14:30 · llamar a Rosa"}]

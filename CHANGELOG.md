@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the day on the screen)
+
+- `dayplan.card` and `dayplan.show`: when Andy says the day plan (the morning plan, or "What's on
+  today?"), the TV shows the same plan as a **Today** card. It has the date, each reminder still to
+  come with its time ("9:36 pm · Call Rosa"), "And 2 more today" if they don't fit, and today's
+  moments ("Also today: Sofia's piano recital"). It is built from the same reminders as the spoken
+  plan, in English or Spanish, with up to four one-line items. Andy glances at it as it appears
+  (`docs/images/tv-today.png`, sample).
+- The plan is not highlighted line by line as Andy speaks: Andy's words reach the screen as a whole
+  reply, so any highlighting would be a guess that could drift out of step.
+- `tests/conftest.py`: every test now runs against a throwaway data folder, set before Andy's modules
+  load. Before this, a test that forgot to redirect a file would have written into the real Andy's
+  data while Andy ran; the new morning-card test would have put a card on the real TV.
+- 3 tests; live test 3m.
+
 ### Added (a letter on the screen, in large print)
 
 - `src/andy_companion/letters.py`: when Andy reads a page held up to it, the text also goes to

@@ -17,4 +17,8 @@ class DayPlan(Tool):
     parameters_schema = {"type": "object", "properties": {}}
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
+        try:
+            dayplan.show()                         # the same plan on the screen, in large print
+        except Exception:
+            pass
         return {"say": dayplan.say()}
