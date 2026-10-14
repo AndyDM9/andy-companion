@@ -5,7 +5,10 @@
 - public on YouTube;
 - at least one minute of the robot really operating;
 - Nebius Token Factory and the NVIDIA models named aloud;
-- no unlicensed music.
+- no third-party trademarks, copyrighted music or other material without permission;
+- English subtitles for anything not in English.
+
+Every rule and how we meet it: [rules-compliance.md](rules-compliance.md).
 
 **Organisers' tip:** "hardware reacting live to real-world input is where this track can really shine".
 
@@ -19,9 +22,10 @@
 - [ ] Yesterday's moment set the day before: "Sofia's piano recital", with a yes.
 - [ ] The family page open on a second phone; one photo ready (a beach, a garden, a grandchild's drawing).
 - [ ] A printed letter that asks for "a fee to release your prize".
+- [ ] No music; no third-party logos in shot (cover any on mugs, books, screens); the browser tabs and links not visible.
 - [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the screen if possible.
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) open on a laptop or the second screen: it fills with the real timings of every turn filmed.
-- [ ] After filming: `cloud/vision-endpoint.sh stop`.
+- [ ] After filming: `cloud/vision-endpoint.sh stop` (and `cloud/guard-endpoint.sh stop`); if the settings code was filmed, "Make a new settings link".
 
 ## Shots
 
@@ -29,11 +33,11 @@
 |---|---|---|---|
 | 1 | 0:00–0:12 | Morning light. Andy wakes, turns to the person, the screen glows "Tuesday" | Person: "Good morning, Andy." Andy greets them ("Good morning! I'm Andy, your robot companion, here to help with your day."), gives the day's plan in the same words as every day, and asks "How was Sofia's recital yesterday?" |
 | 2 | 0:12–0:25 | Founder to camera, Andy behind | "This is Andy, a home companion robot for older adults who live at home, and the family who help. Everything you'll see is live." |
-| 3 | 0:25–0:45 | The person walks across the room while Andy talks; Andy's head and body follow | Person: "What's the local news?" Andy names two stories and their sources; they appear on the screen |
+| 3 | 0:25–0:45 | The person walks across the room while Andy talks; Andy's head and body follow; the TV's strip says "Checking the weather" | Person: "Do I need an umbrella tomorrow?" Andy answers from the National Weather Service (public domain); the forecast shows on the TV. (Not newspaper headlines: their pages are third-party copyright.) |
 | 4 | 0:45–1:05 | Andy's reminder chime; Andy says it unprompted | Andy: "It's time to call Rosa." Person: "Thank you, Andy." |
 | 5 | 1:05–1:25 | The person holds up the letter | "Can you read this for me?" Andy reads it, explains it simply, notices the fee, looks it up: "This looks like a known kind of scam. Shall we check with Anna before doing anything?" |
-| 6 | 1:25–1:45 | The daughter, on her phone, sends a photo from the family page; it appears on the screen | Andy: "Anna sent a photo, it's on your screen: two children building a sandcastle." |
-| 7 | 1:45–2:00 | The person switches to Spanish | "Andy, ¿qué tenemos hoy?" Andy answers in Spanish |
+| 6 | 1:25–1:45 | The daughter, on her phone, sends a photo from the family page; it appears on the screen | Andy: "Anna sent a photo, it's on your screen: two children building a sandcastle." **Our own photo, with the family's agreement; not a sample landscape.** |
+| 7 | 1:45–2:00 | The person switches to Spanish; **English subtitles** | "Andy, ¿qué tenemos hoy?" Andy answers in Spanish |
 | 8 | 2:00–2:15 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone. "How many of my pills should I take?" Andy points to the pharmacist |
 | 9 | 2:15–2:35 | Founder with the under-the-hood page from this shoot (the real timings of the turns just filmed), then the architecture and the suite | "Andy hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with Nemotron Nano VL on a Nebius Serverless Endpoint. Our conversation suite of 63 situations runs as a Nebius Serverless Job, in English and Spanish: [the final run's numbers, said exactly]." |
 | 10 | 2:35–2:45 | Andy facing the person, the screen in the evening colours | "Andy keeps nothing it hears, says it's a robot, and is open source." Title card with the repository address |
