@@ -27,6 +27,18 @@ in the same commit that makes it true.
 - [ ] Decide the commit author address (personal email, or GitHub's noreply address by rewriting history)
 - [ ] Final name and branding decided
 
+## The Reachy Mini app (`reachy_app/`)
+
+- [x] Passes Pollen's checker, `robot/.venv/bin/reachy-mini-app-assistant check reachy_app`, including a
+      test install in a clean environment (2026-10-13); `tests/test_reachy_app.py` keeps it so
+- [x] Its own landing page (the screen, what Andy does, how it's built, what it keeps, what it needs)
+- [ ] A Hugging Face account, and `hf auth login` on the desktop (founder)
+- [ ] After the repository is public: `robot/.venv/bin/reachy-mini-app-assistant publish reachy_app`,
+      public (the app installs `andy-companion` from GitHub, so it can't install while the repository
+      is private)
+- [ ] At submission: pin the app's `andy-companion` dependency to the `hackathon-submission` tag instead
+      of `main`, so an install during judging gets exactly what was submitted
+
 ## The video
 
 - [ ] Under three minutes

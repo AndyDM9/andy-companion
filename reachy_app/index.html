@@ -1,40 +1,82 @@
 <!doctype html>
-<html>
-
+<html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width" />
-	<title> Andy Companion App </title>
-	<link rel="stylesheet" href="style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andy Companion</title>
+<meta name="description" content="A home companion on Reachy Mini for older adults who live at home, and the family who help. NVIDIA Nemotron on Nebius; it keeps nothing it hears.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-	<div class="hero">
-		<div class="hero-content">
-			<div class="app-icon">🤖⚡</div>
-			<h1> Andy Companion App </h1>
-			<p class="tagline">Enter your tagline here</p>
-		</div>
-	</div>
+  <div class="scene" aria-hidden="true"><span class="glow g1"></span><span class="glow g2"></span><span class="glow g3"></span></div>
 
-	<div class="container">
-		<div class="main-card">
-			<div class="app-preview">
-				<div class="preview-image">
-					<div class="camera-feed">🛠️</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <header class="hero">
+    <p class="kicker">A Reachy Mini app</p>
+    <h1>Andy, a companion<br>for home.</h1>
+    <p class="lede">For older adults who live at home, and the family who help. Andy talks and keeps looking
+      at you, keeps your reminders in your words, reads the letter you hold up, looks things up and names
+      the source, and speaks English and Spanish. It keeps nothing it hears.</p>
+    <p class="actions"><a class="button" href="https://github.com/AndyDM9/andy-companion">Set it up</a>
+      <a class="quiet" href="https://github.com/AndyDM9/andy-companion#how-it-uses-nvidia-and-nebius">How it's built</a></p>
+  </header>
 
-	<div class="footer">
-		<p>
-			🤖 Andy Companion App •
-			<a href="https://github.com/pollen-robotics" target="_blank">Pollen Robotics</a> •
-			<a href="https://huggingface.co/spaces/pollen-robotics/reachy-mini-landing-page#apps" target="_blank">Browse More
-				Apps</a>
-		</p>
-	</div>
+  <main>
+    <figure class="shot glass">
+      <img src="screen.png" width="1920" height="1080" alt="Andy's screen on a TV beside the robot: the day in large type, the next reminder, the weather, what Andy found with its sources, and Andy's words as captions.">
+      <figcaption>Andy's screen beside the robot: what Andy is doing, the next reminder, the weather, what it
+        found with its sources, and its own words as captions. Sample data.</figcaption>
+    </figure>
+
+    <section class="features" aria-labelledby="does">
+      <h2 id="does">What Andy does</h2>
+      <ul>
+        <li><b>Says it's a robot, from the first word.</b> It never pretends to be a person, and never speaks as
+          someone you know.</li>
+        <li><b>Your day, the same way every time.</b> The date, your reminders in your words, said when they're
+          due, and the weather from the National Weather Service.</li>
+        <li><b>Reads a letter you hold up.</b> On the screen in large print. When a page asks for gift cards or
+          rushes you, it says "Be careful" first: "Don't call or pay yet. Check with family first."</li>
+        <li><b>Looks things up, and names the source.</b> Local news, what's on this week, a link someone sent,
+          and longer questions it researches while you carry on.</li>
+        <li><b>Shows you where to look.</b> When something new appears on the screen, Andy turns to it, and back
+          to you.</li>
+        <li><b>Family, on your terms.</b> Family see only what you ask Andy to share, and Andy always tells you
+          who looked.</li>
+      </ul>
+    </section>
+
+    <section class="built glass" aria-labelledby="built">
+      <h2 id="built">How it's built</h2>
+      <dl>
+        <div><dt>Hears</dt><dd>NVIDIA Parakeet, on your own computer</dd></div>
+        <div><dt>Thinks</dt><dd>NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, and Nemotron 3 Ultra for hard questions</dd></div>
+        <div><dt>Sees</dt><dd>NVIDIA Nemotron Nano VL on a Nebius Serverless Endpoint</dd></div>
+        <div><dt>Checked</dt><dd>A conversation suite judged by Nemotron 3 Ultra, run as a Nebius Serverless Job</dd></div>
+        <div><dt>Searches</dt><dd>Tavily</dd></div>
+      </dl>
+    </section>
+
+    <section class="privacy" aria-labelledby="privacy">
+      <h2 id="privacy">What Andy keeps</h2>
+      <p>No audio and no words you say are stored or logged. Andy saves a reminder or a moment only when you
+        ask, or say yes, and a helper can see and delete everything it keeps on one page.</p>
+    </section>
+
+    <section class="before glass" aria-labelledby="before">
+      <h2 id="before">Before you install</h2>
+      <p>Andy needs its voice server running on a computer with an NVIDIA GPU beside the robot, and your own
+        Nebius Token Factory and Tavily keys. The <a href="https://github.com/AndyDM9/andy-companion">setup guide</a>
+        takes you through it.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Andy Companion, open source under Apache-2.0. Built on
+      <a href="https://github.com/pollen-robotics/reachy_mini_conversation_app">Pollen Robotics' conversation app</a>.
+      <a href="https://huggingface.co/spaces/pollen-robotics/reachy-mini-landing-page#apps">More Reachy Mini apps</a></p>
+  </footer>
 </body>
-
 </html>

@@ -3,20 +3,31 @@
 Andy's voice server must be reachable (ANDY_VOICE_URL, default ws://127.0.0.1:8765/v1/realtime).
 In the dashboard there is no supervisor, so sleep and quiet stop the app; start it again from
 the dashboard. Reminders still need the app running to be said.
+
+The class inherits ReachyMiniApp directly, as Pollen's app checker (`reachy-mini-app-assistant
+check`) requires, and runs Pollen's conversation app the way its own ReachyMiniConversationApp does
+(reachy_mini_conversation_app 1.0.1, main.py), with Andy installed first.
 """
 
+import asyncio
 import threading
 
-from reachy_mini import ReachyMini
-from reachy_mini_conversation_app.main import ReachyMiniConversationApp
+from reachy_mini import ReachyMini, ReachyMiniApp
+from reachy_mini_conversation_app.main import parse_args, run as run_conversation
 
 from andy_companion import app_mode
 
 
-class AndyCompanionApp(ReachyMiniConversationApp):
+class AndyCompanionApp(ReachyMiniApp):
+    custom_app_url = "http://0.0.0.0:7860/"     # Pollen's settings page, as in its own app
+    dont_start_webserver = False
+
     def run(self, reachy_mini: ReachyMini, stop_event: threading.Event) -> None:
         app_mode.install(screen=True)
-        super().run(reachy_mini, stop_event)
+        asyncio.set_event_loop(asyncio.new_event_loop())
+        args, _ = parse_args()
+        run_conversation(args, robot=reachy_mini, app_stop_event=stop_event, settings_app=self.settings_app,
+                         instance_path=self._get_instance_path().parent)
 
 
 if __name__ == "__main__":
