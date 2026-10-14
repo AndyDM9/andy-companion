@@ -36,3 +36,26 @@ def _reminders_part(now: datetime, w: dict, language: str) -> str:
     upcoming = [r for r in today if r["due"] >= now.timestamp()]
     nxt = " " + w["next"].format(time=datetime.fromtimestamp(upcoming[0]["due"]).strftime("%H:%M")) if len(today) > 1 and upcoming else ""
     return f"{day} {count}{nxt}"
+
+
+def weather_line(period: Optional[dict], language: Optional[str] = None) -> str:
+    """One sentence of the morning plan, in fixed words: 'The weather today: sunny, 86°, with a 40% chance of rain.'"""
+    if not period:
+        return ""
+    if language is None:
+        from andy_companion import settings
+        language = settings.get().get("language", "en")
+    lg = words.lang(language)
+    name = str(period.get("name", ""))
+    temp = str(period.get("temperature", ""))
+    rain = period.get("rain")
+    if lg == "es":
+        when = {"today": "hoy", "this afternoon": "esta tarde", "tonight": "esta noche"}.get(name.lower(), words.weather_period(name, "es").lower())
+        sky = words.sky(str(period.get("short", "")), "es").lower()
+        line = f"El tiempo {when}: {sky}" + (f", {temp}" if temp else "")
+        line += f", con un {rain} % de probabilidad de lluvia" if isinstance(rain, (int, float)) and rain >= 30 else ""
+        return line + "."
+    when = {"today": "today", "this afternoon": "this afternoon", "tonight": "tonight"}.get(name.lower(), name)
+    line = f"The weather {when}: {str(period.get('short', '')).lower()}" + (f", {temp}" if temp else "")
+    line += f", with a {rain}% chance of rain" if isinstance(rain, (int, float)) and rain >= 30 else ""
+    return line + "."

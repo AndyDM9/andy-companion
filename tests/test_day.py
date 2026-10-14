@@ -172,3 +172,17 @@ def test_weather_periods_in_spanish():
     assert words.weather_period("Wednesday", "es") == "Miércoles"
     assert words.weather_period("Wednesday Night", "es") == "Miércoles por la noche"
     assert words.weather_period("Columbus Day", "es") == "Columbus Day"
+
+
+@pytest.mark.parametrize("period, lang, line", [
+    ({"name": "Today", "short": "Sunny", "temperature": "86°", "rain": 10}, "en", "The weather today: sunny, 86°."),
+    ({"name": "This Afternoon", "short": "Chance Showers And Thunderstorms", "temperature": "88°", "rain": 40}, "en",
+     "The weather this afternoon: chance showers and thunderstorms, 88°, with a 40% chance of rain."),
+    ({"name": "Today", "short": "Mostly Sunny", "temperature": "86°", "rain": 50}, "es",
+     "El tiempo hoy: mayormente soleado, 86°, con un 50 % de probabilidad de lluvia."),
+    (None, "en", ""),
+])
+def test_the_morning_plan_has_the_weather_in_fixed_words(period, lang, line):
+    from andy_companion import dayplan
+
+    assert dayplan.weather_line(period, lang) == line

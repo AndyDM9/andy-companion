@@ -135,6 +135,20 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
     return 1
 
 
+async def morning_weather() -> str:
+    """Today's weather for the morning plan, or nothing if the town is not set or the service is slow."""
+    try:
+        from andy_companion import weather
+
+        spot = await asyncio.wait_for(asyncio.to_thread(weather.where), timeout=8)
+        found = await asyncio.wait_for(asyncio.to_thread(weather.forecast, spot["lat"], spot["lon"], 1), timeout=8)
+        line = dayplan.weather_line(found["periods"][0] if found["periods"] else None)
+        alert = (" " + found["alerts"][0] + ".") if found.get("alerts") else ""
+        return (" " + line + alert) if line else ""
+    except Exception:
+        return ""   # the plan stands without the weather
+
+
 async def morning(handler: Any, now: Optional[datetime] = None, present: Optional[bool] = None) -> int:
     """Once a day, between 06:00 and noon, when someone is here: the day plan, the same way every time."""
     now = now or datetime.now()
@@ -149,7 +163,7 @@ async def morning(handler: Any, now: Optional[datetime] = None, present: Optiona
     moments.tidy(now.date())
     from datetime import timedelta
     yesterday = "; ".join(m["what"] for m in moments.on_day(now.date() - timedelta(days=1)))
-    await handler.say(morning_frame(dayplan.say(now), yesterday))
+    await handler.say(morning_frame(dayplan.say(now) + await morning_weather(), yesterday))
     logger.info("Said the morning plan")
     return 1
 

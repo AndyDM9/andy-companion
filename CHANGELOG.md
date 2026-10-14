@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (the weather in the morning plan)
+
+- The morning plan ends with one sentence of weather in fixed words, English or Spanish
+  (`dayplan.weather_line`): "The weather today: sunny, 86°, with a 40% chance of rain." The chance
+  of rain is said from 30%; an official alert follows. If the town is not set or the weather service is
+  slow (8 s), the plan is said without it. Live: "The weather tonight: mostly clear, 81°." 4 tests.
+
 ### Added (the hackathon's Official Rules, rule by rule)
 
 - `docs/rules-compliance.md`: every rule (dates, eligibility, prizes, project and submission
