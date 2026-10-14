@@ -308,7 +308,7 @@
  },
  {
   "name": "share_with_family",
-  "description": "Only when the person clearly asks you to share or send something to their family. Repeat back exactly what you will share and get a yes first. Then share it, in their words, and say it is now on the family page. Never share anything they did not ask you to share.",
+  "description": "Only when the person clearly asks you to share or send something to their family. Repeat back exactly what you will share and get a yes first. Then share it, in their words, and say it is now on the family page. Never share anything they did not ask you to share. Don't ask for their name: the family page already shows it is from them.",
   "parameters": {
    "type": "object",
    "properties": {

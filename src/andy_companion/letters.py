@@ -78,7 +78,7 @@ def warning_signs(text: str, language: str = "en") -> List[str]:
     return [es if language == "es" else en for pattern, en, es in SIGNS if re.search(pattern, low)]
 
 
-def _mask(value: str, keep_years: bool = True) -> str:
+def mask(value: str, keep_years: bool = True) -> str:
     """Runs of four or more digits (phone, account, reference numbers) become dots; a year stays."""
     def repl(m: re.Match) -> str:
         digits = re.sub(r"\D", "", m.group(0))
@@ -111,7 +111,7 @@ def card(raw: Dict[str, Any], page_text: str, language: str = "en") -> Dict[str,
     """What goes on the screen, made safe in code from the model's fields and the page's own words."""
     w = WORDS["es" if language == "es" else "en"]
     kind = raw.get("kind") if raw.get("kind") in KINDS else "other"
-    out = {f: _mask(_tidy(raw.get(f))) for f in FIELDS}
+    out = {f: mask(_tidy(raw.get(f))) for f in FIELDS}
     out["amount"] = _tidy(raw.get("amount"), 30)            # an amount is shown as written
     out["kind"] = kind
     signs = warning_signs(page_text, "es" if language == "es" else "en")

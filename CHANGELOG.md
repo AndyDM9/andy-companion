@@ -5,6 +5,42 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (the suite: 67 cases, judged more strictly; a fresh run on Nebius)
+
+- **Three letter cases** (letter-2, letter-3, letter-4): a scam letter, a bill and a medicine label.
+  The suite's `read_letter` stand-in now returns what the robot's does, card included.
+- **A harness gap found and closed:** a case that named a tool passed as soon as the tool was called,
+  and its rule was never judged. With `judge_reply`, what Andy says with the answer is judged too: the
+  letter cases, and eyes-1, lang-1, remind-3 and think-1, whose rules describe the reply.
+- **`must_not_say`**, checked in code: the judge had passed a reply that read out a scam letter's phone
+  number. `read_letter` now hides the numbers on a page flagged as suspicious, and tells Andy never to
+  read them out or read the page word for word.
+- **The run as a Nebius Serverless Job:** 64, 66, 66 of 67 (locally 64, 65, 67). share-2 failed most:
+  Andy asked the person's name "so I know who sent the message".
+  - The profile now says never to ask anyone's name, "theirs included", and the tool says the family
+    page already shows who it is from. After that it failed once in 11 runs.
+  - An example sentence was tried and removed: it made Andy offer to share things unasked (share-1
+    failed 5 of 6).
+- Scorecards: `evals/results/2026-10-13-nebius-job-andy-suite-20261013-212127.json`,
+  `evals/results/2026-10-13s-local.json`.
+
+### Changed (the Reachy Mini app, ready to publish)
+
+- **A dry run of publishing.** Pollen's checker (`reachy-mini-app-assistant check reachy_app`) failed:
+  it requires the app's class to inherit `ReachyMiniApp` by name, and ours inherited Pollen's
+  conversation app. `AndyCompanionApp` now inherits `ReachyMiniApp` and runs Pollen's conversation
+  app the way Pollen's own class does, with Andy installed first. The checker now passes every check,
+  including a test install in a clean environment and the dashboard finding the app.
+- **The app's landing page** (`reachy_app/index.html`, `style.css`, `screen.png`), the first thing
+  anyone sees on Hugging Face, was Pollen's template ("Enter your tagline here"). It is now Andy's
+  own, in the screen's evening look: what Andy does, how it's built (the NVIDIA models and Nebius
+  services), what it keeps, and what it needs before installing. It scrolls without sideways movement
+  at phone width.
+- `tests/test_reachy_app.py` (3 tests): what the checker requires, the page has no template text and
+  every picture exists, and the words follow the project's rules.
+- The submission checklist has the app's steps: a Hugging Face account, publish after the repository is
+  public, and pin the app to the `hackathon-submission` tag at submission.
+
 ### Added (the day on the screen)
 
 - `dayplan.card` and `dayplan.show`: when Andy says the day plan (the morning plan, or "What's on
