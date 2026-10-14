@@ -3,6 +3,21 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-14
+
+### Added (the research, saved; the plan to the deadline)
+
+- `docs/research.md` sets out what Andy is built on, with sources and what we took or left out:
+  conversation, reminiscence (carefully, no therapy claims), humour, stories, body language, finding
+  things, the NVIDIA options considered, the screen and On this day.
+- `docs/PLAN.md` has the road to October 30, every remaining item with its owner and status:
+  - **Build:** B1 to B8 (the watchdog, the health check, the Tavily scam-check evaluation, Tavily map at
+    setup, the arrival greeting, the cost per household, Magpie TTS, and safe body language);
+  - **Cleanup:** C1 to C4;
+  - **The founder's steps.**
+- The rule for the last two weeks is reliability on camera before more features, with a feature freeze
+  on 2026-10-23.
+
 ## 2026-10-13
 
 ### Fixed (Andy not answering, and "go to sleep" not sticking; found on the robot by the founder)

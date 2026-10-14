@@ -43,20 +43,46 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 |
 | M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 |
 
-## Road to October 30 (the deadline is 2026-10-30, 10:00 PT; we submit on 2026-10-27)
+## Road to October 30 (the deadline is 2026-10-30, 10:00 PT; a complete draft by 2026-10-22, final by 2026-10-27)
 
-| When | What | Who | Where it is tracked |
+Planned 2026-10-14 from four reviews (a judge's-eye review, a claims audit, a code and privacy review,
+innovation research) and the founder's test on the robot. The research is in [research.md](research.md).
+**The rule for the last two weeks: reliability on camera comes before more features.** Feature freeze
+2026-10-23; fixes only after.
+
+### Build (Claude), in order
+
+| # | Item | Why | Status |
 |---|---|---|---|
-| Now to 2026-10-23 | Build and measure: every new function with tests, a suite case and a live check | Claude, the founder testing | CHANGELOG, STATUS |
-| Any evening this week | The live test on the robot, 25 minutes | Founder | [live-test.md](live-test.md) |
-| About 2026-10-20 | The name decided after the trademark filing; the repository made public; the licence visible in About; the Hugging Face account and the Reachy Mini app published | Founder (Claude prepares) | [rules-compliance.md](rules-compliance.md), [submission-checklist.md](submission-checklist.md) |
-| 2026-10-22 | **A complete draft submitted** on Devpost, for its free eligibility check (entries in by 2026-10-23 10:00 PT); editing continues | Founder (texts ready in submission.md and feedback.md) | [submission-checklist.md](submission-checklist.md) |
-| 2026-10-23 | Feature freeze: only fixes after this | Both | STATUS |
-| 2026-10-23 | The final suite run as a Nebius Serverless Job; numbers into README and the form | Claude | `evals/results/` |
-| 2026-10-24 to 10-26 | Filming to the shot list (no music or logos, own photos, English subtitles); the video on YouTube, public | Founder | [video.md](video.md) |
-| 2026-10-26 | The Devpost texts final, the feedback written up | Both | [submission.md](submission.md), [feedback-notes.md](feedback-notes.md) |
-| 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted | Founder | [submission-checklist.md](submission-checklist.md) |
-| 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | Founder | [rules-compliance.md](rules-compliance.md) |
+| B1 | **A watchdog** in the supervisor: if one turn keeps reopening (a TV, a radio) or the microphone keeps dropping audio, restart Andy's app and log why; cap one turn's continuous speech | On 2026-10-13 Andy stopped answering in exactly these ways | ⬜ |
+| B2 | **A health check**, one command before filming or a demo: the voice server, the robot, both endpoints, Token Factory, Tavily, the screen, a test turn; green or red in plain words | Nothing should fail on camera that a minute's check would have caught | ⬜ |
+| B3 | **A scam-check evaluation with real Tavily calls**: about 30 scam messages and 30 genuine ones, warnings found with and without Tavily, run as a Nebius Job; published | Makes the Tavily bonus undeniable (the review's ask) | ⬜ |
+| B4 | **Tavily `map` at setup**: find the town's events page from its website automatically | Tavily's fifth capability, in real use | ⬜ |
+| B5 | **Greeting on arrival**: "Welcome back" when someone is seen after a long absence, at most every few hours, a setting to turn it off; speech only, no head movement | ElliQ and Lovot's most-liked behaviour | ⬜ |
+| B6 | **The cost per household**, with dated prices, in the README and Devpost text | Potential impact: "what does it cost to run?" | ⬜ |
+| B7 | **NVIDIA Magpie TTS**, evaluated beside Qwen3-TTS: time to first audio, the Spanish voice; switched only if as fast and the founder approves | Every model in the speech loop NVIDIA's | ⬜ |
+| B8 | **The body language, safely**: test with the founder whether head motion during listening reaches the microphones; if so, move only while Andy speaks | Built and switched off on 2026-10-13 | ⬜ (needs the founder at the robot) |
+
+### Cleanup (Claude)
+
+| # | Item | Status |
+|---|---|---|
+| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | ⬜ |
+| C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ⬜ |
+| C3 | The final Nebius Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
+| C4 | Pin the Reachy Mini app's `andy-companion` dependency to the `hackathon-submission` tag | ⬜ (10-27) |
+
+### The founder
+
+| When | What | Where |
+|---|---|---|
+| Now | The live test on the robot | [live-test.md](live-test.md) |
+| Now | Photos and four 5-second clips of the real robot (the glance, following, finding glasses, the joke wiggle) | founder action 6.17 |
+| About 2026-10-20 | The name; the repository public, licence in About; a Hugging Face account; Claude publishes the app | [submission-checklist.md](submission-checklist.md) |
+| By 2026-10-22 | **A complete draft submitted** on Devpost (the early eligibility check) | [submission.md](submission.md), [feedback.md](feedback.md) |
+| 2026-10-24 to 10-26 | Filming to the shot list; YouTube Public, "not made for kids", captions | [video.md](video.md) |
+| 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted; posts | [rules-compliance.md](rules-compliance.md) |
+| 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | |
 
 ## The video (draft)
 
