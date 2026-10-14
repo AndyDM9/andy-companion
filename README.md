@@ -30,6 +30,8 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   what's on this week, a link someone sent, and whether a message looks like a known scam.
 - **The weather, from the National Weather Service.** "Do I need an umbrella tomorrow?" gets the
   forecast for your town, the day named, and any official alert first.
+- **"Help me think it through."** A decision or a hard question goes to the bigger NVIDIA Nemotron 3 Ultra,
+  which answers in about two seconds: what matters, both sides, and who could help you decide.
 - **"Look into it for me."** For a bigger question ("Is the farmers market still on this Saturday?"),
   Andy starts Tavily's research agent and carries on talking; the TV shows each step as it happens
   (planning, searching, the sites it reads), and at the next quiet moment Andy tells you the answer,
@@ -75,7 +77,7 @@ Each principle comes from published research, and each has something you can see
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes ("what do you see?") | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0 | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
-| Judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
+| Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | The conversation suite | 63 spoken situations, 17 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), and **research**, streamed, for "look into it for me"; safe search on; every request tagged `X-Project-ID`, credits shown on `/hood` | Tavily API |
 

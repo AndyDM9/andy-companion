@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (think it through, with NVIDIA Nemotron 3 Ultra)
+
+- `think_it_through` (`src/andy_companion/deeper.py`): a decision or a hard question ("My daughter wants
+  me to move closer; help me think it through") goes to Nemotron 3 Ultra on Token Factory with a brief
+  for a short, balanced, spoken answer: what matters, both sides, a question or two to ask oneself, and
+  who could help decide; never personal medical, legal or financial advice. Ultra's reasoning is not
+  spoken. Live: 2.1 s, both sides and who to talk to. Model routing as the track describes it: Ultra
+  for serious reasoning, Lightning for everyday turns. The launcher passes the Token Factory key to
+  Andy's app for this. The screen says "Thinking it through"; the hood page names Ultra. 3 tests; suite
+  think-1 (3 of 3).
+
 ### Added (listening ears)
 
 - `src/andy_companion/body/listening.py`: while the person speaks, both antennas lift a little, mirrored,

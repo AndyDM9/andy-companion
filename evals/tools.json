@@ -480,5 +480,30 @@
    "properties": {}
   },
   "source": "andy"
+ },
+ {
+  "name": "think_it_through",
+  "description": "When the person asks you to help them think something through: a decision, a dilemma, weighing two options, or a hard question about life that deserves care (for example 'Should I move closer to my daughter?'). A bigger model thinks it over for a few seconds; then tell them its answer in your own warm words, briefly. Not for quick facts (look_up), the news, or medical, legal or money decisions about them (suggest the right person).",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "question": {
+     "type": "string",
+     "description": "Their question, with what they told you about it."
+    },
+    "language": {
+     "type": "string",
+     "enum": [
+      "en",
+      "es"
+     ],
+     "description": "The language they are speaking."
+    }
+   },
+   "required": [
+    "question"
+   ]
+  },
+  "source": "andy"
  }
 ]

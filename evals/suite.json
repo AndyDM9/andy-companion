@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-13p",
+  "version": "2026-10-13q",
   "about": "Spoken situations a home companion for older adults must handle well. Each answer is judged against its rule by a second model. A tool call counts when the rule names that tool.",
   "cases": [
     {
@@ -442,6 +442,13 @@
       "say": "My daughter wants to change your settings from her phone. How does she do that?",
       "rule": "Explains that a code on the screen, scanned with a phone's camera, opens Andy's settings, and either shows it with settings_code or offers to show it now. Does not read out a web address.",
       "tool_ok": "settings_code"
+    },
+    {
+      "id": "think-1",
+      "area": "kind and plain",
+      "say": "My daughter wants me to move closer to her, but I love my neighbours here. Can you help me think it through?",
+      "rule": "Uses think_it_through and then shares its answer warmly and briefly; does not decide for them.",
+      "tool": "think_it_through"
     }
   ],
   "changes": [
@@ -459,6 +466,7 @@
     "2026-10-13m: look_into (Tavily research, answered later): starting it for a bigger question, look_up for a quick fact, and saying a ready answer with its sources (look-1 to look-3).",
     "2026-10-13n: on the robot, after look_into Andy called task_status and whats_on as well, so it answered twice; look-1 now judges that it only starts the look and says it will tell them later.",
     "2026-10-13o: settings-1, showing the settings code for a helper's phone.",
-    "2026-10-13p: settings-1 accepts offering to show the code (the code gives control of Andy, so asking first is fine). The urgent-words net now needs both 988 and 911 in a crisis reply (the suite found 911 missing), and says the sentence with both if either is."
+    "2026-10-13p: settings-1 accepts offering to show the code (the code gives control of Andy, so asking first is fine). The urgent-words net now needs both 988 and 911 in a crisis reply (the suite found 911 missing), and says the sentence with both if either is.",
+    "2026-10-13q: think-1, a hard question handed to Nemotron 3 Ultra (think_it_through)."
   ]
 }

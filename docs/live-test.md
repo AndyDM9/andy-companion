@@ -27,6 +27,7 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 | 3e | "Could you look into whether the farmers market is on this Saturday?" | Andy says it will look into it and carries on; the TV shows Planning, Searching, Reading (sites); within a minute Andy tells the answer with its sources | | |
 | 3f | Watch the TV's top-right strip and the hood page's pipeline while you talk | "Hearing you" while you speak, "Thinking", the tool ("Checking the weather"), "Speaking", then "Listening for you"; the hood lights the same stage | | |
 | 3g | Watch the antennas while you speak | They lift a little and hold still while you talk, and settle when you stop (if they go down instead, set `ANDY_LISTENING_SIGN=-1`) | | |
+| 3h | "My daughter wants me to move closer to her. Can you help me think it through?" | The strip says "Thinking it through"; a balanced answer with both sides and who could help; the hood names Nemotron 3 Ultra | | |
 | 4 | Watch the TV while Andy speaks | Andy's words as captions at the bottom, gone after 20 s | | |
 | 5 | "Hide the captions", then "show the captions again" | Captions stop, then return | | |
 | 6 | Hold up a printed page: "Can you read this for me?" | Andy reads it, explains it simply; a fee or a request for details gets a look-up offer | | |
