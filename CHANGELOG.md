@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Changed (Andy Glass, refined from Apple's own guidance)
+
+- Researched Apple's Liquid Glass at the source: the Human Interface Guidelines, two WWDC25 talks,
+  tvOS 26, and the Nielsen Norman Group's critique. What was taken and what was left out, with the
+  reasons, is in [decision 0005](docs/decisions/0005-the-screen-s-design-andy-glass.md).
+- The panels now have a **specular edge lit from where the sun would be**: from the left in the
+  morning, from above at noon, from the right in the evening (`lightAngle`, eased over 4 s).
+- **Bigger glass is thicker** (the finding card and photo frame); the state pill is thinner.
+- **Concentric corners:** the photo's radius is the frame's radius less its padding.
+- **A new card lights up from within** as it rises in, and the state pill flexes a little when
+  Andy's state changes.
+- **Margins** now follow tvOS's safe area.
+- **Increase Contrast** gives solid panels with an outline and no scene
+  (`docs/images/tv-glass-contrast.png`).
+- **Old TVs:** the `inset` shorthand is gone, since 2022 TVs run Chromium 85.
+- **Shadows** are no longer cut off in a hard line under the cards.
+- **Tests:** concentric corners, no overshooting easing, no `inset`, the contrast fallback, captions
+  never on glass, and the light's path through the day.
+
 ### Added (Andy glances at the screen)
 
 - `src/andy_companion/body/glance.py`: when something new appears on the TV (a finding, the news, the

@@ -75,3 +75,28 @@ def test_calm_and_reduced_transparency_give_solid_panels():
 
 def test_the_screen_never_shows_the_persons_words():
     assert '"user"' not in PAGE and "transcript" not in PAGE.lower()
+
+
+def test_glass_follows_apple_s_rules_where_they_help_reading():
+    # Concentric corners: the photo's radius is the frame's radius less the frame's padding.
+    pad = re.search(r"\.family \{[^}]*padding: ([\d.]+vh)", PAGE).group(1)
+    assert f"border-radius: calc(var(--r) - {pad})" in PAGE
+    # More contrast asked for: solid panels and an outline (Increase Contrast, iOS 26).
+    assert "prefers-contrast: more" in PAGE
+    # The captions are running text: never on glass.
+    assert 'class="caption"' in PAGE and not re.search(r'class="caption[^"]*glass', PAGE)
+    # Calm motion: no easing that overshoots (a bounce), so nothing springs past where it rests.
+    for curve in re.findall(r"cubic-bezier\(([^)]*)\)", PAGE):
+        y1, y2 = float(curve.split(",")[1]), float(curve.split(",")[3])
+        assert 0 <= y1 <= 1 and 0 <= y2 <= 1, curve
+
+
+def test_the_page_runs_on_a_2022_tv():
+    # Chromium 85: no `inset` shorthand (87); the light's angle animates through @property (85).
+    assert not re.search(r"[\s;{]inset\s*:", PAGE)
+    assert "@property --light" in PAGE
+
+
+def test_the_light_on_the_glass_follows_the_sun():
+    body = re.search(r"function lightAngle\(hhmm\) \{(.*?)\n  \}", PAGE, re.S).group(1)
+    assert "100 +" in body and "160" in body and "return 180" in body

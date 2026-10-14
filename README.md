@@ -43,7 +43,8 @@ model on a Nebius Serverless Endpoint. It keeps nothing it hears.
   type, what Andy is doing right now ("Listening for you", "Checking the weather", "Speaking"), the
   next reminder with how long until it, the weather, what Andy found with its sources, and **two-line
   captions of Andy's own words** (never yours). Its colours follow the time of day, behind frosted
-  glass panels and slow light that drifts over minutes, not seconds; a small orb breathes while Andy
+  glass panels after Apple's Liquid Glass, their edges lit from where the sun would be, and slow light
+  that drifts over minutes, not seconds ([design decision 0005](docs/decisions/0005-the-screen-s-design-andy-glass.md)); a small orb breathes while Andy
   thinks and rings while it speaks. Every text colour reaches 7:1 contrast against the worst case,
   tested, and the screen goes fully still and solid for anyone whose TV or eyes prefer it ("Calm
   screen" in the settings, or the system's reduced-motion setting).
