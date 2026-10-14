@@ -124,6 +124,13 @@ follow you, its antennas lift while you speak and lean while it thinks.
 - **Make it look current and keep it readable.** Glass looks good until text sits on it, so the screen
   is tested against its worst case.
 
+## What it costs
+
+About $2.30 a month for one household's conversation, help and web lookups, at Token Factory's prices on
+2026-10-14 (Nemotron 3.5 Lightning at $0.06 per million input tokens). Every assumption is in
+`docs/cost.md`. The eyes and the second look run on Nebius endpoints we start when needed; a product would
+share them across households or run them on the home GPU.
+
 ## What's next
 
 - A pilot with older adults and their families, with an ethics review.

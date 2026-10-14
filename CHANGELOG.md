@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (what Andy costs to run)
+
+- **`docs/cost.md`:** about **$2.30 a month** for one household's conversation, help and web lookups at
+  an active level of use. Prices are from Token Factory's own models API on 2026-10-14 (Nemotron 3.5
+  Lightning $0.06 and $0.24 per million input and output tokens; Nemotron 3 Ultra $1 and $3), and the
+  input of 7,514 tokens is measured from one real request with Andy's instructions and 35 tools.
+- The web fits within Tavily's free 1,000 credits a month at that use, or costs about $5 if paid.
+- The eyes and the second look are priced honestly: about $1.55 an hour per endpoint while running, so
+  a product would share them or run them on the home GPU. That isn't measured yet.
+- The cost appears in the README and the Devpost text.
+
 ### Added (welcome back)
 
 - **`speaker.welcome_back`:** when someone is seen (a face or a person; never just a voice, which might

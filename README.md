@@ -54,6 +54,10 @@ Everything, in full: [docs/features.md](docs/features.md).
 **What Andy never does:** give medicine doses or medical advice, ask for money or passwords, claim to keep
 anyone safe, speak as a real person, or keep recordings or transcripts.
 
+**What it costs:** about **$2.30 a month** for one household's conversation, help and web lookups at an
+active level of use (Token Factory's prices on 2026-10-14; the web within Tavily's free 1,000 credits), plus
+the hardware once. Every price and assumption: [docs/cost.md](docs/cost.md).
+
 ## Built on what older adults have said they want
 
 Each principle comes from published research, and each has something you can see Andy do.
