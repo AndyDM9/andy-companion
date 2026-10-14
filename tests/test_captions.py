@@ -37,6 +37,18 @@ def test_andys_words_reach_the_screen_and_fade(server):
     assert screen(server)["caption"] == ""
 
 
+def test_a_whole_reply_is_kept_with_when_it_was_sent(server):
+    # The screen pages through all of it at reading pace, timed from caption_at, so a TV that opens
+    # mid-story does not start again (the founder saw only the last sentence, 2026-10-14).
+    story = "A Lion lay asleep in the forest. " * 40
+    captions.send(story)
+    shown = screen(server)
+    assert shown["caption"] == " ".join(story.split())[:2000] and len(shown["caption"]) > 1000
+    assert abs(shown["caption_at"] - time.time()) < 5
+    screen_server._caption["at"] -= screen_server.CAPTION_FOR_S + 1
+    assert screen(server)["caption_at"] is None
+
+
 def test_captions_can_be_turned_off(server):
     settings.update(captions=False)
     captions.send("Hello")

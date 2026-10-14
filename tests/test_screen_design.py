@@ -91,6 +91,23 @@ def test_glass_follows_apple_s_rules_where_they_help_reading():
         assert 0 <= y1 <= 1 and 0 <= y2 <= 1, curve
 
 
+def test_nothing_moves_when_a_card_a_photo_or_a_caption_comes_and_goes():
+    # The clock used to shrink and grow with each card and looked as if the time kept shifting
+    # (the founder, 2026-10-14): one size by day, and no transition on its size.
+    assert not re.search(r"body\.has-(showing|photo)[^{]*\.(day|when)\b[^{]*\{", PAGE)
+    assert not re.search(r"\.day \{[^}]*transition", PAGE)
+    # Captions lie over the foot of the screen, so the layout never makes room for them.
+    assert re.search(r"\.caption \{ position: fixed;", PAGE)
+    assert "grid-template-rows: auto minmax(0, 1fr);" in PAGE
+
+
+def test_the_tv_has_a_gear_for_settings_and_under_the_hood_and_a_way_back():
+    assert 'id="gear"' in PAGE and "/api/screen/settings-code" in PAGE and "/hood?t=" in PAGE
+    assert re.search(r'gear: "Ajustes"', PAGE)                       # in Spanish too
+    hood = (Path(__file__).resolve().parents[1] / "src/andy_companion/pages/hood.html").read_text()
+    assert 'id="back"' in hood and '"Escape"' in hood and '"Backspace"' in hood
+
+
 def test_the_page_runs_on_a_2022_tv():
     # Chromium 85: no `inset` shorthand (87); the light's angle animates through @property (85).
     assert not re.search(r"[\s;{]inset\s*:", PAGE)

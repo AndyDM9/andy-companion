@@ -56,7 +56,7 @@
   body {
     background: var(--ground); color: var(--ink);
     font-family: "Atkinson Hyperlegible", "Verdana", sans-serif;
-    display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100vh;
+    display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100vh;
     padding: 5.6vh 5vw 5vh;       /* tvOS keeps 60 pt top and bottom, 80 at the sides, clear at 1080p */
   }
   body.ready { transition: background-color 2s, color 2s, --light 4s ease; }
@@ -106,15 +106,14 @@
 
   /* The clock: day, then the part of the day, the time and the date. */
   .clock { padding-bottom: 2.6vh; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3vw; align-items: start; }
-  .day { grid-column: 1; font-size: clamp(64px, 14vw, 250px); font-weight: 700; line-height: .9; letter-spacing: -0.025em; margin: 0; }
-  .when { grid-column: 1; font-size: clamp(28px, 4vw, 70px); margin: 1.4vh 0 0; color: var(--soft); }
+  /* One steady size: the clock used to shrink and grow whenever a card came or went, and looked as if
+     the time kept shifting (the founder, 2026-10-14). */
+  .day { grid-column: 1; font-size: clamp(54px, 8.5vw, 150px); font-weight: 700; line-height: .9; letter-spacing: -0.025em; margin: 0; }
+  .when { grid-column: 1; font-size: clamp(24px, 2.9vw, 50px); margin: 1.4vh 0 0; color: var(--soft); font-variant-numeric: tabular-nums; }
   .when strong { color: var(--ink); font-weight: 700; }
-  body.has-showing .day, body.has-photo .day { font-size: clamp(54px, 8.5vw, 150px); }
-  body.has-showing .when, body.has-photo .when { font-size: clamp(24px, 2.9vw, 50px); }
-  @media (prefers-reduced-motion: no-preference) { body.ready:not(.calm) .day, body.ready:not(.calm) .when { transition: font-size .6s cubic-bezier(.2, .8, .2, 1); } }
 
   /* What Andy is doing: a glass pill with an orb that breathes while Andy listens or thinks. */
-  .state { grid-column: 2; grid-row: 1 / span 2; justify-self: end; display: flex; align-items: center; gap: .65em;
+  .state { grid-column: 2; grid-row: 1; justify-self: end; display: flex; align-items: center; gap: .65em;
            margin: .4vh 0 0; padding: .5em 1.05em .5em .75em; border-radius: 999px;
            font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); max-width: 36vw; }
   .orb { flex: none; width: .9em; height: .9em; border-radius: 50%; background: var(--hush); opacity: .7; position: relative; }
@@ -169,6 +168,9 @@
   .weather .alert { font-size: clamp(20px, 2vw, 34px); margin: 1.2vh 0 0; padding: .6vh 1vw; border-left: 6px solid var(--mark); }
   .weather .from { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 1vh 0 0; }
   body.has-showing .weather .deg, body.has-photo .weather .deg { font-size: clamp(36px, 3.6vw, 64px); }
+  /* Beside a photo or a card, a long forecast ("Slight Chance Rain Showers then…") keeps to two lines. */
+  body.has-showing .weather .sky, body.has-photo .weather .sky { display: -webkit-box; -webkit-line-clamp: 2;
+                                                               -webkit-box-orient: vertical; overflow: hidden; }
   body.has-showing .weather .then, body.has-showing .weather .from,
   body.has-photo .weather .then, body.has-photo .weather .from { display: none; }
 
@@ -186,7 +188,7 @@
   .item.caution .summary { color: var(--ink); -webkit-line-clamp: 3; }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
   .photo { display: block; max-width: 100%; max-height: 50vh; margin: 0 0 1.5vh; border-radius: max(10px, calc(var(--r) - 2.6vw)); object-fit: contain; }
-  .qr { display: block; width: min(44vh, 100%); height: auto; margin: 0 auto 2vh; border-radius: max(10px, calc(var(--r) - 2.6vw)); background: #fff; padding: 1vh; }
+  .qr { display: block; width: min(38vh, 100%); height: auto; margin: 0 auto 2vh; border-radius: max(10px, calc(var(--r) - 2.6vw)); background: #fff; padding: 1vh; }
   .qr-note { font-size: clamp(22px, 2.2vw, 38px); margin: 0; line-height: 1.3; }
   @media (prefers-reduced-motion: no-preference) {
     body:not(.calm) .enter { animation: rise .6s cubic-bezier(.2, .8, .2, 1) both; }
@@ -215,16 +217,34 @@
   body.is-night .below { display: none; }
   body.is-night .clock { align-self: center; }
   body.is-night .day { font-size: clamp(80px, 16vw, 280px); font-variant-numeric: tabular-nums; }
-  body.is-night { grid-template-rows: minmax(0, 1fr) auto auto; }
+  body.is-night { grid-template-rows: minmax(0, 1fr) auto; }
 
-  /* Captions: Andy's words only, two lines at most, gone a few seconds after he stops. */
-  .caption { margin: 2.2vh 0 0; padding: 1.5vh 2.2vw; background: var(--ink); color: var(--ground); border-radius: var(--r);
-             font-size: clamp(26px, 2.9vw, 50px); line-height: 1.28;
-             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-             box-shadow: 0 1.6vh 4vh var(--shadow); }
-  body:not(.has-caption) .caption { display: none; }
+  /* Captions: everything Andy says, three lines at a time at reading pace, laid over the foot of the
+     screen like a TV's subtitles, so nothing on the screen moves when Andy starts or stops speaking and no
+     empty band is kept for them. Andy's words only, never the person's. */
+  :root { --cap-size: clamp(26px, 2.9vw, 50px); }
+  .caption { position: fixed; left: 5vw; right: 5vw; bottom: 5vh; z-index: 5; margin: 0; padding: 1.5vh 2.2vw; background: var(--ink); color: var(--ground); border-radius: var(--r);
+             font-size: var(--cap-size); line-height: 1.28; align-self: end;
+             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+             box-shadow: 0 1.6vh 4vh var(--shadow); transition: opacity .3s; }
+  body:not(.has-caption) .caption { visibility: hidden; opacity: 0; }
+  /* The settings code is for scanning: while it is up, the caption keeps to the left column, never over it. */
+  body.showing-code .caption { right: calc(5vw + (90vw - 2.4vw) * .59 + 2.4vw); font-size: clamp(20px, 1.9vw, 32px); }
   @media (prefers-reduced-motion: no-preference) { body:not(.calm).has-caption .caption { animation: rise .45s cubic-bezier(.2, .8, .2, 1) both; } }
 
+  /* The gear: Andy's settings (the code for a phone) and Under the hood, from the TV or its remote. */
+  .gear { grid-column: 2; grid-row: 2; justify-self: end; align-self: end; display: inline-flex; align-items: center; gap: .5em;
+          margin: 0; padding: .45em .9em; border-radius: 999px; font: inherit; font-size: clamp(16px, 1.5vw, 26px);
+          color: var(--soft); cursor: pointer; }
+  .gear svg { width: 1.2em; height: 1.2em; }
+  .gear:focus-visible, .menu button:focus-visible { outline: 4px solid var(--mark); outline-offset: 4px; }
+  .menu { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: min(640px, 90vw);
+          padding: 4vh 3vw; display: none; flex-direction: column; gap: 2vh; }
+  .menu.open { display: flex; }
+  .menu h2 { margin: 0 0 1vh; font-size: clamp(26px, 2.6vw, 44px); color: var(--ink); }
+  .menu button { font: inherit; font-size: clamp(20px, 2vw, 34px); padding: .7em 1em; border-radius: var(--r); text-align: left;
+                 background: var(--panel); color: var(--ink); border: 2px solid var(--edge); cursor: pointer; }
+  .menu button span { display: block; font-size: .7em; color: var(--soft); margin-top: .2em; }
   .offline { position: fixed; right: 2vw; bottom: 2vh; font-size: 20px; color: var(--soft); display: none; }
   body.offline-on .offline { display: block; }
 </style>
@@ -235,6 +255,10 @@
     <p class="day" id="day">&nbsp;</p>
     <p class="when" id="when">&nbsp;</p>
     <p class="state glass" id="state" data-state="away" role="status" aria-live="polite"><span class="orb"></span><span id="state-label"></span></p>
+    <button class="gear glass" id="gear" type="button" aria-haspopup="dialog" aria-controls="menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5A3.5 3.5 0 1 1 13 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
+      <span id="gear-label">Settings</span>
+    </button>
   </header>
   <main class="below">
     <div class="side">
@@ -265,6 +289,12 @@
     </section>
   </main>
   <p class="caption" id="caption" aria-live="polite"></p>
+  <div class="menu glass thick" id="menu" role="dialog" aria-modal="true" aria-labelledby="menu-h">
+    <h2 id="menu-h">Andy's settings</h2>
+    <button type="button" id="menu-code">Show the settings code<span id="menu-code-hint">Point a phone's camera at it to change Andy's settings</span></button>
+    <button type="button" id="menu-hood">Under the hood<span id="menu-hood-hint">How fast Andy answers, and what it uses, live</span></button>
+    <button type="button" id="menu-close">Close</button>
+  </div>
   <p class="offline" id="offline">Andy's screen is reconnecting…</p>
 <script>
   const token = new URLSearchParams(location.search).get("t");
@@ -278,12 +308,16 @@
     en: { family: "family", nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
           code: "Point a phone's camera here to open Andy's settings. It disappears in two minutes.",
+          gear: "Settings", menu: "Andy's settings", menuCode: "Show the settings code", menuCodeHint: "Point a phone's camera at it to change Andy's settings",
+          menuHood: "Under the hood", menuHoodHint: "How fast Andy answers, and what it uses, live", close: "Close",
           kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
                    check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says", today: "Today", story: "Story time", on_this_day: "On this day", seen: "What I see" },
           where: "Andy looks here when it shows you something new." },
     es: { family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
           code: "Apunte la cámara de un teléfono aquí para abrir los ajustes de Andy. Desaparece en dos minutos.",
+          gear: "Ajustes", menu: "Ajustes de Andy", menuCode: "Mostrar el código de ajustes", menuCodeHint: "Apunte la cámara de un teléfono para cambiar los ajustes de Andy",
+          menuHood: "Por dentro", menuHoodHint: "Lo rápido que responde Andy y lo que usa, en directo", close: "Cerrar",
           kinds: { code: "Ajustes de Andy", news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
                    whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace", where: "La pantalla de Andy", letter: "Lo que dice la página", today: "Hoy", story: "Hora del cuento", on_this_day: "Un día como hoy", seen: "Lo que veo" },
           where: "Andy mira aquí cuando le muestra algo nuevo." },
@@ -318,6 +352,9 @@
       when.append(cap1(shown.part_of_day) + ", ", make("strong", "", clock12(s.today.time)), ", " + shown.date);
     }
     text($("next-h"), ui.next); text($("weather-h"), ui.weather); text($("offline"), ui.offline);
+    text($("gear-label"), ui.gear); text($("menu-h"), ui.menu); text($("menu-close"), ui.close);
+    $("menu-code").firstChild.textContent = ui.menuCode; text($("menu-code-hint"), ui.menuCodeHint);
+    $("menu-hood").firstChild.textContent = ui.menuHood; text($("menu-hood-hint"), ui.menuHoodHint);
 
     // Next: the first reminder still to come, with how long until it; the rest of today below it.
     const nowS = Date.now() / 1000;
@@ -355,6 +392,7 @@
     // What Andy found: one card. Otherwise, when idle, a family photo.
     const showing = s.showing;
     document.body.classList.toggle("has-showing", !!showing);
+    document.body.classList.toggle("showing-code", !!showing && showing.kind === "code");
     if (!showing) foundKey = foundContent = "";
     const fp = !showing ? s.idle_photo : null;
     document.body.classList.toggle("has-photo", !!fp);
@@ -406,9 +444,21 @@
       }
     }
 
-    // Captions: Andy's latest words, at most two lines, gone a few seconds after he stops speaking.
-    const cap = latest(s.caption || "");
-    const showCap = !!cap && Date.now() - lastSpoke < 4000;
+    // Captions: everything Andy says, a page of up to three lines at a time, at reading pace from when the
+    // words arrived; gone a few seconds after the last page. Timed from when Andy's process sent them (caption_at), so a TV that opens the page mid-story is not
+    // taken back to the start; never from later than now, in case the TV's clock runs behind.
+    if ((s.caption || "") !== capText) {
+      capText = s.caption || "";
+      capSeenAt = s.caption_at ? Math.min(Date.now(), s.caption_at * 1000) : Date.now();
+      capPages = captionPages(capText);
+      capChars = pageChars();
+    } else if (capText && pageChars() !== capChars) {    // the settings code came or went: re-page to fit
+      capChars = pageChars();
+      capPages = captionPages(capText);
+    }
+    const now = Date.now(), cap = capText ? captionNow(now) : "";
+    // Up while Andy speaks and until the last page has had its time, then a few seconds more.
+    const showCap = !!cap && (now - lastSpoke < 4000 || now < capSeenAt + captionLasts() * 1000 + 4000);
     document.body.classList.toggle("has-caption", showCap);
     if ($("caption").textContent !== cap) $("caption").textContent = cap;
     // The colour fades only when the part of the day changes, never when the page first opens.
@@ -440,16 +490,45 @@
     return Math.round(100 + (Math.min(hour, 18) - 6) / 12 * 160);
   }
 
-  function latest(caption) {
-    // The last sentences that fit about two lines on a TV.
-    const parts = caption.match(/[^.!?¡¿]+[.!?]*/g) || [];
-    let out = "";
-    for (let i = parts.length - 1; i >= 0; i--) {
-      const next = (parts[i].trim() + " " + out).trim();
-      if (out && next.length > 130) break;
-      out = next;
+  let capText = "", capSeenAt = 0, capPages = [], capChars = 0;
+  const READ_CPS = 15;                          // about Andy's speaking pace
+  // How many characters fit three lines of the caption as it is now laid out on this TV, with room spare:
+  // Atkinson Hyperlegible's letters average a little over half their size in width.
+  function pageChars() {
+    const el = $("caption"), cs = getComputedStyle(el);
+    const width = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const perLine = width / (parseFloat(cs.fontSize) * 0.56);
+    return Math.max(40, Math.floor(perLine * 3 * 0.85));
+  }
+  function captionPages(text) {
+    const PAGE_CHARS = pageChars();
+    const sentences = (text.match(/[^.!?¡¿]+[.!?]*/g) || []).map((x) => x.trim()).filter(Boolean);
+    const pages = [];
+    let cur = "";
+    for (let sentence of sentences) {
+      while (sentence.length > PAGE_CHARS) {          // a very long sentence is split between words
+        const cut = sentence.lastIndexOf(" ", PAGE_CHARS);
+        if (cur) { pages.push(cur); cur = ""; }
+        pages.push(sentence.slice(0, cut > 0 ? cut : PAGE_CHARS));
+        sentence = sentence.slice(cut > 0 ? cut + 1 : PAGE_CHARS);
+      }
+      if (cur && (cur + " " + sentence).length > PAGE_CHARS) { pages.push(cur); cur = sentence; }
+      else cur = cur ? cur + " " + sentence : sentence;
     }
-    return out;
+    if (cur) pages.push(cur);
+    return pages;
+  }
+  function captionLasts() {
+    return capPages.reduce((sum, page) => sum + Math.max(2.5, page.length / READ_CPS), 0);
+  }
+  function captionNow(now) {
+    let t = (now - capSeenAt) / 1000;
+    for (const page of capPages) {
+      const lasts = Math.max(2.5, page.length / READ_CPS);
+      if (t < lasts) return page;
+      t -= lasts;
+    }
+    return capPages[capPages.length - 1] || "";
   }
   function clock12(hhmm) {
     let [h, m] = hhmm.split(":").map(Number);
@@ -482,6 +561,28 @@
       text($("state-label"), s.label);
     } catch (e) { /* the reconnecting notice covers this */ }
   }
+  // The gear: a menu for the TV's remote or a mouse. Arrow keys move between its buttons, Escape closes it.
+  function openMenu(open) {
+    $("menu").classList.toggle("open", open);
+    if (open) $("menu-code").focus(); else $("gear").focus();
+  }
+  $("gear").addEventListener("click", () => openMenu(true));
+  $("menu-close").addEventListener("click", () => openMenu(false));
+  $("menu-hood").addEventListener("click", () => { location.href = "/hood?t=" + encodeURIComponent(token); });
+  $("menu-code").addEventListener("click", async () => {
+    try { await fetch("/api/screen/settings-code?t=" + encodeURIComponent(token), { method: "POST" }); } catch (e) {}
+    openMenu(false);
+    tick();
+  });
+  document.addEventListener("keydown", (e) => {
+    const menu = $("menu");
+    if (!menu.classList.contains("open")) return;
+    const buttons = [...menu.querySelectorAll("button")];
+    const i = buttons.indexOf(document.activeElement);
+    if (e.key === "Escape" || e.key === "Backspace") { openMenu(false); e.preventDefault(); }
+    if (e.key === "ArrowDown") { buttons[(i + 1) % buttons.length].focus(); e.preventDefault(); }
+    if (e.key === "ArrowUp") { buttons[(i - 1 + buttons.length) % buttons.length].focus(); e.preventDefault(); }
+  });
   tick(); setInterval(tick, 1000);
   stateTick(); setInterval(stateTick, 400);
 </script>

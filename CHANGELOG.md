@@ -5,6 +5,27 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (the screen, from the founder's report)
+
+The founder saw no family photos, only the last sentence of what Andy said, and a time that "kept
+shifting", and couldn't find the settings or Under the hood on the TV. Tested in a browser on the real
+screen server (Playwright, 1920 × 1080 and 1280 × 720):
+- **Photos:** a card stayed 15 minutes, so the photos rarely came back. Now five (`board.SHOW_FOR_S`).
+  Photos still rest at night (9 pm to 7 am) by design.
+- **Captions:** everything Andy says, up to 2,000 characters, kept three minutes, shown three lines at a
+  time and turning at about Andy's pace (15 characters a second), timed from when Andy sent it
+  (`caption_at`), so a TV that opens mid-story isn't sent back to the start. A page holds what fits
+  three lines on that TV. They lie over the foot of the screen like subtitles, so no empty band is kept
+  for them, and keep to the left column while the settings code is up, never over it.
+- **The shifting:** the clock shrank and grew, with an animation, whenever a card, a photo or a caption
+  came or went. It now keeps one size and nothing moves. A long forecast keeps to two lines beside a
+  photo.
+- **The gear:** a Settings button on the TV, for a mouse or the remote, with **Show the settings code**
+  (new route `POST /api/screen/settings-code`, screen token) and **Under the hood**. The hood page has a
+  way back, and the remote's Back key works on it. The QR code is a little smaller so its note fits at
+  720p.
+- 5 more tests (491).
+
 ### Measured (the scam check and the events finder, live, with Tavily pay-as-you-go)
 
 - **The scam-check evaluation, a clean run with real calls** (`evals/results/scam-eval-2026-10-14-0951.json`):

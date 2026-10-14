@@ -1,7 +1,8 @@
 """Captions: what Andy says appears in large text on the screen beside it.
 
 Only Andy's own words, never the person's. Sent to the screen server on this computer and kept in
-its memory for 20 seconds; never written to disk or logged.
+its memory for three minutes (screen_server.CAPTION_FOR_S), long enough to read a story's part along
+to the end; never written to disk or logged.
 """
 
 from __future__ import annotations

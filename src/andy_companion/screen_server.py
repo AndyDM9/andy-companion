@@ -28,14 +28,14 @@ from andy_companion import board, clock, reminders
 
 logger = logging.getLogger("andy.screen")
 PAGES = Path(__file__).parent / "pages"
-CAPTION_FOR_S = 20.0
+CAPTION_FOR_S = 180.0      # long enough for a story's part to be read along to the end
 # Andy's last spoken words, for the screen's captions. Memory only: never written to disk or logged.
 _caption: Dict[str, Any] = {"text": "", "at": 0.0}
 
 
 def set_caption(text: str, now: Optional[float] = None) -> None:
     import time as _t
-    _caption["text"] = " ".join(str(text).split())[:400]
+    _caption["text"] = " ".join(str(text).split())[:2000]
     _caption["at"] = now if now is not None else _t.time()
 
 
@@ -312,6 +312,7 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     if state["showing"] and state["showing"].get("kind") == "code" and host:
         state["showing"] = {**state["showing"], "qr": settings_qr(host)}
     state["caption"] = caption() if settings.get().get("captions", True) else ""
+    state["caption_at"] = _caption["at"] if state["caption"] else None
     state["weather"] = weather_card()
     hour = (now or datetime.now()).hour
     s = settings.get()
@@ -430,6 +431,9 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         local = self.client_address[0] in ("127.0.0.1", "::1")
+        if url.path == "/api/screen/settings-code" and _ok(q.get("t"), "screen"):
+            board.show_settings_code()       # the gear on the TV: the QR code appears, for two minutes
+            return self._json({"ok": True})
         if url.path == "/api/frame" and _ok(q.get("t"), "screen") and local:
             length = self._length()
             if not 0 < length <= MAX_FRAME:

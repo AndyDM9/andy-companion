@@ -78,7 +78,7 @@ supervisor: no wake phrase; the dashboard starts and stops it).
   waiting to be said (`inbox.json`), family photos (`photos/`, 7 days), settings (`settings.json`), the
   story bookmark (`story.json`) and joke numbers (`fun.json`). The card on the screen (`screen.json`) is
   cleared when it expires, by a housekeeping thread, whether or not a TV is open.
-- Captions of Andy's own words live only in the screen server's memory, for 20 seconds.
+- Captions of Andy's own words live only in the screen server's memory, for three minutes (long enough to read a story's part along to the end), never on disk or in a log.
 - Turn timings (numbers and tool names only) live only in the screen server's memory, last 40.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
   and `voice/serve.py` silences the transcript prints of every console in the voice server.

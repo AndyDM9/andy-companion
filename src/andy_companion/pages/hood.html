@@ -21,6 +21,8 @@
   body { background: var(--ground); color: var(--ink); min-height: 100vh;
          font-family: "Atkinson Hyperlegible", "Verdana", sans-serif; padding: 4vh 5vw; }
   h1 { font-size: clamp(32px, 4vw, 64px); margin: 0; line-height: 1.05; }
+  .back { margin: 0 0 1.4vh; font-size: clamp(16px, 1.5vw, 24px); }
+  .back a { color: inherit; text-underline-offset: .2em; }
   .lede { color: var(--soft); font-size: clamp(17px, 1.6vw, 26px); margin: 1vh 0 0; max-width: 62ch; }
 
   /* The live pipeline: the stage Andy is in right now, lit; as Home Assistant's voice pipeline shows its stages. */
@@ -77,8 +79,9 @@
 </head>
 <body>
   <header>
+    <p class="back"><a id="back" href="#">← Back to Andy's screen</a></p>
     <h1>Under the hood</h1>
-    <p class="lede">How long Andy's last turns took, measured live on this robot. Only the numbers are kept, in memory, never the words.</p>
+    <p class="lede">What happens each time you talk to Andy: it hears you on this computer, thinks with NVIDIA Nemotron on Nebius, looks things up with Tavily, and speaks. Below, how long Andy's last turns took, measured live on this robot. Only the numbers are kept, in memory, never the words.</p>
   </header>
 
   <section class="pipeline" aria-label="What Andy is doing now">
@@ -117,6 +120,11 @@
 
 <script>
   const token = new URLSearchParams(location.search).get("t") || "";
+  document.getElementById("back").href = "/screen?t=" + encodeURIComponent(token);
+  // A TV remote's Back key arrives as Escape or Backspace: it goes back to Andy's screen.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" || e.key === "Backspace") { e.preventDefault(); location.href = document.getElementById("back").href; }
+  });
   const WHERE = {
     local_news: "Tavily", look_up: "Tavily", whats_on: "Tavily", read_link: "Tavily", check_message: "Tavily",
     describe_view: "Nemotron Nano VL on Nebius", describe_photo: "Nemotron Nano VL on Nebius",

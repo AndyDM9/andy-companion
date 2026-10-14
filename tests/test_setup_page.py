@@ -121,6 +121,22 @@ def test_the_settings_code_shows_for_two_minutes_and_points_at_this_address(serv
     assert board.showing(now=time.time() + board.CODE_FOR_S + 1) is None          # gone after two minutes
 
 
+def test_the_gear_on_the_tv_shows_the_settings_code_with_the_screen_token_only(server):
+    def press(token):
+        req = urllib.request.Request(f"{server}/api/screen/settings-code?t={token}", method="POST", data=b"{}")
+        with urllib.request.urlopen(req, timeout=5) as r:
+            return json.loads(r.read())
+
+    with pytest.raises(urllib.error.HTTPError):
+        press("wrong")
+    with pytest.raises(urllib.error.HTTPError):
+        press(board.tokens()["setup"])
+    assert board.showing() is None
+    old = board.tokens()["setup"]
+    assert press(board.tokens()["screen"]) == {"ok": True}
+    assert board.showing()["kind"] == "code" and board.tokens()["setup"] != old
+
+
 def test_a_new_settings_link_retires_the_old_one(server):
     old = board.tokens()["setup"]
     post(server, "/api/setup/new-settings-link", {})

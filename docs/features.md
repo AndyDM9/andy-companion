@@ -84,8 +84,14 @@ and the [live test](live-test.md).
 
 A TV or monitor shows the day in large type, what Andy is doing ("Listening for you", "Checking the
 weather"), the next reminder with how long until it, the weather, what Andy found with its sources, and
-two-line captions of Andy's own words (never yours). When something new appears, Andy turns its head to
-look at it, and back to you.
+captions of everything Andy says (never your words): three lines at a time, turning to the next at reading
+pace, laid over the foot of the screen like a TV's subtitles. When something new appears, Andy turns its
+head to look at it, and back to you. A card stays five minutes, then the family photos come back. The
+clock keeps one size, so nothing on the screen moves when a card, a photo or a caption comes and goes.
+
+A **Settings** button with a gear, top right, works with a mouse or the TV's remote (arrow keys, OK, Back).
+It offers **Show the settings code** (the QR code for a phone, for two minutes) and **Under the hood**
+(how fast Andy answers and what it uses, live, with a way back to the screen).
 
 Its design, "Andy Glass", takes from Apple's Liquid Glass ([decision 0005](decisions/0005-the-screen-s-design-andy-glass.md)):
 - frosted panels over slow light in the time of day's colours, with edges lit from where the sun would

@@ -57,6 +57,13 @@ def test_the_screen_forgets_what_it_showed():
     assert board.showing(now=1000 + board.SHOW_FOR_S + 1) is None and not board.SCREEN.exists()
 
 
+def test_a_card_gives_the_screen_back_to_the_photos_within_five_minutes():
+    # A card used to stay 15 minutes, so the family photos rarely came back (the founder, 2026-10-14).
+    assert board.SHOW_FOR_S <= 5 * 60
+    board.show("news", "Local news", [{"title": "Road reopens"}], now=1000)
+    assert board.showing(now=1000 + 5 * 60 + 1) is None
+
+
 def test_only_what_is_shared_is_shared():
     item = board.share("  The recital was lovely  ")
     assert board.shared()[0]["note"] == "The recital was lovely"
