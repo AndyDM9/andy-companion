@@ -2,7 +2,7 @@
 
 **A small home robot for older adults who live at home, and the family who help.** Andy runs on a
 Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It hears with NVIDIA
-Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory in under a second, sees with Nemotron Nano
+Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory (which answers in 0.6 to 0.8 s), sees with Nemotron Nano
 VL on a Nebius Serverless Endpoint, and looks things up with Tavily. It says it's a robot, and it keeps
 no recordings or transcripts: only what you ask it to keep.
 
@@ -42,9 +42,11 @@ with its sources.
 - **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle
   jokes and riddles, public-domain stories read a part at a time, On this day from Wikipedia, and "help me
   think it through" with Nemotron 3 Ultra.
-- **Scam checks, measured:** with Tavily's consumer-protection warnings, Andy's check caught 39 of 40
-  scams (9 of 10 subtle ones, against 7 without Tavily) and flagged none of 40 ordinary messages, naming
-  its source for 38 of 39 ([evals/scam_eval.py](evals/scam_eval.py), 2026-10-14).
+- **Scam checks, measured:** Andy's full check (Tavily's consumer-protection warnings, then Nemotron 3
+  Ultra comparing the message with each warning) caught 39 of 40 scams (9 of 10 subtle ones) against 36
+  (7 subtle) for Nemotron 3.5 Lightning alone, flagged none of 40 ordinary messages, and named its source
+  for 38 of 39. One run, on messages written while the check was built
+  ([evals/scam_eval.py](evals/scam_eval.py), 2026-10-14).
 - **The world, with sources:** local news from your own papers, look-ups, what's on, a link family sent,
   and scam checks, all through Tavily.
 - **Family, on your terms:** family see only what you share, Andy tells you who looked, and a helper sets
@@ -59,7 +61,8 @@ anyone safe, speak as a real person, or keep recordings or transcripts.
 
 **What it costs:** about **$2.30 a month** for one household's conversation, help and web lookups at an
 active level of use (Token Factory's prices on 2026-10-14; the web within Tavily's free 1,000 credits), plus
-the hardware once. Every price and assumption: [docs/cost.md](docs/cost.md).
+the hardware once. The eyes and the second look are not in that figure: they run on Nebius endpoints
+started when needed (about $1.55 an hour each while running). Every price and assumption: [docs/cost.md](docs/cost.md).
 
 ## Built on what older adults have said they want
 
@@ -67,7 +70,7 @@ Each principle comes from published research, and each has something you can see
 
 | Principle | Source | What Andy does |
 |---|---|---|
-| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | About a second from your last word to Andy's first sound, shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
+| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | Nemotron answers in 0.6 to 0.8 s; each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
 | Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
 | The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
@@ -85,7 +88,7 @@ Each principle comes from published research, and each has something you can see
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
-| The conversation suite | 82 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/safety-job.sh](cloud/safety-job.sh)) |
+| The conversation suite | 83 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
 
 ### Where Token Factory sped us up
@@ -115,7 +118,7 @@ how long it took and where it ran. Numbers and tool names only, in memory; never
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 82 spoken situations in 19 areas, English and Spanish,
+**The conversation suite** ([evals/](evals/)): 83 spoken situations in 19 areas, English and Spanish,
 judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
@@ -192,7 +195,7 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
    RUNNING. Run `stop` when you're done; a stopped endpoint costs nothing for compute.
 6. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing.
    To start Andy at login: `scripts/install-services.sh --enable`.
-7. **Optional: the suite on Nebius.** `cloud/safety-job.sh run`, or locally
+7. **Optional: the suite on Nebius.** `cloud/suite-job.sh run`, or locally
    `uv run python evals/run_suite.py --runs 3`.
 
 Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's environment:

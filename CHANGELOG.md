@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Changed (public words and numbers, from the submission audit)
+
+- `docs/research.md` no longer cites sources whose titles name a condition or a loneliness framing; the
+  rules they informed are stated as Andy's own choices, and the sources are kept privately. The word
+  "Judge" before a judge's name is gone. One older line here was reworded the same way.
+- `cloud/safety-job.sh` is now `cloud/suite-job.sh` (it runs the conversation suite).
+- Numbers brought up to date: 83 spoken situations (the welcome-back and name cases were added after the
+  last count), 35 tools in the architecture picture and the feedback text, "more than 490 tests".
+- Exact claims: Nemotron answers in 0.6 to 0.8 s (the whole turn shows on `/hood`), where the README said
+  "under a second" for everything; the monthly cost now says it leaves out the eyes and the second look;
+  the scam result now says Andy's full check adds Nemotron 3 Ultra as well as Tavily, and that it is one
+  run on messages written while the check was built.
+- `docs/feedback.md`: a "first call" for every model, a Tavily section and the Magpie TTS trial.
+
 ### Fixed (the model key off the voice server's command line)
 
 - `voice/run.sh` passed the Token Factory key as a command-line argument, which every process on the shared
@@ -373,8 +387,8 @@ empty home folder installs and passes. What it found is fixed and tested (`tests
 
 - **Research:** best practice for conversation with older adults: Irfan et al. 2024 and 2025 on
   social robots and older adults; elderspeak research (Williams 2009, a 2021 concept analysis);
-  dementia-communication guidance (Alzheimer's Association and Alzheimer's Society; applying it to
-  everyone is our own choice); ElliQ's documented features; and the ethics literature (Sharkey &
+  communication guidance against quizzing and correcting (applying it to everyone is our own
+  choice); ElliQ's documented features; and the ethics literature (Sharkey &
   Sharkey 2012).
 - **Andy's profile has a KEEPING COMPANY section:**
   - short turns and one open question that picks up the person's words;
@@ -818,7 +832,7 @@ empty home folder installs and passes. What it found is fixed and tested (`tests
 
 ### Changed (the suite runs on Nebius again; the dizziness rule made concrete)
 
-- **The job's files travel as one compressed bundle** (`cloud/safety-job.sh`, `cloud/job-entry.sh`):
+- **The job's files travel as one compressed bundle** (`cloud/suite-job.sh`, `cloud/job-entry.sh`):
   Nebius limits a job's injected files to 64 KB in all, and the suite's eight files came to 62.9 KB
   before encoding. Bundled they are 26 KB; the entry script unpacks them and runs the suite. The
   file list is one array, kept complete by a test.
@@ -1166,7 +1180,7 @@ empty home folder installs and passes. What it found is fixed and tested (`tests
   calmly. Negations ("no chest pain today") and everyday uses ("a stroke in swimming") are
   ignored. The words are looked at and dropped. Added because the model passed the chest-pain
   case in 2 of 3 runs. 17 tests.
-- `cloud/safety-job.sh` runs the suite as a Nebius Serverless Job (python:3.12-slim on cpu-d3,
+- `cloud/suite-job.sh` runs the suite as a Nebius Serverless Job (python:3.12-slim on cpu-d3,
   the suite and profile injected as files, the Token Factory key from Nebius's secret store) and
   saves the scorecard to `evals/results/`.
 - Vision is HTTPS only: the endpoint script saves the managed HTTPS address, `vision.py` refuses

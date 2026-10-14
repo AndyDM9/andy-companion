@@ -13,16 +13,15 @@ with, by our own choice. Andy makes no therapeutic or health claim from any of i
   interruptions and replies that were slow, repetitive or superficial.
   ([Irfan et al. 2024](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2024.1363713/full);
   [Irfan et al. 2025](https://onlineacademiccommunity.uvic.ca/implicitassociationtestsyessir/wp-content/uploads/sites/9812/2025/12/irfan.pdf))
-- **Pauses.** Voice assistants cut people off too early; the better choice is to wait, or to ask a short
-  question ([Addlesee and Eshghi 2024](https://www.frontiersin.org/journals/dementia/articles/10.3389/frdem.2024.1343052/full)).
+- **Pauses.** Voice assistants tend to cut people off too early; the better choice is to wait, or to ask a
+  short question. The same complaint about interruptions came up in the live use above.
 - **Pacing.** Older listeners expect a voice robot to speak a little more slowly, the more so the longer
   the reply ([PMC10132265](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10132265/)). Pauses at clause
   boundaries help recall.
 - **Elderspeak** ("sweetie", "are *we* ready", a sing-song tone) is patronising and harms understanding
   ([concept analysis, 2021](https://pubmed.ncbi.nlm.nih.gov/34476301/); [Williams 2009](https://pmc.ncbi.nlm.nih.gov/articles/pmid/18591210)).
-- **Memory questions.** Guidance advises against quizzing, "Do you remember…?" and correcting
-  ([Alzheimer's Association](https://www.alz.org/media/cacentral/documents/t-t3.pdf);
-  [Alzheimer's Society](https://alzheimers.org.uk/blog/language-dementia-what-not-to-say)).
+- **No quizzing.** Communication guidance advises against testing people ("Do you remember…?") and
+  against correcting them; Andy follows it with everyone, as a matter of courtesy.
 
 **What Andy does with it:** short turns; one open question that picks up the person's own words; waiting
 through pauses; curiosity about their past without testing it; adult to adult; *usted* in Spanish;
@@ -30,11 +29,9 @@ through pauses; curiosity about their past without testing it; adult to adult; *
 
 ## Reminiscence, carefully
 
-Casual reminiscence is not reminiscence therapy. Webster separates simple reminiscence, life review and
-life-review therapy, and reminiscence appears among treatments for loneliness in the literature
-([Broadbent et al. 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC10917141/)). So Andy offers only
-spontaneous, casual conversation about the past, and never calls anything therapy or cognitive
-stimulation.
+Casual reminiscence is not reminiscence therapy: the literature separates simple reminiscence, life
+review and life-review therapy (Webster). So Andy offers only spontaneous, casual conversation about the
+past, and never calls anything therapy.
 
 ## Humour (researched 2026-10-13)
 
@@ -42,8 +39,7 @@ stimulation.
   shared-moment humour ([Stanley et al. 2014](https://pubmed.ncbi.nlm.nih.gov/25244473/)).
 - Ageist jokes read as relatable from friends but offensive from strangers, and a robot is a stranger
   ([Aberystwyth 2026](https://www.aber.ac.uk/en/news/archive/2026/03/title-286801-en.html)).
-- ElliQ uses puns and jokes about itself ([The Senior List](https://www.theseniorlist.com/aging-in-place/elliq/);
-  [Generations](https://generations.asaging.org/staving-loneliness-social-robot)).
+- ElliQ, a companion robot on sale, is known for puns and jokes about itself.
 
 **What Andy does with it:** gentle puns and riddles from a chosen set, tested for topics (no age, memory,
 health, bodies, death), never repeated within a month, and never made up by the model.
@@ -81,7 +77,7 @@ robot.
 
 Among roughly the 50 most-liked Reachy Mini apps on Hugging Face, none searches a room for an object, and
 none does listening body language ([the app store by likes](https://huggingface.co/spaces?filter=reachy_mini&sort=likes)).
-The most-liked apps react physically to something the camera notices. A judge's
+The most-liked apps react physically to something the camera notices. a judge's
 [Reachy Mini Jetson tutorial](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
 sweeps the body and settles before taking a frame. **What Andy does:** "where did I leave my glasses?"
 sweeps the room, reads four views in parallel with Nemotron Nano VL, and points with the head.

@@ -41,7 +41,7 @@ def test_each_of_andys_tools_reads_as_the_robot_sends_it(spec):
 
 
 def job_files():
-    text = (ROOT / "cloud" / "safety-job.sh").read_text()
+    text = (ROOT / "cloud" / "suite-job.sh").read_text()
     return re.search(r"FILES=\(([^)]*)\)", text).group(1).split()
 
 

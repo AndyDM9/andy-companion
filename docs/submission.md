@@ -57,7 +57,7 @@ follow you, its antennas lift while you speak and lean while it thinks.
 - **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second **Serverless Endpoint**, with a policy
   written for signs of crisis: on held-out phrasings our word list misses, it caught 7 of 8 with no
   false alarms, in about 0.55 s.
-- **Proof:** a conversation suite of 82 spoken situations in 19 areas, English and Spanish, run as a
+- **Proof:** a conversation suite of 83 spoken situations in 19 areas, English and Spanish, run as a
   **Nebius Serverless Job** and judged by Nemotron 3 Ultra. The model gets exactly the robot's tools.
   Tool cases are judged on what Andy says, and words that must never be said are checked in code. Latest
   Job: 79, 79 and 79 of 81 (2026-10-13), every run's scorecard and failures in the repository.
@@ -71,10 +71,11 @@ follow you, its antennas lift while you speak and lean while it thinks.
     site when the site refuses crawlers);
   - **research, streamed:** "look into it", step by step on the screen.
 - **Measured: does Tavily make the scam check better?** On 80 messages read aloud (40 with scam signs,
-  40 ordinary, 20 hard on purpose), with real calls: Nemotron alone caught 36 of 40 scams; with Tavily,
+  40 ordinary, 20 hard on purpose), with real calls: Nemotron 3.5 Lightning alone caught 36 of 40 scams; Andy's full check, which adds
+  Tavily's consumer-protection warnings and Nemotron 3 Ultra comparing the message with each one, caught
   **39 of 40, and 9 of the 10 subtle ones against 7**, with **no ordinary message flagged** either way, and
   38 of 39 scam verdicts naming the consumer-protection source Andy says aloud
-  (`evals/scam_eval.py`, 2026-10-14).
+  (`evals/scam_eval.py`, 2026-10-14; one run, on messages written while the check was built).
 
   Andy offers an action from an answer (a reminder, a note to family) and waits for a yes; the suite
   judges it.
@@ -90,7 +91,7 @@ follow you, its antennas lift while you speak and lean while it thinks.
     naming it, in English and Spanish.
   - **Consent:** checked in code before anything is remembered.
   - **Scam pages:** warnings decided from the page's own words.
-- **Engineering:** 477 tests, a pre-commit hook that blocks failing tests and key-like strings, an
+- **Engineering:** more than 490 tests, a pre-commit hook that blocks failing tests and key-like strings, an
   independent code and privacy review with every finding fixed and tested, and each choice between
   alternatives recorded in `docs/decisions/`.
 

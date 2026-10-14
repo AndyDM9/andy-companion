@@ -3,8 +3,8 @@
 # VM, the suite and Andy's real profile injected as files, the Token Factory key from Nebius's
 # secret store (never in the job's settings). Prints the scorecard from the job's logs.
 #
-#   cloud/safety-job.sh run      create the job, wait for it, print and save the scorecard
-#   cloud/safety-job.sh secret   store or refresh the Token Factory key in the secret store
+#   cloud/suite-job.sh run      create the job, wait for it, print and save the scorecard
+#   cloud/suite-job.sh secret   store or refresh the Token Factory key in the secret store
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"

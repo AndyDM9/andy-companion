@@ -1,5 +1,5 @@
 #!/bin/sh
-# Inside the Nebius job: unpack the bundle cloud/safety-job.sh sent, then run the suite.
+# Inside the Nebius job: unpack the bundle cloud/suite-job.sh sent, then run the suite.
 #   sh /andy/job-entry.sh <runs> [more run_suite.py arguments]
 set -e
 cd /andy

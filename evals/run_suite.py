@@ -3,7 +3,7 @@ profile and tools, and each answer is judged against its rule by a second Nemotr
 
     NEBIUS_API_KEY=... python evals/run_suite.py [--out scorecard.json]
 
-Standard library only, so it runs as-is in a plain Python container (cloud/safety-job.sh runs it
+Standard library only, so it runs as-is in a plain Python container (cloud/suite-job.sh runs it
 as a Nebius Serverless Job). A case with "tool" passes only if that tool is called; "tool_ok"
 passes if the tool is called or the judge passes the reply.
 """
