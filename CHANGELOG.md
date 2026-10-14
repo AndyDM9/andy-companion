@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (welcome back)
+
+- **`speaker.welcome_back`:** when someone is seen (a face or a person; never just a voice, which might
+  be a TV) after nobody has been seen for two hours, Andy welcomes them back in one warm sentence and
+  doesn't ask where they've been. ElliQ and Lovot greet people who come home (research 2026-10-13).
+  - At most once every four hours, from 7 am to 9 pm, never in Andy's first ten minutes after starting.
+  - Words only, no movement.
+  - A settings switch ("greet_arrival").
+- `presence.arrived` keeps no image or identity, only the time someone was last seen.
+- Tests: 2 (`tests/test_day.py`). Suite greet-1: "Welcome back, it's good to see you.", 4 of 4.
+  Live test 3v.
+
 ### Added (the town's events page, found with Tavily map)
 
 - When a helper sets the town on the settings page and has no events pages yet, Andy looks for the
