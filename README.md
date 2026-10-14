@@ -36,8 +36,7 @@ with its sources.
 ## What Andy does
 
 - **Talks and keeps looking at you**, in English or Spanish, with body language from research: its
-  antennas lift while you speak and lean while it thinks, it glances away while thinking, and its head
-  tilts when it asks you something.
+  antennas lift while you speak and lean while it thinks.
 - **Your day:** the date (never guessed), reminders in your own words, the morning plan, and the weather
   from the National Weather Service.
 - **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle

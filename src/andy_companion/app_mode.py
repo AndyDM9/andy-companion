@@ -44,6 +44,9 @@ def install(screen: bool = False) -> None:
     captions.install()
     turns.install()
     volume.apply_saved()
+    from andy_companion import state
+
+    state.install_sleep_tool()
     import threading
 
     from andy_companion import live

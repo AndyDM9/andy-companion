@@ -117,3 +117,22 @@ def test_the_pages_may_load_fonts_only_from_andy(server):
     conn.request("GET", f"/screen?t={board.tokens()['screen']}")
     csp = conn.getresponse().getheader("Content-Security-Policy")
     assert "font-src 'self'" in csp and "google" not in csp
+
+
+def test_go_to_sleep_after_be_quiet_means_asleep(tmp_path, monkeypatch):
+    import asyncio
+    from datetime import datetime
+
+    from andy_companion import state
+
+    monkeypatch.setattr(state, "FILE", tmp_path / "state.json")
+
+    class GoToSleep:
+        async def __call__(self, deps, **kwargs):
+            return {"stopped": True}
+
+    state.quiet_for(10, now=datetime(2026, 10, 13, 23, 29))
+    assert state.current()["mode"] == "quiet"
+    assert state.install_sleep_tool(GoToSleep) and not state.install_sleep_tool(GoToSleep)
+    assert asyncio.run(GoToSleep()(None)) == {"stopped": True}
+    assert state.current() == {"mode": "asleep", "until": None}      # stays asleep until woken

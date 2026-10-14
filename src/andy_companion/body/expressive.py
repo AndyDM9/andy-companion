@@ -30,7 +30,10 @@ from typing import Callable, Optional
 
 from andy_companion.body import speaking
 
-ENABLED = os.environ.get("ANDY_EXPRESSIVE", "on").strip().lower() not in ("off", "0", "false", "no")
+# Off until checked on the robot: on 2026-10-13 Andy kept cancelling its own answers right after this went
+# live (each answer cut by "speech" that reopened the person's turn), most likely the head's motor sound
+# reaching the microphones during the thinking glance. ANDY_EXPRESSIVE=on turns it on for a test.
+ENABLED = os.environ.get("ANDY_EXPRESSIVE", "off").strip().lower() in ("on", "1", "true", "yes")
 THINK_AFTER_S = 0.8
 THINK_YAW_DEG = 14.0
 THINK_UP_DEG = 8.0

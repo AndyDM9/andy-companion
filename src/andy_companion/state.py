@@ -52,3 +52,25 @@ def asleep() -> None:
 
 def awake() -> None:
     _write({"mode": "awake", "until": None})
+
+
+def install_sleep_tool(tool_class=None) -> bool:
+    """"Go to sleep" means asleep, whatever came before. Pollen's go_to_sleep only stops the app, and the
+    supervisor then keeps the mode it finds: after "be quiet" that was quiet, which ends by itself, so on
+    2026-10-13 "be quiet" then "go to sleep" would have woken Andy ten minutes later. Asleep first."""
+    if tool_class is None:
+        from reachy_mini_conversation_app.tools.go_to_sleep import GoToSleep as tool_class
+    original = tool_class.__call__
+    if getattr(original, "_andy_asleep", False):
+        return False
+
+    async def go_to_sleep(self, deps, **kwargs):
+        try:
+            asleep()
+        except Exception:
+            pass
+        return await original(self, deps, **kwargs)
+
+    go_to_sleep._andy_asleep = True
+    tool_class.__call__ = go_to_sleep
+    return True

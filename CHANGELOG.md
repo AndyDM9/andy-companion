@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Fixed (Andy not answering, and "go to sleep" not sticking; found on the robot by the founder)
+
+- **Andy stopped answering.** After the restart that put the new body language live (23:15), Andy kept
+  reopening the person's turn a fraction of a second after each sentence ended. Every answer it started
+  was cancelled ("speech during pending response"), and one turn grew to over 5,000 characters. The
+  desktop was also heavily loaded by another program, and from 23:20 the robot's microphone pipeline
+  dropped audio, so transcripts came back empty.
+  - A restart cleared the dropped audio, but the reopening came back.
+  - Switching the new body language off stopped it: Andy answered at once, and "go to sleep" ran.
+  - The likely cause is the head's motor sound during the thinking glance reaching the microphones.
+    `body/expressive.py` is now **off by default** (`ANDY_EXPRESSIVE=on` for a test). The README and
+    features page no longer claim it.
+- **"Go to sleep" after "be quiet" didn't stick.** Andy first heard "be quiet" (quiet for 10 minutes),
+  then "go to sleep". Pollen's tool only stops the app, and the supervisor kept the quiet mode, which
+  ends by itself, so Andy would have woken ten minutes later. `state.install_sleep_tool` now records
+  **asleep** before Pollen's tool runs, whatever came before (test in `tests/test_hardening.py`;
+  checked on Pollen's real tool). Andy was put to sleep by hand that night.
+
 ### Changed (every public claim checked against its evidence; the README's first screen)
 
 An independent audit (2026-10-13) checked every number and claim in the README, the Devpost texts, the

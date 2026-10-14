@@ -11,11 +11,11 @@ and the [live test](live-test.md).
 - **It looks at you.** Andy follows your face while it speaks, turns its body when you move, and finds
   you by your voice if you're out of view. While you speak, its antennas lift and hold, like a
   listener; while it thinks or looks something up, they lean slowly, so a pause never looks dead.
-- **Body language from research.** When an answer takes a moment (a tool, the bigger model), Andy
-  glances away and a little up, as people do when they think, then back to you (Andrist, Mutlu and
-  Gleicher 2013). When its reply ends with a question, its head tilts a little as the words end (Mara
-  and Appel 2015). Both are triggered by code, capped and rate-limited; the model never chooses a
-  movement.
+- **Body language from research, built and switched off for now.** A glance away while thinking
+  (Andrist, Mutlu and Gleicher 2013) and a head tilt as a question ends (Mara and Appel 2015) are
+  built and tested in code. They are off (`ANDY_EXPRESSIVE=on` turns them on) because on the robot
+  Andy began cancelling its own answers when they went live, most likely the head's motor sound
+  reaching the microphones. They come back only after a check on the robot.
 - **It says it's a robot, from the first word:** "Good morning! I'm Andy, your robot companion, here
   to help with your day." It never pretends to be a person, and never speaks as someone you know.
 - **Good company, on any topic.** Short turns, one open question that picks up your own words. It never
