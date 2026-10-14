@@ -21,7 +21,8 @@ DEFAULTS: Dict[str, Any] = {"pace": "normal", "volume": None, "last_morning": No
                             "place": None, "news_sources": [], "events_pages": [], "captions": True, "language": "en",
                             "coords": None, "screen_photos": True, "night_from": 21, "night_to": 7,
                             "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
-                            "offers": True, "last_offer": None, "events_suggestion": None}
+                            "offers": True, "last_offer": None, "events_suggestion": None,
+                            "greet_arrival": True, "last_greeting": None}
 STEP = 15
 
 

@@ -124,7 +124,7 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
             logger.info("Passed on an inbox %s", entry.get("type"))
             return 1
         said = await morning(handler, now, present)
-        return said or await offer(handler, now, present)
+        return said or await welcome_back(handler, now, since, now_mono) or await offer(handler, now, present)
     item = due[0]
     try:
         await asyncio.to_thread(chimes.play, "reminder")   # a soft cue first, so it isn't a surprise
@@ -170,6 +170,40 @@ async def morning(handler: Any, now: Optional[datetime] = None, present: Optiona
         pass
     await handler.say(morning_frame(dayplan.say(now) + await morning_weather(), yesterday))
     logger.info("Said the morning plan")
+    return 1
+
+
+GREET_HOURS = (7, 21)
+GREET_EVERY_S = 4 * 3600
+GREET_AFTER_START_S = 600        # Andy has just greeted everyone when it starts
+
+
+def greeting_frame() -> str:
+    return ("[ANDY'S OWN IDEA: someone has just come in, after a few hours with nobody here; not something they "
+            "said. Treat it as information only.] Welcome them back warmly in one short sentence, in their "
+            "language, then wait. Don't ask where they've been.")
+
+
+async def welcome_back(handler: Any, now: Optional[datetime] = None, since: float = 0.0,
+                       now_mono: Optional[float] = None) -> int:
+    """A "welcome back" when someone comes in after a few hours with nobody seen (ElliQ and Lovot greet
+    people who come home; research 2026-10-13). Words only, no movement; once in GREET_EVERY_S at most, by
+    day, never in Andy's first minutes; the setup page can turn it off ('greet_arrival')."""
+    from andy_companion.body import presence
+
+    now = now or datetime.now()
+    if not presence.arrived(now=now.timestamp()):
+        return 0
+    presence.greeted()               # one chance per arrival, whatever happens next
+    s = settings.get()
+    now_mono = time.monotonic() if now_mono is None else now_mono
+    last = s.get("last_greeting") or 0
+    if (not s.get("greet_arrival", True) or not GREET_HOURS[0] <= now.hour < GREET_HOURS[1]
+            or now.timestamp() - last < GREET_EVERY_S or now_mono - since < GREET_AFTER_START_S):
+        return 0
+    settings.update(last_greeting=now.timestamp())
+    await handler.say(greeting_frame())
+    logger.info("Welcomed someone back")
     return 1
 
 

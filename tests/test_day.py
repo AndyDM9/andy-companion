@@ -47,7 +47,8 @@ def test_settings_default_and_stick():
                             "news_sources": [], "events_pages": [], "captions": True, "language": "en",
                               "coords": None, "screen_photos": True, "night_from": 21, "night_to": 7,
                               "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
-                              "offers": True, "last_offer": None, "events_suggestion": None}
+                              "offers": True, "last_offer": None, "events_suggestion": None,
+                              "greet_arrival": True, "last_greeting": None}
     settings.update(pace="slow", volume=70)
     assert settings.get()["pace"] == "slow" and settings.get()["volume"] == 70
 
@@ -259,3 +260,39 @@ def test_the_quiet_clock_restarts_when_the_person_speaks():
     assert clock.quiet_for() == 4900.0
     clock.mark("user_speech_started")
     assert clock.quiet_for() == 0.0
+
+
+def test_someone_coming_in_after_hours_away_is_welcomed_back_once(monkeypatch):
+    from andy_companion.body import presence
+
+    monkeypatch.setattr(presence, "_seen", {"t": None, "arrived": None})
+    day = datetime(2026, 10, 14, 15, 0)
+    t = day.timestamp()
+    presence.mark("face", now=t - 3 * 3600)              # seen this morning, then nobody
+    presence.mark("voice", now=t - 60)                   # a TV talking is not someone coming in
+    assert not presence.arrived(now=t)
+    presence.mark("face", now=t)
+    assert presence.arrived(now=t)
+    h = FakeHandler()
+    assert asyncio.run(speaker.welcome_back(h, day, since=0.0, now_mono=3600.0)) == 1
+    assert "Welcome them back" in h.said[0] and "Don't ask where" in h.said[0]
+    assert asyncio.run(speaker.welcome_back(h, day, since=0.0, now_mono=3600.0)) == 0      # once per arrival
+
+
+def test_no_welcome_at_night_too_soon_after_starting_or_when_off(monkeypatch):
+    from andy_companion.body import presence
+
+    def arrive(at):
+        monkeypatch.setattr(presence, "_seen", {"t": at - 3 * 3600, "arrived": None})
+        presence.mark("person", now=at)
+
+    h = FakeHandler()
+    night = datetime(2026, 10, 14, 22, 30)
+    arrive(night.timestamp())
+    assert asyncio.run(speaker.welcome_back(h, night, since=0.0, now_mono=3600.0)) == 0
+    day = datetime(2026, 10, 14, 15, 0)
+    arrive(day.timestamp())
+    assert asyncio.run(speaker.welcome_back(h, day, since=0.0, now_mono=60.0)) == 0      # Andy just started
+    settings.update(greet_arrival=False)
+    arrive(day.timestamp())
+    assert asyncio.run(speaker.welcome_back(h, day, since=0.0, now_mono=3600.0)) == 0 and h.said == []
