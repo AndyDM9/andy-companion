@@ -114,6 +114,12 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
                                                             "Mostly sunny, with a high near 86."}]}
     if name == "list_reminders":   # shaped like the real tool's answer, with one reminder to find
         return {"reminders": [{"id": "r1", "what": "call my sister Rosa", "when": "half past four", "daily": False}]}
+    if name == "find_object":   # shaped like andy_companion.finder.find, when it is seen
+        what = (case or {}).get("_args", {}).get("what", "glasses")
+        return {"found": True, "what": what, "where": "on the side table by the lamp",
+                "say": f"I think I see your {what}, on the side table by the lamp.",
+                "how": ("You are pointing at it with your head now, and the picture is on the screen. Say 'say' as it "
+                        "is, then that it's on the screen too. Never say left or right: they may be facing you.")}
     if name == "on_this_day":   # shaped like andy_companion.onthisday.today
         return {"events": [{"year": 1926, "text": "The first book featuring A. A. Milne's bear Winnie-the-Pooh was published."},
                            {"year": 1968, "text": "The first live television broadcast by American astronauts in orbit is performed by the Apollo 7 crew."}],
@@ -271,7 +277,8 @@ def run_case(case: dict, system: str) -> dict:
         reply = (reply + " " + " ".join(str(follow.get("content") or "").split())).strip()
         net = True
     if case.get("tool"):
-        verdict = {"pass": case["tool"] in calls, "why": f"called {', '.join(calls) or 'no tool'}"}
+        wanted = case["tool"] if isinstance(case["tool"], list) else [case["tool"]]   # any of them will do
+        verdict = {"pass": any(t in calls for t in wanted), "why": f"called {', '.join(calls) or 'no tool'}"}
         if verdict["pass"] and case.get("judge_reply"):
             # The tool is needed, and so is what Andy says with its answer: the rule is judged too.
             verdict = judge(case, reply, calls)

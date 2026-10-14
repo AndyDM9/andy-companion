@@ -1,0 +1,143 @@
+import asyncio
+import json
+import math
+import urllib.error
+import urllib.request
+
+import numpy as np
+import pytest
+
+from andy_companion import board, finder, screen_server
+from andy_companion.body import glance, look
+
+
+@pytest.fixture(autouse=True)
+def data(tmp_path, monkeypatch):
+    for name in ("SCREEN", "TOKENS"):
+        monkeypatch.setattr(board, name, tmp_path / f"{name.lower()}.json")
+
+
+def pose(yaw_deg=0.0, pitch_deg=0.0):
+    return glance._pose(0.0, math.radians(pitch_deg), math.radians(yaw_deg), [0.0, 0.0, 0.01])
+
+
+class Media:
+    def __init__(self):
+        self.taken = 0
+
+    def get_frame(self):
+        self.taken += 1
+        return np.full((480, 640, 3), self.taken * 20, dtype=np.uint8)   # each frame different
+
+
+class Robot:
+    def __init__(self):
+        self.media = Media()
+
+    def get_current_head_pose(self):
+        return pose()
+
+    def get_current_joint_positions(self):
+        return [0.0] * 7, [-0.17, 0.17]
+
+
+class Manager:
+    def __init__(self):
+        self.moves = []
+
+    def queue_move(self, move):
+        self.moves.append(move)
+
+
+def run_find(asker, poster=lambda jpeg: None):
+    robot, manager = Robot(), Manager()
+
+    async def no_wait(seconds):
+        return None
+
+    out = asyncio.run(finder.find("my reading glasses", robot, manager, asker=asker, poster=poster,
+                                  queueable=lambda m: m, sleep=no_wait, clock=lambda: 0.0))
+    return out, robot, manager
+
+
+def test_the_model_s_answer_is_made_safe():
+    assert finder.parse('{"seen": true, "x": 1.7, "where": "on the table"}') == {"seen": True, "x": 1.0, "where": "on the table"}
+    assert finder.parse('Sure! {"seen": "yes", "x": 0.2, "where": "shelf"}')["seen"] is False   # only a plain true
+    assert finder.parse("I can't tell") == {"seen": False, "x": 0.5, "where": ""}
+    assert finder.tidy_what("  My reading glasses? ") == "reading glasses"
+
+
+def test_a_place_in_the_frame_becomes_a_head_angle():
+    assert finder.target_yaw(0.3, 0.5) == pytest.approx(0.3)                                   # dead centre
+    assert math.degrees(finder.target_yaw(0.0, 0.0)) == pytest.approx(40.5, abs=0.5)           # left edge: turn left
+    assert finder.target_yaw(0.0, 1.0) == pytest.approx(-finder.target_yaw(0.0, 0.0))
+    assert finder.best([{"seen": False, "x": 0.5}, {"seen": True, "x": 0.9}, {"seen": True, "x": 0.55}]) == 2
+    assert finder.best([{"seen": False, "x": 0.5}]) is None
+
+
+def test_andy_sweeps_finds_points_and_shows_what_it_saw():
+    seen_frames, posted = [], []
+
+    def asker(frame, what):
+        seen_frames.append(int(frame[0, 0, 0]))
+        assert what == "reading glasses"
+        hit = int(frame[0, 0, 0]) == 60                        # the third frame
+        return {"seen": hit, "x": 0.25 if hit else 0.5, "where": "on the table by the lamp" if hit else ""}
+
+    out, robot, manager = run_find(asker, poster=posted.append)
+    sweep, point = manager.moves[:4], manager.moves[4]
+    assert len(manager.moves) == 5 and all(m.andy_owns_head for m in manager.moves)
+    assert [round(math.degrees(glance._rpy(m.end)[2])) for m in sweep] == [55, 18, -18, -55]
+    assert all(round(math.degrees(glance._rpy(m.end)[1])) == finder.PITCH_DEG for m in sweep)   # a little down
+    assert sorted(seen_frames) == [20, 40, 60, 80]              # every frame read
+    assert glance._rpy(point.end)[2] == pytest.approx(finder.target_yaw(math.radians(-18), 0.25))
+    assert point.hold_s == finder.POINT_HOLD_S
+    assert out["found"] and out["where"] == "on the table by the lamp"
+    assert out["say"] == "I think I see your reading glasses, on the table by the lamp." and "left or right" in out["how"]
+    assert posted and posted[0][:2] == b"\xff\xd8"              # a JPEG to the screen
+    shown = board.showing()
+    assert shown["kind"] == "seen" and shown["title"] == "Your reading glasses"
+
+
+def test_not_found_says_so_kindly_and_points_nowhere():
+    out, robot, manager = run_find(lambda f, w: {"seen": False, "x": 0.5, "where": ""})
+    assert not out["found"] and "No guessing" in out["how"] and len(manager.moves) == 4
+    assert board.showing() is None
+
+
+def test_eyes_switched_off_is_said_plainly():
+    def asker(frame, what):
+        raise finder.FinderError("My eyes are switched off right now, so I can't look around.")
+
+    out, _, _ = run_find(asker)
+    assert out == {"error": "My eyes are switched off right now, so I can't look around."}
+
+
+def test_the_look_turns_gently_and_holds():
+    step = look.HoldLook(pose(), (-0.17, 0.17), math.radians(55), math.radians(15), 1.1)
+    ts = np.arange(0.0, step.duration, 0.01)
+    yaws = [glance._rpy(step.evaluate(t)[0])[2] for t in ts]
+    assert max(abs(a - b) for a, b in zip(yaws, yaws[1:])) / 0.01 <= glance.PEAK_RAD_S * 1.01
+    assert yaws[-1] == pytest.approx(math.radians(55)) and step.evaluate(step.duration - 0.01)[2] == 0.0
+
+
+def test_the_screen_keeps_the_frame_in_memory_for_two_minutes():
+    httpd = screen_server.serve(host="127.0.0.1", port=0)
+    try:
+        base = f"http://127.0.0.1:{httpd.server_address[1]}"
+        token = board.tokens()["screen"]
+        req = urllib.request.Request(f"{base}/api/frame?t={token}", method="POST", data=b"\xff\xd8 a jpeg",
+                                     headers={"Content-Type": "image/jpeg"})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            assert json.loads(r.read()) == {"ok": True}
+        with urllib.request.urlopen(f"{base}/frame?t={token}", timeout=5) as r:
+            assert r.read() == b"\xff\xd8 a jpeg"
+        bad = urllib.request.Request(f"{base}/api/frame?t={token}", method="POST", data=b"<html>",
+                                     headers={"Content-Type": "image/jpeg"})
+        with pytest.raises(urllib.error.HTTPError):
+            urllib.request.urlopen(bad, timeout=5)
+        assert screen_server.frame(now=screen_server._frame["at"] + screen_server.FRAME_FOR_S + 1) == b""
+        with pytest.raises(urllib.error.HTTPError):
+            urllib.request.urlopen(f"{base}/frame?t=wrong", timeout=5)
+    finally:
+        httpd.shutdown()

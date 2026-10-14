@@ -5,6 +5,36 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-13
 
+### Added (finding things, and body language from research)
+
+- **"Andy, where did I leave my glasses?"** (`src/andy_companion/finder.py`, `body/look.py`,
+  `tools/find_object.py`). Andy sweeps the room with its head, a little down where things are put down.
+  It takes a frame at each of four stops, and NVIDIA Nemotron Nano VL on the person's own Nebius
+  Serverless Endpoint reads all of them in parallel as structured output (seen, where across the
+  frame, where in words). Andy then turns its head to point at the thing, says "I think I see your
+  reading glasses, on the table…", and the TV shows the frame it saw it in (**What I see**). The frame
+  is held in the screen server's memory for two minutes and never written to disk; the model is told
+  never to describe people, and never to say left or right.
+  - **Live on Nemotron Nano VL, 2026-10-13, on public-domain test photos:** keys and a car key found,
+    with sensible places; no keys correctly said for two living rooms; a phone or remote on the floor
+    and glasses on a coffee table found. Seven frames read in parallel took 3.9 s in all (1.7 s each
+    once warm).
+  - The first wording said "near the right side of the coffee table", so the question now says never
+    left or right.
+  - Built because a judge's-eye review (2026-10-13) found NVIDIA's vision model wasn't part of how the
+    robot moves. Among roughly the 50 most-liked Reachy Mini apps none searches a room for an object.
+- **Body language** (`body/expressive.py`), from studies of people and robots.
+  - A **glance away while thinking**, when an answer takes over 0.8 s: about 14 degrees to the side
+    and 8 up, then back (Andrist, Mutlu and Gleicher 2013 and 2014).
+  - A **head tilt of 10 degrees as a question ends** (Mara and Appel 2015).
+  - Both are moves of Andy's own, triggered by code, never by the model; each is capped and rate
+    limited, and neither plays while the person speaks.
+  - Nodding while the person speaks is left out until it's checked on the robot that motor sound
+    doesn't reach the microphones.
+- `body/glance.py`'s move takes an optional roll, antenna perk and hold.
+- The suite has find-1, and eyes-2 accepts either way of looking (a case's `tool` may list several):
+  9 of 9. 11 tests (`tests/test_finder.py`, `tests/test_expressive.py`).
+
 ### Changed (what's left for the rules, researched; the video and feedback ready)
 
 - **Research** (2026-10-13, Devpost's guidance, its judges' tips, and the hackathon's updates, FAQ and

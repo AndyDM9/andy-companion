@@ -129,7 +129,10 @@ class Glance:
 
     andy_owns_head = True
 
-    def __init__(self, start_pose, antennas: Tuple[float, float], tv: Tuple[float, float]):
+    def __init__(self, start_pose, antennas: Tuple[float, float], tv: Tuple[float, float],
+                 perk: float = PERK_RAD, roll: float = 0.0, hold_s: float = HOLD_S):
+        """To (yaw, pitch) from `tv`, with `roll` (body.expressive's head tilt), and back; `perk` lifts the
+        antennas while it looks (0 for none)."""
         import numpy as np
 
         self.start = np.array(start_pose, dtype=float)
@@ -137,21 +140,22 @@ class Glance:
         self.r0, self.p0, self.y0 = _rpy(self.start)
         self.dyaw = (tv[0] - self.y0 + math.pi) % (2 * math.pi) - math.pi
         self.dpitch = tv[1] - self.p0
-        self.droll = -self.r0
+        self.droll = roll - self.r0
+        self.perk, self.hold_s = float(perk), float(hold_s)
         # Minimum jerk peaks at 1.875 times the average speed.
         big = max(abs(self.dyaw), abs(self.dpitch))
         self.turn_s = max(MIN_TURN_S, 1.875 * big / PEAK_RAD_S)
 
     @property
     def duration(self) -> float:
-        return 2 * self.turn_s + HOLD_S
+        return 2 * self.turn_s + self.hold_s
 
     def weight(self, t: float) -> float:
         if t < self.turn_s:
             return _ease(t / self.turn_s)
-        if t < self.turn_s + HOLD_S:
+        if t < self.turn_s + self.hold_s:
             return 1.0
-        return 1.0 - _ease((t - self.turn_s - HOLD_S) / self.turn_s)
+        return 1.0 - _ease((t - self.turn_s - self.hold_s) / self.turn_s)
 
     def evaluate(self, t: float):
         import numpy as np
@@ -161,7 +165,7 @@ class Glance:
             head = self.start.copy()
         else:
             head = _pose(self.r0 + w * self.droll, self.p0 + w * self.dpitch, self.y0 + w * self.dyaw, self.start[:3, 3])
-        lift = PERK_RAD * w
+        lift = self.perk * w
         return head, np.array([self.antennas[0] - lift, self.antennas[1] + lift]), 0.0
 
 

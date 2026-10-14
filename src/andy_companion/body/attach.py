@@ -8,7 +8,8 @@ it lets Andy, on each control tick:
 - hand the head over to a calm idle moment and take it back (idle);
 - soften upward looks (gaze);
 - glance at the TV when something new shows on it (glance);
-- a small antenna wiggle after a joke's punchline (giggle).
+- a small antenna wiggle after a joke's punchline (giggle);
+- a glance away while thinking and a head tilt on a question (expressive).
 
 Anything of ours that fails falls back to Pollen's own command, so movement never stops.
 """
@@ -96,7 +97,7 @@ def follow_with_body() -> bool:
     """Wrap MovementManager's single send point with Andy's body behaviours. Off with
     ANDY_BODY_FOLLOW=off."""
     from andy_companion import turns
-    from andy_companion.body import body_follow, gaze, giggle, glance, idle, listening as ears, presence, seek, thinking
+    from andy_companion.body import body_follow, expressive, gaze, giggle, glance, idle, listening as ears, presence, seek, thinking
 
     if not body_follow.ENABLED:
         return False
@@ -129,6 +130,10 @@ def follow_with_body() -> bool:
         yaw = follower.read_head_yaw(now, self.current_robot.get_current_head_pose) if tracking else None
         if glance.ENABLED:
             glance.step(self, now, antennas, listening=listening, move_playing=move_owns_body, tracking=tracking)
+        if expressive.ENABLED:
+            body_language = self.__dict__.setdefault("_andy_expressive", expressive.Expressive())
+            body_language.step(self, (float(antennas[0]), float(antennas[1])), thinking=turns.CLOCK.thinking(),
+                               listening=listening, move_playing=move_owns_body, tracking=tracking)
         # Andy's own head moves (idle moments): give the head back before seek, so seek's weight
         # wins on that tick; take it after seek, whose stand-down would undo it.
         idle.release_step(self, now)

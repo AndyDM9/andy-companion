@@ -41,6 +41,12 @@ def install(handler_class=None) -> bool:
         previous(self, role, text, final)
         if role == "assistant" and final and str(text).strip():
             threading.Thread(target=send, args=(str(text),), daemon=True).start()
+            try:
+                from andy_companion.body import expressive
+
+                expressive.heard_reply(str(text))     # a question tilts the head as it ends
+            except Exception:
+                pass
 
     emit._andy_captions = True
     handler_class._emit_transcript = emit

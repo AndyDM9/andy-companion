@@ -39,6 +39,27 @@ def set_caption(text: str, now: Optional[float] = None) -> None:
     _caption["at"] = now if now is not None else _t.time()
 
 
+# What Andy's camera saw when it found something ("where are my glasses?"), for the screen. Memory
+# only, for FRAME_FOR_S; never written to disk or logged. Posted by Andy's own process on this computer.
+FRAME_FOR_S = 120
+MAX_FRAME = 1_500_000
+_frame: Dict[str, Any] = {"jpeg": b"", "at": 0.0}
+
+
+def set_frame(jpeg: bytes, now: Optional[float] = None) -> None:
+    import time as _t
+
+    _frame["jpeg"] = bytes(jpeg)[:MAX_FRAME]
+    _frame["at"] = now if now is not None else _t.time()
+
+
+def frame(now: Optional[float] = None) -> bytes:
+    import time as _t
+
+    fresh = (now if now is not None else _t.time()) - _frame["at"] <= FRAME_FOR_S
+    return _frame["jpeg"] if fresh and _frame["jpeg"].startswith(b"\xff\xd8") else b""
+
+
 def caption(now: Optional[float] = None) -> str:
     import time as _t
     return _caption["text"] if (now if now is not None else _t.time()) - _caption["at"] <= CAPTION_FOR_S else ""
@@ -365,6 +386,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._page("family.html")
         if url.path == "/api/family" and _ok(q.get("k"), "family"):
             return self._json(family_state())
+        if url.path == "/frame" and _ok(q.get("t"), "screen"):
+            data = frame()
+            if data:
+                return self._send(200, data, "image/jpeg")
+            return self._send(404, b"Not found", "text/plain")
         if url.path == "/photo" and _ok(q.get("t"), "screen"):
             path = board.photo_path(q.get("id", ""))
             if path is not None:
@@ -375,6 +401,15 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         local = self.client_address[0] in ("127.0.0.1", "::1")
+        if url.path == "/api/frame" and _ok(q.get("t"), "screen") and local:
+            length = int(self.headers.get("Content-Length") or 0)
+            if not 0 < length <= MAX_FRAME:
+                return self._json({"error": "too long"}, 413)
+            data = self.rfile.read(length)
+            if not data.startswith(b"\xff\xd8"):
+                return self._json({"error": "not a picture"}, 400)
+            set_frame(data)
+            return self._json({"ok": True})
         if url.path in ("/api/caption", "/api/turn") and _ok(q.get("t"), "screen") and local:
             length = int(self.headers.get("Content-Length") or 0)
             if length > MAX_BODY:
