@@ -31,7 +31,7 @@ cards and content vetting.
 **Used for:** Andy's voice conversation with tool calls, in English and Spanish.
 **Worked:** correct tool calls in 0.62 to 0.83 s with thinking off; fast enough that a robot feels
 immediate.
-**Needs work**, each found by our conversation suite (now 83 spoken situations):
+**Needs work**, each found by our conversation suite (now 85 spoken situations):
 - **Tool choice changes with the size of the tool list:** with 17 tools it always called the clock;
   with the robot's real 27 it once invented a time.
 - **Persona rules weaken after tool results:** a broad "call tools first" rule led it to agree to speak

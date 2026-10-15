@@ -78,7 +78,7 @@
 
   <rect x="724" y="388" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="420" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Job</text>
-  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 83 situations,</text>
+  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 85 situations,</text>
   <text x="744" y="468" font-size="15" fill="#24304f">judged by NVIDIA Nemotron 3 Ultra</text>
   <text x="744" y="494" font-size="15" fill="#4c5d4f">English and Spanish; every failure published</text>
 

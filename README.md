@@ -8,6 +8,21 @@ no recordings or transcripts: only what you ask it to keep.
 
 > Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
 
+**Judging it in five minutes:**
+1. **Watch the video** (link above, once published): everything on it is live, on the robot.
+2. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open the
+   TV screen, the family page and the settings page it prints (sample data; no robot, GPU or keys).
+3. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)
+   (a Nebius Serverless Job) and the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
+   (four ways, four Nebius Serverless Jobs); every failure is in them.
+4. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
+   `NEBIUS_API_KEY=… uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`
+   (a few minutes; Tavily isn't called).
+5. **The code that matters:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
+   ([finder.py](src/andy_companion/finder.py)), letters ([letters.py](src/andy_companion/letters.py)), the
+   urgent-words net ([urgent.py](src/andy_companion/urgent.py)), privacy ([privacy.py](src/andy_companion/privacy.py)),
+   and why each choice was made ([decisions](docs/decisions/README.md)).
+
 <!-- Founder: the video link and a photo or GIF of Andy beside the TV go here before submitting. -->
 
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
@@ -98,7 +113,7 @@ Each principle comes from published research, and each has something you can see
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
-| The conversation suite | 83 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
+| The conversation suite | 85 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
 | The scam check, measured four ways | Lightning, Ultra, and Tavily's warnings with each; 120 messages, three runs | **Nebius Serverless Jobs**, four of them, two at a time ([cloud/scam-job.sh](cloud/scam-job.sh)) |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
 
@@ -130,7 +145,7 @@ how long it took and where it ran. Numbers and tool names only, in memory; never
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 83 spoken situations in 19 areas, English and Spanish,
+**The conversation suite** ([evals/](evals/)): 85 spoken situations in 19 areas, English and Spanish,
 judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)

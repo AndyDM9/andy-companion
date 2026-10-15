@@ -48,7 +48,7 @@ def test_when_the_web_lookup_fails_andy_never_says_no_sign(check_message, monkey
     monkeypatch.setattr(scamcheck, "verdict", lambda message, found: dict(NO_SIGN))
     out = check_message()
     assert out["web_unavailable"] is True and "scam_signs" not in out
-    assert "couldn't check the scam warnings online" in out["say"] and "careful anyway" in out["say"]
+    assert "couldn't check the scam warnings online" in out["say"] and "best not to reply, pay or give any details" in out["say"]
     assert "no sign" not in out["say"].lower()
     assert board.showing()["title"] != "No sign of a known kind of scam"
 
@@ -60,7 +60,7 @@ def test_when_both_checks_fail_andy_still_says_to_be_careful(check_message, monk
     monkeypatch.setattr(web, "check_message", down)
     monkeypatch.setattr(scamcheck, "verdict", broken)
     out = check_message()
-    assert out["web_unavailable"] is True and "careful anyway" in out["say"]
+    assert out["web_unavailable"] is True and "best not to reply, pay or give any details" in out["say"]
 
 
 def test_a_sign_in_the_message_is_still_said_when_the_web_is_down(check_message, monkeypatch):

@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (for judges, and two new suite cases)
+
+- **README, "Judging it in five minutes":** the video, the screens with no keys, the scorecards, rerunning
+  the scam check with one key against the saved Tavily warnings, and the code that matters.
+- **`evals/results/README.md`:** which scorecard answers which question, and what the morning's tuning
+  runs were (one broad question that flagged 6 to 14 ordinary messages, before the design was frozen).
+- **The suite, 85 situations (version 2026-10-14b):** moment-5, "forget the visit" when two visits are
+  remembered (Andy asks which); money-6, a scam check while the web is down (Andy says it couldn't check,
+  never "no sign"). Both 3 of 3 locally. `run_suite.py --only` runs chosen cases.
+- **The web-down scam answer reworded** so Andy says it in its own words ("it's best not to reply, pay or
+  give any details until you've checked with family"); the first wording was repeated aloud as an
+  instruction ("suggest not replying").
+
 ### Documentation (every document brought up to date with the day's work)
 
 - **New decisions:** [0007](docs/decisions/0007-the-scam-check-two-narrow-questions.md) the scam check's

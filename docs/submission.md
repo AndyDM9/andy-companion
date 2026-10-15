@@ -83,7 +83,7 @@ follow you, its antennas lift while you speak and lean while it thinks.
 - **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second **Serverless Endpoint**, with a policy
   written for signs of crisis: on held-out phrasings our word list misses, it caught 7 of 8 with no
   false alarms, in about 0.55 s.
-- **Proof:** a conversation suite of 83 spoken situations in 19 areas, English and Spanish, run as a
+- **Proof:** a conversation suite of 85 spoken situations in 19 areas, English and Spanish, run as a
   **Nebius Serverless Job** and judged by Nemotron 3 Ultra. The model gets exactly the robot's tools.
   Tool cases are judged on what Andy says, and words that must never be said are checked in code. Latest
   Job: 79, 79 and 79 of 81 (2026-10-13), every run's scorecard and failures in the repository.

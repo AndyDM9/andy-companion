@@ -43,9 +43,9 @@ class CheckMessage(Tool):
             board.show("check", "I couldn't check the warnings just now",
                        [{"title": "Don't reply, pay or give details until you've checked with family"}])
             return {"web_unavailable": True,
-                    "say": ("Say you couldn't check the scam warnings online just now, so you can't tell whether it's a "
-                            "known kind of scam. Be careful anyway: suggest not replying, paying or giving any details "
-                            "until they've checked with family or someone they trust.")}
+                    "say": ("Tell them in your own words that you couldn't check the scam warnings online just now, so "
+                            "you can't tell whether it's a known kind of scam, and that until they've checked with "
+                            "family or someone they trust, it's best not to reply, pay or give any details.")}
         if v is not None and not v["scam_signs"]:
             board.show("check", "No sign of a known kind of scam",
                        [{"title": "If you're unsure, check with family before you reply or pay"}], how=how)
