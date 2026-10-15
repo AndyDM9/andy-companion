@@ -130,3 +130,30 @@ def test_face_following_is_on_from_the_start_in_code():
     profile = (Path(__file__).resolve().parents[1] / "profiles/companion/profile.md").read_text()
     greeting = re.search(r'^greeting = "(.*)"$', profile, re.M).group(1)
     assert "head_tracking" not in greeting and "Call no tool" in greeting
+
+
+def test_andy_wakes_in_spanish_with_the_same_rules():
+    assert wake.is_trigger("andy despierta", wake.triggers_for("quiet", "es"))
+    assert not wake.is_trigger("buenos días andy", wake.triggers_for("quiet", "es"))   # a greeting doesn't end quiet
+    assert wake.is_trigger("buenos días andy", wake.triggers_for("asleep", "es"))
+
+    class Rec:
+        def __init__(self, text):
+            self.text = text
+
+        def AcceptWaveform(self, data):
+            return True
+
+        def Result(self):
+            return json.dumps({"text": self.text})
+
+    got = wake.heard(iter([b"x"]), Rec("[unk]"), should_stop=lambda: False,
+                     also=[(Rec("andy despierta"), wake.triggers_for("asleep", "es"))])
+    assert got == "phrase"
+
+
+def test_the_spanish_phrases_reach_vosk_with_their_accents():
+    # json.dumps escapes "días" as "d\\u00edas", which Vosk took as an unknown word (found 2026-10-14).
+    from pathlib import Path
+    src = (Path(__file__).resolve().parents[1] / "src/andy_companion/supervisor.py").read_text()
+    assert "json.dumps(wake.GRAMMAR_ES, ensure_ascii=False)" in src

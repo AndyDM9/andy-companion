@@ -9,8 +9,8 @@ and the [live test](live-test.md).
 - **English and Spanish**, in whichever you speak; the day plan and the screen switch too. In Spanish
   Andy says *usted* unless you say *tú*. "Buenas noches" and "silencio por una hora" work as spoken
   controls, days like "el lunes" are understood, and letters in Spanish are read when Tesseract's Spanish
-  data is installed. Waking Andy from sleep is still in English ("Andy, wake up"): the offline listener
-  has an English model only.
+  data is installed. "Andy, despierta" wakes Andy, offline, like "Andy, wake up" (a second small model,
+  fetched once for a Spanish speaker).
 - **It looks at you.** Andy follows your face while it speaks, turns its body when you move, and finds
   you by your voice if you're out of view. While you speak, its antennas lift and hold, like a
   listener; while it thinks or looks something up, they lean slowly, so a pause never looks dead.

@@ -180,6 +180,14 @@ def wait_asleep() -> str:
     except Exception as e:  # no microphone model: still wake on time and for reminders
         logger.warning("Wake phrase unavailable (%s); waking on time and for reminders only", type(e).__name__)
         model = None
+    model_es = None
+    try:
+        # Spanish too, for a Spanish speaker (fetched then, about 40 MB) or once its model is here.
+        from andy_companion import settings
+        if settings.get().get("language") == "es" or (wake.MODEL_DIR.parent / wake.MODEL_ES).is_dir():
+            model_es = Model(str(wake.ensure_model("es")))
+    except Exception as e:
+        logger.info("Spanish wake phrase unavailable (%s)", type(e).__name__)
     while True:
         reason = wake_reason()
         if reason:
@@ -191,9 +199,11 @@ def wait_asleep() -> str:
         from vosk import KaldiRecognizer
 
         recognizer = KaldiRecognizer(model, wake.RATE, json.dumps(wake.GRAMMAR))
-        triggers = wake.triggers_for(state.current()["mode"])
+        mode = state.current()["mode"]
+        also = [(KaldiRecognizer(model_es, wake.RATE, json.dumps(wake.GRAMMAR_ES, ensure_ascii=False)), wake.triggers_for(mode, "es"))] \
+            if model_es is not None else []
         if wake.heard(wake.mic_chunks(source), recognizer, should_stop=lambda: wake_reason() is not None,
-                      triggers=triggers) == "phrase":
+                      triggers=wake.triggers_for(mode), also=also) == "phrase":
             return "wake phrase"
 
 

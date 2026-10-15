@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (waking Andy in Spanish)
+
+- "Andy, despierta" wakes Andy from sleep or quiet, and "Buenos días, Andy" from sleep only, as in English:
+  a second small offline model (Vosk Spanish, 40 MB, checksum pinned) listens beside the English one, fetched
+  once for a Spanish speaker. Tested with Andy's own voice saying the phrases: all wake as designed, and an
+  ordinary Spanish sentence doesn't. Found on the way: the phrase list reached Vosk with its accents escaped
+  ("d\u00edas"), so it didn't know "días"; it now goes as written. 2 tests.
+
 ### Fixed (a regression check of the whole suite before the freeze)
 
 - The suite, 85 cases three times on this computer: **82, 83, 82**. look-1 failed every run: asked to look

@@ -66,8 +66,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
   endpoints that exist were made the old way, with the token in their start arguments; recreating them
   clears that.
 - The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
-- Spanish gaps: waking Andy from sleep is English only (the offline listener's model); letters in Spanish
-  need `tesseract-ocr-spa` installed (the founder's, with sudo).
+- Letters in Spanish need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
 - `scripts/andy-sim` (Andy without a robot, Pollen's `--mockup-sim`) is not verified: on this desktop the
   robot's own USB camera and microphone are plugged in, and the pretend robot's media server failed on them
