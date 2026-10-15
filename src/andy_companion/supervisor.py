@@ -138,7 +138,9 @@ class BackAfterReminder:
 def run_app(should_stop: Optional[Callable[[], bool]] = None, poll_s: float = POLL_S) -> int:
     """Run the app until it stops. When should_stop() answers True, stop it the way Ctrl+C does and return 0:
     a stop the supervisor chose is never taken for a crash."""
-    proc = subprocess.Popen([str(ROOT / "scripts" / "run-robot.sh"), *sys.argv[1:]])
+    # The app hears Ctrl-C (SIGINT) even when Andy was started in the background, where it would be ignored.
+    proc = subprocess.Popen([str(ROOT / "scripts" / "run-robot.sh"), *sys.argv[1:]],
+                            preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_DFL))
     try:
         while True:
             try:
@@ -237,8 +239,19 @@ def stopped() -> int:
     return 0
 
 
+def stop_on_signals() -> None:
+    """Ctrl-C and SIGTERM both stop Andy the same clean way (the app first). Started in the background a
+    program ignores Ctrl-C, and SIGTERM would otherwise end the supervisor and leave the app running: on
+    2026-10-14 two copies left that way by a test script kept running beside the service."""
+    def stop(signum, frame):
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGINT, signal.default_int_handler)
+    signal.signal(signal.SIGTERM, stop)
+
+
 if __name__ == "__main__":
     os.environ.setdefault("PYTHONUNBUFFERED", "1")
+    stop_on_signals()
     try:
         sys.exit(main())
     except KeyboardInterrupt:

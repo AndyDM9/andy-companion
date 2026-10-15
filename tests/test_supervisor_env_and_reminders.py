@@ -221,3 +221,22 @@ def test_the_supervisor_stops_the_app_when_told_and_it_is_not_a_crash(tmp_path, 
 
 def test_the_wake_phrase_module_is_not_shadowed():
     assert supervisor.wake.__name__ == "andy_companion.wake" and callable(supervisor.wake.ensure_model)
+
+
+def test_sigterm_and_ctrl_c_stop_the_supervisor_the_same_clean_way():
+    import signal
+    from andy_companion import supervisor
+
+    before = signal.getsignal(signal.SIGINT), signal.getsignal(signal.SIGTERM)
+    try:
+        supervisor.stop_on_signals()
+        handler = signal.getsignal(signal.SIGTERM)
+        try:
+            handler(signal.SIGTERM, None)
+            raise AssertionError("SIGTERM should stop like Ctrl-C")
+        except KeyboardInterrupt:
+            pass
+        assert signal.getsignal(signal.SIGINT) is signal.default_int_handler
+    finally:
+        signal.signal(signal.SIGINT, before[0])
+        signal.signal(signal.SIGTERM, before[1])

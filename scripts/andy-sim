@@ -21,8 +21,8 @@ if curl -s -m 2 http://127.0.0.1:8000/api/daemon/status >/dev/null 2>&1; then
   exit 1
 fi
 
-# Programs a script starts in the background ignore Ctrl-C, so the two helpers are stopped with SIGTERM;
-# Andy runs in the foreground, where Ctrl-C reaches it and it puts the pretend robot to sleep first.
+# Programs a script starts in the background ignore Ctrl-C, so everything this starts is stopped with
+# SIGTERM (Andy first, which puts the pretend robot to sleep), then forced after 10 s.
 PIDS=()
 cleanup() {
   for pid in "${PIDS[@]}"; do kill -TERM "$pid" 2>/dev/null || true; done
@@ -54,4 +54,8 @@ if ! (exec 3<>/dev/tcp/127.0.0.1/8765) 2>/dev/null; then
 fi
 
 echo "Starting Andy. Say hello; Ctrl-C to stop."
-ANDY_SIM=1 "$ROOT/scripts/andy" "$@" || true
+# Andy is stopped with the helpers (the supervisor takes SIGTERM as a clean stop), so nothing is left behind.
+trap 'exit 130' INT TERM
+ANDY_SIM=1 "$ROOT/scripts/andy" "$@" &
+PIDS=("$!" "${PIDS[@]}")
+wait "${PIDS[0]}" || true

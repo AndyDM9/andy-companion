@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (Andy stopped answering at about 20:55: three copies at once)
+
+- The founder reported Andy wasn't working. Cause: the two `andy-sim` tries that evening each left a copy
+  of Andy running (stopping the script stopped its daemon but not the Andy it started), so three copies
+  shared the robot and the voice server, whose sessions failed. The two strays were stopped and the service
+  restarted; Andy answered again at 20:59.
+- So it can't happen again: the supervisor now stops the same clean way on SIGTERM as on Ctrl-C, makes sure
+  Ctrl-C reaches it and the app it starts even when started in the background, and `andy-sim` stops Andy
+  with its helpers. 1 test.
+
 ### Added (how judges can test it without a robot)
 
 - Researched how Physical AI entries are judged: the rules let judges decide on the video, text and
