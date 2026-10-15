@@ -67,4 +67,9 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 - Spanish gaps: waking Andy from sleep is English only (the offline listener's model); letters in Spanish
   need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
+- `scripts/andy-sim` (Andy without a robot, Pollen's `--mockup-sim`) is not verified: on this desktop the
+  robot's own USB camera and microphone are plugged in, and the pretend robot's media server failed on them
+  (2026-10-14, two tries, the real robot restored after each). It needs a try on a computer without the
+  robot; until then the README calls it experimental.
+
 The live test of everything built today is [live-test.md](live-test.md).

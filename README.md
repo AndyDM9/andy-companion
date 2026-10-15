@@ -18,7 +18,8 @@ no recordings or transcripts: only what you ask it to keep.
 4. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
    `NEBIUS_API_KEY=… uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`
    (a few minutes; Tavily isn't called).
-5. **The code that matters:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
+5. **See the real robot live** on a video call, any time until 2026-12-15: ask, and we'll show it.
+6. **The code that matters:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
    ([finder.py](src/andy_companion/finder.py)), letters ([letters.py](src/andy_companion/letters.py)), the
    urgent-words net ([urgent.py](src/andy_companion/urgent.py)), privacy ([privacy.py](src/andy_companion/privacy.py)),
    and why each choice was made ([decisions](docs/decisions/README.md)).
@@ -212,6 +213,12 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 - **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
 - **The scam evaluation,** with only a Token Factory key, against the saved Tavily warnings:
   `uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`.
+- **Andy on your own computer, experimental:** `./scripts/andy-sim` runs Pollen's pretend robot
+  (`--mockup-sim`) with your webcam, microphone and speakers, the voice server (an NVIDIA GPU) and Andy.
+  Nothing moves, and finding things sees one view. On Linux, Pollen's daemon needs GStreamer with its WebRTC
+  plugin ([Pollen's guide](https://huggingface.co/docs/reachy_mini/SDK/installation)). Not yet tried on a
+  computer without a robot attached; the robot, on video, is the reference.
+- **The real robot, live:** ask for a video call, any time until judging ends (2026-12-15).
 
 ## Setup
 

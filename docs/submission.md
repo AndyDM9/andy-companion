@@ -183,6 +183,15 @@ share them across households or run them on the home GPU.
 - The finder measured from real tries at home, and a stronger room search where it misses.
 - Publishing Andy as a one-click Reachy Mini app on Hugging Face.
 
+## How to test it (for the judges)
+
+The robot is a Pollen Robotics Reachy Mini, so the video shows everything live, on the robot, with no cuts
+in the pauses. To check more:
+1. The screens with no robot, GPU or keys: `uv sync && uv run python scripts/demo_screen.py`.
+2. The scorecards in `evals/results/` (its README says which is which), and the scam check rerun with one
+   Token Factory key against the Tavily warnings we saved (the README's "Judging it in five minutes").
+3. The real robot, live on a video call, any time until judging ends: ask, and we'll show it.
+
 ## Built with
 
 nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron,

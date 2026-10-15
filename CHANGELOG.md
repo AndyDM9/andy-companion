@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (how judges can test it without a robot)
+
+- Researched how Physical AI entries are judged: the rules let judges decide on the video, text and
+  images alone ("Judges are not required to test the Project…"); Physical AI needs no demo URL; the
+  sponsor may ask for access to the hardware; the FAQ allows simulation. So the README's five minutes and
+  the Devpost text now offer the real robot live on a video call until 2026-12-15, beside the keyless
+  screens and the scorecards.
+- `scripts/andy-sim`: Pollen's pretend robot (`--mockup-sim`) with this computer's webcam, microphone and
+  speakers, the voice server and Andy, stopped together; the wake listener uses the default microphone
+  without a robot. **Experimental:** two tries on the desktop (with the real robot stopped, then restored)
+  failed because the robot's own USB camera and microphone are attached here; it needs a computer without
+  the robot (STATUS, open problems).
+
 ### Fixed (an independent review of the day's code: 2 high, 6 medium, 6 low)
 
 - **High: the urgent sentence in the wrong language.** "Oh no, help me, my chest hurts" counted as Spanish

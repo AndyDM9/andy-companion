@@ -8,7 +8,9 @@
 # except that nothing moves (head turns, glances and pointing have no body to show them) and the webcam
 # doesn't turn, so finding something looks at one view, four times. Headphones keep Andy from hearing
 # itself. The voice server needs an NVIDIA GPU; it is started here if it isn't running already.
-# Ctrl-C stops everything this started.
+# Ctrl-C stops everything this started. On Linux, Pollen's daemon needs GStreamer with its WebRTC plugin,
+# installed as Pollen's guide says (huggingface.co/docs/reachy_mini/SDK/gstreamer-installation); a plugin
+# built elsewhere is found through GST_PLUGIN_PATH.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ROBOT_PY="$ROOT/robot/.venv/bin"
@@ -24,7 +26,11 @@ fi
 PIDS=()
 cleanup() {
   for pid in "${PIDS[@]}"; do kill -TERM "$pid" 2>/dev/null || true; done
-  for pid in "${PIDS[@]}"; do wait "$pid" 2>/dev/null || true; done
+  for _ in $(seq 1 20); do      # up to 10 s each to stop, then they are stopped for them
+    alive=0; for pid in "${PIDS[@]}"; do kill -0 "$pid" 2>/dev/null && alive=1; done
+    [ "$alive" = 0 ] && break; sleep 0.5
+  done
+  for pid in "${PIDS[@]}"; do kill -KILL "$pid" 2>/dev/null || true; done
 }
 trap cleanup EXIT
 
