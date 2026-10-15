@@ -21,11 +21,15 @@ from andy_companion import board, settings
 NAMES = {"place": "the town", "news_sources": "the local news sites", "events_pages": "the pages for what's on",
          "language": "the language", "pace": "how fast I speak", "volume": "the volume", "captions": "the captions",
          "screen_photos": "family photos on the screen", "night_from": "when the screen dims at night",
-         "night_to": "when the screen brightens in the morning", "screen_calm": "the calm screen",
+         "night_to": "when the screen brightens in the morning", "night_clock": "when the night clock shows",
+         "screen_calm": "the calm screen",
          "tv_yaw": "where the screen is", "tv_height": "how high the screen is", "tv_glance": "glancing at the screen",
          "offers": "offering a story or a riddle in the afternoon", "greet_arrival": "welcoming you back"}
 # The same, as the helper's page says it.
 SHOWN = {**NAMES, "pace": "how fast Andy speaks"}
+# When the screen becomes the calm night clock (the founder, 2026-10-14: "from what time till what time,
+# or maybe when Andy is sleeping").
+NIGHT_CLOCK = ("hours", "asleep", "off")
 SITE = re.compile(r"^(https?://)?([a-z0-9-]+\.)+[a-z]{2,}(/[^\s]*)?$", re.I)
 MAX_SITES = 20
 
@@ -117,6 +121,10 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
         out["greet_arrival"] = bool(data["greet_arrival"])
     if "tv_glance" in data:
         out["tv_glance"] = bool(data["tv_glance"])
+    if "night_clock" in data:
+        if data["night_clock"] not in NIGHT_CLOCK:
+            raise ValueError("The night clock shows at the hours chosen, while Andy is asleep, or never.")
+        out["night_clock"] = data["night_clock"]
     for key in ("night_from", "night_to"):
         if key in data:
             try:

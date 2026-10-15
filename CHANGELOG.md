@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (the night clock, the household's choice)
+
+- The founder asked whether the screen had become a minimal version: it was the night clock (9 pm to 7 am),
+  which rests the photos, reminders and weather. He asked for it to be set in Settings, "from what time till
+  what time, or maybe when Andy is sleeping". The settings page now has "The night clock": at these hours
+  (the hours appear only for this), while Andy is asleep, or never, with a plain note of what rests at
+  night. Andy tells the person who changed it, like every setting. Checked on a phone-sized page. 1 test.
+
 ### Fixed (the screen at night, from the founder's report at 9 pm)
 
 - "Andy's screen is not showing everything": from 9 pm the night clock hid the whole lower area, cards

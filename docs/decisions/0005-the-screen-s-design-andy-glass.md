@@ -98,3 +98,6 @@ must stay at 7:1 (WCAG AAA) against the worst case behind it, tested.
   while there is nothing to show.
 - **A TV left open updates itself:** the server sends the page's version, and the page reloads itself
   when it changes, so nobody has to refresh the TV after an update.
+- **When the night clock shows is the household's choice** (the founder: "from what time till what time, or
+  maybe when Andy is sleeping"): at chosen hours, while Andy is asleep, or never (`night_clock`), on the
+  settings page with a plain note of what rests at night.

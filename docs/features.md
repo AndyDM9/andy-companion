@@ -109,8 +109,9 @@ Under what Andy found on the web, a small line says how: which Tavily call, its 
 credits Tavily reported ("Found with Tavily: search (basic), 1.4 s, 1 credit"), and for research, the time
 so far.
 
-From 9 pm (a setting) the screen becomes a calm night clock with the date, but anything Andy shows at night
-still appears in full. A TV left open updates itself when Andy's screen is updated.
+At night the screen becomes a calm night clock with the date: family photos, reminders and the weather
+rest until morning, but anything Andy shows still appears in full. When is set on the settings page under
+"The night clock": at chosen hours (9 pm to 7 am to begin with), while Andy is asleep, or never. A TV left open updates itself when Andy's screen is updated.
 
 A **Settings** button with a gear, top right, works with a mouse or the TV's remote (arrow keys, OK, Back).
 It offers **Show the settings code** (the QR code for a phone, for two minutes) and **Under the hood**

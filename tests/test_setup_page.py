@@ -154,3 +154,18 @@ def test_pressing_the_gear_again_keeps_the_code_already_up(server):
     link = board.tokens()["setup"]
     press()
     assert board.tokens()["setup"] == link        # not retired again while its code is still on the TV
+
+
+def test_the_night_clock_at_hours_while_asleep_or_never(monkeypatch):
+    from andy_companion import screen_server, setup_page, state as andy_state
+
+    assert setup_page.clean({"night_clock": "asleep"})["night_clock"] == "asleep"
+    with pytest.raises(ValueError):
+        setup_page.clean({"night_clock": "sometimes"})
+    hours = {"night_clock": "hours", "night_from": 22, "night_to": 6}
+    assert screen_server.night_now(hours, 23) and not screen_server.night_now(hours, 21)
+    assert not screen_server.night_now({"night_clock": "off"}, 2)
+    monkeypatch.setattr(andy_state, "current", lambda: {"mode": "asleep"})
+    assert screen_server.night_now({"night_clock": "asleep"}, 14)          # asleep in the afternoon: night clock
+    monkeypatch.setattr(andy_state, "current", lambda: {"mode": "awake"})
+    assert not screen_server.night_now({"night_clock": "asleep"}, 23)       # awake at 11 pm: the full screen

@@ -132,9 +132,15 @@
         <label><input type="checkbox" id="screen_photos"> Show family photos when Andy is idle</label>
         <label><input type="checkbox" id="screen_calm"> Calm screen: no movement, no see-through panels</label>
       </div>
-      <label for="night_from">Dim the screen at night</label>
-      <div class="hours"><select id="night_from"></select><span>until</span><select id="night_to"></select></div>
-      <p class="hint">At night the screen shows only a soft clock.</p>
+      <p class="group" id="night-h">The night clock</p>
+      <div class="choices" role="radiogroup" aria-labelledby="night-h">
+        <label><input type="radio" name="night_clock" value="hours"> At these hours:</label>
+        <div class="hours" id="night-hours"><select id="night_from" aria-label="From"></select><span>until</span><select id="night_to" aria-label="Until"></select></div>
+        <label><input type="radio" name="night_clock" value="asleep"> While Andy is asleep</label>
+        <label><input type="radio" name="night_clock" value="off"> Never</label>
+      </div>
+      <p class="hint">The night clock shows the time and date in soft colours; family photos, reminders and the
+        weather rest until morning. Anything Andy shows you at night still appears.</p>
     </fieldset>
 
     <fieldset>
@@ -206,6 +212,10 @@
   const api = (path) => `${path}?s=${encodeURIComponent(token)}`;
   const $ = (id) => document.getElementById(id);
   const text = (el, v) => { el.textContent = v; return el; };
+  // The hours matter only for "at these hours".
+  const chosen = (name) => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
+  const showNightHours = () => { $("night-hours").hidden = chosen("night_clock") !== "hours"; };
+  for (const r of document.querySelectorAll("input[name=night_clock]")) r.addEventListener("change", showNightHours);
   const hourName = (h) => h === 0 ? "midnight" : h === 12 ? "noon" : `${h % 12} ${h < 12 ? "am" : "pm"}`;
   const KEPT = [["reminder", "Reminders"], ["moment", "Remembered moments"], ["fact", "Remembered facts"],
                 ["shared", "Shared with family"], ["photo", "Photos from family"]];
@@ -271,6 +281,8 @@
     $("offers").checked = v.offers !== false;
     $("greet_arrival").checked = v.greet_arrival !== false;
     showFar();
+    for (const r of document.querySelectorAll("input[name=night_clock]")) r.checked = r.value === (v.night_clock || "hours");
+    showNightHours();
     for (const id of ["night_from", "night_to"]) {
       const sel = $(id);
       if (!sel.options.length) for (let h = 0; h < 24; h++) sel.append(new Option(hourName(h), h));
@@ -336,7 +348,7 @@
       const out = await call("/api/setup", { name: who, settings: {
         place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
         language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
-        screen_photos: $("screen_photos").checked, screen_calm: $("screen_calm").checked, night_from: Number($("night_from").value), night_to: Number($("night_to").value),
+        screen_photos: $("screen_photos").checked, screen_calm: $("screen_calm").checked, night_clock: pick("night_clock") || "hours", night_from: Number($("night_from").value), night_to: Number($("night_to").value),
         ...tvSettings(), offers: $("offers").checked, greet_arrival: $("greet_arrival").checked,
         ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
       fill(out);

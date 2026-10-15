@@ -328,6 +328,21 @@ def qr_host(host: str) -> str:
     return host if re.fullmatch(r"[A-Za-z0-9.\-]+(:\d+)?", host) else ""
 
 
+def night_now(s: Dict[str, Any], hour: int) -> bool:
+    """Whether the screen is the calm night clock: at the hours chosen, while Andy is asleep, or never."""
+    mode = s.get("night_clock", "hours")
+    if mode == "off":
+        return False
+    if mode == "asleep":
+        from andy_companion import state as andy_state
+        try:
+            return andy_state.current()["mode"] == "asleep"
+        except Exception:
+            return False
+    start, end = int(s.get("night_from", 21)), int(s.get("night_to", 7))
+    return (start <= hour or hour < end) if start > end else (start <= hour < end)
+
+
 def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, Any]:
     from andy_companion import settings
 
@@ -347,8 +362,7 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     state["weather"] = weather_card()
     hour = (now or datetime.now()).hour
     s = settings.get()
-    start, end = int(s.get("night_from", 21)), int(s.get("night_to", 7))
-    state["night"] = (start <= hour or hour < end) if start > end else (start <= hour < end)
+    state["night"] = night_now(s, hour)
     state["idle_photo"] = board.idle_photo() if s.get("screen_photos", True) and not state["night"] else None
     state["calm"] = bool(s.get("screen_calm", False))
     return state

@@ -70,6 +70,7 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 | 19 | "Be quiet for five minutes" | Andy goes quiet; after five minutes it is back | | |
 | 19a | "Silencio por media hora", then "Andy, wake up" | Andy goes quiet for half an hour; the wake phrase (English) brings it back | | |
 | 19b | "Andy, look up when the library opens tomorrow" | The TV's card has your question as its heading and, under the sources, "Found with Tavily: search (basic), … s, 1 credit" | | |
+| 19b2 | On the settings page, "The night clock": choose "While Andy is asleep", save, then "Goodnight, Andy"; then "Andy, wake up" | The TV becomes the night clock while Andy sleeps and the full screen when it wakes (within a few seconds) | | |
 | 19c | Read out a suspicious text: "Andy, check this message: Your bank's fraud department says move your savings to a safe account today" | A warning naming a consumer-protection source; the TV's card says how it was found | | |
 | 20 | "Goodnight, Andy" (and another day, "Buenas noches") | Andy sleeps; "Andy, wake up" brings it back | | |
 
