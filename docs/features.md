@@ -54,6 +54,8 @@ and the [live test](live-test.md).
   says "I think I see your glasses, on the table…", and the TV shows the picture it saw it in (held in
   memory for two minutes, never saved). Never for finding a person. If the eyes are switched off, Andy
   says so within a few seconds.
+- **What Andy looked at:** after a search, the TV shows the four views in the order Andy turned, the one it
+  chose marked with where the thing is; when it couldn't see it, the four views show where it looked.
 - **"What do you see?"** One picture, described in two or three plain sentences. It never says who a
   person is, or guesses their age, health or mood.
 - **A letter you hold up** is read on this computer (Tesseract), explained simply, and shown in large
@@ -72,7 +74,9 @@ and the [live test](live-test.md).
   first). Nemotron 3.5 Lightning looks for the message's own sign, and Nemotron 3 Ultra checks it against
   each warning found: the same trick, not merely the same topic. Measured on 120 messages, three runs as
   Nebius Jobs: 58 of 60 scams caught, none of 60 ordinary messages flagged
-  ([decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md)). If the warnings can't be
+  ([decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md)). On the TV, "Be careful: a known
+  scam" in three steps: the sign (with the message's own words, never its numbers or links), the warning
+  Tavily found and its site, and why Nemotron 3 Ultra judged them the same trick. If the warnings can't be
   checked, Andy says so rather than "no sign".
 - **The town's events page** is found at setup from the town's own website (Tavily map, or a search within
   the site), and offered on the settings page with "Use it".
@@ -135,6 +139,9 @@ plain page saying what to do, never a bare error.
 
 ## Family, on your terms
 
+- **Family can suggest a reminder** ("call the pharmacy at 3 pm"). Andy asks the person, "Anna suggested a
+  reminder… Shall I set it?", and sets it only after a yes; the family never hear the answer.
+- **A family note shows on the TV** with who sent it and when, while Andy passes it on.
 - **The family page** previews a photo before it is sent and greets family by the person's name when the
   settings page has it.
 - **Family see only what you ask Andy to share,** can send Andy a message, a link or a photo, and Andy

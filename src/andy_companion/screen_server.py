@@ -11,6 +11,8 @@ library only. Opening the family page tells the person who looked.
 
 from __future__ import annotations
 
+import base64
+import binascii
 import hmac
 import json
 import logging
@@ -41,25 +43,63 @@ def set_caption(text: str, now: Optional[float] = None) -> None:
 
 FONTS = {f"/fonts/atkinson-hyperlegible-{w}.woff2": f"fonts/atkinson-hyperlegible-{w}.woff2" for w in (400, 700)}
 
-# What Andy's camera saw when it found something ("where are my glasses?"), for the screen. Memory
-# only, for FRAME_FOR_S; never written to disk or logged. Posted by Andy's own process on this computer.
+# What Andy looked at when it searched for something ("where are my glasses?"), for the screen: up to four
+# small views in the order Andy turned, which one it chose, and which ones the model said it saw the thing
+# in. Memory only, for FRAME_FOR_S, then forgotten; never written to disk or logged. Posted by Andy's own
+# process on this computer (finder.post_views).
 FRAME_FOR_S = 120
-MAX_FRAME = 1_500_000
-_frame: Dict[str, Any] = {"jpeg": b"", "at": 0.0}
+MAX_VIEWS = 4
+MAX_VIEW = 400_000                          # a 480 px view at quality 70 is about 30 KB
+MAX_VIEWS_BODY = MAX_VIEWS * (MAX_VIEW * 4 // 3 + 8) + 1024
+_views: Dict[str, Any] = {"jpegs": [], "seen": [], "chosen": None, "at": 0.0}
 
 
-def set_frame(jpeg: bytes, now: Optional[float] = None) -> None:
+def set_views(jpegs: List[Optional[bytes]], seen: List[bool], chosen: Optional[int], now: Optional[float] = None) -> None:
+    """Keep one search's views. A view may be None (the camera gave no picture at that stop)."""
     import time as _t
 
-    _frame["jpeg"] = bytes(jpeg)[:MAX_FRAME]
-    _frame["at"] = now if now is not None else _t.time()
+    jpegs, seen = list(jpegs), list(seen)
+    if not 0 < len(jpegs) <= MAX_VIEWS or len(seen) != len(jpegs):
+        raise ValueError("bad views")
+    for j in jpegs:
+        if j is not None and not (isinstance(j, (bytes, bytearray)) and 0 < len(j) <= MAX_VIEW and bytes(j).startswith(b"\xff\xd8")):
+            raise ValueError("not a picture")
+    if not all(isinstance(s, bool) for s in seen):
+        raise ValueError("bad views")
+    if chosen is not None and (isinstance(chosen, bool) or not isinstance(chosen, int) or not 0 <= chosen < len(jpegs)
+                               or jpegs[chosen] is None or not seen[chosen]):
+        raise ValueError("bad choice")
+    _views.update(jpegs=[None if j is None else bytes(j) for j in jpegs], seen=seen, chosen=chosen,
+                  at=now if now is not None else _t.time())
 
 
-def frame(now: Optional[float] = None) -> bytes:
+def forget_views() -> None:
+    _views.update(jpegs=[], seen=[], chosen=None, at=0.0)
+
+
+def _fresh_views(now: Optional[float]) -> bool:
     import time as _t
 
-    fresh = (now if now is not None else _t.time()) - _frame["at"] <= FRAME_FOR_S
-    return _frame["jpeg"] if fresh and _frame["jpeg"].startswith(b"\xff\xd8") else b""
+    if not _views["jpegs"]:
+        return False
+    if (now if now is not None else _t.time()) - _views["at"] > FRAME_FOR_S:
+        forget_views()                     # gone from memory, not only from the screen
+        return False
+    return True
+
+
+def views(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
+    """What the TV needs to lay out the strip (no pictures): None once the two minutes are up."""
+    if not _fresh_views(now):
+        return None
+    return {"at": _views["at"], "pictures": [j is not None for j in _views["jpegs"]], "seen": list(_views["seen"]),
+            "chosen": _views["chosen"]}
+
+
+def view(i: int, now: Optional[float] = None) -> bytes:
+    if not _fresh_views(now) or not 0 <= i < len(_views["jpegs"]):
+        return b""
+    return _views["jpegs"][i] or b""
 
 
 def caption(now: Optional[float] = None) -> str:
@@ -400,6 +440,7 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     state["showing"] = board.showing()
     if state["showing"] and state["showing"].get("kind") == "code" and host:
         state["showing"] = {**state["showing"], "qr": settings_qr(host)}
+    state["views"] = views_for(state["showing"])
     state["caption"] = caption() if settings.get().get("captions", True) else ""
     state["caption_at"] = _caption["at"] if state["caption"] else None
     import time as _t
@@ -414,6 +455,18 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     state["idle_photo"] = board.idle_photo() if s.get("screen_photos", True) and not state["night"] else None
     state["calm"] = bool(s.get("screen_calm", False))
     return state
+
+
+def views_for(showing: Optional[Dict[str, Any]], now: Optional[float] = None) -> Optional[Dict[str, Any]]:
+    """The views go with the card of the same search only: the finder posts them a moment before it puts the
+    card up, so an older search's views never sit under a newer card."""
+    v = views(now)
+    if not v or not showing or showing.get("kind") not in VIEW_KINDS:
+        return None
+    return v if -5 <= float(showing.get("at", 0)) - v["at"] <= 60 else None
+
+
+VIEW_KINDS = ("seen", "looked")
 
 
 def family_state() -> Dict[str, Any]:
@@ -558,8 +611,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, (PAGES / FONTS[url.path]).read_bytes(), "font/woff2")
         if url.path in EXPIRED:
             return self._expired(url.path)
-        if url.path == "/frame" and _ok(q.get("t"), "screen"):
-            data = frame()
+        if url.path == "/view" and _ok(q.get("t"), "screen"):
+            try:
+                data = view(int(q.get("i", "")))
+            except ValueError:
+                data = b""
             if data:
                 return self._send(200, data, "image/jpeg")
             return self._send(404, b"Not found", "text/plain")
@@ -580,14 +636,19 @@ class Handler(BaseHTTPRequestHandler):
             if not (showing and showing.get("kind") == "code"):
                 board.show_settings_code()
             return self._json({"ok": True})
-        if url.path == "/api/frame" and _ok(q.get("t"), "screen") and local:
+        if url.path == "/api/views" and _ok(q.get("t"), "screen") and local:
             length = self._length()
-            if not 0 < length <= MAX_FRAME:
+            if not 0 < length <= MAX_VIEWS_BODY:
                 return self._json({"error": "too long"}, 413)
-            data = self.rfile.read(length)
-            if not data.startswith(b"\xff\xd8"):
-                return self._json({"error": "not a picture"}, 400)
-            set_frame(data)
+            try:
+                data = _object(self.rfile.read(length))
+                pictures = data.get("views")
+                if not isinstance(pictures, list) or len(pictures) > MAX_VIEWS:
+                    raise ValueError("bad views")
+                set_views([None if p is None else base64.b64decode(str(p), validate=True) for p in pictures],
+                          data.get("seen") or [], data.get("chosen"))
+            except (ValueError, TypeError, AttributeError, binascii.Error):
+                return self._json({"error": "bad request"}, 400)
             return self._json({"ok": True})
         if url.path in ("/api/caption", "/api/turn") and _ok(q.get("t"), "screen") and local:
             length = self._length()
@@ -666,8 +727,6 @@ class Handler(BaseHTTPRequestHandler):
                 board.looked(data.get("name", ""))
                 return self._json({"ok": True})
             if url.path == "/api/family/photo":
-                import base64
-
                 raw = str(data.get("image", ""))
                 raw = raw.split(",", 1)[1] if raw.startswith("data:") else raw
                 try:
@@ -678,6 +737,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"ok": True})
             if url.path == "/api/family/message":
                 board.family_message(data.get("name", ""), data.get("text", ""), data.get("link", ""))
+                return self._json({"ok": True})
+            if url.path == "/api/family/suggest":
+                # A reminder family suggest: Andy asks the person, and sets it only after their yes. The answer
+                # is never sent back to the family (that would report on the person).
+                board.suggestion_from_page(data.get("name", ""), data.get("what", ""), data.get("when"))
                 return self._json({"ok": True})
         except ValueError as e:
             return self._json({"error": str(e)}, 400)
@@ -697,6 +761,7 @@ def _housekeeping(every_s: float = 60.0, rounds: Optional[int] = None) -> None:
         try:
             board.showing()
             board.tidy_photos()
+            views()                         # what Andy looked at is forgotten after two minutes, TV or not
         except Exception:
             logger.debug("screen housekeeping failed", exc_info=True)
         _t.sleep(every_s)

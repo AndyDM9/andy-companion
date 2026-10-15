@@ -90,6 +90,19 @@ Also done on 2026-10-14, after round 2:
 | B17 | Ready for the clips and the final cut: draft captions with Parakeet (Spanish put into English, marked to check) and GIFs | ✅ |
 | B18 | A fresh clone installs and passes as the README says; the keyless demo screen runs with an empty home folder | ✅ |
 
+### Round 3 (Claude), from the design review of all four pages (2026-10-14, late evening)
+
+The review's high and medium findings were done the same night (B15 to B18 above, and the changelog). The
+founder approved its ideas; these turn the physical and the web work into things a viewer can see:
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B19 | **"What Andy looked at":** after a search for something, the TV shows the four views Nemotron Nano VL read, left to right as Andy turned, the chosen one marked, for two minutes, in memory only | Makes the robot's physical search visible in one glance: the Physical AI track's point | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
+| B20 | **The scam check's receipt:** under "Be careful", three steps on the TV: the sign Nemotron Lightning spotted (with the message's own words), the consumer-protection warning Tavily found (and its site), and why Nemotron Ultra judged it the same trick | Shows the Tavily judges, and anyone, why Andy said what it said | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
+| B21 | **A family suggestion the person accepts:** on the family page, "Suggest a reminder" (what, when); Andy says "Anna suggested: call the pharmacy at 3 pm. Shall I set it?", and sets it only after a yes | Family help without taking over: nothing is set behind the person's back | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
+| B22 | **Family notes on the TV:** when Andy passes on a family message, the TV shows it as a note with who sent it and when, for five minutes | What Nest Hub's Family Notes do, inside our rules (no presence shown back) | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
+| B23 | **The rest of the review's ideas:** Tavily research with a running count of sites read; "Andy is looking at…" on the TV from the head's pose | Smaller; done if B19 to B22 land cleanly | ⬜ |
+
 ### Cleanup (Claude)
 
 | # | Item | Status |

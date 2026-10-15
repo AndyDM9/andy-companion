@@ -49,7 +49,7 @@ class Manager:
         self.moves.append(move)
 
 
-def run_find(asker, poster=lambda jpeg: None):
+def run_find(asker, poster=lambda views, seen, chosen: None):
     robot, manager = Robot(), Manager()
 
     async def no_wait(seconds):
@@ -84,7 +84,7 @@ def test_andy_sweeps_finds_points_and_shows_what_it_saw():
         hit = int(frame[0, 0, 0]) == 60                        # the third frame
         return {"seen": hit, "x": 0.25 if hit else 0.5, "where": "on the table by the lamp" if hit else ""}
 
-    out, robot, manager = run_find(asker, poster=posted.append)
+    out, robot, manager = run_find(asker, poster=lambda views, seen, chosen: posted.append((views, seen, chosen)))
     sweep, point = manager.moves[:4], manager.moves[4]
     assert len(manager.moves) == 5 and all(m.andy_owns_head for m in manager.moves)
     assert [round(math.degrees(glance._rpy(m.end)[2])) for m in sweep] == [55, 18, -18, -55]
@@ -94,15 +94,22 @@ def test_andy_sweeps_finds_points_and_shows_what_it_saw():
     assert point.hold_s == finder.POINT_HOLD_S
     assert out["found"] and out["where"] == "on the table by the lamp"
     assert out["say"] == "I think I see your reading glasses, on the table by the lamp." and "left or right" in out["how"]
-    assert posted and posted[0][:2] == b"\xff\xd8"              # a JPEG to the screen
+    views, seen, chosen = posted[0]                              # all four views to the screen, in the order Andy turned
+    assert len(posted) == 1 and len(views) == 4 and all(v[:2] == b"\xff\xd8" for v in views)
+    assert seen == [False, False, True, False] and chosen == 2
     shown = board.showing()
     assert shown["kind"] == "seen" and shown["title"] == "Your reading glasses"
 
 
 def test_not_found_says_so_kindly_and_points_nowhere():
-    out, robot, manager = run_find(lambda f, w: {"seen": False, "x": 0.5, "where": ""})
+    posted = []
+    out, robot, manager = run_find(lambda f, w: {"seen": False, "x": 0.5, "where": ""},
+                                   poster=lambda views, seen, chosen: posted.append((views, seen, chosen)))
     assert not out["found"] and "No guessing" in out["how"] and len(manager.moves) == 4
-    assert board.showing() is None
+    # The screen shows where Andy looked: the four views, none seen, none chosen.
+    assert len(posted) == 1 and len(posted[0][0]) == 4 and posted[0][1:] == ([False] * 4, None)
+    shown = board.showing()
+    assert shown["kind"] == "looked" and shown["title"] == "I couldn't see your reading glasses"
 
 
 def test_eyes_switched_off_is_said_plainly():
@@ -121,26 +128,42 @@ def test_the_look_turns_gently_and_holds():
     assert yaws[-1] == pytest.approx(math.radians(55)) and step.evaluate(step.duration - 0.01)[2] == 0.0
 
 
-def test_the_screen_keeps_the_frame_in_memory_for_two_minutes():
+def test_the_screen_keeps_the_views_in_memory_for_two_minutes():
+    import base64
+
     httpd = screen_server.serve(host="127.0.0.1", port=0)
     try:
         base = f"http://127.0.0.1:{httpd.server_address[1]}"
         token = board.tokens()["screen"]
-        req = urllib.request.Request(f"{base}/api/frame?t={token}", method="POST", data=b"\xff\xd8 a jpeg",
-                                     headers={"Content-Type": "image/jpeg"})
-        with urllib.request.urlopen(req, timeout=5) as r:
-            assert json.loads(r.read()) == {"ok": True}
-        with urllib.request.urlopen(f"{base}/frame?t={token}", timeout=5) as r:
-            assert r.read() == b"\xff\xd8 a jpeg"
-        bad = urllib.request.Request(f"{base}/api/frame?t={token}", method="POST", data=b"<html>",
-                                     headers={"Content-Type": "image/jpeg"})
+
+        def post(body, t=token):
+            req = urllib.request.Request(f"{base}/api/views?t={t}", method="POST", data=json.dumps(body).encode(),
+                                         headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=5) as r:
+                return json.loads(r.read())
+
+        b64 = [base64.b64encode(b"\xff\xd8 view %d" % i).decode() for i in range(4)]
+        assert post({"views": b64[:3] + [None], "seen": [False, True, False, False], "chosen": 1}) == {"ok": True}
+        with urllib.request.urlopen(f"{base}/view?t={token}&i=1", timeout=5) as r:
+            assert r.read() == b"\xff\xd8 view 1"
+        for i in ("3", "4", "x"):                                 # no picture there, none at all, not a number
+            with pytest.raises(urllib.error.HTTPError):
+                urllib.request.urlopen(f"{base}/view?t={token}&i={i}", timeout=5)
+        for bad in ({"views": [base64.b64encode(b"<html>").decode()], "seen": [False], "chosen": None},   # not a picture
+                    {"views": b64 + b64[:1], "seen": [False] * 5, "chosen": None},                       # five views
+                    {"views": b64, "seen": [False] * 4, "chosen": 0}):                                   # chose one not seen
+            with pytest.raises(urllib.error.HTTPError):
+                post(bad)
         with pytest.raises(urllib.error.HTTPError):
-            urllib.request.urlopen(bad, timeout=5)
-        assert screen_server.frame(now=screen_server._frame["at"] + screen_server.FRAME_FOR_S + 1) == b""
+            post({"views": b64, "seen": [False] * 4, "chosen": None}, t="wrong")
+        assert screen_server.views()["chosen"] == 1                   # the bad posts changed nothing
+        assert screen_server.view(1, now=screen_server._views["at"] + screen_server.FRAME_FOR_S + 1) == b""
+        assert screen_server._views["jpegs"] == []                    # forgotten, not only hidden
         with pytest.raises(urllib.error.HTTPError):
-            urllib.request.urlopen(f"{base}/frame?t=wrong", timeout=5)
+            urllib.request.urlopen(f"{base}/view?t=wrong&i=0", timeout=5)
     finally:
         httpd.shutdown()
+        screen_server.forget_views()
 
 
 def test_a_stopped_endpoint_is_said_at_once_not_after_the_read_timeout(monkeypatch):

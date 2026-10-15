@@ -3,8 +3,9 @@
     uv run python scripts/demo_screen.py            then open the addresses it prints
 
 It runs Andy's real screen server on a throwaway data folder, with made-up reminders, a sample
-weather card, and a card that changes every 20 seconds (what Andy found, a letter with a warning, the
-day's plan, a story, On this day), so you can see the screen as it is beside the robot. Under the hood
+weather card, and a card that changes every 20 seconds (research, finding glasses with the four views Andy
+looked at, a letter with a warning, a scam check's three steps, the day's plan, a family note, a story), so
+you can see the screen as it is beside the robot. Under the hood
 shows sample turns with times of the kind measured on the robot (2026-10-13 and 14), so the page isn't
 empty without one. Nothing leaves this computer. Ctrl+C stops it, and the throwaway folder is deleted.
 """
@@ -30,7 +31,51 @@ CAPTIONS = {
     "research": "I looked into it: the farmers market isn't on this Saturday. It runs on the first Saturday of each month.",
     "letter": "This letter asks for gift cards and threatens arrest. Real organisations never do that. Shall we check with Anna first?",
     "story": "The Lion and the Mouse, by Aesop. A Lion lay asleep in the forest, his great head resting on his paws.",
+    "found": "I think I see your glasses, on the table by the lamp. It's on your screen too.",
+    "scam": "This shows a sign of a known scam: a grandson in trouble asking for money. The FTC warns about messages like this. Let's check with Anna first.",
+    "note": "Anna sent you a note: she'll call you at six tonight.",
 }
+
+
+def room(view: int) -> bytes:
+    """A made-up view of a room for the finder's strip (no camera here): a wall, a floor, furniture, and in
+    the third view a pair of glasses on a table by a lamp."""
+    import cv2
+    import numpy as np
+
+    img = np.zeros((270, 480, 3), np.uint8)
+    img[:] = (150, 170, 190)                                   # wall
+    img[180:] = (90, 110, 130)                                 # floor
+    shade = 60 + 30 * view
+    cv2.rectangle(img, (40 + 20 * view, 120), (200 + 20 * view, 200), (70, shade, 120), -1)          # sofa or shelf
+    if view == 2:
+        cv2.rectangle(img, (250, 150), (430, 165), (60, 80, 110), -1)                                 # table
+        cv2.rectangle(img, (395, 70), (405, 150), (50, 50, 50), -1)                                   # lamp
+        cv2.ellipse(img, (400, 70), (32, 20), 0, 180, 360, (200, 230, 240), -1)
+        for x in (310, 350):                                                                          # glasses
+            cv2.circle(img, (x, 143), 14, (20, 20, 20), 3)
+        cv2.line(img, (324, 143), (336, 143), (20, 20, 20), 3)
+    ok, jpg = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 70])
+    return jpg.tobytes()
+
+
+def found() -> None:
+    screen_server.set_views([room(i) for i in range(4)], [False, False, True, False], 2)
+    board.show("seen", "Your glasses", [{"summary": "on the table by the lamp"}])
+
+
+def scam() -> None:
+    # As tools/check_message.py shows a scam with a matching warning (its RECEIPT words), on sample data.
+    board.show("check", "Be careful: a known scam", [
+        {"title": "The sign", "summary": "A relative or friend in trouble asking for money: “I'm in jail… need bail money today”",
+         "tone": "caution"},
+        {"title": "The warning", "summary": "consumer.ftc.gov: Scammers pretend to be your grandchild in trouble", "tone": "caution"},
+        {"title": "Why it matches", "summary": "NVIDIA Nemotron 3 Ultra compared them: the same trick, not just the same topic.",
+         "tone": "caution"}], how={"calls": ["search"], "depth": "advanced", "seconds": 3.1, "credits": 2})
+
+
+def note() -> None:
+    board.show("note", "A note from Anna", [{"summary": "I'll call you at six tonight. Love, Anna", "when": "5:42 pm"}])
 
 
 def research() -> None:
@@ -96,7 +141,8 @@ def main() -> int:
     print(f"The settings page:                   {base}/setup?s=demo-setup")
     print(f"Under the hood:                      {base}/hood?t=demo-hood")
     print("Sample data only; Ctrl+C to stop.", flush=True)
-    scenes = [("research", research), ("letter", letter), ("today", dayplan.show), ("story", lambda: stories.start("lion"))]
+    scenes = [("research", research), ("found", found), ("letter", letter), ("scam", scam), ("today", dayplan.show),
+              ("note", note), ("story", lambda: stories.start("lion"))]
     try:
         i = 0
         while True:

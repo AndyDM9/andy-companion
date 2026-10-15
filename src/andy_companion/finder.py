@@ -8,12 +8,14 @@ for the thing, in parallel, as structured output: seen or not, where across the 
 
 Andy then turns its head to it (the frame's direction, plus the thing's offset from the centre,
 through the camera's intrinsics, as body.person does). It holds there while it says where, and the
-TV shows the frame it was seen in.
+TV shows what Andy looked at: the four views, numbered in the order Andy turned, the one it chose marked
+and the "where" words under it; when nothing was found, the four views, each "not seen", so the person
+sees where Andy looked.
 
-Privacy: the frames go only to the person's own endpoint and are not kept there. The one shown on the
-TV lives in the screen server's memory for two minutes (screen_server.FRAME_FOR_S) and is never
-written to disk. The model is told never to describe people. Nothing is logged but whether it was
-found.
+Privacy: the frames go only to the person's own endpoint and are not kept there. The views shown on the
+TV are small (VIEW_WIDTH, VIEW_QUALITY), live in the screen server's memory for two minutes
+(screen_server.FRAME_FOR_S) and are never written to disk. The model is told never to describe people.
+Nothing is logged but whether it was found.
 
 Measuring it (PLAN B11): only when ANDY_FINDER_RECORD names a folder, each try is kept there for scoring by
 evals/finder_eval.py: the four views, what the model said of each, the view Andy chose and the times. It is
@@ -41,6 +43,7 @@ SETTLE_S = 0.6                             # into the hold, before the frame is 
 POINT_HOLD_S = 3.5
 FX, CX = 1116.0, 953.0                     # body.person's defaults: about 81 degrees across
 TIMEOUT_S = 40
+VIEW_WIDTH, VIEW_QUALITY = 480, 70         # the TV's strip: small enough for four in memory, clear at a glance
 ASK = ("You are the eyes of a home companion robot helping someone find their {what}. Look at this picture. "
        "Is their {what} visible? Answer as JSON: seen (true or false), x (where it is across the picture, "
        "0 at the left edge to 1 at the right edge), and where (a few plain words, like 'on the table by the "
@@ -142,12 +145,28 @@ def record(what: str, frames: List[Any], results: List[Dict[str, Any]], chosen: 
         return None
 
 
-def post_frame(jpeg: bytes, opener: Optional[Callable] = None) -> None:
-    """The frame to the screen server's memory (this computer only), for the TV."""
+def views_for_screen(frames: List[Any]) -> List[Optional[bytes]]:
+    """Each view as a small JPEG for the TV's strip (None where the camera gave no picture)."""
+    from andy_companion import vision
+
+    out: List[Optional[bytes]] = []
+    for f in frames:
+        try:
+            out.append(None if f is None else vision.jpeg(f, VIEW_WIDTH, VIEW_QUALITY))
+        except Exception:
+            out.append(None)
+    return out
+
+
+def post_views(views: List[Optional[bytes]], seen: List[bool], chosen: Optional[int],
+               opener: Optional[Callable] = None) -> None:
+    """The views, in the order Andy turned, to the screen server's memory (this computer only), for the TV."""
     from andy_companion import board, captions
 
-    req = urllib.request.Request(f"{captions.SCREEN}/api/frame?t={board.tokens()['screen']}", method="POST",
-                                 data=jpeg, headers={"Content-Type": "image/jpeg"})
+    body = {"views": [None if v is None else base64.b64encode(v).decode() for v in views], "seen": list(seen),
+            "chosen": chosen}
+    req = urllib.request.Request(f"{captions.SCREEN}/api/views?t={board.tokens()['screen']}", method="POST",
+                                 data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=2):
             pass
@@ -155,7 +174,7 @@ def post_frame(jpeg: bytes, opener: Optional[Callable] = None) -> None:
         pass   # the TV is a help, never a reason to stop
 
 
-async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, poster: Callable = post_frame,
+async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, poster: Callable = post_views,
                queueable: Optional[Callable] = None, sleep: Callable = asyncio.sleep,
                clock: Optional[Callable[[], float]] = None) -> Dict[str, Any]:
     """Sweep, look, point, show. Returns what Andy should say."""
@@ -209,22 +228,26 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, po
     i = best(results)
     looked_s = clock() - start
     logger.info("finder: %s", "found" if i is not None else "not found")
+
+    def show_views() -> None:     # first the views, then the card: the screen pairs a card with views just before it
+        try:
+            poster(views_for_screen(frames), [bool(r.get("seen")) for r in results], i)
+        except Exception:
+            pass   # the TV is a help, never a reason to stop
+
     if i is None:
         await asyncio.to_thread(record, what, frames, results, None, {"to_answer": round(looked_s, 2)})
+        await asyncio.to_thread(show_views)
+        board.show("looked", f"I couldn't see your {what}", [])
         return {"found": False, "what": what, "looked": len(frames),
-                "how": (f"Say kindly that you looked around but couldn't see their {what} from where you are. "
-                        "Offer to look again if they move something or hold it nearer, or suggest one likely "
-                        "place to check. No guessing.")}
+                "how": (f"Say kindly that you looked around but couldn't see their {what} from where you are, and "
+                        "that the screen shows where you looked. Offer to look again if they move something or "
+                        "hold it nearer, or suggest one likely place to check. No guessing.")}
     yaw = target_yaw(math.radians(SWEEP_DEG[i]), results[i]["x"])
     manager.queue_move(queueable(look.HoldLook(robot.get_current_head_pose(), antennas, yaw, pitch, POINT_HOLD_S)))
     await asyncio.to_thread(record, what, frames, results, i,
                             {"to_answer": round(looked_s, 2), "to_point": round(clock() - start, 2)})
-    try:
-        from andy_companion import vision
-
-        poster(vision.jpeg(frames[i]))
-    except Exception:
-        pass
+    await asyncio.to_thread(show_views)
     where = results[i]["where"]
     board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
     say = f"I think I see your {what}" + (f", {where}" if where else ", over there where I'm looking") + "."

@@ -62,11 +62,14 @@
 
   label { display: block; font-weight: 700; margin: 18px 0 8px; }
   label.first { margin-top: 0; }
-  input[type=text], input[type=url], textarea { width: 100%; min-height: 52px; font: inherit; color: inherit; background: var(--field);
-                                               border: 2px solid var(--line); padding: 11px 14px; border-radius: var(--r-in); }
+  input[type=text], input[type=url], input[type=time], select, textarea {
+    width: 100%; min-height: 52px; font: inherit; color: inherit; background: var(--field);
+    border: 2px solid var(--line); padding: 11px 14px; border-radius: var(--r-in); }
+  /* The day and the time side by side when there is room, one under the other on a narrow phone. */
+  .when-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: 0 14px; }
   textarea { min-height: 116px; resize: vertical; }
   .hint { font-size: 17px; color: var(--soft); margin: 8px 0 0; }
-  input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
 
   button, .pick { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin: 18px 0 0;
                   padding: 11px 22px; font: inherit; font-weight: 700; color: var(--on-mark); background: var(--mark);
@@ -96,7 +99,7 @@
 
   <section id="who">
     <h1 data-t="title">Notes from home</h1>
-    <p class="lede" data-t="lede_who">See what's been shared with you, and send a message or a photo for Andy to pass on.</p>
+    <p class="lede" data-t="lede_who">See what's been shared with you, and send a message, a photo or a suggested reminder for Andy to pass on.</p>
     <form id="name-form" class="panel">
       <label for="name" class="first" data-t="your_name">Your first name</label>
       <input type="text" id="name" name="name" autocomplete="given-name" maxlength="40" required>
@@ -127,6 +130,25 @@
       <p class="status" id="status" role="status" aria-live="polite"></p>
     </form>
 
+    <form id="suggest-form" class="panel" aria-labelledby="suggest-h">
+      <h2 id="suggest-h" data-t="suggest_h">Suggest a reminder</h2>
+      <label for="what" class="first" data-t="what">What to remind them about</label>
+      <input id="what" type="text" maxlength="120" data-tp="what_example" placeholder="Call the pharmacy">
+      <div class="when-row">
+        <div>
+          <label for="day" data-t="day">Day</label>
+          <select id="day"></select>
+        </div>
+        <div>
+          <label for="time" data-t="time">Time</label>
+          <input id="time" type="time" step="300">
+        </div>
+      </div>
+      <p class="hint" data-t="suggest_hint">Andy asks them at the next quiet moment and sets it only after a yes. Andy won't tell you the answer.</p>
+      <button type="submit" data-t="suggest">Suggest it</button>
+      <p class="status" id="suggest-status" role="status" aria-live="polite"></p>
+    </form>
+
     <form id="photo-form" class="panel" aria-labelledby="photo-h">
       <h2 id="photo-h" data-t="photo_h">Send a photo</h2>
       <p class="hint" style="margin:0 0 14px" data-t="photo_hint">It shows on the screen beside Andy, Andy says it's from you, and it is deleted after a week.</p>
@@ -149,7 +171,7 @@
 {
   "en": {
     "title": "Notes from home",
-    "lede_who": "See what's been shared with you, and send a message or a photo for Andy to pass on.",
+    "lede_who": "See what's been shared with you, and send a message, a photo or a suggested reminder for Andy to pass on.",
     "your_name": "Your first name", "who_hint": "Andy will tell {them} who looked.", "open": "Open notes",
     "hello": "Hello, {who}", "lede": "Only what {they} chose to share appears here.",
     "shared_h": "Shared with you",
@@ -159,6 +181,12 @@
     "msg_hint": "Andy says your message at the next quiet moment, and can read a link aloud.",
     "send": "Send to Andy", "sending": "Sending…", "sent": "Sent. Andy will pass it on at the next quiet moment.",
     "need_text": "Write a message or add a link first.",
+    "suggest_h": "Suggest a reminder", "what": "What to remind {them} about", "what_example": "Call the pharmacy",
+    "day": "Day", "time": "Time", "today": "Today", "tomorrow": "Tomorrow",
+    "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "suggest_hint": "Andy asks {them} at the next quiet moment and sets it only after a yes. Andy won't tell you the answer.",
+    "suggest": "Suggest it", "suggested": "Sent. Andy will ask {them}.",
+    "need_what": "Write what to remind {them} about first.", "need_time": "Choose a time first.",
     "photo_h": "Send a photo",
     "photo_hint": "It shows on the screen beside Andy, Andy says it's from you, and it is deleted after a week.",
     "choose": "Choose a photo", "choose_again": "Choose another photo",
@@ -171,7 +199,7 @@
   },
   "es": {
     "title": "Notas de casa",
-    "lede_who": "Vea lo que se ha compartido con usted y envíe un mensaje o una foto para que Andy lo transmita.",
+    "lede_who": "Vea lo que se ha compartido con usted y envíe un mensaje, una foto o un recordatorio sugerido para que Andy lo transmita.",
     "your_name": "Su nombre", "who_hint": "Andy le dirá{a} quién miró.", "open": "Abrir las notas",
     "hello": "Hola, {who}", "lede": "Aquí aparece solo lo que{sub} eligió compartir.",
     "shared_h": "Compartido con usted",
@@ -181,6 +209,12 @@
     "msg_hint": "Andy dirá su mensaje en el próximo momento tranquilo y puede leer un enlace en voz alta.",
     "send": "Enviar a Andy", "sending": "Enviando…", "sent": "Enviado. Andy lo dirá en el próximo momento tranquilo.",
     "need_text": "Primero escriba un mensaje o añada un enlace.",
+    "suggest_h": "Sugerir un recordatorio", "what": "Qué recordarle{a}", "what_example": "Llamar a la farmacia",
+    "day": "Día", "time": "Hora", "today": "Hoy", "tomorrow": "Mañana",
+    "days": ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+    "suggest_hint": "Andy se lo preguntará{a} en el próximo momento tranquilo y solo lo pondrá si dice que sí. Andy no le dirá a usted la respuesta.",
+    "suggest": "Sugerirlo", "suggested": "Enviado. Andy se lo preguntará{a}.",
+    "need_what": "Primero escriba qué recordarle{a}.", "need_time": "Primero elija una hora.",
     "photo_h": "Enviar una foto",
     "photo_hint": "Aparece en la pantalla junto a Andy, Andy dice que es de usted, y se borra al cabo de una semana.",
     "choose": "Elegir una foto", "choose_again": "Elegir otra foto",
@@ -215,6 +249,7 @@
     for (const el of document.querySelectorAll("[data-t]")) el.textContent = t(el.dataset.t);
     for (const el of document.querySelectorAll("[data-tp]")) el.placeholder = t(el.dataset.tp);
     $("hello").textContent = name ? t("hello", { who: name }) : t("title");
+    fillDays();
     if (photo) $("photo").nextElementSibling.textContent = t("choose_again");
   }
   function say(id, message, error) { const el = $(id); el.className = error ? "status error" : "status"; el.textContent = message; }
@@ -272,6 +307,36 @@
       say("status", t("sent"));
       $("text").value = ""; $("link").value = "";
     } catch (err) { say("status", err.message, true); }
+  });
+
+  // The days a suggestion can be for: today, tomorrow, then the next five days by name (a reminder can be set
+  // at most a week ahead). Sent as "today", "tomorrow" or the weekday's number, Monday first; Andy works out
+  // the time on its own clock.
+  function fillDays() {
+    const sel = $("day"), was = sel.value, now = new Date();
+    sel.textContent = "";
+    const add = (value, label) => { const o = document.createElement("option"); o.value = value; o.textContent = label; sel.append(o); };
+    add("today", t("today")); add("tomorrow", t("tomorrow"));
+    const days = UI[lang].days || UI.en.days;
+    for (let n = 2; n < 7; n++) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + n), wd = (d.getDay() + 6) % 7;
+      add(String(wd), days[wd]);
+    }
+    if (was && [...sel.options].some((o) => o.value === was)) sel.value = was;
+  }
+
+  $("suggest-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const what = $("what").value.trim(), time = $("time").value;
+    if (!what) { say("suggest-status", t("need_what"), true); $("what").focus(); return; }
+    if (!time) { say("suggest-status", t("need_time"), true); $("time").focus(); return; }
+    say("suggest-status", t("sending"));
+    try {
+      // The answer is only "sent": Andy never tells family whether it was set.
+      await send("/api/family/suggest", { name, what, when: { day: $("day").value, time } });
+      say("suggest-status", t("suggested"));
+      $("what").value = ""; $("time").value = "";
+    } catch (err) { say("suggest-status", err.message, true); }
   });
 
   // The chosen photo, shown before it is sent. Read once as a data address: the page's security policy lets

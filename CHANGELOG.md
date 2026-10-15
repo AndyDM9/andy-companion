@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (round 3: the physical search and the scam check made visible; family suggestions and notes)
+
+From the design review's ideas, approved by the founder (plan, round 3; the review is kept privately):
+- **What Andy looked at (B19):** after a search, the TV shows the four views Nemotron Nano VL read, in the
+  order Andy turned, the chosen one marked with where the thing is; when nothing was found, the views show
+  where Andy looked. Kept in the screen server's memory for two minutes (480 px each, `POST /api/views` from
+  this computer, `GET /view` for the TV), never on disk or in a log; replaces the single found frame.
+- **The scam check's receipt (B20):** "Be careful: a known scam" in three numbered steps: the sign, with the
+  message's own words (never its numbers, links or emails), the warning Tavily found and its site, and why
+  Nemotron 3 Ultra judged them the same trick; without a match, step 2 says so. While Andy speaks, each step
+  becomes one line so all three stay on screen.
+- **A family suggestion (B21):** on the family page, "Suggest a reminder" (what, a day this week, a time).
+  Andy says "Anna suggested a reminder: … Shall I set it?" in the household's language and sets it only after
+  a clear yes; the family page says only "Sent. Andy will ask them." (`POST /api/family/suggest`).
+- **Family notes on the TV (B22):** when Andy passes on a family message, the TV shows "A note from Anna"
+  with the time (a link only as its site); a suggestion shows as "Anna suggested".
+- The keyless demo shows all of these. 37 tests (772; 779 in the robot's environment).
+
 ### Changed (every page, from a design review: the TV, Under the hood, the settings and family pages)
 
 A review of all four pages (in a browser, on the keyless demo) found six high and seven medium problems and

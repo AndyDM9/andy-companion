@@ -5,8 +5,8 @@ Small owner-only files in Andy's folder, read by the screen server (screen_serve
 - screen.json: what Andy is showing now (news, a look-up, a letter's summary). It expires after
   SHOW_FOR_S and is cleared, so the screen never becomes a record.
 - shared.json: notes the person explicitly asked Andy to share with family. Nothing else is shared.
-- inbox.json: messages and links family send to Andy, and who looked at the family page. The
-  speaker says them to the person, then they are deleted: the person always hears who looked.
+- inbox.json: messages, links and reminder suggestions family send to Andy, and who looked at the family
+  page. The speaker says them to the person, then they are deleted: the person always hears who looked.
 """
 
 from __future__ import annotations
@@ -199,6 +199,63 @@ def family_message(name: str, text: str = "", link: str = "", now: Optional[floa
     if link and not link.startswith(("http://", "https://")):
         raise ValueError("A link starts with http:// or https://.")
     _inbox_add({"type": "message", "name": name, "text": text, "link": link, "at": now or time.time()})
+
+
+SUGGEST_TEXT = 120
+# A suggestion is set with set_reminder, which takes a time at most a week ahead (reminders.due_time): a
+# suggestion further out could never be set, so the family page offers today, tomorrow or a weekday.
+SUGGEST_DAYS = 7
+_LINKISH = re.compile(r"https?:|www\.|\b[a-z0-9-]+\.(com|net|org|info|biz|io|co|ly|me|app|xyz|us|uk|es|gov|edu)\b", re.I)
+
+
+def family_suggestion(name: str, what: str, when_text: str, due_ts: float, now: Optional[float] = None) -> Dict[str, Any]:
+    """Family suggest a reminder (B21). It is only passed on: Andy asks the person, and sets it only after their
+    yes. Family are never told the answer, so nothing here reports on the person."""
+    name, what, when_text = _tidy(name, NAME_LEN), _tidy(what, MAX_TEXT), _tidy(when_text, 60)
+    if not name or not what:
+        raise ValueError("A name and what to remind them about are needed.")
+    if len(what) > SUGGEST_TEXT:
+        raise ValueError(f"Keep it short: up to {SUGGEST_TEXT} characters.")
+    if _LINKISH.search(what):
+        raise ValueError("A suggestion can't carry a link. Send a link as a message instead.")
+    now = time.time() if now is None else now
+    try:
+        due = float(due_ts)
+    except (TypeError, ValueError):
+        raise ValueError("Choose a day and a time.") from None
+    if due <= now + 60:
+        raise ValueError("Choose a time later than now.")
+    if due > now + SUGGEST_DAYS * 86400:
+        raise ValueError("Choose a time within the next week.")
+    entry = {"type": "suggestion", "name": name, "what": what, "when": when_text, "due": due, "at": now}
+    _inbox_add(entry)
+    return entry
+
+
+def suggestion_from_page(name: str, what: str, when: Any, now: Optional[float] = None) -> Dict[str, Any]:
+    """What the family page posts ({"day": "today" | "tomorrow" | "0".."6" (Monday first), "time": "HH:MM"}),
+    turned into a time on Andy's own clock, then family_suggestion. The route /api/family/suggest calls this."""
+    if not isinstance(when, dict):
+        raise ValueError("Choose a day and a time.")
+    day, clock = str(when.get("day", "")).strip().lower(), str(when.get("time", "")).strip()
+    match = re.fullmatch(r"([01]?\d|2[0-3]):([0-5]\d)", clock)
+    if not match:
+        raise ValueError("Choose a time.")
+    from datetime import timedelta
+
+    now = time.time() if now is None else now
+    today = datetime.fromtimestamp(now).replace(hour=int(match.group(1)), minute=int(match.group(2)), second=0, microsecond=0)
+    if day == "today":
+        due = today
+    elif day == "tomorrow":
+        due = today + timedelta(days=1)
+    elif day in ("0", "1", "2", "3", "4", "5", "6"):
+        due = today + timedelta(days=(int(day) - today.weekday()) % 7)
+        if due.timestamp() <= now + 60:           # that weekday is today and the time has passed: next week
+            due += timedelta(days=7)
+    else:
+        raise ValueError("Choose a day.")
+    return family_suggestion(name, what, f"{due:%A} {due:%H:%M}", due.timestamp(), now)
 
 
 def looked(name: str, now: Optional[float] = None) -> None:

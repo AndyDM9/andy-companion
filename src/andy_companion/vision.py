@@ -49,13 +49,13 @@ def reachable(url: str, connect: Callable = socket.create_connection) -> bool:
 SWITCHED_OFF = "My eyes are switched off right now, so I can't see. They can be turned on from the computer."
 
 
-def jpeg(frame: Any, width: int = 768) -> bytes:
+def jpeg(frame: Any, width: int = 768, quality: int = 85) -> bytes:
     import cv2
 
     h, w = frame.shape[:2]
     if w > width:
         frame = cv2.resize(frame, (width, int(h * width / w)), interpolation=cv2.INTER_AREA)
-    ok, data = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
+    ok, data = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), int(quality)])
     if not ok:
         raise VisionError("The picture could not be prepared.")
     return data.tobytes()

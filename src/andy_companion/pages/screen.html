@@ -195,6 +195,48 @@
   .item.caution .summary { color: var(--ink); -webkit-line-clamp: 3; }
   .item.caution.short2 .summary { -webkit-line-clamp: 2; }       /* beside a caption on a small screen */
   .item.caution.short1 .summary { -webkit-line-clamp: 1; }
+  .item .when { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: .5vh 0 0; }
+  /* The scam check's receipt: why Andy said "be careful", as numbered steps (a real sequence: the sign, the
+     warning, why they match), in the caution look; the number on a solid disc, never text over glass. */
+  .item.step { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1.3vw; align-items: start;
+               border-left: 0; padding: 1vh 0; margin: 0; border-top: 1px solid var(--rule); }
+  .item.step:first-child { border-top: 0; }
+  .item.step .num { display: flex; align-items: center; justify-content: center; width: 1.7em; height: 1.7em; border-radius: 50%;
+                    background: var(--mark); color: var(--panel); font-weight: 700; font-size: clamp(20px, 2vw, 36px);
+                    font-variant-numeric: tabular-nums; }
+  .item.step .title { font-size: clamp(18px, 1.7vw, 30px); color: var(--soft); }
+  .item.step .summary { font-size: clamp(20px, 1.9vw, 34px); margin-top: .2vh; line-height: 1.3; }
+  /* At its shortest a step is one line, its name and words together ("The sign: a relative in trouble…"),
+     so all three steps fit above a caption while Andy speaks (step 3 names Nemotron Ultra: it must stay). */
+  .item.step.short1 { align-items: center; padding: .6vh 0; }
+  .item.step.short1 .num { width: 1.3em; height: 1.3em; font-size: clamp(17px, 1.6vw, 28px); }
+  .item.step.short1 > :last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .item.step.short1 .title, .item.step.short1 .summary { display: inline; -webkit-line-clamp: unset; }
+  .item.step.short1 .title::after { content: ": "; }
+  /* What Andy looked at: the views in the order Andy turned, numbered (someone facing Andy has its left on
+     their right, so "left" and "right" would mislead), the chosen one wider and ringed in the mark colour,
+     where it is under it. 16:9 boxes by padding: Chromium 85 has no aspect-ratio. */
+  .views { margin: .2vh 0 1.2vh; }
+  .views .order { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 0 0 1.2vh; }
+  .strip { display: flex; align-items: flex-start; gap: 1.1vw; }
+  .view { flex: 1 1 0; min-width: 0; margin: 0; }
+  .view.chosen { flex-grow: 2.8; }
+  .view .pic { position: relative; padding-top: 56.25%; border-radius: max(8px, calc(var(--r) - 2.6vw)); overflow: hidden;
+               background: var(--rule); }
+  .view .pic.none { background: transparent; }
+  .view .pic.none::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: inherit;
+                           border: 2px dashed var(--rule); }
+  .view img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .strip.has-chosen .view:not(.chosen) .pic { opacity: .82; }
+  .view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }
+  .view figcaption { display: flex; align-items: center; gap: .6em; margin: 1.1vh 0 0; font-size: clamp(16px, 1.45vw, 26px);
+                     color: var(--soft); }
+  .view .n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em;
+             border-radius: 50%; border: 2px solid var(--soft); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .view.chosen .n { background: var(--mark); border-color: var(--mark); color: var(--panel); }
+  .view.seen .said { color: var(--mark); font-weight: 700; }
+  .view.chosen figcaption { align-items: flex-start; }
+  .view .where { font-size: clamp(20px, 1.9vw, 34px); font-weight: 700; line-height: 1.24; color: var(--ink); min-width: 0; }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
   /* While Andy speaks the caption lies over the foot of the screen: the card keeps its own foot clear of
      it (three caption lines and their padding), and its list gives way instead. Not beside the settings
@@ -211,6 +253,11 @@
     body:not(.calm) .enter .item:nth-of-type(2) { animation-delay: .3s; }
     body:not(.calm) .enter .item:nth-of-type(3) { animation-delay: .42s; }
     body:not(.calm) .enter .source { animation-delay: .55s; }
+    /* The views arrive one by one, in the order Andy turned to them. */
+    body:not(.calm) .enter .view { animation: rise .5s cubic-bezier(.2, .8, .2, 1) both; }
+    body:not(.calm) .enter .view:nth-child(2) { animation-delay: .15s; }
+    body:not(.calm) .enter .view:nth-child(3) { animation-delay: .3s; }
+    body:not(.calm) .enter .view:nth-child(4) { animation-delay: .45s; }
     body:not(.calm) .enter::before { animation: lit 1.8s ease-out both; }   /* lit from within as it arrives */
   }
   @keyframes lit { from { opacity: 1; } to { opacity: var(--rim); } }
@@ -341,8 +388,11 @@
           gear: "Settings", menu: "Andy's settings", menuCode: "Show the settings code", menuCodeHint: "Point a phone's camera at it to change Andy's settings",
           menuHood: "Under the hood", menuHoodHint: "How fast Andy answers, and what it uses, live", close: "Close",
           kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
-                   check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says", today: "Today", story: "Story time", on_this_day: "On this day", seen: "What I see" },
-          where: "Andy looks here when it shows you something new." },
+                   check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says", today: "Today", story: "Story time", on_this_day: "On this day", seen: "What I see",
+                   looked: "Where I looked", note: "Family note", suggestion: "Suggested reminder" },
+          where: "Andy looks here when it shows you something new.",
+          order: "In the order I looked", view: "View", seenHere: "Seen here", seenToo: "Seen here too", notSeen: "Not seen",
+          noPicture: "No picture" },
     es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", credit: "crédito", credits: "créditos", and: "y",
           calls: { search: "búsqueda", extract: "extracción", crawl: "rastreo", map: "mapa", research: "investigación" },
           family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
@@ -351,8 +401,11 @@
           gear: "Ajustes", menu: "Ajustes de Andy", menuCode: "Mostrar el código de ajustes", menuCodeHint: "Apunte la cámara de un teléfono para cambiar los ajustes de Andy",
           menuHood: "Por dentro", menuHoodHint: "Lo rápido que responde Andy y lo que usa, en directo", close: "Cerrar",
           kinds: { code: "Ajustes de Andy", news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
-                   whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace", where: "La pantalla de Andy", letter: "Lo que dice la página", today: "Hoy", story: "Hora del cuento", on_this_day: "Un día como hoy", seen: "Lo que veo" },
-          where: "Andy mira aquí cuando le muestra algo nuevo." },
+                   whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace", where: "La pantalla de Andy", letter: "Lo que dice la página", today: "Hoy", story: "Hora del cuento", on_this_day: "Un día como hoy", seen: "Lo que veo",
+                   looked: "Dónde miré", note: "Nota de la familia", suggestion: "Recordatorio sugerido" },
+          where: "Andy mira aquí cuando le muestra algo nuevo.",
+          order: "En el orden en que miré", view: "Vista", seenHere: "Visto aquí", seenToo: "También aquí", notSeen: "No visto",
+          noPicture: "Sin imagen" },
   };
   let ui = UI.en;
   // The clock's words, the same as words.py (DAYS, MONTHS, PARTS_SHOWN; a test checks): the date in the order
@@ -486,7 +539,9 @@
       // A new finding rises in, its lines one after another. The card is rebuilt only when what it
       // shows changes, so nothing flickers between refreshes.
       const cardKey = showing.kind + "|" + showing.title;
-      const contentKey = cardKey + "|" + JSON.stringify(showing.items) + "|" + (showing.qr ? "qr" : "") + "|" + document.documentElement.lang;
+      const views = VIEW_KINDS.includes(showing.kind) ? s.views : null;      // what Andy looked at, while it's kept
+      const contentKey = cardKey + "|" + JSON.stringify(showing.items) + "|" + (showing.qr ? "qr" : "") + "|" + document.documentElement.lang
+                         + "|" + JSON.stringify(views);
       if (cardKey !== foundKey) {
         foundKey = cardKey;
         const card = $("found"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
@@ -502,12 +557,7 @@
           img.className = "qr"; img.alt = ui.kinds.code; img.src = showing.qr;
           items.append(img, make("p", "qr-note", ui.code));
         }
-        if (showing.kind === "seen") {     // the frame Andy found it in, from the screen server's memory
-          const img = document.createElement("img");
-          img.className = "photo"; img.alt = showing.title;
-          img.src = "/frame?t=" + encodeURIComponent(token) + "&at=" + encodeURIComponent(showing.at || "");
-          items.append(img);
-        }
+        if (views) items.append(viewStrip(views, showing));
         if (showing.kind === "photo" && showing.photo) {
           const img = document.createElement("img");
           img.className = "photo"; img.alt = showing.title;
@@ -515,13 +565,21 @@
           items.append(img);
         }
         const sources = [];
-        for (const it of showing.items) {
+        // The scam check's receipt: a "check" card whose lines are all cautions is a sequence of steps, numbered.
+        const steps = showing.kind === "check" && showing.items.length > 1 && showing.items.every((it) => it.tone === "caution");
+        // With the views on screen, where the thing is sits under the view it was seen in, not again below.
+        const listed = views && showing.kind === "seen" ? [] : showing.items;
+        for (const it of listed) {
           if (it.title === "Sources") { if (it.summary) sources.push(it.summary); continue; }
           if (it.source && !sources.includes(it.source)) sources.push(it.source);
-          if (items.querySelectorAll(".item").length >= (showing.kind === "today" ? 4 : 3)) continue;   // a day's lines are short
-          const box = make("article", it.tone === "caution" ? "item caution" : "item");
-          if (it.title) box.append(make("p", "title", it.title));
-          if (it.summary) box.append(make("p", "summary", it.summary));
+          const n = items.querySelectorAll(".item").length;
+          if (n >= (showing.kind === "today" ? 4 : 3)) continue;   // a day's lines are short
+          const box = make("article", it.tone === "caution" ? "item caution" + (steps ? " step" : "") : "item");
+          const body = steps ? make("div", "body") : box;
+          if (steps) box.append(make("span", "num", String(n + 1)), body);
+          if (it.title) body.append(make("p", "title", it.title));
+          if (it.summary) body.append(make("p", "summary", it.summary));
+          if (it.when) body.append(make("p", "when", it.when));
           items.append(box);
         }
         $("found-source").hidden = !sources.length;
@@ -562,11 +620,26 @@
   function fitItems() {
     const box = $("items"), lines = [...box.querySelectorAll(".item")];      // never the photo or the code
     lines.forEach((el) => { el.style.display = ""; el.classList.remove("short2", "short1"); });
+    // What Andy looked at: its line about the order goes first, then the strip narrows (all its views together,
+    // never cut) until it and the words under the chosen view fit above the caption.
+    const views = box.querySelector(".views");
+    if (views) {
+      const strip = views.querySelector(".strip"), order = views.querySelector(".order");
+      const room = () => views.offsetTop + views.offsetHeight <= box.offsetTop + box.clientHeight + 1;
+      strip.style.maxWidth = ""; order.style.display = "";
+      if (!room()) order.style.display = "none";
+      for (let w = 95; w >= 45 && !room(); w -= 5) strip.style.maxWidth = w + "%";
+    }
     const order = lines.filter((el) => !el.classList.contains("caution")).reverse()
       .concat(lines.filter((el) => el.classList.contains("caution")).reverse());
     // Layout positions (both inside the card), not drawn ones: a line still rising in is drawn lower.
     const fits = () => lines.every((el) => el.style.display === "none" ||
                                            el.offsetTop + el.offsetHeight <= box.offsetTop + box.clientHeight + 1);
+    // A receipt's steps all get shorter (two lines, then one) before any step is left out, the last first.
+    const steps = lines.filter((el) => el.classList.contains("step"));
+    for (const cls of ["short2", "short1"]) {
+      for (const el of steps.slice().reverse()) { if (fits()) break; el.classList.add(cls); }
+    }
     for (const el of order) {
       if (fits()) break;
       if (el.classList.contains("caution")) {      // a warning first gets shorter: two lines, then one
@@ -579,6 +652,36 @@
   window.addEventListener("resize", () => { if (document.body.classList.contains("has-showing")) fitItems(); });
 
   let familyId = "", foundKey = "", foundContent = "";
+  // What Andy looked at when it searched for something: the views from the screen server's memory (two minutes),
+  // numbered in the order Andy turned, the one it chose ringed and wider, where the thing is under it.
+  const VIEW_KINDS = ["seen", "looked"];
+  function viewStrip(v, showing) {
+    const wrap = make("div", "views"), strip = make("div", "strip" + (v.chosen !== null ? " has-chosen" : ""));
+    const where = showing.kind === "seen" && showing.items[0] ? showing.items[0].summary || "" : "";
+    v.pictures.forEach((has, i) => {
+      const chosen = v.chosen === i, seen = !!v.seen[i];
+      const said = !has ? ui.noPicture : chosen ? ui.seenHere : seen ? ui.seenToo : ui.notSeen;
+      const fig = make("figure", "view" + (chosen ? " chosen" : "") + (seen && has ? " seen" : ""));
+      const pic = make("div", "pic" + (has ? "" : " none"));
+      if (has) {
+        const img = document.createElement("img");
+        img.alt = `${ui.view} ${i + 1}: ${said}`;
+        img.src = "/view?t=" + encodeURIComponent(token) + "&i=" + i + "&at=" + encodeURIComponent(v.at);
+        img.onerror = () => img.remove();          // forgotten in the meantime: an empty frame, never a broken image
+        pic.append(img);
+      }
+      const cap = make("figcaption", "");
+      cap.append(make("span", "n", String(i + 1)));
+      // The chosen view's number has where the thing is beside it (its ring says "seen here"); beside it, the
+      // narrow views say only their number unless the thing was seen there too.
+      if (chosen && where) cap.append(make("span", "where", where));
+      else if (v.chosen === null || chosen || seen || !has) cap.append(make("span", "said", said));
+      fig.append(pic, cap);
+      strip.append(fig);
+    });
+    wrap.append(make("p", "order", ui.order), strip);
+    return wrap;
+  }
   function showFamilyPhoto(fp) {
     const cap = $("family-cap"); cap.textContent = "";
     if (fp.sample) cap.append(fp.caption);       // a sample landscape: only its credit

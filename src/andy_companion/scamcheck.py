@@ -98,7 +98,7 @@ def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opene
     models (`model`, `match_model`) to tell what Tavily adds from what a bigger model adds."""
     message = str(message)[:2000]
     out = grounded(_ask(BRIEF, f"Message: {message}", SCHEMA, opener, model), message)
-    out["matched"] = []
+    out["matched"], out["matched_warnings"] = [], []
     warnings = [w for w in warnings or [] if w.get("summary") or w.get("title")][:6]
     if warnings:
         listing = "\n".join(f"{i}. ({w.get('source', '')}) {w.get('title', '')}: {w.get('summary', '')}"
@@ -106,6 +106,10 @@ def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opene
         got = _ask(MATCH, f"Message: {message}\n\nWarnings:\n{listing}", MATCH_SCHEMA, opener, match_model)
         hits = sorted({int(i) for i in got.get("matches", []) if isinstance(i, int) and 1 <= i <= len(warnings)})
         out["matched"] = [warnings[i - 1].get("source", "") for i in hits]
+        # The matched warnings' own titles too, for the TV's receipt (tools/check_message.py): a Tavily
+        # result's title, never words from the message.
+        out["matched_warnings"] = [{"title": " ".join(str(warnings[i - 1].get("title", "")).split())[:160],
+                                    "source": str(warnings[i - 1].get("source", ""))} for i in hits]
         if hits:
             out["scam_signs"] = True
             out["source"] = out["matched"][0]
