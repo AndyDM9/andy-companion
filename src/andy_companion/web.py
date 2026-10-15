@@ -210,7 +210,9 @@ def whats_on(place: str, interest: str = "", pages: Optional[List[str]] = None, 
 
 # --- finding the town's events page: Tavily search, then map ----------------------------------------
 
-OFFICIAL = re.compile(r"\.(gov|us)$|\.(fl|ca|ny|tx)\.us$|city|town|village|county", re.I)
+# Whole labels only: "cityofmiami.gov" or "town.example.org", never "downtownstore.com" (review, 2026-10-14).
+OFFICIAL = re.compile(r"\.(gov|us)$|\.(fl|ca|ny|tx)\.us$|(^|\.)(city|town|village|county)(of\w*)?(\.|$)|"
+                      r"(^|\.)(cityof|townof|villageof|countyof)\w+\.", re.I)
 EVENTS = re.compile(r"(calendar|events?|activities|things-to-do|whats-on|recreation|parks)", re.I)
 SKIP_PATH = re.compile(r"(\.pdf$|/login|/account|/search|/news/|/\d{4}/\d{2}/)", re.I)
 

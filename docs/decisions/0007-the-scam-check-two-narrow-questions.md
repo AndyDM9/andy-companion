@@ -30,9 +30,12 @@ the models run three times as Nebius Serverless Jobs (`evals/scam_eval.py`, `clo
 | | Scams caught (of 60) | Ordinary flagged (of 60) |
 |---|---|---|
 | Lightning alone | 53.3 | 0 |
-| Ultra alone, no web | 55.7 | 0 |
+| Ultra alone, no web | 55.7 (of the 59.7 it answered) | 0 (of the 54.7 it answered) |
 | Tavily's warnings matched by Lightning | 60 | 24 |
 | **Tavily's warnings matched by Ultra (this design)** | **58** | **0** |
+
+17 of Ultra's answers on its own never finished their JSON; they are left out of its totals, not
+counted as right (recomputed 2026-10-14 after a review).
 
 The web finds the trick; only the stronger model tells the trick from the topic. A bigger model without
 the web does not get there.

@@ -13,6 +13,8 @@ def no_speaker(monkeypatch):
     """No test plays a recording on the robot beside it: the daemon's player is replaced."""
     PLAYED.clear()
     monkeypatch.setattr(chimes, "play_file", lambda path, opener=None: PLAYED.append(path.name) or True)
+    monkeypatch.setattr(urgent, "SPEECH_CPS", 1e9)       # no wait for a pretend reply's speech to end
+    monkeypatch.setattr(urgent, "NO_REPLY_S", 3600)      # the no-reply timer is tested on its own
 
 
 @pytest.mark.parametrize("text", [
@@ -288,3 +290,36 @@ def test_the_recording_goes_to_the_robot_daemon_by_path():
     assert DAEMON_PLAY(path, opener) is True
     assert sent[0][0].endswith("/api/media/play_sound") and str(path).encode() in sent[0][1]
     assert DAEMON_PLAY(path, lambda req, timeout: (_ for _ in ()).throw(OSError("daemon away"))) is False
+
+
+
+def test_urgent_words_with_no_reply_at_all_get_the_net_anyway(monkeypatch):
+    import asyncio
+
+    monkeypatch.setattr(urgent, "REPLY_WAIT_S", 0.05)
+
+    class H:
+        _andy_urgent_pending = False
+        said = []
+
+        async def say(self, text):
+            self.said.append(text)
+
+    h = H()
+    h._andy_urgent_pending = urgent.FRAME
+    asyncio.run(urgent._no_reply(h, urgent.FRAME, wait_s=0.01))
+    assert h._andy_urgent_pending is False and PLAYED == ["call_911_en.wav"]   # no reply came: the recording
+
+
+@pytest.mark.parametrize("text, spanish", [
+    ("Oh no, help me, my chest hurts", False), ("No no, I can't breathe", False),
+    ("I want to die, no one would miss me", False), ("Me caí", True), ("Me duele el pecho", True),
+    ("No tengo ganas de vivir", True)])
+def test_the_sentence_is_in_the_language_the_person_spoke(text, spanish):
+    assert urgent.is_urgent(text) and urgent.spoke_spanish(text) is spanish
+
+
+@pytest.mark.parametrize("text", ["I have no reason to live", "My chest is killing me", "I can not breathe",
+                                  "No tengo razones para vivir"])
+def test_more_common_phrasings_are_caught(text):
+    assert urgent.is_urgent(text)

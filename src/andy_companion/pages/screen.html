@@ -457,7 +457,9 @@
     // taken back to the start; never from later than now, in case the TV's clock runs behind.
     if ((s.caption || "") !== capText) {
       capText = s.caption || "";
-      capSeenAt = s.caption_at ? Math.min(Date.now(), s.caption_at * 1000) : Date.now();
+      // The caption's age by the server's clock, so a TV whose clock is wrong pages it correctly.
+      const age = s.caption_at && s.server_now ? Math.max(0, s.server_now - s.caption_at) * 1000 : 0;
+      capSeenAt = Date.now() - age;
       capPages = captionPages(capText);
       capChars = pageChars();
     } else if (capText && pageChars() !== capChars) {    // the settings code came or went: re-page to fit

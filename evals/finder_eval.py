@@ -59,7 +59,7 @@ def score(all_tries: list, truth: dict) -> dict:
             outcome = "right" if got in want else ("wrong view" if got is not None else "missed")
         else:
             outcome = "said not seen" if got is None else "pointed at nothing"
-        rows.append({"try": t["name"], "what": t.get("what", ""), "truth": sorted(want), "chosen": got,
+        rows.append({"try": t["name"], "truth": sorted(want), "chosen": got,      # never what was asked for
                      "outcome": outcome, "to_point_s": t.get("seconds", {}).get("to_point")})
     in_sight = [r for r in rows if r["truth"]]
     out_of_sight = [r for r in rows if not r["truth"]]

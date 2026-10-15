@@ -64,13 +64,15 @@ with its sources.
   | | Scams caught (of 60) | Ordinary flagged (of 60) |
   |---|---|---|
   | Nemotron 3.5 Lightning alone | 53.3 | 0 |
-  | Nemotron 3 Ultra alone, no web | 55.7 | 0 |
+  | Nemotron 3 Ultra alone, no web | 55.7 (of the 59.7 it answered) | 0 (of the 54.7 it answered) |
   | Tavily's warnings, matched by Lightning | 60 | 24 |
   | **Andy: Tavily's warnings, matched by Ultra** | **58** | **0** |
 
   Tavily's warnings let every scam be caught, but only a strong model tells the same trick from the same
   topic. Andy named the consumer-protection source it relied on in 170 of 174 scam verdicts; on the 20
   held-out scams it caught 19, against 18 for either model alone.
+  17 of Ultra's answers on its own never finished their JSON (written up as feedback); they are left out of
+  its totals, not counted as right.
 - **The world, with sources:** local news from your own papers, look-ups, what's on, a link family sent,
   and scam checks, all through Tavily. Under each answer the TV says how it was found ("Found with Tavily:
   search (basic), 1.4 s, 1 credit"); a Spanish speaker gets Spanish pages first.

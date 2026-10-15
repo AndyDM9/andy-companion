@@ -143,3 +143,14 @@ def test_a_new_settings_link_retires_the_old_one(server):
     assert board.tokens()["setup"] != old
     with pytest.raises(urllib.error.HTTPError):
         urllib.request.urlopen(f"{server}/api/setup?s={old}", timeout=5)
+
+
+def test_pressing_the_gear_again_keeps_the_code_already_up(server):
+    def press():
+        req = urllib.request.Request(f"{server}/api/screen/settings-code?t={board.tokens()['screen']}", method="POST", data=b"{}")
+        urllib.request.urlopen(req, timeout=5).read()
+
+    press()
+    link = board.tokens()["setup"]
+    press()
+    assert board.tokens()["setup"] == link        # not retired again while its code is still on the TV

@@ -36,11 +36,15 @@ ASKED = re.compile(
 KEEPING = re.compile(r"\b(don'?t forget|do not forget|never forget|no (te |lo )?olvides|no (se |lo )?olvide)\b")
 REFUSED = re.compile(r"\b(no|nope|nah|not|don'?t|do not|never|rather not|better not|no thanks|nunca|tampoco|"
                      r"mejor no|forget (it|that|this|about it))\b|\bolv[ií]d(a|e)(lo|la)?\b")
-# A clear yes opens the answer and is the answer: followed by nothing, by punctuation, or by a few
-# more words. "si" without its accent counts only on its own ("si mañana llueve" is "if").
+# A clear yes opens the answer and is the answer: followed by nothing, or only by a short closer ("yes,
+# please", "sure, go ahead", "sí, gracias"). Anything more is a new sentence, not consent: Parakeet
+# writes commas, and "Okay, so my sister is coming Friday" must not save (2026-10-14 review).
+# "si" without its accent counts only on its own ("si mañana llueve" is "if").
+CLOSER = (r"please|please do|do|go ahead|you can|yes|thanks|thank you|that'?s fine|that'?s right|sure|of course|"
+          r"andy|gracias|por favor|claro|vale|s[ií]")
 YES = re.compile(r"^\W*(yes|yeah|yep|yup|sure|of course|please do|please|ok|okay|go ahead|that'?s right|correct|"
                  r"definitely|absolutely|s[ií] por favor|s[ií] claro|sí|claro|vale|por favor|de acuerdo|perfecto|"
-                 r"bueno|dale)\b(\W*$|\s*[,.!]|(\s+\w+){0,2}\W*$)")
+                 r"bueno|dale)\b(\W*(" + CLOSER + r"))*\W*$")
 BARE_SI = re.compile(r"^\W*si\W*($|[,.!]\s*(claro|por favor|gracias|vale)?\W*$)")
 NOT_SAVED = {"saved": False,
              "say": "Not saved: the person has not asked. Ask \"Shall I remember that?\" and save only after they say yes."}

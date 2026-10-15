@@ -16,6 +16,10 @@ opens only `/hood`, `/api/hood` and the status strip; the screen learns the hood
 `/api/screen` (screen token). Each settings code shown makes a new settings link. Every route compares its
 token in constant time; caption, turn and frame posts are local-only as well.
 
+The screen link is as private as the settings link: the TV shows the settings code when asked (the gear),
+so whoever holds the screen link can ask for it. A code already on the screen stays when the gear is pressed
+again, so the settings link can't be cancelled over and over (review, 2026-10-14).
+
 ## Why
 
 A link shown on camera or sent to the wrong person reveals only its own page.

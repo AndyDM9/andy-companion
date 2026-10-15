@@ -5,6 +5,31 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (an independent review of the day's code: 2 high, 6 medium, 6 low)
+
+- **High: the urgent sentence in the wrong language.** "Oh no, help me, my chest hurts" counted as Spanish
+  ("no", "me"), so a Spanish recording could play to an English speaker. The language is now the one whose
+  words outnumber the other's (the chosen language breaks a tie). Also caught now: "I have no reason to
+  live", "no tengo ganas de vivir", "my chest is killing me", "I can not breathe".
+- **High: consent.** "Okay, so my sister is coming Friday" passed as a yes (Parakeet writes commas). A yes
+  now counts only alone or with a short closer ("yes, please", "sure, go ahead", "sí, gracias").
+- **The urgent net's timing:** a later fragment no longer clears urgent words not yet answered; urgent
+  words with no reply at all get the net after 25 s; the model's follow-up may take 35 s (longer than the
+  voice server's own 20 s limit) before the recording plays; the recording waits for Andy's last words to
+  finish.
+- **The settings code:** pressing the gear while a code is up keeps it, so the settings link can't be
+  cancelled over and over (decision 0009 notes that the screen link is as private as the settings link).
+- **The scam scorecard:** failed answers are left out of an arm's totals, not counted as right; the
+  published scorecard was recomputed from its own rows (`scam_eval.py --rescore`, no new calls): Andy's
+  numbers are unchanged, Ultra alone is 55.7 of the 59.7 scams it answered and 0 of the 54.7 ordinary
+  messages it answered (17 failed answers).
+- **The endpoint scripts** refuse to make a new token while an endpoint of that name exists, and save the
+  token on this computer before storing it, so the two can't disagree.
+- Small: the scam jobs script reports missing parts instead of stopping; the finder's scorecard keeps no
+  words; a TV with a wrong clock pages captions correctly (the server's time is sent); two finder tries in
+  one second get their own folders, written off the event loop; a town's own site is told by whole names
+  ("downtownstore.com" is not a town). 28 tests (663 in all).
+
 ### Added (for judges, and two new suite cases)
 
 - **README, "Judging it in five minutes":** the video, the screens with no keys, the scorecards, rerunning

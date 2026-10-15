@@ -27,6 +27,14 @@ case "${1:-status}" in
     # a pipe, secret.sh), and the endpoint reads it from there twice: --token-secret for Nebius's own check
     # at the HTTPS address, and VLLM_API_KEY, which vLLM reads in place of --api-key, for the plain IP:port.
     if [ -z "${DRY_RUN:-}" ]; then
+      # A new token replaces the stored one, so never while an endpoint of this name exists: it would keep
+      # reading the old one, and the new one would be lost if create then failed (review, 2026-10-14).
+      if [ -n "$(id_of || true)" ]; then
+        echo "An endpoint called $NAME exists already: '$0 start' to use it, or '$0 delete' first." >&2
+        exit 1
+      fi
+      # Kept here first, so this computer and the secret store always agree.
+      save ANDY_VISION_TOKEN "$TOKEN"
       printf '%s' "$TOKEN" | store_secret "$NAME-auth" AUTH_TOKEN "Endpoint token for $NAME" replace
       printf '%s' "$TOKEN" | store_secret "$NAME-vllm" VLLM_API_KEY "vLLM key for $NAME" replace
     fi
@@ -42,7 +50,6 @@ case "${1:-status}" in
       --env-secret "VLLM_API_KEY=$NAME-vllm" \
       --auth token --token-secret "$NAME-auth"
     [ -n "${DRY_RUN:-}" ] && exit 0
-    save ANDY_VISION_TOKEN "$TOKEN"
     echo "Created. Run '$0 status' until it is RUNNING; the URL is saved when it is."
     ;;
   status)

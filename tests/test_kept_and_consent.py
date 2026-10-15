@@ -135,3 +135,17 @@ def test_a_moment_deleted_on_the_settings_page_goes_by_its_id_alone(tmp_path):
     assert kept.delete("moment", "") is False and kept.delete("moment", "rosa") is False
     assert len(kept.summary()["moment"]) == 2
     assert kept.delete("moment", a["id"]) and [m["id"] for m in kept.summary()["moment"]] == [b["id"]]
+
+
+@pytest.mark.parametrize("words", ["Okay, so my sister is coming Friday.", "Please, my hip hurts today",
+                                   "Sure, my grandson Tom visited yesterday", "Bueno, pues mi nieto se casa",
+                                   "Yes, and then we went to the market"])
+def test_a_yes_that_starts_a_new_sentence_is_not_consent(words):
+    from andy_companion import consent
+    assert consent.asked(words) is False          # Parakeet writes commas (2026-10-14 review)
+
+
+@pytest.mark.parametrize("words", ["Yes, please do", "Sure, go ahead", "Sí, gracias", "Yes, thank you Andy", "Okay."])
+def test_a_yes_with_a_short_closer_is_consent(words):
+    from andy_companion import consent
+    assert consent.asked(words) is True

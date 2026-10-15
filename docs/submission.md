@@ -101,7 +101,7 @@ follow you, its antennas lift while you speak and lean while it thinks.
   October 2026). Tavily searched once per message; the models ran three times, as Nebius Serverless Jobs
   (`cloud/scam-job.sh`, `evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json`):
   - Nemotron 3.5 Lightning alone: 53.3 of 60 scams, no ordinary message flagged;
-  - Nemotron 3 Ultra alone, no web: 55.7, none flagged;
+  - Nemotron 3 Ultra alone, no web: 55.7, none flagged (17 of its answers failed and are left out of its totals);
   - Tavily's warnings matched by Lightning: 60, but 24 ordinary messages flagged;
   - **Andy's check, Tavily's warnings matched by Ultra: 58 of 60, none flagged**, and the source named in
     170 of 174 scam verdicts; on the 20 held-out scams, 19 against 18 for either model alone.

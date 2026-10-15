@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import os
 import json
 import logging
 import subprocess
@@ -49,12 +50,15 @@ def triggers_for(mode: str):
     return WAKE_UP if mode == "quiet" else TRIGGERS
 
 
-def mic_source() -> Optional[str]:
+def mic_source(sim: Optional[bool] = None) -> Optional[str]:
+    """The robot's microphones; without a robot (ANDY_SIM, scripts/andy-sim), this computer's default one."""
     out = subprocess.run(["pactl", "list", "short", "sources"], capture_output=True, text=True).stdout
     for line in out.splitlines():
         parts = line.split("\t")
         if len(parts) > 1 and "Reachy_Mini_Audio" in parts[1] and not parts[1].endswith(".monitor"):
             return parts[1]
+    if sim if sim is not None else os.environ.get("ANDY_SIM") == "1":
+        return "@DEFAULT_SOURCE@"          # PulseAudio's (and PipeWire's) name for the default microphone
     return None
 
 

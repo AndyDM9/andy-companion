@@ -339,6 +339,9 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
         state["showing"] = {**state["showing"], "qr": settings_qr(host)}
     state["caption"] = caption() if settings.get().get("captions", True) else ""
     state["caption_at"] = _caption["at"] if state["caption"] else None
+    import time as _t
+
+    state["server_now"] = _t.time()        # the TV works out the caption's age from this, not its own clock
     state["weather"] = weather_card()
     hour = (now or datetime.now()).hour
     s = settings.get()
@@ -459,7 +462,11 @@ class Handler(BaseHTTPRequestHandler):
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         local = self.client_address[0] in ("127.0.0.1", "::1")
         if url.path == "/api/screen/settings-code" and _ok(q.get("t"), "screen"):
-            board.show_settings_code()       # the gear on the TV: the QR code appears, for two minutes
+            # The gear on the TV: the QR code appears, for two minutes. Each new code retires the settings
+            # link, so a code already up stays: pressing again can't keep cancelling a helper's link.
+            showing = board.showing()
+            if not (showing and showing.get("kind") == "code"):
+                board.show_settings_code()
             return self._json({"ok": True})
         if url.path == "/api/frame" and _ok(q.get("t"), "screen") and local:
             length = self._length()

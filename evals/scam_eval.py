@@ -36,6 +36,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "src"))
@@ -78,11 +79,15 @@ def judge(m: dict, warnings: list, arm: str) -> dict:
 
 
 def score(rows: list, msgs: dict, arm: str, group) -> dict:
-    chosen = [r for r in rows if group(msgs[r["id"]])]
+    # An answer that failed (the model's JSON never closed, a timeout) is neither caught nor flagged: it is
+    # left out of that arm's totals and counted apart (2026-10-14 review: 17 failed Ultra answers had been
+    # scored as correct "not flagged").
+    chosen = [r for r in rows if group(msgs[r["id"]]) and not r[arm].get("error")]
     scams = [r for r in chosen if msgs[r["id"]]["scam"]]
     ordinary = [r for r in chosen if not msgs[r["id"]]["scam"]]
     return {"caught": sum(r[arm]["flagged"] for r in scams), "of_scams": len(scams),
-            "flagged": sum(r[arm]["flagged"] for r in ordinary), "of_ordinary": len(ordinary)}
+            "flagged": sum(r[arm]["flagged"] for r in ordinary), "of_ordinary": len(ordinary),
+            "failed": sum(1 for r in rows if group(msgs[r["id"]]) and r[arm].get("error"))}
 
 
 def one_run(msgs: list, warnings: dict, workers: int = 4) -> list:
@@ -102,7 +107,9 @@ def summary(runs: list, msgs: list, warnings: dict) -> dict:
             per_run = [score(rows, by_id, arm, group) for rows in runs]
             caught = [s["caught"] for s in per_run]
             flagged = [s["flagged"] for s in per_run]
-            out[arm][gname] = {"of_scams": per_run[0]["of_scams"], "of_ordinary": per_run[0]["of_ordinary"],
+            out[arm][gname] = {"of_scams": round(sum(s["of_scams"] for s in per_run) / len(per_run), 2),
+                               "of_ordinary": round(sum(s["of_ordinary"] for s in per_run) / len(per_run), 2),
+                               "failed": sum(s["failed"] for s in per_run),
                                "caught_mean": round(sum(caught) / len(caught), 2), "caught_range": [min(caught), max(caught)],
                                "flagged_mean": round(sum(flagged) / len(flagged), 2), "flagged_range": [min(flagged), max(flagged)]}
     full = [r["tavily_ultra"] for rows in runs for r in rows if by_id[r["id"]]["scam"] and r["tavily_ultra"]["flagged"]]
@@ -120,8 +127,9 @@ def show(card: dict) -> None:
         print(f"  {gname}")
         for arm, label in names.items():
             s = card["summary"][arm][gname]
+            failed = f", {s['failed']} answers failed (left out)" if s.get("failed") else ""
             print(f"    {label:22} caught {s['caught_mean']:>5}/{s['of_scams']} {s['caught_range']}, "
-                  f"ordinary flagged {s['flagged_mean']:>4}/{s['of_ordinary']} {s['flagged_range']}")
+                  f"ordinary flagged {s['flagged_mean']:>4}/{s['of_ordinary']} {s['flagged_range']}{failed}")
     named, of = card["summary"]["full_check_scam_verdicts_naming_a_source"]
     found, scams = card["summary"]["scams_with_warnings_found"]
     print(f"  Andy's check named a consumer-protection source in {named} of {of} scam verdicts; "
@@ -130,7 +138,7 @@ def show(card: dict) -> None:
 
 def main() -> int:
     args = sys.argv[1:]
-    if not os.environ.get("NEBIUS_API_KEY") and "--lookup" not in args and "--merge" not in args:
+    if not os.environ.get("NEBIUS_API_KEY") and not {"--lookup", "--merge", "--rescore"} & set(args):
         print("Needs NEBIUS_API_KEY.")
         return 2
     msgs = messages()
@@ -151,6 +159,17 @@ def main() -> int:
         failed = sum(1 for f in found if f.get("failed"))
         print(f"Warnings for {len(found)} messages ({failed} lookups failed), median search "
               f"{sorted(f['tavily_s'] for f in found)[len(found) // 2]} s: {out}")
+        return 0
+    if "--rescore" in args:      # a scorecard's summary worked out again from its own rows; no model calls
+        path = Path(args[args.index("--rescore") + 1])
+        card = json.loads(path.read_text())
+        seen = {r["id"] for r in card["rows"][0]}
+        wfile = HERE / "results" / card.get("warnings_file", "")
+        found = ({f["id"]: f["warnings"] for f in json.loads(wfile.read_text())["messages"]} if wfile.is_file()
+                 else {k: [1] * v for k, v in card.get("warnings_found", {}).items()})
+        card["summary"] = summary(card["rows"], [m for m in msgs if m["id"] in seen], found)
+        path.write_text(json.dumps(card, indent=1, ensure_ascii=False))
+        show(card)
         return 0
     if "--merge" in args:
         return merge([Path(a) for a in args[args.index("--merge") + 1:]], msgs)
@@ -185,7 +204,7 @@ def main() -> int:
     return 0
 
 
-def merge(cards: list, msgs: list) -> int:
+def merge(cards: list, msgs: list, out: Optional[Path] = None) -> int:
     """One scorecard from the parts' scorecards (the same runs, different messages)."""
     parts = [json.loads(c.read_text()) for c in cards]
     runs = [sum((p["rows"][i] for p in parts), []) for i in range(min(p["runs"] for p in parts))]
@@ -197,9 +216,10 @@ def merge(cards: list, msgs: list) -> int:
     card = {**{k: parts[0][k] for k in ("ran", "models", "warnings_file")}, "messages": len(msgs), "runs": len(runs),
             "minutes": max(p["minutes"] for p in parts), "errors": sum(p["errors"] for p in parts),
             "ran_on": parts[0].get("ran_on", ""), "jobs": [p.get("job", "") for p in parts],
+            "warnings_found": warnings,
             "summary": summary(runs, msgs, {k: [1] * v for k, v in warnings.items()}), "rows": runs}
     show(card)
-    out = HERE / "results" / f"scam-eval-{datetime.now():%Y-%m-%d-%H%M}-nebius-jobs.json"
+    out = out or HERE / "results" / f"scam-eval-{datetime.now():%Y-%m-%d-%H%M}-nebius-jobs.json"
     out.write_text(json.dumps(card, indent=1, ensure_ascii=False))
     print(f"Scorecard: {out}")
     return 0

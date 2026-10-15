@@ -122,7 +122,7 @@ while [ $# -gt 0 ]; do
   for k in "${batch[@]}"; do finish "$k"; done
 done
 
-have="$(ls "$KEEP"/part-*.json 2>/dev/null | wc -l)"
+shopt -s nullglob; kept=("$KEEP"/part-*.json); have="${#kept[@]}"
 if [ "$have" -eq "$PARTS" ]; then
   cd "$ROOT" && python3 evals/scam_eval.py --merge "$KEEP"/part-*.json
 else

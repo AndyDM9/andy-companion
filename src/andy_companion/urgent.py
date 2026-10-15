@@ -30,7 +30,7 @@ logger = logging.getLogger("andy.urgent")
 
 URGENT = [r"\bchest\b(\W+\w+){0,4}?\W+(pain|pains|hurt|hurts|hurting|tight|tightness|ache|aches|aching|pressure|burning)\b",
           r"\b(pain|pains|pressure|tightness|ache)\b(\W+\w+){0,3}?\W+(my |the )?chest\b", r"heart attack",
-          r"can'?t breathe", r"cannot breathe", r"(trouble|difficulty) breathing", r"short of breath",
+          r"can'?t breathe", r"cannot breathe", r"can not breathe", r"chest is killing me", r"(trouble|difficulty) breathing", r"short of breath",
           r"i('ve| have)? fallen", r"i fell( down)? and can'?t get up", r"can'?t get up", r"(having|had|think it's) a stroke",
           r"face is drooping", r"can'?t (move|feel) my (arm|leg|face)", r"bleeding (a lot|badly|heavily)",
           r"passing out", r"(i )?fainted", r"choking",
@@ -43,13 +43,18 @@ URGENT = [r"\bchest\b(\W+\w+){0,4}?\W+(pain|pains|hurt|hurts|hurting|tight|tight
 CRISIS = [r"\b(want|wanna|wish) to die\b", r"\bwish i (was|were) dead\b", r"\bwish i wasn'?t (here|alive)\b",
           r"\b(don'?t|do not) want to (live|be alive)\b", r"\b(don'?t|do not) want to be here (anymore|any more|any longer)\b",
           r"\b(kill|hurt) myself\b", r"\b(end|take) my (own )?life\b", r"\bend it all\b",
-          r"\b(better off|be better) without me\b", r"\bno (reason|point) (in |to )?(living|going on|being alive)\b",
+          r"\b(better off|be better) without me\b", r"\bno (reason|point) (in |to )?(live|living|go on|going on|be alive|being alive)\b",
           r"\bwhat'?s the point (of|in) (living|going on|being alive)\b",
           r"\b(feel|feeling|felt|am|i'?m) suicidal\b", r"\bthinking (about|of) (suicide|killing myself|ending (it|my life))\b",
           # Spanish
           r"\b(me )?quiero morir(me)?\b", r"\bno quiero (seguir )?viviendo\b", r"\bno quiero vivir\b",
           r"\bya no quiero estar aqu[ií]\b", r"\bquitarme la vida\b", r"\bmatarme\b", r"\bsuicidarme\b",
-          r"\bestar[ií]an mejor sin m[ií]\b"]
+          r"\bestar[ií]an mejor sin m[ií]\b", r"\bno tengo (ganas|razones?|motivos?) (de|para) vivir\b"]
+# Which language the person spoke, for the sentence Andy says back. Words are counted in both languages:
+# "no" and "me" are Spanish and English too, so "Oh no, help me, my chest hurts" counts as English
+# (2026-10-14 review: counting Spanish words alone chose Spanish for it, and the Spanish recording).
+ENGLISH = re.compile(r"\b(i|i'm|i've|my|the|is|it|to|and|you|of|help|want|can't|cant|can|would|chest|hurts|hurt|"
+                     r"pain|breathe|fell|fallen|one|nobody|anymore|please|so|oh|this|feel|like|just)\b")
 SPANISH = re.compile(r"\b(me|el|la|los|las|no|que|tengo|un|una|al|del|en|mi|de|por|estoy|creo|ataque|dolor|puedo|pecho|"
                      r"duele|ca[ií]|respirar|levantar|coraz[oó]n|ahogando|desmay\w*|cocina|ahora|mucho|quiero|vivir|"
                      r"morir\w*|matarme|vida|sin|todos|estar[ií]an|pienso|veces|ya)\b")
@@ -101,7 +106,12 @@ RECORDINGS = {SAY: "call_911_en.wav", SAY_ES: "call_911_es.wav",
 SENTENCE = {FRAME: SAY, FRAME_ES: SAY_ES, FRAME_CRISIS: SAY_CRISIS, FRAME_CRISIS_ES: SAY_CRISIS_ES}
 # What speech-to-speech says, instead of a reply, when Token Factory fails (PROVIDER_FAILURE_FALLBACK).
 MODEL_FAILED = re.compile(r"trouble responding right now", re.I)
-REPLY_WAIT_S = 15.0       # how long the model's follow-up may take before the recording plays instead
+# How long the model's follow-up may take before the recording plays instead: longer than the voice
+# server's own model timeout (20 s) and its speech, so a slow but good answer isn't spoken over.
+REPLY_WAIT_S = 35.0
+# If urgent words get no reply at all (cut off, or a turn that never answers), the net speaks anyway.
+NO_REPLY_S = 25.0
+SPEECH_CPS = 14.0         # about how fast Andy speaks, to let the last reply finish before a recording
 
 
 def _negated(value: str, start: int, end: int) -> bool:
@@ -135,13 +145,28 @@ def is_urgent(text: str) -> bool:
     return is_crisis(text) or _matches(URGENT, text)
 
 
+def spoke_spanish(text: str) -> bool:
+    """Spanish when its words outnumber English ones (at least two), or tie when Spanish is the language
+    the person chose."""
+    value = str(text).lower().replace("’", "'")
+    es, en = len(SPANISH.findall(value)), len(ENGLISH.findall(value))
+    if es >= 2 and es > en:
+        return True
+    try:
+        from andy_companion import settings
+        chosen = settings.get().get("language")
+    except Exception:
+        chosen = None
+    return chosen == "es" and es >= 1 and es >= en
+
+
 def crisis_frame_for(text: str) -> str:
     """The crisis sentence in the person's language, for words found by the second look (guard.py)."""
-    return FRAME_CRISIS_ES if len(SPANISH.findall(str(text).lower())) >= 2 else FRAME_CRISIS
+    return FRAME_CRISIS_ES if spoke_spanish(text) else FRAME_CRISIS
 
 
 def frame_for(text: str) -> str:
-    spanish = len(SPANISH.findall(str(text).lower())) >= 2
+    spanish = spoke_spanish(text)
     if is_crisis(text):
         return FRAME_CRISIS_ES if spanish else FRAME_CRISIS
     return FRAME_ES if spanish else FRAME
@@ -200,13 +225,21 @@ def install(handler_class=None) -> bool:
         if not final:
             return
         if role == "user":
-            self._andy_urgent_pending = frame_for(text) if is_urgent(text) else False
+            # A later fragment ("in the kitchen", after "I've fallen") must not clear urgent words that
+            # have not been answered yet; they wait for the next reply of Andy's.
+            if is_urgent(text):
+                self._andy_urgent_pending = frame_for(text)
+                try:
+                    asyncio.get_running_loop().create_task(_no_reply(self, self._andy_urgent_pending))
+                except RuntimeError:
+                    pass
             return
         if role != "assistant":
             return
         waiting = getattr(self, "_andy_urgent_reply", None)
         if waiting is not None and not waiting.done():
             waiting.set_result(str(text))          # the reply to the net's own follow-up
+        self._andy_last_reply = str(text)
         if getattr(self, "_andy_urgent_pending", False):
             frame, self._andy_urgent_pending = self._andy_urgent_pending, False
             if needs_followup(text, frame):
@@ -221,6 +254,15 @@ def install(handler_class=None) -> bool:
     return True
 
 
+async def _no_reply(handler, frame: str, wait_s: Optional[float] = None) -> None:
+    """Urgent words that get no reply of Andy's within NO_REPLY_S: the net follows up on its own."""
+    await asyncio.sleep(NO_REPLY_S if wait_s is None else wait_s)
+    if getattr(handler, "_andy_urgent_pending", False) == frame:
+        handler._andy_urgent_pending = False
+        logger.info("Urgent words got no reply; following up")
+        await _follow_up(handler, frame)
+
+
 async def _settled(handler, timeout: float) -> None:
     """Wait for Andy to finish speaking, so the sentence is not said over the end of a reply."""
     done = getattr(handler, "_response_done_event", None)
@@ -228,11 +270,14 @@ async def _settled(handler, timeout: float) -> None:
         await asyncio.wait_for(done.wait(), timeout=timeout)
 
 
-async def _play(handler, frame: str, play: Callable[[str], bool]) -> None:
+async def _play(handler, frame: str, play: Callable[[str], bool], pause: Optional[float] = None) -> None:
     try:
         await _settled(handler, 10)
     except Exception:
         pass                                   # a stuck reply must not keep the sentence back
+    # "Done" means the reply was made, not that it finished playing: let its words end first.
+    spoken = str(getattr(handler, "_andy_last_reply", "") or "")
+    await asyncio.sleep(min(8.0, len(spoken) / SPEECH_CPS) if pause is None else pause)
     try:
         played = await asyncio.to_thread(play, frame)
     except Exception:
