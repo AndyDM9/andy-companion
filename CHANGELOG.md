@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Added (ready to film; the organisers' own words)
+
+- **`scripts/prepare_demo.py`:** `check` before filming (the night clock, captions, the screen's place, the
+  town, the language, the vision endpoint, family photos); `letters`, a printable prize letter and electric
+  bill with every name, number (a 555 number) and amount made up, so no real company is on camera (the
+  prize letter trips all three warnings Andy reads for); `set` and `clean`, the long take's reminder and
+  yesterday's moment, added and then removed exactly. 2 tests. Run tonight, `check` found Andy set to
+  Spanish and the night clock on.
+- **Re-read the organisers' updates in full** ("Here's how judging works", "How to build a winning
+  project"): the video now opens with the problem in its first caption; the feedback uses their own
+  headings, "Onboarding (zero to hello world)" and "Would we build with it again?", each yes with its
+  reason; the Nano VL line keeps to what is measured.
+
 ### Added (the night clock, the household's choice)
 
 - The founder asked whether the screen had become a minimal version: it was the night clock (9 pm to 7 am),

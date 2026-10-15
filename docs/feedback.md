@@ -2,8 +2,9 @@
 
 The form's feedback on Token Factory, AI Cloud and the NVIDIA tools is mandatory; the ten most valuable
 win the Most Valuable Feedback award, judged on completeness, viability and potential impact. Each
-product below says what we used it for, what worked, what needs work, how the first working call went,
-and whether we'd use it again. Every point is from [feedback-notes.md](feedback-notes.md), dated and
+product below says what we used it for, what worked, what needs work, how onboarding felt (zero to hello
+world), and whether we'd build with it again, and why: the organisers' own list ("How to build a winning
+project", Devpost update). Every point is from [feedback-notes.md](feedback-notes.md), dated and
 reproducible. Revised 2026-10-14; finish before submitting.
 
 ## Nebius Token Factory
@@ -23,8 +24,8 @@ cards and content vetting.
   people hours.
 - Time to first token, per model, with thinking on and off, isn't published. It decides whether a
   spoken robot feels alive.
-**First call:** the OpenAI-compatible API worked with Hugging Face's speech-to-speech server's chat-completions backend as it was, by changing only the base URL, key and model name.
-**Again?** Yes. It is why Nemotron answers Andy in under a second.
+**Onboarding (zero to hello world):** the OpenAI-compatible API worked with Hugging Face's speech-to-speech server's chat-completions backend as it was, by changing only the base URL, key and model name.
+**Would we build with it again?** Yes. It is why Nemotron answers Andy in under a second.
 
 ## NVIDIA Nemotron 3.5 Lightning
 
@@ -47,10 +48,10 @@ immediate.
 
 A model card section on tool-list size, register in other languages, and a default crisis line would
 help every builder of a voice assistant.
-**First call:** Token Factory's OpenAI-compatible chat completions worked on the first try with tools. The
+**Onboarding (zero to hello world):** Token Factory's OpenAI-compatible chat completions worked on the first try with tools. The
 one surprise: with thinking on, a strict `json_schema` response format was ignored (free-text reasoning
 came back instead); with thinking off it returned exactly the schema in 0.73 to 0.97 s.
-**Again?** Yes, with those rules in our own prompt and code.
+**Would we build with it again?** Yes: correct tool calls in 0.6 to 0.8 s with thinking off make a spoken robot feel immediate; with those rules in our own prompt and code.
 
 ## NVIDIA Nemotron 3 Ultra
 
@@ -63,9 +64,9 @@ blank space until `max_tokens` instead of the remaining required field: 17 of 36
 evaluation, the same messages each run (2026-10-14). A guard in the decoder, or a note in the docs, would
 help. Evaluation guidance should say to check hard constraints deterministically beside an
 LLM judge.
-**First call:** the same key and endpoint as Lightning, only the model name changed, so routing hard turns
+**Onboarding (zero to hello world):** the same key and endpoint as Lightning, only the model name changed, so routing hard turns
 to Ultra was one line.
-**Again?** Yes.
+**Would we build with it again?** Yes: it judged 85 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
 
 ## NVIDIA Nemotron 3.5 Content Safety
 
@@ -79,10 +80,10 @@ crisis, on a Nebius Serverless Endpoint.
   under controlled substances. Indirect signs of self-harm deserve a place in the default taxonomy.
 - The card pins vLLM at or below 0.20.2.
 - It isn't on serverless Token Factory, so a guard needs its own GPU.
-**First call:** on our own endpoint with the vLLM version the card names; its plain-text answer ("User
+**Onboarding (zero to hello world):** on our own endpoint with the vLLM version the card names; its plain-text answer ("User
 Safety: unsafe", then the categories) needed a small parser, and the custom-policy mode worked without
 reasoning.
-**Again?** Yes. Serverless would make it a default.
+**Would we build with it again?** Yes. Serverless would make it a default.
 
 ## NVIDIA Nemotron Nano 12B v2 VL
 
@@ -92,17 +93,17 @@ reasoning.
 - The card asks for a vLLM nightly image; we pinned v0.30.0.
 - No NVIDIA vision model is on serverless Token Factory, so robotics prototypes need a dedicated
   endpoint.
-**First call:** about 15 minutes to the endpoint's first start (14.3 GB of weights downloaded in 4.7
+**Onboarding (zero to hello world):** about 15 minutes to the endpoint's first start (14.3 GB of weights downloaded in 4.7
 minutes), then 3.5 s per description.
-**Again?** Yes.
+**Would we build with it again?** Yes: accurate descriptions in 3.5 s, and four views read at once as structured output, which is what lets Andy turn its head toward something; on an endpoint we start only when needed.
 
 ## NVIDIA Parakeet TDT 0.6B v3
 
 **Used for:** speech to text, locally, in Hugging Face's speech-to-speech server.
 **Worked:** 0.02 to 0.08 s per utterance on the desktop's GPU. Excellent for a home robot.
-**First call:** it worked out of the box in speech-to-speech. The only work was privacy: the server prints
+**Onboarding (zero to hello world):** it worked out of the box in speech-to-speech. The only work was privacy: the server prints
 every transcript to the console whatever `--log_transcripts` says, so we filter those prints.
-**Again?** Yes.
+**Would we build with it again?** Yes: 0.02 to 0.08 s per utterance on a home GPU is what makes a spoken robot feel immediate.
 
 ## NVIDIA Magpie TTS Multilingual 357M (evaluated, not adopted)
 
@@ -111,9 +112,9 @@ every transcript to the console whatever `--log_transcripts` says, so we filter 
 **Needs work:** the NeMo API makes a whole sentence at once, so a voice assistant waits 0.6 to 0.8 s for
 its first sound, against 0.10 to 0.33 s from a streaming voice. A streaming interface, or a TensorRT
 recipe for short phrases, would make it a drop-in choice for robots.
-**First call:** installing NeMo's main branch, as the card says, also needed `peft`, which the card doesn't
+**Onboarding (zero to hello world):** installing NeMo's main branch, as the card says, also needed `peft`, which the card doesn't
 mention.
-**Again?** Yes, once it streams.
+**Would we build with it again?** Yes, once it streams.
 
 ## Nebius AI Cloud (Serverless Endpoints and Jobs)
 
@@ -132,9 +133,9 @@ scorecard; we stop the endpoints between uses, and stopped they cost nothing for
   say both.
 - **A job's log cuts lines at 16,384 characters and may return them out of order,** so a long result
   printed on one line comes back broken; we print it in numbered chunks.
-**First call:** the endpoint took about 15 minutes to first start (14 GB of weights). The job worked once
+**Onboarding (zero to hello world):** the endpoint took about 15 minutes to first start (14 GB of weights). The job worked once
 it was in the right region.
-**Again?** Yes, for evaluation above all.
+**Would we build with it again?** Yes, for evaluation above all.
 
 ## Tavily
 
@@ -160,5 +161,5 @@ research, streamed to the TV step by step.
 - Research latency (12 to 57 s for a mini task) isn't documented.
 - `map` came back empty for a town site that refuses crawlers; saying so in the response, rather than an
   empty list, would help.
-**First call:** one key and plain HTTPS calls to the REST API (no SDK needed, so the robot adds no dependency); a working search within minutes.
-**Again?** Yes.
+**Onboarding (zero to hello world):** one key and plain HTTPS calls to the REST API (no SDK needed, so the robot adds no dependency); a working search within minutes.
+**Would we build with it again?** Yes: one key gives a robot search, extract, crawl, map and research, and the consumer-protection warnings it finds measurably sharpen the scam check.

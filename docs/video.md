@@ -12,7 +12,9 @@
 - the project must "function as depicted in the video", so **never cut out a pause or lag**.
 
 **What wins** (research 2026-10-13: Devpost's demo-video guidance, its judges' tips, and the
-organisers' "How to build a winning project" update):
+organisers' "How to build a winning project" update, read in full again 2026-10-14: "Treat your video like
+a pitch, not a tutorial… Lead with the problem, show the solution working"; name Nebius Token
+Factory/AI Cloud and the NVIDIA model "with audio… not just a passing mention"):
 - treat it like a pitch: the problem, who it's for, how it uses Nebius and NVIDIA, what it does;
 - the first ten seconds are a trailer: a real moment on the robot, not a title slide;
 - narration, plus English captions for everything (an SRT uploaded to YouTube);
@@ -26,6 +28,12 @@ long, unedited takes.
 
 ## Before filming
 
+- [ ] `uv run python scripts/prepare_demo.py check` shows no ✗ (the night clock off while filming, captions on,
+      the screen's place set, the town set, English).
+- [ ] `uv run python scripts/prepare_demo.py letters`, then print the made-up prize letter and electric bill
+      (every name, number and amount invented; no real company on camera).
+- [ ] Just before the long take: `uv run python scripts/prepare_demo.py set --reminder-in 4` (the "call Rosa"
+      reminder, and yesterday's "Sofia's piano recital"); after filming: `… clean`.
 - [ ] **`robot/.venv/bin/python scripts/doctor.py --live` says "Ready to film."** (both endpoints answer, Nemotron replies quickly, no audio drops, nothing talking over Andy, the computer not overloaded, the screen's place set).
 - [ ] `cloud/vision-endpoint.sh start` and `cloud/guard-endpoint.sh start` about 25 minutes before;
       `status` shows RUNNING and the model answers (the first start loads weights for about 8 minutes
@@ -34,9 +42,7 @@ long, unedited takes.
       the screen's place is set (it glances there).
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) on a laptop in shot, or recorded
       at the same time for a corner inset: it shows the real timings of every turn filmed.
-- [ ] One reminder set for about 2 minutes into the long take ("call Rosa").
 - [ ] The glasses hidden by someone off camera just before shot 4; the vision endpoint answering.
-- [ ] Yesterday's moment set the day before: "Sofia's piano recital", with a yes.
 - [ ] The family page open on a second phone; **our own photo**, with the family's agreement (not a
       sample landscape).
 - [ ] A printed letter that asks for "a fee to release your prize", from a **made-up sender** (no real
@@ -54,7 +60,7 @@ uncut physical moment, Tavily named at the start, a dated problem line, privacy 
 
 | # | Time | What we see | What is said |
 |---|---|---|---|
-| 1 | 0:00–0:18 | **The hook, live.** The person holds up the prize letter. Andy turns to the TV, where **Be careful** appears, then back to the person, and offers to look it up; "yes"; the TV shows the warning Tavily found | Andy, live, in its own words, for example: "It asks for a fee to release a prize. Real organisations never do that. Shall I look it up?" … "Consumer-protection warnings describe exactly this trick. Let's check with Anna before paying anything." Caption: "Andy, a home robot. Everything you see is live." |
+| 1 | 0:00–0:18 | **The hook, live.** The person holds up the prize letter. Andy turns to the TV, where **Be careful** appears, then back to the person, and offers to look it up; "yes"; the TV shows the warning Tavily found | Andy, live, in its own words, for example: "It asks for a fee to release a prize. Real organisations never do that. Shall I look it up?" … "Consumer-protection warnings describe exactly this trick. Let's check with Anna before paying anything." Caption from the first frame, the problem first (the organisers: "lead with the problem"): "Scam letters target people at home. Andy, a home robot, reads them with you. Everything you see is live." |
 | 2 | 0:18–0:32 | The founder to camera, Andy behind | "Three in four Americans over fifty want to keep living in their own homes (a national survey, 2024), and their families want to help without taking over. This is Andy, a small robot built with NVIDIA Nemotron on Nebius Token Factory and Tavily search. A robot, not a speaker: it turns to you, looks at what you show it, and finds things in the room." |
 | 3 | 0:32–1:35 | **One long take, unedited, the hood page's timings in a corner.** (a) "What's on today?": the **Today** card, and Andy glances at it. (b) The person walks across the room asking "Could you look into whether the farmers market is on this Saturday?": Andy's head follows, and the TV shows **Tavily** research live (planning, searching, sources). (c) The reminder chime: "It's time to call Rosa." (d) Mid-answer, the person talks over Andy ("Andy, stop"): Andy stops at once and listens. (e) The research answer arrives: Andy tells it, naming the source | Only the person's lines are planned; Andy is live. Voice-over if needed: "Every answer from the web comes through Tavily, with its sources named." |
 | 4 | 1:35–2:00 | **Finding the glasses, one uncut take.** Someone off camera has hidden them; the TV clock is in shot. "Andy, where did I leave my glasses?" Andy sweeps the room, stops, points with its head; the TV shows the frame it found them in | Andy, live. Caption: "NVIDIA Nemotron Nano VL on a Nebius Serverless Endpoint, four views read at once." Never cut the pause while it looks |
