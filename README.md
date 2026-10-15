@@ -57,7 +57,8 @@ with its sources.
   topic. Andy named the consumer-protection source it relied on in 170 of 174 scam verdicts; on the 20
   held-out scams it caught 19, against 18 for either model alone.
 - **The world, with sources:** local news from your own papers, look-ups, what's on, a link family sent,
-  and scam checks, all through Tavily.
+  and scam checks, all through Tavily. Under each answer the TV says how it was found ("Found with Tavily:
+  search (basic), 1.4 s, 1 credit"); a Spanish speaker gets Spanish pages first.
 - **Family, on your terms:** family see only what you share, Andy tells you who looked, and a helper sets
   Andy up from a phone, with Andy telling you who changed what.
 - **A screen beside it**, readable from across the room, with captions of Andy's own words and every
@@ -98,6 +99,7 @@ Each principle comes from published research, and each has something you can see
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
 | The conversation suite | 83 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
+| The scam check, measured four ways | Lightning, Ultra, and Tavily's warnings with each; 120 messages, three runs | **Nebius Serverless Jobs**, four of them, two at a time ([cloud/scam-job.sh](cloud/scam-job.sh)) |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
 
 ### Where Token Factory sped us up
@@ -110,8 +112,9 @@ Each principle comes from published research, and each has something you can see
   robot.
 - **Zero data retention**, switched on in Token Factory, so a household's conversation is not kept by
   the model service either.
-- **The same suite runs on Nebius AI Cloud** as a Serverless Job, and the eyes and the second look are
-  Serverless Endpoints we start when needed and stop after; stopped, they cost nothing for compute.
+- **The same suite runs on Nebius AI Cloud** as a Serverless Job, and so does the scam evaluation (the
+  models three times against warnings Tavily fetched once, in about six minutes); the eyes and the second
+  look are Serverless Endpoints we start when needed and stop after; stopped, they cost nothing for compute.
 
 ## Measured (Reachy Mini Lite, 2026-10-13)
 
@@ -190,6 +193,8 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 - **The screen and pages, on sample data:** `uv sync && uv run python scripts/demo_screen.py`, then open
   the addresses it prints. No robot, GPU or keys.
 - **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
+- **The scam evaluation,** with only a Token Factory key, against the saved Tavily warnings:
+  `uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`.
 
 ## Setup
 
@@ -230,13 +235,15 @@ Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's
 
 | Path | What it is |
 |---|---|
-| `src/andy_companion/` | Andy's own code: clock, reminders, speaker, body behaviours, privacy, web, reading, vision, screen, supervisor |
+| `src/andy_companion/` | Andy's own code: clock, reminders, speaker, body behaviours, privacy, web, the scam check, reading, vision and the finder, the urgent-words net (with its recordings), screen, supervisor and watchdog |
 | `tools/` | The voice tools Andy can call |
 | `profiles/companion/` | Who Andy is and what it never does |
 | `voice/` | The voice server (Parakeet, Nemotron on Token Factory, text-to-speech) |
 | `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
-| `cloud/` | The Nebius Serverless Endpoint and Job scripts |
-| `evals/` | The conversation suite and its scorecards |
+| `cloud/` | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
+| `evals/` | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
+| `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), settings links, the demo screen, captions and GIFs for the video |
+| `systemd/` | The two user services: the voice server and Andy |
 | `docs/` | [Plan](docs/PLAN.md), [status](docs/STATUS.md), [architecture](docs/architecture.md), [decisions](docs/decisions/) |
 
 ## Built during the hackathon

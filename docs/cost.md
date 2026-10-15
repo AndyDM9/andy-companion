@@ -40,4 +40,6 @@ Both are open questions for after the hackathon; we haven't measured either.
 
 Token Factory lists each model's price per token in its models API (`GET /v1/models`, `pricing`). The
 7,514 input tokens are one real request with Andy's instructions and all 35 tools (2026-10-14). Tavily's
-monthly use shows on Andy's `/hood` page.
+monthly use shows on Andy's `/hood` page, and since 2026-10-14 each web answer on the TV shows the
+credits Tavily reported for it (a basic search measured at 1 credit, live), so the web line can be
+checked against real use.

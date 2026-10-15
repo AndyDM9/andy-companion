@@ -11,7 +11,7 @@ Every change updates:
 4. **docs/architecture.md:** whenever a part, a data flow or a boundary changes.
 
 A choice between real alternatives gets a short record in `docs/decisions/` (copy `0001`, number
-sequentially). A milestone is done only when its "done when" in PLAN.md is true.
+sequentially, and add it to `docs/decisions/README.md`). A milestone is done only when its "done when" in PLAN.md is true.
 
 ## Rules
 
@@ -24,6 +24,14 @@ sequentially). A milestone is done only when its "done when" in PLAN.md is true.
   enforces it (`git config core.hooksPath .githooks` once per clone).
 - **Only one program drives the robot at a time.** A test that runs Andy stops the other app first, and says so.
 - **This repository will be public.** Write nothing here about any company, brand plan or person that is not meant for the public.
+
+## Running Andy
+
+On the desktop Andy and its voice server are user services ([decision 0008](docs/decisions/0008-andy-runs-as-user-services.md)):
+`systemctl --user start|stop|restart|status andy andy-voice`, logs with `journalctl --user -u andy`.
+Restart Andy after a change with `systemctl --user restart andy`; never start a second copy by hand while
+the service runs, and never stop a process by matching part of its command line. The desktop is shared:
+stop both services when the founder needs it for other work.
 
 ## The hackathon's rules
 

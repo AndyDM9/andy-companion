@@ -39,14 +39,21 @@ and the [live test](live-test.md).
   official alert first.
 - **"Shall I remember that?"** When you mention something coming up (a recital, a visit), Andy asks
   first, and the morning after it asks how it went. Andy can remember a fact or a moment only after
-  you ask or say yes; that is checked in code, not left to the model.
+  you ask or say yes; that is checked in code, not left to the model ("No, don't remember that" is a no).
+  "Forget the recital" forgets that one moment, and if several match, Andy asks which.
+- **"Welcome back."** When someone comes into view after two hours or more away, in the daytime, Andy says one
+  warm sentence: at most every four hours, not in the first ten minutes, no questions about where you
+  were, and a setting turns it off.
+- **A reminder waits for you to finish.** Andy never starts a reminder or a message while you're
+  speaking.
 
 ## Seeing
 
 - **"Where did I leave my glasses?"** Andy looks around the room, a little down where things are put
   down, and NVIDIA Nemotron Nano VL reads the four views at once. Andy turns its head to point at it,
   says "I think I see your glasses, on the table…", and the TV shows the picture it saw it in (held in
-  memory for two minutes, never saved). Never for finding a person.
+  memory for two minutes, never saved). Never for finding a person. If the eyes are switched off, Andy
+  says so within a few seconds.
 - **"What do you see?"** One picture, described in two or three plain sentences. It never says who a
   person is, or guesses their age, health or mood.
 - **A letter you hold up** is read on this computer (Tesseract), explained simply, and shown in large
@@ -62,7 +69,13 @@ and the [live test](live-test.md).
 - **Local news** from the papers you choose, **look-ups**, **what's on** this week from your town's
   pages, **a link** someone sent, and **whether a message looks like a known scam** (searched on
   consumer-protection sites only, at advanced depth, with the message's numbers and links removed
-  first).
+  first). Nemotron 3.5 Lightning looks for the message's own sign, and Nemotron 3 Ultra checks it against
+  each warning found: the same trick, not merely the same topic. Measured on 120 messages, three runs as
+  Nebius Jobs: 58 of 60 scams caught, none of 60 ordinary messages flagged
+  ([decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md)). If the warnings can't be
+  checked, Andy says so rather than "no sign".
+- **The town's events page** is found at setup from the town's own website (Tavily map, or a search within
+  the site), and offered on the settings page with "Use it".
 - **"Look into it for me."** For a bigger question, Andy starts Tavily's research agent and carries
   on talking. The TV shows each step (planning, searching, the sites it reads), and at the next quiet
   moment Andy tells you the dated answer with its sources.

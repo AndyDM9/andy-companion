@@ -76,3 +76,17 @@ must stay at 7:1 (WCAG AAA) against the worst case behind it, tested.
 - The look costs little to draw: the blur sits on four still panels, and the lights behind them move
   slowly enough that a TV can keep up. It still has to be measured on a real 2022 TV before we claim
   it runs well there.
+
+## Amended 2026-10-14 (from the founder's report on the real TV)
+
+- **One steady clock size.** The clock used to shrink and grow, with an animation, whenever a card, a photo
+  or a caption came or went, and read as "the time keeps shifting". It keeps one size; nothing moves when
+  something appears.
+- **Captions like a TV's subtitles.** Everything Andy says, paged three lines at a time at about its
+  speaking pace, laid over the foot of the screen (no empty band kept for them), and kept to the left
+  column while the settings QR code is up, never over it.
+- **A card gives way to the family photos after five minutes** (it was 15).
+- **A gear for Settings** (the settings code, Under the hood), for a mouse or the TV's remote: arrow keys,
+  OK, Back.
+- **How a web answer was found,** in small type under its sources.
+`tests/test_screen_design.py` keeps the clock's single size, the captions' overlay and the gear.

@@ -1,7 +1,9 @@
 # Plan
 
-**Goal:** win the Physical AI track of the Nebius x NVIDIA Global AI Hackathon, and Best Use of
-Tavily, with a companion robot that a judge would want in their own parent's home.
+**Goal:** win the Nebius x NVIDIA Global AI Hackathon with a companion robot that a judge would want in
+their own parent's home. A project wins one Overall award, or one track award and one bonus award, never
+both (rules, section 8), so we aim for the Grand Prize, and the same work serves the Physical AI track with
+Best Use of Tavily.
 
 **Deadline:** submissions close **2026-10-30, 10:00 PT**. We submit by **2026-10-27**.
 
@@ -20,10 +22,10 @@ model. Stage two scores four criteria, equally weighted, 1 to 5.
 
 | Criterion | What answers it |
 |---|---|
-| Technological implementation | Three or more NVIDIA models across three Nebius products (Token Factory, a Serverless Endpoint, a Serverless Job); sub-second replies measured on screen; tested tools; a safety layer between the model and the body |
+| Technological implementation | Five NVIDIA models across three Nebius products (Token Factory, two Serverless Endpoints, Serverless Jobs); Nemotron answering in 0.6 to 0.8 s, each turn timed on screen; the conversation suite and the scam check measured as Nebius Jobs; tested tools; rules in code between the model and the body |
 | Design ("a complete product, not a proof of concept") | The person's side (voice and robot) **and** the family's side (a phone page); setup in a few commands; a published Reachy Mini app |
 | Potential impact | A real person and a real problem: older adults living at home, and the family who help. Honest wording, nothing claimed that is not measured |
-| Quality of the idea | A companion that says it is a robot, never imitates a person, never stores what it hears, and lets the person decide what family sees |
+| Quality of the idea | A companion that says it is a robot, never imitates a person, never stores what it hears, and lets the person decide what family sees; a language model that moves the robot to find things; a scam check where the web finds the trick and a strong model tells it from the topic, measured both ways |
 
 ## Milestones
 
@@ -39,7 +41,7 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 · 🔶 built; live test, and Tavily credits (founder 6.3) |
 | M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 · 🔶 built, finding things tested on the live model; live test on the robot |
 | M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 · 🔶 built; live test |
-| M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; Nebius Job 79/79/79 of 81; final run 2026-10-23 |
+| M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; Nebius Job 79/79/79 of 81; the scam check four ways as Nebius Jobs (2026-10-14); final suite run 2026-10-23 |
 | M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 · 🔶 app ready; repository public about 2026-10-20 |
 | M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 · 🔶 texts ready; filming 2026-10-24 to 10-26 |
 
@@ -75,15 +77,24 @@ same work serves the Physical AI track and the Tavily bonus.
 | B9 | **The audit's fixes:** the events finder's key in the supervisor; "what's on" falling back when a crawl fails; the urgent-words net (negations, and a spoken fallback when the model is down); consent asked for properly; "forget" deleting only what was meant; Andy never starting to speak over the person; secrets off every command line; the hood page's own token; endpoints that fail fast when stopped; the dashboard app's settings | Each could fail on camera or for a judge | ✅ 2026-10-14 (130 more tests); the new Nebius secret calls are proved at the next endpoint `create` |
 | B10 | **The scam evaluation, fair and repeated:** a third arm (Nemotron 3 Ultra without Tavily), three runs each as a Nebius Serverless Job, and about 20 new messages modelled on this month's consumer-protection alerts, where finding recent warnings should matter | Today's gain (39 against 36) mixes Tavily with a second model and is one run; a rival scam entry exists | ✅ 2026-10-14: four arms, 120 messages (40 held out), three runs as Nebius Jobs: Andy 58 of 60, 0 flagged; Ultra alone 55.7; Lightning 53.3; Tavily + Lightning 60 but 24 flagged |
 | B11 | **The finder measured:** about 25 recorded sweeps with known answers, run as a Nebius Serverless Job; accuracy and time to point | Robotics judges ask "how well does it work?"; Nebius presents Serverless Jobs for physical AI | 🔨 built 2026-10-14 (`ANDY_FINDER_RECORD`, `evals/finder_eval.py`); the founder records about 25 tries (1.5 h). The frames are too big for a job's 64 KB, so it is scored on this computer |
-| B12 | **"How Andy found this"** on the screen and `/hood`: which Tavily call, depth, credits, time and sources for each answer | Shows the Tavily judges the integration plainly | ✅ 2026-10-14 (look-ups, news, what's on, scam checks, research) |
+| B12 | **"How Andy found this"** on the screen: which Tavily call, depth, credits and time under each web answer (the sources were already named) | Shows the Tavily judges the integration plainly | ✅ 2026-10-14 (look-ups, news, what's on, scam checks, research) |
 | B13 | **Privacy in four plain answers** (where it's heard, what's kept, who sees it, how to delete) in the README, the Devpost text and the video's last shot | The question every review of a home robot asks | ✅ 2026-10-14 (README, Devpost text, the video's last shot) |
 | B14 | **The Devpost text and video script rewritten:** the robot first, a dated problem line, "What's new here", finding the glasses as an uncut take, talking over Andy in the long take, Tavily named in the opening, Spanish moved to a social clip | The submission audit's weakest criterion was the idea's sharpness | ✅ 2026-10-14 |
+
+Also done on 2026-10-14, after round 2:
+
+| # | Item | Status |
+|---|---|---|
+| B15 | Andy and the voice server as user services on the desktop (restart on failure; the stop through the supervisor) | ✅ |
+| B16 | Spanish: spoken controls, saved days, Spanish pages first for news and events, letters in Spanish once `tesseract-ocr-spa` is installed | ✅ (waking from sleep stays English) |
+| B17 | Ready for the clips and the final cut: draft captions with Parakeet (Spanish put into English, marked to check) and GIFs | ✅ |
+| B18 | A fresh clone installs and passes as the README says; the keyless demo screen runs with an empty home folder | ✅ |
 
 ### Cleanup (Claude)
 
 | # | Item | Status |
 |---|---|---|
-| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 93 commits, no leaks (2026-10-14); a fresh clone of the private repository installs and passes (2026-10-14); again once public |
+| C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 108 commits, no leaks (2026-10-14); a fresh clone of the private repository installs and passes (2026-10-14); again once public |
 | C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ✅ 2026-10-14 (four unused imports removed; ruff's error and bug checks pass) |
 | C3 | The final Nebius Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
 | C4 | Pin the Reachy Mini app's `andy-companion` dependency to the `hackathon-submission` tag | ⬜ (10-27) |

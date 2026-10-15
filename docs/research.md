@@ -92,6 +92,32 @@ sweeps the room, reads four views in parallel with Nemotron Nano VL, and points 
 | Llama Nemotron Embed and Rerank | Cross-lingual memory search | Later; invisible without a demo |
 | Audio2Face-3D, Jetson | — | Not a fit (no face; no Jetson here) |
 
+## Scams this autumn, and a fair test (researched 2026-10-14)
+
+The 40 held-out messages in the scam evaluation are modelled on warnings published from July to October
+2026: law-enforcement impersonation that asks for payment through a cryptocurrency kiosk and tells people
+not to talk to family or their bank ([FBI IC3, 2026-09-17](https://www.ic3.gov/PSA/2026/PSA260917)); fake
+fund-recovery agents ([FBI IC3, 2026-07-20](https://www.ic3.gov/PSA/2026/PSA260720)); a bank impostor
+saying to move money "to keep it safe" ([WFSB, 2026-10-13](https://wfsb.com/2026/10/13/banking-group-launches-campaign-help-consumers-spot-impersonation-scams));
+texts with only a name and a question mark ([Malwarebytes, October 2026](https://malwarebytes.com/blog/threat-intel/2026/10/your-whos-this-reply-is-exactly-what-text-scammers-want));
+and the FTC's alerts on gold couriers, payment by gift card, wire or crypto, and toll notices
+([consumer.ftc.gov](https://consumer.ftc.gov/consumer-alerts)). **What Andy does with it:** the check in
+[decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md), measured four ways.
+
+## Who it's for, in one number
+
+Three in four US adults aged 50 and over want to stay in their current homes (AARP's Home and Community
+Preferences Survey, 3,090 adults, fieldwork June to July 2024, released 2024-12-10:
+[press release](https://www.aarp.org/press/releases/2024-12-10-new-aarp-report-majority-adults-50-plus-age-place-policies-communities-catch-up.html)).
+
+## Tavily's newer options (read 2026-10-14)
+
+From [Tavily's changelog](https://docs.tavily.com/changelog): `filter_by_language` (August 2026) keeps only
+pages in the chosen language, which Andy uses for a Spanish speaker's news and events; `exact_match`
+(February 2026) and the `X-Human-Id` header (May 2026) were read and not used yet. From the
+[search API reference](https://docs.tavily.com/documentation/api-reference/endpoint/search):
+`include_usage` reports each call's credits, which the TV shows.
+
 ## Apple's Liquid Glass, for the screen
 
 See [decision 0005](decisions/0005-the-screen-s-design-andy-glass.md).

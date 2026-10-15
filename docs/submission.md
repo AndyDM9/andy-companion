@@ -142,7 +142,13 @@ follow you, its antennas lift while you speak and lean while it thinks.
   console, through a second console our first fix missed. We found it in our own log, deleted the log,
   and now filter every console.
 - **Nebius AI Cloud quirks.** There was no CPU quota for new accounts in eu-north1, and an endpoint's
-  plain IP address bypassed its token. Both are worked around and written up in our feedback.
+  plain IP address bypassed its token. A job's request holds 64 KB, a new account runs two VMs at once,
+  and a job's log cuts long lines, so the scam evaluation runs as four jobs, two at a time, and prints
+  its scorecard in numbered pieces. All worked around and written up in our feedback.
+- **A topic is not a trick.** Asked one broad question with the scam warnings in hand, the model flagged a
+  grandchild's recital invitation as "computer access": 11 of 40 ordinary messages. Two narrow questions,
+  and a stronger model for the second, brought it to none of 60, and we measured why: with the smaller
+  model matching, the same warnings flagged 24.
 
 ## Accomplishments that we're proud of
 
@@ -158,6 +164,8 @@ follow you, its antennas lift while you speak and lean while it thinks.
   each, failures published.
 - **Put hard rules in code and judgment in the model.** That covers scam warnings, numbers on a screen,
   stories from the text, and consent before memory.
+- **The web finds; a strong model judges.** Tavily's warnings let every scam be caught, but only Nemotron
+  3 Ultra could tell the same trick from the same topic; a bigger model without the web caught fewer.
 - **Make it look current and keep it readable.** Glass looks good until text sits on it, so the screen
   is tested against its worst case.
 
@@ -171,7 +179,8 @@ share them across households or run them on the home GPU.
 ## What's next
 
 - A pilot with older adults and their families, with an ethics review.
-- More languages: Parakeet already hears 25 European languages.
+- More languages: Parakeet already hears 25 European languages; next, waking Andy in Spanish.
+- The finder measured from real tries at home, and a stronger room search where it misses.
 - Publishing Andy as a one-click Reachy Mini app on Hugging Face.
 
 ## Built with

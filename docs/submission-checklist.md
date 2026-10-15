@@ -1,6 +1,6 @@
 # Submission checklist
 
-From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-10-13. Every rule, our
+From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-10-13 and checked again 2026-10-14. Every rule, our
 status and the evidence: [rules-compliance.md](rules-compliance.md). Tick an item only when it is true,
 in the same commit that makes it true.
 
@@ -15,16 +15,16 @@ in the same commit that makes it true.
 - [ ] Public on GitHub
 - [x] Open-source licence file at the top level (Apache-2.0)
 - [ ] Licence visible in the repository's About section
-- [ ] README: setup instructions that work from a fresh clone
+- [x] README: setup instructions that work from a fresh clone (cloned from GitHub and checked 2026-10-14; again once public)
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
-- [ ] No keys, secrets or personal data anywhere in the history
+- [x] No keys, secrets or personal data anywhere in the history (gitleaks, 108 commits, 2026-10-14)
 
 ## Before making the repository public
 
-- [x] No keys in the history (gitleaks: 16 commits, no leaks, 2026-10-13)
-- [x] A fresh clone installs and passes its tests (2026-10-13)
+- [x] No keys in the history (gitleaks: 108 commits, no leaks, 2026-10-14)
+- [x] A fresh clone installs and passes its tests (2026-10-13; from GitHub, all three environments, 2026-10-14)
 - [x] No home address, phone number or private project names in the tree
-- [ ] Decide the commit author address (personal email, or GitHub's noreply address by rewriting history)
+- [x] The commit author address: GitHub's noreply address on every commit (history rewritten 2026-10-13; 108 of 108 on 2026-10-14)
 - [ ] Final name and branding decided
 
 ## The Reachy Mini app (`reachy_app/`)
@@ -47,7 +47,7 @@ in the same commit that makes it true.
 - [ ] Token Factory and the NVIDIA models named aloud
 - [ ] No unlicensed music, third-party logos or copyrighted material (no newspaper pages on the TV; our
       own family photos with consent, not the sample landscapes)
-- [ ] English subtitles for the Spanish moment
+- [ ] English captions throughout, and English subtitles for any Spanish (draft: `scripts/draft_captions.py`)
 - [ ] After filming the settings code: "Make a new settings link"
 
 ## The Devpost form
@@ -76,4 +76,4 @@ in the same commit that makes it true.
 
 ## Bonus
 
-- [x] Best Use of Tavily: a functional runtime call to the Tavily API in the product (five tools; search, extract, crawl)
+- [x] Best Use of Tavily: a functional runtime call to the Tavily API in the product (search, extract, crawl, map and research; the scam check measured with and without it, 2026-10-14)

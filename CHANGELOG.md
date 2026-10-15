@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Documentation (every document brought up to date with the day's work)
+
+- **New decisions:** [0007](docs/decisions/0007-the-scam-check-two-narrow-questions.md) the scam check's
+  two narrow questions, measured four ways; [0008](docs/decisions/0008-andy-runs-as-user-services.md)
+  Andy as user services; [0009](docs/decisions/0009-four-private-links-each-with-its-own-token.md) four
+  private links, each with its own token; 0002 (Tavily: all five endpoints, credits, Spanish pages) and
+  0005 (the screen: one clock size, captions as subtitles, the gear) amended; an index of decisions.
+- **architecture.md:** the services, the watchdog, the scam check's two models, the finder and its
+  recorder, the recorded urgent sentences, the hood's own token, an Evaluation section.
+- **STATUS, PLAN, rules-compliance, the submission checklist:** each milestone's progress today; the prize
+  rule in the goal; B15 to B18; gitleaks over 108 commits, no leaks; every commit's author is GitHub's
+  noreply address; the fresh clone ticked.
+- **README, features, live test, cost, research, submission text:** the scam results, how answers were
+  found, Spanish, welcome back, consent and forgetting, the finder's tries, services in the setup and the
+  live test, today's public research (scam alerts, the AARP figure, Tavily's newer options), and the day's
+  challenges and lessons in the Devpost story.
+
 ### Added (ready for the founder's clips and the final cut)
 
 - `scripts/draft_captions.py`: a draft SRT for the video from its own sound, split at pauses and
