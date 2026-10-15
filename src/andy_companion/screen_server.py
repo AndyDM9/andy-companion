@@ -342,6 +342,8 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     import time as _t
 
     state["server_now"] = _t.time()        # the TV works out the caption's age from this, not its own clock
+    # The page's version: when Andy's screen is updated, a TV left open reloads itself (no remote needed).
+    state["page_version"] = int((PAGES / "screen.html").stat().st_mtime)
     state["weather"] = weather_card()
     hour = (now or datetime.now()).hour
     s = settings.get()

@@ -118,3 +118,12 @@ def test_the_page_runs_on_a_2022_tv():
 def test_the_light_on_the_glass_follows_the_sun():
     body = re.search(r"function lightAngle\(hhmm\) \{(.*?)\n  \}", PAGE, re.S).group(1)
     assert "100 +" in body and "160" in body and "return 180" in body
+
+
+def test_a_card_at_night_is_shown_not_hidden_by_the_night_clock():
+    # From 9 pm the night clock hid the whole lower area, cards included (the founder, 2026-10-14).
+    assert 'toggle("is-night", !!s.night && !s.showing)' in PAGE
+
+
+def test_a_tv_left_open_reloads_itself_when_the_screen_is_updated():
+    assert "s.page_version !== pageVersion" in PAGE and "location.reload()" in PAGE

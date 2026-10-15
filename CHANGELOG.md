@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (the screen at night, from the founder's report at 9 pm)
+
+- "Andy's screen is not showing everything": from 9 pm the night clock hid the whole lower area, cards
+  included, so a letter, the news or an answer put up at night never appeared (captions still did). The
+  night clock now shows only while nothing is being shown; a card brings back the usual layout, in the
+  evening colours. Checked in a browser at night.
+- **A TV left open reloads itself** when the screen page is updated (the server sends its version), so an
+  update never needs someone to refresh the TV. Checked: the page reloaded within seconds of a change.
+  2 tests.
+
 ### Fixed (Andy stopped answering at about 20:55: three copies at once)
 
 - The founder reported Andy wasn't working. Cause: the two `andy-sim` tries that evening each left a copy

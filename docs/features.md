@@ -109,6 +109,9 @@ Under what Andy found on the web, a small line says how: which Tavily call, its 
 credits Tavily reported ("Found with Tavily: search (basic), 1.4 s, 1 credit"), and for research, the time
 so far.
 
+From 9 pm (a setting) the screen becomes a calm night clock with the date, but anything Andy shows at night
+still appears in full. A TV left open updates itself when Andy's screen is updated.
+
 A **Settings** button with a gear, top right, works with a mouse or the TV's remote (arrow keys, OK, Back).
 It offers **Show the settings code** (the QR code for a phone, for two minutes) and **Under the hood**
 (how fast Andy answers and what it uses, live, with a way back to the screen).

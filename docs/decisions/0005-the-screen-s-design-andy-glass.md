@@ -90,3 +90,11 @@ must stay at 7:1 (WCAG AAA) against the worst case behind it, tested.
   OK, Back.
 - **How a web answer was found,** in small type under its sources.
 `tests/test_screen_design.py` keeps the clock's single size, the captions' overlay and the gear.
+
+## Amended 2026-10-14, evening
+
+- **At night, a card still shows.** The calm night clock (from 9 pm, a setting) hid the whole lower area,
+  so a letter, the news or an answer Andy put up at night never appeared. The night clock now shows only
+  while there is nothing to show.
+- **A TV left open updates itself:** the server sends the page's version, and the page reloads itself
+  when it changes, so nobody has to refresh the TV after an update.

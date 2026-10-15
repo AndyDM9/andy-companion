@@ -344,7 +344,14 @@
     ui = es ? UI.es : UI.en;
     document.body.dataset.part = s.today.part_of_day;
     document.documentElement.lang = es ? "es" : "en";
-    document.body.classList.toggle("is-night", !!s.night);
+    // The calm night clock only while there is nothing to show: a card Andy puts up at night (a letter, the
+    // news, an answer) brings back the usual layout, which hid it before (the founder, 2026-10-14, 9 pm).
+    // A newer screen on the server: reload once, so the TV never keeps an old page (no remote needed).
+    if (s.page_version) {
+      if (pageVersion && s.page_version !== pageVersion) { location.reload(); return; }
+      pageVersion = s.page_version;
+    }
+    document.body.classList.toggle("is-night", !!s.night && !s.showing);
     document.body.classList.toggle("calm", !!s.calm);
     document.body.style.setProperty("--light", lightAngle(s.today.time) + "deg");
     const when = $("when"); when.textContent = "";
@@ -501,6 +508,7 @@
   }
 
   let capText = "", capSeenAt = 0, capPages = [], capChars = 0;
+  let pageVersion = 0;
   const READ_CPS = 15;                          // about Andy's speaking pace
   // How many characters fit three lines of the caption as it is now laid out on this TV, with room spare:
   // Atkinson Hyperlegible's letters average a little over half their size in width.
