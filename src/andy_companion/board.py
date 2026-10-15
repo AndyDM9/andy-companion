@@ -103,6 +103,8 @@ def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float
         card["how"] = {"calls": [_tidy(c, 12) for c in how.get("calls", [])][:4], "depth": _tidy(how.get("depth", ""), 12),
                        "credits": credits if isinstance(credits, (int, float)) else None,
                        "seconds": float(how.get("seconds") or 0)}
+        if isinstance(how.get("sites"), int) and not isinstance(how.get("sites"), bool) and 0 < how["sites"] < 1000:
+            card["how"]["sites"] = how["sites"]
     _write(SCREEN, card)
 
 

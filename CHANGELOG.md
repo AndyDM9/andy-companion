@@ -21,7 +21,14 @@ From the design review's ideas, approved by the founder (plan, round 3; the revi
   a clear yes; the family page says only "Sent. Andy will ask them." (`POST /api/family/suggest`).
 - **Family notes on the TV (B22):** when Andy passes on a family message, the TV shows "A note from Anna"
   with the time (a link only as its site); a suggestion shows as "Anna suggested".
-- The keyless demo shows all of these. 37 tests (772; 779 in the robot's environment).
+- **What Andy is looking at (B23):** under the state on the TV, one small line says what the head is turned
+  to: "Looking at you" while Andy follows your face, "Looking at the screen" on a glance, "Looking around
+  the room" during a search, "Pointing at what it found" (Spanish too). Each move says so for as long as it
+  lasts (`body/looking_at.py`); only one of those four names leaves Andy, never a picture or a position, and
+  the line is blank when Andy is quiet, asleep or away.
+- **Research counts the sites it reads (B23):** while Tavily's research runs, the how line under the card
+  adds "9 sites read", each site counted once.
+- The keyless demo shows all of these. 43 tests (778; 785 in the robot's environment).
 
 ### Changed (every page, from a design review: the TV, Under the hood, the settings and family pages)
 

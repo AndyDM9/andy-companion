@@ -200,6 +200,8 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, po
     start = clock()
     for step in looks:
         manager.queue_move(queueable(step))
+    from andy_companion.body import looking_at
+    looking_at.set("room", sum(step.duration for step in looks))
     frames: List[Any] = []
     elapsed = 0.0
     for step in looks:
@@ -245,6 +247,7 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, po
                         "hold it nearer, or suggest one likely place to check. No guessing.")}
     yaw = target_yaw(math.radians(SWEEP_DEG[i]), results[i]["x"])
     manager.queue_move(queueable(look.HoldLook(robot.get_current_head_pose(), antennas, yaw, pitch, POINT_HOLD_S)))
+    looking_at.set("pointing", POINT_HOLD_S + 1.0)
     await asyncio.to_thread(record, what, frames, results, i,
                             {"to_answer": round(looked_s, 2), "to_point": round(clock() - start, 2)})
     await asyncio.to_thread(show_views)

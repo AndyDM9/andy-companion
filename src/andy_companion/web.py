@@ -353,7 +353,8 @@ def stream_research(question: str, place: str = "", language: str = "en",
                     on_step: Optional[Callable[[str, str], None]] = None, opener=None,
                     timeout_s: float = 120) -> Dict[str, Any]:
     """Tavily research as a stream, so each step can be shown while it happens:
-    on_step("planning"|"searching"|"reading"|"writing", detail). Returns the answer like research_result."""
+    on_step("planning"|"searching"|"reading"|"writing", detail), and on_step("sites", "N") with the count of
+    distinct sites read so far after each "reading". Returns the answer like research_result."""
     req = urllib.request.Request(API + "/research", method="POST",
                                  data=json.dumps(_research_body(question, place, language, True)).encode(),
                                  headers={"Authorization": f"Bearer {_key()}", "Content-Type": "application/json",
@@ -361,6 +362,7 @@ def stream_research(question: str, place: str = "", language: str = "en",
     step = on_step or (lambda kind, detail: None)
     content: Any = None
     sources: Any = None
+    read_sites: set = set()
     began = False   # once Tavily has sent anything, the research is under way (and paid for)
     try:
         with (opener or urllib.request.urlopen)(req, timeout=timeout_s) as r:
@@ -389,6 +391,8 @@ def stream_research(question: str, place: str = "", language: str = "en",
                     if names:
                         more = f" and {len(names) - 4} more" if len(names) > 4 else ""
                         step("reading", ", ".join(names[:4]) + more)
+                        read_sites.update(names)
+                        step("sites", str(len(read_sites)))        # the running count, for the screen
                 if "content" in delta:
                     content = delta["content"]
                 if "sources" in delta:

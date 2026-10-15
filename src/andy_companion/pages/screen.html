@@ -297,6 +297,11 @@
           margin: 0; padding: .45em .9em; border-radius: 999px; font: inherit; font-size: clamp(16px, 1.5vw, 26px);
           color: var(--soft); cursor: pointer; }
   .gear svg { width: 1.2em; height: 1.2em; }
+  /* Where Andy's head is turned ("Looking at you"), from the behaviours that move it: beside the gear, so
+     nothing moves when it comes and goes; quiet type, the state pill stays the one to read. */
+  .row2 { grid-column: 2; grid-row: 2; justify-self: end; align-self: end; display: flex; align-items: center; gap: 1.2vw; }
+  .looking { font-size: clamp(17px, 1.5vw, 26px); color: var(--soft); margin: 0; white-space: nowrap; }
+  .looking:empty { visibility: hidden; }
   /* A ring a remote's user can see from the sofa. Chromium 85 (a 2022 TV) has no :focus-visible, so the ring
      is on :focus, and taken off only where a browser knows a mouse, not a key, put the focus there. */
   .gear:focus, .menu button:focus { outline: 4px solid var(--mark); outline-offset: 4px; }
@@ -329,10 +334,11 @@
     <p class="day" id="day">&nbsp;</p>
     <p class="when" id="when">&nbsp;</p>
     <p class="state glass" id="state" data-state="away" role="status" aria-live="polite"><span class="orb"></span><span id="state-label"></span></p>
+    <div class="row2"><p class="looking" id="looking" aria-hidden="true"></p>
     <button class="gear glass" id="gear" type="button" aria-haspopup="dialog" aria-controls="menu">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5A3.5 3.5 0 1 1 13 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
       <span id="gear-label">Settings</span>
-    </button>
+    </button></div>
   </header>
   <main class="below">
     <div class="side">
@@ -380,11 +386,13 @@
 
   // The page's own words, in the language chosen on the setup page.
   const UI = {
-    en: { how: "Found with Tavily", howSoFar: "so far", credit: "credit", credits: "credits", and: "and",
+    en: { how: "Found with Tavily", howSoFar: "so far", site: "site read", sites: "sites read", credit: "credit", credits: "credits", and: "and",
           calls: { search: "search", extract: "extract", crawl: "crawl", map: "map", research: "research" },
           family: "family", nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…", lost: "Not connected",
           code: "Point a phone's camera here to open Andy's settings. It disappears in two minutes.",
+          looking: { you: "Looking at you", screen: "Looking at the screen", room: "Looking around the room",
+                     pointing: "Pointing at what it found" },
           gear: "Settings", menu: "Andy's settings", menuCode: "Show the settings code", menuCodeHint: "Point a phone's camera at it to change Andy's settings",
           menuHood: "Under the hood", menuHoodHint: "How fast Andy answers, and what it uses, live", close: "Close",
           kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
@@ -393,11 +401,13 @@
           where: "Andy looks here when it shows you something new.",
           order: "In the order I looked", view: "View", seenHere: "Seen here", seenToo: "Seen here too", notSeen: "Not seen",
           noPicture: "No picture" },
-    es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", credit: "crédito", credits: "créditos", and: "y",
+    es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", site: "sitio leído", sites: "sitios leídos", credit: "crédito", credits: "créditos", and: "y",
           calls: { search: "búsqueda", extract: "extracción", crawl: "rastreo", map: "mapa", research: "investigación" },
           family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…", lost: "Sin conexión",
           code: "Apunte la cámara de un teléfono aquí para abrir los ajustes de Andy. Desaparece en dos minutos.",
+          looking: { you: "Mirándole a usted", screen: "Mirando la pantalla", room: "Buscando por la habitación",
+                     pointing: "Señalando lo que encontró" },
           gear: "Ajustes", menu: "Ajustes de Andy", menuCode: "Mostrar el código de ajustes", menuCodeHint: "Apunte la cámara de un teléfono para cambiar los ajustes de Andy",
           menuHood: "Por dentro", menuHoodHint: "Lo rápido que responde Andy y lo que usa, en directo", close: "Cerrar",
           kinds: { code: "Ajustes de Andy", news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
@@ -758,6 +768,7 @@
     const parts = [`${ui.how}: ${what}` + (h.depth ? ` (${h.depth})` : ""),
                    showing.kind === "research" ? `${secs} ${ui.howSoFar}` : secs];
     if (typeof h.credits === "number") parts.push(`${h.credits} ${h.credits === 1 ? ui.credit : ui.credits}`);
+    if (typeof h.sites === "number" && h.sites > 0) parts.push(`${h.sites} ${h.sites === 1 ? ui.site : ui.sites}`);
     return parts.join(", ");
   }
   function clock12(hhmm) {
@@ -808,6 +819,7 @@
       if (!r.ok || document.body.classList.contains("offline-on")) return;
       const s = await r.json();
       if (s.state === "speaking") lastSpoke = Date.now();
+      text($("looking"), (ui.looking && ui.looking[s.looking]) || "");
       const key = s.state + "|" + s.label;
       if (key === lastState) return;
       const pill = $("state");

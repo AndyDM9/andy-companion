@@ -235,6 +235,8 @@ def step(manager, now: float, antennas, *, listening: bool, move_playing: bool, 
         return False
     g = Glance(manager.current_robot.get_current_head_pose(), (float(antennas[0]), float(antennas[1])), tv)
     manager.queue_move(queueable(g))
+    from andy_companion.body import looking_at
+    looking_at.set("screen", float(getattr(g, "duration", 2.5)))
     logger.info("glance at the screen (%s), %.0f degrees", (_seen["key"] or "").split("|")[0],
                 math.degrees(tv[0]))
     return True

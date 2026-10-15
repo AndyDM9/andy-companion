@@ -82,7 +82,11 @@ def research() -> None:
     board.show("research", "Is the farmers market on this Saturday?", [
         {"title": "Not this Saturday, October 17"}, {"title": "First Saturday of each month, 9 am to noon"},
         {"title": "Next market: Saturday, November 7"}, {"title": "Sources", "summary": "harborbayfl.gov, miamifarmersmarket.org"}],
-        how={"calls": ["research"], "depth": "mini", "seconds": 23.4, "credits": None})
+        how={"calls": ["research"], "depth": "mini", "seconds": 23.4, "credits": None, "sites": 9})
+
+
+# What the head is turned to in each scene, as the behaviours would say on the robot (body/looking_at.py).
+LOOKING = {"research": "screen", "found": "pointing"}
 
 
 def today_caption() -> str:
@@ -150,7 +154,7 @@ def main() -> int:
             show()
             started = time.time()
             while time.time() - started < 20:
-                screen_server.set_live({"state": "speaking", "tool": ""})
+                screen_server.set_live({"state": "speaking", "tool": "", "looking": LOOKING.get(name, "you")})
                 screen_server.set_caption(today_caption() if name == "today" else CAPTIONS[name])
                 time.sleep(1)
             i += 1

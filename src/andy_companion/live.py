@@ -22,16 +22,21 @@ TICK_S = 0.15
 HEARTBEAT_S = 5.0
 
 
-def derive(clock, speaking_now: bool) -> Dict[str, str]:
+def derive(clock, speaking_now: bool, looking: str = "") -> Dict[str, str]:
+    """The state, with what the head is turned to when a behaviour has said (body.looking_at)."""
     if speaking_now:
-        return {"state": "speaking", "tool": ""}
-    if clock.running > 0:
-        return {"state": "working", "tool": clock.current_tool or ""}
-    if clock.thinking():
-        return {"state": "thinking", "tool": ""}
-    if clock.hearing:
-        return {"state": "hearing", "tool": ""}
-    return {"state": "ready", "tool": ""}
+        out = {"state": "speaking", "tool": ""}
+    elif clock.running > 0:
+        out = {"state": "working", "tool": clock.current_tool or ""}
+    elif clock.thinking():
+        out = {"state": "thinking", "tool": ""}
+    elif clock.hearing:
+        out = {"state": "hearing", "tool": ""}
+    else:
+        out = {"state": "ready", "tool": ""}
+    if looking:
+        out["looking"] = looking
+    return out
 
 
 def report_loop(send: Optional[Callable[[Dict], None]] = None, rounds: Optional[int] = None,
@@ -46,7 +51,8 @@ def report_loop(send: Optional[Callable[[Dict], None]] = None, rounds: Optional[
     done = 0
     while rounds is None or done < rounds:
         try:
-            state = derive(turns.CLOCK, speaking.speaking())
+            from andy_companion.body import looking_at
+            state = derive(turns.CLOCK, speaking.speaking(), looking_at.current())
             if state != last or now() - sent_at >= HEARTBEAT_S:
                 threading.Thread(target=send, args=({"live": state},), daemon=True).start()
                 last, sent_at = state, now()

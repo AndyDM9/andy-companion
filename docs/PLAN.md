@@ -101,7 +101,7 @@ founder approved its ideas; these turn the physical and the web work into things
 | B20 | **The scam check's receipt:** under "Be careful", three steps on the TV: the sign Nemotron Lightning spotted (with the message's own words), the consumer-protection warning Tavily found (and its site), and why Nemotron Ultra judged it the same trick | Shows the Tavily judges, and anyone, why Andy said what it said | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
 | B21 | **A family suggestion the person accepts:** on the family page, "Suggest a reminder" (what, when); Andy says "Anna suggested: call the pharmacy at 3 pm. Shall I set it?", and sets it only after a yes | Family help without taking over: nothing is set behind the person's back | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
 | B22 | **Family notes on the TV:** when Andy passes on a family message, the TV shows it as a note with who sent it and when, for five minutes | What Nest Hub's Family Notes do, inside our rules (no presence shown back) | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
-| B23 | **The rest of the review's ideas:** Tavily research with a running count of sites read; "Andy is looking at…" on the TV from the head's pose | Smaller; done if B19 to B22 land cleanly | ⬜ |
+| B23 | **The rest of the review's ideas:** Tavily research with a running count of sites read; "Andy is looking at…" on the TV from the head's pose | Smaller; done if B19 to B22 land cleanly | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in live test 3w) |
 
 ### Cleanup (Claude)
 

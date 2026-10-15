@@ -81,7 +81,8 @@ and the [live test](live-test.md).
 - **The town's events page** is found at setup from the town's own website (Tavily map, or a search within
   the site), and offered on the settings page with "Use it".
 - **"Look into it for me."** For a bigger question, Andy starts Tavily's research agent and carries
-  on talking. The TV shows each step (planning, searching, the sites it reads), and at the next quiet
+  on talking. The TV shows each step (planning, searching, the sites it reads, with a running count of
+  them), and at the next quiet
   moment Andy tells you the dated answer with its sources.
 - An answer from the web leads to an action (a reminder, a note to family) only when you say yes;
   that is the model's job, judged in the suite.
@@ -111,7 +112,11 @@ clock keeps one size, so nothing on the screen moves when a card, a photo or a c
 
 Under what Andy found on the web, a small line says how: which Tavily call, its depth, the time and the
 credits Tavily reported ("Found with Tavily: search (basic), 1.4 s, 1 credit"), and for research, the time
-so far.
+so far and the number of sites read.
+
+Under Andy's state, a small line says what its head is turned to: "Looking at you" while it talks with you,
+"Looking at the screen" when it glances at the TV, "Looking around the room" while it searches, "Pointing
+at what it found". It says only that, never what the camera sees.
 
 At night the screen becomes a calm night clock with the date: family photos, reminders and the weather
 rest until morning, but anything Andy shows still appears in full. When is set on the settings page under

@@ -93,5 +93,8 @@ def speaking_step(manager, face: bool, move_playing=None) -> None:
             if not state.get("logged"):
                 logger.info("Following the face while speaking")
             state["logged"] = True
+        if state["following"]:
+            from andy_companion.body import looking_at
+            looking_at.set("you", 1.0)                 # renewed every tick while it lasts
     except Exception as e:
         logger.warning("Following while speaking failed: %s", e)

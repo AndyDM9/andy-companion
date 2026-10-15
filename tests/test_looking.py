@@ -133,7 +133,17 @@ def test_a_long_list_of_sites_is_shortened_for_the_screen():
     many = sse({"tool_calls": {"type": "tool_response", "tool_response": [{"sources": [
         {"url": f"https://site{i}.org/x"} for i in range(7)]}]}}, {"content": DONE["content"]})
     web.stream_research("q", on_step=lambda k, d: steps.append((k, d)), opener=StreamOpener(many))
-    assert steps == [("reading", "site0.org, site1.org, site2.org, site3.org and 3 more")]
+    assert steps == [("reading", "site0.org, site1.org, site2.org, site3.org and 3 more"), ("sites", "7")]
+
+
+def test_the_count_of_sites_read_grows_as_tavily_reads_them():
+    steps = []
+    read = lambda *urls: {"tool_calls": {"type": "tool_response", "tool_response": [   # noqa: E731
+        {"sources": [{"url": u} for u in urls]}]}}
+    body = sse(read("https://a.org/1", "https://b.org/2"), read("https://b.org/3", "https://c.org/4"),
+               {"content": DONE["content"]})
+    web.stream_research("q", on_step=lambda k, d: steps.append((k, d)), opener=StreamOpener(body))
+    assert [d for k, d in steps if k == "sites"] == ["2", "3"]          # the same site counts once
 
 
 def test_without_a_key_andy_says_so_and_promises_nothing(monkeypatch):

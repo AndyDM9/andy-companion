@@ -59,10 +59,11 @@ STEPS = {"planning": "Planning what to look for", "searching": "Searching the we
          "writing": "Writing the answer"}
 
 
-def show_progress(topic: str, done: list, seconds: float = 0.0) -> None:
-    """On the screen beside Andy, each step as Tavily takes it, and how long it has taken so far."""
+def show_progress(topic: str, done: list, seconds: float = 0.0, sites: int = 0) -> None:
+    """On the screen beside Andy, each step as Tavily takes it, how long it has taken so far, and how many
+    sites it has read."""
     board.show("research", f"Looking into: {topic}", [{"title": t, "summary": d} for t, d in done[-4:]],
-               how={"calls": ["research"], "depth": "mini", "seconds": round(seconds, 1)})
+               how={"calls": ["research"], "depth": "mini", "seconds": round(seconds, 1), "sites": sites})
 
 
 def run(question: str, place: str = "", language: str = "en", opener=None,
@@ -73,13 +74,18 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
     topic = question[:120]
     done: list = []
     began = clock()
+    read = {"sites": 0}
 
     def on_step(kind: str, detail: str) -> None:
+        if kind == "sites":                 # a running count, not a step of its own
+            read["sites"] = int(detail) if str(detail).isdigit() else read["sites"]
+            show_progress(topic, done, clock() - began, read["sites"])
+            return
         if kind == "searching":
             done.append((STEPS[kind], f"{detail} searches" if detail and detail != "0" else ""))
         else:
             done.append((STEPS[kind], detail))
-        show_progress(topic, done, clock() - began)
+        show_progress(topic, done, clock() - began, read["sites"])
 
     try:
         show_progress(topic, [("Starting", "")])

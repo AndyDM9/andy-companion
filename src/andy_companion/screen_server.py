@@ -112,7 +112,7 @@ _turns: "deque[Dict[str, Any]]" = deque(maxlen=40)
 
 
 # What Andy is doing right now (live.py), refreshed several times a second. Memory only.
-_live: Dict[str, Any] = {"state": "", "tool": "", "at": 0.0}
+_live: Dict[str, Any] = {"state": "", "tool": "", "looking": "", "at": 0.0}
 LIVE_STALE_S = 12.0
 
 
@@ -121,11 +121,14 @@ def set_live(data: Dict[str, Any], now: Optional[float] = None) -> None:
     from andy_companion import live
     from andy_companion.turns import TOOL_NAME
 
+    from andy_companion.body.looking_at import TARGETS
+
     state = str(data.get("state", "")) if isinstance(data, dict) else ""
     tool = str(data.get("tool", "")) if isinstance(data, dict) else ""
-    if state not in live.STATES or (tool and not TOOL_NAME.match(tool)):
+    looking = str(data.get("looking", "") or "") if isinstance(data, dict) else ""
+    if state not in live.STATES or (tool and not TOOL_NAME.match(tool)) or (looking and looking not in TARGETS):
         raise ValueError("bad state")
-    _live.update(state=state, tool=tool, at=now if now is not None else _t.time())
+    _live.update(state=state, tool=tool, looking=looking, at=now if now is not None else _t.time())
 
 
 def live_state(now: Optional[float] = None) -> Dict[str, Any]:
@@ -146,7 +149,9 @@ def live_state(now: Optional[float] = None) -> Dict[str, Any]:
     else:
         key, tool, until = "away", "", ""
     stage = {"hearing": "hear", "thinking": "think", "working": "tools", "speaking": "speak"}.get(key, "")
-    return {"state": key, "tool": tool, "stage": stage, "label": words.state_label(key, tool, language, until)}
+    looking = _live.get("looking", "") if key not in ("quiet", "asleep", "away") else ""
+    return {"state": key, "tool": tool, "stage": stage, "label": words.state_label(key, tool, language, until),
+            "looking": looking}
 
 
 # This month's Tavily credits, as numbers (turns.tavily_usage_loop). Memory only.
