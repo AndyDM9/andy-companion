@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Fixed (a regression check of the whole suite before the freeze)
+
+- The suite, 85 cases three times on this computer: **82, 83, 82**. look-1 failed every run: asked to look
+  something up for later, Andy also searched now (the look_into result says not to, but tools are chosen
+  together, before it is read). "I can't hear you" got no set_volume twice. Once, Andy read an instruction
+  from its profile aloud ("…say so, and suggest calling the bank…").
+- Fixed in the profile (look_into does the searching, call nothing else for that question; "I can't hear
+  you" means set_volume first; the PIN rule worded so it can't be read out; never ask a name in order to
+  do something, after share-2 asked for one) and in look_into's description. The five cases then passed 15
+  of 15, and the whole suite **84, 85, 83 of 85**, three different single misses
+  (`evals/results/2026-10-14-local-85-cases*.json`). The final run as a Nebius Job stays on 2026-10-23.
+
 ### Added (ready to film; the organisers' own words)
 
 - **`scripts/prepare_demo.py`:** `check` before filming (the night clock, captions, the screen's place, the

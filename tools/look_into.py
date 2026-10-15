@@ -14,7 +14,8 @@ class LookInto(Tool):
         "When the person asks you to look into, find out about, or research something that needs more than a "
         "quick answer: a change in their town, how a service works, comparing options, the background to a news "
         "story. It runs for a minute or two in the background: say you will look into it and tell them when it's "
-        "ready, then carry on. For a quick fact use look_up instead. Never for medical, legal or money decisions "
+        "ready, then carry on. It does the searching: call no other search tool for the same question. "
+        "For a quick fact use look_up instead. Never for medical, legal or money decisions "
         "about them: suggest the right person instead."
     )
     parameters_schema = {

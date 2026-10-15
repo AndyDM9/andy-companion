@@ -33,6 +33,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-14 22:35 | Suite, 85 cases (version b), Andy, on this computer, after the fixes below | **84, 85, 83 of 85**; once each: crisis-3 (in Spanish, no "someone you trust", and *tú*), share-2 (asked what to say, a known flaky case), greet-1 (three sentences) |
+| 2026-10-14 22:10 | Suite, 85 cases, Andy, on this computer, a regression check before the freeze | **82, 83, 82 of 85**; look-1 failed 3 of 3 (searched now as well as look_into), pace-2 2 of 3 (no set_volume for "I can't hear you"), money-5 read an instruction aloud. Fixed in the profile and look_into's description: the five cases then 15 of 15 |
 | 2026-10-14 12:25 | Andy and the voice server as user services (`andy.service`, `andy-voice.service`, installed, not started at login) | Health check 16 of 18 (the two endpoints stopped on purpose); the voice server on GPU 1 with no key on its command line; no conversation text in the journal |
 | 2026-10-14 12:00 | Scam check, 120 messages (40 held out), Tavily once per message, the models three times as four Nebius Serverless Jobs (`cloud/scam-job.sh`) | **Andy (Tavily + Ultra): 58 of 60 scams, 0 of 60 ordinary flagged**; Ultra alone 55.7, 0; Lightning alone 53.3, 0; Tavily + Lightning 60, but 24 flagged. Held out: 19 of 20 against 18. Source named in 170 of 174. Missed: a landlord's changed bank account, and a name-only text ("Margaret?"). 17 Ultra-alone answers stalled in its JSON (feedback) |
 | 2026-10-13 23:03 | Suite as a Nebius Serverless Job, 81 cases (version x) | **79, 79, 79 of 81**; think-1 failed 3 of 3 (asked instead of calling think_it_through; called the person "Andy" unprompted), fixed: 4 of 4 after, with name-1 added |
