@@ -159,7 +159,23 @@ def add_turn(data: Dict[str, Any]) -> Dict[str, Any]:
     turn = {"at": int(_t.time()), "hearing_ms": _ms(data.get("hearing_ms")), "reply_ms": reply,
             "total_ms": _ms(data.get("total_ms")) if _ms(data.get("total_ms")) is not None else reply, "tools": tools}
     _turns.append(turn)
+    _count(turn)
     return turn
+
+
+# Since Andy started (this process): counts only, for the hood's tally line. Memory only; the recent turns
+# above keep 40, these keep counting.
+_tally: Dict[str, int] = {"turns": 0, "nebius": 0, "tavily": 0, "eyes": 0}
+
+
+def _count(turn: Dict[str, Any]) -> None:
+    from andy_companion.turns import EYES, ON_NEBIUS, ON_TAVILY
+
+    _tally["turns"] += 1
+    for t in turn["tools"]:
+        _tally["nebius"] += t["name"] in ON_NEBIUS
+        _tally["tavily"] += t["name"] in ON_TAVILY
+        _tally["eyes"] += t["name"] in EYES
 
 
 def _median(values: List[int]) -> Optional[int]:
@@ -183,9 +199,23 @@ def _when(card: Dict[str, Any]) -> datetime:
     return t
 
 
+# Model ids as people read them; an id not listed is shown with its dashes as spaces.
+MODEL_NAMES = {"Nemotron-3-Ultra-550b-a55b": "Nemotron 3 Ultra", "Nemotron-3_5-Lightning": "Nemotron 3.5 Lightning"}
+
+
+def model_name(model_id: Any) -> str:
+    short = str(model_id or "").split("/")[-1]
+    return MODEL_NAMES.get(short, short.replace("-", " ").replace("_", "."))
+
+
+def _on_nebius(card: Dict[str, Any]) -> bool:
+    return "Nebius" in str(card.get("ran_on", ""))
+
+
 def proof(results: Path = RESULTS) -> Optional[Dict[str, Any]]:
-    """The newest conversation-suite scorecard, as numbers (none in an installed app without evals/)."""
-    best: Optional[Dict[str, Any]] = None
+    """The newest conversation-suite scorecard that ran as a Nebius Serverless Job, as the README and the video
+    say; the newest of any when none did (none in an installed app without evals/)."""
+    cards: List[Dict[str, Any]] = []
     for path in sorted(results.glob("*.json")) if results.is_dir() else []:
         try:
             card = json.loads(path.read_text())
@@ -194,14 +224,16 @@ def proof(results: Path = RESULTS) -> Optional[Dict[str, Any]]:
         if not isinstance(card, dict) or "per_run" not in card or "ran" not in card:
             continue
         try:
-            if best is None or _when(card) > _when(best):
-                best = card
-        except ValueError:
+            _when(card)
+        except (ValueError, TypeError):
             continue
-    if best is None:
+        cards.append(card)
+    pool = [c for c in cards if _on_nebius(c)] or cards
+    if not pool:
         return None
+    best = max(pool, key=_when)
     return {"suite": best.get("suite"), "per_run": best.get("per_run"), "total": best.get("total"),
-            "judge": str(best.get("judge", "")).split("/")[-1], "ran": _when(best).astimezone().strftime("%Y-%m-%d"),
+            "judge": model_name(best.get("judge")), "ran": _when(best).astimezone().strftime("%Y-%m-%d"),
             "ran_on": best.get("ran_on", "this computer")}
 
 
@@ -211,12 +243,28 @@ def _health() -> List[Dict[str, str]]:
     return health.tiles(float(_live["at"]), _weather["card"], _tavily)
 
 
+def _language() -> str:
+    from andy_companion import settings
+
+    try:
+        return "es" if settings.get().get("language") == "es" else "en"
+    except Exception:
+        return "en"
+
+
 def hood_state() -> Dict[str, Any]:
+    from andy_companion.turns import BESIDE, think_ms, where
+
     turns = list(_turns)
-    plain = [t for t in turns if not t["tools"]]
+    plain = [t for t in turns if not [x for x in t["tools"] if x["name"] not in BESIDE]]
+    language = _language()
     return {
-        "turns": list(reversed(turns[-8:])),
+        # Each turn with its split: Nemotron's part (the reply less the tools Andy waited for), computed here.
+        "turns": [{**t, "think_ms": think_ms(t)} for t in reversed(turns[-8:])],
         "count": len(turns),
+        "language": language,
+        "where": where(language),
+        "tally": dict(_tally),
         "proof": proof(),
         "tavily": dict(_tavily) or None,
         "health": _health(),
@@ -369,9 +417,20 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
 
 
 def family_state() -> Dict[str, Any]:
-    return {"shared": [{"id": s["id"], "note": s["note"],
-                        "when": datetime.fromtimestamp(s["at"]).strftime("%A %-d %B, %-I:%M %p").replace("AM", "am").replace("PM", "pm")}
-                       for s in reversed(board.shared())]}
+    """What family see: only what the person shared, with the household's language and the name the
+    settings page gave (so the page can say "Hello" in Spanish, and "Rosa" rather than "they")."""
+    from andy_companion import settings, words
+
+    chosen = settings.get()
+    lg = "es" if chosen.get("language") == "es" else "en"
+
+    def when(at: float) -> str:
+        dt = datetime.fromtimestamp(at)
+        clock = dt.strftime("%H:%M") if lg == "es" else dt.strftime("%-I:%M %p").replace("AM", "am").replace("PM", "pm")
+        return f"{words.date_shown(dt, lg, with_weekday=True)}, {clock}"
+
+    return {"shared": [{"id": s["id"], "note": s["note"], "when": when(s["at"])} for s in reversed(board.shared())],
+            "language": lg, "person_name": chosen.get("person_name") or None}
 
 
 def setup_state() -> Dict[str, Any]:
@@ -383,6 +442,34 @@ def setup_state() -> Dict[str, Any]:
     return {"settings": setup_page.state(), "kept": kept.summary(), "now": live_state(), "tavily": dict(_tavily) or None,
             "links": {"screen": f"/screen?t={t['screen']}", "family": f"/family?k={t['family']}",
                       "hood": f"/hood?t={t['hood']}"}}
+
+
+# The kind page for a page link whose token no longer opens it. The token is never echoed back.
+EXPIRED = {
+    "/setup": {"en": ("Settings link replaced", "This settings link has been replaced.",
+                      "Ask Andy: \u201cAndy, show the settings code\u201d, and point your phone's camera at the TV."),
+               "es": ("Enlace de ajustes reemplazado", "Este enlace de ajustes ha sido reemplazado.",
+                      "Pídale a Andy: «Andy, muestra el código de ajustes», y apunte la cámara de su teléfono a la televisión.")},
+    "/family": {"en": ("Family link replaced", "This family link has been replaced.",
+                       "Ask whoever set up Andy for the new one."),
+                "es": ("Enlace familiar reemplazado", "Este enlace familiar ha sido reemplazado.",
+                       "Pida el nuevo a quien configuró a Andy.")},
+    "/hood": {"en": ("Link replaced", "This link has been replaced.",
+                     "The gear on Andy's screen opens Under the hood."),
+              "es": ("Enlace reemplazado", "Este enlace ha sido reemplazado.",
+                     "El engranaje en la pantalla de Andy abre «Por dentro».")},
+}
+
+
+def expired_page(path: str, language: Optional[str] = None) -> bytes:
+    import html
+
+    lg = language if language in ("en", "es") else _language()
+    title, head, line = EXPIRED[path][lg]
+    page = (PAGES / "expired.html").read_text()
+    for key, value in (("lang", lg), ("title", title), ("head", head), ("line", line)):
+        page = page.replace("{{" + key + "}}", html.escape(value, quote=False))   # text, and lang in ""
+    return page.encode()
 
 
 def _ok(token: Optional[str], kind: str) -> bool:
@@ -434,7 +521,14 @@ class Handler(BaseHTTPRequestHandler):
         self._send(code, json.dumps(data).encode(), "application/json")
 
     def _page(self, name: str) -> None:
-        self._send(200, (PAGES / name).read_bytes(), "text/html; charset=utf-8")
+        body = (PAGES / name).read_bytes()
+        if name == "hood.html" and _language() == "es":       # the TV's Spanish menu opens it: the page in Spanish
+            body = body.replace(b'<html lang="en">', b'<html lang="es">', 1)
+        self._send(200, body, "text/html; charset=utf-8")
+
+    def _expired(self, path: str) -> None:
+        """A page link that no longer opens (replaced, or mistyped): a kind page saying what to do, still a 404."""
+        self._send(404, expired_page(path), "text/html; charset=utf-8")
 
     def do_GET(self) -> None:  # noqa: N802
         url = urlparse(self.path)
@@ -462,6 +556,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(family_state())
         if url.path in FONTS:           # Andy's own copy of its typeface; no token, nothing private
             return self._send(200, (PAGES / FONTS[url.path]).read_bytes(), "font/woff2")
+        if url.path in EXPIRED:
+            return self._expired(url.path)
         if url.path == "/frame" and _ok(q.get("t"), "screen"):
             data = frame()
             if data:

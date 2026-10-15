@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Andy's settings</title>
 <link rel="icon" href="data:,">
 <style>
@@ -12,321 +12,766 @@
   @font-face { font-family: "Atkinson Hyperlegible"; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-hyperlegible-700.woff2") format("woff2"); }
 </style>
 <style>
-  /* The family page's colours and type, so a helper sees one product. Every setting is a plain
-     question with its answer beside it; saving says exactly what Andy will tell the person. */
-  :root { --ground: #e7eee3; --ink: #1d2a1f; --soft: #52634f; --mark: #2f6f5e; --panel: #f7faf5; --rule: #cbd8c6; --error: #9b2c2c; }
+  /* Andy Glass on a phone (decision 0005): the TV's afternoon colours by day and its evening navy and gold
+     in dark mode, its soft lights behind, its lit panel edges and round corners. Unlike the TV, no text sits
+     on see-through glass: every panel is solid. Every text colour reaches 7:1 against what is behind it,
+     lights included, and every field's outline 3:1 (tests/test_phone_pages.py). */
+  :root {
+    --ground: #e1ebdc; --ink: #1d2a1f; --soft: #334335; --mark: #184a3d; --on-mark: #f7faf5;
+    --panel: #f7faf5; --field: #ffffff; --chosen: #e4efe8; --line: #6f816b; --rule: #c7d5c1;
+    --error: #7d1a1a; --on-error: #f7faf5; --edge: #d3dfcd; --shine: rgba(255, 255, 255, .9);
+    --shadow: rgba(40, 70, 40, .14); --orb: #184a3d;
+    --glow1: #fff0c0; --glow2: #c4e6c6; --glow3: #bcdff0; --glow-a: .5;
+    --r: 20px; --r-in: 16px;
+  }
   @media (prefers-color-scheme: dark) {
-    :root { --ground: #1a2420; --ink: #e8efe6; --soft: #a9b9a8; --mark: #8fd0b8; --panel: #212d28; --rule: #33443c; --error: #f2a3a3; }
+    :root {
+      --ground: #1c2543; --ink: #eef1f7; --soft: #d3d9e6; --mark: #f6dc96; --on-mark: #1c2543;
+      --panel: #2b3658; --field: #1c2543; --chosen: #34406a; --line: #8a96bd; --rule: #4a5784;
+      --error: #ffd3ca; --on-error: #1c2543; --edge: rgba(255, 255, 255, .12); --shine: rgba(255, 255, 255, .18);
+      --shadow: rgba(0, 0, 0, .35); --orb: #f6dc96;
+      --glow1: #4a5fa8; --glow2: #7b4d86; --glow3: #a0662f; --glow-a: .3;
+    }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--ground); color: var(--ink); font: 19px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif; }
-  main { max-width: 38rem; margin: 0 auto; padding: 28px 16px 48px; }
-  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 6px; }
-  .lede { color: var(--soft); margin: 0 0 20px; }
-  fieldset { border: 0; border-top: 1px solid var(--rule); margin: 26px 0 0; padding: 18px 0 0; }
-  legend { font-size: 22px; font-weight: 700; padding: 0; }
-  label, .group { display: block; font-weight: 700; margin: 16px 0 6px; }
-  input[type=text], textarea { width: 100%; font: inherit; color: inherit; background: var(--panel);
-                               border: 2px solid var(--rule); padding: 12px; border-radius: 6px; }
-  textarea { min-height: 96px; resize: vertical; }
-  .choices { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  .choices label { display: flex; align-items: center; gap: 10px; margin: 0; font-weight: 400; background: var(--panel);
-                   border: 2px solid var(--rule); border-radius: 6px; padding: 10px 14px; cursor: pointer; }
-  .choices input { width: 22px; height: 22px; accent-color: var(--mark); }
-  .choices label:has(input:checked) { border-color: var(--mark); font-weight: 700; }
-  input[type=range] { width: 100%; accent-color: var(--mark); height: 32px; }
-  .volume { display: flex; justify-content: space-between; color: var(--soft); font-size: 16px; }
-  input:focus-visible, textarea:focus-visible, button:focus-visible, .choices label:has(input:focus-visible) {
-    outline: 3px solid var(--mark); outline-offset: 2px; }
-  button { margin-top: 18px; font: inherit; font-weight: 700; color: var(--ground); background: var(--mark); border: 0;
-           padding: 13px 22px; border-radius: 6px; cursor: pointer; }
-  button.quiet { background: transparent; color: var(--mark); border: 2px solid var(--mark); }
-  .hint { font-size: 16px; color: var(--soft); margin: 6px 0 0; }
-  .status { min-height: 1.5em; margin-top: 12px; }
-  .status.error { color: var(--error); }
-  .hours { display: flex; align-items: center; gap: 12px; }
-  select { font: inherit; color: inherit; background: var(--panel); border: 2px solid var(--rule); border-radius: 6px; padding: 10px; }
-  .kept-group { margin-top: 18px; }
-  .kept-group h3 { font-size: 18px; margin: 0 0 6px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 19px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif;
+         -webkit-text-size-adjust: 100%; }
+
+  /* The TV's three soft lights, still, behind the top of the page. */
+  .scene { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .glow { position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%; opacity: var(--glow-a); filter: blur(70px); }
+  .g1 { background: var(--glow1); left: -30vmax; top: -40vmax; }
+  .g2 { background: var(--glow2); right: -35vmax; top: -20vmax; }
+  .g3 { background: var(--glow3); left: 10vmax; top: 15vmax; opacity: calc(var(--glow-a) * .6); }
+
+  main { max-width: 40rem; margin: 0 auto; padding: 22px 16px 150px; }
+  .brand { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; font-weight: 700; font-size: 20px; letter-spacing: .01em; }
+  .orb { flex: none; width: 18px; height: 18px; border-radius: 50%;
+         background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .6), transparent 55%), var(--orb);
+         box-shadow: 0 0 14px var(--orb); }
+  @media (prefers-reduced-motion: no-preference) { body.busy .orb { animation: breathe 1.6s ease-in-out infinite; } }
+  @keyframes breathe { 50% { opacity: .45; transform: scale(.85); } }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -.01em; }
+  .lede { color: var(--soft); margin: 0 0 18px; }
+
+  .panel { background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r); padding: 20px 18px 22px;
+           margin: 16px 0 0; box-shadow: inset 0 1px 0 var(--shine), 0 10px 28px var(--shadow); scroll-margin-top: 16px; }
+  h2 { font-size: 25px; line-height: 1.2; margin: 0 0 6px; }
+  h3 { font-size: 20px; margin: 18px 0 8px; }
+
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 4px; }
+  .jump a { display: inline-flex; align-items: center; min-height: 48px; padding: 8px 16px; border-radius: 999px;
+            background: var(--panel); border: 1px solid var(--edge); box-shadow: inset 0 1px 0 var(--shine);
+            color: var(--mark); font-weight: 700; font-size: 17px; text-decoration: none; }
+
+  label, .group { display: block; font-weight: 700; margin: 20px 0 8px; }
+  input[type=text], textarea, select { width: 100%; min-height: 52px; font: inherit; color: inherit; background: var(--field);
+                                       border: 2px solid var(--line); padding: 11px 14px; border-radius: var(--r-in); }
+  textarea { min-height: 104px; resize: vertical; }
+  select { width: auto; min-width: 8.5em; }
+  .choices { display: flex; flex-wrap: wrap; gap: 10px; }
+  .choices.stack { flex-direction: column; }
+  .choices label { display: flex; align-items: center; gap: 12px; margin: 0; min-height: 52px; font-weight: 400; cursor: pointer;
+                   background: var(--field); border: 2px solid var(--line); border-radius: var(--r-in); padding: 11px 16px; }
+  .choices input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: var(--mark); }
+  .choices label:has(input:checked) { border-color: var(--mark); box-shadow: inset 0 0 0 1px var(--mark); background: var(--chosen); font-weight: 700; }
+  .choices + .choices { margin-top: 10px; }
+  .hours { display: grid; grid-template-columns: auto minmax(0, 12em); align-items: center; gap: 10px 12px; padding: 2px 0 4px 18px; }
+  .hours select { width: 100%; }
+  input[type=range] { width: 100%; height: 48px; margin: 0; accent-color: var(--mark); }
+  input[type=range]:disabled { opacity: .45; }
+  .ends { display: flex; justify-content: space-between; color: var(--soft); font-size: 17px; }
+  .hint { font-size: 17px; color: var(--soft); margin: 8px 0 0; }
+  input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible, summary:focus-visible,
+  .choices label:has(input:focus-visible) { outline: 3px solid var(--mark); outline-offset: 2px; }
+
+  button, .button { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin: 18px 0 0;
+                    padding: 11px 22px; font: inherit; font-weight: 700; color: var(--on-mark); background: var(--mark);
+                    border: 2px solid var(--mark); border-radius: var(--r-in); cursor: pointer; text-decoration: none;
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22); }
+  button.quiet, .button.quiet { color: var(--mark); background: transparent; box-shadow: none; }
+  button.danger { color: var(--error); border-color: var(--error); background: transparent; box-shadow: none; }
+  button.armed { color: var(--on-error); background: var(--error); border-color: var(--error); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .row > button, .row > .button { margin-top: 12px; }
+  .status { min-height: 1.5em; margin: 12px 0 0; }
+  .status:empty { min-height: 0; margin: 0; }
+  .status.error { color: var(--error); font-weight: 700; }
+
   .kept-list { list-style: none; padding: 0; margin: 0; }
-  .kept-list li { display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--panel);
-                  border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; }
-  .kept-list .t { min-width: 0; }
-  .kept-list .when { display: block; font-size: 15px; color: var(--soft); }
-  .kept-list button { margin: 0; padding: 8px 14px; flex: none; }
-  .none { color: var(--soft); font-size: 16px; margin: 4px 0 0; }
-  button.danger { border-color: var(--error); color: var(--error); }
-  .facts { list-style: none; padding: 0; margin: 8px 0 0; }
-  .facts li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
-  .facts span { color: var(--soft); text-align: right; }
-  .links { list-style: none; padding: 0; margin: 10px 0 0; }
-  .links li { background: var(--panel); border-left: 6px solid var(--mark); padding: 12px 14px; margin-bottom: 10px; }
-  .links strong { display: block; }
-  .links a { color: var(--mark); word-break: break-all; font-size: 16px; }
-  .honest { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 16px; color: var(--soft); }
+  .kept-list li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; justify-content: space-between; margin: 0 0 10px;
+                  background: var(--field); border: 1px solid var(--rule); border-radius: var(--r-in); padding: 10px 10px 10px 16px; }
+  .kept-list .t { flex: 1 1 8em; min-width: 0; overflow-wrap: anywhere; }
+  .when { display: block; font-size: 17px; color: var(--soft); }
+  .kept-list button { margin: 0; flex: none; min-height: 48px; padding: 8px 16px; }
+  .none { color: var(--soft); font-size: 17px; margin: 14px 0 0; }
+
+  .link { margin: 18px 0 0; padding: 0 0 18px; border-bottom: 1px solid var(--rule); }
+  .link:last-of-type { border-bottom: 0; }
+  .link strong { display: block; font-size: 20px; }
+  .link p { margin: 2px 0 0; }
+  .link input[readonly] { margin-top: 12px; font-size: 16px; }
+
+  .facts { list-style: none; padding: 0; margin: 10px 0 0; }
+  .facts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .facts span { color: var(--soft); }
+
+  details.panel > summary { display: flex; align-items: center; gap: 12px; min-height: 48px; cursor: pointer; list-style: none; }
+  details.panel > summary::-webkit-details-marker { display: none; }
+  details.panel > summary h2 { margin: 0; flex: 1; }
+  details.panel > summary .sum-state { display: block; font-size: 17px; font-weight: 400; color: var(--soft); margin-top: 2px; }
+  details.panel > summary::after { content: ""; flex: none; width: 14px; height: 14px; margin: 0 6px 0 0;
+                                   border-right: 3px solid var(--mark); border-bottom: 3px solid var(--mark); transform: rotate(45deg); }
+  details.panel[open] > summary::after { transform: rotate(225deg); }
+
+  .honest { margin: 28px 4px 0; font-size: 17px; color: var(--soft); }
+
+  /* Appears once anything changes; the TV's caption colours, solid. */
+  .savebar { position: fixed; z-index: 10; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+             max-width: 39rem; margin: 0 auto; display: flex; align-items: center; gap: 12px; justify-content: space-between;
+             padding: 10px 10px 10px 20px; border-radius: var(--r); background: var(--ink); color: var(--ground);
+             box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 14px 36px rgba(0, 0, 0, .3); }
+  .savebar p { margin: 0; font-weight: 700; }
+  .savebar button { margin: 0; flex: none; color: var(--ink); background: var(--ground); border-color: var(--ground); }
+  .savebar button:focus-visible { outline-color: var(--ground); }
+  .savebar.done { padding-right: 20px; }
+  .savebar.done p { font-weight: 400; }
+  @media (prefers-reduced-motion: no-preference) { .savebar:not([hidden]) { animation: rise .22s ease-out; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<div class="scene" aria-hidden="true"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
 <main>
+  <p class="brand"><span class="orb" aria-hidden="true"></span>Andy</p>
+
   <section id="who">
-    <h1>Andy's settings</h1>
-    <p class="lede">Set Andy up, see everything Andy keeps, and delete any of it.</p>
-    <form id="name-form">
-      <label for="name">Your first name</label>
+    <h1 data-t="title">Andy's settings</h1>
+    <p class="lede" data-t="lede_who">Set Andy up, see everything Andy remembers, and delete any of it.</p>
+    <form id="name-form" class="panel">
+      <label for="name" style="margin-top:0" data-t="your_name">Your first name</label>
       <input type="text" id="name" autocomplete="given-name" maxlength="40" required>
-      <p class="hint">Andy tells them who changed what, so nothing changes behind their back.</p>
-      <button type="submit">Continue</button>
+      <p class="hint" data-t="who_hint">Andy tells them who changed what, so nothing changes without them knowing.</p>
+      <button type="submit" data-t="continue">Continue</button>
+      <p class="status" id="who-status" role="status" aria-live="polite"></p>
     </form>
   </section>
 
-  <form id="setup" hidden>
-    <h1>Andy's settings</h1>
-    <p class="lede">Change what you need, then save. Andy tells them about every change. They can also change most of this by talking to Andy.</p>
+  <form id="setup" hidden novalidate>
+    <h1 data-t="title">Andy's settings</h1>
+    <p class="lede" data-t="lede">Change what you need, then save. Andy tells them about every change, and most of this can also be changed by talking to Andy.</p>
 
-    <fieldset>
-      <legend>Where Andy lives</legend>
-      <label for="place">Town and state</label>
+    <nav data-ta="jump_aria" aria-label="Sections">
+      <ul class="jump">
+        <li><a href="#kept-panel" data-t="j_kept">What Andy remembers</a></li>
+        <li><a href="#links-panel" data-t="j_family">Family link</a></li>
+        <li><a href="#home-panel" data-t="j_home">Home and news</a></li>
+        <li><a href="#speak-panel" data-t="j_speak">Speaking</a></li>
+        <li><a href="#screen-panel" data-t="j_screen">The screen</a></li>
+        <li><a href="#tv" data-t="j_tv">The TV's position</a></li>
+      </ul>
+    </nav>
+
+    <section class="panel" id="kept-panel" aria-labelledby="kept-h">
+      <h2 id="kept-h" data-t="kept_h">What Andy remembers</h2>
+      <p class="hint" data-t="kept_hint">Everything Andy keeps, besides these settings. Andy tells them about anything you delete.</p>
+      <div id="kept"></div>
+      <button type="button" class="danger" id="delete-all" data-t="delete_all">Delete everything Andy keeps</button>
+      <p class="status" id="kept-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="links-panel" aria-labelledby="links-h">
+      <h2 id="links-h" data-t="family_h">The family link</h2>
+      <div class="link">
+        <strong data-t="family_title">Family page</strong>
+        <p data-t="family_text">Send it to family. Family see only what they asked Andy to share, and Andy tells them who looked.</p>
+        <div class="row">
+          <button type="button" data-copy="family" data-t="copy">Copy link</button>
+          <button type="button" class="quiet" id="share-family" data-t="share" hidden>Share</button>
+          <a class="button quiet" id="text-family" href="#" data-t="text_it">Send as a text</a>
+        </div>
+        <input type="text" readonly id="raw-family" hidden aria-label="Family page link">
+        <button type="button" class="quiet" id="new-family" data-t="new_family">Make a new family link</button>
+        <p class="hint" data-t="new_family_hint">The old family link stops working for everyone who has it.</p>
+      </div>
+      <div class="link">
+        <strong data-t="screen_title">Andy's screen</strong>
+        <p data-t="screen_text">Open it on the TV or monitor beside Andy.</p>
+        <div class="row">
+          <button type="button" class="quiet" data-copy="screen" data-t="copy">Copy link</button>
+          <a class="button quiet" id="open-screen" href="#" target="_blank" rel="noopener" data-t="open">Open</a>
+        </div>
+        <input type="text" readonly id="raw-screen" hidden aria-label="Andy's screen link">
+      </div>
+      <div class="link">
+        <strong data-t="hood_title">Under the hood</strong>
+        <p data-t="hood_text">How fast each answer was, for the curious.</p>
+        <div class="row">
+          <button type="button" class="quiet" data-copy="hood" data-t="copy">Copy link</button>
+          <a class="button quiet" id="open-hood" href="#" target="_blank" rel="noopener" data-t="open">Open</a>
+        </div>
+        <input type="text" readonly id="raw-hood" hidden aria-label="Under the hood link">
+      </div>
+      <div class="link">
+        <strong data-t="settings_title">This page</strong>
+        <button type="button" class="quiet" id="new-settings" data-t="new_settings">Make a new settings link</button>
+        <p class="hint" data-t="new_settings_hint">This page's link stops working.</p>
+      </div>
+      <p class="status" id="link-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="home-panel" aria-labelledby="home-h">
+      <h2 id="home-h" data-t="home_h">Home and news</h2>
+      <label for="person_name" data-t="person_name">Their first name (optional)</label>
+      <input type="text" id="person_name" maxlength="40" autocomplete="off">
+      <p class="hint" data-t="person_hint">Shown on this page, as in “What Andy remembers for Rosa”.</p>
+      <label for="place" data-t="place">Town and state</label>
       <input type="text" id="place" maxlength="120" placeholder="Harbor Bay, Florida">
-      <p class="hint">For local news, what's on, and opening hours nearby.</p>
-    </fieldset>
-
-    <fieldset>
-      <legend>Local news and what's on</legend>
-      <label for="news">Local news sites Andy reads first</label>
+      <p class="hint" data-t="place_hint">For local news, what's on, and opening hours nearby.</p>
+      <label for="news" data-t="news">Local news sites Andy reads first</label>
       <textarea id="news" placeholder="wlrn.org&#10;miamiherald.com"></textarea>
-      <p class="hint">One per line. Andy always says which site the news came from.</p>
-      <label for="events">Pages that list what's on</label>
+      <p class="hint" data-t="news_hint">One per line. Andy always says which site the news came from.</p>
+      <label for="events" data-t="events">Pages that list what's on</label>
       <textarea id="events" placeholder="harborbay.example/events"></textarea>
-      <p class="hint">A library, a community centre or the town's calendar. One per line.</p>
-      <p class="hint" id="events-found" hidden>Found on the town's own website: <a id="events-found-link" href="#" rel="noopener"></a>
-        <button type="button" class="quiet" id="events-use">Use it</button></p>
-    </fieldset>
+      <p class="hint" data-t="events_hint">A library, a community centre or the town's calendar. One per line.</p>
+      <div id="events-found" hidden>
+        <p class="hint"><span data-t="events_found">Found on the town's own website:</span> <a id="events-found-link" href="#" rel="noopener"></a></p>
+        <button type="button" class="quiet" id="events-use" data-t="use_it">Use it</button>
+      </div>
+    </section>
 
-    <fieldset>
-      <legend>How Andy speaks</legend>
-      <p class="group" id="lang-l">Language</p>
+    <section class="panel" id="speak-panel" aria-labelledby="speak-h">
+      <h2 id="speak-h" data-t="speak_h">How Andy speaks</h2>
+      <p class="group" id="lang-l" data-t="language">Language</p>
       <div class="choices" role="radiogroup" aria-labelledby="lang-l">
         <label><input type="radio" name="language" value="en"> English</label>
         <label><input type="radio" name="language" value="es"> Español</label>
       </div>
-      <p class="hint">Andy answers in whichever language it hears; this sets the screen and the daily plan.</p>
-      <p class="group" id="pace-l">Pace</p>
+      <p class="hint" data-t="language_hint">Andy answers in whichever language it hears; this sets the screen, these pages and the daily plan.</p>
+      <p class="group" id="pace-l" data-t="pace">Pace</p>
       <div class="choices" role="radiogroup" aria-labelledby="pace-l">
-        <label><input type="radio" name="pace" value="normal"> Normal</label>
-        <label><input type="radio" name="pace" value="slow"> Slower</label>
+        <label><input type="radio" name="pace" value="normal"> <span data-t="pace_normal">Normal</span></label>
+        <label><input type="radio" name="pace" value="slow"> <span data-t="pace_slow">Slower</span></label>
       </div>
-      <label for="volume">Volume <span id="volume-v"></span></label>
+      <label for="volume"><span data-t="volume">Volume</span> <span id="volume-v"></span></label>
       <input type="range" id="volume" min="10" max="100" step="5">
-      <div class="volume"><span>Quieter</span><span>Louder</span></div>
-      <div class="choices">
-        <label><input type="checkbox" id="offers"> Once in the afternoon, Andy may offer a story, a riddle or a bit of history</label>
-        <label><input type="checkbox" id="greet_arrival"> Andy says "welcome back" when someone comes in after a few hours</label>
+      <div class="ends"><span data-t="quieter">Quieter</span><span data-t="louder">Louder</span></div>
+      <div class="choices stack" style="margin-top:18px">
+        <label><input type="checkbox" id="offers"> <span data-t="offers">Once in the afternoon, Andy may offer a story, a riddle or a bit of history</span></label>
+        <label><input type="checkbox" id="greet_arrival"> <span data-t="greet">Andy says “welcome back” when someone comes in after a few hours</span></label>
       </div>
-    </fieldset>
+    </section>
 
-    <fieldset>
-      <legend>The screen</legend>
-      <div class="choices">
-        <label><input type="checkbox" id="captions"> Show Andy's words on the screen (captions)</label>
-        <label><input type="checkbox" id="screen_photos"> Show family photos when Andy is idle</label>
-        <label><input type="checkbox" id="screen_calm"> Calm screen: no movement, no see-through panels</label>
+    <section class="panel" id="screen-panel" aria-labelledby="screen-h">
+      <h2 id="screen-h" data-t="screen_h">The screen</h2>
+      <div class="choices stack" style="margin-top:14px">
+        <label><input type="checkbox" id="captions"> <span data-t="captions">Show Andy's words on the screen (captions)</span></label>
+        <label><input type="checkbox" id="screen_photos"> <span data-t="photos">Show family photos when Andy is idle</span></label>
+        <label><input type="checkbox" id="screen_calm"> <span data-t="calm">Calm screen: no movement, no see-through panels</span></label>
       </div>
-      <p class="group" id="night-h">The night clock</p>
-      <div class="choices" role="radiogroup" aria-labelledby="night-h">
-        <label><input type="radio" name="night_clock" value="hours"> At these hours:</label>
-        <div class="hours" id="night-hours"><select id="night_from" aria-label="From"></select><span>until</span><select id="night_to" aria-label="Until"></select></div>
-        <label><input type="radio" name="night_clock" value="asleep"> While Andy is asleep</label>
-        <label><input type="radio" name="night_clock" value="off"> Never</label>
+      <p class="group" id="night-h" data-t="night">At night, show only a clock:</p>
+      <div class="choices stack" role="radiogroup" aria-labelledby="night-h">
+        <label><input type="radio" name="night_clock" value="hours"> <span data-t="night_hours">at these hours</span></label>
+        <div class="hours" id="night-hours"><span data-t="from">from</span><select id="night_from" data-ta="from" aria-label="from"></select>
+          <span data-t="until">until</span><select id="night_to" data-ta="until" aria-label="until"></select></div>
+        <label><input type="radio" name="night_clock" value="asleep"> <span data-t="night_asleep">while Andy sleeps</span></label>
+        <label><input type="radio" name="night_clock" value="off"> <span data-t="night_never">never</span></label>
       </div>
-      <p class="hint">The night clock shows the time and date in soft colours; family photos, reminders and the
-        weather rest until morning. Anything Andy shows you at night still appears.</p>
-    </fieldset>
+      <p class="hint" data-t="night_hint">The clock shows the time and date in soft colours; family photos, reminders and the weather rest until morning. Anything Andy puts up at night still shows.</p>
+    </section>
 
-    <fieldset>
-      <legend>Where the screen is</legend>
-      <p class="hint">When Andy puts something new on the screen, it turns to look at it for a moment, so
-        your eyes follow. Left and right as Andy sees them: stand behind Andy and look the way it looks.</p>
-      <p class="group" id="tv-side-l">The screen is</p>
-      <div class="choices" role="radiogroup" aria-labelledby="tv-side-l">
-        <label><input type="radio" name="tv_side" value="none"> Not set (Andy won't look)</label>
-        <label><input type="radio" name="tv_side" value="left"> To Andy's left</label>
-        <label><input type="radio" name="tv_side" value="ahead"> Straight ahead</label>
-        <label><input type="radio" name="tv_side" value="right"> To Andy's right</label>
+    <details class="panel" id="tv">
+      <summary><h2><span data-t="tv_h">Help Andy look at the TV</span><span class="sum-state" id="tv-sum"></span></h2></summary>
+      <p class="hint" data-t="tv_hint">When Andy puts something new on the screen, it turns to look at it for a moment, so eyes follow. Left and right as Andy sees them: stand behind Andy and look the way it looks.</p>
+      <p class="group" id="tv-side-l" data-t="tv_side">Where the TV is</p>
+      <div class="choices stack" role="radiogroup" aria-labelledby="tv-side-l">
+        <label><input type="radio" name="tv_side" value="none"> <span data-t="tv_none">Not set (Andy won't look)</span></label>
+        <label><input type="radio" name="tv_side" value="left"> <span data-t="tv_left">To Andy's left</span></label>
+        <label><input type="radio" name="tv_side" value="ahead"> <span data-t="tv_ahead">Straight ahead</span></label>
+        <label><input type="radio" name="tv_side" value="right"> <span data-t="tv_right">To Andy's right</span></label>
       </div>
-      <label for="tv_far">How far round <span id="tv_far-v"></span></label>
+      <label for="tv_far"><span data-t="tv_far">How far to the side</span> <span id="tv_far-v"></span></label>
       <input type="range" id="tv_far" min="10" max="120" step="5">
-      <div class="volume"><span>A little</span><span>Beside Andy</span></div>
-      <p class="group" id="tv-height-l">Height</p>
-      <div class="choices" role="radiogroup" aria-labelledby="tv-height-l">
-        <label><input type="radio" name="tv_height" value="above"> Above Andy's eyes</label>
-        <label><input type="radio" name="tv_height" value="level"> About level</label>
-        <label><input type="radio" name="tv_height" value="below"> Below</label>
+      <div class="ends"><span data-t="tv_little">A little</span><span data-t="tv_beside">Beside Andy</span></div>
+      <p class="group" id="tv-height-l" data-t="tv_height">Height</p>
+      <div class="choices stack" role="radiogroup" aria-labelledby="tv-height-l">
+        <label><input type="radio" name="tv_height" value="above"> <span data-t="tv_above">Above Andy's eyes</span></label>
+        <label><input type="radio" name="tv_height" value="level"> <span data-t="tv_level">About level</span></label>
+        <label><input type="radio" name="tv_height" value="below"> <span data-t="tv_below">Below</span></label>
       </div>
-      <div class="choices">
-        <label><input type="checkbox" id="tv_glance"> Look at the screen when showing something</label>
+      <div class="choices stack" style="margin-top:18px">
+        <label><input type="checkbox" id="tv_glance"> <span data-t="tv_glance">Look at the screen when showing something</span></label>
       </div>
-      <button type="button" class="quiet" id="tv-try">Save and show me</button>
+      <button type="button" class="quiet" id="tv-try" data-t="tv_try">Save and show me</button>
       <p class="status" id="tv-status" role="status" aria-live="polite"></p>
-    </fieldset>
+    </details>
 
-    <button type="submit">Save</button>
-    <p class="status" id="status" role="status" aria-live="polite"></p>
-
-    <fieldset>
-      <legend>Links</legend>
-      <ul class="links">
-        <li><strong>Andy's screen</strong>Open on the TV or monitor beside Andy.<br><a id="l-screen" href="#"></a></li>
-        <li><strong>Family page</strong>Send to family. They see only what was shared, and Andy tells them who looked.<br><a id="l-family" href="#"></a></li>
-        <li><strong>Under the hood</strong>How fast each answer was, for the curious.<br><a id="l-hood" href="#"></a></li>
-      </ul>
-      <button type="button" class="quiet" id="new-family">Make a new family link</button>
-      <p class="hint">The old family link stops working for everyone who has it.</p>
-      <button type="button" class="quiet" id="new-settings">Make a new settings link</button>
-      <p class="hint">This page's link stops working. To open settings again, say "Andy, show the settings code".</p>
-      <p class="status" id="link-status" role="status" aria-live="polite"></p>
-    </fieldset>
-
-    <fieldset>
-      <legend>What Andy keeps</legend>
-      <p class="hint">Everything Andy keeps about them, besides these settings. Deleting anything is told to them by Andy.</p>
-      <div id="kept"></div>
-      <button type="button" class="quiet danger" id="delete-all">Delete everything Andy keeps</button>
-      <p class="status" id="kept-status" role="status" aria-live="polite"></p>
-    </fieldset>
-
-    <fieldset>
-      <legend>Andy now</legend>
+    <section class="panel" id="now-panel" aria-labelledby="now-h">
+      <h2 id="now-h" data-t="now_h">Andy now</h2>
       <ul class="facts">
-        <li><strong>Doing</strong><span id="now-state">…</span></li>
-        <li><strong>Web searches (Tavily)</strong><span id="now-tavily">…</span></li>
+        <li><strong data-t="now_doing">Doing</strong><span id="now-state">…</span></li>
+        <li><strong data-t="now_tavily">Web searches (Tavily)</strong><span id="now-tavily">…</span></li>
       </ul>
-      <p class="hint">Timings and the services behind Andy are on the under-the-hood page.</p>
-    </fieldset>
+      <p class="hint" data-t="now_hint">Timings and the services behind Andy are on the under-the-hood page.</p>
+    </section>
 
-    <p class="honest">Settings are kept on this computer only. This page works only on your home network, with this private link.</p>
+    <p class="honest" data-t="honest">Settings are kept on this computer only. This page works only on your home network, with this private link.</p>
+
+    <div class="savebar" id="savebar" hidden>
+      <p id="bar-text" role="status" aria-live="polite"></p>
+      <button type="submit" id="save" data-t="save">Save</button>
+    </div>
   </form>
+
+  <section id="moved" class="panel" hidden><p id="moved-text" style="margin:0"></p></section>
 </main>
+
+<!-- Every word on the page, in English and Spanish (usted; the TV's words where they overlap). {them},
+     {they}, {for}, {a}, {de}, {para} and {sub} become the person's first name when it is set. -->
+<script type="application/json" id="ui">
+{
+  "en": {
+    "title": "Andy's settings",
+    "lede_who": "Set Andy up, see everything Andy remembers, and delete any of it.",
+    "your_name": "Your first name",
+    "who_hint": "Andy tells {them} who changed what, so nothing changes without {them} knowing.",
+    "continue": "Continue",
+    "lede": "Change what you need, then save. Andy tells {them} about every change, and most of this can also be changed by talking to Andy.",
+    "jump_aria": "Sections",
+    "j_kept": "What Andy remembers", "j_family": "Family link", "j_home": "Home and news", "j_speak": "Speaking",
+    "j_screen": "The screen", "j_tv": "The TV's position",
+    "kept_h": "What Andy remembers{for}",
+    "kept_hint": "Everything Andy keeps, besides these settings. Andy tells {them} about anything you delete.",
+    "k_reminder": "Reminders", "k_moment": "Remembered moments", "k_fact": "Remembered facts", "k_shared": "Shared with family",
+    "k_photo": "Photos from family", "photo_item": "Photo",
+    "none_yet": "None yet: {list}.", "nothing_kept": "Andy keeps nothing yet besides these settings.",
+    "delete": "Delete", "delete_armed": "Delete? Tap again", "delete_aria": "Delete {label}",
+    "delete_all": "Delete everything Andy keeps", "delete_all_armed": "Delete everything? Tap again",
+    "deleted_one": "Deleted “{label}”. Andy will tell {them} that {who} deleted it.",
+    "deleted_all": "Deleted {what}. Andy will tell {them} that {who} deleted it.",
+    "nothing_to_delete": "There was nothing to delete.",
+    "family_h": "The family link", "family_title": "Family page",
+    "family_text": "Send it to family. Family see only what {they} asked Andy to share, and Andy tells {them} who looked.",
+    "copy": "Copy link", "copied": "Copied", "share": "Share", "text_it": "Send as a text", "open": "Open",
+    "copy_failed": "Copy the link from the box above.", "share_text": "Andy's family page",
+    "new_family": "Make a new family link", "new_family_armed": "New family link? Tap again",
+    "new_family_hint": "The old family link stops working for everyone who has it.",
+    "new_family_done": "Done. Send the new family link to family.",
+    "screen_title": "Andy's screen", "screen_text": "Open it on the TV or monitor beside Andy.",
+    "hood_title": "Under the hood", "hood_text": "How fast each answer was, for the curious.",
+    "settings_title": "This page",
+    "new_settings": "Make a new settings link", "new_settings_armed": "New settings link? Tap again",
+    "new_settings_hint": "This page's link stops working. To open settings again, say “Andy, show the settings code”, or choose Settings on the TV.",
+    "new_settings_done": "Done. This link no longer works. To open settings again, say “Andy, show the settings code”, or choose Settings on the TV.",
+    "home_h": "Home and news",
+    "person_name": "Their first name (optional)",
+    "person_hint": "Shown on this page, as in “What Andy remembers for Rosa”.",
+    "place": "Town and state", "place_hint": "For local news, what's on, and opening hours nearby.",
+    "news": "Local news sites Andy reads first", "news_hint": "One per line. Andy always says which site the news came from.",
+    "events": "Pages that list what's on", "events_hint": "A library, a community centre or the town's calendar. One per line.",
+    "events_found": "Found on the town's own website:", "use_it": "Use it", "added_events": "Added. Save to keep it.",
+    "speak_h": "How Andy speaks", "language": "Language",
+    "language_hint": "Andy answers in whichever language it hears; this sets the screen, these pages and the daily plan.",
+    "pace": "Pace", "pace_normal": "Normal", "pace_slow": "Slower", "volume": "Volume", "quieter": "Quieter", "louder": "Louder",
+    "offers": "Once in the afternoon, Andy may offer a story, a riddle or a bit of history",
+    "greet": "Andy says “welcome back” when someone comes in after a few hours",
+    "screen_h": "The screen",
+    "captions": "Show Andy's words on the screen (captions)", "photos": "Show family photos when Andy is idle",
+    "calm": "Calm screen: no movement, no see-through panels",
+    "night": "At night, show only a clock:", "night_hours": "at these hours", "from": "from", "until": "until",
+    "night_asleep": "while Andy sleeps", "night_never": "never",
+    "night_hint": "The clock shows the time and date in soft colours; family photos, reminders and the weather rest until morning. Anything Andy puts up at night still shows.",
+    "midnight": "midnight", "noon": "noon", "am": "am", "pm": "pm",
+    "tv_h": "Help Andy look at the TV", "tv_unset": "Not set yet", "tv_set": "Set: {where}",
+    "tv_hint": "When Andy puts something new on the screen, it turns to look at it for a moment, so eyes follow. Left and right as Andy sees them: stand behind Andy and look the way it looks.",
+    "tv_side": "Where the TV is", "tv_none": "Not set (Andy won't look)", "tv_left": "To Andy's left", "tv_ahead": "Straight ahead",
+    "tv_right": "To Andy's right", "tv_far": "How far to the side", "tv_little": "A little", "tv_beside": "Beside Andy",
+    "tv_height": "Height", "tv_above": "Above Andy's eyes", "tv_level": "About level", "tv_below": "Below",
+    "tv_glance": "Look at the screen when showing something", "tv_try": "Save and show me",
+    "tv_need_side": "Choose where the TV is first.", "tv_need_glance": "Tick “Look at the screen when showing something” first.",
+    "tv_watch": "Watch Andy: it looks at the screen in a moment (if someone is with it and it isn't resting). If it looked somewhere else, change the direction and try again.",
+    "now_h": "Andy now", "now_doing": "Doing", "now_tavily": "Web searches (Tavily)",
+    "tavily_used": "{used} of {limit} credits this month", "tavily_none": "not reported yet",
+    "now_hint": "Timings and the services behind Andy are on the under-the-hood page.",
+    "honest": "Settings are kept on this computer only. This page works only on your home network, with this private link.",
+    "unsaved": "Unsaved changes", "save": "Save", "saving": "Saving…",
+    "saved": "Saved. Andy will tell {them} that {who} changed {what}.", "nothing_changed": "Nothing had changed.",
+    "not_saved": "Not saved. {error}", "and": "and",
+    "no_answer": "Andy's computer did not answer. Is it on?", "wrong": "Something went wrong; please try again.",
+    "changed": {}
+  },
+  "es": {
+    "title": "Ajustes de Andy",
+    "lede_who": "Configure a Andy, vea todo lo que Andy recuerda y borre lo que quiera.",
+    "your_name": "Su nombre",
+    "who_hint": "Andy le dice{a} quién cambió qué, para que nada cambie a sus espaldas.",
+    "continue": "Continuar",
+    "lede": "Cambie lo que necesite y guarde. Andy le cuenta{a} cada cambio, y casi todo esto también se puede cambiar hablando con Andy.",
+    "jump_aria": "Secciones",
+    "j_kept": "Lo que recuerda", "j_family": "Enlace de la familia", "j_home": "Casa y noticias", "j_speak": "Cómo habla",
+    "j_screen": "La pantalla", "j_tv": "Dónde está el televisor",
+    "kept_h": "Lo que Andy recuerda{para}",
+    "kept_hint": "Todo lo que Andy guarda, aparte de estos ajustes. Andy le cuenta{a} todo lo que usted borre.",
+    "k_reminder": "Recordatorios", "k_moment": "Momentos recordados", "k_fact": "Cosas recordadas", "k_shared": "Compartido con la familia",
+    "k_photo": "Fotos de la familia", "photo_item": "Foto",
+    "none_yet": "Nada todavía: {list}.", "nothing_kept": "Andy todavía no guarda nada aparte de estos ajustes.",
+    "delete": "Borrar", "delete_armed": "¿Borrar? Toque otra vez", "delete_aria": "Borrar {label}",
+    "delete_all": "Borrar todo lo que Andy guarda", "delete_all_armed": "¿Borrar todo? Toque otra vez",
+    "deleted_one": "Borrado: «{label}». Andy le dirá{a} que {who} lo borró.",
+    "deleted_all": "Todo borrado. Andy le dirá{a} que {who} lo borró.",
+    "nothing_to_delete": "No había nada que borrar.",
+    "family_h": "El enlace de la familia", "family_title": "Página de la familia",
+    "family_text": "Envíela a la familia. Solo verán lo que{sub} pidió a Andy que compartiera, y Andy le dice{a} quién miró.",
+    "copy": "Copiar el enlace", "copied": "Copiado", "share": "Compartir", "text_it": "Enviar por mensaje", "open": "Abrir",
+    "copy_failed": "Copie el enlace del recuadro de arriba.", "share_text": "La página de la familia de Andy",
+    "new_family": "Crear un nuevo enlace de la familia", "new_family_armed": "¿Nuevo enlace? Toque otra vez",
+    "new_family_hint": "El enlace anterior deja de funcionar para todos los que lo tengan.",
+    "new_family_done": "Hecho. Envíe el nuevo enlace a la familia.",
+    "screen_title": "La pantalla de Andy", "screen_text": "Ábrala en el televisor o el monitor junto a Andy.",
+    "hood_title": "Por dentro", "hood_text": "Lo rápido que fue cada respuesta, para los curiosos.",
+    "settings_title": "Esta página",
+    "new_settings": "Crear un nuevo enlace de ajustes", "new_settings_armed": "¿Nuevo enlace? Toque otra vez",
+    "new_settings_hint": "El enlace de esta página deja de funcionar. Para abrir los ajustes otra vez, diga «Andy, muestra el código de ajustes» o elija Ajustes en el televisor.",
+    "new_settings_done": "Hecho. Este enlace ya no funciona. Para abrir los ajustes otra vez, diga «Andy, muestra el código de ajustes» o elija Ajustes en el televisor.",
+    "home_h": "La casa y las noticias",
+    "person_name": "Nombre de la persona (opcional)",
+    "person_hint": "Aparece en esta página, como en «Lo que Andy recuerda para Rosa».",
+    "place": "Ciudad y estado", "place_hint": "Para las noticias locales, las actividades y los horarios cercanos.",
+    "news": "Sitios de noticias locales que Andy lee primero", "news_hint": "Uno por línea. Andy siempre dice de qué sitio viene la noticia.",
+    "events": "Páginas con las actividades", "events_hint": "Una biblioteca, un centro comunitario o el calendario de la ciudad. Una por línea.",
+    "events_found": "Encontrada en la web de la ciudad:", "use_it": "Usarla", "added_events": "Añadida. Guarde para conservarla.",
+    "speak_h": "Cómo habla Andy", "language": "Idioma",
+    "language_hint": "Andy responde en el idioma que oye; esto elige el de la pantalla, estas páginas y el plan del día.",
+    "pace": "Ritmo", "pace_normal": "Normal", "pace_slow": "Más despacio", "volume": "Volumen", "quieter": "Más bajo", "louder": "Más alto",
+    "offers": "Una vez por la tarde, Andy puede ofrecer un cuento, una adivinanza o un poco de historia",
+    "greet": "Andy dice «bienvenido» cuando alguien entra después de unas horas",
+    "screen_h": "La pantalla",
+    "captions": "Mostrar en la pantalla lo que dice Andy (subtítulos)", "photos": "Mostrar fotos de la familia cuando Andy está en reposo",
+    "calm": "Pantalla tranquila: sin movimiento ni paneles transparentes",
+    "night": "Por la noche, mostrar solo un reloj:", "night_hours": "a estas horas", "from": "de", "until": "hasta",
+    "night_asleep": "mientras Andy duerme", "night_never": "nunca",
+    "night_hint": "El reloj muestra la hora y la fecha en colores suaves; las fotos de la familia, los recordatorios y el tiempo descansan hasta la mañana. Lo que Andy muestre de noche aparece igual.",
+    "midnight": "medianoche", "noon": "mediodía", "am": "a. m.", "pm": "p. m.",
+    "tv_h": "Ayude a Andy a mirar el televisor", "tv_unset": "Sin configurar todavía", "tv_set": "Configurado: {where}",
+    "tv_hint": "Cuando Andy pone algo nuevo en la pantalla, se gira un momento para mirarla, y la mirada lo sigue. Izquierda y derecha según las ve Andy: póngase detrás de Andy y mire hacia donde mira.",
+    "tv_side": "Dónde está el televisor", "tv_none": "Sin configurar (Andy no mirará)", "tv_left": "A la izquierda de Andy",
+    "tv_ahead": "Justo enfrente", "tv_right": "A la derecha de Andy", "tv_far": "Cuánto hacia el lado", "tv_little": "Un poco",
+    "tv_beside": "Al lado de Andy", "tv_height": "Altura", "tv_above": "Por encima de los ojos de Andy",
+    "tv_level": "Más o menos a su altura", "tv_below": "Más abajo",
+    "tv_glance": "Mirar a la pantalla al mostrar algo", "tv_try": "Guardar y mostrármelo",
+    "tv_need_side": "Primero elija dónde está el televisor.", "tv_need_glance": "Primero marque «Mirar a la pantalla al mostrar algo».",
+    "tv_watch": "Mire a Andy: en un momento mirará a la pantalla (si hay alguien con él y no está descansando). Si miró a otro lado, cambie la dirección y pruebe otra vez.",
+    "now_h": "Andy ahora", "now_doing": "Estado", "now_tavily": "Búsquedas web (Tavily)",
+    "tavily_used": "{used} de {limit} créditos este mes", "tavily_none": "sin datos todavía",
+    "now_hint": "Los tiempos y los servicios detrás de Andy están en la página Por dentro.",
+    "honest": "Los ajustes se guardan solo en esta computadora. Esta página funciona solo en la red de casa, con este enlace privado.",
+    "unsaved": "Cambios sin guardar", "save": "Guardar", "saving": "Guardando…",
+    "saved": "Guardado. Andy le dirá{a} que {who} cambió {what}.", "nothing_changed": "No había nada que cambiar.",
+    "not_saved": "No se guardó. {error}", "and": "y",
+    "no_answer": "La computadora de Andy no contestó. ¿Está encendida?", "wrong": "Algo salió mal; pruebe otra vez.",
+    "changed": {
+      "the name these pages use": "el nombre que usan estas páginas", "the town": "la ciudad", "the local news sites": "los sitios de noticias locales",
+      "the pages for what's on": "las páginas de actividades", "the language": "el idioma",
+      "how fast Andy speaks": "lo rápido que habla Andy", "the volume": "el volumen", "the captions": "los subtítulos",
+      "family photos on the screen": "las fotos de la familia en la pantalla",
+      "when the screen dims at night": "cuándo se atenúa la pantalla de noche",
+      "when the screen brightens in the morning": "cuándo se ilumina la pantalla por la mañana",
+      "when the night clock shows": "cuándo aparece el reloj de noche", "the calm screen": "la pantalla tranquila",
+      "where the screen is": "dónde está la pantalla", "how high the screen is": "a qué altura está la pantalla",
+      "glancing at the screen": "mirar a la pantalla",
+      "offering a story or a riddle in the afternoon": "ofrecer un cuento o una adivinanza por la tarde",
+      "welcoming them back": "dar la bienvenida al volver"
+    }
+  }
+}
+</script>
 <script>
   const token = new URLSearchParams(location.search).get("s") || "";
   const api = (path) => `${path}?s=${encodeURIComponent(token)}`;
   const $ = (id) => document.getElementById(id);
   const text = (el, v) => { el.textContent = v; return el; };
-  // The hours matter only for "at these hours".
-  const chosen = (name) => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
-  const showNightHours = () => { $("night-hours").hidden = chosen("night_clock") !== "hours"; };
-  for (const r of document.querySelectorAll("input[name=night_clock]")) r.addEventListener("change", showNightHours);
-  const hourName = (h) => h === 0 ? "midnight" : h === 12 ? "noon" : `${h % 12} ${h < 12 ? "am" : "pm"}`;
-  const KEPT = [["reminder", "Reminders"], ["moment", "Remembered moments"], ["fact", "Remembered facts"],
-                ["shared", "Shared with family"], ["photo", "Photos from family"]];
-
-  function renderKept(kept) {
-    const box = $("kept"); box.replaceChildren();
-    let total = 0;
-    for (const [kind, title] of KEPT) {
-      const items = kept[kind] || [];
-      total += items.length;
-      const group = document.createElement("section"); group.className = "kept-group";
-      group.append(text(document.createElement("h3"), `${title} (${items.length})`));
-      if (!items.length) { group.append(text(Object.assign(document.createElement("p"), { className: "none" }), "None.")); box.append(group); continue; }
-      const ul = document.createElement("ul"); ul.className = "kept-list";
-      for (const it of items) {
-        const li = document.createElement("li");
-        const t = document.createElement("span"); t.className = "t";
-        t.append(it.text, text(Object.assign(document.createElement("span"), { className: "when" }), it.when || ""));
-        const b = text(Object.assign(document.createElement("button"), { type: "button", className: "quiet" }), "Delete");
-        b.setAttribute("aria-label", `Delete ${it.text}`);
-        b.addEventListener("click", () => removeKept(kind, it.id, it.text));
-        li.append(t, b); ul.append(li);
-      }
-      group.append(ul); box.append(group);
-    }
-    $("delete-all").hidden = !total;
-  }
-
-  async function removeKept(kind, id, label) {
-    if (!confirm(`Delete "${label}"? Andy will tell them.`)) return;
-    try {
-      const out = await call("/api/setup/delete", { name: who, kind, id });
-      fill(out);
-      text($("kept-status"), `Deleted. Andy will tell them that ${who} deleted ${out.deleted.join(", ")}.`);
-    } catch (err) { text($("kept-status"), err.message); }
-  }
-
-  let who = "";
-  let volumeTouched = false;
+  const make = (tag, props) => Object.assign(document.createElement(tag), props || {});
+  const UI = JSON.parse($("ui").textContent);
+  let lang = "en", person = "", who = "", S = null;
   try { who = localStorage.getItem("andy-setup-name") || ""; } catch (e) {}
 
-  function fill(s) {
+  // One phrase from the table, with the person's name (or "them") and any values put in.
+  function t(key, values) {
+    const p = person;
+    const fill = { them: p || "them", they: p || "they", for: p ? ` for ${p}` : "", a: p ? ` a ${p}` : "",
+                   de: p ? ` de ${p}` : "", para: p ? ` para ${p}` : "", sub: p ? ` ${p}` : "", ...(values || {}) };
+    const s = UI[lang][key] != null ? UI[lang][key] : UI.en[key];
+    return String(s).replace(/\{(\w+)\}/g, (m, k) => (k in fill ? fill[k] : m));
+  }
+  const list = (words) => words.length > 1 ? words.slice(0, -1).join(", ") + ` ${t("and")} ` + words[words.length - 1] : words[0] || "";
+  const changedWords = (words) => words.map((w) => (UI[lang].changed || {})[w] || w);
+
+  function translate() {
+    document.documentElement.lang = lang;
+    document.title = t("title");
+    for (const el of document.querySelectorAll("[data-t]")) el.textContent = t(el.dataset.t);
+    for (const el of document.querySelectorAll("[data-ta]")) el.setAttribute("aria-label", t(el.dataset.ta));
+    for (const id of ["night_from", "night_to"]) for (const o of $(id).options) o.textContent = hourName(Number(o.value));
+  }
+  const hourName = (h) => h === 0 ? t("midnight") : h === 12 ? t("noon") : `${h % 12} ${t(h < 12 ? "am" : "pm")}`;
+
+  // --- The settings, field by field: what the form shows, and what was last saved -----------------------
+  const chosen = (name) => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
+  const radio = (name, dflt) => ({ get: () => chosen(name) || dflt || null,
+    set: (v) => { for (const r of document.querySelectorAll(`input[name=${name}]`)) r.checked = r.value === (v || dflt); } });
+  const box = (id, dflt) => ({ get: () => $(id).checked, set: (v) => { $(id).checked = v == null ? dflt : !!v; } });
+  const words = (id) => ({ get: () => $(id).value.trim(), set: (v) => { $(id).value = v || ""; } });
+  const lines = (id) => ({ get: () => $(id).value.split("\n").map((s) => s.trim()).filter(Boolean).join("\n"),
+    set: (v) => { $(id).value = (v || []).join("\n"); } });
+  const hour = (id) => ({ get: () => Number($(id).value), set: (v) => { $(id).value = v; } });
+  const FIELDS = {
+    person_name: words("person_name"), place: words("place"), news_sources: lines("news"), events_pages: lines("events"),
+    language: radio("language", "en"), pace: radio("pace", "normal"),
+    volume: { get: () => Number($("volume").value), set: (v) => { $("volume").value = v == null ? 80 : v; showVolume(); } },
+    offers: box("offers", true), greet_arrival: box("greet_arrival", true),
+    captions: box("captions", true), screen_photos: box("screen_photos", true), screen_calm: box("screen_calm", false),
+    night_clock: { get: () => chosen("night_clock") || "hours", set: (v) => { radio("night_clock", "hours").set(v); showNightHours(); } },
+    night_from: hour("night_from"), night_to: hour("night_to"),
+    tv_yaw: { get: () => { const side = chosen("tv_side") || "none", far = Number($("tv_far").value);
+                           return side === "none" ? null : side === "ahead" ? 0 : side === "left" ? far : -far; },
+              set: (v) => { radio("tv_side").set(v == null ? "none" : v > 0 ? "left" : v < 0 ? "right" : "ahead");
+                            $("tv_far").value = v ? Math.abs(v) : 45; showFar(); } },
+    tv_height: radio("tv_height", "level"), tv_glance: box("tv_glance", true),
+  };
+  const TV = ["tv_yaw", "tv_height", "tv_glance"];
+  const saved = {};
+  const now = (k) => JSON.stringify(FIELDS[k].get());
+  const dirty = () => Object.keys(FIELDS).filter((k) => now(k) !== saved[k]);
+
+  // Fill the form from Andy's answer. A field someone is still editing keeps their edit, unless `force`
+  // names it (or is true): after a save, what Andy now holds is the truth.
+  function fill(s, force) {
+    S = s;
     const v = s.settings;
-    $("place").value = v.place || "";
-    $("news").value = (v.news_sources || []).join("\n");
-    $("events").value = (v.events_pages || []).join("\n");
+    lang = v.language === "es" ? "es" : "en";
+    person = v.person_name || "";
+    for (const id of ["night_from", "night_to"]) {
+      const sel = $(id);
+      if (!sel.options.length) for (let h = 0; h < 24; h++) sel.append(new Option("", h));
+    }
+    for (const k of Object.keys(FIELDS)) {
+      if (force === true || (force || []).includes(k) || saved[k] === undefined || now(k) === saved[k]) {
+        FIELDS[k].set(v[k]);
+        saved[k] = now(k);
+      }
+    }
+    translate();
     const found = v.events_suggestion;
     const showFound = !!(found && found.page && !(v.events_pages || []).length);
     $("events-found").hidden = !showFound;
     if (showFound) { const a = $("events-found-link"); a.href = found.page; text(a, found.page); }
-    for (const r of document.querySelectorAll("input[name=language]")) r.checked = r.value === v.language;
-    for (const r of document.querySelectorAll("input[name=pace]")) r.checked = r.value === v.pace;
-    $("volume").value = v.volume == null ? 80 : v.volume;
-    $("volume-v").textContent = $("volume").value;
-    $("captions").checked = !!v.captions;
-    $("screen_photos").checked = v.screen_photos !== false;
-    $("screen_calm").checked = !!v.screen_calm;
-    const side = v.tv_yaw == null ? "none" : v.tv_yaw > 0 ? "left" : v.tv_yaw < 0 ? "right" : "ahead";
-    for (const r of document.querySelectorAll("input[name=tv_side]")) r.checked = r.value === side;
-    for (const r of document.querySelectorAll("input[name=tv_height]")) r.checked = r.value === (v.tv_height || "level");
-    $("tv_far").value = v.tv_yaw ? Math.abs(v.tv_yaw) : 45;
-    $("tv_glance").checked = v.tv_glance !== false;
-    $("offers").checked = v.offers !== false;
-    $("greet_arrival").checked = v.greet_arrival !== false;
-    showFar();
-    for (const r of document.querySelectorAll("input[name=night_clock]")) r.checked = r.value === (v.night_clock || "hours");
-    showNightHours();
-    for (const id of ["night_from", "night_to"]) {
-      const sel = $(id);
-      if (!sel.options.length) for (let h = 0; h < 24; h++) sel.append(new Option(hourName(h), h));
-      sel.value = v[id];
-    }
+    if (!$("tv").dataset.seen) { $("tv").open = v.tv_yaw == null; $("tv").dataset.seen = "1"; }
+    showTvSummary(v.tv_yaw);
     renderKept(s.kept || {});
     text($("now-state"), s.now ? s.now.label : "…");
-    const t = s.tavily;
-    text($("now-tavily"), t && t.used != null ? `${t.used} of ${t.limit || "?"} credits this month` : "not reported yet");
-    for (const k of ["screen", "family", "hood"]) {
-      const a = $("l-" + k);
-      a.href = s.links[k];
-      a.textContent = location.origin + s.links[k];
-    }
+    const tav = s.tavily;
+    text($("now-tavily"), tav && tav.used != null ? t("tavily_used", { used: tav.used, limit: tav.limit || "?" }) : t("tavily_none"));
+    $("open-screen").href = s.links.screen;
+    $("open-hood").href = s.links.hood;
+    const family = location.origin + s.links.family;
+    $("text-family").href = "sms:?&body=" + encodeURIComponent(`${t("share_text")}: ${family}`);
+    $("share-family").hidden = !navigator.share;
+    $("text-family").hidden = !!navigator.share;
+    updateBar();
   }
 
+  function showVolume() { $("volume-v").textContent = $("volume").value; }
+  function showNightHours() { $("night-hours").hidden = chosen("night_clock") !== "hours"; }
   function showFar() {
-    const side = (document.querySelector("input[name=tv_side]:checked") || {}).value;
-    const sideways = side === "left" || side === "right";
+    const side = chosen("tv_side"), sideways = side === "left" || side === "right";
     $("tv_far").disabled = !sideways;
     $("tv_far-v").textContent = sideways ? `${$("tv_far").value}°` : "";
   }
-
-  function tvSettings() {
-    const side = (document.querySelector("input[name=tv_side]:checked") || {}).value || "none";
-    const far = Number($("tv_far").value);
-    return { tv_yaw: side === "none" ? null : side === "ahead" ? 0 : side === "left" ? far : -far,
-             tv_height: (document.querySelector("input[name=tv_height]:checked") || {}).value || "level",
-             tv_glance: $("tv_glance").checked };
+  function showTvSummary(yaw) {
+    const where = yaw == null ? null : t(yaw > 0 ? "tv_left" : yaw < 0 ? "tv_right" : "tv_ahead");
+    text($("tv-sum"), where ? t("tv_set", { where }) : t("tv_unset"));
   }
 
+  // --- What Andy remembers ----------------------------------------------------------------------------
+  const KEPT = ["reminder", "moment", "fact", "shared", "photo"];
+  function renderKept(kept) {
+    const box = $("kept"); box.replaceChildren();
+    const empty = [];
+    for (const kind of KEPT) {
+      const items = kept[kind] || [];
+      if (!items.length) { empty.push(t("k_" + kind).toLowerCase()); continue; }
+      const group = make("section");
+      group.append(text(make("h3"), `${t("k_" + kind)} (${items.length})`));
+      const ul = make("ul", { className: "kept-list" });
+      for (const it of items) {
+        const label = kind === "photo" ? t("photo_item") : it.text;
+        const li = make("li"), tx = make("span", { className: "t" });
+        tx.append(label, text(make("span", { className: "when" }), it.when || ""));
+        const b = make("button", { type: "button", className: "quiet" });
+        b.setAttribute("aria-label", t("delete_aria", { label }));
+        twoTaps(b, "delete", "delete_armed", () => removeKept(kind, it.id, label));
+        li.append(tx, b); ul.append(li);
+      }
+      group.append(ul); box.append(group);
+    }
+    if (empty.length === KEPT.length) box.append(text(make("p", { className: "none" }), t("nothing_kept")));
+    else if (empty.length) box.append(text(make("p", { className: "none" }), t("none_yet", { list: list(empty) })));
+    $("delete-all").hidden = empty.length === KEPT.length;
+  }
+
+  // A deletion or a new link needs a second tap within four seconds; the first only asks.
+  function twoTaps(button, idle, armed, action) {
+    let timer = null;
+    const reset = () => { clearTimeout(timer); button.classList.remove("armed"); button.textContent = t(idle); };
+    reset();
+    button.addEventListener("click", async () => {
+      if (!button.classList.contains("armed")) {
+        button.classList.add("armed"); button.textContent = t(armed);
+        timer = setTimeout(reset, 4000);
+        return;
+      }
+      reset();
+      button.disabled = true;
+      try { await action(); } finally { button.disabled = false; }
+    });
+  }
+
+  function say(id, message, error) { const el = $(id); el.className = error ? "status error" : "status"; text(el, message); }
+
+  async function removeKept(kind, id, label) {
+    try {
+      const out = await call("/api/setup/delete", { name: who, kind, id });
+      fill(out);
+      say("kept-status", t("deleted_one", { label, who }));
+    } catch (err) { say("kept-status", err.message, true); }
+  }
+
+  // --- Talking to Andy ------------------------------------------------------------------------------------
   async function call(path, body) {
-    const r = await fetch(api(path), body === undefined ? { cache: "no-store" } :
-      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    const data = await r.json().catch(() => ({ error: "Andy's computer did not answer. Is it on?" }));
-    if (!r.ok) throw new Error(data.error || "Something went wrong; please try again.");
-    return data;
+    document.body.classList.add("busy");
+    try {
+      const r = await fetch(api(path), body === undefined ? { cache: "no-store" } :
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const data = await r.json().catch(() => ({ error: t("no_answer") }));
+      if (!r.ok) throw new Error(data.error || t("wrong"));
+      return data;
+    } catch (err) {
+      throw err instanceof TypeError ? new Error(t("no_answer")) : err;
+    } finally { document.body.classList.remove("busy"); }
   }
+
+  // --- The save bar: "Unsaved changes" while anything differs from what Andy holds -------------------
+  let barTimer = null, barMessage = false;
+  function updateBar() {
+    if (barMessage) return;
+    const bar = $("savebar"), changes = dirty().length > 0;
+    bar.classList.remove("done");
+    $("save").hidden = false;
+    text($("bar-text"), t("unsaved"));
+    bar.hidden = !changes;
+  }
+  function barSays(message, sticky) {
+    clearTimeout(barTimer);
+    barMessage = true;
+    const bar = $("savebar");
+    bar.hidden = false; bar.classList.toggle("done", !sticky);
+    $("save").hidden = !sticky;
+    text($("bar-text"), message);
+    if (!sticky) barTimer = setTimeout(() => { barMessage = false; updateBar(); }, 7000);
+  }
+  for (const ev of ["input", "change"]) $("setup").addEventListener(ev, (e) => {
+    if (!(e.target.closest && e.target.closest(".savebar"))) { if (barMessage && dirty().length) { barMessage = false; clearTimeout(barTimer); } updateBar(); }
+  });
+
+  $("setup").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const keys = dirty();
+    if (!keys.length) { updateBar(); return; }
+    const settings = Object.fromEntries(keys.map((k) => [k, FIELDS[k].get()]));
+    barSays(t("saving"), true); $("save").disabled = true;
+    try {
+      const out = await call("/api/setup", { name: who, settings });
+      fill(out, true);
+      barSays(out.changed.length ? t("saved", { who, what: list(changedWords(out.changed)) }) : t("nothing_changed"));
+    } catch (err) {
+      barMessage = false; updateBar();
+      text($("bar-text"), t("not_saved", { error: err.message }));
+    } finally { $("save").disabled = false; }
+  });
+
+  // --- Links ----------------------------------------------------------------------------------------------
+  function copyText(value) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(value).then(() => true, () => false);
+    const area = make("textarea", { value }); area.setAttribute("readonly", ""); area.style.position = "fixed"; area.style.opacity = "0";
+    document.body.append(area); area.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    area.remove();
+    return Promise.resolve(ok);
+  }
+  for (const b of document.querySelectorAll("[data-copy]")) b.addEventListener("click", async () => {
+    const kind = b.dataset.copy, url = location.origin + S.links[kind];
+    if (await copyText(url)) {
+      b.textContent = t("copied"); setTimeout(() => { b.textContent = t("copy"); }, 2500);
+      say("link-status", "");
+    } else {
+      const raw = $("raw-" + kind); raw.value = url; raw.hidden = false; raw.focus(); raw.select();
+      say("link-status", t("copy_failed"));
+    }
+  });
+  $("share-family").addEventListener("click", () => {
+    navigator.share({ title: t("share_text"), url: location.origin + S.links.family }).catch(() => {});
+  });
+  twoTaps($("new-family"), "new_family", "new_family_armed", async () => {
+    try { fill(await call("/api/setup/new-family-link", {})); say("link-status", t("new_family_done")); }
+    catch (err) { say("link-status", err.message, true); }
+  });
+  twoTaps($("new-settings"), "new_settings", "new_settings_armed", async () => {
+    try {
+      await call("/api/setup/new-settings-link", {});
+      $("setup").hidden = true; $("moved").hidden = false; text($("moved-text"), t("new_settings_done"));
+    } catch (err) { say("link-status", err.message, true); }
+  });
+  twoTaps($("delete-all"), "delete_all", "delete_all_armed", async () => {
+    try {
+      const out = await call("/api/setup/delete-all", { name: who });
+      fill(out);
+      say("kept-status", out.deleted.length ? t("deleted_all", { what: list(out.deleted), who }) : t("nothing_to_delete"));
+    } catch (err) { say("kept-status", err.message, true); }
+  });
+
+  // --- The rest --------------------------------------------------------------------------------------------
+  $("volume").addEventListener("input", showVolume);
+  document.querySelector('a[href="#tv"]').addEventListener("click", () => { $("tv").open = true; });
+  for (const r of document.querySelectorAll("input[name=night_clock]")) r.addEventListener("change", showNightHours);
+  for (const el of document.querySelectorAll("input[name=tv_side], #tv_far")) el.addEventListener("input", showFar);
+
+  $("events-use").addEventListener("click", () => {
+    $("events").value = $("events-found-link").textContent;
+    $("events-found").hidden = true;
+    updateBar();
+    text($("bar-text"), t("added_events"));
+  });
+
+  $("tv-try").addEventListener("click", async () => {
+    const tv = Object.fromEntries(TV.map((k) => [k, FIELDS[k].get()]));
+    if (tv.tv_yaw === null) { say("tv-status", t("tv_need_side"), true); return; }
+    if (!tv.tv_glance) { say("tv-status", t("tv_need_glance"), true); return; }
+    say("tv-status", t("saving"));
+    try {
+      fill(await call("/api/setup", { name: who, settings: tv }), TV);
+      fill(await call("/api/setup/show-screen", {}), TV);
+      say("tv-status", t("tv_watch"));
+    } catch (err) { say("tv-status", err.message, true); }
+  });
 
   async function open() {
     $("who").hidden = true;
     $("setup").hidden = false;
-    try { fill(await call("/api/setup")); }
-    catch (e) { $("status").textContent = e.message; $("status").className = "status error"; }
+    try { fill(S || await call("/api/setup")); }
+    catch (err) { barSays(err.message, true); $("save").hidden = true; }
   }
 
   $("name-form").addEventListener("submit", (e) => {
@@ -336,73 +781,19 @@
     try { localStorage.setItem("andy-setup-name", who); } catch (err) {}
     open();
   });
-  $("volume").addEventListener("input", () => { volumeTouched = true; $("volume-v").textContent = $("volume").value; });
 
-  $("setup").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const status = $("status");
-    status.className = "status";
-    status.textContent = "Saving…";
-    const pick = (name) => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
+  // The household's language (and the person's name) before anything else, so the first question is
+  // already in it.
+  (async () => {
+    if (who) $("name").value = who;
     try {
-      const out = await call("/api/setup", { name: who, settings: {
-        place: $("place").value, news_sources: $("news").value, events_pages: $("events").value,
-        language: pick("language"), pace: pick("pace"), captions: $("captions").checked,
-        screen_photos: $("screen_photos").checked, screen_calm: $("screen_calm").checked, night_clock: pick("night_clock") || "hours", night_from: Number($("night_from").value), night_to: Number($("night_to").value),
-        ...tvSettings(), offers: $("offers").checked, greet_arrival: $("greet_arrival").checked,
-        ...(volumeTouched ? { volume: Number($("volume").value) } : {}) } });
-      fill(out);
-      volumeTouched = false;
-      status.textContent = out.changed.length
-        ? `Saved. Andy will tell them that ${who} changed ${out.changed.join(", ")}.`
-        : "Nothing had changed.";
-    } catch (err) { status.textContent = err.message; status.className = "status error"; }
-  });
-
-  for (const el of document.querySelectorAll("input[name=tv_side], #tv_far")) el.addEventListener("input", showFar);
-
-  $("events-use").addEventListener("click", () => {
-    $("events").value = $("events-found-link").textContent;
-    $("events-found").hidden = true;
-    text($("status"), "Added. Press Save to keep it.");
-  });
-
-  $("tv-try").addEventListener("click", async () => {
-    const status = $("tv-status");
-    const tv = tvSettings();
-    if (tv.tv_yaw === null) { text(status, "Choose where the screen is first."); return; }
-    if (!tv.tv_glance) { text(status, "Tick \"Look at the screen when showing something\" first."); return; }
-    text(status, "Saving…");
-    try {
-      fill(await call("/api/setup", { name: who, settings: tv }));
-      fill(await call("/api/setup/show-screen", {}));
-      text(status, "Watch Andy: it looks at the screen in a moment (if someone is with it and it isn't resting). " +
-                   "If it looked somewhere else, change the direction and try again.");
-    } catch (err) { text(status, err.message); }
-  });
-
-  $("delete-all").addEventListener("click", async () => {
-    if (!confirm("Delete everything Andy keeps about them? This cannot be undone. Andy will tell them.")) return;
-    try {
-      const out = await call("/api/setup/delete-all", { name: who });
-      fill(out);
-      text($("kept-status"), out.deleted.length ? `Deleted ${out.deleted.join(", ")}. Andy will tell them.` : "There was nothing to delete.");
-    } catch (err) { text($("kept-status"), err.message); }
-  });
-
-  $("new-settings").addEventListener("click", async () => {
-    if (!confirm("Make a new settings link? This page stops working; open it again with \"Andy, show the settings code\".")) return;
-    try { await call("/api/setup/new-settings-link", {}); document.body.replaceChildren(text(document.createElement("p"), "Done. This link no longer works. Say \"Andy, show the settings code\" to open settings again.")); }
-    catch (err) { $("link-status").textContent = err.message; }
-  });
-
-  $("new-family").addEventListener("click", async () => {
-    if (!confirm("Make a new family link? The old one stops working for everyone who has it.")) return;
-    try { fill(await call("/api/setup/new-family-link", {})); $("link-status").textContent = "Done. Send the new family link to family."; }
-    catch (err) { $("link-status").textContent = err.message; }
-  });
-
-  if (who) { $("name").value = who; }
+      const s = await call("/api/setup");
+      lang = s.settings.language === "es" ? "es" : "en";
+      person = s.settings.person_name || "";
+      S = s;
+      translate();
+    } catch (err) { say("who-status", err.message, true); }
+  })();
 </script>
 </body>
 </html>

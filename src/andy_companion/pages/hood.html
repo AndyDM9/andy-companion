@@ -12,109 +12,152 @@
   @font-face { font-family: "Atkinson Hyperlegible"; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-hyperlegible-700.woff2") format("woff2"); }
 </style>
 <style>
-  /* Andy's evening colours. Each turn is one bar: the gold part is hearing, the pale part is the
-     reply, drawn to the same scale so a slow turn looks slow. Numbers only; no words are kept. */
+  /* Andy's evening colours. One colour per stage, the same everywhere on the page: gold is hearing, blue is
+     Nemotron's reply, green is a tool. Every bar is drawn to scale, so a slow turn looks slow. Numbers and
+     tool names only; no words are kept. */
   :root { --ground: #24304f; --ink: #f6f1e3; --soft: #c9cfe0; --gold: #f3d78f; --reply: #9fb7e6;
-          --tool: #7fc4a8; --panel: #2d3a5c; --rule: #44527a; }
+          --tool: #7fc4a8; --panel: #2d3a5c; --rule: #44527a; --track: #2a3657; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body { background: var(--ground); color: var(--ink); min-height: 100vh;
-         font-family: "Atkinson Hyperlegible", "Verdana", sans-serif; padding: 4vh 5vw; }
-  h1 { font-size: clamp(32px, 4vw, 64px); margin: 0; line-height: 1.05; }
-  .back { margin: 0 0 1.4vh; font-size: clamp(16px, 1.5vw, 24px); }
-  .back a { color: inherit; text-underline-offset: .2em; }
-  .lede { color: var(--soft); font-size: clamp(17px, 1.6vw, 26px); margin: 1vh 0 0; max-width: 62ch; }
+         font-family: "Atkinson Hyperlegible", "Verdana", sans-serif; padding: 3vh 4vw 5vh; }
+  [hidden] { display: none !important; }
+  .num { font-variant-numeric: tabular-nums; }
 
-  /* The live pipeline: the stage Andy is in right now, lit; as Home Assistant's voice pipeline shows its stages. */
-  .pipeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1vw; margin: 3vh 0 0; }
-  .stage { border: 2px solid var(--rule); border-radius: 8px; padding: 1.4vh 1.2vw; background: var(--panel);
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4em 2vw; }
+  h1 { font-size: clamp(30px, 3vw, 54px); margin: 0; line-height: 1.05; }
+  .back { flex-basis: 100%; margin: 0; font-size: clamp(16px, 1.3vw, 22px); }
+  .back a { color: inherit; text-underline-offset: .2em; }
+  .lede { color: var(--soft); font-size: clamp(16px, 1.3vw, 23px); margin: 0; max-width: 70ch; }
+
+  /* The latest turn, first: the whole wait as one big number, then the same wait as a waterfall. */
+  .latest { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3.1fr); gap: 2vh 3vw; align-items: center;
+            margin: 2.4vh 0 0; padding: 2.4vh 0; border-top: 2px solid var(--rule); border-bottom: 2px solid var(--rule); }
+  .big { font-size: clamp(64px, 8.4vw, 168px); font-weight: 700; line-height: .9; color: var(--ink); margin: 0;
+         font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .big small { font-size: .36em; font-weight: 400; color: var(--soft); letter-spacing: 0; }
+  .what { font-size: clamp(17px, 1.45vw, 26px); margin: 1.2vh 0 0; max-width: 22ch; line-height: 1.3; }
+  .aside { color: var(--soft); font-size: clamp(14px, 1.1vw, 19px); margin: 1.2vh 0 0; max-width: 30ch; }
+  .aside b { color: var(--ink); }
+
+  .fall { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 2fr) 6.5ch; column-gap: 1.6vw;
+          font-size: clamp(15px, 1.3vw, 23px); }
+  .fall .who { padding: .9vh 0; line-height: 1.2; }
+  .fall .who b { display: block; }
+  .fall .who span { display: block; color: var(--soft); font-size: .8em; margin-top: .15em; }
+  .fall .t { align-self: center; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+  /* Each track is a full row tall and the rows touch, so the first-sound line runs down through all of them. */
+  .track { position: relative; background:
+             repeating-linear-gradient(90deg, transparent 0 calc(var(--sec) - 1px), var(--rule) calc(var(--sec) - 1px) var(--sec)),
+             var(--track); }
+  .track::after { content: ""; position: absolute; top: 0; bottom: 0; left: var(--end); width: 3px; margin-left: -1px;
+                  background: var(--ink); }
+  .seg { position: absolute; top: 50%; height: 46%; transform: translateY(-50%); min-width: 5px; border-radius: 2px; }
+  .seg.beside { height: 22%; background: repeating-linear-gradient(135deg, var(--tool) 0 6px, transparent 6px 10px); }
+  .ruler { position: relative; height: 1.6em; color: var(--soft); font-size: .78em; }
+  .ruler span { position: absolute; top: .3em; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ruler span:first-child { transform: none; }
+  .fall-empty { grid-column: 1 / -1; color: var(--soft); font-size: clamp(18px, 1.6vw, 28px); margin: 0; }
+
+  /* The live pipeline: the stage Andy is in right now, lit, with the latest turn's time under each. */
+  .pipeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1vw; margin: 2.2vh 0 0; }
+  .stage { border: 2px solid var(--rule); border-left-width: 8px; border-radius: 6px; padding: 1.1vh 1.1vw; background: var(--panel);
            transition: border-color .15s, background-color .15s; }
-  .stage b { display: block; font-size: clamp(18px, 1.7vw, 30px); }
-  .stage span { display: block; color: var(--soft); font-size: clamp(13px, 1.05vw, 18px); margin-top: .3em; }
-  .stage em { display: block; font-style: normal; color: var(--gold); font-size: clamp(13px, 1.05vw, 18px); min-height: 1.3em; margin-top: .3em; }
+  .stage b { display: block; font-size: clamp(17px, 1.5vw, 27px); }
+  .stage span { display: block; color: var(--soft); font-size: clamp(13px, 1vw, 17px); margin-top: .25em; }
+  .stage em { display: block; font-style: normal; font-weight: 700; font-size: clamp(15px, 1.25vw, 22px); min-height: 1.3em;
+              margin-top: .3em; font-variant-numeric: tabular-nums; }
+  #st-hear { border-left-color: var(--gold); } #st-think { border-left-color: var(--reply); }
+  #st-tools { border-left-color: var(--tool); } #st-speak { border-left-color: var(--ink); }
   .stage.on { border-color: var(--gold); background: #3a4670; }
   .stage.on b { color: var(--gold); }
-  .now { margin: 1.2vh 0 0; color: var(--soft); font-size: clamp(15px, 1.2vw, 21px); }
-  .now b { color: var(--ink); }
-  @media (max-width: 640px) { .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (prefers-reduced-motion: reduce) { .stage { transition: none; } }
 
-  /* Health: one glance at everything Andy depends on; words and a colour, never colour alone. */
-  .health { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1vw; margin: 2.5vh 0 0; }
-  .tile { border: 2px solid var(--rule); border-radius: 8px; padding: 1.1vh 1vw; background: var(--panel); }
-  .tile b { display: flex; align-items: center; gap: .5em; font-size: clamp(15px, 1.2vw, 21px); }
-  .tile b::before { content: ""; width: .7em; height: .7em; border-radius: 50%; background: var(--soft); flex: none; }
-  .tile[data-status="ok"] b::before { background: var(--tool); }
-  .tile[data-status="warn"] { border-color: var(--gold); }
-  .tile[data-status="warn"] b::before { background: var(--gold); }
-  .tile[data-status="off"] b::before { background: transparent; border: 2px solid var(--soft); }
-  .tile span { display: block; color: var(--soft); font-size: clamp(13px, 1vw, 17px); margin-top: .3em; }
+  .lines { margin: 1.6vh 0 0; display: grid; gap: .8vh; font-size: clamp(14px, 1.1vw, 19px); color: var(--soft); }
+  .lines p { margin: 0; }
+  .lines b { color: var(--ink); }
+  .health { display: flex; flex-wrap: wrap; gap: .3em 1.4em; }
+  .health .dot { display: inline-flex; align-items: center; gap: .45em; color: var(--ink); }
+  .health .dot::before { content: ""; width: .7em; height: .7em; border-radius: 50%; background: var(--soft); flex: none; }
+  .health .dot[data-status="ok"]::before { background: var(--tool); }
+  .health .dot[data-status="warn"]::before { background: var(--gold); }
+  .health .dot[data-status="off"]::before { background: transparent; box-shadow: inset 0 0 0 2px var(--soft); }
+  .health .dot i { font-style: normal; color: var(--soft); }
+  .tally .num { color: var(--ink); font-weight: 700; }
 
-  .headline { display: grid; grid-template-columns: auto 1fr; gap: 1vh 4vw; align-items: end;
-              padding: 3vh 0; border-bottom: 2px solid var(--rule); }
-  .big { font-size: clamp(72px, 11vw, 190px); font-weight: 700; line-height: .9; color: var(--gold);
-         font-variant-numeric: tabular-nums; margin: 0; }
-  .big small { font-size: .38em; font-weight: 400; color: var(--soft); }
-  .what { font-size: clamp(18px, 1.8vw, 30px); margin: 0 0 1vh; max-width: 30ch; }
-  .split { list-style: none; margin: 0; padding: 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--soft); }
-  .split li { margin: .5vh 0; }
-  .split b { color: var(--ink); font-variant-numeric: tabular-nums; }
-  .key { display: inline-block; width: .9em; height: .9em; border-radius: 2px; vertical-align: -0.1em; margin-right: .4em; }
-
-  .turns { list-style: none; margin: 3vh 0 0; padding: 0; }
-  .turn { display: grid; grid-template-columns: 9ch 1fr; column-gap: 2vw; row-gap: .15em; align-items: center; padding: 1vh 0;
-          border-bottom: 1px solid var(--rule); font-size: clamp(16px, 1.4vw, 24px); }
+  h2 { font-size: clamp(18px, 1.5vw, 26px); margin: 3.5vh 0 0; }
+  .turns { list-style: none; margin: 1vh 0 0; padding: 0; }
+  .turn { display: grid; grid-template-columns: 7ch 1fr; column-gap: 2vw; row-gap: .15em; align-items: center; padding: .8vh 0;
+          border-bottom: 1px solid var(--rule); font-size: clamp(15px, 1.25vw, 22px); }
   .turn .t { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
-  .bar { display: flex; height: 1.1em; border-radius: 3px; overflow: hidden; background: var(--panel); }
+  .bar { display: flex; height: 1em; border-radius: 3px; overflow: hidden; background: var(--track); }
   .bar span { display: block; height: 100%; }
-  .tools { grid-column: 2; display: flex; flex-wrap: wrap; gap: .5em 1.2em; color: var(--soft); font-size: .85em; }
+  .bar span + span { box-shadow: inset 2px 0 0 var(--ground); }
+  .tools { grid-column: 2; display: flex; flex-wrap: wrap; gap: .3em 1.2em; color: var(--soft); font-size: .85em; }
   .tools b { color: var(--tool); font-weight: 700; }
-  .empty { color: var(--soft); font-size: clamp(20px, 2vw, 32px); margin: 4vh 0; }
+  .empty { color: var(--soft); font-size: clamp(16px, 1.3vw, 22px); margin: 1vh 0 0; }
 
   .stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2vh 3vw;
-           margin-top: 3vh; padding-top: 2.5vh; border-top: 2px solid var(--rule); font-size: clamp(15px, 1.25vw, 21px); }
+           margin-top: 3vh; padding-top: 2.5vh; border-top: 2px solid var(--rule); font-size: clamp(15px, 1.15vw, 20px); }
   .stack p { margin: 0; color: var(--soft); line-height: 1.4; }
   .stack strong { display: block; color: var(--ink); }
-  @media (max-width: 640px) { .headline { grid-template-columns: 1fr; } .turn { grid-template-columns: 7ch 1fr; } }
+
+  @media (max-width: 900px) {
+    .latest { grid-template-columns: 1fr; }
+    .what, .aside { max-width: none; }
+    .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 20px 16px 32px; }
+    .fall { grid-template-columns: minmax(0, 1fr) 6ch; }
+    .fall .who { grid-column: 1 / -1; padding-bottom: .3em; }
+    .fall .track { grid-column: 1; min-height: 1.6em; }
+    .fall .ruler { grid-column: 1; }
+    .turn { grid-template-columns: 6ch 1fr; }
+  }
 </style>
 </head>
 <body>
   <header>
     <p class="back" id="back-row" hidden><a id="back" href="#">← Back to Andy's screen</a></p>
-    <h1>Under the hood</h1>
-    <p class="lede">What happens each time you talk to Andy: it hears you on this computer, thinks with NVIDIA Nemotron on Nebius, looks things up with Tavily, and speaks. Below, how long Andy's last turns took, measured live on this robot. Only the numbers are kept, in memory, never the words.</p>
+    <h1 id="title">Under the hood</h1>
+    <p class="lede" id="lede">Each of Andy's turns, timed live on this robot: only the numbers are kept, in memory, never the words.</p>
   </header>
 
-  <section class="pipeline" aria-label="What Andy is doing now">
-    <div class="stage" id="st-hear"><b>Hear</b><span>NVIDIA Parakeet, on this computer</span><em></em></div>
-    <div class="stage" id="st-think"><b>Think</b><span>NVIDIA Nemotron 3.5 Lightning, Nebius Token Factory</span><em></em></div>
-    <div class="stage" id="st-tools"><b>Tools</b><span>Tavily, the weather, the eyes, reminders</span><em id="st-tool"></em></div>
-    <div class="stage" id="st-speak"><b>Speak</b><span>Qwen3-TTS, on this computer</span><em></em></div>
-  </section>
-  <p class="now" aria-live="polite">Now: <b id="now-label">…</b></p>
-  <section class="health" id="health" aria-label="Health"></section>
-
-  <section class="headline" aria-live="polite">
-    <p class="big" id="big">–</p>
+  <section class="latest" aria-live="polite" aria-label="The latest turn">
     <div>
-      <p class="what" id="what">From the end of your words to Andy's first sound, the middle of recent turns</p>
-      <ul class="split">
-        <li><span class="key" style="background: var(--gold)"></span>Hearing <b id="hear">–</b>: turn detection, then NVIDIA Parakeet on this computer</li>
-        <li><span class="key" style="background: var(--reply)"></span>Reply <b id="reply">–</b>: NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, then the first words spoken</li>
-        <li><span class="key" style="background: var(--tool)"></span>Tools Andy used, and where they ran</li>
-        <li id="talked-over" hidden>You talked over Andy <b id="talked-n">0</b>: each time he stopped at once and listened</li>
-      </ul>
+      <p class="big" id="big">–</p>
+      <p class="what" id="what">From the end of your words to Andy's first sound, last turn</p>
+      <p class="aside" id="median-row" hidden><span id="median-label">Middle of recent turns without a tool</span>: <b class="num" id="median">–</b></p>
+      <p class="aside" id="talked-over" hidden></p>
+    </div>
+    <div class="fall" id="fall" role="img" aria-label="The latest turn, stage by stage">
+      <p class="fall-empty" id="fall-empty">Talk to Andy, and each turn appears here.</p>
     </div>
   </section>
 
+  <section class="pipeline" aria-label="What Andy is doing now">
+    <div class="stage" id="st-hear"><b>Hear</b><span>NVIDIA Parakeet, on this computer</span><em id="em-hear"></em></div>
+    <div class="stage" id="st-think"><b>Think</b><span>NVIDIA Nemotron 3.5 Lightning, Nebius Token Factory</span><em id="em-think"></em></div>
+    <div class="stage" id="st-tools"><b>Tools</b><span>Tavily, the weather, the eyes, reminders</span><em id="st-tool"></em></div>
+    <div class="stage" id="st-speak"><b>Speak</b><span>Qwen3-TTS, on this computer</span><em id="em-speak"></em></div>
+  </section>
+
+  <div class="lines">
+    <p><span id="now-word">Now</span>: <b id="now-label">…</b></p>
+    <p class="health" id="health" aria-label="Health"></p>
+    <p class="tally" id="tally" hidden></p>
+  </div>
+
+  <h2 id="earlier-head" hidden>Earlier turns</h2>
   <ul class="turns" id="turns"></ul>
-  <p class="empty" id="empty">Talk to Andy, and each turn appears here.</p>
 
   <section class="stack" aria-label="What runs where">
-    <p><strong>Hearing</strong>NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card</p>
-    <p><strong>Thinking and tools</strong>NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention</p>
-    <p><strong>Eyes</strong>NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked</p>
+    <p><strong id="k-hearing">Hearing</strong><span id="v-hearing">NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card</span></p>
+    <p><strong id="k-thinking">Thinking and tools</strong><span id="v-thinking">NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention</span></p>
+    <p><strong id="k-eyes">Eyes</strong><span id="v-eyes">NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked</span></p>
     <p id="tavily"><strong>The web</strong>Tavily: search, extract, crawl and research, each source named aloud</p>
-    <p><strong>A second look</strong>NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply</p>
+    <p><strong id="k-second">A second look</strong><span id="v-second">NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply</span></p>
     <p id="proof"><strong>Proof</strong>A conversation suite judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job</p>
   </section>
 
@@ -132,86 +175,245 @@
   document.addEventListener("keydown", (e) => {
     if (fromScreen && (e.key === "Escape" || e.key === "Backspace")) { e.preventDefault(); history.back(); }
   });
-  const WHERE = {
-    local_news: "Tavily", look_up: "Tavily", whats_on: "Tavily", read_link: "Tavily", check_message: "Tavily",
-    describe_view: "Nemotron Nano VL on Nebius", describe_photo: "Nemotron Nano VL on Nebius",
-    read_letter: "Tesseract on this computer",
-    content_safety: "Nemotron 3.5 Content Safety on Nebius, beside the reply",
-    look_into: "started Tavily research, answered later", think_it_through: "NVIDIA Nemotron 3 Ultra on Token Factory", task_status: "the robot app", weather: "National Weather Service",
+
+  // The page's words in the household's language (the server sets <html lang>). Sponsor and model names stay.
+  const UI = {
+    en: {
+      title: "Under the hood", back: "← Back to Andy's screen",
+      lede: "Each of Andy's turns, timed live on this robot: only the numbers are kept, in memory, never the words.",
+      what: "From the end of your words to Andy's first sound, last turn", waiting: "waiting for a turn",
+      median: "Middle of recent turns without a tool", empty: "Talk to Andy, and each turn appears here.",
+      hearWho: "NVIDIA Parakeet", hearWhere: "hearing, on this computer",
+      thinkWho: "NVIDIA Nemotron 3.5 Lightning", thinkWhere: "Nebius Token Factory, and the voice starting",
+      endWho: "First sound", endWhere: "Qwen3-TTS, on this computer",
+      fall: (h, r, total) => `Hearing ${h}, reply ${r}, first sound at ${total}`,
+      stages: { hear: ["Hear", "NVIDIA Parakeet, on this computer"],
+                think: ["Think", "NVIDIA Nemotron 3.5 Lightning, Nebius Token Factory"],
+                tools: ["Tools", "Tavily, the weather, the eyes, reminders"],
+                speak: ["Speak", "Qwen3-TTS, on this computer"] },
+      noTool: "no tool this turn", firstAt: (s) => `first sound at ${s}`, now: "Now",
+      talked: (n) => `You talked over Andy ${n === 1 ? "once" : n + " times"}: each time it stopped at once and listened`,
+      tally: (t) => [`Since Andy started: ${t.turns} ${t.turns === 1 ? "turn" : "turns"}`,
+                     `${t.nebius} tool ${t.nebius === 1 ? "call" : "calls"} on Nebius/Token Factory`,
+                     `${t.tavily} Tavily ${t.tavily === 1 ? "call" : "calls"}`,
+                     `${t.eyes} ${t.eyes === 1 ? "look" : "looks"} with Nemotron Nano VL`],
+      status: { off: "stopped", unknown: "not checked" }, earlier: "Earlier turns",
+      stack: { hearing: ["Hearing", "NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card"],
+               thinking: ["Thinking and tools", "NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention"],
+               eyes: ["Eyes", "NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked"],
+               second: ["A second look", "NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply"] },
+      web: "The web", proof: "Proof",
+      proofLine: (p, where) => `${p.total} spoken situations, judged by NVIDIA ${p.judge}, ${where}: ` +
+                               `${p.per_run.join(", ")} of ${p.total} in ${p.per_run.length} runs (${p.ran})`,
+      asJob: "run as a Nebius Serverless Job", on: (x) => "on " + x,
+      tavily: (t, by) => `Tavily: ${t.used}${t.limit ? " of " + t.limit.toLocaleString("en-US") : ""} credits this month` +
+                         (by ? ` (${by})` : "") + ", each source named aloud",
+    },
+    es: {
+      title: "Por dentro", back: "← Volver a la pantalla de Andy",
+      lede: "Cada turno de Andy, medido en directo en este robot: solo se guardan los números, en memoria, nunca las palabras.",
+      what: "Del final de sus palabras al primer sonido de Andy, último turno", waiting: "esperando un turno",
+      median: "Mediana de los turnos recientes sin herramienta", empty: "Hable con Andy y cada turno aparecerá aquí.",
+      hearWho: "NVIDIA Parakeet", hearWhere: "oír, en esta computadora",
+      thinkWho: "NVIDIA Nemotron 3.5 Lightning", thinkWhere: "Nebius Token Factory, y la voz al empezar",
+      endWho: "Primer sonido", endWhere: "Qwen3-TTS, en esta computadora",
+      fall: (h, r, total) => `Oír ${h}, respuesta ${r}, primer sonido a los ${total}`,
+      stages: { hear: ["Oír", "NVIDIA Parakeet, en esta computadora"],
+                think: ["Pensar", "NVIDIA Nemotron 3.5 Lightning, Nebius Token Factory"],
+                tools: ["Herramientas", "Tavily, el tiempo, la vista, recordatorios"],
+                speak: ["Hablar", "Qwen3-TTS, en esta computadora"] },
+      noTool: "sin herramienta en este turno", firstAt: (s) => `primer sonido a los ${s}`, now: "Ahora",
+      talked: (n) => `Usted interrumpió a Andy ${n === 1 ? "una vez" : n + " veces"}: cada vez se detuvo enseguida y escuchó`,
+      tally: (t) => [`Desde que Andy empezó: ${t.turns} ${t.turns === 1 ? "turno" : "turnos"}`,
+                     `${t.nebius} ${t.nebius === 1 ? "llamada" : "llamadas"} a herramientas en Nebius/Token Factory`,
+                     `${t.tavily} ${t.tavily === 1 ? "llamada" : "llamadas"} a Tavily`,
+                     `${t.eyes} ${t.eyes === 1 ? "mirada" : "miradas"} con Nemotron Nano VL`],
+      status: { off: "apagado", unknown: "sin comprobar" }, earlier: "Turnos anteriores",
+      stack: { hearing: ["Oír", "NVIDIA Parakeet TDT 0.6B v3, en la tarjeta gráfica de esta computadora"],
+               thinking: ["Pensar y herramientas", "NVIDIA Nemotron 3.5 Lightning en Nebius Token Factory, sin retención de datos"],
+               eyes: ["La vista", "NVIDIA Nemotron Nano 12B v2 VL en un Nebius Serverless Endpoint, solo cuando se le pide"],
+               second: ["Una segunda mirada", "NVIDIA Nemotron 3.5 Content Safety en un Nebius Serverless Endpoint, junto a cada respuesta"] },
+      web: "La web", proof: "Prueba",
+      proofLine: (p, where) => `${p.total} situaciones habladas, juzgadas por NVIDIA ${p.judge}, ${where}: ` +
+                               `${p.per_run.join(", ")} de ${p.total} en ${p.per_run.length} pasadas (${p.ran})`,
+      asJob: "como un Nebius Serverless Job", on: (x) => "en " + x,
+      tavily: (t, by) => `Tavily: ${t.used}${t.limit ? " de " + t.limit.toLocaleString("en-US") : ""} créditos este mes` +
+                         (by ? ` (${by})` : "") + ", cada fuente dicha en voz alta",
+    },
   };
+  const lang = document.documentElement.lang === "es" ? "es" : "en";
+  const ui = UI[lang];
+  const $ = (id) => document.getElementById(id);
+  const say = (id, text) => { const e = $(id); if (e && e.textContent !== text) e.textContent = text; };
+
+  document.title = ui.title;
+  say("title", ui.title); say("back", ui.back); say("lede", ui.lede); say("what", ui.what);
+  say("median-label", ui.median); say("fall-empty", ui.empty); say("now-word", ui.now); say("earlier-head", ui.earlier);
+  for (const [k, [name, where]] of Object.entries(ui.stages)) {
+    $("st-" + k).querySelector("b").textContent = name;
+    $("st-" + k).querySelector("span").textContent = where;
+  }
+  for (const [k, [name, text]] of Object.entries(ui.stack)) { say("k-" + k, name); say("v-" + k, text); }
+  $("tavily").firstChild.textContent = ui.web;
+  $("proof").firstChild.textContent = ui.proof;
+
+  let WHERE = {};                       // each tool's place, from the server, in this language
+  const HERE = lang === "es" ? "en esta computadora" : "on this computer";
+  const BESIDE = new Set(["content_safety"]);       // runs beside the reply, not before it
   const secs = (ms) => ms == null ? "–" : (ms / 1000).toFixed(ms < 10000 ? 2 : 1) + " s";
+  const toolName = (n) => n.replace(/_/g, " ");
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  let latestTools = "";
 
   function drawProof(p) {
     if (!p || !p.per_run) return;
-    const el = document.getElementById("proof");
-    const where = /Nebius/.test(p.ran_on) ? "on a Nebius Serverless Job" : "on " + p.ran_on;
-    el.replaceChildren();
-    const head = document.createElement("strong");
-    head.textContent = "Proof";
-    el.append(head, `${p.total} spoken situations, judged by NVIDIA ${p.judge.replace(/-/g, " ")}, ${where}: ` +
-                    `${p.per_run.join(", ")} of ${p.total} in ${p.per_run.length} runs (${p.ran})`);
+    const box = $("proof");
+    const where = /Nebius/.test(p.ran_on) ? ui.asJob : ui.on(p.ran_on);
+    box.replaceChildren(el("strong", null, ui.proof), ui.proofLine(p, where));
   }
 
   function drawTavily(t) {
     if (!t || t.used == null) return;
-    const el = document.getElementById("tavily");
     const by = Object.entries(t.by || {}).filter(([, n]) => n > 0).map(([k, n]) => `${k} ${n}`).join(", ");
-    el.replaceChildren();
-    const head = document.createElement("strong");
-    head.textContent = "The web";
-    el.append(head, `Tavily: ${t.used}${t.limit ? " of " + t.limit.toLocaleString("en-US") : ""} credits this month` +
-                    (by ? ` (${by})` : "") + ", each source named aloud");
+    $("tavily").replaceChildren(el("strong", null, ui.web), ui.tavily(t, by));
   }
 
+  // Health, folded into one line: a dot and a name each, and a word only when something is not running.
   function drawHealth(tiles) {
-    const box = document.getElementById("health");
+    const box = $("health");
     box.replaceChildren();
     for (const t of tiles || []) {
-      const el = document.createElement("div"); el.className = "tile"; el.dataset.status = t.status;
-      const b = document.createElement("b"); b.textContent = t.name;
-      const s = document.createElement("span"); s.textContent = t.detail;
-      el.append(b, s); box.append(el);
+      const d = el("span", "dot", t.name);
+      d.dataset.status = t.status;
+      d.title = t.detail || "";
+      const word = t.status === "warn" ? t.detail : ui.status[t.status];
+      if (word) d.append(el("i", null, word));
+      box.append(d);
     }
   }
 
-  function draw(s) {
-    drawProof(s.proof);
-    drawHealth(s.health);
-    drawTavily(s.tavily);
-    const iv = s.interruptions || { count: 0 };
-    document.getElementById("talked-over").hidden = !iv.count;
-    document.getElementById("talked-n").textContent = iv.count === 1 ? "once" : `${iv.count} times`;
-    const m = s.median || {};
-    document.getElementById("big").innerHTML = m.total_ms == null ? "<small>waiting for a turn</small>"
-                                                                 : (m.total_ms / 1000).toFixed(2) + "<small> s</small>";
-    document.getElementById("hear").textContent = secs(m.hearing_ms);
-    document.getElementById("reply").textContent = secs(m.reply_ms);
-    const list = document.getElementById("turns");
+  function drawTally(t) {
+    if (!t || !t.turns) { $("tally").hidden = true; return; }
+    const box = $("tally");
+    box.hidden = false;
+    box.replaceChildren();
+    ui.tally(t).forEach((part, i) => {
+      if (i) box.append(" · ");
+      // the numbers stand out; the words around them stay quiet
+      for (const bit of part.split(/(\d+)/)) box.append(/^\d+$/.test(bit) ? el("span", "num", bit) : bit);
+    });
+  }
+
+  // The latest turn as a waterfall: one row per stage, each bar where it falls in the turn, all to one scale.
+  function drawFall(t) {
+    const fall = $("fall");
+    if (!t) { fall.replaceChildren($("fall-empty") || el("p", "fall-empty", ui.empty)); return; }
+    const hear = t.hearing_ms || 0;
+    const waited = t.tools.filter(x => !BESIDE.has(x.name));
+    const beside = t.tools.filter(x => BESIDE.has(x.name));
+    const toolSum = waited.reduce((a, x) => a + x.ms, 0);
+    const squeeze = toolSum > t.reply_ms ? t.reply_ms / toolSum : 1;   // tools that ran side by side
+    const think = t.think_ms != null ? t.think_ms : Math.max(0, t.reply_ms - toolSum);
+    const total = t.total_ms;
+    const reach = Math.max(total, ...beside.map(x => hear + x.ms));
+    const step = reach > 12000 ? 2000 : 1000;
+    const scale = Math.max(1000, Math.ceil(reach / step) * step);
+    const pc = (ms) => (ms / scale * 100) + "%";
+    fall.style.setProperty("--sec", pc(step));
+    fall.style.setProperty("--end", pc(total));
+    fall.setAttribute("aria-label", ui.fall(secs(t.hearing_ms), secs(t.reply_ms), secs(total)));
+    const rows = [];
+    const row = (who, where, from, ms, colour, time, cls) => {
+      const w = el("div", "who"); w.append(el("b", null, who), el("span", null, where));
+      const tr = el("div", "track");
+      if (ms != null) {
+        const s = el("span", "seg" + (cls === "beside" ? " beside" : ""));
+        s.style.left = pc(from); s.style.width = pc(ms);
+        if (colour) s.style.background = colour;
+        tr.append(s);
+      }
+      rows.push([w, tr, el("span", "t", time)]);
+    };
+    let at = 0;
+    row(ui.hearWho, ui.hearWhere, 0, hear, "var(--gold)", secs(t.hearing_ms));
+    at += hear;
+    row(ui.thinkWho, ui.thinkWhere, at, think, "var(--reply)", secs(think));
+    at += think;
+    for (const x of waited) {
+      const ms = Math.round(x.ms * squeeze);
+      row(toolName(x.name), WHERE[x.name] || HERE, at, ms, "var(--tool)", secs(x.ms));
+      at += ms;
+    }
+    for (const x of beside) row(toolName(x.name), WHERE[x.name] || HERE, hear, x.ms, null, secs(x.ms), "beside");
+    row(ui.endWho, ui.endWhere, null, null, null, secs(total), "end");
+    const ruler = el("div", "ruler");
+    for (let s = 0; s <= scale; s += step) ruler.append(el("span", null, s === 0 ? "0" : (s / 1000) + " s"));
+    [...ruler.children].forEach((c, i) => { c.style.left = pc(i * step); });
+    ruler.lastChild.style.transform = "translateX(-100%)";
+    const box = [];
+    rows.forEach(r => box.push(...r));
+    box.push(el("span"), ruler, el("span"));
+    fall.replaceChildren(...box);
+  }
+
+  function drawStages(t) {
+    say("em-hear", t ? secs(t.hearing_ms) : "");
+    say("em-think", t ? secs(t.think_ms) : "");
+    say("em-speak", t ? ui.firstAt(secs(t.total_ms)) : "");
+    const waited = t ? t.tools.filter(x => !BESIDE.has(x.name)) : [];
+    latestTools = !t ? "" : waited.length ? waited.map(x => `${toolName(x.name)} ${secs(x.ms)}`).join(", ") : ui.noTool;
+  }
+
+  function drawEarlier(turns) {
+    const list = $("turns");
     list.replaceChildren();
-    document.getElementById("empty").hidden = s.turns.length > 0;
-    const scale = Math.max(3000, ...s.turns.slice(0, 6).map(t => t.total_ms || 0));
-    for (const t of s.turns.slice(0, 6)) {
+    $("earlier-head").hidden = turns.length === 0;
+    const scale = Math.max(3000, ...turns.map(t => t.total_ms || 0));
+    for (const t of turns) {
       const li = el("li", "turn");
       li.append(el("span", "t", secs(t.total_ms)));
       const bar = el("div", "bar");
       bar.setAttribute("role", "img");
-      bar.setAttribute("aria-label", `hearing ${secs(t.hearing_ms)}, reply ${secs(t.reply_ms)}`);
-      const h = el("span"); h.style.background = "var(--gold)"; h.style.width = ((t.hearing_ms || 0) / scale * 100) + "%";
-      const r = el("span"); r.style.background = t.tools.length ? "var(--tool)" : "var(--reply)"; r.style.width = (t.reply_ms / scale * 100) + "%";
-      bar.append(h, r);
+      bar.setAttribute("aria-label", ui.fall(secs(t.hearing_ms), secs(t.reply_ms), secs(t.total_ms)));
+      const waited = t.tools.filter(x => !BESIDE.has(x.name));
+      const toolSum = waited.reduce((a, x) => a + x.ms, 0);
+      const squeeze = toolSum > t.reply_ms ? t.reply_ms / toolSum : 1;
+      const part = (ms, colour) => { const s = el("span"); s.style.background = colour; s.style.width = (ms / scale * 100) + "%"; bar.append(s); };
+      part(t.hearing_ms || 0, "var(--gold)");
+      part(t.think_ms != null ? t.think_ms : Math.max(0, t.reply_ms - toolSum), "var(--reply)");
+      for (const x of waited) part(x.ms * squeeze, "var(--tool)");
       li.append(bar);
       if (t.tools.length) {
         const tools = el("div", "tools");
         for (const x of t.tools) {
           const one = el("span");
-          one.append(el("b", null, x.name.replace(/_/g, " ")), ` ${secs(x.ms)}, ${WHERE[x.name] || "on this computer"}`);
+          one.append(el("b", null, toolName(x.name)), ` ${secs(x.ms)}, ${WHERE[x.name] || HERE}`);
           tools.append(one);
         }
         li.append(el("span"), tools);
       }
       list.append(li);
     }
+  }
+
+  function draw(s) {
+    WHERE = s.where || WHERE;
+    drawProof(s.proof);
+    drawHealth(s.health);
+    drawTavily(s.tavily);
+    drawTally(s.tally);
+    const iv = s.interruptions || { count: 0 };
+    $("talked-over").hidden = !iv.count;
+    if (iv.count) say("talked-over", ui.talked(iv.count));
+    const latest = s.turns[0];
+    $("big").innerHTML = latest ? (latest.total_ms / 1000).toFixed(2) + "<small> s</small>"
+                                : `<small>${ui.waiting}</small>`;
+    const m = s.median || {};
+    $("median-row").hidden = m.total_ms == null || s.turns.length < 2;
+    say("median", secs(m.total_ms));
+    drawFall(latest);
+    drawStages(latest);
+    drawEarlier(s.turns.slice(1, 7));
   }
 
   async function tick() {
@@ -228,9 +430,9 @@
       const r = await fetch(`/api/state?t=${encodeURIComponent(token)}`, { cache: "no-store" });
       if (!r.ok) return;
       const s = await r.json();
-      for (const k of ["hear", "think", "tools", "speak"]) document.getElementById("st-" + k).classList.toggle("on", s.stage === k);
-      document.getElementById("st-tool").textContent = s.state === "working" ? s.label : "";
-      document.getElementById("now-label").textContent = s.label;
+      for (const k of ["hear", "think", "tools", "speak"]) $("st-" + k).classList.toggle("on", s.stage === k);
+      say("st-tool", s.state === "working" ? s.label : latestTools);
+      say("now-label", s.label);
     } catch (e) { /* the next tick tries again */ }
   }
   liveTick();

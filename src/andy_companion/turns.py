@@ -26,6 +26,61 @@ from typing import Any, Callable, Dict, List, Optional
 SCREEN = f"http://127.0.0.1:{os.environ.get('ANDY_SCREEN_PORT', '8090')}"
 TOOL_NAME = re.compile(r"^[a-z][a-z0-9_]{0,39}$")
 
+# Where each of Andy's tools runs, for the hood page: every tool in evals/tools.json (tests check it), in
+# English and Spanish. A tool that reaches the network names the service; the rest run on this computer.
+HERE = {"en": "on this computer", "es": "en esta computadora"}
+WHERE: Dict[str, Dict[str, str]] = {
+    "local_news": {"en": "Tavily search", "es": "búsqueda de Tavily"},
+    "look_up": {"en": "Tavily search", "es": "búsqueda de Tavily"},
+    "whats_on": {"en": "Tavily crawl of the town's events page, or search",
+                 "es": "Tavily recorre la página de eventos del pueblo, o busca"},
+    "read_link": {"en": "Tavily extract", "es": "Tavily extract (lee la página)"},
+    "check_message": {"en": "Tavily (advanced) + Nemotron Lightning and Ultra, Token Factory",
+                      "es": "Tavily (avanzada) + Nemotron Lightning y Ultra, Token Factory"},
+    "look_into": {"en": "Tavily research, started now, answered later",
+                  "es": "investigación de Tavily, empieza ahora, responde después"},
+    "read_letter": {"en": "read on this computer + Nemotron Lightning card",
+                    "es": "leída en esta computadora + tarjeta de Nemotron Lightning"},
+    "on_this_day": {"en": "Wikipedia + Nemotron Lightning, Token Factory",
+                    "es": "Wikipedia + Nemotron Lightning, Token Factory"},
+    "think_it_through": {"en": "Nemotron 3 Ultra on Token Factory", "es": "Nemotron 3 Ultra en Token Factory"},
+    "describe_view": {"en": "Nemotron Nano VL on Nebius", "es": "Nemotron Nano VL en Nebius"},
+    "describe_photo": {"en": "Nemotron Nano VL on Nebius", "es": "Nemotron Nano VL en Nebius"},
+    "find_object": {"en": "Nemotron Nano VL on Nebius, four views at once",
+                    "es": "Nemotron Nano VL en Nebius, cuatro vistas a la vez"},
+    "weather": {"en": "National Weather Service (weather.gov)", "es": "Servicio Meteorológico Nacional (weather.gov)"},
+    "content_safety": {"en": "Nemotron 3.5 Content Safety on Nebius, beside the reply",
+                       "es": "Nemotron 3.5 Content Safety en Nebius, junto a la respuesta"},
+}
+LOCAL = ("head_tracking", "idle_do_nothing", "go_to_sleep", "remember", "forget", "get_today", "set_reminder",
+         "list_reminders", "cancel_reminder", "quiet_for", "day_plan", "set_pace", "set_volume", "share_with_family",
+         "remember_moment", "forget_moment", "what_you_remember", "captions", "set_language", "settings_code",
+         "tell_joke", "story", "task_status")
+WHERE.update({name: dict(HERE) for name in LOCAL})
+# For the hood's tally: the tools that call a Nebius service (Token Factory or a Serverless Endpoint), Tavily,
+# or the eyes. The conversation itself is on Token Factory every turn and is counted as turns.
+ON_NEBIUS = frozenset({"check_message", "read_letter", "on_this_day", "think_it_through",
+                       "describe_view", "describe_photo", "find_object"})
+ON_TAVILY = frozenset({"local_news", "look_up", "whats_on", "read_link", "check_message", "look_into"})
+EYES = frozenset({"describe_view", "describe_photo", "find_object"})
+# Runs beside the reply rather than before it (guard.py), so it is not part of the wait for the first sound.
+BESIDE = frozenset({"content_safety"})
+
+
+def think_ms(turn: Dict[str, Any]) -> Optional[int]:
+    """The reply's time less the tools Andy waited for: Nemotron 3.5 Lightning's calls and the voice starting."""
+    reply = turn.get("reply_ms")
+    if reply is None:
+        return None
+    waited = sum(t.get("ms") or 0 for t in turn.get("tools") or [] if t.get("name") not in BESIDE)
+    return max(0, reply - waited)
+
+
+def where(language: str = "en") -> Dict[str, str]:
+    """Each tool's place, in the household's language."""
+    lg = "es" if language == "es" else "en"
+    return {name: w[lg] for name, w in WHERE.items()}
+
 
 class TurnClock:
     """Turns one conversation's activity marks into finished turns of numbers."""

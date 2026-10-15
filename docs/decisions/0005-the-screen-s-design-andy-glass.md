@@ -101,3 +101,14 @@ must stay at 7:1 (WCAG AAA) against the worst case behind it, tested.
 - **When the night clock shows is the household's choice** (the founder: "from what time till what time, or
   maybe when Andy is sleeping"): at chosen hours, while Andy is asleep, or never (`night_clock`), on the
   settings page with a plain note of what rests at night.
+
+## Amended 2026-10-14, late evening (a design review of all four pages)
+
+- **One product:** the settings and family pages take the TV's font, colours, rounded panels and lit edge,
+  with text always on solid panels; Under the hood keeps its dark page but leads with the latest turn laid
+  out stage by stage, readable in five seconds on camera.
+- **The TV:** the remote's arrow keys and OK reach the gear from the start, Tab stays inside the menu, and
+  the open menu is a solid panel over a dark scrim (no text over glass). The clock keeps running from the
+  server's time if the connection drops, and after 10 s the screen says it isn't connected. How a web
+  answer was found sits at the top of its card, so a caption never covers it. Dates read as in Florida
+  ("Wednesday, October 14"; "miércoles, 14 de octubre"), and Spanish says "Por la mañana".

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Notes from home</title>
 <link rel="icon" href="data:,">
 <style>
@@ -12,99 +12,236 @@
   @font-face { font-family: "Atkinson Hyperlegible"; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-hyperlegible-700.woff2") format("woff2"); }
 </style>
 <style>
-  :root { --ground: #e7eee3; --ink: #1d2a1f; --soft: #52634f; --mark: #2f6f5e; --panel: #f7faf5; --rule: #cbd8c6; --error: #9b2c2c; }
+  /* The settings page's Andy Glass on a phone (decision 0005): solid panels with the TV's lit edge, its soft
+     lights behind, and every text colour at 7:1 against what is behind it (tests/test_phone_pages.py). */
+  :root {
+    --ground: #e1ebdc; --ink: #1d2a1f; --soft: #334335; --mark: #184a3d; --on-mark: #f7faf5;
+    --panel: #f7faf5; --field: #ffffff; --line: #6f816b; --rule: #c7d5c1;
+    --error: #7d1a1a; --edge: #d3dfcd; --shine: rgba(255, 255, 255, .9);
+    --shadow: rgba(40, 70, 40, .14); --orb: #184a3d;
+    --glow1: #fff0c0; --glow2: #c4e6c6; --glow3: #bcdff0; --glow-a: .5;
+    --r: 20px; --r-in: 16px;
+  }
   @media (prefers-color-scheme: dark) {
-    :root { --ground: #1a2420; --ink: #e8efe6; --soft: #a9b9a8; --mark: #8fd0b8; --panel: #212d28; --rule: #33443c; --error: #f2a3a3; }
+    :root {
+      --ground: #1c2543; --ink: #eef1f7; --soft: #d3d9e6; --mark: #f6dc96; --on-mark: #1c2543;
+      --panel: #2b3658; --field: #1c2543; --line: #8a96bd; --rule: #4a5784;
+      --error: #ffd3ca; --edge: rgba(255, 255, 255, .12); --shine: rgba(255, 255, 255, .18);
+      --shadow: rgba(0, 0, 0, .35); --orb: #f6dc96;
+      --glow1: #4a5fa8; --glow2: #7b4d86; --glow3: #a0662f; --glow-a: .3;
+    }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--ground); color: var(--ink); font: 19px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif; }
-  main { max-width: 38rem; margin: 0 auto; padding: 28px 16px 48px; }
-  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 6px; }
-  .lede { color: var(--soft); margin: 0 0 28px; }
-  h2 { font-size: 22px; margin: 32px 0 10px; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 19px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif;
+         -webkit-text-size-adjust: 100%; }
+  .scene { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .glow { position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%; opacity: var(--glow-a); filter: blur(70px); }
+  .g1 { background: var(--glow1); left: -30vmax; top: -40vmax; }
+  .g2 { background: var(--glow2); right: -35vmax; top: -20vmax; }
+  .g3 { background: var(--glow3); left: 10vmax; top: 15vmax; opacity: calc(var(--glow-a) * .6); }
+
+  main { max-width: 40rem; margin: 0 auto; padding: 22px 16px calc(48px + env(safe-area-inset-bottom, 0px)); }
+  .brand { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; font-weight: 700; font-size: 20px; letter-spacing: .01em; }
+  .orb { flex: none; width: 18px; height: 18px; border-radius: 50%;
+         background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .6), transparent 55%), var(--orb);
+         box-shadow: 0 0 14px var(--orb); }
+  @media (prefers-reduced-motion: no-preference) { body.busy .orb { animation: breathe 1.6s ease-in-out infinite; } }
+  @keyframes breathe { 50% { opacity: .45; transform: scale(.85); } }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -.01em; }
+  .lede { color: var(--soft); margin: 0 0 18px; }
+  .panel { background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r); padding: 20px 18px 22px;
+           margin: 16px 0 0; box-shadow: inset 0 1px 0 var(--shine), 0 10px 28px var(--shadow); }
+  h2 { font-size: 25px; line-height: 1.2; margin: 0 0 12px; }
+
   .notes { list-style: none; padding: 0; margin: 0; }
-  .notes li { background: var(--panel); border-left: 6px solid var(--mark); padding: 14px 16px; margin-bottom: 10px; }
-  .notes .when { display: block; font-size: 15px; color: var(--soft); margin-top: 6px; }
-  .none { color: var(--soft); }
-  label { display: block; font-weight: 700; margin: 16px 0 6px; }
-  input, textarea { width: 100%; font: inherit; color: inherit; background: var(--panel); border: 2px solid var(--rule);
-                    padding: 12px; border-radius: 6px; }
-  textarea { min-height: 110px; resize: vertical; }
+  .notes li { position: relative; background: var(--field); border: 1px solid var(--rule); border-radius: var(--r-in);
+              padding: 14px 16px 14px 22px; margin: 0 0 10px; overflow-wrap: anywhere; }
+  .notes li::before { content: ""; position: absolute; left: 8px; top: 14px; bottom: 14px; width: 4px; border-radius: 2px; background: var(--mark); }
+  .when { display: block; font-size: 17px; color: var(--soft); margin-top: 6px; }
+  .none { color: var(--soft); margin: 0; }
+
+  label { display: block; font-weight: 700; margin: 18px 0 8px; }
+  label.first { margin-top: 0; }
+  input[type=text], input[type=url], textarea { width: 100%; min-height: 52px; font: inherit; color: inherit; background: var(--field);
+                                               border: 2px solid var(--line); padding: 11px 14px; border-radius: var(--r-in); }
+  textarea { min-height: 116px; resize: vertical; }
+  .hint { font-size: 17px; color: var(--soft); margin: 8px 0 0; }
   input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
-  button { margin-top: 16px; font: inherit; font-weight: 700; color: var(--ground); background: var(--mark); border: 0;
-           padding: 13px 22px; border-radius: 6px; cursor: pointer; }
-  .hint { font-size: 16px; color: var(--soft); margin: 6px 0 0; }
-  .status { min-height: 1.5em; margin-top: 12px; }
-  .status.error { color: var(--error); }
-  .honest { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 16px; color: var(--soft); }
+
+  button, .pick { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin: 18px 0 0;
+                  padding: 11px 22px; font: inherit; font-weight: 700; color: var(--on-mark); background: var(--mark);
+                  border: 2px solid var(--mark); border-radius: var(--r-in); cursor: pointer;
+                  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22); }
+  button:disabled { opacity: .6; cursor: default; }
+  .pick { color: var(--mark); background: transparent; box-shadow: none; margin: 0; }
+  /* The real file input stays in the page for the keyboard and screen readers; the button-like label is
+     what people see and tap. */
+  .file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+  .file:focus-visible + .pick { outline: 3px solid var(--mark); outline-offset: 2px; }
+  .preview { display: flex; gap: 14px; align-items: center; margin: 14px 0 0; padding: 10px; background: var(--field);
+             border: 1px solid var(--rule); border-radius: var(--r-in); }
+  .preview img { flex: none; width: 112px; height: 112px; object-fit: cover; border-radius: 10px; background: var(--rule); }
+  .preview p { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  .status { margin: 12px 0 0; }
+  .status:empty { margin: 0; }
+  .status.error { color: var(--error); font-weight: 700; }
+  .honest { margin: 28px 4px 0; font-size: 17px; color: var(--soft); }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<div class="scene" aria-hidden="true"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
 <main>
+  <p class="brand"><span class="orb" aria-hidden="true"></span>Andy</p>
+
   <section id="who">
-    <h1>Notes from home</h1>
-    <p class="lede">See what's been shared with you, and send a message for Andy to pass on.</p>
-    <form id="name-form">
-      <label for="name">Your first name</label>
-      <input id="name" name="name" autocomplete="given-name" maxlength="40" required>
-      <p class="hint">Andy will tell them who looked, so they always know.</p>
-      <button type="submit">Open notes</button>
+    <h1 data-t="title">Notes from home</h1>
+    <p class="lede" data-t="lede_who">See what's been shared with you, and send a message or a photo for Andy to pass on.</p>
+    <form id="name-form" class="panel">
+      <label for="name" class="first" data-t="your_name">Your first name</label>
+      <input type="text" id="name" name="name" autocomplete="given-name" maxlength="40" required>
+      <p class="hint" data-t="who_hint">Andy will tell {them} who looked.</p>
+      <button type="submit" data-t="open">Open notes</button>
+      <p class="status" id="who-status" role="status" aria-live="polite"></p>
     </form>
   </section>
 
   <section id="page" hidden>
     <h1 id="hello">Notes from home</h1>
-    <p class="lede">Only what they chose to share appears here.</p>
+    <p class="lede" data-t="lede">Only what they chose to share appears here.</p>
 
-    <h2>Shared with you</h2>
-    <ul class="notes" id="notes"></ul>
-    <p class="none" id="none" hidden>Nothing has been shared yet. When they ask Andy to share something with family, it appears here.</p>
+    <section class="panel" aria-labelledby="shared-h">
+      <h2 id="shared-h" data-t="shared_h">Shared with you</h2>
+      <ul class="notes" id="notes"></ul>
+      <p class="none" id="none" hidden data-t="none">Nothing has been shared yet. What Andy is asked to share with family appears here.</p>
+    </section>
 
-    <h2>Send a message</h2>
-    <form id="msg-form">
-      <label for="text">Message for Andy to say</label>
-      <textarea id="text" maxlength="600" placeholder="Hi Mum, I'll call you at 6 tonight."></textarea>
-      <label for="link">A link to read (optional)</label>
+    <form id="msg-form" class="panel" aria-labelledby="msg-h">
+      <h2 id="msg-h" data-t="msg_h">Send a message</h2>
+      <label for="text" class="first" data-t="msg">Message for Andy to say</label>
+      <textarea id="text" maxlength="600" data-tp="msg_example" placeholder="Hi Mum, I'll call you at 6 tonight."></textarea>
+      <label for="link" data-t="link">A link to read (optional)</label>
       <input id="link" type="url" inputmode="url" placeholder="https://">
-      <p class="hint">Andy says your message the next time it's a quiet moment, and can read a link aloud.</p>
-      <button type="submit">Send to Andy</button>
-      <p class="status" id="status" role="status"></p>
+      <p class="hint" data-t="msg_hint">Andy says your message at the next quiet moment, and can read a link aloud.</p>
+      <button type="submit" data-t="send">Send to Andy</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
     </form>
 
-    <h2>Send a photo</h2>
-    <form id="photo-form">
-      <label for="photo">A photo for the screen beside Andy</label>
-      <input id="photo" type="file" accept="image/*">
-      <label for="caption">A few words about it (optional)</label>
-      <input id="caption" maxlength="140" placeholder="Sofia at her recital">
-      <p class="hint">It shows on the screen, Andy tells them it's from you, and it is deleted after a week.</p>
-      <button type="submit">Send photo</button>
-      <p class="status" id="photo-status" role="status"></p>
+    <form id="photo-form" class="panel" aria-labelledby="photo-h">
+      <h2 id="photo-h" data-t="photo_h">Send a photo</h2>
+      <p class="hint" style="margin:0 0 14px" data-t="photo_hint">It shows on the screen beside Andy, Andy says it's from you, and it is deleted after a week.</p>
+      <input class="file" id="photo" type="file" accept="image/*">
+      <label for="photo" class="pick" data-t="choose">Choose a photo</label>
+      <div class="preview" id="preview" hidden><img id="preview-img" alt=""><p id="preview-name"></p></div>
+      <label for="caption" data-t="caption">A few words about it (optional)</label>
+      <input id="caption" type="text" maxlength="140" data-tp="caption_example" placeholder="Sofia at her recital">
+      <button type="submit" data-t="send_photo">Send photo</button>
+      <p class="status" id="photo-status" role="status" aria-live="polite"></p>
     </form>
 
-    <p class="honest">They hear when you look at this page and when you send a message. Nothing here is a recording; Andy shares only what they ask it to.</p>
+    <p class="honest" data-t="honest">Andy tells them when you open this page and when you send something. Nothing here is a recording; Andy shares only what it is asked to share.</p>
   </section>
 </main>
+
+<!-- Every word on the page, in English and Spanish (usted). {them}, {they}, {a} and {sub} become the
+     person's first name when the family API gives it. -->
+<script type="application/json" id="ui">
+{
+  "en": {
+    "title": "Notes from home",
+    "lede_who": "See what's been shared with you, and send a message or a photo for Andy to pass on.",
+    "your_name": "Your first name", "who_hint": "Andy will tell {them} who looked.", "open": "Open notes",
+    "hello": "Hello, {who}", "lede": "Only what {they} chose to share appears here.",
+    "shared_h": "Shared with you",
+    "none": "Nothing has been shared yet. What Andy is asked to share with family appears here.",
+    "msg_h": "Send a message", "msg": "Message for Andy to say", "msg_example": "Hi Mum, I'll call you at 6 tonight.",
+    "link": "A link to read (optional)",
+    "msg_hint": "Andy says your message at the next quiet moment, and can read a link aloud.",
+    "send": "Send to Andy", "sending": "Sending…", "sent": "Sent. Andy will pass it on at the next quiet moment.",
+    "need_text": "Write a message or add a link first.",
+    "photo_h": "Send a photo",
+    "photo_hint": "It shows on the screen beside Andy, Andy says it's from you, and it is deleted after a week.",
+    "choose": "Choose a photo", "choose_again": "Choose another photo",
+    "caption": "A few words about it (optional)", "caption_example": "Sofia at her recital",
+    "send_photo": "Send photo", "photo_sent": "Sent. It will show on Andy's screen at the next quiet moment.",
+    "need_photo": "Choose a photo first.", "too_big": "That photo is over 8 MB. Choose a smaller one.",
+    "not_photo": "That file is not a photo. Choose a photo.", "unreadable": "That photo could not be read. Choose another.",
+    "honest": "Andy tells {them} when you open this page and when you send something. Nothing here is a recording; Andy shares only what it is asked to share.",
+    "no_answer": "That didn't go through. Check your connection and try again."
+  },
+  "es": {
+    "title": "Notas de casa",
+    "lede_who": "Vea lo que se ha compartido con usted y envíe un mensaje o una foto para que Andy lo transmita.",
+    "your_name": "Su nombre", "who_hint": "Andy le dirá{a} quién miró.", "open": "Abrir las notas",
+    "hello": "Hola, {who}", "lede": "Aquí aparece solo lo que{sub} eligió compartir.",
+    "shared_h": "Compartido con usted",
+    "none": "Todavía no se ha compartido nada. Lo que se le pida a Andy compartir con la familia aparecerá aquí.",
+    "msg_h": "Enviar un mensaje", "msg": "Mensaje para que Andy lo diga", "msg_example": "Hola, mamá, te llamo esta noche a las 6.",
+    "link": "Un enlace para leer (opcional)",
+    "msg_hint": "Andy dirá su mensaje en el próximo momento tranquilo y puede leer un enlace en voz alta.",
+    "send": "Enviar a Andy", "sending": "Enviando…", "sent": "Enviado. Andy lo dirá en el próximo momento tranquilo.",
+    "need_text": "Primero escriba un mensaje o añada un enlace.",
+    "photo_h": "Enviar una foto",
+    "photo_hint": "Aparece en la pantalla junto a Andy, Andy dice que es de usted, y se borra al cabo de una semana.",
+    "choose": "Elegir una foto", "choose_again": "Elegir otra foto",
+    "caption": "Unas palabras sobre la foto (opcional)", "caption_example": "Sofía en su recital",
+    "send_photo": "Enviar la foto", "photo_sent": "Enviada. Aparecerá en la pantalla de Andy en el próximo momento tranquilo.",
+    "need_photo": "Primero elija una foto.", "too_big": "Esa foto pasa de 8 MB. Elija una más pequeña.",
+    "not_photo": "Ese archivo no es una foto. Elija una foto.", "unreadable": "No se pudo leer esa foto. Elija otra.",
+    "honest": "Andy le dice{a} cuándo abre usted esta página y cuándo envía algo. Nada de esto es una grabación; Andy comparte solo lo que se le pide.",
+    "no_answer": "No se pudo enviar. Revise la conexión y pruebe otra vez."
+  }
+}
+</script>
 <script>
-  const key = new URLSearchParams(location.search).get("k");
+  const key = new URLSearchParams(location.search).get("k") || "";
   const api = (path) => path + "?k=" + encodeURIComponent(key);
   const $ = (id) => document.getElementById(id);
-  let name = "";
-  try { name = localStorage.getItem("andy-family-name") || ""; } catch (e) {}
+  const UI = JSON.parse($("ui").textContent);
+  let name = "", lang = "en", person = "";
+  // The household's language is known only after the page has told the person who looked (the family API
+  // answers then); the last one seen is kept on this phone so the first question is in it next time.
+  try { name = localStorage.getItem("andy-family-name") || ""; lang = localStorage.getItem("andy-family-lang") === "es" ? "es" : "en"; } catch (e) {}
 
-  async function post(path, body) {
-    const r = await fetch(api(path), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || "That didn't go through. Check your connection and try again.");
-    return data;
+  function t(k, values) {
+    const p = person;
+    const fill = { them: p || "them", they: p || "they", a: p ? ` a ${p}` : "", sub: p ? ` ${p}` : "", ...(values || {}) };
+    const s = UI[lang][k] != null ? UI[lang][k] : UI.en[k];
+    return String(s).replace(/\{(\w+)\}/g, (m, x) => (x in fill ? fill[x] : m));
   }
+  function translate() {
+    document.documentElement.lang = lang;
+    document.title = t("title");
+    for (const el of document.querySelectorAll("[data-t]")) el.textContent = t(el.dataset.t);
+    for (const el of document.querySelectorAll("[data-tp]")) el.placeholder = t(el.dataset.tp);
+    $("hello").textContent = name ? t("hello", { who: name }) : t("title");
+    if (photo) $("photo").nextElementSibling.textContent = t("choose_again");
+  }
+  function say(id, message, error) { const el = $(id); el.className = error ? "status error" : "status"; el.textContent = message; }
+
+  async function send(path, body, method) {
+    document.body.classList.add("busy");
+    try {
+      const r = await fetch(api(path), method === "GET" ? { cache: "no-store" } :
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || t("no_answer"));
+      return data;
+    } catch (err) {
+      throw err instanceof TypeError ? new Error(t("no_answer")) : err;
+    } finally { document.body.classList.remove("busy"); }
+  }
+
   async function open() {
-    await post("/api/family/look", { name });
+    await send("/api/family/look", { name });
+    const data = await send("/api/family", null, "GET");
+    // Read only if the server sends them (it does not yet): the household's language and the person's name.
+    if (data.language === "es" || data.language === "en") {
+      lang = data.language;
+      try { localStorage.setItem("andy-family-lang", lang); } catch (e) {}
+    }
+    person = typeof data.person_name === "string" ? data.person_name : "";
     $("who").hidden = true; $("page").hidden = false;
-    $("hello").textContent = "Hello, " + name;
-    const r = await fetch(api("/api/family"), { cache: "no-store" });
-    const data = await r.json();
     const list = $("notes"); list.textContent = "";
     for (const s of data.shared) {
       const li = document.createElement("li");
@@ -113,40 +250,65 @@
       li.append(when); list.append(li);
     }
     $("none").hidden = data.shared.length > 0;
+    translate();
   }
+
   $("name-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     name = $("name").value.trim();
     if (!name) return;
     try { localStorage.setItem("andy-family-name", name); } catch (err) {}
-    open().catch((err) => alert(err.message));
+    say("who-status", "");
+    open().catch((err) => say("who-status", err.message, true));
   });
+
   $("msg-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const status = $("status"); status.className = "status";
     const text = $("text").value.trim(), link = $("link").value.trim();
-    if (!text && !link) { status.textContent = "Write a message or add a link first."; status.className = "status error"; return; }
+    if (!text && !link) { say("status", t("need_text"), true); return; }
+    say("status", t("sending"));
     try {
-      await post("/api/family/message", { name, text, link });
-      status.textContent = "Sent. Andy will pass it on at the next quiet moment.";
+      await send("/api/family/message", { name, text, link });
+      say("status", t("sent"));
       $("text").value = ""; $("link").value = "";
-    } catch (err) { status.textContent = err.message; status.className = "status error"; }
+    } catch (err) { say("status", err.message, true); }
   });
+
+  // The chosen photo, shown before it is sent. Read once as a data address: the page's security policy lets
+  // images come only from Andy or from data, and the same data is what is sent.
+  let photo = null;
+  const readPhoto = (file) => new Promise((ok, fail) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = fail; r.readAsDataURL(file); });
+  function clearPhoto() {
+    photo = null; $("preview").hidden = true; $("preview-img").removeAttribute("src");
+    $("photo").nextElementSibling.textContent = t("choose");
+  }
+  $("photo").addEventListener("change", async () => {
+    const file = $("photo").files[0];
+    clearPhoto(); say("photo-status", "");
+    if (!file) return;
+    if (!/^image\//.test(file.type)) { say("photo-status", t("not_photo"), true); return; }
+    if (file.size > 8 * 1024 * 1024) { say("photo-status", t("too_big"), true); return; }
+    try { photo = await readPhoto(file); } catch (err) { say("photo-status", t("unreadable"), true); return; }
+    $("preview-img").src = photo;
+    $("preview-name").textContent = file.name;
+    $("preview").hidden = false;
+    $("photo").nextElementSibling.textContent = t("choose_again");
+  });
+
   $("photo-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const status = $("photo-status"); status.className = "status";
-    const file = $("photo").files[0];
-    if (!file) { status.textContent = "Choose a photo first."; status.className = "status error"; return; }
-    if (file.size > 8 * 1024 * 1024) { status.textContent = "That photo is over 8 MB. Choose a smaller one."; status.className = "status error"; return; }
-    const image = await new Promise((ok, fail) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = fail; r.readAsDataURL(file); });
+    if (!photo) { say("photo-status", t("need_photo"), true); return; }
+    say("photo-status", t("sending"));
     try {
-      status.textContent = "Sending…";
-      await post("/api/family/photo", { name, image, caption: $("caption").value.trim() });
-      status.textContent = "Sent. It will show on Andy's screen at the next quiet moment.";
+      await send("/api/family/photo", { name, image: photo, caption: $("caption").value.trim() });
+      say("photo-status", t("photo_sent"));
       $("photo").value = ""; $("caption").value = "";
-    } catch (err) { status.textContent = err.message; status.className = "status error"; }
+      clearPhoto();
+    } catch (err) { say("photo-status", err.message, true); }
   });
-  if (name) open().catch(() => {});
+
+  translate();
+  if (name) { $("name").value = name; open().catch((err) => say("who-status", err.message, true)); }
 </script>
 </body>
 </html>

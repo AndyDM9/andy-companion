@@ -21,21 +21,21 @@ def today(now: Optional[datetime] = None, language: str = "en") -> Dict[str, str
 
     now = now or datetime.now()
     weekday = now.strftime("%A")
-    date = f"{now.day} {now.strftime('%B %Y')}"
+    date = f"{now.strftime('%B')} {now.day}, {now.year}"      # "October 14, 2026", as said in the US
     time = now.strftime("%H:%M")
     out = {
         "weekday": weekday,
         "date": date,
         "time": time,
         "part_of_day": part_of_day(now),
-        "say": f"It is {weekday} {date}, and the time is {time}.",
+        "say": f"It is {weekday}, {date}, and the time is {time}.",
     }
     if words.lang(language) == "es":
         out["shown"] = {"weekday": words.weekday(now, "es"), "date": f"{now.day} de {words.month(now, 'es')}",
                         "part_of_day": words.PARTS["es"][part_of_day(now)], "today": "Hoy",
                         "empty": "Nada para hoy. Pídale a Andy que le recuerde algo.", "from": "De"}
     else:
-        out["shown"] = {"weekday": weekday, "date": f"{now.day} {now.strftime('%B')}",
+        out["shown"] = {"weekday": weekday, "date": f"{now.strftime('%B')} {now.day}",
                         "part_of_day": part_of_day(now), "today": "Today",
                         "empty": "Nothing planned today. Ask Andy to remind you of something.", "from": "From"}
     return out

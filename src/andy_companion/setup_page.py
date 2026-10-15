@@ -2,7 +2,8 @@
 
     /setup?s=<setup token>      (scripts/settings.py links prints it; screen_server serves it)
 
-A helper (often a son or daughter setting Andy up) gives their first name, then sets the town,
+A helper (often a son or daughter setting Andy up) gives their first name, then sets the person's first
+name (optional: the phone pages say "What Andy remembers for Rosa" rather than "them"), the town,
 the local news sites, the pages for what's on, the language, the pace, the volume and the
 captions. Every change is told to the person in Andy's own words at its next quiet moment
 ("Anna changed my settings: the town and the volume"), the way family visits are, so nothing about
@@ -13,12 +14,13 @@ are the person's to set, by talking to Andy.
 from __future__ import annotations
 
 import re
+import unicodedata
 from typing import Any, Dict, List
 
 from andy_companion import board, settings
 
 # What each setting is called when Andy tells the person about a change (Andy's own voice).
-NAMES = {"place": "the town", "news_sources": "the local news sites", "events_pages": "the pages for what's on",
+NAMES = {"person_name": "your name", "place": "the town", "news_sources": "the local news sites", "events_pages": "the pages for what's on",
          "language": "the language", "pace": "how fast I speak", "volume": "the volume", "captions": "the captions",
          "screen_photos": "family photos on the screen", "night_from": "when the screen dims at night",
          "night_to": "when the screen brightens in the morning", "night_clock": "when the night clock shows",
@@ -26,12 +28,16 @@ NAMES = {"place": "the town", "news_sources": "the local news sites", "events_pa
          "tv_yaw": "where the screen is", "tv_height": "how high the screen is", "tv_glance": "glancing at the screen",
          "offers": "offering a story or a riddle in the afternoon", "greet_arrival": "welcoming you back"}
 # The same, as the helper's page says it.
-SHOWN = {**NAMES, "pace": "how fast Andy speaks"}
+SHOWN = {**NAMES, "person_name": "the name these pages use", "pace": "how fast Andy speaks", "greet_arrival": "welcoming them back"}
 # When the screen becomes the calm night clock (the founder, 2026-10-14: "from what time till what time,
 # or maybe when Andy is sleeping").
 NIGHT_CLOCK = ("hours", "asleep", "off")
 SITE = re.compile(r"^(https?://)?([a-z0-9-]+\.)+[a-z]{2,}(/[^\s]*)?$", re.I)
 MAX_SITES = 20
+# The person's first name: letters, with single spaces, hyphens or apostrophes between them ("Anne-Marie",
+# "O'Brien", "María José"); nothing that could carry markup or a number.
+PERSON_NAME = re.compile(r"^[^\W\d_]+(?:[ '’-][^\W\d_]+)*$")
+PERSON_NAME_LEN = 40
 
 
 def state() -> Dict[str, Any]:
@@ -72,6 +78,12 @@ def _sites(value: Any) -> List[str]:
 def clean(data: Dict[str, Any]) -> Dict[str, Any]:
     """The changes asked for, checked. Unknown fields are ignored; a bad value raises ValueError."""
     out: Dict[str, Any] = {}
+    if "person_name" in data:
+        person = unicodedata.normalize("NFC", " ".join(str(data["person_name"] or "").split()))
+        if person and (len(person) > PERSON_NAME_LEN or not PERSON_NAME.match(person)):
+            raise ValueError(f"Their first name can have letters, spaces, hyphens and apostrophes, up to "
+                             f"{PERSON_NAME_LEN} in all.")
+        out["person_name"] = person or None
     if "place" in data:
         place = " ".join(str(data["place"] or "").split())[:120]
         out["place"] = place or None

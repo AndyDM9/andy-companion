@@ -5,6 +5,33 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-14
 
+### Changed (every page, from a design review: the TV, Under the hood, the settings and family pages)
+
+A review of all four pages (in a browser, on the keyless demo) found six high and seven medium problems and
+ranked ideas; all the high and medium ones are done (101 tests added: 735, 742 in the robot's environment).
+- **Under the hood, for the video:** the flagship "find my glasses" turn said "on this computer"; every tool
+  now says where it really ran (all 35, English and Spanish). The page leads with the latest turn laid out
+  stage by stage (Parakeet, Nemotron 3.5 Lightning, each tool with its own time, first sound), the four
+  stage cards show its times, health is one line, and a tally counts turns, tool calls, Tavily calls and
+  looks since Andy started. The proof line shows the latest Nebius Serverless Job (it had picked tonight's
+  local run). In Spanish too. The README's picture is the new page on sample turns.
+- **The TV:** the remote reaches the gear at once (arrows and OK), Tab stays in the menu, Back closes it;
+  the open menu is solid over a dark scrim; the clock keeps time if the connection drops and says so after
+  10 s; the Tavily line sits at the top of its card so a caption never covers it, and list lines are
+  dropped whole to fit; dates in the order people in Florida use; "Por la mañana" in Spanish.
+- **The settings and family pages:** the TV's look (font, colours, rounded panels with a lit edge, text on
+  solid panels); 7:1 text and 3:1 field outlines, 17 px small text, 48 px targets; the settings page starts
+  with what Andy remembers and the family link, has jump links, a "Save" bar once something changes, a
+  second tap to delete instead of pop-ups, Copy and Share for the family link, plainer labels, and an
+  optional name for the person ("What Andy remembers for Rosa"); the family page previews a photo before
+  sending and shows errors on the page; both in Spanish, by the household's language, which the family API
+  now sends with the person's name.
+- **A replaced link** (settings, family, hood) opens a plain page saying what to do, never a bare error.
+- **Dates everywhere in US order** in English: what Andy says ("Today is Wednesday, October 14"), the cards,
+  the settings page, the family page; Spanish keeps "14 de octubre".
+- **The keyless demo** shows sample turns on Under the hood, a research card with how it was found,
+  captions that match the cards, no medication-like sample reminder, and cleans up when stopped by a signal.
+
 ### Added (waking Andy in Spanish)
 
 - "Andy, despierta" wakes Andy from sleep or quiet, and "Buenos días, Andy" from sleep only, as in English:

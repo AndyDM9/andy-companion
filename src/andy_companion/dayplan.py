@@ -63,7 +63,7 @@ def weather_line(period: Optional[dict], language: Optional[str] = None) -> str:
 
 # --- the same plan on the screen ----------------------------------------------------------------
 
-CARD = {"en": {"title": "{weekday} {day} {month}", "none": "No more reminders today.", "more": "And {n} more today",
+CARD = {"en": {"title": "{weekday}, {month} {day}", "none": "No more reminders today.", "more": "And {n} more today",
                "also": "Also today"},
         "es": {"title": "{weekday} {day} de {month}", "none": "No quedan recordatorios hoy.", "more": "Y {n} más hoy",
                "also": "Hoy también"}}

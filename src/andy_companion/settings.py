@@ -23,7 +23,7 @@ DEFAULTS: Dict[str, Any] = {"pace": "normal", "volume": None, "last_morning": No
                             "night_clock": "hours",
                             "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
                             "offers": True, "last_offer": None, "events_suggestion": None,
-                            "greet_arrival": True, "last_greeting": None}
+                            "greet_arrival": True, "last_greeting": None, "person_name": None}
 STEP = 15
 
 
@@ -65,7 +65,7 @@ def next_volume(current: int, change: Union[str, int]) -> int:
 def instructions(now: Optional[datetime] = None) -> str:
     """Lines added to Andy's instructions at the start of each conversation."""
     today = clock.today(now)
-    lines = [f"## TODAY\nAt the start of this conversation it is {today['weekday']} {today['date']}, "
+    lines = [f"## TODAY\nAt the start of this conversation it is {today['weekday']}, {today['date']}, "
              f"{today['time']}. Call get_today for the time later on."]
     from andy_companion import moments, recall
 

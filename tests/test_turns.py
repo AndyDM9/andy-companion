@@ -196,7 +196,7 @@ def test_the_screen_learns_the_hood_link_and_the_hood_goes_back_only_to_the_scre
     assert 'hoodLink + "&from=screen"' in screen_page and "/hood?t=" not in screen_page
 
 
-def test_the_hood_shows_the_newest_suite_scorecard(tmp_path, monkeypatch):
+def test_the_hood_shows_the_newest_nebius_job_scorecard(tmp_path, monkeypatch):
     monkeypatch.setenv("TZ", "America/New_York")
     import time
     time.tzset()
@@ -208,10 +208,33 @@ def test_the_hood_shows_the_newest_suite_scorecard(tmp_path, monkeypatch):
     # A job's naive time is UTC: 2026-10-13T20:00 UTC is 16:00 in Miami, older than the local 18:00 run.
     (tmp_path / "job.json").write_text(json.dumps({"ran": "2026-10-13T20:00:00", "per_run": [33], "total": 36,
                                                    "ran_on": "Nebius Serverless Job, cpu-d3 2vcpu-8gb"}))
+    # The README and the video say the suite runs as a Nebius Serverless Job: that run is shown, even when a
+    # local run is newer (review, 2026-10-14), and the judge by a name people read.
+    (tmp_path / "older-job.json").write_text(json.dumps({"ran": "2026-10-12T20:00:00", "per_run": [30], "total": 36,
+                                                         "ran_on": "Nebius Serverless Job, cpu-d3 2vcpu-8gb"}))
     p = screen_server.proof(tmp_path)
-    assert p == {"suite": "2026-10-13k", "per_run": [57, 56, 56], "total": 57, "judge": "Nemotron-3-Ultra-550b-a55b",
+    assert p == {"suite": None, "per_run": [33], "total": 36, "judge": "", "ran": "2026-10-13",
+                 "ran_on": "Nebius Serverless Job, cpu-d3 2vcpu-8gb"}
+    (tmp_path / "job.json").unlink()
+    (tmp_path / "older-job.json").unlink()
+    p = screen_server.proof(tmp_path)                       # no job: the newest of any
+    assert p == {"suite": "2026-10-13k", "per_run": [57, 56, 56], "total": 57, "judge": "Nemotron 3 Ultra",
                  "ran": "2026-10-13", "ran_on": "this computer"}
     assert screen_server.proof(tmp_path / "missing") is None
+
+
+def test_the_real_proof_is_the_newest_nebius_job_and_names_its_judge():
+    p = screen_server.proof()
+    if p is None:
+        pytest.skip("no evals/results here")
+    assert "Nebius" in p["ran_on"] and p["judge"] == "Nemotron 3 Ultra"
+
+
+def test_model_ids_read_as_names():
+    assert screen_server.model_name("nvidia/Nemotron-3-Ultra-550b-a55b") == "Nemotron 3 Ultra"
+    assert screen_server.model_name("nvidia/Nemotron-3_5-Lightning") == "Nemotron 3.5 Lightning"
+    assert screen_server.model_name("nvidia/Some-New-Model") == "Some New Model"
+    assert screen_server.model_name(None) == ""
 
 
 def test_talking_over_andy_shows_on_the_hood_page(server):

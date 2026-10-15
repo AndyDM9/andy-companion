@@ -20,14 +20,14 @@ def data(tmp_path, monkeypatch):
 
 
 def test_the_day_with_nothing_planned():
-    assert dayplan.say(NOW) == "Today is Tuesday 13 October. You have no reminders today."
+    assert dayplan.say(NOW) == "Today is Tuesday, October 13. You have no reminders today."
 
 
 def test_the_day_is_said_the_same_way_every_time():
     reminders.add("water the plants", at="17:00", now=NOW)
     reminders.add("call my daughter", at="14:30", now=NOW)
     first = dayplan.say(NOW)
-    assert first == ("Today is Tuesday 13 October. You have 2 reminders today: at 2:30 pm, call my daughter; "
+    assert first == ("Today is Tuesday, October 13. You have 2 reminders today: at 2:30 pm, call my daughter; "
                      "at 5:00 pm, water the plants. The next one is at 2:30 pm.")   # times as people say them
     assert dayplan.say(NOW) == first
 
@@ -48,7 +48,7 @@ def test_settings_default_and_stick():
                               "coords": None, "screen_photos": True, "night_from": 21, "night_to": 7, "night_clock": "hours",
                               "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
                               "offers": True, "last_offer": None, "events_suggestion": None,
-                              "greet_arrival": True, "last_greeting": None}
+                              "greet_arrival": True, "last_greeting": None, "person_name": None}
     settings.update(pace="slow", volume=70)
     assert settings.get()["pace"] == "slow" and settings.get()["volume"] == 70
 
@@ -63,7 +63,7 @@ def test_settings_refuse_odd_values():
 def test_instructions_carry_the_pace():
     settings.update(pace="slow")
     extra = settings.instructions(NOW)
-    assert "slowly" in extra and "Tuesday 13 October 2026" in extra
+    assert "slowly" in extra and "Tuesday, October 13, 2026" in extra
 
 
 def test_volume_steps():
@@ -199,7 +199,7 @@ def test_the_plan_is_on_the_screen_too(monkeypatch, tmp_path):
     reminders.add("call my daughter", at="14:30", now=NOW)
     moments.add("Sofia's piano recital", "today", today=NOW.date())
     title, items = dayplan.card(NOW)
-    assert title == "Tuesday 13 October"
+    assert title == "Tuesday, October 13"
     assert items == [{"title": "2:30 pm · call my daughter"}, {"title": "5:00 pm · water the plants"},
                      {"title": "Also today", "summary": "Sofia's piano recital"}]
     h = FakeHandler()

@@ -142,9 +142,11 @@ Each principle comes from published research, and each has something you can see
 | Nemotron 3.5 Lightning reply or tool call | 0.62–0.83 s |
 | Text-to-speech, first audio | 0.10–0.33 s |
 
-**Live, on the robot:** the screen server's `/hood` page shows every turn as it happens: from the
-end of your words to Andy's first sound, split into hearing and reply, with each tool Andy used,
-how long it took and where it ran. Numbers and tool names only, in memory; never the words.
+**Live, on the robot:** the screen server's `/hood` page shows each turn as it happens: the time from the
+end of your words to Andy's first sound, then the turn laid out stage by stage (NVIDIA Parakeet on this
+computer, Nemotron 3.5 Lightning on Nebius Token Factory, each tool with where it ran and how long it
+took), a tally since Andy started, and the latest Nebius Serverless Job scorecard. Numbers and tool names
+only, in memory; never the words. In English or Spanish, like the household.
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 

@@ -152,7 +152,7 @@ def show(result: Dict[str, Any], day: Optional[date] = None, language: str = "en
 
     day = day or date.today()
     lg = words.lang(language)
-    title = f"{day.day} de {words.month(day, lg)}" if lg == "es" else f"{day.day} {words.month(day, lg)}"
+    title = f"{day.day} de {words.month(day, lg)}" if lg == "es" else f"{words.month(day, lg)} {day.day}"
     items = [{"title": str(e["year"]), "summary": e["text"]} for e in result["events"][:PICK]]
     if items:
         items.append({"title": "Sources", "summary": f"Wikipedia ({result['licence']})"})

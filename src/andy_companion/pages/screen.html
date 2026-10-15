@@ -175,9 +175,16 @@
   body.has-photo .weather .then, body.has-photo .weather .from { display: none; }
 
   /* What Andy found: one card that rises in; its lines arrive one after another. */
+  /* A column: the list in the middle gives way first, so the kind, how it was found and the sources stay
+     in view. How a web answer was found sits at the top beside the kind, where a caption never covers it. */
   .found { display: none; padding: 3.2vh 2.6vw; overflow: hidden; }
-  body.has-showing .found { display: block; }
+  body.has-showing .found { display: flex; flex-direction: column; }
+  .found .top { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 1.4vw; row-gap: .3vh; flex: none; }
   .found .kind { font-size: clamp(18px, 1.7vw, 30px); color: var(--soft); margin: 0; }
+  .found .how { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 0; }
+  .found h2 { flex: none; }
+  #items { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+  .found .source { flex: none; }
   .found h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.12; margin: .6vh 0 1.6vh; color: var(--ink); }
   .item { padding: 1.3vh 0; border-top: 1px solid var(--rule); }
   .item .title { font-size: clamp(22px, 2.2vw, 40px); font-weight: 700; margin: 0; line-height: 1.2; }
@@ -186,7 +193,13 @@
   /* A warning on a letter: the same mark as a weather alert, a bar at the start, never a red flash. */
   .item.caution { border-top: 0; border-left: 8px solid var(--mark); padding: 1.1vh 0 1.1vh 1.4vw; margin: .4vh 0 1vh; }
   .item.caution .summary { color: var(--ink); -webkit-line-clamp: 3; }
+  .item.caution.short2 .summary { -webkit-line-clamp: 2; }       /* beside a caption on a small screen */
+  .item.caution.short1 .summary { -webkit-line-clamp: 1; }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
+  /* While Andy speaks the caption lies over the foot of the screen: the card keeps its own foot clear of
+     it (three caption lines and their padding), and its list gives way instead. Not beside the settings
+     code, where the caption keeps to the left column. */
+  body.has-caption:not(.showing-code) .found { padding-bottom: calc(var(--cap-block) + 2.4vh); }
   .photo { display: block; max-width: 100%; max-height: 50vh; margin: 0 0 1.5vh; border-radius: max(10px, calc(var(--r) - 2.6vw)); object-fit: contain; }
   .qr { display: block; width: min(38vh, 100%); height: auto; margin: 0 auto 2vh; border-radius: max(10px, calc(var(--r) - 2.6vw)); background: #fff; padding: 1vh; }
   .qr-note { font-size: clamp(22px, 2.2vw, 38px); margin: 0; line-height: 1.3; }
@@ -222,7 +235,7 @@
   /* Captions: everything Andy says, three lines at a time at reading pace, laid over the foot of the
      screen like a TV's subtitles, so nothing on the screen moves when Andy starts or stops speaking and no
      empty band is kept for them. Andy's words only, never the person's. */
-  :root { --cap-size: clamp(26px, 2.9vw, 50px); }
+  :root { --cap-size: clamp(26px, 2.9vw, 50px); --cap-block: calc(var(--cap-size) * 1.28 * 3 + 3vh); }
   .caption { position: fixed; left: 5vw; right: 5vw; bottom: 5vh; z-index: 5; margin: 0; padding: 1.5vh 2.2vw; background: var(--ink); color: var(--ground); border-radius: var(--r);
              font-size: var(--cap-size); line-height: 1.28; align-self: end;
              display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
@@ -237,15 +250,29 @@
           margin: 0; padding: .45em .9em; border-radius: 999px; font: inherit; font-size: clamp(16px, 1.5vw, 26px);
           color: var(--soft); cursor: pointer; }
   .gear svg { width: 1.2em; height: 1.2em; }
-  .gear:focus-visible, .menu button:focus-visible { outline: 4px solid var(--mark); outline-offset: 4px; }
+  /* A ring a remote's user can see from the sofa. Chromium 85 (a 2022 TV) has no :focus-visible, so the ring
+     is on :focus, and taken off only where a browser knows a mouse, not a key, put the focus there. */
+  .gear:focus, .menu button:focus { outline: 4px solid var(--mark); outline-offset: 4px; }
+  .gear:focus:not(:focus-visible), .menu button:focus:not(:focus-visible) { outline: none; }
+  /* Behind the open menu, a dark scrim: nothing of the screen reads through behind the menu's words. */
+  .scrim { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9; background: rgba(4, 8, 18, .74); display: none; }
+  body.menu-open .scrim { display: block; }
   .menu { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: min(640px, 90vw);
           padding: 4vh 3vw; display: none; flex-direction: column; gap: 2vh; }
   .menu.open { display: flex; }
+  .menu.glass { background: var(--panel); -webkit-backdrop-filter: none; backdrop-filter: none; }   /* solid: text behind text never */
   .menu h2 { margin: 0 0 1vh; font-size: clamp(26px, 2.6vw, 44px); color: var(--ink); }
   .menu button { font: inherit; font-size: clamp(20px, 2vw, 34px); padding: .7em 1em; border-radius: var(--r); text-align: left;
-                 background: var(--panel); color: var(--ink); border: 2px solid var(--edge); cursor: pointer; }
+                 background: var(--ground); color: var(--ink); border: 2px solid var(--rule); cursor: pointer; }
   .menu button span { display: block; font-size: .7em; color: var(--soft); margin-top: .2em; }
-  .offline { position: fixed; right: 2vw; bottom: 2vh; font-size: 20px; color: var(--soft); display: none; }
+  /* No word from Andy for about ten seconds: the time keeps running from the TV's own clock, what is below
+     it dims (it may be out of date), and a plain notice says so, at the size of a card's label. */
+  .below { transition: opacity .8s; }
+  body.offline-on .below { opacity: .4; }
+  body.offline-on .caption { visibility: hidden; }
+  .offline { position: fixed; left: 50%; bottom: 5vh; transform: translateX(-50%); z-index: 6; margin: 0; max-width: 90vw;
+             padding: .6em 1.3em; border-radius: 999px; background: var(--panel); color: var(--ink); border: 2px solid var(--rule);
+             font-size: clamp(19px, 1.9vw, 32px); text-align: center; box-shadow: 0 1.6vh 4vh var(--shadow); display: none; }
   body.offline-on .offline { display: block; }
 </style>
 </head>
@@ -282,14 +309,14 @@
       <figcaption id="family-cap"></figcaption>
     </figure>
     <section class="found glass thick" id="found" aria-live="polite" aria-labelledby="found-h">
-      <p class="kind" id="found-kind"></p>
+      <div class="top"><p class="kind" id="found-kind"></p><p class="how" id="found-how" hidden></p></div>
       <h2 id="found-h">&nbsp;</h2>
       <div id="items"></div>
       <p class="source" id="found-source" hidden></p>
-      <p class="source how" id="found-how" hidden></p>
     </section>
   </main>
   <p class="caption" id="caption" aria-live="polite"></p>
+  <div class="scrim" id="scrim" aria-hidden="true"></div>
   <div class="menu glass thick" id="menu" role="dialog" aria-modal="true" aria-labelledby="menu-h">
     <h2 id="menu-h">Andy's settings</h2>
     <button type="button" id="menu-code">Show the settings code<span id="menu-code-hint">Point a phone's camera at it to change Andy's settings</span></button>
@@ -309,7 +336,7 @@
     en: { how: "Found with Tavily", howSoFar: "so far", credit: "credit", credits: "credits", and: "and",
           calls: { search: "search", extract: "extract", crawl: "crawl", map: "map", research: "research" },
           family: "family", nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
-          hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…",
+          hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…", lost: "Not connected",
           code: "Point a phone's camera here to open Andy's settings. It disappears in two minutes.",
           gear: "Settings", menu: "Andy's settings", menuCode: "Show the settings code", menuCodeHint: "Point a phone's camera at it to change Andy's settings",
           menuHood: "Under the hood", menuHoodHint: "How fast Andy answers, and what it uses, live", close: "Close",
@@ -319,7 +346,7 @@
     es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", credit: "crédito", credits: "créditos", and: "y",
           calls: { search: "búsqueda", extract: "extracción", crawl: "rastreo", map: "mapa", research: "investigación" },
           family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
-          hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…",
+          hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…", lost: "Sin conexión",
           code: "Apunte la cámara de un teléfono aquí para abrir los ajustes de Andy. Desaparece en dos minutos.",
           gear: "Ajustes", menu: "Ajustes de Andy", menuCode: "Mostrar el código de ajustes", menuCodeHint: "Apunte la cámara de un teléfono para cambiar los ajustes de Andy",
           menuHood: "Por dentro", menuHoodHint: "Lo rápido que responde Andy y lo que usa, en directo", close: "Cerrar",
@@ -328,6 +355,62 @@
           where: "Andy mira aquí cuando le muestra algo nuevo." },
   };
   let ui = UI.en;
+  // The clock's words, the same as words.py (DAYS, MONTHS, PARTS_SHOWN; a test checks): the date in the order
+  // people in Florida read it ("Wednesday, October 14"; "miércoles, 14 de octubre"), and "Por la mañana",
+  // never a bare "Mañana", which reads as "Tomorrow".
+  const WORDS = {
+    en: { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          parts: { morning: "morning", afternoon: "afternoon", evening: "evening", night: "night" } },
+    es: { days: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"],
+          months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+          parts: { morning: "por la mañana", afternoon: "por la tarde", evening: "por la tarde", night: "por la noche" } },
+  };
+  function dateShown(d, lg, withWeekday) {    // d is read with getUTC*: it holds the server's wall clock
+    const W = WORDS[lg], day = d.getUTCDate(), month = W.months[d.getUTCMonth()];
+    const date = lg === "es" ? `${day} de ${month}` : `${month} ${day}`;
+    return withWeekday ? `${W.days[(d.getUTCDay() + 6) % 7]}, ${date}` : date;
+  }
+  function partOfDay(h) {                      // as clock.part_of_day
+    return h >= 5 && h < 12 ? "morning" : h >= 12 && h < 17 ? "afternoon" : h >= 17 && h < 22 ? "evening" : "night";
+  }
+
+  // The time runs here, every second, from the server's clock: the page learns how far the TV's clock is from
+  // the server's (skew) and the server's distance from UTC (tz), so the clock keeps going if Andy can't be
+  // reached, and a TV set to the wrong time or zone still shows Andy's.
+  let skewMs = 0, tzMs = -new Date().getTimezoneOffset() * 60000, lastS = null, clockKey = "";
+  function learnClock(s) {
+    if (!s.server_now || !s.today || !s.today.time) return;
+    skewMs = s.server_now * 1000 - Date.now();
+    const [h, m] = s.today.time.split(":").map(Number), utc = new Date(s.server_now * 1000);
+    let diff = (h * 60 + m) - (utc.getUTCHours() * 60 + utc.getUTCMinutes());
+    diff = ((diff % 1440) + 1440) % 1440;
+    if (diff > 840) diff -= 1440;               // UTC-12 to UTC+14
+    tzMs = Math.round(diff / 15) * 15 * 60000;  // zones are whole quarter hours; a minute's turn in between is lost
+  }
+  const serverNow = () => Date.now() + skewMs;
+  function renderClock() {
+    if (!lastS) return;
+    const d = new Date(serverNow() + tzMs), h = d.getUTCHours(), m = d.getUTCMinutes();
+    const lg = document.documentElement.lang === "es" ? "es" : "en", part = partOfDay(h), hhmm = h + ":" + m;
+    const night = !!lastS.night;
+    const key = [lg, night, d.getUTCDate(), hhmm].join("|");
+    if (key === clockKey) return;               // only when it changes: the header is read out by screen readers
+    clockKey = key;
+    document.body.dataset.part = part;
+    document.body.style.setProperty("--light", lightAngle(hhmm) + "deg");
+    const when = $("when"); when.textContent = "";
+    if (night) {
+      // The time is what someone looks for at night; the day and date sit quietly under it.
+      text($("day"), clock12(hhmm));
+      when.append(cap1(dateShown(d, lg, true)));
+    } else {
+      text($("day"), cap1(WORDS[lg].days[(d.getUTCDay() + 6) % 7]));
+      // In Spanish, from 8 pm the evening is "por la noche", as Andy's greeting says "Buenas noches" (words.py).
+      const said = lg === "es" && part === "evening" && h >= 20 ? WORDS.es.parts.night : WORDS[lg].parts[part];
+      when.append(cap1(said) + ", ", make("strong", "", clock12(hhmm)), ", " + dateShown(d, lg, false));
+    }
+  }
 
   function until(due, nowS) {
     const m = Math.round((due - nowS) / 60);
@@ -342,7 +425,6 @@
     const shown = s.today.shown;
     const es = shown.today === "Hoy";
     ui = es ? UI.es : UI.en;
-    document.body.dataset.part = s.today.part_of_day;
     document.documentElement.lang = es ? "es" : "en";
     // The calm night clock only while there is nothing to show: a card Andy puts up at night (a letter, the
     // news, an answer) brings back the usual layout, which hid it before (the founder, 2026-10-14, 9 pm).
@@ -353,23 +435,14 @@
     }
     document.body.classList.toggle("is-night", !!s.night && !s.showing);
     document.body.classList.toggle("calm", !!s.calm);
-    document.body.style.setProperty("--light", lightAngle(s.today.time) + "deg");
-    const when = $("when"); when.textContent = "";
-    if (s.night) {
-      // The time is what someone looks for at night; the day and date sit quietly under it.
-      text($("day"), clock12(s.today.time));
-      when.append(cap1(shown.weekday) + ", " + shown.date);
-    } else {
-      text($("day"), cap1(shown.weekday));
-      when.append(cap1(shown.part_of_day) + ", ", make("strong", "", clock12(s.today.time)), ", " + shown.date);
-    }
+    learnClock(s); lastS = s; renderClock();
     text($("next-h"), ui.next); text($("weather-h"), ui.weather); text($("offline"), ui.offline);
     text($("gear-label"), ui.gear); text($("menu-h"), ui.menu); text($("menu-close"), ui.close);
     $("menu-code").firstChild.textContent = ui.menuCode; text($("menu-code-hint"), ui.menuCodeHint);
     $("menu-hood").firstChild.textContent = ui.menuHood; text($("menu-hood-hint"), ui.menuHoodHint);
 
     // Next: the first reminder still to come, with how long until it; the rest of today below it.
-    const nowS = Date.now() / 1000;
+    const nowS = serverNow() / 1000;
     const coming = s.plan.filter((p) => !p.done);
     const first = coming[0];
     $("next-what").hidden = $("next-at").hidden = !first;
@@ -478,9 +551,32 @@
     const showCap = !!cap && (now - lastSpoke < 4000 || now < capSeenAt + captionLasts() * 1000 + 4000);
     document.body.classList.toggle("has-caption", showCap);
     if ($("caption").textContent !== cap) $("caption").textContent = cap;
+    if (showing) fitItems();
     // The colour fades only when the part of the day changes, never when the page first opens.
     if (!document.body.classList.contains("ready")) setTimeout(() => document.body.classList.add("ready"), 500);
   }
+
+  // The card's list gives way to the caption a whole line at a time: a line that doesn't fit is left out,
+  // never cut in half, and comes back when the caption goes. Plain lines go first, from the last; a warning
+  // (a letter's caution) is the last to give way.
+  function fitItems() {
+    const box = $("items"), lines = [...box.querySelectorAll(".item")];      // never the photo or the code
+    lines.forEach((el) => { el.style.display = ""; el.classList.remove("short2", "short1"); });
+    const order = lines.filter((el) => !el.classList.contains("caution")).reverse()
+      .concat(lines.filter((el) => el.classList.contains("caution")).reverse());
+    // Layout positions (both inside the card), not drawn ones: a line still rising in is drawn lower.
+    const fits = () => lines.every((el) => el.style.display === "none" ||
+                                           el.offsetTop + el.offsetHeight <= box.offsetTop + box.clientHeight + 1);
+    for (const el of order) {
+      if (fits()) break;
+      if (el.classList.contains("caution")) {      // a warning first gets shorter: two lines, then one
+        el.classList.add("short2"); if (fits()) break;
+        el.classList.add("short1"); if (fits()) break;
+      }
+      el.style.display = "none";
+    }
+  }
+  window.addEventListener("resize", () => { if (document.body.classList.contains("has-showing")) fitItems(); });
 
   let familyId = "", foundKey = "", foundContent = "";
   function showFamilyPhoto(fp) {
@@ -566,15 +662,39 @@
     const ampm = h < 12 ? "am" : "pm"; h = h % 12 || 12;
     return h + ":" + String(m).padStart(2, "0") + " " + ampm;
   }
+  // One request at a time, given up after five seconds, so a dead connection doesn't pile them up.
+  let ticking = false, lastOk = performance.now();
   async function tick() {
+    if (ticking) return;
+    ticking = true;
+    const ctl = window.AbortController ? new AbortController() : null;
+    const timer = ctl ? setTimeout(() => ctl.abort(), 5000) : 0;
     try {
-      const r = await fetch("/api/screen?t=" + encodeURIComponent(token), { cache: "no-store" });
+      const r = await fetch("/api/screen?t=" + encodeURIComponent(token), { cache: "no-store", signal: ctl ? ctl.signal : undefined });
       if (!r.ok) throw new Error(r.status);
       const data = await r.json();
       if (data.links && data.links.hood) hoodLink = data.links.hood;
       render(data);
-      document.body.classList.remove("offline-on");
-    } catch (e) { document.body.classList.add("offline-on"); }
+      lastOk = performance.now();
+      setOffline(false);
+    } catch (e) { /* everySecond() says so after ten seconds without an answer */ }
+    finally { clearTimeout(timer); ticking = false; }
+  }
+  // About ten seconds without Andy: the lower area dims, the state pill goes to its "away" look, and the
+  // notice shows. The clock goes on from the server's time it last learned.
+  const OFFLINE_AFTER_MS = 10000;
+  function setOffline(on) {
+    if (document.body.classList.contains("offline-on") === on) return;
+    document.body.classList.toggle("offline-on", on);
+    if (on) {
+      const pill = $("state");
+      pill.dataset.state = "away"; text($("state-label"), ui.lost);
+      lastState = "";                             // the real state comes back with the connection
+    }
+  }
+  function everySecond() {
+    renderClock();
+    if (performance.now() - lastOk > OFFLINE_AFTER_MS) setOffline(true);
   }
 
   // The state strip changes in a moment, so it is asked for more often than the rest of the screen.
@@ -582,7 +702,7 @@
   async function stateTick() {
     try {
       const r = await fetch("/api/state?t=" + encodeURIComponent(token), { cache: "no-store" });
-      if (!r.ok) return;
+      if (!r.ok || document.body.classList.contains("offline-on")) return;
       const s = await r.json();
       if (s.state === "speaking") lastSpoke = Date.now();
       const key = s.state + "|" + s.label;
@@ -594,13 +714,16 @@
       text($("state-label"), s.label);
     } catch (e) { /* the reconnecting notice covers this */ }
   }
-  // The gear: a menu for the TV's remote or a mouse. Arrow keys move between its buttons, Escape closes it.
+  // The gear: a menu for the TV's remote or a mouse. Nothing has focus when the page opens, so the first arrow
+  // or OK puts it on the gear; in the menu, arrows and Tab go round its buttons, and Back closes it.
   function openMenu(open) {
     $("menu").classList.toggle("open", open);
+    document.body.classList.toggle("menu-open", open);
     if (open) $("menu-code").focus(); else $("gear").focus();
   }
   $("gear").addEventListener("click", () => openMenu(true));
   $("menu-close").addEventListener("click", () => openMenu(false));
+  $("scrim").addEventListener("click", () => openMenu(false));
   // The hood page has its own token, learned from /api/screen; "from=screen" lets its Back key come back here.
   let hoodLink = "";
   $("menu-hood").addEventListener("click", () => { if (hoodLink) location.href = hoodLink + "&from=screen"; });
@@ -609,16 +732,28 @@
     openMenu(false);
     tick();
   });
+  const ARROWS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  // Back on a TV remote: Escape or Backspace in most browsers; LG's and Samsung's TVs send their own codes.
+  const isBack = (e) => ["Escape", "Backspace", "GoBack", "BrowserBack"].includes(e.key) || e.keyCode === 461 || e.keyCode === 10009;
   document.addEventListener("keydown", (e) => {
     const menu = $("menu");
-    if (!menu.classList.contains("open")) return;
-    const buttons = [...menu.querySelectorAll("button")];
+    if (!menu.classList.contains("open")) {
+      const a = document.activeElement;
+      if ((!a || a === document.body || a === document.documentElement) && (ARROWS.includes(e.key) || e.key === "Enter")) {
+        $("gear").focus(); e.preventDefault();
+      }
+      return;
+    }
+    const buttons = [...menu.querySelectorAll("button")], n = buttons.length;
     const i = buttons.indexOf(document.activeElement);
-    if (e.key === "Escape" || e.key === "Backspace") { openMenu(false); e.preventDefault(); }
-    if (e.key === "ArrowDown") { buttons[(i + 1) % buttons.length].focus(); e.preventDefault(); }
-    if (e.key === "ArrowUp") { buttons[(i - 1 + buttons.length) % buttons.length].focus(); e.preventDefault(); }
+    const next = i < 0 ? 0 : (i + 1) % n, prev = i < 0 ? n - 1 : (i - 1 + n) % n;
+    if (isBack(e)) { openMenu(false); e.preventDefault(); }
+    else if (e.key === "Tab") { buttons[e.shiftKey ? prev : next].focus(); e.preventDefault(); }   // focus stays in the menu
+    else if (e.key === "ArrowDown" || e.key === "ArrowRight") { buttons[next].focus(); e.preventDefault(); }
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") { buttons[prev].focus(); e.preventDefault(); }
   });
   tick(); setInterval(tick, 1000);
+  setInterval(everySecond, 1000);
   stateTick(); setInterval(stateTick, 400);
 </script>
 </body>

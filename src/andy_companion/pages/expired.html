@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<link rel="icon" href="data:,">
+<style>
+  /* A link that no longer opens: the same plain look as Andy's other phone pages, and what to do next.
+     Filled in by screen_server.expired_page; the link's token is never shown. */
+  @font-face { font-family: "Atkinson Hyperlegible"; font-weight: 400; font-display: swap; src: url("/fonts/atkinson-hyperlegible-400.woff2") format("woff2"); }
+  @font-face { font-family: "Atkinson Hyperlegible"; font-weight: 700; font-display: swap; src: url("/fonts/atkinson-hyperlegible-700.woff2") format("woff2"); }
+  :root { --ground: #e7eee3; --ink: #1d2a1f; --soft: #52634f; --mark: #2f6f5e; --panel: #f7faf5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #1a2420; --ink: #e8efe6; --soft: #a9b9a8; --mark: #8fd0b8; --panel: #212d28; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 22px/1.5 "Atkinson Hyperlegible", Verdana, sans-serif; }
+  main { max-width: 34rem; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 34px; line-height: 1.2; margin: 0 0 18px; }
+  p { margin: 0; background: var(--panel); border-left: 6px solid var(--mark); padding: 16px 18px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>{{head}}</h1>
+  <p>{{line}}</p>
+</main>
+</body>
+</html>

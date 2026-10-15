@@ -16,7 +16,7 @@ MONTHS = {"en": ["January", "February", "March", "April", "May", "June", "July",
 PARTS = {"en": {"morning": "morning", "afternoon": "afternoon", "evening": "evening", "night": "night"},
          "es": {"morning": "mañana", "afternoon": "tarde", "evening": "tarde", "night": "noche"}}
 PLAN: Dict[str, Dict[str, str]] = {
-    "en": {"today_is": "Today is {weekday} {day} {month}.", "none": "You have no reminders today.",
+    "en": {"today_is": "Today is {weekday}, {month} {day}.", "none": "You have no reminders today.",
            "count_one": "You have 1 reminder today: {items}.", "count": "You have {n} reminders today: {items}.",
            "item": "at {time}, {text}", "next": "The next one is at {time}.", "also": "Today is also: {items}."},
     "es": {"today_is": "Hoy es {weekday} {day} de {month}.", "none": "No tiene recordatorios hoy.",
@@ -25,8 +25,34 @@ PLAN: Dict[str, Dict[str, str]] = {
 }
 
 
+# The parts of the day as the screen's clock line shows them ("Por la mañana, 9:41 am"): a bare
+# "Mañana" there reads as "Tomorrow". The screen (pages/screen.html) keeps the same words; a test checks it.
+PARTS_SHOWN = {"en": {"morning": "morning", "afternoon": "afternoon", "evening": "evening", "night": "night"},
+               "es": {"morning": "por la mañana", "afternoon": "por la tarde", "evening": "por la tarde",
+                      "night": "por la noche"}}
+
+
 def lang(value: str | None) -> str:
     return value if value in LANGUAGES else "en"
+
+
+def part_shown(dt, language: str = "en") -> str:
+    """The part of the day as the screen's clock line says it. In Spanish the evening is "por la noche" from
+    8 pm, as the greeting turns to "Buenas noches" then."""
+    from andy_companion.clock import part_of_day
+
+    lg, part = lang(language), part_of_day(dt)
+    if lg == "es" and part == "evening" and dt.hour >= 20:
+        part = "night"
+    return PARTS_SHOWN[lg][part]
+
+
+def date_shown(dt, language: str = "en", with_weekday: bool = False) -> str:
+    """The date as the screen writes it, in the order people in Florida read it: "October 14" or
+    "Wednesday, October 14"; in Spanish "14 de octubre" or "miércoles, 14 de octubre"."""
+    lg = lang(language)
+    date = f"{dt.day} de {month(dt, lg)}" if lg == "es" else f"{month(dt, lg)} {dt.day}"
+    return f"{weekday(dt, lg)}, {date}" if with_weekday else date
 
 
 def weekday(dt, language: str = "en") -> str:

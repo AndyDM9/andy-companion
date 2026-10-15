@@ -82,7 +82,7 @@ def test_the_screen_credits_wikipedia_and_its_licence():
     result = onthisday.today(date(2026, 10, 14), opener=opener(), vetter=lambda e: e)
     onthisday.show(result, day=date(2026, 10, 14))
     shown = board.showing()
-    assert shown["kind"] == "on_this_day" and shown["title"] == "14 October"
+    assert shown["kind"] == "on_this_day" and shown["title"] == "October 14"
     assert shown["items"][-1] == {"title": "Sources", "summary": "Wikipedia (CC BY-SA 4.0)"}
     onthisday.show(result, day=date(2026, 10, 14), language="es")
     assert board.showing()["title"] == "14 de octubre"

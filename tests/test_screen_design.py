@@ -113,6 +113,10 @@ def test_the_page_runs_on_a_2022_tv():
     # Chromium 85: no `inset` shorthand (87); the light's angle animates through @property (85).
     assert not re.search(r"[\s;{]inset\s*:", PAGE)
     assert "@property --light" in PAGE
+    # Chromium 85 has no :focus-visible (86): a focus ring is drawn on :focus and only taken off through it.
+    css = re.sub(r"/\*.*?\*/", "", PAGE, flags=re.S)
+    for rule in re.findall(r"([^{}]*:focus-visible[^{}]*)\{", css):
+        assert ":not(:focus-visible)" in rule, rule
 
 
 def test_the_light_on_the_glass_follows_the_sun():

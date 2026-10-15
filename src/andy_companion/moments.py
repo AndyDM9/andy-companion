@@ -148,4 +148,4 @@ def spoken_day(on: str, today: Optional[date] = None) -> str:
         return "tomorrow"
     if d == today - timedelta(days=1):
         return "yesterday"
-    return d.strftime("%A %-d %B")
+    return d.strftime("%A, %B %-d")

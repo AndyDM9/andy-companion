@@ -39,7 +39,7 @@ def _write_facts(facts: List[Dict[str, Any]]) -> None:
 
 
 def _when(ts: float) -> str:
-    return datetime.fromtimestamp(ts).strftime("%a %-d %b, %-I:%M %p").replace("AM", "am").replace("PM", "pm")
+    return datetime.fromtimestamp(ts).strftime("%a, %b %-d, %-I:%M %p").replace("AM", "am").replace("PM", "pm")
 
 
 def summary() -> Dict[str, List[Dict[str, str]]]:

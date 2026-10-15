@@ -124,8 +124,19 @@ Its design, "Andy Glass", takes from Apple's Liquid Glass ([decision 0005](decis
 - still and solid for anyone who prefers it ("Calm screen", or the system's reduced-motion setting);
 - its typeface served by Andy itself, so the TV asks nothing of anyone outside the house.
 
+## The phone pages
+
+The settings page and the family page share the TV's look (the same font, colours and rounded panels,
+with text always on solid panels), reach 7:1 contrast with touch targets of at least 48 px, and are in
+English or Spanish like the household. The settings page opens with what Andy remembers and the family
+link, jumps to each section, keeps a "Save" bar in view once something changes, asks for a second tap
+before deleting, and shares the family link with Copy and Share. A link that has been replaced opens a
+plain page saying what to do, never a bare error.
+
 ## Family, on your terms
 
+- **The family page** previews a photo before it is sent and greets family by the person's name when the
+  settings page has it.
 - **Family see only what you ask Andy to share,** can send Andy a message, a link or a photo, and Andy
   always tells you who looked.
 - **Everything Andy keeps, on one page.** Helpers see every reminder, remembered moment and fact, shared

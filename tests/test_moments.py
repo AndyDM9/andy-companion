@@ -77,7 +77,7 @@ def test_the_morning_after_andy_asks_how_it_went():
 def test_spoken_days():
     assert moments.spoken_day("2026-10-13", TUE) == "today"
     assert moments.spoken_day("2026-10-12", TUE) == "yesterday"
-    assert moments.spoken_day("2026-10-16", TUE) == "Friday 16 October"
+    assert moments.spoken_day("2026-10-16", TUE) == "Friday, October 16"
 
 
 def test_andy_starts_every_conversation_knowing_what_it_remembers():
@@ -109,7 +109,7 @@ def test_when_several_moments_match_none_is_forgotten_and_andy_can_ask_which():
     b = moments.add("Rosa's birthday", "Friday", TUE)
     out = moments.forget_one("Rosa", TUE)
     assert out["forgotten"] == 0 and [w["id"] for w in out["which"]] == [a["id"], b["id"]]
-    assert out["which"][0] == {"id": a["id"], "what": "lunch with Rosa", "day": "Thursday 15 October"}
+    assert out["which"][0] == {"id": a["id"], "what": "lunch with Rosa", "day": "Thursday, October 15"}
     assert moments.forget("Rosa") == 0 and len(moments._load()) == 2
     assert moments.forget_one(b["id"]) == {"forgotten": 1, "what": "Rosa's birthday"}       # then by its id
     assert moments.forget_one("birthday")["forgotten"] == 0 and "say" in moments.forget_one("")

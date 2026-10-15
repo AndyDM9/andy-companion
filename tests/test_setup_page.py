@@ -102,6 +102,24 @@ def test_adding_the_setup_link_keeps_the_existing_links(tmp_path):
     assert t["screen"] == "S" * 16 and t["family"] == "F" * 16 and len(t["setup"]) >= 16
 
 
+@pytest.mark.parametrize("given, kept", [("Rosa", "Rosa"), ("  Anne-Marie ", "Anne-Marie"), ("O'Brien", "O'Brien"),
+                                         ("María  José", "María José"), ("", None), (None, None)])
+def test_the_person_s_first_name_is_optional_and_only_a_name(given, kept):
+    assert setup_page.clean({"person_name": given}) == {"person_name": kept}
+
+
+@pytest.mark.parametrize("bad", ["R2D2", "<b>Rosa</b>", "Rosa_", "Jo-", "a" * 41, "Rosa; drop"])
+def test_anything_but_a_name_is_refused(bad):
+    with pytest.raises(ValueError, match="letters, spaces, hyphens and apostrophes"):
+        setup_page.clean({"person_name": bad})
+
+
+def test_setting_the_person_s_name_is_told_to_them_like_any_change(server):
+    out = post(server, "/api/setup", {"name": "Anna", "settings": {"person_name": "Rosa"}})
+    assert out["changed"] == ["the name these pages use"] and out["settings"]["person_name"] == "Rosa"
+    assert "Anna changed your settings: your name" in speaker.family_frame(board.next_for_person())
+
+
 def test_reminders_memories_and_sharing_are_not_settings():
     assert set(setup_page.clean({"reminders": [1], "memory": "x", "shared": "y"})) == set()
 

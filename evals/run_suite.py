@@ -74,9 +74,9 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
     """What a tool would return on the robot, so Andy can finish its turn as it would there."""
     now = datetime.now()
     if name == "get_today":
-        return {"weekday": now.strftime("%A"), "date": f"{now.day} {now:%B %Y}", "time": now.strftime("%H:%M")}
+        return {"weekday": now.strftime("%A"), "date": f"{now:%B} {now.day}, {now.year}", "time": now.strftime("%H:%M")}
     if name == "day_plan":
-        return {"say": f"Today is {now:%A} {now.day} {now:%B}. You have no reminders today."}
+        return {"say": f"Today is {now:%A}, {now:%B} {now.day}. You have no reminders today."}
     if name == "what_you_remember":   # the same moments the case puts in Andy's instructions
         return {"facts": [], "moments": [{"what": w, "day": d} for w, d in (case or {}).get("remembered", [])]}
     nxt = {"next": offers.NEXT[name]} if offers is not None and name in offers.NEXT else {}
@@ -200,7 +200,7 @@ def profile_prompt(path: Path) -> str:
     text = path.read_text()
     body = text.split("+++", 2)[2] if text.startswith("+++") else text
     today = datetime.now()
-    return body.strip() + f"\n\n## TODAY\nAt the start of this conversation it is {today:%A %-d %B %Y}."
+    return body.strip() + f"\n\n## TODAY\nAt the start of this conversation it is {today:%A, %B %-d, %Y}."
 
 
 def chat(model: str, messages, tools=None, max_tokens=300, thinking=False) -> dict:
