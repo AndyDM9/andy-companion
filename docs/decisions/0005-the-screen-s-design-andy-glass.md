@@ -112,3 +112,21 @@ must stay at 7:1 (WCAG AAA) against the worst case behind it, tested.
   server's time if the connection drops, and after 10 s the screen says it isn't connected. How a web
   answer was found sits at the top of its card, so a caption never covers it. Dates read as in Florida
   ("Wednesday, October 14"; "miércoles, 14 de octubre"), and Spanish says "Por la mañana".
+
+## Amended 2026-10-20 (a design pass before filming; PLAN round 6)
+
+The founder asked for the most beautiful screen we can make; the judges had faulted another entry for a warning
+buried under its evidence and for a stock look. Seen on the demo at TV size, the screen read well but was generic
+in two places and wrong in two:
+- **Andy itself, drawn small, replaces the grey dot** in the state pill: a round head, two eyes, two antennas that
+  do what the robot's do (lifted while you speak, leaning together while it thinks, a sway while it speaks, drooped
+  with eyes shut asleep; a blink now and then while it waits). The poses are the state, so they stay with motion
+  off; only the movement between them needs motion. "Looking at you" moved under the state's words in the pill.
+- **A warning looks like one:** a solid warm wash (never glass) and "Be careful" on a solid band with a mark, white
+  on sienna by day, dark on amber in the evening and at night; every text at 7:1 or more on both, in every part of
+  the day (`tests/test_round6_screen.py`; the night wash was darkened when the test found 6.85:1).
+- **The card is the thing to read:** while a card shows, the day's two cards keep to a narrow column (.6 to 1.4),
+  the captions page two lines at a time, and the chosen view of a search is bigger.
+- **Never cut off:** the scam receipt's three steps wrap to two lines at their shortest and are never left out
+  (they used to end in "…", and step 3 could drop).
+- **The quiet screen** sits in the middle of the space below the clock instead of leaving its lower third empty.

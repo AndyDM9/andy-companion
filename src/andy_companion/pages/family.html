@@ -42,9 +42,12 @@
 
   main { max-width: 40rem; margin: 0 auto; padding: 22px 16px calc(48px + env(safe-area-inset-bottom, 0px)); }
   .brand { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; font-weight: 700; font-size: 20px; letter-spacing: .01em; }
-  .orb { flex: none; width: 18px; height: 18px; border-radius: 50%;
-         background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .6), transparent 55%), var(--orb);
-         box-shadow: 0 0 14px var(--orb); }
+  /* The Andy mark, as on the TV (2026-10-20): its round head, two eyes and two antennas. */
+  .orb { flex: none; width: 30px; height: 30px; color: var(--orb); }
+  .orb svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .orb .head, .orb .ant circle { fill: currentColor; }
+  .orb .ant line { stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+  .orb .eye { fill: var(--panel); }
   @media (prefers-reduced-motion: no-preference) { body.busy .orb { animation: breathe 1.6s ease-in-out infinite; } }
   @keyframes breathe { 50% { opacity: .45; transform: scale(.85); } }
   h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -.01em; }
@@ -95,7 +98,7 @@
 <body>
 <div class="scene" aria-hidden="true"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
 <main>
-  <p class="brand"><span class="orb" aria-hidden="true"></span>Andy</p>
+  <p class="brand"><span class="orb" aria-hidden="true"><svg viewBox="0 0 40 40"><g class="ant"><line x1="15" y1="16" x2="11" y2="5"/><circle cx="11" cy="5" r="2.8"/><line x1="25" y1="16" x2="29" y2="5"/><circle cx="29" cy="5" r="2.8"/></g><rect class="head" x="6" y="14" width="28" height="22" rx="11"/><circle class="eye" cx="14.5" cy="25" r="3.6"/><circle class="eye" cx="25.5" cy="25" r="3.6"/></svg></span>Andy</p>
 
   <section id="who">
     <h1 data-t="title">Notes from home</h1>

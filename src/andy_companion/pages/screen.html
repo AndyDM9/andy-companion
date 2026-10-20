@@ -33,22 +33,27 @@
     --glass: rgba(255, 255, 255, .68); --edge: rgba(255, 255, 255, .85); --shine: rgba(255, 255, 255, .9);
     --glow1: #ffd8b5; --glow2: #b9d5f4; --glow3: #c7ecd9; --glow-a: .75; --photo-a: .09; --orb: #1c5244; --shadow: rgba(40, 60, 90, .18);
     --r: 32px; --rim: .7; --light: 135deg;
+    /* A warning (a scam's sign, a letter that asks for gift cards): a solid band and a warm wash, never glass. */
+    --warn: #7a2e0c; --warn-on: #ffffff; --warn-wash: #fbeee2;
   }
   body[data-part="afternoon"] {
     --ground: #e1ebdc; --ink: #1d2a1f; --soft: #334335; --mark: #1c5244; --panel: #f2f6ef; --rule: #c7d5c1; --hush: #415243;
     --glass: rgba(255, 255, 255, .66); --glow1: #fff0c0; --glow2: #c4e6c6; --glow3: #bcdff0; --orb: #1c5244;
     --shadow: rgba(40, 70, 40, .16);
+    --warn: #7a2e0c; --warn-on: #ffffff; --warn-wash: #fbeee2;
   }
   body[data-part="evening"] {
     --ground: #1c2543; --ink: #f6dc96; --soft: #dde2ee; --mark: #f6dc96; --panel: #2b3658; --rule: #4a5784; --hush: #c9d0e0;
     --glass: rgba(37, 48, 82, .66); --edge: rgba(255, 255, 255, .16); --shine: rgba(255, 255, 255, .22);
     --glow1: #4a5fa8; --glow2: #7b4d86; --glow3: #a0662f; --glow-a: .38; --photo-a: .14; --orb: #f6dc96; --shadow: rgba(0, 0, 0, .35);
+    --warn: #f2c078; --warn-on: #2a1600; --warn-wash: #3b2a33;
   }
   body[data-part="night"] {
     --ground: #0b1020; --ink: #c7cfdd; --soft: #a9b3c6; --mark: #d8c38c; --panel: #151d36; --rule: #26314d; --hush: #a3adc1;
     --glass: rgba(18, 25, 48, .72); --edge: rgba(255, 255, 255, .08); --shine: rgba(255, 255, 255, .1);
     --glow1: #1e2c5a; --glow2: #2a2454; --glow3: #1d3b4a; --glow-a: .35; --photo-a: .09; --orb: #d8c38c; --shadow: rgba(0, 0, 0, .5);
     --rim: .45;
+    --warn: #e9b26a; --warn-on: #241200; --warn-wash: #221a28;
   }
 
   * { box-sizing: border-box; }
@@ -112,30 +117,51 @@
   .when { grid-column: 1; font-size: clamp(24px, 2.9vw, 50px); margin: 1.4vh 0 0; color: var(--soft); font-variant-numeric: tabular-nums; }
   .when strong { color: var(--ink); font-weight: 700; }
 
-  /* What Andy is doing: a glass pill with an orb that breathes while Andy listens or thinks. */
-  .state { grid-column: 2; grid-row: 1; justify-self: end; display: flex; align-items: center; gap: .65em;
-           margin: .4vh 0 0; padding: .5em 1.05em .5em .75em; border-radius: 999px;
-           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); max-width: 36vw; }
-  .orb { flex: none; width: .9em; height: .9em; border-radius: 50%; background: var(--hush); opacity: .7; position: relative; }
-  .state[data-state="ready"] .orb { background: radial-gradient(circle at 35% 30%, #fff8, transparent 55%), var(--orb); opacity: .55; }
-  .state[data-state="hearing"] .orb, .state[data-state="thinking"] .orb, .state[data-state="working"] .orb,
-  .state[data-state="speaking"] .orb { background: radial-gradient(circle at 35% 30%, #fff9, transparent 55%), var(--orb); opacity: 1;
-                                       box-shadow: 0 0 .8em var(--orb); }
+  /* What Andy is doing: a glass pill with Andy itself drawn small (its round head, its two eyes, its two antennas)
+     doing on the TV what the robot does in the room: antennas lifted while you speak, leaning together while it
+     thinks, a small sway while it speaks, drooped and eyes shut when asleep (2026-10-20, the one bold thing on
+     the screen: the robot's own body language, not decoration). Where its head is turned, under the words. */
+  .state { grid-column: 2; grid-row: 1; justify-self: end; display: flex; align-items: center; gap: .6em;
+           margin: .4vh 0 0; padding: .45em 1.15em .45em .6em; border-radius: 999px;
+           font-size: clamp(20px, 2.1vw, 38px); color: var(--ink); max-width: 38vw; }
+  .state .words { display: flex; flex-direction: column; min-width: 0; line-height: 1.12; }
+  .andy { flex: none; width: 1.75em; height: 1.75em; position: relative; color: var(--orb); }
+  .andy svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .andy .head { fill: currentColor; }
+  .andy .eye { fill: var(--panel); }
+  .andy .ant line { stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+  .andy .ant circle { fill: currentColor; }
+  .andy .ant, .andy .eyes { transform-box: view-box; }
+  .andy .ant-l { transform-origin: 15px 16px; transform: rotate(-6deg); }
+  .andy .ant-r { transform-origin: 25px 16px; transform: rotate(6deg); }
+  .andy .eyes { transform-origin: 20px 25px; }
+  .state[data-state="hearing"] .ant-l { transform: rotate(14deg); }              /* lifted, listening */
+  .state[data-state="hearing"] .ant-r { transform: rotate(-14deg); }
+  .state[data-state="thinking"] .ant-l, .state[data-state="working"] .ant-l { transform: rotate(18deg); }   /* leaning together */
+  .state[data-state="thinking"] .ant-r, .state[data-state="working"] .ant-r { transform: rotate(18deg); }
+  .state[data-state="quiet"] .ant-l, .state[data-state="asleep"] .ant-l { transform: rotate(-48deg); }      /* drooped */
+  .state[data-state="quiet"] .ant-r, .state[data-state="asleep"] .ant-r { transform: rotate(48deg); }
+  .state[data-state="asleep"] .eyes { transform: scaleY(.18); }                  /* eyes shut */
   .state[data-state="quiet"], .state[data-state="asleep"], .state[data-state="away"] { color: var(--soft); }
-  .state[data-state="quiet"] .orb, .state[data-state="asleep"] .orb { background: transparent; border: 2px solid var(--soft); box-shadow: none; }
+  .state[data-state="quiet"] .andy, .state[data-state="asleep"] .andy, .state[data-state="away"] .andy { color: var(--soft); }
+  .state[data-state="away"] .andy { opacity: .6; }
   @media (prefers-reduced-motion: no-preference) {
-    body:not(.calm) .state[data-state="hearing"] .orb { animation: listen 1.1s ease-in-out infinite; }
-    body:not(.calm) .state[data-state="thinking"] .orb, body:not(.calm) .state[data-state="working"] .orb { animation: breathe 1.6s ease-in-out infinite; }
-    body:not(.calm) .state[data-state="speaking"] .orb::after { content: ""; position: absolute; top: -.15em; right: -.15em;
-                                                                bottom: -.15em; left: -.15em; border-radius: 50%;
-                                                                border: 2px solid var(--orb); animation: ring 1.4s ease-out infinite; }
+    body:not(.calm) .andy .ant, body:not(.calm) .andy .eyes { transition: transform .7s cubic-bezier(.2, .8, .2, 1); }
+    body:not(.calm) .state[data-state="thinking"] .ant, body:not(.calm) .state[data-state="working"] .ant { animation: ponder 2.4s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="speaking"] .ant-l { animation: sway-l 1.6s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="speaking"] .ant-r { animation: sway-r 1.6s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="ready"] .eyes { animation: blink 6s ease-in-out infinite; }
+    body:not(.calm) .state[data-state="speaking"] .andy::after { content: ""; position: absolute; top: 20%; right: 0; bottom: -20%; left: 0;
+                                                                 border-radius: 50%; border: 2px solid var(--orb); animation: ring 1.6s ease-out infinite; }
     body:not(.calm) #state-label { transition: opacity .25s; }
     body:not(.calm) .state.flex { animation: flex .5s cubic-bezier(.2, .8, .2, 1); }
   }
   @keyframes flex { 40% { transform: scale(1.035); } }
-  @keyframes breathe { 50% { opacity: .35; transform: scale(.85); } }
-  @keyframes listen { 50% { transform: scale(1.22); box-shadow: 0 0 1.4em var(--orb); } }
-  @keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(2.1); opacity: 0; } }
+  @keyframes ponder { 50% { transform: rotate(26deg); } }
+  @keyframes sway-l { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(4deg); } }
+  @keyframes sway-r { 0%, 100% { transform: rotate(6deg); } 50% { transform: rotate(-4deg); } }
+  @keyframes blink { 0%, 94%, 100% { transform: none; } 97% { transform: scaleY(.15); } }
+  @keyframes ring { from { transform: scale(.85); opacity: .7; } to { transform: scale(1.3); opacity: 0; } }
 
   /* Below the clock: two glass cards side by side; when Andy shows something they stack on the left. */
   /* Room round the cards for their shadows (a clipped shadow shows as a hard line): the area reaches
@@ -144,6 +170,10 @@
            margin: 0 -5vw -4vh; padding: 2vh 5vw 4vh;
            align-content: start; overflow: hidden; }
   body.has-showing .below, body.has-photo .below { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-content: stretch; }
+  /* A card is the thing to read: it takes most of the width, and the day's two cards keep to a narrow column. */
+  body.has-showing .below { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); }
+  /* Nothing to show and no photo: the two cards sit in the middle of the space below the clock, not at its top. */
+  body:not(.has-showing):not(.has-photo) .below { align-content: center; }
   .side { display: contents; }
   body.has-showing .side, body.has-photo .side { display: flex; flex-direction: column; gap: 2.4vh; min-width: 0; }
   .card { padding: 3vh 2.4vw; min-width: 0; }
@@ -159,6 +189,9 @@
   .later .t { font-variant-numeric: tabular-nums; }
   .empty { font-size: clamp(24px, 2.6vw, 44px); color: var(--soft); margin: 0; line-height: 1.3; }
   body.has-showing .next .what, body.has-photo .next .what { font-size: clamp(26px, 2.7vw, 48px); }
+  body.has-showing .next .what { font-size: clamp(24px, 2.3vw, 42px); }
+  body.has-showing .next .at { font-size: clamp(20px, 1.9vw, 34px); }
+  body.has-showing .card { padding: 2.6vh 2vw; }
   body.has-showing .later, body.has-photo .later { display: none; }
 
   .weather .now { display: flex; align-items: baseline; gap: 1.2vw; margin: 0; flex-wrap: wrap; }
@@ -168,6 +201,8 @@
   .weather .alert { font-size: clamp(20px, 2vw, 34px); margin: 1.2vh 0 0; padding: .6vh 1vw; border-left: 6px solid var(--mark); }
   .weather .from { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 1vh 0 0; }
   body.has-showing .weather .deg, body.has-photo .weather .deg { font-size: clamp(36px, 3.6vw, 64px); }
+  body.has-showing .weather .deg { font-size: clamp(32px, 3vw, 56px); }
+  body.has-showing .weather .sky { font-size: clamp(20px, 1.9vw, 34px); }
   /* Beside a photo or a card, a long forecast ("Slight Chance Rain Showers then…") keeps to two lines. */
   body.has-showing .weather .sky, body.has-photo .weather .sky { display: -webkit-box; -webkit-line-clamp: 2;
                                                                -webkit-box-orient: vertical; overflow: hidden; }
@@ -197,6 +232,20 @@
                  margin: -.6vh 0 1.4vh; }
   .item.caution { border-top: 0; border-left: 8px solid var(--mark); padding: 1.1vh 0 1.1vh 1.4vw; margin: .4vh 0 1vh; }
   .item.caution .summary { color: var(--ink); -webkit-line-clamp: 3; }
+  /* A warning card (2026-10-20): it must look like one from across the room. The card is a solid warm wash, never
+     glass; "Be careful" sits on a solid band with a mark, white on sienna by day, dark on amber at night (7:1,
+     tests/test_round6_screen.py); what to do comes next, in bold. Warm, never a red flash. */
+  .found.warn { background: var(--warn-wash); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .found.warn .kind, .found.warn .how, .found.warn .source { color: var(--soft); }
+  .found.warn-title h2, .item.caution:not(.step) { background: var(--warn); color: var(--warn-on);
+                                                   border-radius: max(10px, calc(var(--r) - 1.6vw)); }
+  .found.warn-title h2 { padding: 1.2vh 1.4vw; margin: .8vh 0 1.6vh; }
+  .found.warn-title h2::before, .item.caution:not(.step) .title::before {
+    content: "!"; display: inline-block; width: 1.15em; height: 1.15em; line-height: 1.15em; text-align: center; border-radius: 50%;
+    background: var(--warn-on); color: var(--warn); font-weight: 700; margin-right: .45em; vertical-align: .06em; }
+  .item.caution:not(.step) { border-left: 0; padding: 1.4vh 1.4vw; }
+  .item.caution:not(.step) .title { font-size: clamp(26px, 2.6vw, 46px); color: var(--warn-on); }
+  .item.caution:not(.step) .summary { color: var(--warn-on); font-size: clamp(21px, 2vw, 36px); }
   .item.caution.short2 .summary { -webkit-line-clamp: 2; }       /* beside a caption on a small screen */
   .item.caution.short1 .summary { -webkit-line-clamp: 1; }
   .item .when { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: .5vh 0 0; }
@@ -212,9 +261,12 @@
   .item.step .summary { font-size: clamp(20px, 1.9vw, 34px); margin-top: .2vh; line-height: 1.3; }
   /* At its shortest a step is one line, its name and words together ("The sign: a relative in trouble…"),
      so all three steps fit above a caption while Andy speaks (step 3 names Nemotron Ultra: it must stay). */
-  .item.step.short1 { align-items: center; padding: .6vh 0; }
+  .item.step.short1 { align-items: start; padding: .6vh 0; }
   .item.step.short1 .num { width: 1.3em; height: 1.3em; font-size: clamp(17px, 1.6vw, 28px); }
-  .item.step.short1 > :last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .item.step.short1 .title { font-size: clamp(17px, 1.5vw, 26px); }
+  .item.step.short1 .summary { font-size: clamp(18px, 1.6vw, 29px); }
+  /* Never cut off mid-word (the judges came for this evidence): at its shortest a step wraps to two lines. */
+  .item.step.short1 > :last-child { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-width: 0; }
   .item.step.short1 .title, .item.step.short1 .summary { display: inline; -webkit-line-clamp: unset; }
   .item.step.short1 .title::after { content: ": "; }
   /* What Andy looked at: the views in the order Andy turned, numbered (someone facing Andy has its left on
@@ -224,7 +276,7 @@
   .views .order { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 0 0 1.2vh; }
   .strip { display: flex; align-items: flex-start; gap: 1.1vw; }
   .view { flex: 1 1 0; min-width: 0; margin: 0; }
-  .view.chosen { flex-grow: 2.8; }
+  .view.chosen { flex-grow: 4; }
   .view .pic { position: relative; padding-top: 56.25%; border-radius: max(8px, calc(var(--r) - 2.6vw)); overflow: hidden;
                background: var(--rule); }
   .view .pic.none { background: transparent; }
@@ -240,7 +292,7 @@
   .view.chosen .n { background: var(--mark); border-color: var(--mark); color: var(--panel); }
   .view.seen .said { color: var(--mark); font-weight: 700; }
   .view.chosen figcaption { align-items: flex-start; }
-  .view .where { font-size: clamp(20px, 1.9vw, 34px); font-weight: 700; line-height: 1.24; color: var(--ink); min-width: 0; }
+  .view .where { font-size: clamp(22px, 2.3vw, 42px); font-weight: 700; line-height: 1.2; color: var(--ink); min-width: 0; }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
   /* While Andy speaks the caption lies over the foot of the screen: the card keeps its own foot clear of
      it (three caption lines and their padding), and its list gives way instead. Not beside the settings
@@ -288,6 +340,9 @@
      empty band is kept for them. Andy's words only, never the person's. */
   :root { --cap-size: clamp(26px, 2.9vw, 50px); --cap-block: calc(var(--cap-size) * 1.28 * 3 + 3vh); }
   :root { --ask-size: clamp(22px, 2.1vw, 38px); }
+  /* Beside a card, two lines at a time, so the card keeps its evidence in view (paged the same way). */
+  body.has-showing { --cap-block: calc(var(--cap-size) * 1.28 * 2 + 3vh); }
+  body.has-showing .caption { -webkit-line-clamp: 2; }
   .caption { position: fixed; left: 5vw; right: 5vw; bottom: 5vh; z-index: 5; margin: 0; padding: 1.5vh 2.2vw; background: var(--ink); color: var(--ground); border-radius: var(--r);
              font-size: var(--cap-size); line-height: 1.28; align-self: end;
              display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
@@ -310,11 +365,11 @@
           margin: 0; padding: .45em .9em; border-radius: 999px; font: inherit; font-size: clamp(16px, 1.5vw, 26px);
           color: var(--soft); cursor: pointer; }
   .gear svg { width: 1.2em; height: 1.2em; }
-  /* Where Andy's head is turned ("Looking at you"), from the behaviours that move it: beside the gear, so
-     nothing moves when it comes and goes; quiet type, the state pill stays the one to read. */
+  /* Where Andy's head is turned ("Looking at you"), from the behaviours that move it: under the state's words in
+     the pill, in quiet type, so it belongs to Andy rather than floating by the gear (2026-10-20). */
   .row2 { grid-column: 2; grid-row: 2; justify-self: end; align-self: end; display: flex; align-items: center; gap: 1.2vw; }
-  .looking { font-size: clamp(17px, 1.5vw, 26px); color: var(--soft); margin: 0; white-space: nowrap; }
-  .looking:empty { visibility: hidden; }
+  .looking { font-size: .58em; color: var(--soft); margin: .15em 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .looking:empty { display: none; }
   /* A ring a remote's user can see from the sofa. Chromium 85 (a 2022 TV) has no :focus-visible, so the ring
      is on :focus, and taken off only where a browser knows a mouse, not a key, put the focus there. */
   .gear:focus, .menu button:focus { outline: 4px solid var(--mark); outline-offset: 4px; }
@@ -346,8 +401,8 @@
   <header class="clock" aria-live="polite">
     <p class="day" id="day">&nbsp;</p>
     <p class="when" id="when">&nbsp;</p>
-    <p class="state glass" id="state" data-state="away" role="status" aria-live="polite"><span class="orb"></span><span id="state-label"></span></p>
-    <div class="row2"><p class="looking" id="looking" aria-hidden="true"></p>
+    <p class="state glass" id="state" data-state="away" role="status" aria-live="polite"><span class="andy" aria-hidden="true"><svg viewBox="0 0 40 40"><g class="ant ant-l"><line x1="15" y1="16" x2="11" y2="5"/><circle cx="11" cy="5" r="2.8"/></g><g class="ant ant-r"><line x1="25" y1="16" x2="29" y2="5"/><circle cx="29" cy="5" r="2.8"/></g><rect class="head" x="6" y="14" width="28" height="22" rx="11"/><g class="eyes"><circle class="eye" cx="14.5" cy="25" r="3.6"/><circle class="eye" cx="25.5" cy="25" r="3.6"/></g></svg></span><span class="words"><span id="state-label"></span><span class="looking" id="looking" aria-hidden="true"></span></span></p>
+    <div class="row2">
     <button class="gear glass" id="gear" type="button" aria-haspopup="dialog" aria-controls="menu">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5A3.5 3.5 0 1 1 13 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
       <span id="gear-label">Settings</span>
@@ -579,6 +634,10 @@
       }
       if (contentKey !== foundContent) {
         foundContent = contentKey;
+        // A warning card looks like one: a scam's sign (its title on the band) or a letter with a caution.
+        const caution = showing.items.some((it) => it.tone === "caution");
+        $("found").classList.toggle("warn", !!showing.lead || caution);
+        $("found").classList.toggle("warn-title", showing.kind === "check" && !!showing.lead);
         text($("found-kind"), ui.kinds[showing.kind] || "");
         text($("found-h"), showing.kind === "where" ? ui.where : showing.title);
         $("found-lead").hidden = !showing.lead;
@@ -676,6 +735,7 @@
     }
     for (const el of order) {
       if (fits()) break;
+      if (el.classList.contains("step")) continue;   // the receipt's three steps always stay (step 3 names Ultra)
       if (el.classList.contains("caution")) {      // a warning first gets shorter: two lines, then one
         el.classList.add("short2"); if (fits()) break;
         el.classList.add("short1"); if (fits()) break;
@@ -749,7 +809,8 @@
     const el = $("caption"), cs = getComputedStyle(el);
     const width = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const perLine = width / (parseFloat(cs.fontSize) * 0.56);
-    return Math.max(40, Math.floor(perLine * 3 * 0.85));
+    const lines = document.body.classList.contains("has-showing") ? 2 : 3;
+    return Math.max(40, Math.floor(perLine * lines * 0.85));
   }
   function captionPages(text) {
     const PAGE_CHARS = pageChars();

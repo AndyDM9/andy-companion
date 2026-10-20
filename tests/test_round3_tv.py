@@ -172,7 +172,7 @@ def test_the_tv_draws_the_views_as_a_numbered_strip():
     assert 'chosen ? " chosen"' in strip and 'if (chosen && where) cap.append(make("span", "where", where));' in strip
     assert "img.onerror" in strip                                        # forgotten views: no broken image
     assert 'const VIEW_KINDS = ["seen", "looked"];' in PAGE
-    assert ".view.chosen { flex-grow: 2.8; }" in PAGE and ".view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }" in PAGE
+    assert ".view.chosen { flex-grow: 4; }" in PAGE and ".view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }" in PAGE
     assert "padding-top: 56.25%" in PAGE and not re.search(r"aspect-ratio\s*:", PAGE)   # Chromium 85 has none
     ui = PAGE[PAGE.index("const UI = {"):PAGE.index("let ui = UI.en;")]
     for key in ("order", "seenHere", "seenToo", "notSeen", "noPicture", "looked"):

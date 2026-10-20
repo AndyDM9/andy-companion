@@ -55,9 +55,11 @@ in the same commit that makes it true.
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by
       2026-10-23 10:00 PT); editing continues afterwards
 - [ ] A gallery thumbnail, 3:2, at most 5 MB (a still of Andy beside the TV), and gallery images:
-      the screen, the letter card, the scam check's receipt, the hood page, the family page, the architecture
-      picture, and the scam check five ways (`docs/images/scam-check-five-ways.png`, from
-      `scripts/make_charts.py`)
+      the screen (`tv-glass-found.png`), the letter card (`tv-letter.png`), the scam check's receipt
+      (`tv-scam-receipt.png`), the four views Andy looked at (`tv-finder.png`), the hood page, the family page, the
+      architecture picture, and the scam check five ways (`docs/images/scam-check-five-ways.png`, from
+      `scripts/make_charts.py`); all in `docs/images/`, the screens taken from the demo
+      (`ANDY_DEMO_SCENE=scam scripts/demo_screen.py`, sample data only)
 - [ ] "Built with": every sponsor tool (up to 25 tags; the list is in [submission.md](submission.md))
 - [ ] Feedback from [feedback.md](feedback.md)
 

@@ -145,6 +145,15 @@ Not taken: music and radio (no copyrighted music in the video; after the hackath
 to music (breadth), video calls (the person's camera to family), sending a scam's number or the letter
 itself to Tavily, Pollen's app 1.1.0 (a transcript RPC; no upgrade before filming), a speech-to-text switch.
 
+### Round 6 (Claude), the screen's design pass before filming (2026-10-20, the founder: "most beautiful front end")
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B40 | **Andy in the state pill:** a small drawing of the robot whose antennas do what the robot's do; "Looking at you" under the state; the same mark on the phone pages | The one memorable element: the robot's own body language, not a stock dot | ✅ 2026-10-20 |
+| B41 | **Warnings that look like warnings:** a solid wash and "Be careful" on a solid band, 7:1 in every part of the day | The judges faulted a scam checker whose action sat under its evidence; ours must read from the sofa | ✅ 2026-10-20 (`tests/test_round6_screen.py`) |
+| B42 | **The card is the thing to read:** a narrow day column, two-line captions beside a card, a bigger chosen view, the receipt never cut off or short of a step; the quiet screen centred | Step 3 (Nemotron Ultra) could drop and the evidence ended in "…" | ✅ 2026-10-20 (checked in a browser on the demo, day and evening) |
+| B43 | **The demo for filming and screenshots:** `ANDY_DEMO_SCENE` holds one scene; the real coming Saturdays; new screenshots in the README, the app page and the gallery list | The gallery and README showed the old design; the demo's date was wrong | ✅ 2026-10-20 |
+
 ### Cleanup (Claude)
 
 | # | Item | Status |

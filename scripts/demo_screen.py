@@ -10,6 +10,9 @@ you can see the screen as it is beside the robot. Under the hood
 shows sample turns with times of the kind measured on the robot (2026-10-13 and 14), so the page isn't
 empty without one. Nothing leaves this computer. Ctrl+C stops it, and the throwaway folder is deleted.
 
+`ANDY_DEMO_SCENE=found` (research, found, letter, scam, today, note, story or quiet) holds one scene, for
+screenshots and for filming the screen.
+
 `--public` (or ANDY_DEMO_PUBLIC=1) is for a hosted copy that anyone can open (PLAN B26): it listens on every
 address, on $PORT if set (Hugging Face uses 7860), keeps the night clock off, lets the Space's page frame it,
 and takes nothing a visitor sends (every form says so), so one visitor's words never reach another.
@@ -136,10 +139,28 @@ def note() -> None:
     board.show("note", "A note from Anna", [{"summary": "I'll call you at six tonight. Love, Anna", "when": "5:42 pm"}])
 
 
+def coming_saturdays(today: date) -> tuple:
+    """This Saturday (never a first Saturday, when the sample market would be on) and the next first Saturday."""
+    from datetime import timedelta
+
+    sat = today + timedelta(days=(5 - today.weekday()) % 7)
+    if sat.day <= 7:
+        sat += timedelta(days=7)
+    first = (sat.replace(day=1) + timedelta(days=32)).replace(day=1)
+    first += timedelta(days=(5 - first.weekday()) % 7)
+    return sat, first
+
+
+def spoken(d: date) -> str:
+    return f"{d:%B} {d.day}"
+
+
 def research() -> None:
+    saturday, first_saturday = coming_saturdays(date.today())
     board.show("research", "Is the farmers market on this Saturday?", [
-        {"title": "Not this Saturday, October 17"}, {"title": "First Saturday of each month, 9 am to noon"},
-        {"title": "Next market: Saturday, November 7"}, {"title": "Sources", "summary": "harborbayfl.gov, miamifarmersmarket.org"}],
+        {"title": f"Not this Saturday, {spoken(saturday)}"}, {"title": "First Saturday of each month, 9 am to noon"},
+        {"title": f"Next market: Saturday, {spoken(first_saturday)}"},
+        {"title": "Sources", "summary": "harborbayfl.gov, miamifarmersmarket.org"}],
         how={"calls": ["research"], "depth": "mini", "seconds": 23.4, "credits": None, "sites": 9})
 
 
@@ -213,6 +234,10 @@ def main() -> int:
     print("Sample data only; Ctrl+C to stop.", flush=True)
     scenes = [("research", research), ("found", found), ("letter", letter), ("scam", scam), ("today", dayplan.show),
               ("note", note), ("story", lambda: stories.start("lion")), ("quiet", board.clear_screen)]
+    # ANDY_DEMO_SCENE=found (or any name above) holds that one scene: for screenshots and for filming the screen.
+    hold = os.environ.get("ANDY_DEMO_SCENE", "")
+    if hold:
+        scenes = [sc for sc in scenes if sc[0] == hold] or scenes
     try:
         i = 0
         while True:

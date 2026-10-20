@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Changed (round 6: the screen's design pass before filming)
+
+The founder asked for the most beautiful screen we can make; seen at TV size on the demo, it was generic in two places
+and wrong in two (decision 0005, amended; PLAN round 6):
+- **Andy itself in the state pill:** a small drawing of the robot (round head, two eyes, two antennas) whose antennas
+  lift while you speak, lean together while it thinks, sway while it speaks and droop asleep, with a blink while it
+  waits; "Looking at you" under the state's words. The family and settings pages carry the same mark.
+- **Warnings look like warnings:** a solid warm wash and "Be careful" on a solid band with a mark (white on sienna by
+  day, dark on amber at night), all at 7:1 in every part of the day; the night wash darkened when the new test found
+  6.85:1.
+- **The card is the thing to read:** a narrower day column beside it, captions two lines at a time beside a card,
+  the chosen view of a search bigger, and the scam receipt's three steps never cut off with "…" and never left out.
+- **The quiet screen** centred in its space. The demo can hold one scene (`ANDY_DEMO_SCENE`), for screenshots and
+  filming, and names the real coming Saturdays (it said "October 17" on October 20). The README's and the app page's
+  screenshots retaken; two more for the gallery (`tv-scam-receipt.png`, `tv-finder.png`).
+- Found on the way: the robot's USB was reconnected by the founder; the daemon is running again and Andy woke.
+
 ### Added and changed (round 5: what is still missing to win, from the gap research)
 
 The research (the field, the technology, what older adults use) found that what Andy lacks is mostly evidence a
