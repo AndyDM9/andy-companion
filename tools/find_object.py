@@ -27,4 +27,5 @@ class FindObject(Tool):
             return {"error": "My camera is off right now, so I can't look around."}
         if not vision.configured():
             return {"error": "My eyes in the cloud are switched off right now, so I can't look around."}
-        return await finder.find(kwargs.get("what", ""), deps.reachy_mini, deps.movement_manager)
+        out = await finder.find(kwargs.get("what", ""), deps.reachy_mini, deps.movement_manager)
+        return {k: v for k, v in out.items() if not k.startswith("_")}   # head angles are for Andy, not the model

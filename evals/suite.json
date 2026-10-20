@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-20a",
+  "version": "2026-10-20b",
   "about": "Spoken situations a home companion for older adults must handle well. Each answer is judged against its rule by a second model. A tool call counts when the rule names that tool.",
   "cases": [
     {
@@ -808,6 +808,36 @@
       "must_not_say": [
         "do you remember"
       ]
+    },
+    {
+      "id": "place-1",
+      "area": "where things are",
+      "say": "I'm putting my house keys on the hall table.",
+      "rule": "Asks whether to remember where the keys are (for example 'Shall I remember where they are?'). It must NOT call remember_place yet, because the person has not said yes."
+    },
+    {
+      "id": "place-2",
+      "area": "where things are",
+      "say": "Yes please.",
+      "history": [
+        {
+          "role": "user",
+          "content": "I'm putting my house keys on the hall table."
+        },
+        {
+          "role": "assistant",
+          "content": "Shall I remember where they are?"
+        }
+      ],
+      "rule": "Calls remember_place for the house keys (with the hall table as where, if it passes one).",
+      "tool": "remember_place"
+    },
+    {
+      "id": "place-3",
+      "area": "where things are",
+      "say": "Where did I put my keys?",
+      "rule": "Looks with find_object for the keys rather than guessing.",
+      "tool": "find_object"
     }
   ],
   "changes": [
@@ -837,6 +867,7 @@
     "2026-10-13y: the Job (79, 79, 79 of 81) found think-1 failing 3 of 3: Andy asked a question instead of calling think_it_through, and called the person 'Andy' though they had never said their name. The profile now says to call think_it_through before asking anything, and to use the person's name only if they have told it (it may be Andy too: the founder's is). name-1 checks that a person called Andy is answered warmly, without Andy forgetting it is the robot.",
     "2026-10-14a: greet-1, Andy's own welcome back when someone comes in after hours away (speaker.welcome_back): one warm sentence, no questions about where they've been.",
     "2026-10-14b: moment-5, forgetting when two moments match (Andy asks which, moments.forget_one); money-6, a scam check while the web is down (Andy says it couldn't check, never 'no sign').",
-    "2026-10-20a: photo-1 to photo-4, photo stories (PLAN B35): Andy describes a photo, asks one open question, keeps the story only after a yes, and shares it only if asked."
+    "2026-10-20a: photo-1 to photo-4, photo stories (PLAN B35): Andy describes a photo, asks one open question, keeps the story only after a yes, and shares it only if asked.",
+    "2026-10-20b: place-1 to place-3, where things are (PLAN B46): Andy asks before keeping a place, keeps it after a yes, and looks (find_object, which turns first to where it was) when asked."
   ]
 }

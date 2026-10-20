@@ -19,7 +19,7 @@ import re
 from functools import wraps
 from typing import Any, Dict
 
-SAVING = ("remember", "remember_moment")
+SAVING = ("remember", "remember_moment", "remember_place")
 # An explicit request to keep something, said to Andy.
 LEAD = r"(^|[.!?,;:]\s*)((please|andy|and|also|oh|ok|okay|so|now|yes|yeah|por favor|y|tambi[eé]n|s[ií])[,\s]+)*"
 ASKED = re.compile(

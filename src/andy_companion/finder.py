@@ -364,6 +364,45 @@ def post_views(views: List[Optional[bytes]], seen: List[bool], chosen: Optional[
 BACK_TO_FACE_S = 1.0                       # after the last look, face following comes back
 
 
+async def closer_look(robot: Any, manager: Any, antennas: tuple, place: Dict[str, Any], what: str, checker: Callable,
+                      queueable: Callable, sleep: Callable) -> Optional[Dict[str, Any]]:
+    """One closer look at a place (yaw and pitch: where the thing should be): the head turned at it as far as it
+    can reach (2026-10-20: a chair 74 degrees to the side, past the head's 65), still, then the strict question
+    about a close-up of a fresh frame around where it should show from there. Returns the frame, the close-up's box,
+    where the head really was and the answer; None when the camera gave no picture. Raises FinderError."""
+    from andy_companion.body import look, looking_at
+
+    aim = (within(place["yaw"], REACH_YAW_DEG), within(place["pitch"], REACH_PITCH_DEG))
+    quiet_tracking(robot)
+    step = look.HoldLook(robot.get_current_head_pose(), antennas, aim[0], aim[1], CLOSER_HOLD_S)
+    manager.queue_move(queueable(step))
+    looking_at.set("room", step.duration + 0.5)
+    await sleep(step.turn_s)
+    there = await arrive(robot, *aim, sleep)
+    await sleep(SETTLE_S)
+    try:
+        frame = robot.media.get_frame()
+    except Exception:
+        frame = None
+    if frame is None:
+        return None
+    frame = frame.copy()
+    head = there if there and abs(math.degrees(there[0] - aim[0])) < 25 else aim   # the head's own angles
+    box = _close_box(frame, CLOSE_UP, where_in_view(place["yaw"], place["pitch"], *head))
+    checked = await asyncio.to_thread(checker, frame[box].copy(), what)
+    return {"frame": frame, "box": box, "head": head, "checked": checked}
+
+
+def confirmed_place(place: Dict[str, Any], look_: Dict[str, Any]) -> Dict[str, Any]:
+    """Where the thing sits in the close-up, back to the whole frame, as the head angles to point (within reach)."""
+    frame, box, head, checked = look_["frame"], look_["box"], look_["head"], look_["checked"]
+    h, w = frame.shape[:2]
+    fx = (box[1].start + checked.get("x", 0.5) * (box[1].stop - box[1].start)) / w
+    fy = (box[0].start + checked.get("y", 0.5) * (box[0].stop - box[0].start)) / h
+    return dict(place, yaw=within(target_yaw(head[0], fx), REACH_YAW_DEG), pitch=target_pitch(head[1], fy),
+                where=checked.get("where") or place.get("where", ""))
+
+
 async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]:
     """Sweep, look (zoomed in), look closer, point, show. Returns what Andy should say.
 
@@ -380,7 +419,18 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
     quiet_tracking(robot)
     out: Dict[str, Any] = {}
     try:
+        hint = None
+        if zoom():
+            from andy_companion import places
+
+            hint = places.recall(tidy_what(what))
+        if hint and hint.get("yaw") is not None:          # where it was: look there first, then around
+            out = await where_it_was(tidy_what(what), robot, manager, hint, **kw)
+            if out.get("found") or out.get("error"):
+                return out
         out = await _find(what, robot, manager, **kw)
+        if hint and "how" in out:
+            out["how"] = out["how"] + " " + moved_note(hint, bool(out.get("found")))
         return out
     finally:
         back = BACK_TO_FACE_S + (POINT_HOLD_S if out.get("found") else 0.0)
@@ -397,6 +447,59 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
             asyncio.get_running_loop().call_later(back, face_back)
         except RuntimeError:
             face_back()
+
+
+def moved_note(hint: Dict[str, Any], found: bool) -> str:
+    """What Andy says about where the thing was before (B46): moved, or not where it was left."""
+    from andy_companion import places
+
+    who = "where they left it" if hint.get("told") else "where you saw it"
+    when = places.ago(float(hint.get("at", 0)))
+    if found:
+        return f"Mention briefly that it has moved since {when}: it was {hint.get('where', '')} ({who})."
+    return f"Say that it isn't {who} {when} ({hint.get('where', '')}) any more."
+
+
+async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any], *, checker: Callable = look_closer,
+                       poster: Callable = post_views, queueable: Optional[Callable] = None,
+                       sleep: Callable = asyncio.sleep, **_: Any) -> Dict[str, Any]:
+    """Look first where the thing was (B46): the place the person had Andy keep, or where Andy last saw it. One
+    closer look, a few seconds instead of a sweep. Found: point and say so. Not there: an empty dict, and the sweep
+    follows."""
+    from andy_companion import board, places
+    from andy_companion.body import look, looking_at
+
+    queueable = queueable or look.queueable
+    try:
+        antennas = tuple(float(a) for a in robot.get_current_joint_positions()[1][:2])
+    except Exception:
+        antennas = (0.0, 0.0)
+    place = {"view": 0, "x": 0.5, "yaw": float(hint["yaw"]), "pitch": float(hint["pitch"]), "where": hint.get("where", ""),
+             "tiles": 1}
+    try:
+        got = await closer_look(robot, manager, antennas, place, what, checker, queueable, sleep)
+    except FinderError as e:
+        return {"error": str(e)}
+    logger.info("finder: %s where it was", "found" if got and got["checked"].get("yes") else "not")
+    if not got or not got["checked"].get("yes"):
+        return {}
+    chosen = confirmed_place(place, got)
+    manager.queue_move(queueable(look.HoldLook(robot.get_current_head_pose(), antennas, chosen["yaw"], chosen["pitch"],
+                                               POINT_HOLD_S)))
+    looking_at.set("pointing", POINT_HOLD_S + 1.0)
+    try:
+        poster(views_for_screen([got["frame"][got["box"]]]), [True], 0)
+    except Exception:
+        pass   # the TV is a help, never a reason to stop
+    where = chosen["where"] or hint.get("where", "")
+    board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
+    places.saw(what, where, chosen["yaw"], chosen["pitch"])
+    kept = "where you left them" if hint.get("told") else "where I last saw them"
+    say = f"They're still {kept}" + (f", {where}" if where else "") + "."
+    return {"found": True, "what": what, "where": where, "say": say, "looked_closer": True, "where_it_was": True,
+            "_yaw": chosen["yaw"], "_pitch": chosen["pitch"],
+            "how": ("You are pointing at it with your head now, and the picture is on the screen. Say exactly the words "
+                    "in 'say', then that it's on the screen too. Never say left or right: they may be facing you.")}
 
 
 async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, checker: Callable = look_closer,
@@ -489,39 +592,17 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     if places and not zoom():                       # one shrunk frame per view, as before: the first sighting
         chosen = dict(places[0])
     for place in places[:MAX_CLOSER] if zoom() else []:
-        # Look closer: the head at it as far as it can reach (2026-10-20: a chair 74 degrees to the side, past the
-        # head's 65), still, then a close-up of a fresh frame around where it should show from there.
-        aim = (within(place["yaw"], REACH_YAW_DEG), within(place["pitch"], REACH_PITCH_DEG))
-        quiet_tracking(robot)
-        step = look.HoldLook(robot.get_current_head_pose(), antennas, aim[0], aim[1], CLOSER_HOLD_S)
-        manager.queue_move(queueable(step))
-        looking_at.set("room", step.duration + 0.5)
-        await sleep(step.turn_s)
-        there = await arrive(robot, *aim, sleep)
-        await sleep(SETTLE_S)
         try:
-            frame = robot.media.get_frame()
-        except Exception:
-            frame = None
-        if frame is None:
-            continue
-        head = there if there and abs(math.degrees(there[0] - aim[0])) < 25 else aim   # the head's own angles
-        at = where_in_view(place["yaw"], place["pitch"], *head)
-        box = _close_box(frame, CLOSE_UP, at)
-        close_ups.append(frame[box].copy())
-        try:
-            checked = await asyncio.to_thread(checker, frame[box].copy(), what)
+            got = await closer_look(robot, manager, antennas, place, what, checker, queueable, sleep)
         except FinderError as e:
             return {"error": str(e)}
-        closer.append({"view": place["view"], "yes": bool(checked.get("yes"))})
-        if checked.get("yes"):
-            # Where it sits in the close-up, back to the whole frame, as a last small turn (within reach).
-            h, w = frame.shape[:2]
-            fx = (box[1].start + checked.get("x", 0.5) * (box[1].stop - box[1].start)) / w
-            fy = (box[0].start + checked.get("y", 0.5) * (box[0].stop - box[0].start)) / h
-            chosen = dict(place, yaw=within(target_yaw(head[0], fx), REACH_YAW_DEG), pitch=target_pitch(head[1], fy),
-                          where=checked.get("where") or place["where"])
-            close_picture = frame[box].copy()
+        if got is None:
+            continue
+        close_ups.append(got["frame"][got["box"]].copy())
+        closer.append({"view": place["view"], "yes": bool(got["checked"].get("yes"))})
+        if got["checked"].get("yes"):
+            chosen = confirmed_place(place, got)
+            close_picture = got["frame"][got["box"]].copy()
             break
     i = chosen["view"] if chosen else None
     # Numbers only, never pictures or words: how many places were seen, how many closer looks, how long.
@@ -564,6 +645,9 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     where = chosen["where"]
     board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
     say = f"I think I see your {what}" + (f", {where}" if where else ", over there where I'm looking") + "."
+    from andy_companion import places as kept_places
+    kept_places.saw(what, where, chosen["yaw"], chosen["pitch"])     # in memory only: asked again soon, look there first
     return {"found": True, "what": what, "where": where, "say": say, "looked_closer": bool(closer),
+            "_yaw": chosen["yaw"], "_pitch": chosen["pitch"],
             "how": ("You are pointing at it with your head now, and the picture is on the screen. Say exactly the words in 'say', 'I think' included, "
                     "then that it's on the screen too. Never say left or right: they may be facing you.")}

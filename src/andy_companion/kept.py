@@ -13,12 +13,12 @@ import tempfile
 from datetime import datetime
 from typing import Any, Dict, List
 
-from andy_companion import board, moments, reminders
+from andy_companion import board, moments, places, reminders
 from andy_companion.privacy import MEMORY_FILE
 
 KINDS = {"reminder": ("a reminder", "reminders"), "moment": ("a remembered moment", "remembered moments"),
          "fact": ("a remembered fact", "remembered facts"), "shared": ("a shared note", "shared notes"),
-         "photo": ("a photo from family", "photos from family")}
+         "photo": ("a photo from family", "photos from family"), "place": ("a remembered place", "remembered places")}
 
 
 def _facts() -> List[Dict[str, Any]]:
@@ -53,6 +53,7 @@ def summary() -> Dict[str, List[Dict[str, str]]]:
                   "when": _when(f["createdAt"] / 1000) if isinstance(f.get("createdAt"), (int, float)) else ""} for f in _facts()],
         "shared": [{"id": s["id"], "text": s["note"], "when": _when(s["at"])} for s in board.shared()],
         "photo": [{"id": p.stem, "text": "Photo", "when": _when(p.stat().st_mtime)} for p in photos],
+        "place": [{"id": p["id"], "text": f"{p['what']}: {p['where']}", "when": _when(p["at"])} for p in places.kept()],
     }
 
 
@@ -71,6 +72,8 @@ def delete(kind: str, item_id: str) -> bool:
         return True
     if kind == "shared":
         return board.unshare(item_id)
+    if kind == "place":
+        return places.remove(item_id)
     if kind == "photo":
         path = board.photo_path(item_id)
         if path is None:

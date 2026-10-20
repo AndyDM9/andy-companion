@@ -9,3 +9,15 @@ import os
 import tempfile
 
 os.environ["ANDY_DATA_DIR"] = tempfile.mkdtemp(prefix="andy-tests-")
+
+import pytest  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def _forget_last_seen_places():
+    """Where Andy last saw things lives in memory (places._last_seen): never carried from one test to the next."""
+    from andy_companion import places
+
+    places._last_seen.clear()
+    yield
+    places._last_seen.clear()

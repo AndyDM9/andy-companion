@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Added (round 8: Physical AI, from the judges' and the field's research)
+
+- **Turn to whoever speaks (B45):** while Andy follows one face, speech more than 40 degrees to the side for 0.6 s,
+  with Andy silent, turns its head there; a face there and tracking takes the new person; nobody there (the TV) and
+  the head goes back, that direction left alone for a minute (`body/seek.py`, `ANDY_TURN_TO_SPEAKER`).
+- **Remember where I put it (B46):** "my keys are here" gets "Shall I remember where they are?"; after a yes (the
+  consent gate), `remember_place` looks, and keeps the thing, the head's direction, Andy's words for the place and
+  the time, never a picture (`places.py`); a later "where are my keys?" turns straight there and checks up close
+  before any sweep, and says so if they've moved. A find is remembered in memory only for six hours. Places are in
+  what_you_remember and on the settings page, deletable; `forget_place`. Suite 2026-10-20b: place-1 to place-3, 18 of
+  18 with their neighbours after the instruction said never to promise before the yes.
+
 ### Changed (round 7: the finder zooms in, then looks closer)
 
 The founder's tries at home: Andy found his glasses some times and not others. The cause: each 1080p frame was shrunk

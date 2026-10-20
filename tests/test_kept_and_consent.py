@@ -45,7 +45,7 @@ def test_each_item_can_be_deleted_and_everything_at_once(tmp_path):
     assert kept.delete("fact", fact) and kept.summary()["fact"] == []
     assert json.loads((tmp_path / "memory.json").read_text())["version"] == 1      # Pollen's format kept
     counts = kept.delete_everything()
-    assert counts == {"reminder": 1, "moment": 1, "fact": 0, "shared": 1, "photo": 1}
+    assert counts == {"reminder": 1, "moment": 1, "fact": 0, "shared": 1, "photo": 1, "place": 0}
     assert all(not v for v in kept.summary().values())
     assert kept.words_for(counts) == ["a reminder", "a remembered moment", "a shared note", "a photo from family"]
 

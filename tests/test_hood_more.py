@@ -51,12 +51,12 @@ def tool_names():
 
 
 NETWORK = {"local_news", "look_up", "whats_on", "read_link", "check_message", "look_into", "read_letter", "on_this_day",
-           "think_it_through", "describe_view", "describe_photo", "find_object", "weather"}
+           "think_it_through", "describe_view", "describe_photo", "find_object", "weather", "remember_place"}
 
 
 def test_every_tool_says_where_it_runs_in_both_languages():
     names = tool_names()
-    assert len(names) == 35
+    assert len(names) == 37
     for lang in ("en", "es"):
         where = turns.where(lang)
         for name in names:

@@ -378,7 +378,7 @@
  },
  {
   "name": "what_you_remember",
-  "description": "When the person asks what you remember about them, or what you know. Tell them everything listed, plainly, and that they can ask you to forget any of it. To forget a moment use forget_moment; a fact, forget.",
+  "description": "When the person asks what you remember about them, or what you know. Tell them everything listed, plainly, and that they can ask you to forget any of it. To forget a moment use forget_moment; a fact, forget; where something is, forget_place.",
   "parameters": {
    "type": "object",
    "properties": {}
@@ -589,6 +589,44 @@
     "what": {
      "type": "string",
      "description": "The thing to find, e.g. 'reading glasses'."
+    }
+   },
+   "required": [
+    "what"
+   ]
+  },
+  "source": "andy"
+ },
+ {
+  "name": "remember_place",
+  "description": "When the person tells you where they are putting or have put something ('my keys are here', 'I'm leaving my glasses on the shelf'), first ask 'Shall I remember where they are?'. Only after a yes, call this with what (the thing, in a few words) and said_where (their own words for the place, if they said any). You look to see it and keep where it is; later, when they ask where it is, you look there first. Never call it without a yes.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "what": {
+     "type": "string",
+     "description": "The thing, e.g. 'house keys'."
+    },
+    "said_where": {
+     "type": "string",
+     "description": "Their words for the place, if any, e.g. 'on the hall table'."
+    }
+   },
+   "required": [
+    "what"
+   ]
+  },
+  "source": "andy"
+ },
+ {
+  "name": "forget_place",
+  "description": "When the person asks you to forget where something is ('forget where my keys are'). Say what you forgot.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "what": {
+     "type": "string",
+     "description": "The thing, e.g. 'keys'."
     }
    },
    "required": [

@@ -49,20 +49,22 @@ WHERE: Dict[str, Dict[str, str]] = {
     "find_object": {"en": "Nemotron 3.5 Super VL, Token Factory, four views at once, zoomed in, then a closer look",
                     "es": "Nemotron 3.5 Super VL, Token Factory, cuatro vistas a la vez, ampliadas, y una mirada más de cerca"},
     "weather": {"en": "National Weather Service (weather.gov)", "es": "Servicio Meteorológico Nacional (weather.gov)"},
+    "remember_place": {"en": "Nemotron 3.5 Super VL, Token Factory, then kept on this computer",
+                       "es": "Nemotron 3.5 Super VL, Token Factory, y se guarda en esta computadora"},
     "content_safety": {"en": "Nemotron 3.5 Content Safety on Nebius, beside the reply",
                        "es": "Nemotron 3.5 Content Safety en Nebius, junto a la respuesta"},
 }
 LOCAL = ("head_tracking", "idle_do_nothing", "go_to_sleep", "remember", "forget", "get_today", "set_reminder",
          "list_reminders", "cancel_reminder", "quiet_for", "day_plan", "set_pace", "set_volume", "share_with_family",
          "remember_moment", "forget_moment", "what_you_remember", "captions", "set_language", "settings_code",
-         "tell_joke", "story", "task_status")
+         "tell_joke", "story", "task_status", "forget_place")
 WHERE.update({name: dict(HERE) for name in LOCAL})
 # For the hood's tally: the tools that call a Nebius service (Token Factory or a Serverless Endpoint), Tavily,
 # or the eyes. The conversation itself is on Token Factory every turn and is counted as turns.
 ON_NEBIUS = frozenset({"check_message", "read_letter", "on_this_day", "think_it_through",
-                       "describe_view", "describe_photo", "find_object"})
+                       "describe_view", "describe_photo", "find_object", "remember_place"})
 ON_TAVILY = frozenset({"local_news", "look_up", "whats_on", "read_link", "check_message", "look_into"})
-EYES = frozenset({"describe_view", "describe_photo", "find_object"})
+EYES = frozenset({"describe_view", "describe_photo", "find_object", "remember_place"})
 # Runs beside the reply rather than before it (guard.py), so it is not part of the wait for the first sound.
 BESIDE = frozenset({"content_safety"})
 
