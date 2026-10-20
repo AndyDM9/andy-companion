@@ -23,6 +23,9 @@ if [ -f "$ENV_FILE" ]; then
   ANDY_GUARD_TOKEN="$(sed -n 's/^ANDY_GUARD_TOKEN=//p' "$ENV_FILE" | tail -1)"
   NEBIUS_API_KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' "$ENV_FILE" | tail -1)"      # Ultra, the scam check, and the eyes on Token Factory
   ANDY_VISION="$(sed -n 's/^ANDY_VISION=//p' "$ENV_FILE" | tail -1)"              # token-factory (default), endpoint or off
+  # Off unless the env file names a folder: the finder then keeps each try there for scoring (live test 3t2).
+  ANDY_FINDER_RECORD="${ANDY_FINDER_RECORD:-$(sed -n 's/^ANDY_FINDER_RECORD=//p' "$ENV_FILE" | tail -1)}"
+  export ANDY_FINDER_RECORD
   export TAVILY_API_KEY ANDY_VISION ANDY_VISION_URL ANDY_VISION_TOKEN ANDY_GUARD_URL ANDY_GUARD_TOKEN NEBIUS_API_KEY
 fi
 export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"

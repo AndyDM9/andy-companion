@@ -20,6 +20,9 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
 - No "enhance" filters: no evidence they help these models, and resampling hurts them.
 - After the founder's first try at home (found, 14 s): each view is now read while the head turns to the next, instead of
   after the sweep, and the log says how many places were seen, how many closer looks and the time (numbers only).
+- The founder's third try: the log said "found (3 places seen, 1 closer look)", but the glasses weren't there, so the
+  close-up check said yes to something else. To see why, recording for the founder's own tries can now be switched on
+  with one line in the env file (`ANDY_FINDER_RECORD`, off by default; live test 3t2), with no need to start Andy by hand.
 
 ### Changed (round 6: the screen's design pass before filming)
 
