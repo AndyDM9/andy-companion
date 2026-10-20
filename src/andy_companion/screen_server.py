@@ -315,6 +315,8 @@ def hood_state() -> Dict[str, Any]:
         "proof": proof(),
         "tavily": dict(_tavily) or None,
         "health": _health(),
+        # What Andy is doing with its head and why, as the TV says it (body.looking_at's names only).
+        "noticed": live_state().get("looking", ""),
         "interruptions": {"count": len(_interrupts),
                           "last_cut_ms": _interrupts[-1]["cut_ms"] if _interrupts else None},
         "median": {"hearing_ms": _median([t["hearing_ms"] for t in turns]),

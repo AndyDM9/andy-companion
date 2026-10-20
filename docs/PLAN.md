@@ -163,6 +163,23 @@ itself to Tavily, Pollen's app 1.1.0 (a transcript RPC; no upgrade before filmin
 Not taken yet (decision 0012, revisit with the recorded tries): a second, lower row of views; the camera's 4K mode
 (the daemon sets it once at start); a local detector first (OWLv2, or NanoOWL as the Jetson path); any "enhance" filter.
 
+### Round 8 (Claude), Physical AI: reacting to the room (2026-10-20, approved by the founder: "build 1 to 6")
+
+From the judges' and the field's research (kept privately): the track rewards hardware reacting live to the real
+world, and "Serverless Jobs to run simulations … evaluate robot policies".
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B45 | **Turn to whoever speaks:** a second voice well to the side turns the head; nobody there, back | a judge's non-verbal behaviour; a judge's presence; a judge's assistant has no sound direction | ✅ 2026-10-20 (tests; on the robot in live test 3aa) |
+| B46 | **Remember where I put it:** a place kept after a yes, looked at first when asked | Human–object interaction | ✅ 2026-10-20 (suite 18 of 18; live test 3bb) |
+| B47 | **Teach Andy a move by hand** (antennas), kept by name, played back | Puppetry and demonstration data | ✅ 2026-10-20 (suite 12 of 12; live test 3cc) |
+| B48 | **The finder in simulation, as Nebius Serverless Jobs** (decision 0013) | The track's text; the tie-break on technology | ✅ 2026-10-20 (two jobs: zoomed in 0 false finds in 7, error 0.76°; old way 3 in 7) |
+| B49 | **Wave, and Andy waves back** with its antennas | Presence in a few seconds of video | ✅ 2026-10-20 (tests; live test 3dd) |
+| B50 | **What Andy noticed**, on the TV and the hood page | The video shows the robot's reason, not only its move | ✅ 2026-10-20 |
+
+Not taken: guided movement and reacting to falls or loud sounds (health and safety claims), Cosmos Reason 2 on an
+endpoint, emotions and dances in the model's hands, full-head teaching (the head may drop with its motors off).
+
 ### Cleanup (Claude)
 
 | # | Item | Status |
@@ -176,6 +193,7 @@ Not taken yet (decision 0012, revisit with the recorded tries): a second, lower 
 
 | When | What | Where |
 |---|---|---|
+| With the live test | **The new robot behaviours (B45 to B49):** a second person speaking from the side, a wave, "my keys are here", "let me teach you a move" | [live-test.md](live-test.md) 3aa to 3dd |
 | Now | **The robot's power and USB:** on 2026-10-20 its daemon reported "Motor communication error! Check connections and power supply" | |
 | Now | The live test on the robot | [live-test.md](live-test.md) |
 | With the live test | **About 20 recorded "find my glasses" tries (B34)**, as live test 3t2 says: hide something, ask, repeat (glasses, keys, the remote; a few out of sight on purpose); then Claude scores them, and reads the same tries with both vision models | [live-test.md](live-test.md) 3t2 |

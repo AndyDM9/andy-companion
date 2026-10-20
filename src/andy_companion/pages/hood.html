@@ -130,6 +130,7 @@
       <p class="what" id="what">From the end of your words to Andy's first sound, last turn</p>
       <p class="aside" id="median-row" hidden><span id="median-label">Middle of recent turns without a tool</span>: <b class="num" id="median">–</b></p>
       <p class="aside" id="talked-over" hidden></p>
+      <p class="aside" id="noticed" hidden></p>
     </div>
     <div class="fall" id="fall" role="img" aria-label="The latest turn, stage by stage">
       <p class="fall-empty" id="fall-empty">Talk to Andy, and each turn appears here.</p>
@@ -193,6 +194,10 @@
                 speak: ["Speak", "Qwen3-TTS, on this computer"] },
       noTool: "no tool this turn", firstAt: (s) => `first sound at ${s}`, now: "Now",
       talked: (n) => `You talked over Andy ${n === 1 ? "once" : n + " times"}: each time it stopped at once and listened`,
+      noticed: { you: "Andy is looking at you", screen: "Andy is looking at the screen", room: "Andy is looking around the room",
+                 pointing: "Andy is pointing at what it found", voice: "Andy heard a voice to the side and is turning to it",
+                 wave: "Andy saw a wave and is waving back", closer: "Andy is looking closer, to be sure",
+                 remembered: "Andy is looking first where it was left" },
       tally: (t) => [`Since Andy started: ${t.turns} ${t.turns === 1 ? "turn" : "turns"}`,
                      `${t.nebius} tool ${t.nebius === 1 ? "call" : "calls"} on Nebius/Token Factory`,
                      `${t.tavily} Tavily ${t.tavily === 1 ? "call" : "calls"}`,
@@ -225,6 +230,10 @@
                 speak: ["Hablar", "Qwen3-TTS, en esta computadora"] },
       noTool: "sin herramienta en este turno", firstAt: (s) => `primer sonido a los ${s}`, now: "Ahora",
       talked: (n) => `Usted interrumpió a Andy ${n === 1 ? "una vez" : n + " veces"}: cada vez se detuvo enseguida y escuchó`,
+      noticed: { you: "Andy le está mirando", screen: "Andy está mirando la pantalla", room: "Andy está buscando por la habitación",
+                 pointing: "Andy está señalando lo que encontró", voice: "Andy oyó una voz a un lado y se está girando hacia ella",
+                 wave: "Andy vio un saludo y está saludando", closer: "Andy está mirando más de cerca, para estar seguro",
+                 remembered: "Andy está mirando primero donde se dejó" },
       tally: (t) => [`Desde que Andy empezó: ${t.turns} ${t.turns === 1 ? "turno" : "turnos"}`,
                      `${t.nebius} ${t.nebius === 1 ? "llamada" : "llamadas"} a herramientas en Nebius/Token Factory`,
                      `${t.tavily} ${t.tavily === 1 ? "llamada" : "llamadas"} a Tavily`,
@@ -406,6 +415,9 @@
     drawTavily(s.tavily);
     drawTally(s.tally);
     const iv = s.interruptions || { count: 0 };
+    const noticed = (ui.noticed || {})[s.noticed] || "";
+    $("noticed").hidden = !noticed;
+    if (noticed) say("noticed", noticed);
     $("talked-over").hidden = !iv.count;
     if (iv.count) say("talked-over", ui.talked(iv.count));
     const latest = s.turns[0];

@@ -33,6 +33,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-20 19:10 | The finder in simulation as two Nebius Serverless Jobs (`cloud/sim-job.sh`, decision 0013): Pollen's MuJoCo scene, a glasses-sized duck at random places, 30 trials each, software rendering | Zoomed in with the closer look: pointed 18 of 23 (58–90%), **false finds 0 of 7**, error median 0.76°; the old way: 19 of 23, **3 of 7**, 2.73°. On this computer's GPU: 21 of 23, 0 of 7, 0.8° against 23 of 23, 1 of 7, 1.5° |
 | 2026-10-20 17:11 | Zooming in at the desk (`evals/zoom_check.py`): a real pair of reading glasses in a CC0 room photo, 9 frames with them, 9 painted out | Old way (768 px) **0 of 9**; six full-size tiles **9 of 9**, no false sighting; closer look confirmed 8 of 9, wrongly 0 of 9; 24 tiles at once 1.8 s |
 | 2026-10-20 16:14 | The eyes side by side at the desk (`evals/eyes_check.py`, same pictures, three runs each) | Super VL on Token Factory: describe median 1.35 s, four views 2.08 s; Nano VL on our endpoint: 3.45 s and 2.28 s (3.69 s cold); both right on all four views; the endpoint stopped after |
 | 2026-10-20 15:59 | Suite, 89 cases (version 2026-10-20a, photo stories added), Andy, on this computer | **87, 88, 86 of 89**; photo-1 to photo-4 12 of 12; once or twice each: share-2 (2), greet-1 (2), story-1, chat-2, all seen varying before |

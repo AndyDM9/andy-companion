@@ -77,6 +77,9 @@ def seek_step(manager, now, head, tracking, head_world_yaw, move_playing):
                            person_yaw=person_yaw, person_top=person_top)
     if seeker.state != before:
         logger.info("seek %s -> %s", before, seeker.state)
+        if seeker.state == "TURN" and getattr(seeker, "_for_voice", False):
+            from andy_companion.body import looking_at
+            looking_at.set("voice", 3.0)                 # the TV: "Turning to a voice"
     own_move = getattr(getattr(manager, "state", None), "current_move", None)
     if decision.weight is not None and not getattr(own_move, "andy_owns_head", False):
         try:

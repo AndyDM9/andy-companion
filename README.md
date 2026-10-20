@@ -59,6 +59,13 @@ with its sources.
 
 - **Talks and keeps looking at you**, in English or Spanish, with body language from research: its
   antennas lift while you speak and lean while it thinks.
+- **Notices the room by itself:** when someone else speaks from the side, Andy turns to them (and back if nobody is
+  there, such as the TV); wave at it and its antennas wave back. The TV says what it noticed ("Turning to a voice",
+  "Waving back").
+- **Remembers where you put things, if you want:** "my keys are here" gets "Shall I remember where they are?";
+  later "where are my keys?" turns straight to that spot and checks up close before looking around.
+- **Learns a move by hand:** a grandchild moves Andy's antennas for six seconds, and "do Sofia's wave" plays it
+  back, gently (its antennas only).
 - **Your day:** the date (never guessed), reminders in your own words, the morning plan, and the weather
   from the National Weather Service.
 - **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle
@@ -213,6 +220,12 @@ Each principle comes from published research, and each has something you can see
 - **The newest NVIDIA vision model the week it arrived.** Nemotron 3.5 Super VL appeared on Token Factory in
   October 2026; Andy's eyes moved to it with one setting, and the same evaluation reads the robot's tries with
   either model.
+- **The finder tested in simulation, as Serverless Jobs** ([decision 0013](docs/decisions/0013-the-finder-tested-in-simulation.md)):
+  Pollen's MuJoCo scene with things placed at random, Andy's own search on what a virtual eye sees, scored against
+  the scene's truth. Two jobs, 30 trials each, with a glasses-sized duck: zoomed in with the closer look, pointed at
+  it 18 of 23 times with **no false find in 7** (error 0.76°); the old way 19 of 23, but **3 false finds in 7**
+  (error 2.73°) ([on](evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json),
+  [off](evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json)).
 
 ## Measured (Reachy Mini Lite)
 
@@ -268,7 +281,11 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 - **No study with older adults yet.** Andy is built on published research and measured with our own tests;
   a pilot with an ethics review comes next.
 - **The finder isn't measured at home yet.** Tries can be recorded and scored (`evals/finder_eval.py`); the
-  scorecard will be in `evals/results/` when it exists. It finds things, not people.
+  scorecard will be in `evals/results/` when it exists. It finds things, not people. In simulation it is measured
+  (decision 0013), but rendered pictures are cleaner than a room. From where Andy sits it can't look further than
+  60 degrees to either side without turning its body, so a chair beside it can be out of reach.
+- **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the
+  suite, not yet on camera with two people. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
 - **The suite isn't perfect:** about one different case fails each run, and every failure is in its

@@ -35,7 +35,9 @@ a robot can do that a phone can't:
   first ("Don't reply, pay or give any details. Check with family first."), then why: the sign in the
   message's own words, the warning and its site, and why Nemotron 3 Ultra judged it the same trick.
 
-Also: your day the same way every time (the date, reminders in your words, the weather); "look into it for
+Also: Andy notices the room by itself (it turns to whoever speaks, and waves back with its antennas when you wave);
+it remembers where you put your keys if you ask it to, and looks there first; a grandchild can teach it a move by
+moving its antennas by hand. And: your day the same way every time (the date, reminders in your words, the weather); "look into it for
 me", a Tavily research task shown step by step on the TV while you carry on talking; good company (open
 questions about your life, jokes, real stories read a part at a time); a family photo that becomes a story,
 with Andy asking about it and keeping the story only after a yes; family who see only what you share, with
@@ -54,6 +56,9 @@ Andy telling you who looked; and English and Spanish.
   28; each model alone caught 53 to 56, which overlaps Andy, so we don't claim more catches. What the web
   plus a strong second question buys is a named source and no false alarms: matched by the smaller
   model, the same warnings flagged 24 ordinary messages (29–53%). About $17 per 1,000 checks.
+- **A robot search tested in simulation, as Nebius Serverless Jobs:** Andy's own finder in Pollen's MuJoCo scene,
+  things placed at random, scored against the scene's truth: with its closer look, no false find in 7 trials without
+  the object (the old way: 3 in 7) and pointing within 0.76 degrees (median), over 30 trials each.
 - **Measured on the robot, not only at the desk:** 54 real turns on the Reachy Mini, a median of 1.06 s
   from the person's words being understood to Andy's first sound (95% of turns under 3.2 s, the slow
   ones with a web search).

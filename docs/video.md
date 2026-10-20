@@ -33,6 +33,11 @@ so this video is the entry. Web-only scam checkers are many; a robot in a real h
 physical moment (the letter in a hand, the head turning to the TV), keep the scam verdict one beat of three,
 and let the glasses and the family photo carry the rest.
 
+**Physical AI moments (2026-10-20, round 8), each a few seconds, live:** a second person speaks from the side and
+Andy turns to them (the TV: "Turning to a voice"); a wave, and its antennas wave back; "my keys are here" and, later,
+Andy turning straight to them; a grandchild teaching it a move with its antennas. The judges' research: an unprompted
+turn toward something real reads at once as attention. Fit one or two into shot 3's long take rather than adding time.
+
 **Target length:** 2:50, never over 2:55 (time a rough cut). Andy's lines are never scripted; only the person's are planned. Robot shots are
 long, unedited takes.
 

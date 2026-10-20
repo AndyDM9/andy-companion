@@ -17,3 +17,4 @@ gets a dated amendment, or a new decision that replaces it.
 | [0010](0010-a-public-read-only-demo-of-the-screens.md) | A public, read-only demo of the screens, as a Hugging Face Space | 2026-10-20 |
 | [0011](0011-the-eyes-on-token-factory.md) | The eyes on Token Factory: Nemotron 3.5 Super VL, with our own endpoint as an option | 2026-10-20 |
 | [0012](0012-the-finder-zooms-in-then-looks-closer.md) | The finder zooms in, then looks closer | 2026-10-20 |
+| [0013](0013-the-finder-tested-in-simulation.md) | The finder tested in simulation, as Nebius Serverless Jobs | 2026-10-20 |

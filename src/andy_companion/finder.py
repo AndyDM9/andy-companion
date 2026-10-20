@@ -376,7 +376,7 @@ async def closer_look(robot: Any, manager: Any, antennas: tuple, place: Dict[str
     quiet_tracking(robot)
     step = look.HoldLook(robot.get_current_head_pose(), antennas, aim[0], aim[1], CLOSER_HOLD_S)
     manager.queue_move(queueable(step))
-    looking_at.set("room", step.duration + 0.5)
+    looking_at.set(place.get("noticed", "closer"), step.duration + 0.5)
     await sleep(step.turn_s)
     there = await arrive(robot, *aim, sleep)
     await sleep(SETTLE_S)
@@ -496,7 +496,7 @@ async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any]
     except Exception:
         antennas = (0.0, 0.0)
     place = {"view": 0, "x": 0.5, "yaw": float(hint["yaw"]), "pitch": float(hint["pitch"]), "where": hint.get("where", ""),
-             "tiles": 1}
+             "tiles": 1, "noticed": "remembered"}
     try:
         got = await closer_look(robot, manager, antennas, place, what, checker, queueable, sleep)
     except FinderError as e:

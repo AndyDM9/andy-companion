@@ -188,7 +188,7 @@ def step(manager: Any, antennas: Tuple[float, float], *, tracking: bool, speakin
 
         def back() -> None:
             waver.start()
-            looking_at.set("you", WAVE_S)
+            looking_at.set("wave", WAVE_S)
 
         manager.__dict__["_andy_wave_watch"] = WaveWatcher(
             lambda: robot.media.get_frame(), lambda: robot.get_tracked_face(wait=False),

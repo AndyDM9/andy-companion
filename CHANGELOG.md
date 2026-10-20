@@ -25,6 +25,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   second; motion beside the face at shoulder height that turns back three times in two seconds, with the face itself
   still, is a wave, and both antennas wave back for 2.5 s (under 2 rad/s), the head untouched; not while anyone speaks,
   during a search, or within 20 s of the last (`body/wave.py`, `ANDY_WAVE`). No new model: OpenCV, already there.
+- **The finder tested in simulation, on Nebius (B48, decision 0013):** Pollen's MuJoCo scene (table, rubber duck,
+  croissant, apple), a virtual eye at the robot's eye camera, Andy's own search (sweep, tiles, `merge_places`, the
+  closer look) on what it sees, things placed at random, scored against the scene's truth. As two Nebius Serverless
+  Jobs (`cloud/sim-job.sh`, software rendering), 30 trials each with a glasses-sized duck: zoomed in with the closer
+  look, pointed 18 of 23, false finds 0 of 7, error 0.76°; the old way 19 of 23, 3 of 7, 2.73°. The closer look ends
+  false finds and points two to three times as precisely; finding is within chance of the old way on rendered scenes.
+- **What Andy noticed (B50):** the TV's line under Andy's state, and the hood page, now also say "Turning to a voice",
+  "Waving back", "Looking closer" and "Looking where they were left" (English and Spanish), names only.
 
 ### Changed (round 7: the finder zooms in, then looks closer)
 
