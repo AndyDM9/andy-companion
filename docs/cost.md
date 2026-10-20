@@ -16,11 +16,25 @@ are from Nebius Token Factory's model list and Tavily's pricing page on **2026-1
 **Altogether: about $2.30 a month** for conversation, help and the web, at this level of use (the web free within Tavily's 1,000 monthly credits). The estimate
 scales with use: twice the talking is about twice the conversation line.
 
-## The eyes and the second look
+## The eyes
 
-For the hackathon, Nemotron Nano VL (the eyes, finding things) and Nemotron 3.5 Content Safety (the
-second look) each run on a Nebius Serverless Endpoint, one L40S at about **$1.55 an hour** while running.
-We start them when needed and stop them after; stopped, they cost nothing for compute. An endpoint kept
+Since 2026-10-20 the eyes are NVIDIA Nemotron 3.5 Super VL on Token Factory, paid per picture: about 1,000
+input tokens a view (measured: 814 to 1,078 for one view at 768 px wide; 478 for half a view) and under 40
+output tokens, so a four-view search for the glasses is about 4,000 tokens. At Token Factory's price (its models
+API, 2026-10-20: $0.30 per million input tokens, $0.90 per million output, served from us-north1), a search is
+about **$0.0013** and a description about $0.0003. Nothing runs, and nothing is paid, while idle.
+
+## The scam check, per check (measured 2026-10-20)
+
+One advanced Tavily search (2 credits, $0.016 on pay-as-you-go), Lightning about 180 tokens in and 65 out, and
+Ultra about 560 in and 10 out: about **$0.017 a check, or $17 per 1,000**, 96% of it the search
+(`evals/scam_eval.py`, `COST`).
+
+## The second look, and the eyes on our own endpoint
+
+Nemotron 3.5 Content Safety (the second look), and Nemotron Nano VL when the eyes are set to our own endpoint
+(`ANDY_VISION=endpoint`), each run on a Nebius Serverless Endpoint, one L40S at about **$1.55 an hour** while
+running. We start them when needed and stop them after; stopped, they cost nothing for compute. An endpoint kept
 running for one household all month would cost about $1,100, so that is not how a product would run them:
 
 - **Shared:** one endpoint serving many households, batched. The cost per household falls with the

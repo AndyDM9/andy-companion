@@ -15,3 +15,4 @@ gets a dated amendment, or a new decision that replaces it.
 | [0008](0008-andy-runs-as-user-services.md) | Andy and its voice server run as user services | 2026-10-14 |
 | [0009](0009-four-private-links-each-with-its-own-token.md) | Four private links, each with its own token | 2026-10-14 |
 | [0010](0010-a-public-read-only-demo-of-the-screens.md) | A public, read-only demo of the screens, as a Hugging Face Space | 2026-10-20 |
+| [0011](0011-the-eyes-on-token-factory.md) | The eyes on Token Factory: Nemotron 3.5 Super VL, with our own endpoint as an option | 2026-10-20 |

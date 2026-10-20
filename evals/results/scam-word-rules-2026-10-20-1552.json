@@ -1,0 +1,65 @@
+{
+ "ran": "2026-10-20T15:52:23-04:00",
+ "messages": 120,
+ "what": "Andy's warning-sign rules for letters (andy_companion.letters.SIGNS), no model and no web",
+ "summary": {
+  "word_rules": {
+   "all": {
+    "of_scams": 60,
+    "of_ordinary": 60,
+    "failed": 0,
+    "caught_mean": 28,
+    "caught_range": [
+     28,
+     28
+    ],
+    "flagged_mean": 3,
+    "flagged_range": [
+     3,
+     3
+    ]
+   },
+   "subtle (h)": {
+    "of_scams": 10,
+    "of_ordinary": 10,
+    "failed": 0,
+    "caught_mean": 3,
+    "caught_range": [
+     3,
+     3
+    ],
+    "flagged_mean": 2,
+    "flagged_range": [
+     2,
+     2
+    ]
+   },
+   "held out (r, o)": {
+    "of_scams": 20,
+    "of_ordinary": 20,
+    "failed": 0,
+    "caught_mean": 6,
+    "caught_range": [
+     6,
+     6
+    ],
+    "flagged_mean": 1,
+    "flagged_range": [
+     1,
+     1
+    ]
+   }
+  }
+ },
+ "cost_per_1000_checks_usd": {
+  "tavily": 16.0,
+  "models": 0.62,
+  "total": 16.62
+ },
+ "cost": {
+  "tavily_usd": 0.016,
+  "models_usd": 0.0006164,
+  "measured": "2026-10-20",
+  "prices": "2026-10-14"
+ }
+}

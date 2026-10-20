@@ -298,6 +298,7 @@ def _language() -> str:
 
 
 def hood_state() -> Dict[str, Any]:
+    from andy_companion import vision
     from andy_companion.turns import BESIDE, think_ms, where
 
     turns = list(_turns)
@@ -309,6 +310,7 @@ def hood_state() -> Dict[str, Any]:
         "count": len(turns),
         "language": language,
         "where": where(language),
+        "eyes": vision.choice(),
         "tally": dict(_tally),
         "proof": proof(),
         "tavily": dict(_tavily) or None,

@@ -2,7 +2,7 @@
 
 Fill in the final name and links before submitting. Every sentence must be true and checkable in the
 repository; numbers are from the run named beside them. Sections follow Devpost's project template.
-Last revised 2026-10-20 (round 4, from Devpost's judging session); re-read against [rules-compliance.md](rules-compliance.md) before submitting.
+Last revised 2026-10-20 (rounds 4 and 5, from Devpost's judging session and the gap research); re-read against [rules-compliance.md](rules-compliance.md) before submitting.
 
 ## Tagline (under 200 characters)
 
@@ -26,8 +26,8 @@ a robot can do that a phone can't:
 - **"Can you read this for me?"** You hold up a letter. Andy reads it on this computer, explains it, and the
   TV shows it in large print. If the page asks for gift cards or rushes you, code (not the model) puts
   **Be careful** first: "Don't call or pay yet. Check with family first."
-- **"Where did I leave my glasses?"** Andy sweeps the room, NVIDIA Nemotron Nano VL on a Nebius Serverless
-  Endpoint reads four views at once, and Andy turns its head to point at them. The TV shows the four views
+- **"Where did I leave my glasses?"** Andy sweeps the room, NVIDIA Nemotron 3.5 Super VL on Nebius Token
+  Factory reads four views at once, and Andy turns its head to point at them. The TV shows the four views
   in the order it turned, the chosen one marked.
 - **"A man called saying my grandson is in jail and needs gift cards."** You don't paste anything: you say
   it. Andy checks it against consumer-protection warnings found with Tavily, and the TV says what to do
@@ -36,21 +36,26 @@ a robot can do that a phone can't:
 
 Also: your day the same way every time (the date, reminders in your words, the weather); "look into it for
 me", a Tavily research task shown step by step on the TV while you carry on talking; good company (open
-questions about your life, jokes, real stories read a part at a time); family who see only what you share,
-with Andy telling you who looked; and English and Spanish.
+questions about your life, jokes, real stories read a part at a time); a family photo that becomes a story,
+with Andy asking about it and keeping the story only after a yes; family who see only what you share, with
+Andy telling you who looked; and English and Spanish.
 
 ## What's new here
 
 - **A scam check where scams reach people at home.** Phone filters and paste-in checkers see a text or an
   email; Andy hears about the phone call and reads the letter in your hand, and its spoken suite tests that
   it recognises the trick when you just mention it.
-- **A language model that moves a robot's body to find things,** with nothing trained: Nemotron Nano VL
-  reads four views as structured output, and Andy turns its head to the one it chose.
-- **A scam check measured four ways, on Nebius:** on 120 messages read aloud, three runs as Nebius
-  Serverless Jobs, Tavily's consumer-protection warnings matched by Nemotron 3 Ultra caught 58 of 60
-  scams with no ordinary message flagged, against 55.7 for Ultra without the web and 53.3 for Lightning.
-  Matched by the smaller model, the same warnings flagged 24 ordinary messages: the web finds the
-  trick, and the stronger model tells the trick from the topic.
+- **A language model that moves a robot's body to find things,** with nothing trained: Nemotron 3.5 Super
+  VL reads four views as structured output, and Andy turns its head to the one it chose.
+- **A scam check measured five ways, with its uncertainty:** on 120 messages read aloud, three runs as
+  Nebius Serverless Jobs, Tavily's consumer-protection warnings matched by Nemotron 3 Ultra caught 58 of
+  60 scams (95% interval 89–99%) and flagged none of 60 ordinary messages (0–6%). Word rules alone caught
+  28; each model alone caught 53 to 56, which overlaps Andy, so we don't claim more catches. What the web
+  plus a strong second question buys is a named source and no false alarms: matched by the smaller
+  model, the same warnings flagged 24 ordinary messages (29–53%). About $17 per 1,000 checks.
+- **Measured on the robot, not only at the desk:** 54 real turns on the Reachy Mini, a median of 1.06 s
+  from the person's words being understood to Andy's first sound (95% of turns under 3.2 s, the slow
+  ones with a web search).
 - **Rules below the model, in code:** a letter that asks for gift cards gets **Be careful** whatever the
   model says, and its phone numbers are never read out.
 - **A spoken-conversation suite run as a Nebius Serverless Job,** judged by Nemotron 3 Ultra, with words
@@ -87,14 +92,16 @@ with Andy telling you who looked; and English and Spanish.
   retention on), 0.6–0.8 s per reply measured on the robot. **NVIDIA Nemotron 3 Ultra** for hard
   questions (2.1 s) and as the suite's judge. Lightning's **structured output** turns letters into
   large-print screen cards and vets "On this day" items.
-- **Eyes, in the loop:** NVIDIA Nemotron Nano 12B v2 VL on a **Nebius Serverless Endpoint** (L40S, vLLM),
-  behind token authentication. It describes a view in 3.5 s, and to find something Andy sweeps the room
-  and the model reads four views at once as structured output (seven frames in 3.9 s in a live test of the model on its endpoint); Andy then
-  points at it with its head.
+- **Eyes, in the loop:** NVIDIA **Nemotron 3.5 Super VL on Nebius Token Factory**, reasoning off. To find
+  something Andy sweeps the room, the model reads four views at once as structured output, and Andy points at
+  it with its head. Side by side at the desk with NVIDIA Nemotron Nano 12B v2 VL on our own **Nebius
+  Serverless Endpoint** (L40S, vLLM), which Andy used until Super VL reached Token Factory this October: a
+  description in 1.35 s against 3.45 s, four views in 2.08 s against 2.28 s, both right on every view, and
+  nothing to start (the endpoint takes about 15 minutes). The endpoint stays one setting away.
 - **A second look:** NVIDIA Nemotron 3.5 Content Safety on a second **Serverless Endpoint**, with a policy
   written for signs of crisis: on held-out phrasings our word list misses, it caught 7 of 8 with no
   false alarms, in about 0.55 s.
-- **Proof:** a conversation suite of 85 spoken situations in 19 areas, English and Spanish, run as a
+- **Proof:** a conversation suite of 89 spoken situations in 20 areas, English and Spanish, run as a
   **Nebius Serverless Job** and judged by Nemotron 3 Ultra. The model gets exactly the robot's tools.
   Tool cases are judged on what Andy says, and words that must never be said are checked in code. Latest
   Job: 79, 79 and 79 of 81 (2026-10-13), every run's scorecard and failures in the repository.
@@ -107,6 +114,7 @@ with Andy telling you who looked; and English and Spanish.
   - **map:** at setup, the town's events calendar found on its own website (with a search within the
     site when the site refuses crawlers);
   - **research, streamed:** "look into it", step by step on the screen.
+  - Every request carries `X-Project-ID`, and one conversation's requests share an `X-Session-Id`.
 - **Measured: what does Tavily add to the scam check?** 120 messages read aloud (60 with scam signs, 60
   ordinary; 40 written after the check was frozen, modelled on consumer-protection warnings from July to
   October 2026). Tavily searched once per message; the models ran three times, as Nebius Serverless Jobs
@@ -115,7 +123,12 @@ with Andy telling you who looked; and English and Spanish.
   - Nemotron 3 Ultra alone, no web: 55.7, none flagged (17 of its answers failed and are left out of its totals);
   - Tavily's warnings matched by Lightning: 60, but 24 ordinary messages flagged;
   - **Andy's check, Tavily's warnings matched by Ultra: 58 of 60, none flagged**, and the source named in
-    170 of 174 scam verdicts; on the 20 held-out scams, 19 against 18 for either model alone.
+    170 of 174 scam verdicts; on the 20 held-out scams, 19 against 18 for either model alone;
+  - and the baseline, Andy's own word rules for letters with no model and no web: 28 of 60, 3 flagged.
+
+  With 95% intervals over the 60 messages (Andy 89–99% caught, 0–6% flagged), the gain over the models
+  alone is in false alarms, not catches. One check costs about $0.017, almost all of it the advanced
+  Tavily search: about $17 per 1,000.
 
   Andy offers an action from an answer (a reminder, a note to family) and waits for a yes; the suite
   judges it.
@@ -131,7 +144,7 @@ with Andy telling you who looked; and English and Spanish.
     naming it, in English and Spanish.
   - **Consent:** checked in code before anything is remembered.
   - **Scam pages:** warnings decided from the page's own words.
-- **Engineering:** nearly 800 tests (789 on 2026-10-20), a pre-commit hook that blocks failing tests and key-like strings, an
+- **Engineering:** over 800 tests (805 on 2026-10-20), a pre-commit hook that blocks failing tests and key-like strings, an
   independent code and privacy review with every finding fixed and tested, and each choice between
   alternatives recorded in `docs/decisions/`.
 
@@ -193,8 +206,10 @@ About building it:
 ## What doesn't work yet
 
 - No study with older adults yet; a pilot with an ethics review comes next.
-- The finder isn't measured at home yet (the tries are recorded and scored by `evals/finder_eval.py`).
-- The scam check missed 2 of 60 scams. It never calls a message safe.
+- The finder isn't measured at home yet (the tries are recorded and scored by `evals/finder_eval.py`,
+  which also reads the same tries again with each vision model).
+- The scam check missed 2 of 60 scams. It never calls a message safe. On catches, it is not measurably
+  better than a strong model alone; its gain is no false alarms and a named source.
 - About one different suite case fails each run; every failure is in the scorecards.
 - Body language while thinking is built but off until tested on the robot.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
@@ -203,15 +218,19 @@ About building it:
 
 About $2.30 a month for one household's conversation, help and web lookups, at Token Factory's prices on
 2026-10-14 (Nemotron 3.5 Lightning at $0.06 per million input tokens). Every assumption is in
-`docs/cost.md`. The eyes and the second look run on Nebius endpoints we start when needed; a product would
-share them across households or run them on the home GPU.
+`docs/cost.md`. The eyes are on Token Factory too, paid per picture (about 1,000 tokens a view), so nothing runs
+while idle. The second look runs on a Nebius endpoint we start when needed; a product would share it across
+households or run it on the home GPU. A scam check costs about $0.017.
 
 ## What's next
 
 - A pilot with older adults and their families, with an ethics review.
 - More languages: Parakeet already hears 25 European languages; Andy wakes and talks in English and
   Spanish today.
-- Hearing and speaking already run on the home GPU; next, an NVIDIA Jetson beside the robot.
+- Hearing and speaking already run on the home GPU; next, an NVIDIA Jetson beside the robot, with a smaller
+  voice, the big models staying on Token Factory, and a small local model such as Cosmos Reason 2 so "where are my
+  glasses?" still works offline (a plan, not tried; the README compares Andy with NVIDIA's Reachy Mini Jetson
+  assistant).
 - The finder measured from real tries at home, and a stronger room search where it misses.
 - Publishing Andy as a one-click Reachy Mini app on Hugging Face.
 
@@ -229,7 +248,7 @@ in the pauses. To check more:
 ## Built with
 
 nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron,
-nemotron-3.5-lightning, nemotron-3-ultra, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini,
+nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini,
 hugging-face, python, opencv, tesseract, vosk, wikipedia
 
 ## Feedback for Nebius, NVIDIA and the tools (mandatory; the ten best win a prize)

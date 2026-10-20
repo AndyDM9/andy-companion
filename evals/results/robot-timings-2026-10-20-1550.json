@@ -1,0 +1,28 @@
+{
+ "ran": "2026-10-20T15:50:30-04:00",
+ "what": "Reachy Mini Lite, real turns; from the transcript (NVIDIA Parakeet) to Nemotron 3.5 Lightning's reply starting and to Andy's first sound (Qwen3-TTS); tool turns included",
+ "reply_started_ms": {
+  "turns": 62,
+  "p50": 942,
+  "p90": 1380,
+  "p95": 1765,
+  "max": 4109,
+  "days": [
+   "2026-10-14",
+   "2026-10-15",
+   "2026-10-18"
+  ]
+ },
+ "first_sound_ms": {
+  "turns": 54,
+  "p50": 1058,
+  "p90": 1875,
+  "p95": 3239,
+  "max": 5233,
+  "days": [
+   "2026-10-14",
+   "2026-10-15",
+   "2026-10-18"
+  ]
+ }
+}

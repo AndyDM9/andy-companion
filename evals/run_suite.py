@@ -28,6 +28,10 @@ try:
     from andy_companion import offers, recall, urgent
 except ImportError:  # pragma: no cover
     offers = recall = urgent = None
+# The photo tool's own guidance, copied (this file stays standard library only; a test keeps the two the same).
+PHOTO_HOW = ("Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or "
+             "what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then "
+             "ask 'Shall I keep that story?'; only after a yes, use remember with one short line in their words.")
 BASE = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
 CANDIDATE = os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning")
 JUDGE = os.environ.get("ANDY_JUDGE", "nvidia/Nemotron-3-Ultra-550b-a55b")
@@ -191,8 +195,11 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
     if name == "read_letter":   # shaped like the real tool's answer, with the card it puts on the screen
         page = (case or {}).get("page", "bill")
         return dict(LETTERS[page])
-    if name in ("describe_view", "describe_photo"):
-        return {"description": "A tidy living room with a sofa, a lamp and a window."}
+    if name in ("describe_view", "describe_photo"):   # a case may say what the picture shows ("view")
+        out = {"description": (case or {}).get("view", "A tidy living room with a sofa, a lamp and a window.")}
+        if name == "describe_photo":   # as andy_companion.vision.describe_photo answers (PLAN B35)
+            out["how"] = PHOTO_HOW
+        return out
     return {"ok": True}
 
 

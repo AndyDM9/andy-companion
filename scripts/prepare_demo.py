@@ -55,7 +55,7 @@ pay a <b>processing fee of $500 within 24 hours</b>, using gift cards from any s
 def check() -> int:
     from andy_companion import app_mode
 
-    app_mode.load_env(("ANDY_VISION_URL", "TAVILY_API_KEY", "NEBIUS_API_KEY"))   # names only; never printed
+    app_mode.load_env(("ANDY_VISION", "ANDY_VISION_URL", "TAVILY_API_KEY", "NEBIUS_API_KEY"))   # names only; never printed
     s = settings.get()
     now = datetime.now()
     from andy_companion import screen_server
@@ -71,7 +71,7 @@ def check() -> int:
         problems.append("No town set: the weather and what's on need it.")
     if s.get("language") != "en":
         notes.append("The language is Spanish; the video's long take is in English.")
-    if not os.environ.get("ANDY_VISION_URL"):
+    if os.environ.get("ANDY_VISION", "").strip().lower() == "endpoint" and not os.environ.get("ANDY_VISION_URL"):
         notes.append("No vision endpoint in this shell's environment: start it 25 minutes before (cloud/vision-endpoint.sh start).")
     photos = len(list((DATA_DIR / "photos").glob("*.jpg"))) if (DATA_DIR / "photos").is_dir() else 0
     notes.append(f"{photos} family photo(s) kept; use your own, with the family's agreement, not the sample landscapes.")

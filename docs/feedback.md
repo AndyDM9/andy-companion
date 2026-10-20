@@ -32,7 +32,7 @@ cards and content vetting.
 **Used for:** Andy's voice conversation with tool calls, in English and Spanish.
 **Worked:** correct tool calls in 0.62 to 0.83 s with thinking off; fast enough that a robot feels
 immediate.
-**Needs work**, each found by our conversation suite (now 85 spoken situations):
+**Needs work**, each found by our conversation suite (now 89 spoken situations):
 - **Tool choice changes with the size of the tool list:** with 17 tools it always called the clock;
   with the robot's real 27 it once invented a time.
 - **Persona rules weaken after tool results:** a broad "call tools first" rule led it to agree to speak
@@ -66,7 +66,7 @@ help. Evaluation guidance should say to check hard constraints deterministically
 LLM judge.
 **Onboarding (zero to hello world):** the same key and endpoint as Lightning, only the model name changed, so routing hard turns
 to Ultra was one line.
-**Would we build with it again?** Yes: it judged 85 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
+**Would we build with it again?** Yes: it judged 89 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
 
 ## NVIDIA Nemotron 3.5 Content Safety
 
@@ -85,14 +85,31 @@ Safety: unsafe", then the categories) needed a small parser, and the custom-poli
 reasoning.
 **Would we build with it again?** Yes. Serverless would make it a default.
 
+## NVIDIA Nemotron 3.5 Super VL (on Token Factory)
+
+**Used for:** Andy's eyes since 2026-10-20: describing what's in front of the camera, family photos, and
+finding things (four views at once, as structured output with a JSON schema).
+**Worked:** it appeared on serverless Token Factory for our key in October, and moving to it was one setting.
+At the desk it described Andy's TV screen in 1.35 s (word for word) and read four views in 2.08 s, all right,
+against 3.45 s and 2.28 s for Nano VL on our own L40S endpoint, with nothing to start. The models API lists
+its price, region and limits, which made the cost page exact.
+**Needs work:**
+- It reasons before answering by default: our first call with `max_tokens: 200` came back with empty content
+  and 200 reasoning tokens. `chat_template_kwargs: {"enable_thinking": false}` fixes it; a line on the model's
+  page would save the next person the surprise.
+- One region (us-north1) for now; a European household would want eu-north1.
+**Onboarding (zero to hello world):** under five minutes: the same key and base URL as the conversation, an
+image as a data URL, the first answer in 2.6 s.
+**Would we build with it again?** Yes: a bigger model, faster than our own endpoint, always on, and paid per picture.
+
 ## NVIDIA Nemotron Nano 12B v2 VL
 
-**Used for:** Andy's eyes, describing what's in front of the camera, on a Nebius Serverless Endpoint.
+**Used for:** Andy's eyes until 2026-10-20 (now the option, `ANDY_VISION=endpoint`), describing what's in front of the camera, on a Nebius Serverless Endpoint.
 **Worked:** accurate descriptions in 3.5 s on one L40S.
 **Needs work:**
 - The card asks for a vLLM nightly image; we pinned v0.30.0.
-- No NVIDIA vision model is on serverless Token Factory, so robotics prototypes need a dedicated
-  endpoint.
+- Until October there was no NVIDIA vision model on serverless Token Factory, so robotics prototypes needed a
+  dedicated endpoint (Nemotron 3.5 Super VL has since arrived; see above).
 **Onboarding (zero to hello world):** about 15 minutes to the endpoint's first start (14.3 GB of weights downloaded in 4.7
 minutes), then 3.5 s per description.
 **Would we build with it again?** Yes: accurate descriptions in 3.5 s, and four views read at once as structured output, which is what lets Andy turn its head toward something; on an endpoint we start only when needed.

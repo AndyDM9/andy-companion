@@ -1,0 +1,51 @@
+{
+ "ran": "2026-10-20T15:56:57-04:00",
+ "picture": "vanitas.jpg",
+ "what": "glasses",
+ "views": [
+  "left half",
+  "right half",
+  "top half",
+  "bottom half"
+ ],
+ "eyes": {
+  "token-factory": {
+   "model": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory",
+   "describe_s": [
+    1.46,
+    1.51,
+    1.47
+   ],
+   "find_s": [
+    2.22,
+    2.05,
+    1.98
+   ],
+   "said": "The screen shows the time as 9:00 pm on Tuesday, 13 October. A message bubble at the bottom reads, \"Real agencies never do that. Shall we look it up together, and maybe ask your daughter first?\" A \"Speaking\" button is visible in the top right corner.",
+   "views": [
+    {
+     "seen": true,
+     "x": 0.3,
+     "where": "on the table by the book and coins"
+    },
+    {
+     "seen": false,
+     "x": 0.5,
+     "where": "not visible"
+    },
+    {
+     "seen": false,
+     "x": 0.5,
+     "where": ""
+    },
+    {
+     "seen": true,
+     "x": 0.17,
+     "where": "on the table near the book and coins"
+    }
+   ],
+   "describe_p50_s": 1.47,
+   "find_p50_s": 2.05
+  }
+ }
+}

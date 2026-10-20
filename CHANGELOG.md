@@ -5,6 +5,38 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Added and changed (round 5: what is still missing to win, from the gap research)
+
+The research (the field, the technology, what older adults use) found that what Andy lacks is mostly evidence a
+judge can see; judges may score on the text, images and video alone (PLAN, round 5):
+- **The eyes on Token Factory (B32, decision 0011):** NVIDIA Nemotron 3.5 Super VL, new on Token Factory, is now
+  the default for describing, family photos and finding things (`ANDY_VISION`: `token-factory`, `endpoint` for
+  Nano VL on our own endpoint, or `off`), reasoning off. Desk check (`evals/eyes_check.py`, side by side): a
+  description in 1.35 s against 3.45 s for Nano VL on our endpoint, four views in 2.08 s against 2.28 s, both right
+  on all four (the endpoint was started for it and stopped after). Nothing to start before a demo. The hood page, the
+  doctor (which checks the model is listed for the key) and the demo prep name the eyes in use.
+- **The scam numbers with rigour (B33):** a no-model baseline (Andy's own letter rules: 28 of 60 caught, 3 of 60
+  flagged; `scam_eval.py --word-rules`), Wilson 95% intervals on every figure (`andy_companion.measure`), and the
+  cost of one check measured (about $0.017; $17 per 1,000, 96% the Tavily search). The chart is now five ways
+  (`docs/images/scam-check-five-ways.*`), and the README and Devpost text say plainly that the gain over the
+  models alone is no false alarms and a named source, not more catches.
+- **The robot measured (B34):** `evals/robot_timings.py` reads only the turn-timing lines of Andy's own log:
+  54 real turns on the Reachy Mini (2026-10-14 to 10-18), a median of 1.06 s from the words understood to the
+  first sound, 95% under 3.24 s. `finder_eval.py` gains 95% intervals and `compare`, which reads the same
+  recorded tries again with each vision model; it waits for the founder's tries.
+- **Photo stories (B35):** a photo from family, or one held up, gets one open question; its story is kept with
+  `remember` only after "Shall I keep that story?" and a yes, and shared only if asked. The photo tool returns
+  that guidance (`vision.PHOTO_HOW`, the suite's stand-in uses the same words, tested). Suite 2026-10-20a: four
+  photo cases; a full run on this computer, 87, 88 and 86 of 89, the photo cases 12 of 12.
+- **Beside NVIDIA's Reachy Mini Jetson assistant (B36):** a README section comparing the two designs, and what
+  a Jetson version would need, as a plan.
+- **Tavily's session header (B37):** one conversation's requests share a random `X-Session-Id`, renewed after
+  30 quiet minutes; `X-Human-Id` is not sent.
+- **The story (B38):** the video's first caption leads with the letter and the robot; shot 5 is a photo story;
+  shot 7 names Super VL and the measured second.
+- Found on the way: the robot's daemon reports a motor communication error (power or USB), and Andy has been
+  asleep since 2026-10-18; the live test starts with checking the robot.
+
 ### Added and changed (round 4: what the judges said in Devpost's judging session)
 
 The judges, two of them our track's NVIDIA judges, said what they look for (PLAN, round 4):

@@ -140,8 +140,9 @@ def test_the_chart_is_drawn_from_the_scorecard_and_is_up_to_date():
         import make_charts
     finally:
         sys.path.pop(0)
-    svg = make_charts.scam_chart(json.loads(make_charts.SCORECARD.read_text()))
-    for figure in (">53.3<", ">55.7<", ">60<", ">24<", ">58<"):
+    svg = make_charts.scam_chart(json.loads(make_charts.SCORECARD.read_text()),
+                                 json.loads(make_charts.BASELINE.read_text()))
+    for figure in (">28<", ">53.3<", ">55.7<", ">60<", ">24<", ">58<"):
         assert figure in svg
     assert "<title" in svg and "<desc" in svg                   # read by a screen reader as words
     assert make_charts.OUT.read_text() == svg                   # the committed chart is the scorecard's

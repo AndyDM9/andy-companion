@@ -108,7 +108,14 @@ def main() -> int:
     s = state.current()
     check("Andy", True, s["mode"] + (" (until a set time)" if s.get("until") else ""))
 
-    if e.get("ANDY_VISION_URL"):
+    eyes = (e.get("ANDY_VISION") or "token-factory").strip().lower().replace("_", "-")
+    if eyes not in ("endpoint", "off"):
+        check("Eyes (Nemotron 3.5 Super VL, Token Factory)", bool(e.get("NEBIUS_API_KEY")),
+              "always on, nothing to start" if e.get("NEBIUS_API_KEY") else "no Token Factory key",
+              "add NEBIUS_API_KEY to the env file")
+    elif eyes == "off":
+        check("Eyes", True, "switched off (ANDY_VISION=off)")
+    elif e.get("ANDY_VISION_URL"):
         if shutil.which("nebius"):
             out = subprocess.run([str(ROOT / "cloud/vision-endpoint.sh"), "status"], capture_output=True, text=True).stdout
             running = "RUNNING" in out
@@ -133,9 +140,12 @@ def live(e: dict) -> None:
     import time
 
     print("\nLive:")
-    for name, url_key, token_key, fix in (
-            ("Eyes answer", "ANDY_VISION_URL", "ANDY_VISION_TOKEN", "cloud/vision-endpoint.sh start; the model loads about 8 minutes after RUNNING"),
-            ("Second look answers", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "cloud/guard-endpoint.sh start")):
+    eyes = (e.get("ANDY_VISION") or "token-factory").strip().lower().replace("_", "-")
+    endpoints = [("Second look answers", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "cloud/guard-endpoint.sh start")]
+    if eyes == "endpoint":
+        endpoints.insert(0, ("Eyes answer", "ANDY_VISION_URL", "ANDY_VISION_TOKEN",
+                             "cloud/vision-endpoint.sh start; the model loads about 8 minutes after RUNNING"))
+    for name, url_key, token_key, fix in endpoints:
         url, token = e.get(url_key, ""), e.get(token_key, "")
         if not url:
             check(name, True, "not set up (optional)")
@@ -160,6 +170,14 @@ def live(e: dict) -> None:
                   "Token Factory is slow right now; try again in a few minutes")
         except Exception as err:
             check("Nemotron replies quickly", False, type(err).__name__, "check the key and the network")
+        if eyes not in ("endpoint", "off"):   # the eyes on Token Factory: the model is listed for this key
+            model = e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL")
+            try:
+                code, listing = http(base + "/models", headers={"Authorization": f"Bearer {key}"}, timeout=10)
+                ids = {m.get("id") for m in json.loads(listing).get("data", [])}
+                check("Eyes on Token Factory", model in ids, model, "set ANDY_VISION=endpoint and start the endpoint")
+            except Exception as err:
+                check("Eyes on Token Factory", False, type(err).__name__, "check the key and the network")
 
     from andy_companion import settings, watchdog
     running = subprocess.run(["pgrep", "-f", "scripts/run_andy.py"], capture_output=True).returncode == 0

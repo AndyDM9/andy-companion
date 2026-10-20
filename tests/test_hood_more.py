@@ -67,13 +67,16 @@ def test_every_tool_says_where_it_runs_in_both_languages():
                 assert where[name] == turns.HERE[lang], (name, lang)
 
 
-def test_the_flagship_tools_name_their_services():
+def test_the_flagship_tools_name_their_services(monkeypatch):
+    monkeypatch.delenv("ANDY_VISION", raising=False)
     w = turns.where("en")
-    assert w["find_object"] == "Nemotron Nano VL on Nebius, four views at once"
+    assert w["find_object"] == "Nemotron 3.5 Super VL, Token Factory, four views at once"
     assert "Tavily (advanced)" in w["check_message"] and "Ultra" in w["check_message"]
     assert w["read_letter"] == "read on this computer + Nemotron Lightning card"
     assert w["on_this_day"].startswith("Wikipedia + Nemotron")
-    assert "Nemotron Nano VL" in w["describe_view"] and "Nemotron Nano VL" in w["describe_photo"]
+    assert "Super VL" in w["describe_view"] and "Super VL" in w["describe_photo"]
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
+    assert turns.where("es")["find_object"].startswith("Nemotron Nano VL en nuestro endpoint")
     assert "Ultra" in w["think_it_through"] and "Tavily research" in w["look_into"]
     assert "weather.gov" in w["weather"]
 
@@ -84,7 +87,7 @@ def test_the_latest_turn_is_split_into_nemotron_and_each_tool(server):
     s = hood(server)
     latest = s["turns"][0]
     assert latest["think_ms"] == 800                         # the reply less the tool Andy waited for
-    assert s["where"]["find_object"].startswith("Nemotron Nano VL on Nebius")
+    assert "VL" in s["where"]["find_object"] and "four views" in s["where"]["find_object"]
     turns.send({"hearing_ms": 60, "reply_ms": 900, "total_ms": 960, "tools": [{"name": "content_safety", "ms": 400}]})
     s = hood(server)
     assert s["turns"][0]["think_ms"] == 900                  # the second look runs beside the reply, not before it
@@ -134,7 +137,7 @@ def test_the_hood_is_in_spanish_when_the_household_is(server):
         page = r.read().decode()
     assert '<html lang="es">' in page and "Por dentro" in page
     s = hood(server)
-    assert s["language"] == "es" and s["where"]["find_object"].startswith("Nemotron Nano VL en Nebius")
+    assert s["language"] == "es" and s["where"]["find_object"].endswith("cuatro vistas a la vez")
 
 
 @pytest.mark.parametrize("path,key,words", [

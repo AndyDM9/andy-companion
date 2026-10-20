@@ -50,10 +50,13 @@ and the [live test](live-test.md).
 ## Seeing
 
 - **"Where did I leave my glasses?"** Andy looks around the room, a little down where things are put
-  down, and NVIDIA Nemotron Nano VL reads the four views at once. Andy turns its head to point at it,
+  down, and NVIDIA Nemotron 3.5 Super VL on Token Factory reads the four views at once. Andy turns its head to point at it,
   says "I think I see your glasses, on the table…", and the TV shows the picture it saw it in (held in
   memory for two minutes, never saved). Never for finding a person. If the eyes are switched off, Andy
   says so within a few seconds.
+- **A photo's story** (2026-10-20): when family send a photo, or you hold one up, Andy says what is in it and
+  asks one open question ("Where was it taken?"). Tell it the story and Andy asks "Shall I keep that story?";
+  it keeps one short line only after a yes, and shares it with family only if you ask.
 - **What Andy looked at:** after a search, the TV shows the four views in the order Andy turned, the one it
   chose marked with where the thing is; when it couldn't see it, the four views show where it looked.
 - **"What do you see?"** One picture, described in two or three plain sentences. It never says who a

@@ -172,6 +172,7 @@ def test_a_stopped_endpoint_is_said_at_once_not_after_the_read_timeout(monkeypat
     def never(req, timeout=None):
         raise AssertionError("no request to an endpoint that takes no connection")
 
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
     monkeypatch.setenv("ANDY_VISION_URL", "https://eyes.example")
     monkeypatch.setenv("ANDY_VISION_TOKEN", "t")
     monkeypatch.setattr(vision, "reachable", lambda url: False)
@@ -199,7 +200,7 @@ def test_a_try_is_kept_only_when_asked_and_scored_against_the_persons_labels(tmp
     spec.loader.exec_module(ev)
     (tmp_path / "labels.csv").write_text(f"{kept.name},1 2\n")
     card = ev.score(ev.tries(tmp_path), ev.labels(tmp_path))
-    assert card["in_sight"] == {"tries": 1, "right": 1, "wrong_view": 0, "missed": 0}
+    assert card["in_sight"] == {"tries": 1, "right": 1, "right_95": [20.7, 100.0], "wrong_view": 0, "missed": 0}
     assert card["median_to_point_s"] == 4.2
     (tmp_path / "labels.csv").write_text(f"{kept.name},none\n")
     assert ev.score(ev.tries(tmp_path), ev.labels(tmp_path))["out_of_sight"]["pointed_at_nothing"] == 1

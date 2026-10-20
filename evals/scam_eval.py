@@ -2,6 +2,7 @@
 
     uv run python evals/scam_eval.py --lookup --spend     Tavily, once per message: the warnings are saved
     uv run python evals/scam_eval.py --warnings FILE --runs 3      the models only, no Tavily
+    uv run python evals/scam_eval.py --word-rules       the baseline with no model and no web (no calls)
     cloud/scam-job.sh FILE                      the same as four Nebius Serverless Jobs, a quarter of the
                                                 messages each (a job's request may hold 64 KB), merged
 
@@ -119,6 +120,38 @@ def summary(runs: list, msgs: list, warnings: dict) -> dict:
     return out
 
 
+# What one check costs (PLAN B33), measured 2026-10-20 on four of the messages: Lightning about 180 tokens in and
+# 65 out, Ultra about 560 in and 10 out, and one advanced Tavily search (2 credits). Prices of 2026-10-14
+# (docs/cost.md): Lightning $0.06 and $0.24 per million tokens in and out, Ultra $1.00 and $3.00, Tavily $0.008 a
+# credit on pay-as-you-go.
+COST = {"tavily_usd": 2 * 0.008, "models_usd": (180 * 0.06 + 65 * 0.24 + 560 * 1.00 + 10 * 3.00) / 1e6,
+        "measured": "2026-10-20", "prices": "2026-10-14"}
+
+
+def per_thousand() -> dict:
+    """The cost of 1,000 of Andy's scam checks, in US dollars, split into Tavily and the two Nemotron calls."""
+    return {"tavily": round(COST["tavily_usd"] * 1000, 2), "models": round(COST["models_usd"] * 1000, 2),
+            "total": round((COST["tavily_usd"] + COST["models_usd"]) * 1000, 2)}
+
+
+def word_rules(msgs: list) -> dict:
+    """The baseline with no model and no web: Andy's own warning-sign rules for paper letters (letters.SIGNS:
+    gift cards, wire transfers, crypto, arrest, cut-offs, "act now", passwords, prizes), on the same messages,
+    in the summary's shape. Deterministic, so one run."""
+    from andy_companion import letters
+
+    rows = [{"id": m["id"], "word_rules": {"flagged": bool(letters.warning_signs(m["text"])), "source": ""}}
+            for m in msgs]
+    by_id = {m["id"]: m for m in msgs}
+    out = {}
+    for gname, group in GROUPS.items():
+        sc = score(rows, by_id, "word_rules", group)
+        out[gname] = {"of_scams": sc["of_scams"], "of_ordinary": sc["of_ordinary"], "failed": 0,
+                      "caught_mean": sc["caught"], "caught_range": [sc["caught"]] * 2,
+                      "flagged_mean": sc["flagged"], "flagged_range": [sc["flagged"]] * 2}
+    return out
+
+
 def show(card: dict) -> None:
     names = {"lightning": "Lightning alone", "ultra": "Ultra alone", "tavily_lightning": "Tavily + Lightning",
              "tavily_ultra": "Tavily + Ultra (Andy)"}
@@ -138,6 +171,19 @@ def show(card: dict) -> None:
 
 def main() -> int:
     args = sys.argv[1:]
+    if "--word-rules" in args:      # no model, no web: nothing to pay for
+        msgs = messages()
+        card = {"ran": datetime.now().astimezone().isoformat(timespec="seconds"), "messages": len(msgs),
+                "what": "Andy's warning-sign rules for letters (andy_companion.letters.SIGNS), no model and no web",
+                "summary": {"word_rules": word_rules(msgs)}, "cost_per_1000_checks_usd": per_thousand(), "cost": COST}
+        s = card["summary"]["word_rules"]["all"]
+        print(f"Word rules alone: caught {s['caught_mean']} of {s['of_scams']}, flagged {s['flagged_mean']} of "
+              f"{s['of_ordinary']} ordinary. Andy's check costs about ${card['cost_per_1000_checks_usd']['total']} "
+              "per 1,000 at pay-as-you-go prices")
+        out = HERE / "results" / f"scam-word-rules-{datetime.now():%Y-%m-%d-%H%M}.json"
+        out.write_text(json.dumps(card, indent=1) + "\n")
+        print(f"Scorecard: {out}")
+        return 0
     if not os.environ.get("NEBIUS_API_KEY") and not {"--lookup", "--merge", "--rescore"} & set(args):
         print("Needs NEBIUS_API_KEY.")
         return 2

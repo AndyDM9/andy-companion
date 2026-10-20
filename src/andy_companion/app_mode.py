@@ -20,11 +20,12 @@ def data_dir(name: str) -> Path:
 
 # What the app needs from the private env file: the same names scripts/run-robot.sh passes on, plus where
 # the voice server is. The dashboard app has no run-robot.sh, so it reads them here.
-APP_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "NEBIUS_API_KEY", "NEBIUS_BASE_URL", "ANDY_VISION_URL",
-            "ANDY_VISION_TOKEN", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "ANDY_VOICE_URL")
+APP_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "NEBIUS_API_KEY", "NEBIUS_BASE_URL", "ANDY_VISION",
+            "ANDY_VISION_URL", "ANDY_VISION_TOKEN", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "ANDY_VOICE_URL")
 # What the supervisor's own process needs: it hosts the screen server, whose setup page finds the town's
-# events calendar with Tavily (setup_page.suggest_events_page). The weather and the health tiles need no key.
-SUPERVISOR_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT")
+# events calendar with Tavily (setup_page.suggest_events_page), and which eyes are chosen (no key), for the
+# hood page's "where it ran". The weather and the health tiles need no key.
+SUPERVISOR_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "ANDY_VISION")
 
 
 def env_file() -> Path:

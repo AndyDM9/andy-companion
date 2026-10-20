@@ -44,10 +44,10 @@ WHERE: Dict[str, Dict[str, str]] = {
     "on_this_day": {"en": "Wikipedia + Nemotron Lightning, Token Factory",
                     "es": "Wikipedia + Nemotron Lightning, Token Factory"},
     "think_it_through": {"en": "Nemotron 3 Ultra on Token Factory", "es": "Nemotron 3 Ultra en Token Factory"},
-    "describe_view": {"en": "Nemotron Nano VL on Nebius", "es": "Nemotron Nano VL en Nebius"},
-    "describe_photo": {"en": "Nemotron Nano VL on Nebius", "es": "Nemotron Nano VL en Nebius"},
-    "find_object": {"en": "Nemotron Nano VL on Nebius, four views at once",
-                    "es": "Nemotron Nano VL en Nebius, cuatro vistas a la vez"},
+    "describe_view": {"en": "Nemotron 3.5 Super VL, Token Factory", "es": "Nemotron 3.5 Super VL, Token Factory"},
+    "describe_photo": {"en": "Nemotron 3.5 Super VL, Token Factory", "es": "Nemotron 3.5 Super VL, Token Factory"},
+    "find_object": {"en": "Nemotron 3.5 Super VL, Token Factory, four views at once",
+                    "es": "Nemotron 3.5 Super VL, Token Factory, cuatro vistas a la vez"},
     "weather": {"en": "National Weather Service (weather.gov)", "es": "Servicio Meteorológico Nacional (weather.gov)"},
     "content_safety": {"en": "Nemotron 3.5 Content Safety on Nebius, beside the reply",
                        "es": "Nemotron 3.5 Content Safety en Nebius, junto a la respuesta"},
@@ -76,10 +76,20 @@ def think_ms(turn: Dict[str, Any]) -> Optional[int]:
     return max(0, reply - waited)
 
 
+# The eyes when ANDY_VISION chooses the person's own endpoint instead of Token Factory (vision.eyes).
+ON_ENDPOINT = {"describe_view": {"en": "Nemotron Nano VL on our Nebius endpoint", "es": "Nemotron Nano VL en nuestro endpoint de Nebius"},
+               "describe_photo": {"en": "Nemotron Nano VL on our Nebius endpoint", "es": "Nemotron Nano VL en nuestro endpoint de Nebius"},
+               "find_object": {"en": "Nemotron Nano VL on our Nebius endpoint, four views at once",
+                               "es": "Nemotron Nano VL en nuestro endpoint de Nebius, cuatro vistas a la vez"}}
+
+
 def where(language: str = "en") -> Dict[str, str]:
-    """Each tool's place, in the household's language."""
+    """Each tool's place, in the household's language, with the eyes ANDY_VISION chose."""
+    from andy_companion import vision
+
     lg = "es" if language == "es" else "en"
-    return {name: w[lg] for name, w in WHERE.items()}
+    places = {**WHERE, **(ON_ENDPOINT if vision.choice() == "endpoint" else {})}
+    return {name: w[lg] for name, w in places.items()}
 
 
 class TurnClock:

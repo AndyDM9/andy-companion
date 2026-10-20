@@ -56,7 +56,7 @@ in the same commit that makes it true.
       2026-10-23 10:00 PT); editing continues afterwards
 - [ ] A gallery thumbnail, 3:2, at most 5 MB (a still of Andy beside the TV), and gallery images:
       the screen, the letter card, the scam check's receipt, the hood page, the family page, the architecture
-      picture, and the scam check four ways (`docs/images/scam-check-four-ways.png`, from
+      picture, and the scam check five ways (`docs/images/scam-check-five-ways.png`, from
       `scripts/make_charts.py`)
 - [ ] "Built with": every sponsor tool (up to 25 tags; the list is in [submission.md](submission.md))
 - [ ] Feedback from [feedback.md](feedback.md)

@@ -155,7 +155,7 @@
   <section class="stack" aria-label="What runs where">
     <p><strong id="k-hearing">Hearing</strong><span id="v-hearing">NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card</span></p>
     <p><strong id="k-thinking">Thinking and tools</strong><span id="v-thinking">NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention</span></p>
-    <p><strong id="k-eyes">Eyes</strong><span id="v-eyes">NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked</span></p>
+    <p><strong id="k-eyes">Eyes</strong><span id="v-eyes">NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory, only when asked</span></p>
     <p id="tavily"><strong>The web</strong>Tavily: search, extract, crawl and research, each source named aloud</p>
     <p><strong id="k-second">A second look</strong><span id="v-second">NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply</span></p>
     <p id="proof"><strong>Proof</strong>A conversation suite judged by NVIDIA Nemotron 3 Ultra, run as a Nebius Serverless Job</p>
@@ -196,11 +196,12 @@
       tally: (t) => [`Since Andy started: ${t.turns} ${t.turns === 1 ? "turn" : "turns"}`,
                      `${t.nebius} tool ${t.nebius === 1 ? "call" : "calls"} on Nebius/Token Factory`,
                      `${t.tavily} Tavily ${t.tavily === 1 ? "call" : "calls"}`,
-                     `${t.eyes} ${t.eyes === 1 ? "look" : "looks"} with Nemotron Nano VL`],
+                     `${t.eyes} ${t.eyes === 1 ? "look" : "looks"} with Nemotron VL`],
       status: { off: "stopped", unknown: "not checked" }, earlier: "Earlier turns",
       stack: { hearing: ["Hearing", "NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card"],
                thinking: ["Thinking and tools", "NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention"],
-               eyes: ["Eyes", "NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint, only when asked"],
+               eyes: ["Eyes", "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory, only when asked"],
+               eyesEndpoint: "NVIDIA Nemotron Nano 12B v2 VL on our own Nebius Serverless Endpoint, only when asked",
                second: ["A second look", "NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply"] },
       web: "The web", proof: "Proof",
       proofLine: (p, where) => `${p.total} spoken situations, judged by NVIDIA ${p.judge}, ${where}: ` +
@@ -227,11 +228,12 @@
       tally: (t) => [`Desde que Andy empezó: ${t.turns} ${t.turns === 1 ? "turno" : "turnos"}`,
                      `${t.nebius} ${t.nebius === 1 ? "llamada" : "llamadas"} a herramientas en Nebius/Token Factory`,
                      `${t.tavily} ${t.tavily === 1 ? "llamada" : "llamadas"} a Tavily`,
-                     `${t.eyes} ${t.eyes === 1 ? "mirada" : "miradas"} con Nemotron Nano VL`],
+                     `${t.eyes} ${t.eyes === 1 ? "mirada" : "miradas"} con Nemotron VL`],
       status: { off: "apagado", unknown: "sin comprobar" }, earlier: "Turnos anteriores",
       stack: { hearing: ["Oír", "NVIDIA Parakeet TDT 0.6B v3, en la tarjeta gráfica de esta computadora"],
                thinking: ["Pensar y herramientas", "NVIDIA Nemotron 3.5 Lightning en Nebius Token Factory, sin retención de datos"],
-               eyes: ["La vista", "NVIDIA Nemotron Nano 12B v2 VL en un Nebius Serverless Endpoint, solo cuando se le pide"],
+               eyes: ["La vista", "NVIDIA Nemotron 3.5 Super VL en Nebius Token Factory, solo cuando se le pide"],
+               eyesEndpoint: "NVIDIA Nemotron Nano 12B v2 VL en nuestro propio Nebius Serverless Endpoint, solo cuando se le pide",
                second: ["Una segunda mirada", "NVIDIA Nemotron 3.5 Content Safety en un Nebius Serverless Endpoint, junto a cada respuesta"] },
       web: "La web", proof: "Prueba",
       proofLine: (p, where) => `${p.total} situaciones habladas, juzgadas por NVIDIA ${p.judge}, ${where}: ` +
@@ -253,7 +255,7 @@
     $("st-" + k).querySelector("b").textContent = name;
     $("st-" + k).querySelector("span").textContent = where;
   }
-  for (const [k, [name, text]] of Object.entries(ui.stack)) { say("k-" + k, name); say("v-" + k, text); }
+  for (const [k, v] of Object.entries(ui.stack)) if (Array.isArray(v)) { say("k-" + k, v[0]); say("v-" + k, v[1]); }
   $("tavily").firstChild.textContent = ui.web;
   $("proof").firstChild.textContent = ui.proof;
 
@@ -398,6 +400,7 @@
 
   function draw(s) {
     WHERE = s.where || WHERE;
+    say("v-eyes", s.eyes === "endpoint" ? ui.stack.eyesEndpoint : ui.stack.eyes[1]);   // which eyes ANDY_VISION chose
     drawProof(s.proof);
     drawHealth(s.health);
     drawTavily(s.tavily);

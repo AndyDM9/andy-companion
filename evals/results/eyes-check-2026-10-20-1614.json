@@ -1,0 +1,89 @@
+{
+ "ran": "2026-10-20T16:13:50-04:00",
+ "picture": "vanitas.jpg",
+ "what": "glasses",
+ "views": [
+  "left half",
+  "right half",
+  "top half",
+  "bottom half"
+ ],
+ "eyes": {
+  "token-factory": {
+   "model": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory",
+   "describe_s": [
+    1.34,
+    1.35,
+    1.51
+   ],
+   "find_s": [
+    2.36,
+    2.04,
+    2.08
+   ],
+   "said": "The time is 9:00 pm on Tuesday, 13 October. A message bubble at the bottom reads, \"Real agencies never do that. Shall we look it up together, and maybe ask your daughter first?\" A \"Speaking\" button is visible in the top right corner.",
+   "views": [
+    {
+     "seen": true,
+     "x": 0.3,
+     "where": "on the table by the book and coins"
+    },
+    {
+     "seen": false,
+     "x": 0.5,
+     "where": "not visible"
+    },
+    {
+     "seen": false,
+     "x": 0.5,
+     "where": ""
+    },
+    {
+     "seen": true,
+     "x": 0.17,
+     "where": "on the table near the book and coins"
+    }
+   ],
+   "describe_p50_s": 1.35,
+   "find_p50_s": 2.08
+  },
+  "endpoint": {
+   "model": "NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint",
+   "describe_s": [
+    3.5,
+    3.45,
+    3.02
+   ],
+   "find_s": [
+    3.69,
+    2.28,
+    2.27
+   ],
+   "said": "The image shows a digital display with the time \"9:00 pm\" and the date \"Tuesday, 13 October\" on a dark background. There is a button labeled \"Speaking\" next to the time. Below the time, there is a message in a speech bubble that reads, \"Real agencies never do that. Shall we look it up together, and maybe ask your daughter first?\" The text is clear and legible against the dark background.",
+   "views": [
+    {
+     "seen": true,
+     "x": 0.4,
+     "where": "on the table by the skull"
+    },
+    {
+     "seen": false,
+     "x": 0.0,
+     "where": "not visible in the image"
+    },
+    {
+     "seen": false,
+     "x": 0.5,
+     "where": "on the table by the lamp"
+    },
+    {
+     "seen": true,
+     "x": 0.3,
+     "where": "on the table by the skull and book"
+    }
+   ],
+   "describe_p50_s": 3.45,
+   "find_p50_s": 2.28
+  }
+ }
+}

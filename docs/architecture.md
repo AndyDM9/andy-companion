@@ -28,7 +28,8 @@ The text diagram below shows the voice path in detail.
                     Spanish pages first for a Spanish speaker, credits reported for the screen
  check_message ──▶ Nemotron 3.5 Lightning (the message's own sign) + Nemotron 3 Ultra (each Tavily
                     warning: the same trick, not merely the same topic)
- find_object, describe_view ──▶ Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint (started on demand)
+ find_object, describe_view, describe_photo ──▶ Nemotron 3.5 Super VL on Token Factory (ANDY_VISION; or Nano VL
+                    on our own Serverless Endpoint, started on demand)
  guard ──▶ Nemotron 3.5 Content Safety on a second Serverless Endpoint, beside each reply
  think_it_through ──▶ Nemotron 3 Ultra on Token Factory
 ```
@@ -86,7 +87,7 @@ watchdog only logs).
 | `supervisor.py`, `state.py`, `wake.py`, `chimes.py` | Awake, asleep and quiet; waking by phrase, time or due reminder; soft cues | Listen while the app is running; send or keep any audio |
 | `watchdog.py` | Noticing when Andy has stopped hearing well (audio drops), asking the supervisor for a restart, and counts for the hood page | Keep or log words; restart without a supervisor to bring Andy back (the dashboard app only logs) |
 | `scamcheck.py`, `tools/check_message.py` | Whether a message read aloud shows a known scam's sign (Lightning, quoting the message) or uses the trick a Tavily warning describes (Ultra); the TV's receipt (what to do first, then three steps: the sign, the warning and its site, why they match); saying plainly when the warnings couldn't be checked | Send the message's numbers, links or emails to Tavily; say "no sign" when the lookup failed |
-| `finder.py`, `vision.py` | Sweeping the room, reading four views at once with Nemotron Nano VL, pointing with the head; the four views (480 px) in the screen server's memory for two minutes (`POST /api/views` from this computer, `GET /view` for the TV, screen token), shown as "what Andy looked at" with the chosen one marked, also when nothing was found; failing in seconds when the endpoint is stopped; keeping tries for scoring only when `ANDY_FINDER_RECORD` is set | Keep a view on disk or in a log; describe people |
+| `finder.py`, `vision.py` | Choosing the eyes (`vision.eyes`: Nemotron 3.5 Super VL on Token Factory by default, Nano VL on our endpoint with `ANDY_VISION=endpoint`, or off; decision 0011); a family photo with how to talk about it (one open question, a story kept only after a yes); sweeping the room, reading four views at once, pointing with the head; the four views (480 px) in the screen server's memory for two minutes (`POST /api/views` from this computer, `GET /view` for the TV, screen token), shown as "what Andy looked at" with the chosen one marked, also when nothing was found; failing in seconds when the endpoint is stopped; keeping tries for scoring only when `ANDY_FINDER_RECORD` is set | Keep a view on disk or in a log; describe people |
 | `deeper.py` | "Think it through": a hard question handed to Nemotron 3 Ultra | Decide for the person |
 | `captions.py` | Andy's own words to the screen as captions | Send the person's words |
 | `scripts/demo_screen.py`, `space/`, `scripts/space.sh` | The screens on sample data, on this computer or as a public read-only Hugging Face Space (decision 0010) | Hold a key or a real person's data; take anything a visitor sends; run on the robot |
@@ -112,7 +113,7 @@ watchdog only logs).
 
 ## Evaluation
 
-- `evals/run_suite.py`: the conversation suite (85 spoken situations, Andy's real profile and tools, judged
+- `evals/run_suite.py`: the conversation suite (89 spoken situations, Andy's real profile and tools, judged
   by Nemotron 3 Ultra), locally or as a Nebius Serverless Job (`cloud/suite-job.sh`).
 - `evals/scam_eval.py`: the scam check four ways (Lightning, Ultra, Tavily with each), Tavily fetched once
   per message and the models run three times as Nebius Serverless Jobs, two at a time

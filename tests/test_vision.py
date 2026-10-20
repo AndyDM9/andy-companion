@@ -22,6 +22,7 @@ class Opener:
 
 @pytest.fixture
 def endpoint(monkeypatch):
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
     monkeypatch.setenv("ANDY_VISION_URL", "https://abc.endpoints.nebius.cloud")
     monkeypatch.setenv("ANDY_VISION_TOKEN", "secret-token")
 
@@ -39,6 +40,7 @@ def test_describes_with_the_picture_and_the_question(endpoint):
 
 
 def test_switched_off_without_an_endpoint(monkeypatch):
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
     monkeypatch.delenv("ANDY_VISION_URL", raising=False)
     assert "switched off" in vision.look(lambda: FRAME, opener=Opener())["error"]
 
@@ -58,6 +60,7 @@ def test_large_pictures_are_made_smaller():
 
 
 def test_never_sends_over_plain_http(monkeypatch):
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
     monkeypatch.setenv("ANDY_VISION_URL", "192.0.2.10:8000")
     monkeypatch.setenv("ANDY_VISION_TOKEN", "secret-token")
     op = Opener()
@@ -67,6 +70,7 @@ def test_never_sends_over_plain_http(monkeypatch):
 def test_a_stopped_endpoint_is_said_plainly(monkeypatch):
     import urllib.error
 
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
     monkeypatch.setenv("ANDY_VISION_URL", "https://eyes.example")
     monkeypatch.setenv("ANDY_VISION_TOKEN", "t")
 

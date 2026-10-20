@@ -85,18 +85,40 @@ def _note(path: str, body: Optional[Dict[str, Any]], data: Dict[str, Any], secon
                   "credits": credits if isinstance(credits, (int, float)) else None})
 
 
+# Tavily's session header (X-Session-Id, May 2026): an opaque id tying one conversation's calls together in
+# Tavily's usage records (PLAN B37). Random, never derived from the person or the household; a new one after
+# SESSION_IDLE_S without a call, as a conversation ends. X-Human-Id is not sent: one robot is one household's
+# key, so it would only add an identifier.
+SESSION_IDLE_S = 30 * 60
+_session: Dict[str, Any] = {"id": "", "last": 0.0}
+
+
+def session_id(clock: Callable[[], float] = time.monotonic) -> str:
+    import secrets
+
+    now = clock()
+    if not _session["id"] or now - _session["last"] > SESSION_IDLE_S:
+        _session["id"] = "andy-" + secrets.token_hex(8)
+    _session["last"] = now
+    return _session["id"]
+
+
+def _headers(project: bool = True) -> Dict[str, str]:
+    headers = {"Authorization": f"Bearer {_key()}", "Content-Type": "application/json", "X-Session-Id": session_id()}
+    if project:   # Tavily counts this product's use apart from any other (X-Project-ID)
+        headers["X-Project-ID"] = os.environ.get("TAVILY_PROJECT", "andy-companion")
+    return headers
+
+
 def _post(path: str, body: Optional[Dict[str, Any]], opener: Optional[Callable] = None,
           project: bool = True, timeout: float = TIMEOUT_S) -> Dict[str, Any]:
     """POST body to Tavily, or GET when body is None."""
     if body is not None and path in USAGE_PATHS:
         body = {**body, "include_usage": True}      # the credits each call used, for "how Andy found this"
     started = time.monotonic()
-    headers = {"Authorization": f"Bearer {_key()}", "Content-Type": "application/json"}
-    if project:   # Tavily counts this product's use apart from any other (X-Project-ID)
-        headers["X-Project-ID"] = os.environ.get("TAVILY_PROJECT", "andy-companion")
     req = urllib.request.Request(API + path, method="POST" if body is not None else "GET",
                                  data=json.dumps(body).encode() if body is not None else None,
-                                 headers=headers)
+                                 headers=_headers(project))
     try:
         with (opener or urllib.request.urlopen)(req, timeout=timeout) as r:
             data = json.loads(r.read())
@@ -357,8 +379,7 @@ def stream_research(question: str, place: str = "", language: str = "en",
     distinct sites read so far after each "reading". Returns the answer like research_result."""
     req = urllib.request.Request(API + "/research", method="POST",
                                  data=json.dumps(_research_body(question, place, language, True)).encode(),
-                                 headers={"Authorization": f"Bearer {_key()}", "Content-Type": "application/json",
-                                          "X-Project-ID": os.environ.get("TAVILY_PROJECT", "andy-companion")})
+                                 headers=_headers())
     step = on_step or (lambda kind, detail: None)
     content: Any = None
     sources: Any = None

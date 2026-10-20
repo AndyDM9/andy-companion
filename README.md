@@ -2,8 +2,8 @@
 
 **A small home robot for older adults who live at home, and the family who help.** Andy runs on a
 Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It hears with NVIDIA
-Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory (which answers in 0.6 to 0.8 s), sees with Nemotron Nano
-VL on a Nebius Serverless Endpoint, and looks things up with Tavily. It says it's a robot, and it keeps
+Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory (which answers in 0.6 to 0.8 s), sees with Nemotron 3.5
+Super VL, also on Token Factory, and looks things up with Tavily. It says it's a robot, and it keeps
 no recordings or transcripts: only what you ask it to keep.
 
 > Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
@@ -15,8 +15,9 @@ no recordings or transcripts: only what you ask it to keep.
    (no robot, GPU or keys).
    <!-- Founder: once the Hugging Face Space is up (founder action 6.18), its link goes here as "or open it in your browser". -->
 3. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)
-   (a Nebius Serverless Job) and the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
-   (four ways, four Nebius Serverless Jobs); every failure is in them.
+   (a Nebius Serverless Job), the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
+   (four ways, four Nebius Serverless Jobs, beside a [no-model baseline](evals/results/scam-word-rules-2026-10-20-1552.json)),
+   and [54 real turns on the robot](evals/results/robot-timings-2026-10-20-1550.json); every failure is in them.
 4. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
    `NEBIUS_API_KEY=… uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`
    (a few minutes; Tavily isn't called).
@@ -40,8 +41,8 @@ puts **Be careful** first, and Andy never reads out the page's numbers.
 
 ![A letter on Andy's screen, with a warning (sample data)](docs/images/tv-letter.png)
 
-**"Where did I leave my glasses?"** Andy looks around the room. NVIDIA Nemotron Nano VL reads four views
-at once (3.9 s for seven frames in a live test of the model on its endpoint), then Andy turns its head to point at them and says "I
+**"Where did I leave my glasses?"** Andy looks around the room. NVIDIA Nemotron 3.5 Super VL on Token Factory
+reads four views at once (about 2.1 s at the desk), then Andy turns its head to point at them and says "I
 think I see your glasses, on the table…". The TV shows the picture it saw them in, held in memory for two
 minutes and never saved.
 
@@ -62,19 +63,25 @@ with its sources.
   think it through" with Nemotron 3 Ultra.
 - **Scam checks, measured on Nebius** (120 messages read aloud, 60 scams and 60 ordinary; 40 of them
   written after the check was frozen, from this autumn's consumer-protection warnings; three runs as Nebius
-  Serverless Jobs, 2026-10-14, [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)):
+  Serverless Jobs, 2026-10-14, [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); the
+  word rules' [scorecard](evals/results/scam-word-rules-2026-10-20-1552.json)):
 
-  ![The scam check four ways: scams caught and ordinary messages flagged, of 60 each](docs/images/scam-check-four-ways.svg)
+  ![The scam check five ways: scams caught and ordinary messages flagged, of 60 each, with 95% intervals](docs/images/scam-check-five-ways.svg)
 
   | | Scams caught (of 60) | Ordinary flagged (of 60) |
   |---|---|---|
-  | Nemotron 3.5 Lightning alone | 53.3 | 0 |
-  | Nemotron 3 Ultra alone, no web | 55.7 (of the 59.7 it answered) | 0 (of the 54.7 it answered) |
-  | Tavily's warnings, matched by Lightning | 60 | 24 |
-  | **Andy: Tavily's warnings, matched by Ultra** | **58** | **0** |
+  | Word rules alone (Andy's letter rules: gift cards, wire transfers, "act now"…; no model, no web) | 28 (35–59%) | 3 (2–14%) |
+  | Nemotron 3.5 Lightning alone | 53.3 (78–95%) | 0 (0–6%) |
+  | Nemotron 3 Ultra alone, no web | 55.7 (83–97%; of the 59.7 it answered) | 0 (0–6%; of the 54.7 it answered) |
+  | Tavily's warnings, matched by Lightning | 60 (94–100%) | 24 (29–53%) |
+  | **Andy: Tavily's warnings, matched by Ultra** | **58 (89–99%)** | **0 (0–6%)** |
 
-  Tavily's warnings let every scam be caught, but only a strong model tells the same trick from the same
-  topic. Andy named the consumer-protection source it relied on in 170 of 174 scam verdicts; on the 20
+  In brackets, the Wilson 95% interval over the 60 messages. Read plainly: on scams caught, Andy and the
+  models alone overlap, so we don't claim Andy catches more. What Tavily plus a careful second question buys
+  is warnings with a named source and **no false alarms, where Tavily with the fast model flags 40% of
+  ordinary messages**: only a strong model tells the same trick from the same topic. One check costs about
+  **$0.017** (an advanced Tavily search, 2 credits, plus about $0.0006 of Nemotron), so about **$17 per 1,000
+  checks** at pay-as-you-go prices. Andy named the consumer-protection source it relied on in 170 of 174 scam verdicts; on the 20
   held-out scams it caught 19, against 18 for either model alone.
   17 of Ultra's answers on its own never finished their JSON (written up as feedback); they are left out of
   its totals, not counted as right.
@@ -93,8 +100,9 @@ anyone safe, speak as a real person, or keep recordings or transcripts.
 
 **What it costs:** about **$2.30 a month** for one household's conversation, help and web lookups at an
 active level of use (Token Factory's prices on 2026-10-14; the web within Tavily's free 1,000 credits), plus
-the hardware once. The eyes and the second look are not in that figure: they run on Nebius endpoints
-started when needed (about $1.55 an hour each while running). Every price and assumption: [docs/cost.md](docs/cost.md).
+the hardware once. The eyes are on Token Factory, paid per picture (about 1,000 tokens a view), so nothing
+runs while idle. The second look is not in that figure: it runs on a Nebius endpoint started when needed (about
+$1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/cost.md).
 
 ## Accessibility
 
@@ -128,8 +136,35 @@ Andy looks around for something, each frame is taken only after the head has sto
 |---|---|
 | Nemotron 3.5 Lightning, Token Factory | Every turn: 0.6 to 0.8 s a reply with tool calls, at $0.06 per million input tokens |
 | Nemotron 3 Ultra, Token Factory | Only where judgment matters: in the scam check, Ultra told the same trick from the same topic (0 ordinary messages flagged, against 24 with Lightning); hard decisions; the suite's judge |
-| Nemotron Nano 12B v2 VL, Serverless Endpoint | Eyes: four views read at once as structured output; Token Factory has no NVIDIA vision model, so it runs on our own endpoint |
+| Nemotron 3.5 Super VL, Token Factory | Eyes: four views read at once as structured output in about 2.1 s, a description in about 1.35 s, against 2.3 s and 3.45 s for Nano VL on our own endpoint, both right on every view ([desk check](evals/results/eyes-check-2026-10-20-1614.json)); on Token Factory since October 2026, so always on, nothing to start and nothing paid while idle. Nemotron Nano 12B v2 VL on our own Serverless Endpoint stays as an option (`ANDY_VISION=endpoint`, [decision 0011](docs/decisions/0011-the-eyes-on-token-factory.md)) |
 | Nemotron 3.5 Content Safety, Serverless Endpoint | A second look for signs of crisis, with our own policy: 7 of 8 held-out sentences caught, against 5 of 8 with its standard categories, in about 0.55 s |
+
+### Beside NVIDIA's Reachy Mini Jetson assistant
+
+NVIDIA's [Reachy Mini Jetson Assistant](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
+(Jetson AI Lab, read 2026-10-20) runs everything on the robot's own small computer. Andy makes different
+choices, and says why:
+
+| | The Jetson assistant | Andy |
+|---|---|---|
+| Computer | Jetson Orin Nano 8 GB, about 7.6 GB usable | A desktop with an NVIDIA GPU beside the robot; hearing and speaking use about 7.1 GB |
+| Starting a turn | Push-to-talk in a web page; Silero VAD | A spoken wake phrase, offline (Vosk), English and Spanish; then natural turn-taking, and you can talk over Andy |
+| Hearing | faster-whisper | NVIDIA Parakeet TDT 0.6B v3, on this computer |
+| Thinking and seeing | Cosmos Reason 2 2B, 4-bit (about 2.2 GB), llama.cpp, on the Jetson | Nemotron 3.5 Lightning, Nemotron 3 Ultra and Nemotron 3.5 Super VL on Nebius Token Factory, zero data retention |
+| Speaking | Kokoro | Qwen3-TTS, on this computer |
+| Moving | One 100 Hz controller, so face tracking and speaking gestures never fight | The same idea in Pollen's movement manager: one loop at 60 Hz is the only thing that sets the motors; following your face is blended in, and glances at the TV, the finder's sweep and the antennas wait in its one queue |
+| A picture for the model | Motion frozen briefly before the frame is chosen | The head stops and settles 0.6 s before each frame |
+| Published speed | None given | Median 1.06 s from your words being understood to Andy's first sound, 54 real turns ([scorecard](evals/results/robot-timings-2026-10-20-1550.json)) |
+
+**Why the difference:** the hard parts of Andy (telling a scam from an ordinary letter, judging a hard
+question, finding glasses in a cluttered room) are where model size showed in our measurements, and Token
+Factory runs the big models without a language model at home. The trade-off is that your words leave the house,
+with zero data retention; the Jetson assistant keeps everything local.
+
+**What a Jetson version would need** (a plan, not tried): hearing and speaking in well under 7.6 GB, so a
+smaller voice than Qwen3-TTS; thinking and seeing staying on Token Factory, so the Jetson needs no language
+model; and, for when the network is down, a small local model such as Cosmos Reason 2 2B to answer "where are my
+glasses?" offline. Offline Andy should do less, never more.
 
 ## Built on what older adults have said they want
 
@@ -151,13 +186,13 @@ Each principle comes from published research, and each has something you can see
 |---|---|---|
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
-| Eyes: "what do you see?" and finding things in the room | NVIDIA **Nemotron Nano 12B v2 VL** (FP8), vLLM 0.30.0, structured output | **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)) |
+| Eyes: "what do you see?", family photos and finding things in the room | NVIDIA **Nemotron 3.5 Super VL**, structured output, reasoning off | **Nebius Token Factory**; or NVIDIA Nemotron Nano 12B v2 VL (FP8, vLLM 0.30.0) on our own **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)), with `ANDY_VISION=endpoint` |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
-| The conversation suite | 85 spoken situations, 19 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
-| The scam check, measured four ways | Lightning, Ultra, and Tavily's warnings with each; 120 messages, three runs | **Nebius Serverless Jobs**, four of them, two at a time ([cloud/scam-job.sh](cloud/scam-job.sh)) |
-| The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`; credits shown on `/hood` | Tavily API |
+| The conversation suite | 89 spoken situations, 20 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
+| The scam check, measured five ways | Word rules alone, Lightning, Ultra, and Tavily's warnings with each; 120 messages, three runs, 95% intervals | **Nebius Serverless Jobs**, four of them, two at a time ([cloud/scam-job.sh](cloud/scam-job.sh)); the word rules need no model |
+| The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`, and one conversation's requests share an `X-Session-Id`; credits shown on `/hood` | Tavily API |
 
 ### Where Token Factory sped us up
 
@@ -170,16 +205,20 @@ Each principle comes from published research, and each has something you can see
 - **Zero data retention**, switched on in Token Factory, so a household's conversation is not kept by
   the model service either.
 - **The same suite runs on Nebius AI Cloud** as a Serverless Job, and so does the scam evaluation (the
-  models three times against warnings Tavily fetched once, in about six minutes); the eyes and the second
-  look are Serverless Endpoints we start when needed and stop after; stopped, they cost nothing for compute.
+  models three times against warnings Tavily fetched once, in about six minutes); the second look is a
+  Serverless Endpoint we start when needed and stop after; stopped, it costs nothing for compute.
+- **The newest NVIDIA vision model the week it arrived.** Nemotron 3.5 Super VL appeared on Token Factory in
+  October 2026; Andy's eyes moved to it with one setting, and the same evaluation reads the robot's tries with
+  either model.
 
-## Measured (Reachy Mini Lite, 2026-10-13)
+## Measured (Reachy Mini Lite)
 
 | Step | Time |
 |---|---|
-| Parakeet speech-to-text | 0.02–0.08 s |
-| Nemotron 3.5 Lightning reply or tool call | 0.62–0.83 s |
-| Text-to-speech, first audio | 0.10–0.33 s |
+| Parakeet speech-to-text | 0.02–0.08 s (2026-10-13) |
+| Nemotron 3.5 Lightning reply or tool call | 0.62–0.83 s (2026-10-13) |
+| Text-to-speech, first audio | 0.10–0.33 s (2026-10-13) |
+| **The whole turn, 54 real turns** (2026-10-14 to 10-18): from your words being understood to Andy's first sound, tool turns included | **median 1.06 s**; 90% under 1.88 s, 95% under 3.24 s, slowest 5.23 s ([scorecard](evals/results/robot-timings-2026-10-20-1550.json), from Andy's own log, numbers only: `evals/robot_timings.py`) |
 
 **Live, on the robot:** the screen server's `/hood` page shows each turn as it happens: the time from the
 end of your words to Andy's first sound, then the turn laid out stage by stage (NVIDIA Parakeet on this
@@ -189,7 +228,7 @@ only, in memory; never the words. In English or Spanish, like the household.
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 85 spoken situations in 19 areas, English and Spanish,
+**The conversation suite** ([evals/](evals/)): 89 spoken situations in 20 areas, English and Spanish,
 judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
@@ -199,6 +238,8 @@ are checked in code, not by the judge.
   [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)). The one case that
   failed every run (think-1) was then fixed, and a case for a person also called Andy added. The final
   Job run comes before submitting.
+- **On this computer, 2026-10-20, after photo stories were added:** 87, 88 and 86 of 89
+  ([scorecard](evals/results/suite-2026-10-20-round5-local.json)); the four photo cases passed every run.
 - **Baseline:** 27 of 36, before any fixes.
 - **What the suite has found**, each fixed and recorded in [evals/suite.json](evals/suite.json):
   - Andy said it had no camera, and once invented a time;
@@ -234,8 +275,9 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 - **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
   yet.
 - **English and Spanish only.**
-- **The eyes and the second look** run on Nebius endpoints we start when needed; when they're stopped,
-  Andy says it can't see just now.
+- **The second look** runs on a Nebius endpoint we start when needed. The eyes no longer do (they're on Token
+  Factory), but Super VL is newer to Andy than Nano VL: it is checked at the desk and in the suite, and the
+  finder's real measure is the recorded tries at home, read by both models.
 - **The TV page** is tested in Chromium and has live regions for the state and the captions, but hasn't
   been tried with a screen reader.
 - **Andy without a robot** (`scripts/andy-sim`) hasn't been tried on a computer with no robot attached.
@@ -352,7 +394,8 @@ This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own ter
 |---|---|---|
 | NVIDIA Parakeet TDT 0.6B v3 (hearing) | CC-BY-4.0 | NVIDIA, [model card](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) |
 | NVIDIA Nemotron 3.5 Lightning and Nemotron 3 Ultra | Used through Nebius Token Factory under its terms; NVIDIA's model licences | NVIDIA, Nebius |
-| NVIDIA Nemotron Nano 12B v2 VL FP8 (eyes) | NVIDIA's open model licence ([model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-FP8)) | NVIDIA |
+| NVIDIA Nemotron 3.5 Super VL (eyes, since 2026-10-20) | Used through Nebius Token Factory under its terms; NVIDIA's model licence | NVIDIA, Nebius |
+| NVIDIA Nemotron Nano 12B v2 VL FP8 (eyes on our own endpoint, the option) | NVIDIA's open model licence ([model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-FP8)) | NVIDIA |
 | NVIDIA Nemotron 3.5 Content Safety (second look) | OpenMDW-1.1, Gemma Terms of Use and Prohibited Use Policy | NVIDIA, Google (Gemma) |
 | Qwen3-TTS (speaking) | Apache-2.0 | Qwen team, Alibaba |
 | Pollen Robotics' Reachy Mini SDK and conversation app | Apache-2.0 | Pollen Robotics |

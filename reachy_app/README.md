@@ -18,7 +18,7 @@ and keeps looking at you, knows the day, keeps reminders in your words, reads a 
 up, looks things up with sources, speaks English and Spanish, and keeps no recordings or transcripts.
 
 It hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with
-Nemotron Nano VL on a Nebius Serverless Endpoint.
+Nemotron 3.5 Super VL, also on Token Factory.
 
 **Before installing:** Andy needs its voice server running on a computer with an NVIDIA GPU, and your
 own Nebius Token Factory and Tavily keys, in `~/.config/companion-hackathon/.env` (mode 600) on the

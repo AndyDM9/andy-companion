@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="1000" height="650" role="img" aria-labelledby="t d" font-family="Atkinson Hyperlegible, Segoe UI, Helvetica, Arial, sans-serif">
+<title id="t">The scam check, measured five ways</title>
+<desc id="d">Word rules alone (no model, no web): 28 of 60 scams caught, 3 of 60 ordinary messages flagged; Nemotron 3.5 Lightning alone: 53.3 of 60 scams caught, 0 of 60 ordinary messages flagged; Nemotron 3 Ultra alone, no web: 55.7 of 60 scams caught, 0 of 60 ordinary messages flagged; Tavily&#x27;s warnings, matched by Lightning: 60 of 60 scams caught, 24 of 60 ordinary messages flagged; Andy: Tavily&#x27;s warnings, matched by Ultra: 58 of 60 scams caught, 0 of 60 ordinary messages flagged; 95% intervals over the 60 messages; Andy&#x27;s check about $17 per 1,000</desc>
+<rect width="1000" height="650" rx="18" fill="#f6f8f4"/>
+<text x="32" y="46" font-size="24" font-weight="700" fill="#1d2a1f">The scam check, measured five ways</text>
+<rect x="390" y="64" width="16" height="16" rx="3" fill="#1c5244"/><text x="414" y="77" font-size="16" fill="#1d2a1f">Scams caught, of 60</text>
+<rect x="600" y="64" width="16" height="16" rx="3" fill="#a3341c"/><text x="624" y="77" font-size="16" fill="#1d2a1f">Ordinary messages flagged, of 60</text>
+<text x="32" y="130" font-size="17" font-weight="400" fill="#1d2a1f">Word rules alone (no model, no web)</text>
+<rect x="390" y="110" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="110" width="191.3" height="24" rx="5" fill="#1c5244"/>
+<text x="812" y="128" font-size="17" font-weight="700" fill="#1d2a1f">28<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">35–59%</tspan></text>
+<rect x="390" y="142" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="142" width="20.5" height="24" rx="5" fill="#a3341c"/>
+<text x="812" y="160" font-size="17" font-weight="700" fill="#1d2a1f">3<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">2–14%</tspan></text>
+<text x="32" y="216" font-size="17" font-weight="400" fill="#1d2a1f">Nemotron 3.5 Lightning alone</text>
+<rect x="390" y="196" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="196" width="364.4" height="24" rx="5" fill="#1c5244"/>
+<text x="812" y="214" font-size="17" font-weight="700" fill="#1d2a1f">53.3<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">78–95%</tspan></text>
+<rect x="390" y="228" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<text x="812" y="246" font-size="17" font-weight="700" fill="#1d2a1f">0<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">0–6%</tspan></text>
+<text x="32" y="302" font-size="17" font-weight="400" fill="#1d2a1f">Nemotron 3 Ultra alone, no web</text>
+<rect x="390" y="282" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="282" width="380.4" height="24" rx="5" fill="#1c5244"/>
+<text x="812" y="300" font-size="17" font-weight="700" fill="#1d2a1f">55.7<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">83–97%</tspan></text>
+<rect x="390" y="314" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<text x="812" y="332" font-size="17" font-weight="700" fill="#1d2a1f">0<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">0–6%</tspan></text>
+<text x="32" y="388" font-size="17" font-weight="400" fill="#1d2a1f">Tavily&#x27;s warnings, matched by Lightning</text>
+<rect x="390" y="368" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="368" width="410.0" height="24" rx="5" fill="#1c5244"/>
+<text x="812" y="386" font-size="17" font-weight="700" fill="#1d2a1f">60<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">94–100%</tspan></text>
+<rect x="390" y="400" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="400" width="164.0" height="24" rx="5" fill="#a3341c"/>
+<text x="812" y="418" font-size="17" font-weight="700" fill="#1d2a1f">24<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">29–53%</tspan></text>
+<rect x="16" y="440" width="968" height="80" rx="12" fill="none" stroke="#1c5244" stroke-width="2"/>
+<text x="32" y="474" font-size="17" font-weight="700" fill="#1d2a1f">Andy:</text>
+<text x="32" y="496" font-size="17" font-weight="700" fill="#1d2a1f">Tavily&#x27;s warnings, matched by Ultra</text>
+<rect x="390" y="454" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<rect x="390" y="454" width="396.3" height="24" rx="5" fill="#1c5244"/>
+<text x="812" y="472" font-size="17" font-weight="700" fill="#1d2a1f">58<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">89–99%</tspan></text>
+<rect x="390" y="486" width="410" height="24" rx="5" fill="#c7d5c1" opacity=".45"/>
+<text x="812" y="504" font-size="17" font-weight="700" fill="#1d2a1f">0<tspan font-size="14" font-weight="400" fill="#3d4d3f" dx="8">0–6%</tspan></text>
+<text x="32" y="580" font-size="14" fill="#3d4d3f">120 messages read aloud (60 with scam signs, 60 ordinary); the models&#x27; mean of three runs, as Nebius Serverless Jobs, 2026-10-14.</text>
+<text x="32" y="602" font-size="14" fill="#3d4d3f">Grey: the 95% interval over the 60 messages. Ultra alone: 17 failed answers are left out of its totals.</text>
+<text x="32" y="624" font-size="14" fill="#3d4d3f">Andy&#x27;s check costs about $17 per 1,000 (Tavily $16, the two Nemotron calls $0.62), at pay-as-you-go prices.</text>
+</svg>

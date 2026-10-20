@@ -2,7 +2,8 @@
 
 Andy looks around and points with its head. It sweeps the room, looking a little down at tables
 and shelves (SWEEP_DEG, PITCH_DEG), with moves of its own (body.look), and takes a camera frame at
-each stop. NVIDIA Nemotron Nano VL, on the person's own Nebius Serverless Endpoint, reads each frame
+each stop. An NVIDIA Nemotron vision model on Nebius (vision.eyes: Nemotron 3.5 Super VL on Token Factory
+by default, or Nano VL on the person's own Serverless Endpoint) reads each frame
 for the thing, in parallel, as structured output: seen or not, where across the frame (0 left to
 1 right), and a few words for where it is ("on the table by the lamp").
 
@@ -12,7 +13,7 @@ TV shows what Andy looked at: the four views, numbered in the order Andy turned,
 and the "where" words under it; when nothing was found, the four views, each "not seen", so the person
 sees where Andy looked.
 
-Privacy: the frames go only to the person's own endpoint and are not kept there. The views shown on the
+Privacy: the frames go only to Nebius, which keeps nothing (zero data retention), and are not kept there. The views shown on the
 TV are small (VIEW_WIDTH, VIEW_QUALITY), live in the screen server's memory for two minutes
 (screen_server.FRAME_FOR_S) and are never written to disk. The model is told never to describe people.
 Nothing is logged but whether it was found.
@@ -66,24 +67,17 @@ def tidy_what(what: Any) -> str:
 
 
 def ask(frame: Any, what: str, opener: Optional[Callable] = None) -> Dict[str, Any]:
-    """One frame, read by Nemotron Nano VL for the thing."""
+    """One frame, read by the eyes (vision.eyes) for the thing."""
     from andy_companion import vision
 
-    if not vision.configured():
-        raise FinderError("My eyes in the cloud are switched off right now.")
-    url = os.environ["ANDY_VISION_URL"].rstrip("/")
-    if not url.startswith("https://"):
-        raise FinderError("My eyes in the cloud need a secure (https) address.")
-    if opener is None and not vision.reachable(url):   # stopped between demos: say so now, not after TIMEOUT_S
-        raise FinderError(SWITCHED_OFF)
+    e = vision.eyes()
+    why = vision.ready(e, opener)
+    if why:
+        raise FinderError(SWITCHED_OFF if why == vision.SWITCHED_OFF else why)
     image = "data:image/jpeg;base64," + base64.b64encode(vision.jpeg(frame)).decode()
-    body = {"model": vision.MODEL, "max_tokens": 120, "temperature": 0,
-            "messages": [{"role": "user", "content": [{"type": "text", "text": ASK.format(what=what)},
-                                                      {"type": "image_url", "image_url": {"url": image}}]}],
-            "response_format": {"type": "json_schema", "json_schema": {"name": "found", "schema": SCHEMA}}}
-    req = urllib.request.Request(url + "/v1/chat/completions", method="POST", data=json.dumps(body).encode(),
-                                 headers={"Authorization": f"Bearer {os.environ['ANDY_VISION_TOKEN']}",
-                                          "Content-Type": "application/json"})
+    req = vision.request(e, [{"type": "text", "text": ASK.format(what=what)},
+                             {"type": "image_url", "image_url": {"url": image}}], 120, 0,
+                         {"response_format": {"type": "json_schema", "json_schema": {"name": "found", "schema": SCHEMA}}})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
             text = str(json.loads(r.read())["choices"][0]["message"]["content"])

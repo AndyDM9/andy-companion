@@ -122,6 +122,29 @@ until submission.
 | B30 | **A chart of the scam check four ways** (scams caught, ordinary messages flagged), drawn from the scorecard, for the README and the Devpost gallery | A number reads as real against its baseline | ✅ 2026-10-20 (`scripts/make_charts.py`; SVG in the README, PNG for the gallery) |
 | B31 | **The Devpost text, one story:** three moments first, the rest in one short list; "what we learned about the problem"; how Andy differs from a paste-in checker (you say it or hold it up; measured on ordinary messages); shorter sentences | The judges warned against many integrations without one story, and against "AI slop" | ✅ 2026-10-20 (the founder reads it before the draft goes in, 10-22) |
 
+### Round 5 (Claude), from the gap research of 2026-10-20 (approved by the founder the same day)
+
+What is missing is mostly evidence a judge can see, not features: the rules let judges score on the text,
+images and video alone, and the strongest Physical AI entries count real trials with intervals. Two
+build findings: Nemotron 3.5 Super VL is now on serverless Token Factory (tried 2026-10-20: 2.2 s to
+describe a screen, no endpoint to start), and our scam numbers need intervals, a no-model baseline and a
+cost beside them. The research notes are kept privately. Code before the freeze on 2026-10-22.
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B32 | **Eyes on serverless Token Factory:** Nemotron 3.5 Super VL for describing, photos and finding things, by default (`ANDY_VISION`); the Nano VL endpoint stays as an option, and both are measured side by side | Always on, so "find my glasses" never fails because an endpoint is stopped; the newest NVIDIA vision model; a size trade-off measured | ✅ 2026-10-20 ([decision 0011](decisions/0011-the-eyes-on-token-factory.md); `evals/eyes_check.py`: describe 1.35 s against 3.45 s for Nano VL, four views 2.08 s against 2.28 s, both right; the hood page and the doctor name the eyes in use) |
+| B33 | **The scam numbers with rigour:** 95% intervals on every figure, a no-model baseline (keyword rules on the same 120 messages, no credits), the cost per 1,000 checks; the chart and texts redrawn; said plainly that the gain over the models alone is no false alarms, not more scams caught | A number reads as real beside its baseline and its uncertainty | ✅ 2026-10-20 (word rules 28 of 60 caught, 3 flagged; Andy 58 (89–99%), 0 (0–6%); about $17 per 1,000; the chart, README and Devpost text redrawn; `andy_companion.measure`) |
+| B34 | **The robot measured:** timings recorded on the robot during the live test (numbers only, never words: end of words to first sound, p50 and p95), and the finder scored from the founder's recorded tries on both vision models, with intervals and time to point | The track's bar is real trials with intervals; ours are all from the desk so far | 🔶 timings ✅ 2026-10-20 from Andy's own log: 54 real turns, median 1.06 s, 95% under 3.24 s (`evals/robot_timings.py`); the finder's `compare` built and tested, waiting for the founder's ~20 recorded tries |
+| B35 | **Photo stories:** when a photo comes from family or is held up, Andy asks one question about it; the story is kept only with a yes, and shared to family only with a second yes | Being remembered is what older adults value most in robot studies; it strengthens the family story without adding breadth | ✅ 2026-10-20 (profile and the photo tool's guidance; suite photo-1 to photo-4, 12 of 12 in a full run of 87, 88, 86 of 89; live test 3y). Sharing stays only-when-asked: an earlier try showed that offering made Andy share unasked |
+| B36 | **The local design, side by side with NVIDIA's Reachy Mini Jetson assistant:** what matches (frames taken only when the head is still, measured GPU memory), what differs, and what a Jetson port would need, as a plan, never a claim | The track's NVIDIA judges look for local models in physical AI | ✅ 2026-10-20 (README, "Beside NVIDIA's Reachy Mini Jetson assistant"; Devpost "What's next") |
+| B37 | **Tavily session headers** (`X-Session-Id` per conversation) | Uses Tavily's newer request features; cheap | ✅ 2026-10-20 (random, renewed after 30 quiet minutes; `X-Human-Id` not sent, since one robot is one household's key; tried live) |
+| B38 | **The story leads with the robot and the family:** the video opens on a physical moment (the letter held up, the head turning to the glasses), the scam verdict one beat of three | Web-only scam checkers are many; a robot in a real home is not | ✅ 2026-10-20 in words (`docs/video.md`: the first caption leads with the letter and the robot; shot 5 a photo story); the filming is the founder's |
+| B39 | Stretch, only if B32 to B38 land by 10-22: **Cosmos Reason 2 2B on this computer** as the finder's third model and its offline fallback | A local NVIDIA model in the physical loop; needs the gated model accepted on Hugging Face | ⬜ not started: needs the founder's Hugging Face account (6.11) to accept the model's licence, and new code this close to the freeze is the risk the judges warned of; in "What's next" as a plan |
+
+Not taken: music and radio (no copyrighted music in the video; after the hackathon), quizzes and movement
+to music (breadth), video calls (the person's camera to family), sending a scam's number or the letter
+itself to Tavily, Pollen's app 1.1.0 (a transcript RPC; no upgrade before filming), a speech-to-text switch.
+
 ### Cleanup (Claude)
 
 | # | Item | Status |
@@ -135,7 +158,9 @@ until submission.
 
 | When | What | Where |
 |---|---|---|
+| Now | **The robot's power and USB:** on 2026-10-20 its daemon reported "Motor communication error! Check connections and power supply" | |
 | Now | The live test on the robot | [live-test.md](live-test.md) |
+| With the live test | **About 20 recorded "find my glasses" tries (B34)**, as live test 3t2 says: hide something, ask, repeat (glasses, keys, the remote; a few out of sight on purpose); then Claude scores them, and reads the same tries with both vision models | [live-test.md](live-test.md) 3t2 |
 | Now | **The body language test (B8)** with Claude watching the logs: the research says presence matters to at least one Physical AI judge | [live-test.md](live-test.md) 3u |
 | This week | **One real session** with a relative who agrees to it in writing: about 20 unscripted minutes, one real moment for the video if they're willing, no claims about outcomes | founder action 6.17 |
 | By 2026-10-23 | **Two or three short sessions with older adults** (a relative, a neighbour), each agreeing in writing: what they asked first, what confused them, what they'd change. Claude writes down only what they agree to, and what changed because of it. The judges' most repeated advice was to talk to real users | founder action 6.17 |
