@@ -31,6 +31,10 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
   last search's close-up of the glasses, very likely the earlier confident miss. Now a search clears the TV first, both
   questions say a picture on a TV, monitor, phone or photo is not the thing, and a sighting described as on a screen is
   dropped in code.
+- The chair try's recording: the tiles found the glasses "on the chair seat", but the four views were out of order (one
+  pointed at the founder's face) and both close-ups looked at the wrong places, so the check rightly said no. Cause:
+  as Andy finishes "let me have a look around", mid-sweep, Pollen hands the head back to face tracking. Face following
+  is now off for the whole search and comes back (only if it was on) after Andy has pointed.
 
 ### Changed (round 6: the screen's design pass before filming)
 

@@ -271,3 +271,48 @@ def test_a_recorded_try_keeps_full_size_views_the_close_up_and_where_the_head_wa
     assert cv2.imread(str(kept / "view-0.jpg")).shape[:2] == (1080, 1920)                   # every pixel, for re-reading
     assert cv2.imread(str(kept / "closer-0.jpg")).shape[:2] == (540, 960)
     assert json.loads((kept / "try.json").read_text())["poses_deg"][0] == [55.0, 15.0]
+
+
+def test_face_following_is_off_for_the_whole_search_and_comes_back_after_the_point():
+    """The founder's recorded tries: face tracking took the head back mid-sweep and one view pointed at him."""
+    class TrackingManager(Manager):
+        def __init__(self):
+            super().__init__()
+            self._head_tracking, self.switched = True, []
+
+        def set_head_tracking(self, enabled):
+            self.switched.append(enabled)
+            self._head_tracking = enabled
+
+    robot, manager = Robot([EMPTY, EMPTY, frame_with_spot(0.5, 0.5), EMPTY, frame_with_spot(0.5, 0.5)]), TrackingManager()
+    robot.manager = manager
+
+    async def go():
+        async def no_wait(seconds):
+            return None
+        out = await finder.find("glasses", robot, manager, asker=spot_asker,
+                                checker=lambda f, w: {"yes": True, "x": .5, "y": .5, "where": "on the chair"},
+                                poster=lambda *a: None, queueable=lambda m: m, sleep=no_wait, clock=lambda: 0.0)
+        assert manager.switched == [False]                       # off for the search, not yet back
+        await asyncio.sleep(finder.BACK_TO_FACE_S + finder.POINT_HOLD_S + 0.2)
+        return out
+
+    out = asyncio.run(go())
+    assert out["found"] and manager.switched == [False, True]   # back after the point
+
+
+def test_face_following_that_was_off_stays_off():
+    class OffManager(Manager):
+        _head_tracking = False
+
+        def set_head_tracking(self, enabled):
+            raise AssertionError("not touched when it was off")
+
+    robot, manager = Robot([EMPTY] * 4), OffManager()
+    robot.manager = manager
+
+    async def no_wait(seconds):
+        return None
+
+    asyncio.run(finder.find("glasses", robot, manager, asker=spot_asker, checker=lambda f, w: {"yes": False},
+                            poster=lambda *a: None, queueable=lambda m: m, sleep=no_wait, clock=lambda: 0.0))

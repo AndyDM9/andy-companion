@@ -331,10 +331,42 @@ def post_views(views: List[Optional[bytes]], seen: List[bool], chosen: Optional[
         pass   # the TV is a help, never a reason to stop
 
 
-async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, checker: Callable = look_closer,
-               poster: Callable = post_views, queueable: Optional[Callable] = None, sleep: Callable = asyncio.sleep,
-               clock: Optional[Callable[[], float]] = None) -> Dict[str, Any]:
-    """Sweep, look (zoomed in), look closer, point, show. Returns what Andy should say."""
+BACK_TO_FACE_S = 1.0                       # after the last look, face following comes back
+
+
+async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]:
+    """Sweep, look (zoomed in), look closer, point, show. Returns what Andy should say.
+
+    Face following is off for the whole search and comes back after Andy has pointed (2026-10-20, the founder's
+    recorded tries: Pollen hands the head back to face tracking as Andy finishes saying "let me have a look
+    around", mid-sweep, and one view came out pointed at the founder, the close-ups at the wrong places). It comes
+    back only if it was on, once the last look has played out."""
+    tracking = bool(getattr(manager, "_head_tracking", False)) and hasattr(manager, "set_head_tracking")
+    if tracking:
+        manager.set_head_tracking(False)
+    out: Dict[str, Any] = {}
+    try:
+        out = await _find(what, robot, manager, **kw)
+        return out
+    finally:
+        if tracking:
+            back = BACK_TO_FACE_S + (POINT_HOLD_S if out.get("found") else 0.0)
+
+            def face_back() -> None:
+                try:
+                    manager.set_head_tracking(True)
+                except Exception:
+                    pass   # following the face again is a help, never a reason to fail
+
+            try:
+                asyncio.get_running_loop().call_later(back, face_back)
+            except RuntimeError:
+                face_back()
+
+
+async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, checker: Callable = look_closer,
+                poster: Callable = post_views, queueable: Optional[Callable] = None, sleep: Callable = asyncio.sleep,
+                clock: Optional[Callable[[], float]] = None) -> Dict[str, Any]:
     import time
 
     from andy_companion import board
