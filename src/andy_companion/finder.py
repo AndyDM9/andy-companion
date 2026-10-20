@@ -449,6 +449,27 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
             face_back()
 
 
+def merge_places(results: List[Dict[str, Any]], poses: List[tuple]) -> List[Dict[str, Any]]:
+    """Every sighting as a head angle (from where the head really was for its view); the same thing seen from two
+    neighbouring views is one place. The most tiles first, then the most central. Used by the robot and by the
+    simulation (sim/finder_sim.py), so both run the same search."""
+    places: List[Dict[str, Any]] = []
+    for i, r in enumerate(results):
+        for sgt in r.get("sightings") or ([r] if r.get("seen") else []):
+            yaw, tilt = target_yaw(poses[i][0], sgt["x"]), target_pitch(poses[i][1], sgt.get("y", 0.5), reach=False)
+            same = next((pl for pl in places if abs(math.degrees(pl["yaw"] - yaw)) < SAME_PLACE_DEG
+                         and abs(math.degrees(pl["pitch"] - tilt)) < SAME_PLACE_DEG), None)
+            if same:
+                same["tiles"] += sgt.get("tiles", 1)
+                if abs(sgt["x"] - 0.5) < abs(same["x"] - 0.5):        # keep the view that saw it most squarely
+                    same.update(view=i, x=sgt["x"], where=sgt.get("where") or same["where"])
+            else:
+                places.append({"view": i, "x": sgt["x"], "yaw": yaw, "pitch": tilt, "where": sgt.get("where", ""),
+                               "tiles": sgt.get("tiles", 1)})
+    places.sort(key=lambda pl: (-pl["tiles"], abs(pl["x"] - 0.5)))
+    return places
+
+
 def moved_note(hint: Dict[str, Any], found: bool) -> str:
     """What Andy says about where the thing was before (B46): moved, or not where it was left."""
     from andy_companion import places
@@ -568,21 +589,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
             return {"error": str(a)}
     results = [a if isinstance(a, dict) else dict(nothing) for a in answers]
 
-    # Every sighting as a head angle; the same thing seen from two neighbouring views is one place.
-    places: List[Dict[str, Any]] = []
-    for i, r in enumerate(results):
-        for sgt in r.get("sightings") or ([r] if r.get("seen") else []):
-            yaw, tilt = target_yaw(poses[i][0], sgt["x"]), target_pitch(poses[i][1], sgt.get("y", 0.5), reach=False)
-            same = next((pl for pl in places if abs(math.degrees(pl["yaw"] - yaw)) < SAME_PLACE_DEG
-                         and abs(math.degrees(pl["pitch"] - tilt)) < SAME_PLACE_DEG), None)
-            if same:
-                same["tiles"] += sgt.get("tiles", 1)
-                if abs(sgt["x"] - 0.5) < abs(same["x"] - 0.5):        # keep the view that saw it most squarely
-                    same.update(view=i, x=sgt["x"], where=sgt.get("where") or same["where"])
-            else:
-                places.append({"view": i, "x": sgt["x"], "yaw": yaw, "pitch": tilt, "where": sgt.get("where", ""),
-                               "tiles": sgt.get("tiles", 1)})
-    places.sort(key=lambda pl: (-pl["tiles"], abs(pl["x"] - 0.5)))
+    places = merge_places(results, poses)
     looked_s = clock() - start
 
     chosen: Optional[Dict[str, Any]] = None

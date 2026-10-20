@@ -21,6 +21,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   kept by name (`gestures.py`, owner-only, angles only) and played back; "do Sofia's wave" plays it again. The motors
   come back on with a move already playing from where the hand left the antennas, so they never snap. One tool,
   `gesture` (learn, do, list, forget). Suite 2026-10-20c: move-1 and move-2, 12 of 12 with their neighbours.
+- **Wave, and Andy waves back (B49):** while Andy follows a face, a thread compares small grey pictures 8 times a
+  second; motion beside the face at shoulder height that turns back three times in two seconds, with the face itself
+  still, is a wave, and both antennas wave back for 2.5 s (under 2 rad/s), the head untouched; not while anyone speaks,
+  during a search, or within 20 s of the last (`body/wave.py`, `ANDY_WAVE`). No new model: OpenCV, already there.
 
 ### Changed (round 7: the finder zooms in, then looks closer)
 

@@ -101,7 +101,7 @@ def follow_with_body() -> bool:
     """Wrap MovementManager's single send point with Andy's body behaviours. Off with
     ANDY_BODY_FOLLOW=off."""
     from andy_companion import turns
-    from andy_companion.body import body_follow, expressive, gaze, giggle, glance, idle, listening as ears, presence, seek, thinking
+    from andy_companion.body import body_follow, expressive, gaze, giggle, glance, idle, listening as ears, presence, seek, thinking, wave
 
     if not body_follow.ENABLED:
         return False
@@ -160,6 +160,10 @@ def follow_with_body() -> bool:
         if giggle.ENABLED:
             giggler = self.__dict__.setdefault("_andy_giggle", giggle.Giggle())
             antennas = giggler.step((float(antennas[0]), float(antennas[1])), not listening and not move_owns_body)
+        if wave.ENABLED:
+            antennas = wave.step(self, (float(antennas[0]), float(antennas[1])), tracking=tracking,
+                                 speaking=bool(getattr(self, "_is_speaking", False)) or listening,
+                                 move_playing=move_owns_body)
         head = gaze.soften_look_up(head)
         return send(self, head, antennas, follower.step(now, yaw, float(body_yaw), tracking, move_owns_body))
 

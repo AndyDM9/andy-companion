@@ -1,0 +1,421 @@
+{
+ "ran": "2026-10-20T18:48:07-04:00",
+ "eyes": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory",
+ "zoom": "off",
+ "what": "rubber duck",
+ "seed": 7,
+ "pointed_deg": 6.0,
+ "scene": "Pollen's Reachy Mini MuJoCo scene 'minimal' (reachy_mini 1.12.0rc1), MuJoCo 3.3.0",
+ "where": "this computer",
+ "summary": {
+  "trials": 30,
+  "present": 25,
+  "pointed": 25,
+  "pointed_95": [
+   86.7,
+   100.0
+  ],
+  "found_elsewhere": 0,
+  "absent": 5,
+  "false_finds": 1,
+  "false_finds_95": [
+   3.6,
+   62.4
+  ],
+  "error_deg_median": 1.79,
+  "error_deg_p90": 4.93,
+  "seconds_median": 1.59
+ },
+ "rows": [
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 0.99,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.63,
+   "truth_deg": [
+    -15.0,
+    15.4
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 0.72,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.58,
+   "truth_deg": [
+    -37.1,
+    27.7
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 5.99,
+   "pointed": true,
+   "places": 2,
+   "closer_looks": 0,
+   "seconds": 1.62,
+   "truth_deg": [
+    -22.0,
+    17.8
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 2.1,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    23.0,
+    13.3
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 3.77,
+   "pointed": true,
+   "places": 2,
+   "closer_looks": 0,
+   "seconds": 1.57,
+   "truth_deg": [
+    -11.9,
+    33.3
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.79,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    8.5,
+    16.1
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.14,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.59,
+   "truth_deg": [
+    -13.7,
+    18.1
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.22,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.46,
+   "truth_deg": [
+    35.7,
+    20.9
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.54,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.56,
+   "truth_deg": [
+    -34.3,
+    19.6
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.56,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    -14.9,
+    19.1
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 3.41,
+   "pointed": true,
+   "places": 2,
+   "closer_looks": 0,
+   "seconds": 1.59,
+   "truth_deg": [
+    6.8,
+    21.7
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 5.89,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.59,
+   "truth_deg": [
+    15.3,
+    17.6
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 3.36,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.59,
+   "truth_deg": [
+    37.9,
+    25.1
+   ]
+  },
+  {
+   "present": false,
+   "found": false,
+   "error_deg": null,
+   "pointed": false,
+   "places": 0,
+   "closer_looks": 0,
+   "seconds": 1.58,
+   "truth_deg": [
+    176.5,
+    17.6
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.68,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    20.8,
+    13.3
+   ]
+  },
+  {
+   "present": false,
+   "found": true,
+   "error_deg": 145.91,
+   "pointed": false,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.55,
+   "truth_deg": [
+    178.7,
+    18.2
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.0,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    2.7,
+    12.7
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.49,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.54,
+   "truth_deg": [
+    -5.8,
+    13.9
+   ]
+  },
+  {
+   "present": false,
+   "found": false,
+   "error_deg": null,
+   "pointed": false,
+   "places": 0,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    179.7,
+    18.3
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 3.31,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.62,
+   "truth_deg": [
+    1.4,
+    19.7
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 4.93,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.58,
+   "truth_deg": [
+    -22.6,
+    18.2
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 0.57,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    -1.4,
+    17.3
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.94,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.67,
+   "truth_deg": [
+    5.6,
+    17.7
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 2.79,
+   "pointed": true,
+   "places": 2,
+   "closer_looks": 0,
+   "seconds": 1.6,
+   "truth_deg": [
+    29.0,
+    23.2
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.31,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.57,
+   "truth_deg": [
+    -40.0,
+    25.3
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 1.06,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.56,
+   "truth_deg": [
+    -5.9,
+    16.9
+   ]
+  },
+  {
+   "present": false,
+   "found": false,
+   "error_deg": null,
+   "pointed": false,
+   "places": 0,
+   "closer_looks": 0,
+   "seconds": 1.54,
+   "truth_deg": [
+    -177.6,
+    18.0
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 2.36,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.43,
+   "truth_deg": [
+    -24.7,
+    20.2
+   ]
+  },
+  {
+   "present": false,
+   "found": false,
+   "error_deg": null,
+   "pointed": false,
+   "places": 0,
+   "closer_looks": 0,
+   "seconds": 1.41,
+   "truth_deg": [
+    177.3,
+    18.0
+   ]
+  },
+  {
+   "present": true,
+   "found": true,
+   "error_deg": 2.35,
+   "pointed": true,
+   "places": 1,
+   "closer_looks": 0,
+   "seconds": 1.57,
+   "truth_deg": [
+    -19.3,
+    13.4
+   ]
+  }
+ ]
+}

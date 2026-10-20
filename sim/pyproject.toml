@@ -1,0 +1,13 @@
+[project]
+name = "andy-companion-sim"
+version = "0.1.0"
+description = "Andy's finder in simulation: Pollen's Reachy Mini MuJoCo scene, rendered from the robot's eye (PLAN B48)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "mujoco==3.3.0",                     # the version Pollen's reachy_mini[mujoco] pins
+    "numpy>=1.26",
+    "opencv-python-headless>=4.10,<5",
+]
+
+[tool.uv]
+package = false
