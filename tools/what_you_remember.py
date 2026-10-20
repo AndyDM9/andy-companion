@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
-from andy_companion import moments, places
+from andy_companion import gestures, moments, places
 from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 
@@ -27,4 +27,5 @@ class WhatYouRemember(Tool):
         return {"facts": facts,
                 "moments": [{"what": m["what"], "day": moments.spoken_day(m["on"])} for m in moments.upcoming(days=60)],
                 "places": [{"what": p["what"], "where": p["where"], "when": places.ago(p["at"])} for p in places.kept()],
+                "moves_taught": gestures.names(),
                 "note": "This is everything Andy keeps about the person, besides their reminders and settings."}

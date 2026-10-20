@@ -56,7 +56,7 @@ NETWORK = {"local_news", "look_up", "whats_on", "read_link", "check_message", "l
 
 def test_every_tool_says_where_it_runs_in_both_languages():
     names = tool_names()
-    assert len(names) == 37
+    assert len(names) == 38
     for lang in ("en", "es"):
         where = turns.where(lang)
         for name in names:

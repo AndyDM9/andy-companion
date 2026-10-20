@@ -634,5 +634,31 @@
    ]
   },
   "source": "andy"
+ },
+ {
+  "name": "gesture",
+  "description": "Moves someone teaches you with your antennas. When they want to teach you one ('learn a new move', 'let me teach you Sofia's wave'), first say 'Move my antennas gently now; I'll remember for six seconds', then call this with action 'learn' and a short name (theirs, or 'my move'): your antennas go soft while they move them, then you play it back. To do one you learned ('do Sofia's wave'): action 'do' and its name. 'list' to say which moves you know, 'forget' to drop one. Only your antennas move; never your head.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "action": {
+     "type": "string",
+     "enum": [
+      "learn",
+      "do",
+      "list",
+      "forget"
+     ]
+    },
+    "name": {
+     "type": "string",
+     "description": "The move's name, e.g. \"Sofia's wave\"."
+    }
+   },
+   "required": [
+    "action"
+   ]
+  },
+  "source": "andy"
  }
 ]

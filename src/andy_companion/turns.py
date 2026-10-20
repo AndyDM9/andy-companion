@@ -57,7 +57,7 @@ WHERE: Dict[str, Dict[str, str]] = {
 LOCAL = ("head_tracking", "idle_do_nothing", "go_to_sleep", "remember", "forget", "get_today", "set_reminder",
          "list_reminders", "cancel_reminder", "quiet_for", "day_plan", "set_pace", "set_volume", "share_with_family",
          "remember_moment", "forget_moment", "what_you_remember", "captions", "set_language", "settings_code",
-         "tell_joke", "story", "task_status", "forget_place")
+         "tell_joke", "story", "task_status", "forget_place", "gesture")
 WHERE.update({name: dict(HERE) for name in LOCAL})
 # For the hood's tally: the tools that call a Nebius service (Token Factory or a Serverless Endpoint), Tavily,
 # or the eyes. The conversation itself is on Token Factory every turn and is counted as turns.

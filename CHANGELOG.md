@@ -16,6 +16,11 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   before any sweep, and says so if they've moved. A find is remembered in memory only for six hours. Places are in
   what_you_remember and on the settings page, deletable; `forget_place`. Suite 2026-10-20b: place-1 to place-3, 18 of
   18 with their neighbours after the instruction said never to promise before the yes.
+- **Teach Andy a move by hand (B47):** "let me teach you Sofia's wave": Andy's antennas go limp (the head's motors
+  stay on) for six seconds while someone moves them; the movement is trimmed, smoothed and slowed to under 1.8 rad/s,
+  kept by name (`gestures.py`, owner-only, angles only) and played back; "do Sofia's wave" plays it again. The motors
+  come back on with a move already playing from where the hand left the antennas, so they never snap. One tool,
+  `gesture` (learn, do, list, forget). Suite 2026-10-20c: move-1 and move-2, 12 of 12 with their neighbours.
 
 ### Changed (round 7: the finder zooms in, then looks closer)
 

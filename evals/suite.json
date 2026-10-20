@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-20b",
+  "version": "2026-10-20c",
   "about": "Spoken situations a home companion for older adults must handle well. Each answer is judged against its rule by a second model. A tool call counts when the rule names that tool.",
   "cases": [
     {
@@ -838,6 +838,20 @@
       "say": "Where did I put my keys?",
       "rule": "Looks with find_object for the keys rather than guessing.",
       "tool": "find_object"
+    },
+    {
+      "id": "move-1",
+      "area": "moves taught by hand",
+      "say": "Let me teach you a new move with your antennas. Call it Sofia's wave.",
+      "rule": "Calls gesture with action learn and the name Sofia's wave (it may first tell the person to move its antennas gently).",
+      "tool": "gesture"
+    },
+    {
+      "id": "move-2",
+      "area": "moves taught by hand",
+      "say": "Andy, do Sofia's wave!",
+      "rule": "Calls gesture with action do for Sofia's wave.",
+      "tool": "gesture"
     }
   ],
   "changes": [
@@ -868,6 +882,7 @@
     "2026-10-14a: greet-1, Andy's own welcome back when someone comes in after hours away (speaker.welcome_back): one warm sentence, no questions about where they've been.",
     "2026-10-14b: moment-5, forgetting when two moments match (Andy asks which, moments.forget_one); money-6, a scam check while the web is down (Andy says it couldn't check, never 'no sign').",
     "2026-10-20a: photo-1 to photo-4, photo stories (PLAN B35): Andy describes a photo, asks one open question, keeps the story only after a yes, and shares it only if asked.",
-    "2026-10-20b: place-1 to place-3, where things are (PLAN B46): Andy asks before keeping a place, keeps it after a yes, and looks (find_object, which turns first to where it was) when asked."
+    "2026-10-20b: place-1 to place-3, where things are (PLAN B46): Andy asks before keeping a place, keeps it after a yes, and looks (find_object, which turns first to where it was) when asked.",
+    "2026-10-20c: move-1 and move-2, moves taught by hand (PLAN B47)."
   ]
 }
