@@ -23,6 +23,10 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
 - The founder's third try: the log said "found (3 places seen, 1 closer look)", but the glasses weren't there, so the
   close-up check said yes to something else. To see why, recording for the founder's own tries can now be switched on
   with one line in the env file (`ANDY_FINDER_RECORD`, off by default; live test 3t2), with no need to start Andy by hand.
+- The founder's first recorded try (found, on the papers by the calculator; then on the floor too) showed the first
+  view taken about 18 degrees short of where the head was sent: a move can start late. Now the finder waits (up to
+  1.5 s) until the head has arrived before each picture, reads each view from where the head really was, and a
+  recorded try keeps its views and close-ups at full size with the head's angles, so the tries can be re-read zoomed in.
 
 ### Changed (round 6: the screen's design pass before filming)
 

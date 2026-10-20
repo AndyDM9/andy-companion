@@ -100,11 +100,20 @@ class Media:
 
 
 class Robot:
+    """The head is where its last queued move ends: a robot that arrives (finder.arrive waits for it)."""
+
     def __init__(self, frames):
         self.media = Media(frames)
+        self.manager = None
+
+    def now_move(self):
+        """The move the head is in for the picture about to be taken (one per picture: four views, then closer looks)."""
+        moves = self.manager.moves if self.manager else []
+        return moves[min(self.media.taken, len(moves) - 1)] if moves else None
 
     def get_current_head_pose(self):
-        return pose()
+        m = self.now_move()
+        return m.end if m else pose()
 
     def get_current_joint_positions(self):
         return [0.0] * 7, [-0.17, 0.17]
@@ -120,6 +129,7 @@ class Manager:
 
 def run(frames, checker, asker=spot_asker):
     robot, manager, posted = Robot(frames), Manager(), []
+    robot.manager = manager
 
     async def no_wait(seconds):
         return None
@@ -195,3 +205,68 @@ def test_zoom_off_goes_back_to_one_frame_per_view_and_no_closer_look(monkeypatch
     out, robot, manager, _ = run([EMPTY, frame_with_spot(0.5, 0.5), EMPTY, EMPTY],
                                  lambda f, w: pytest.fail("no closer look with zoom off"), asker=asker)
     assert out["found"] and calls == [(1080, 1920)] * 4 and len(manager.moves) == 5
+
+
+def test_a_head_that_starts_late_is_waited_for_and_its_real_angle_is_used():
+    """The founder's first recorded try: the first view was taken about 18 degrees short of where it was sent."""
+    class LateRobot(Robot):
+        def __init__(self, frames):
+            super().__init__(frames)
+            self.asked = 0
+
+        def get_current_head_pose(self):
+            self.asked += 1
+            m = self.now_move()
+            if not m:
+                return pose()
+            yaw, pitch = glance._rpy(m.end)[2], glance._rpy(m.end)[1]
+            if self.asked <= 3:                                     # still on its way for the first three looks
+                return pose(math.degrees(yaw) - 18, math.degrees(pitch))
+            return m.end
+
+    robot, manager, waits = LateRobot([EMPTY, EMPTY, EMPTY, EMPTY]), Manager(), []
+    robot.manager = manager
+
+    async def counting_wait(seconds):
+        waits.append(seconds)
+
+    asyncio.run(finder.find("glasses", robot, manager, asker=spot_asker, checker=lambda f, w: {"yes": False},
+                            poster=lambda *a: None, queueable=lambda m: m, sleep=counting_wait, clock=lambda: 0.0))
+    assert waits.count(finder.POLL_S) >= 2                           # it waited for the head to arrive
+
+
+def test_a_view_seen_short_of_where_it_was_sent_is_read_from_where_the_head_really_was():
+    class ShortRobot(Robot):
+        def get_current_head_pose(self):
+            m = self.now_move()
+            if not m:
+                return pose()
+            yaw, pitch = glance._rpy(m.end)[2], glance._rpy(m.end)[1]
+            return pose(math.degrees(yaw) - 10, math.degrees(pitch))  # always 10 degrees short (inside 25)
+
+    robot, manager = ShortRobot([EMPTY, EMPTY, frame_with_spot(0.5, 0.5), EMPTY]), Manager()
+    robot.manager = manager
+
+    async def no_wait(seconds):
+        return None
+
+    asyncio.run(finder.find("glasses", robot, manager, asker=spot_asker, checker=lambda f, w: {"yes": False},
+                            poster=lambda *a: None, queueable=lambda m: m, sleep=no_wait, clock=lambda: 0.0))
+    closer = manager.moves[4]
+    assert math.degrees(glance._rpy(closer.end)[2]) == pytest.approx(-18 - 10, abs=0.5)   # from the real -28, not -18
+
+
+def test_a_recorded_try_keeps_full_size_views_the_close_up_and_where_the_head_was(tmp_path):
+    import json
+
+    import cv2
+
+    frames = [frame_with_spot(0.5, 0.5)] * 4
+    out = finder.record("glasses", frames, [{"seen": False}] * 4, None, {"to_answer": 9.0}, folder=str(tmp_path),
+                        poses=[[55.0, 15.0], [18.0, 15.0], [-18.0, 15.0], [-55.0, 15.0]],
+                        close_ups=[finder.close_up(frames[0])])
+    from pathlib import Path
+    kept = Path(out)
+    assert cv2.imread(str(kept / "view-0.jpg")).shape[:2] == (1080, 1920)                   # every pixel, for re-reading
+    assert cv2.imread(str(kept / "closer-0.jpg")).shape[:2] == (540, 960)
+    assert json.loads((kept / "try.json").read_text())["poses_deg"][0] == [55.0, 15.0]

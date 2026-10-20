@@ -31,11 +31,15 @@ class Media:
 
 
 class Robot:
+    """The head is where its last queued move ends: a robot that arrives (finder.arrive waits for it)."""
+
     def __init__(self):
         self.media = Media()
+        self.manager = None
 
     def get_current_head_pose(self):
-        return pose()
+        moves = self.manager.moves if self.manager else []   # the move for the picture about to be taken
+        return moves[min(self.media.taken, len(moves) - 1)].end if moves else pose()
 
     def get_current_joint_positions(self):
         return [0.0] * 7, [-0.17, 0.17]
@@ -51,6 +55,7 @@ class Manager:
 
 def run_find(asker, poster=lambda views, seen, chosen: None):
     robot, manager = Robot(), Manager()
+    robot.manager = manager
 
     async def no_wait(seconds):
         return None

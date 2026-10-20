@@ -61,6 +61,8 @@ CLOSER_HOLD_S = 1.2                        # looking closer: the turn, then stil
 CLOSE_UP = 0.5                             # the close-up: the middle half of the frame across and down
 MAX_CLOSER = 2                             # sightings looked at closer before saying it couldn't be seen
 SAME_PLACE_DEG = 6.0                       # sightings this close together are one thing
+ARRIVED_DEG = 2.5                          # the head is where it was sent when within this of it
+WAIT_ARRIVE_S, POLL_S = 1.5, 0.1           # how long to wait for a head that started its move late
 TIMEOUT_S = 40
 VIEW_WIDTH, VIEW_QUALITY = 480, 70         # the TV's strip: small enough for four in memory, clear at a glance
 ASK = ("You are the eyes of a home companion robot helping someone find their {what}. Look at this picture. "
@@ -213,6 +215,30 @@ def read_view(frame: Any, what: str, asker: Callable) -> Dict[str, Any]:
             "where": top["where"] if top else "", "sightings": sightings}
 
 
+def head_angles(robot: Any) -> Optional[tuple]:
+    """Where the head is now: (yaw, pitch) in radians, or None if the robot can't say."""
+    from andy_companion.body import glance
+
+    try:
+        _, p, y = glance._rpy(robot.get_current_head_pose())
+        return float(y), float(p)
+    except Exception:
+        return None
+
+
+async def arrive(robot: Any, yaw: float, pitch: float, sleep: Callable) -> Optional[tuple]:
+    """Wait (up to WAIT_ARRIVE_S) until the head is where it was sent, then return where it is. A move can start late
+    (the head finishing what it was doing), and a picture taken on the way reads the room from the wrong angle:
+    the founder's first recorded try, 2026-10-20, took its first view about 18 degrees short."""
+    now = head_angles(robot)
+    for _ in range(int(WAIT_ARRIVE_S / POLL_S)):
+        if now is None or (abs(math.degrees(now[0] - yaw)) <= ARRIVED_DEG and abs(math.degrees(now[1] - pitch)) <= ARRIVED_DEG):
+            break
+        await sleep(POLL_S)
+        now = head_angles(robot)
+    return now
+
+
 def target_pitch(sweep_pitch: float, y: float, fy: float = FX, cy: float = CY) -> float:
     """The head's pitch (positive is down) toward something at `y` (0 top .. 1 bottom) in a frame at `sweep_pitch`;
     kept within 35 degrees, inside the head's limits."""
@@ -231,8 +257,11 @@ def best(results: List[Dict[str, Any]]) -> Optional[int]:
 
 
 def record(what: str, frames: List[Any], results: List[Dict[str, Any]], chosen: Optional[int],
-           seconds: Dict[str, float], folder: Optional[str] = None) -> Optional[str]:
-    """Keep one try for scoring, only when ANDY_FINDER_RECORD names a folder. Returns the try's folder."""
+           seconds: Dict[str, Any], folder: Optional[str] = None, poses: Optional[List[Any]] = None,
+           close_ups: Optional[List[Any]] = None) -> Optional[str]:
+    """Keep one try for scoring, only when ANDY_FINDER_RECORD names a folder: the views and close-ups at full size
+    (re-reading them zoomed in needs every pixel), where the head really was for each, and what was said. Returns
+    the try's folder."""
     import time
     from pathlib import Path
 
@@ -247,9 +276,13 @@ def record(what: str, frames: List[Any], results: List[Dict[str, Any]], chosen: 
         os.chmod(out, 0o700)
         for i, f in enumerate(frames):
             if f is not None:
-                (out / f"view-{i}.jpg").write_bytes(vision.jpeg(f))
+                (out / f"view-{i}.jpg").write_bytes(vision.jpeg(f, f.shape[1], TILE_QUALITY))
+        for i, f in enumerate(close_ups or []):
+            if f is not None:
+                (out / f"closer-{i}.jpg").write_bytes(vision.jpeg(f, f.shape[1], TILE_QUALITY))
         (out / "try.json").write_text(json.dumps({"what": what, "sweep_deg": list(SWEEP_DEG), "results": results,
-                                                  "chosen": chosen, "seconds": seconds}, indent=1))
+                                                  "chosen": chosen, "seconds": seconds, "poses_deg": poses or []},
+                                                 indent=1))
         return str(out)
     except Exception as e:   # recording is a help for measuring, never a reason to fail the person
         logger.info("finder: could not record the try (%s)", type(e).__name__)
@@ -322,10 +355,15 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
     # reading is done about when the sweep is (2026-10-20: reading after the sweep made a search about 14 s).
     frames: List[Any] = []
     reading: List[Any] = []
+    poses: List[tuple] = []          # where the head really was for each view (yaw, pitch, radians)
     elapsed = 0.0
-    for step in looks:
+    for deg, step in zip(SWEEP_DEG, looks, strict=True):
         when = start + elapsed + step.turn_s + SETTLE_S
         await sleep(max(0.0, when - clock()))
+        sent = (math.radians(deg), pitch)
+        there = await arrive(robot, *sent, sleep)
+        # The head's own angles, when it says them and they are near where it was sent; otherwise where it was sent.
+        poses.append(there if there and abs(math.degrees(there[0] - sent[0])) < 25 else sent)
         try:
             frame = robot.media.get_frame()
             frames.append(None if frame is None else frame.copy())
@@ -348,7 +386,7 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
     places: List[Dict[str, Any]] = []
     for i, r in enumerate(results):
         for sgt in r.get("sightings") or ([r] if r.get("seen") else []):
-            yaw, tilt = target_yaw(math.radians(SWEEP_DEG[i]), sgt["x"]), target_pitch(pitch, sgt.get("y", 0.5))
+            yaw, tilt = target_yaw(poses[i][0], sgt["x"]), target_pitch(poses[i][1], sgt.get("y", 0.5))
             same = next((pl for pl in places if abs(math.degrees(pl["yaw"] - yaw)) < SAME_PLACE_DEG
                          and abs(math.degrees(pl["pitch"] - tilt)) < SAME_PLACE_DEG), None)
             if same:
@@ -364,6 +402,7 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
     chosen: Optional[Dict[str, Any]] = None
     closer: List[Dict[str, Any]] = []
     close_picture: Any = None
+    close_ups: List[Any] = []
     if places and not zoom():                       # one shrunk frame per view, as before: the first sighting
         chosen = dict(places[0])
     for place in places[:MAX_CLOSER] if zoom() else []:
@@ -373,12 +412,16 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
         looking_at.set("room", step.duration + 0.5)
         began = clock()
         await sleep(max(0.0, began + step.turn_s + SETTLE_S - clock()))
+        there = await arrive(robot, place["yaw"], place["pitch"], sleep)
         try:
             frame = robot.media.get_frame()
         except Exception:
             frame = None
         if frame is None:
             continue
+        if there and abs(math.degrees(there[0] - place["yaw"])) < 25:   # the head's own angles, for the last turn
+            place = dict(place, yaw=there[0], pitch=there[1])
+        close_ups.append(close_up(frame.copy()))
         try:
             checked = await asyncio.to_thread(checker, frame.copy(), what)
         except FinderError as e:
@@ -410,7 +453,8 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
 
     seconds = {"to_answer": round(looked_s, 2)}
     if chosen is None:
-        await asyncio.to_thread(record, what, frames, results, None, {**seconds, "closer": closer})
+        await asyncio.to_thread(record, what, frames, results, None, {**seconds, "closer": closer}, None,
+                                [[round(math.degrees(a), 1) for a in ps] for ps in poses], close_ups)
         await asyncio.to_thread(show_views)
         board.show("looked", f"I couldn't see your {what}", [])
         if places:
@@ -426,7 +470,8 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
                                                POINT_HOLD_S)))
     looking_at.set("pointing", POINT_HOLD_S + 1.0)
     await asyncio.to_thread(record, what, frames, results, i,
-                            {**seconds, "to_point": round(clock() - start, 2), "closer": closer})
+                            {**seconds, "to_point": round(clock() - start, 2), "closer": closer}, None,
+                            [[round(math.degrees(a), 1) for a in ps] for ps in poses], close_ups)
     await asyncio.to_thread(show_views)
     where = chosen["where"]
     board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
