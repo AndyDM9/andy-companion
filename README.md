@@ -288,8 +288,10 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 
 - **No study with older adults yet.** Andy is built on published research and measured with our own tests;
   a pilot with an ethics review comes next.
-- **The finder isn't measured at home yet.** Tries can be recorded and scored (`evals/finder_eval.py`); the
-  scorecard will be in `evals/results/` when it exists. It finds things, not people. In simulation it is measured
+- **The finder has no rate at home yet.** In a dozen tries during development (2026-10-19 and 20, the code
+  changing between them) it found the glasses on a table and on the floor; on a dark chair it said several times
+  that it couldn't see them, rather than guessing. Tries can be recorded and scored (`evals/finder_eval.py`). It
+  finds things, not people. In simulation it is measured
   (decision 0013), but rendered pictures are cleaner than a room. From where Andy sits it can't look further than
   60 degrees to either side without turning its body, so a chair beside it can be out of reach.
 - **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the

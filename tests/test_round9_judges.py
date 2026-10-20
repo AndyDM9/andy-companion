@@ -64,3 +64,14 @@ def test_the_simulation_s_camera_and_scoring_are_right():
             {"present": False, "pointed": False, "found": False, "error_deg": None, "seconds": 3.0}]
     s = fs.summary(rows)
     assert (s["pointed"], s["present"], s["false_finds"], s["absent"]) == (1, 1, 0, 1)
+
+
+def test_the_doctor_says_finder_tries_are_kept_before_filming(monkeypatch):
+    spec = importlib.util.spec_from_file_location("doctor_for_tests", ROOT / "scripts" / "doctor.py")
+    doctor = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(doctor)
+    monkeypatch.delenv("ANDY_FINDER_RECORD", raising=False)
+    assert doctor.finder_recording({}) == ""
+    assert doctor.finder_recording({"ANDY_FINDER_RECORD": " /home/x/andy-finder-tries "}) == "/home/x/andy-finder-tries"
+    monkeypatch.setenv("ANDY_FINDER_RECORD", "/elsewhere")
+    assert doctor.finder_recording({}) == "/elsewhere"

@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Changed (packaging, after the freeze on new features)
+
+- **The video plan** (`docs/video.md`) brought up to the zoomed search and round 8: the turn to a voice and the wave
+  back inside shot 3's long take, the keys at the end of shot 4 if the glasses are quick, three seconds of the
+  simulation's film in shot 7 with a narration cut to about 50 words, where to hide the glasses (within the head's
+  reach, not on the dark chair), the eyes needing nothing started, and three new social clips.
+- **The doctor stops "Ready to film" while finder tries are kept** (`scripts/doctor.py --live`, "Finder tries not
+  kept"): the recorded tries would keep the room and everyone filmed.
+- **The Devpost text and the README's limits:** the finder's dozen tries at home said plainly (found on a table and
+  the floor, not confirmed on a dark chair), the round 8 moments waiting on the live test, the search as tiles and a
+  closer look, MuJoCo in "Built with". A scan for the words we never use found none.
+
 ### Added (round 9: judging without a robot)
 
 Judges may judge on the text, images and video alone, and won't have a Reachy Mini:

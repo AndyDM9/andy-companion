@@ -2,7 +2,7 @@
 
 Fill in the final name and links before submitting. Every sentence must be true and checkable in the
 repository; numbers are from the run named beside them. Sections follow Devpost's project template.
-Last revised 2026-10-20 (rounds 4 and 5, from Devpost's judging session and the gap research); re-read against [rules-compliance.md](rules-compliance.md) before submitting.
+Last revised 2026-10-20 (rounds 4 to 9: Devpost's judging session, the gap research, zooming in, the Physical AI moments and judging without a robot); re-read against [rules-compliance.md](rules-compliance.md) before submitting.
 
 ## Tagline (under 200 characters)
 
@@ -49,7 +49,8 @@ Andy telling you who looked; and English and Spanish.
   email; Andy hears about the phone call and reads the letter in your hand, and its spoken suite tests that
   it recognises the trick when you just mention it.
 - **A language model that moves a robot's body to find things,** with nothing trained: Nemotron 3.5 Super
-  VL reads four views as structured output, and Andy turns its head to the one it chose.
+  VL reads four views, each as six zoomed tiles, as structured output; Andy turns its head to the best sighting,
+  asks a strict yes-or-no question about a close-up, and points only on a yes.
 - **A scam check measured five ways, with its uncertainty:** on 120 messages read aloud, three runs as
   Nebius Serverless Jobs, Tavily's consumer-protection warnings matched by Nemotron 3 Ultra caught 58 of
   60 scams (95% interval 89–99%) and flagged none of 60 ordinary messages (0–6%). Word rules alone caught
@@ -212,9 +213,12 @@ About building it:
 ## What doesn't work yet
 
 - No study with older adults yet; a pilot with an ethics review comes next.
-- The finder isn't measured at home yet (the tries are recorded and scored by `evals/finder_eval.py`,
-  which also reads the same tries again with each vision model). Zooming in is measured at the desk on one room
-  and one pair of glasses (0 of 9 before, 9 of 9 after): a direction, not a rate.
+- The finder has no rate at home yet. In a dozen tries during development (2026-10-19 and 20, the code changing
+  between them) it found the glasses on a table and on the floor, and on a dark chair it said several times that it
+  couldn't see them, rather than guessing. The tries are scored by `evals/finder_eval.py`. Zooming in is measured at
+  the desk on one room and one pair of glasses (0 of 9 before, 9 of 9 after): a direction, not a rate.
+- Turning to a second voice, waving back, remembered places and moves taught by hand are tested in code; on the
+  robot they wait on the founder's live test, and the TV's sound can mislead the turn to a voice.
 - The scam check missed 2 of 60 scams. It never calls a message safe. On catches, it is not measurably
   better than a strong model alone; its gain is no false alarms and a named source.
 - About one different suite case fails each run; every failure is in the scorecards.
@@ -259,7 +263,7 @@ simulation's film on its front page.]* The scorecards are in `evals/results/` (i
 
 nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs, nvidia-nemotron,
 nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety, nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini,
-hugging-face, python, opencv, tesseract, vosk, wikipedia
+mujoco, hugging-face, python, opencv, tesseract, vosk, wikipedia
 
 ## Feedback for Nebius, NVIDIA and the tools (mandatory; the ten best win a prize)
 

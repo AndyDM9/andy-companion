@@ -201,6 +201,15 @@ def live(e: dict) -> None:
           "close or pause heavy programs before filming (on 2026-10-13 a busy computer made the microphone drop audio)")
     check("Screen's place set (the glance)", settings.get().get("tv_yaw") is not None, "",
           "settings page → Where the screen is → Save and show me")
+    recording = finder_recording(e)
+    check("Finder tries not kept", not recording, f"each search's pictures go to {recording}" if recording else "",
+          "the room and anyone filmed would be kept: remove the ANDY_FINDER_RECORD line from the env file, "
+          "then systemctl --user restart andy")
+
+
+def finder_recording(e: dict) -> str:
+    """The folder finder tries are kept in, or "" (andy_companion.finder.record, PLAN B11)."""
+    return (os.environ.get("ANDY_FINDER_RECORD") or e.get("ANDY_FINDER_RECORD", "")).strip()
 
 
 if __name__ == "__main__":
