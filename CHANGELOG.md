@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Changed (round 7: the finder zooms in, then looks closer)
+
+The founder's tries at home: Andy found his glasses some times and not others. The cause: each 1080p frame was shrunk
+to 768 pixels, and the model reads a picture at the size it is sent (decision 0012; research in `docs/research.md`):
+- **Zoomed tiles:** each view is read as six overlapping tiles at full resolution, the four views' 24 at once
+  (about 1.8 s, as one view took); a sighting cut by one tile's edge takes its place from the tile that sees it whole.
+- **A closer look:** Andy turns its head straight at the best sighting, holds still, and asks a strict yes/no about a
+  close-up from the middle of the lens; a "no" moves on to the next sighting, two at most. Then it points, and the
+  TV shows the close-up. `ANDY_FINDER_ZOOM=off` keeps the old way.
+- **Measured at the desk** (`evals/zoom_check.py`): a real pair of reading glasses in a CC0 room photo, 9 frames with
+  them and 9 painted out: the old way 0 of 9, zoomed in 9 of 9 with no false sighting, the closer look 8 of 9 and
+  never a yes on the painted-out spot. `finder_eval.py compare` now reads recorded tries the same way.
+- No "enhance" filters: no evidence they help these models, and resampling hurts them.
+
 ### Changed (round 6: the screen's design pass before filming)
 
 The founder asked for the most beautiful screen we can make; seen at TV size on the demo, it was generic in two places

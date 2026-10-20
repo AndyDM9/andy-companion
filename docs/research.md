@@ -82,6 +82,41 @@ The most-liked apps react physically to something the camera notices. a judge's
 sweeps the body and settles before taking a frame. **What Andy does:** "where did I leave my glasses?"
 sweeps the room, reads four views in parallel with Nemotron Nano VL, and points with the head.
 
+## Finding small things: zoom in, then look closer (researched 2026-10-20)
+
+The founder's first tries at home: Andy found the glasses some times and not others. The cause was in our code:
+each 1920x1080 frame was shrunk to 768 pixels before the model saw it, so a pair of glasses across a room (about 50
+to 80 pixels at 1080p, from the camera's calibration, `reachy_mini/media/camera_constants.py`) became 20 to 30.
+Nemotron 3.5 Super VL reads an image as 16-pixel patches at the size it is sent, without tiles of its own
+([model card and processor config](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16), read
+2026-10-20), so what we threw away was gone.
+
+What the research says works, and what Andy does (decision 0012):
+- **Slice the picture and read the slices** (SAHI, [arXiv 2202.06934](https://arxiv.org/abs/2202.06934): +5 to +7 AP
+  for small objects with no retraining). Andy reads each view as six overlapping tiles at full size, all at once.
+- **Find, then crop and check** (Zoom-Refine, [arXiv 2506.01663](https://arxiv.org/html/2506.01663v1); V*,
+  [arXiv 2312.14135](https://arxiv.org/html/2312.14135v2); ZoomEye, [arXiv 2411.16044](https://arxiv.org/html/2411.16044)):
+  gains of several points to tens of points on high-resolution benchmarks. Andy's version is physical: it turns its
+  head straight at the best sighting, lets the picture settle, and checks a close-up from the middle of the lens,
+  the peripheral-then-foveal search of robot vision ("Curious George", Meger et al., Robotics and Autonomous Systems
+  2008, [abstract](https://users.isy.liu.se/cvl/perfo/abstracts/meger08.html)).
+- **No confidence numbers:** a vision model's own confidence is poorly calibrated
+  ([arXiv 2405.02917](https://arxiv.org/html/2405.02917v1)); a second look at a closer picture is the check.
+- **No "enhance":** we found no evidence that sharpening, contrast stretching or super-resolution helps these
+  models, and resampling is among the corruptions that hurt them most (VLM-RobustBench,
+  [arXiv 2603.06148](https://arxiv.org/html/2603.06148)). More real pixels beat filters.
+- **Not now:** a local open-vocabulary detector (OWLv2, Grounding DINO; NVIDIA's NanoOWL for a Jetson) as a fast
+  first pass; the camera's 4K mode (the daemon sets the resolution once at start); a second row of views lower down.
+
+Measured at the desk (`evals/zoom_check.py`, [scorecard](../evals/results/zoom-check-2026-10-20-1711.json)): a CC0
+photo of a living room ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Living_room_in_apartment_of_Condom%C3%ADnio_do_Edif%C3%ADcio_Zaher,_Le_Blond,_Rio_de_Janeiro,_Brazil.jpg))
+with a real pair of reading glasses on its coffee table, 9 frames with them (as taken, mirrored, cropped, darker,
+softer, noisier, and three further away) and the same 9 with them painted out. The old way found them in 0 of 9; the
+tiles in 9 of 9 (95% interval 70 to 100%), with no sighting in the 9 without; the closer look confirmed 8 of 9 and
+said yes to none of the 9 painted-out spots. Reading the four views' 24 tiles at once takes about 1.8 s, as one view
+did before. One room and one pair of glasses: a direction, not a rate. The rate comes from the robot's own recorded
+tries at home.
+
 ## NVIDIA options considered (researched 2026-10-13)
 
 | Option | What it would add | Status |

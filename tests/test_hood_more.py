@@ -70,7 +70,7 @@ def test_every_tool_says_where_it_runs_in_both_languages():
 def test_the_flagship_tools_name_their_services(monkeypatch):
     monkeypatch.delenv("ANDY_VISION", raising=False)
     w = turns.where("en")
-    assert w["find_object"] == "Nemotron 3.5 Super VL, Token Factory, four views at once"
+    assert w["find_object"] == "Nemotron 3.5 Super VL, Token Factory, four views at once, zoomed in, then a closer look"
     assert "Tavily (advanced)" in w["check_message"] and "Ultra" in w["check_message"]
     assert w["read_letter"] == "read on this computer + Nemotron Lightning card"
     assert w["on_this_day"].startswith("Wikipedia + Nemotron")
@@ -137,7 +137,7 @@ def test_the_hood_is_in_spanish_when_the_household_is(server):
         page = r.read().decode()
     assert '<html lang="es">' in page and "Por dentro" in page
     s = hood(server)
-    assert s["language"] == "es" and s["where"]["find_object"].endswith("cuatro vistas a la vez")
+    assert s["language"] == "es" and "cuatro vistas a la vez" in s["where"]["find_object"]
 
 
 @pytest.mark.parametrize("path,key,words", [

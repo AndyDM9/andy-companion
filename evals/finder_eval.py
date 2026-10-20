@@ -124,7 +124,8 @@ def reread(t: dict, eyes: str, asker=None) -> dict:
     nothing = {"seen": False, "x": 0.5, "where": ""}
     start = time.monotonic()
     with ThreadPoolExecutor(4) as pool:
-        said = list(pool.map(lambda f: dict(nothing) if f is None else asker(f, t.get("what", "things")), frames))
+        # Each view as the finder reads it now: zoomed tiles unless ANDY_FINDER_ZOOM=off (finder.read_view).
+        said = list(pool.map(lambda f: dict(nothing) if f is None else finder.read_view(f, t.get("what", "things"), asker), frames))
     return {"results": said, "chosen": finder.best(said), "seconds": round(time.monotonic() - start, 2)}
 
 

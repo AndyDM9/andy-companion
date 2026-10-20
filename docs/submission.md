@@ -27,8 +27,9 @@ a robot can do that a phone can't:
   TV shows it in large print. If the page asks for gift cards or rushes you, code (not the model) puts
   **Be careful** first: "Don't call or pay yet. Check with family first."
 - **"Where did I leave my glasses?"** Andy sweeps the room, NVIDIA Nemotron 3.5 Super VL on Nebius Token
-  Factory reads four views at once, and Andy turns its head to point at them. The TV shows the four views
-  in the order it turned, the chosen one marked.
+  Factory reads the four views zoomed in (six tiles each at full resolution, all at once), then Andy turns its head
+  straight at what it saw, checks a close-up, and points. The TV shows the four views in the order it turned, the
+  close-up in place of the one it chose. Zooming in took our desk test from 0 of 9 to 9 of 9.
 - **"A man called saying my grandson is in jail and needs gift cards."** You don't paste anything: you say
   it. Andy checks it against consumer-protection warnings found with Tavily, and the TV says what to do
   first ("Don't reply, pay or give any details. Check with family first."), then why: the sign in the
@@ -207,7 +208,8 @@ About building it:
 
 - No study with older adults yet; a pilot with an ethics review comes next.
 - The finder isn't measured at home yet (the tries are recorded and scored by `evals/finder_eval.py`,
-  which also reads the same tries again with each vision model).
+  which also reads the same tries again with each vision model). Zooming in is measured at the desk on one room
+  and one pair of glasses (0 of 9 before, 9 of 9 after): a direction, not a rate.
 - The scam check missed 2 of 60 scams. It never calls a message safe. On catches, it is not measurably
   better than a strong model alone; its gain is no false alarms and a named source.
 - About one different suite case fails each run; every failure is in the scorecards.

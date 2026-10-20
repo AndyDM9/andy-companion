@@ -47,7 +47,7 @@ def test_token_factory_is_the_default_with_super_vl_and_no_reasoning(token_facto
 def test_the_finder_asks_token_factory_for_structured_output(token_factory):
     op = Opener('{"seen": true, "x": 0.2, "where": "on the table by the lamp"}')
     out = finder.ask(FRAME, "glasses", opener=op)
-    assert out == {"seen": True, "x": 0.2, "where": "on the table by the lamp"}
+    assert out == {"seen": True, "x": 0.2, "y": 0.5, "where": "on the table by the lamp"}
     body = op.requests[0][1]
     assert body["response_format"]["json_schema"]["schema"] == finder.SCHEMA
     assert body["chat_template_kwargs"] == {"enable_thinking": False} and body["temperature"] == 0

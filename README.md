@@ -42,8 +42,11 @@ puts **Be careful** first, and Andy never reads out the page's numbers.
 ![A letter on Andy's screen, with a warning (sample data)](docs/images/tv-letter.png)
 
 **"Where did I leave my glasses?"** Andy looks around the room. NVIDIA Nemotron 3.5 Super VL on Token Factory
-reads four views at once (about 2.1 s at the desk), then Andy turns its head to point at them and says "I
-think I see your glasses, on the table…". The TV shows the picture it saw them in, held in memory for two
+reads the four views zoomed in, each as six tiles at the camera's full resolution (24 at once, about 1.8 s). Then
+Andy looks closer: it turns its head straight at what it saw, takes a close-up and checks it, and only then points
+at them and says "I think I see your glasses, on the table…". At the desk, the old way (one shrunk picture per view)
+found a real pair of reading glasses in 0 of 9 frames, zoomed in 9 of 9, with no false sighting
+([how we measured](docs/research.md#finding-small-things-zoom-in-then-look-closer-researched-2026-10-20)). The TV shows the picture it saw them in, held in memory for two
 minutes and never saved.
 
 **"Could you look into whether the farmers market is on this Saturday?"** Andy starts Tavily's research

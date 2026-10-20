@@ -154,6 +154,15 @@ itself to Tavily, Pollen's app 1.1.0 (a transcript RPC; no upgrade before filmin
 | B42 | **The card is the thing to read:** a narrow day column, two-line captions beside a card, a bigger chosen view, the receipt never cut off or short of a step; the quiet screen centred | Step 3 (Nemotron Ultra) could drop and the evidence ended in "…" | ✅ 2026-10-20 (checked in a browser on the demo, day and evening) |
 | B43 | **The demo for filming and screenshots:** `ANDY_DEMO_SCENE` holds one scene; the real coming Saturdays; new screenshots in the README, the app page and the gallery list | The gallery and README showed the old design; the demo's date was wrong | ✅ 2026-10-20 |
 
+### Round 7 (Claude), finding small things (2026-10-20, from the founder's tries at home)
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B44 | **Zoom in, then look closer:** six full-size tiles per view, read at once; the head turned at the best sighting for a close-up and a strict yes/no; the close-up on the TV (decision 0012) | The 768-pixel copy lost the glasses; the founder: "he can not find them from first try" | ✅ 2026-10-20 (desk: 0 of 9 before, 9 of 9 after; the robot's rate comes from the founder's recorded tries, 3t2) |
+
+Not taken yet (decision 0012, revisit with the recorded tries): a second, lower row of views; the camera's 4K mode
+(the daemon sets it once at start); a local detector first (OWLv2, or NanoOWL as the Jetson path); any "enhance" filter.
+
 ### Cleanup (Claude)
 
 | # | Item | Status |

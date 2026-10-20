@@ -1,0 +1,402 @@
+{
+ "ran": "2026-10-20T17:11:43-04:00",
+ "eyes": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory",
+ "frames": 18,
+ "summary": {
+  "off": {
+   "found": 0,
+   "of": 9,
+   "found_95": [
+    0.0,
+    29.9
+   ],
+   "false_sightings": 0,
+   "of_without": 9,
+   "median_s": 1.41
+  },
+  "on": {
+   "found": 9,
+   "of": 9,
+   "found_95": [
+    70.1,
+    100.0
+   ],
+   "false_sightings": 0,
+   "of_without": 9,
+   "median_s": 1.68
+  },
+  "closer": {
+   "confirmed": 8,
+   "of": 9,
+   "wrongly_confirmed": 0,
+   "of_checked_without": 9
+  },
+  "end_to_end": {
+   "found_and_confirmed": 8,
+   "of": 9,
+   "false_finds": 0
+  }
+ },
+ "rows": [
+  {
+   "file": "pos-plain.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.3
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.54,
+    "s": 1.71
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.71
+   }
+  },
+  {
+   "file": "pos-mirror.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.26
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.463,
+    "s": 1.75
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.48
+   }
+  },
+  {
+   "file": "pos-crop.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.46
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.529,
+    "s": 1.68
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.67
+   }
+  },
+  {
+   "file": "pos-dark.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.43
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.54,
+    "s": 1.56
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.44
+   }
+  },
+  {
+   "file": "pos-soft.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.47
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.54,
+    "s": 1.59
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.58
+   }
+  },
+  {
+   "file": "pos-noisy.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.25
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.54,
+    "s": 1.84
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.64
+   }
+  },
+  {
+   "file": "pos-far.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.42
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.526,
+    "s": 1.67
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.47
+   }
+  },
+  {
+   "file": "pos-far-mirror.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.45
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.47,
+    "s": 1.61
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.66
+   }
+  },
+  {
+   "file": "pos-far-dark.png",
+   "glasses": true,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.18
+   },
+   "on": {
+    "seen": true,
+    "right_place": true,
+    "x": 0.526,
+    "s": 1.72
+   },
+   "closer": {
+    "yes": true,
+    "s": 1.67
+   }
+  },
+  {
+   "file": "neg-plain.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.26
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.72
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.8
+   }
+  },
+  {
+   "file": "neg-mirror.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.49
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.7
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.57
+   }
+  },
+  {
+   "file": "neg-crop.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.41
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.64
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.64
+   }
+  },
+  {
+   "file": "neg-dark.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.39
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.58
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.69
+   }
+  },
+  {
+   "file": "neg-soft.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.39
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.58
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.67
+   }
+  },
+  {
+   "file": "neg-noisy.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.46
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.82
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.91
+   }
+  },
+  {
+   "file": "neg-far.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.39
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.8
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.66
+   }
+  },
+  {
+   "file": "neg-far-mirror.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.41
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.68
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.49
+   }
+  },
+  {
+   "file": "neg-far-dark.png",
+   "glasses": false,
+   "off": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.41
+   },
+   "on": {
+    "seen": false,
+    "right_place": false,
+    "x": 0.5,
+    "s": 1.61
+   },
+   "closer": {
+    "yes": false,
+    "s": 1.74
+   }
+  }
+ ]
+}

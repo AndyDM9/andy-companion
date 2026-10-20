@@ -124,6 +124,8 @@ class Robot:
 def test_the_finder_posts_all_four_small_views_to_the_screen(monkeypatch):
     import cv2
 
+    monkeypatch.setenv("ANDY_FINDER_ZOOM", "off")   # the views as posted; zooming in and its closer look: test_round7_zoom
+
     sent = []
 
     def opener(req, timeout=None):

@@ -61,9 +61,10 @@ def run_find(asker, poster=lambda views, seen, chosen: None):
 
 
 def test_the_model_s_answer_is_made_safe():
-    assert finder.parse('{"seen": true, "x": 1.7, "where": "on the table"}') == {"seen": True, "x": 1.0, "where": "on the table"}
+    assert finder.parse('{"seen": true, "x": 1.7, "where": "on the table"}') == {"seen": True, "x": 1.0, "y": 0.5,
+                                                                                 "where": "on the table"}
     assert finder.parse('Sure! {"seen": "yes", "x": 0.2, "where": "shelf"}')["seen"] is False   # only a plain true
-    assert finder.parse("I can't tell") == {"seen": False, "x": 0.5, "where": ""}
+    assert finder.parse("I can't tell") == {"seen": False, "x": 0.5, "y": 0.5, "where": ""}
     assert finder.tidy_what("  My reading glasses? ") == "reading glasses"
 
 
@@ -75,7 +76,8 @@ def test_a_place_in_the_frame_becomes_a_head_angle():
     assert finder.best([{"seen": False, "x": 0.5}]) is None
 
 
-def test_andy_sweeps_finds_points_and_shows_what_it_saw():
+def test_andy_sweeps_finds_points_and_shows_what_it_saw(monkeypatch):
+    monkeypatch.setenv("ANDY_FINDER_ZOOM", "off")            # one frame per view, as before zooming in (round 7)
     seen_frames, posted = [], []
 
     def asker(frame, what):
@@ -101,7 +103,8 @@ def test_andy_sweeps_finds_points_and_shows_what_it_saw():
     assert shown["kind"] == "seen" and shown["title"] == "Your reading glasses"
 
 
-def test_not_found_says_so_kindly_and_points_nowhere():
+def test_not_found_says_so_kindly_and_points_nowhere(monkeypatch):
+    monkeypatch.setenv("ANDY_FINDER_ZOOM", "off")
     posted = []
     out, robot, manager = run_find(lambda f, w: {"seen": False, "x": 0.5, "where": ""},
                                    poster=lambda views, seen, chosen: posted.append((views, seen, chosen)))
