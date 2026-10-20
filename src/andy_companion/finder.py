@@ -26,7 +26,7 @@ sees where Andy looked.
 Privacy: the frames go only to Nebius, which keeps nothing (zero data retention), and are not kept there. The views shown on the
 TV are small (VIEW_WIDTH, VIEW_QUALITY), live in the screen server's memory for two minutes
 (screen_server.FRAME_FOR_S) and are never written to disk. The model is told never to describe people.
-Nothing is logged but whether it was found.
+Nothing is logged but whether it was found, how many places and closer looks, and the time.
 
 Measuring it (PLAN B11): only when ANDY_FINDER_RECORD names a folder, each try is kept there for scoring by
 evals/finder_eval.py: the four views, what the model said of each, the view Andy chose and the times. It is
@@ -313,7 +313,15 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
         manager.queue_move(queueable(step))
     from andy_companion.body import looking_at
     looking_at.set("room", sum(step.duration for step in looks))
+    nothing = {"seen": False, "x": 0.5, "y": 0.5, "where": "", "sightings": []}
+
+    async def none() -> Dict[str, Any]:
+        return dict(nothing)
+
+    # Each view is read (its six tiles at once) as soon as it is taken, while the head turns to the next, so the
+    # reading is done about when the sweep is (2026-10-20: reading after the sweep made a search about 14 s).
     frames: List[Any] = []
+    reading: List[Any] = []
     elapsed = 0.0
     for step in looks:
         when = start + elapsed + step.turn_s + SETTLE_S
@@ -323,17 +331,14 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
             frames.append(None if frame is None else frame.copy())
         except Exception:
             frames.append(None)
+        f = frames[-1]
+        reading.append(asyncio.ensure_future(asyncio.to_thread(read_view, f, what, asker) if f is not None else none()))
         elapsed += step.duration
     if not any(f is not None for f in frames):
+        for task in reading:
+            task.cancel()
         return {"error": "My camera did not give a picture just now."}
-    # All views (and all their tiles) are read at once: about one model call's time, not four or twenty-four.
-    nothing = {"seen": False, "x": 0.5, "y": 0.5, "where": "", "sightings": []}
-
-    async def none() -> Dict[str, Any]:
-        return dict(nothing)
-
-    answers = await asyncio.gather(*[asyncio.to_thread(read_view, f, what, asker) if f is not None else none()
-                                     for f in frames], return_exceptions=True)
+    answers = await asyncio.gather(*reading, return_exceptions=True)
     for a in answers:
         if isinstance(a, FinderError):
             return {"error": str(a)}
@@ -388,7 +393,11 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
             close_picture = close_up(frame.copy())
             break
     i = chosen["view"] if chosen else None
-    logger.info("finder: %s", "found" if chosen else ("not confirmed up close" if places else "not found"))
+    # Numbers only, never pictures or words: how many places were seen, how many closer looks, how long.
+    logger.info("finder: %s (%d place%s seen, %d closer look%s, %.1f s)",
+                "found" if chosen else ("not confirmed up close" if places else "not found"),
+                len(places), "" if len(places) == 1 else "s", len(closer), "" if len(closer) == 1 else "s",
+                clock() - start)
 
     def show_views() -> None:     # first the views, then the card: the screen pairs a card with views just before it
         try:

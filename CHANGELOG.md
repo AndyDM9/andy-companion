@@ -18,6 +18,8 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
   them and 9 painted out: the old way 0 of 9, zoomed in 9 of 9 with no false sighting, the closer look 8 of 9 and
   never a yes on the painted-out spot. `finder_eval.py compare` now reads recorded tries the same way.
 - No "enhance" filters: no evidence they help these models, and resampling hurts them.
+- After the founder's first try at home (found, 14 s): each view is now read while the head turns to the next, instead of
+  after the sweep, and the log says how many places were seen, how many closer looks and the time (numbers only).
 
 ### Changed (round 6: the screen's design pass before filming)
 
