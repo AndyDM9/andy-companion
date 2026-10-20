@@ -35,6 +35,12 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
   pointed at the founder's face) and both close-ups looked at the wrong places, so the check rightly said no. Cause:
   as Andy finishes "let me have a look around", mid-sweep, Pollen hands the head back to face tracking. Face following
   is now off for the whole search and comes back (only if it was on) after Andy has pointed.
+- The next tries' recordings: the chair sat about 74 degrees to Andy's left, past the head's 65, so the closer look
+  aimed where the head can't go; the close-ups were blurred (taken while turning: the sweep was queued all at once and
+  timed by the clock); and the "desk near the keyboard" sighting was a real second pair of glasses. Now the sweep sends
+  one move at a time and takes each picture after the head says it has arrived and has settled; the closer look turns
+  as far as the head reaches (60 degrees, 35 down) and cuts the close-up around where the thing should show from there,
+  not always the middle.
 
 ### Changed (round 6: the screen's design pass before filming)
 

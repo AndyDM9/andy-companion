@@ -57,7 +57,7 @@ def one(path: Path, t: dict) -> dict:
         at = (row["on"]["x"], 0.5) if row["on"]["seen"] else None
     if at:
         start = time.monotonic()
-        checked = finder.look_closer(centred(frame, *at), "glasses")
+        checked = finder.look_closer(finder.close_up(centred(frame, *at)), "glasses")
         row["closer"] = {"yes": checked["yes"], "s": round(time.monotonic() - start, 2)}
     return row
 

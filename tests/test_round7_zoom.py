@@ -154,7 +154,7 @@ def test_andy_looks_closer_then_points_and_the_tv_shows_the_close_up():
 
     out, robot, manager, posted = run(sweep + [close], checker)
     assert out["found"] and out["looked_closer"] and out["where"] == "on the coffee table, by the remote"
-    assert robot.media.taken == 5 and checks == [(1080, 1920)]            # four views, then one closer look
+    assert robot.media.taken == 5 and checks == [(540, 960)]              # four views, then one close-up
     sweep_moves, closer, point = manager.moves[:4], manager.moves[4], manager.moves[5]
     assert len(manager.moves) == 6 and closer.hold_s == finder.CLOSER_HOLD_S and point.hold_s == finder.POINT_HOLD_S
     assert [round(math.degrees(glance._rpy(m.end)[2])) for m in sweep_moves] == [55, 18, -18, -55]
@@ -316,3 +316,54 @@ def test_face_following_that_was_off_stays_off():
 
     asyncio.run(finder.find("glasses", robot, manager, asker=spot_asker, checker=lambda f, w: {"yes": False},
                             poster=lambda *a: None, queueable=lambda m: m, sleep=no_wait, clock=lambda: 0.0))
+
+
+def test_where_a_direction_shows_in_a_view_is_the_inverse_of_the_aim():
+    for x, y in ((0.5, 0.5), (0.2, 0.8), (0.9, 0.1)):
+        yaw = finder.target_yaw(math.radians(30), x)
+        pitch = finder.target_pitch(math.radians(15), y, reach=False)
+        bx, by = finder.where_in_view(yaw, pitch, math.radians(30), math.radians(15))
+        assert bx == pytest.approx(x, abs=1e-6) and by == pytest.approx(y, abs=1e-6)
+    f = np.zeros((1080, 1920, 3), np.uint8)
+    rows, cols = finder._close_box(f, 0.5, (0.02, 0.98))                      # kept inside the frame
+    assert (rows.start, rows.stop, cols.start, cols.stop) == (540, 1080, 0, 960)
+
+
+def test_something_past_the_heads_reach_is_looked_at_from_as_far_as_it_turns():
+    """The founder's chair: about 74 degrees to Andy's left, past the head's 65."""
+    sweep = [frame_with_spot(0.15, 0.85), EMPTY, EMPTY, EMPTY]       # far left and low in the first view (55 deg)
+    seen_at = []
+
+    def checker(picture, what):
+        seen_at.append(picture.shape[:2])
+        return {"yes": True, "x": 0.5, "y": 0.5, "where": "on the chair"}
+
+    out, robot, manager, _ = run(sweep + [EMPTY], checker)
+    closer = manager.moves[4]
+    yaw, pitch = glance._rpy(closer.end)[2], glance._rpy(closer.end)[1]
+    assert math.degrees(yaw) == pytest.approx(finder.REACH_YAW_DEG, abs=0.01)          # as far as it can
+    assert math.degrees(pitch) <= finder.REACH_PITCH_DEG + 1e-6
+    assert out["found"] and seen_at == [(540, 960)]
+    assert math.degrees(glance._rpy(manager.moves[5].end)[2]) <= finder.REACH_YAW_DEG + 1e-6   # it points within reach
+
+
+def test_the_sweep_sends_one_move_per_picture():
+    taken_with_moves = []
+
+    class Counting(Robot):
+        def get_current_head_pose(self):
+            if self.manager:
+                taken_with_moves.append((self.media.taken, len(self.manager.moves)))
+            return super().get_current_head_pose()
+
+    robot, manager = Counting([EMPTY] * 4), Manager()
+    robot.manager = manager
+
+    async def no_wait(seconds):
+        return None
+
+    asyncio.run(finder.find("glasses", robot, manager, asker=spot_asker, checker=lambda f, w: {"yes": False},
+                            poster=lambda *a: None, queueable=lambda m: m, sleep=no_wait, clock=lambda: 0.0))
+    # Whenever the head was asked where it is during the sweep, the moves sent were one more than the pictures taken.
+    during = [(t, m) for t, m in taken_with_moves if 1 <= m <= 4 and t < 4]
+    assert during and all(m == t + 1 for t, m in during)

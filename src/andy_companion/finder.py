@@ -62,6 +62,7 @@ CLOSE_UP = 0.5                             # the close-up: the middle half of th
 MAX_CLOSER = 2                             # sightings looked at closer before saying it couldn't be seen
 SAME_PLACE_DEG = 6.0                       # sightings this close together are one thing
 ARRIVED_DEG = 2.5                          # the head is where it was sent when within this of it
+REACH_YAW_DEG, REACH_PITCH_DEG = 60.0, 35.0  # where the head can turn without the body (Pollen: 65 from the body)
 WAIT_ARRIVE_S, POLL_S = 1.5, 0.1           # how long to wait for a head that started its move late
 TIMEOUT_S = 40
 VIEW_WIDTH, VIEW_QUALITY = 480, 70         # the TV's strip: small enough for four in memory, clear at a glance
@@ -127,9 +128,9 @@ def ask(frame: Any, what: str, opener: Optional[Callable] = None, check: bool = 
     return parse_check(text) if check else parse(text)
 
 
-def look_closer(frame: Any, what: str, opener: Optional[Callable] = None) -> Dict[str, Any]:
-    """The close-up check: the middle of a frame taken with the head turned straight at a sighting."""
-    return ask(close_up(frame), what, opener, check=True)
+def look_closer(picture: Any, what: str, opener: Optional[Callable] = None) -> Dict[str, Any]:
+    """The close-up check, on a close-up already cut (close_up) from a frame taken with the head turned at a sighting."""
+    return ask(picture, what, opener, check=True)
 
 
 # A sighting described as on a screen is a picture, not the thing: Andy's own TV shows the last close-up for two
@@ -188,12 +189,18 @@ def tiles(frame: Any, cols: int = TILES[0], rows: int = TILES[1], overlap: float
     return out
 
 
-def close_up(frame: Any, share: float = CLOSE_UP) -> Any:
-    """The middle of the frame (`share` of it across and down), where the lens is sharpest."""
+def close_up(frame: Any, share: float = CLOSE_UP, at: tuple = (0.5, 0.5)) -> Any:
+    """`share` of the frame across and down, centred on `at` (x, y, 0..1; the middle by default, where the lens is
+    sharpest), kept inside the frame."""
+    return frame[_close_box(frame, share, at)]
+
+
+def _close_box(frame: Any, share: float = CLOSE_UP, at: tuple = (0.5, 0.5)) -> tuple:
     h, w = frame.shape[:2]
     cw, ch = int(w * share), int(h * share)
-    x0, y0 = (w - cw) // 2, (h - ch) // 2
-    return frame[y0:y0 + ch, x0:x0 + cw]
+    x0 = int(min(max(at[0] * w - cw / 2, 0), w - cw))
+    y0 = int(min(max(at[1] * h - ch / 2, 0), h - ch))
+    return slice(y0, y0 + ch), slice(x0, x0 + cw)
 
 
 def read_view(frame: Any, what: str, asker: Callable) -> Dict[str, Any]:
@@ -252,10 +259,24 @@ async def arrive(robot: Any, yaw: float, pitch: float, sleep: Callable) -> Optio
     return now
 
 
-def target_pitch(sweep_pitch: float, y: float, fy: float = FX, cy: float = CY) -> float:
+def target_pitch(sweep_pitch: float, y: float, fy: float = FX, cy: float = CY, reach: bool = True) -> float:
     """The head's pitch (positive is down) toward something at `y` (0 top .. 1 bottom) in a frame at `sweep_pitch`;
-    kept within 35 degrees, inside the head's limits."""
-    return max(math.radians(-35), min(math.radians(35), sweep_pitch + math.atan2(y * 2 * cy - cy, fy)))
+    kept within the head's reach unless `reach` is False (the direction itself, for working out where it shows)."""
+    p = sweep_pitch + math.atan2(y * 2 * cy - cy, fy)
+    return within(p, REACH_PITCH_DEG) if reach else p
+
+
+def within(angle: float, limit_deg: float) -> float:
+    return max(-math.radians(limit_deg), min(math.radians(limit_deg), angle))
+
+
+def where_in_view(yaw: float, pitch: float, head_yaw: float, head_pitch: float,
+                  fx: float = FX, cx: float = CX, cy: float = CY) -> tuple:
+    """Where a direction (yaw, pitch) shows in a frame taken with the head at (head_yaw, head_pitch): (x, y), 0..1
+    across and down; the inverse of target_yaw and target_pitch. Used when the head could not turn all the way."""
+    x = (cx - fx * math.tan(yaw - head_yaw)) / (2 * cx)
+    y = (cy + fx * math.tan(pitch - head_pitch)) / (2 * cy)
+    return x, y
 
 
 def target_yaw(sweep_yaw: float, x: float, fx: float = FX, cx: float = CX) -> float:
@@ -386,16 +407,8 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     except Exception:
         pass
     pose = robot.get_current_head_pose()
-    looks = []
-    for deg in SWEEP_DEG:
-        step = look.HoldLook(pose, antennas, math.radians(deg), pitch, HOLD_S)
-        looks.append(step)
-        pose = step.end
     start = clock()
-    for step in looks:
-        manager.queue_move(queueable(step))
     from andy_companion.body import looking_at
-    looking_at.set("room", sum(step.duration for step in looks))
     nothing = {"seen": False, "x": 0.5, "y": 0.5, "where": "", "sightings": []}
 
     async def none() -> Dict[str, Any]:
@@ -403,15 +416,21 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
 
     # Each view is read (its six tiles at once) as soon as it is taken, while the head turns to the next, so the
     # reading is done about when the sweep is (2026-10-20: reading after the sweep made a search about 14 s).
+    # One move at a time (2026-10-20: queued all at once and timed by the clock, the pictures fell out of step with
+    # the head and came out blurred): send it, wait for the head to say it has arrived, let it settle, take the
+    # picture, then the next. Each look holds long enough for that; the next starts when it ends.
     frames: List[Any] = []
     reading: List[Any] = []
     poses: List[tuple] = []          # where the head really was for each view (yaw, pitch, radians)
-    elapsed = 0.0
-    for deg, step in zip(SWEEP_DEG, looks, strict=True):
-        when = start + elapsed + step.turn_s + SETTLE_S
-        await sleep(max(0.0, when - clock()))
+    for deg in SWEEP_DEG:
         sent = (math.radians(deg), pitch)
+        step = look.HoldLook(pose, antennas, sent[0], sent[1], HOLD_S)
+        manager.queue_move(queueable(step))
+        looking_at.set("room", step.duration + 1.0)
+        await sleep(step.turn_s)
         there = await arrive(robot, *sent, sleep)
+        await sleep(SETTLE_S)
+        pose = step.end
         # The head's own angles, when it says them and they are near where it was sent; otherwise where it was sent.
         poses.append(there if there and abs(math.degrees(there[0] - sent[0])) < 25 else sent)
         try:
@@ -421,7 +440,6 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
             frames.append(None)
         f = frames[-1]
         reading.append(asyncio.ensure_future(asyncio.to_thread(read_view, f, what, asker) if f is not None else none()))
-        elapsed += step.duration
     if not any(f is not None for f in frames):
         for task in reading:
             task.cancel()
@@ -436,7 +454,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     places: List[Dict[str, Any]] = []
     for i, r in enumerate(results):
         for sgt in r.get("sightings") or ([r] if r.get("seen") else []):
-            yaw, tilt = target_yaw(poses[i][0], sgt["x"]), target_pitch(poses[i][1], sgt.get("y", 0.5))
+            yaw, tilt = target_yaw(poses[i][0], sgt["x"]), target_pitch(poses[i][1], sgt.get("y", 0.5), reach=False)
             same = next((pl for pl in places if abs(math.degrees(pl["yaw"] - yaw)) < SAME_PLACE_DEG
                          and abs(math.degrees(pl["pitch"] - tilt)) < SAME_PLACE_DEG), None)
             if same:
@@ -456,34 +474,38 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     if places and not zoom():                       # one shrunk frame per view, as before: the first sighting
         chosen = dict(places[0])
     for place in places[:MAX_CLOSER] if zoom() else []:
-        # Look closer: the head straight at it, still, then the middle of a fresh frame, sharpest there.
-        step = look.HoldLook(robot.get_current_head_pose(), antennas, place["yaw"], place["pitch"], CLOSER_HOLD_S)
+        # Look closer: the head at it as far as it can reach (2026-10-20: a chair 74 degrees to the side, past the
+        # head's 65), still, then a close-up of a fresh frame around where it should show from there.
+        aim = (within(place["yaw"], REACH_YAW_DEG), within(place["pitch"], REACH_PITCH_DEG))
+        step = look.HoldLook(robot.get_current_head_pose(), antennas, aim[0], aim[1], CLOSER_HOLD_S)
         manager.queue_move(queueable(step))
         looking_at.set("room", step.duration + 0.5)
-        began = clock()
-        await sleep(max(0.0, began + step.turn_s + SETTLE_S - clock()))
-        there = await arrive(robot, place["yaw"], place["pitch"], sleep)
+        await sleep(step.turn_s)
+        there = await arrive(robot, *aim, sleep)
+        await sleep(SETTLE_S)
         try:
             frame = robot.media.get_frame()
         except Exception:
             frame = None
         if frame is None:
             continue
-        if there and abs(math.degrees(there[0] - place["yaw"])) < 25:   # the head's own angles, for the last turn
-            place = dict(place, yaw=there[0], pitch=there[1])
-        close_ups.append(close_up(frame.copy()))
+        head = there if there and abs(math.degrees(there[0] - aim[0])) < 25 else aim   # the head's own angles
+        at = where_in_view(place["yaw"], place["pitch"], *head)
+        box = _close_box(frame, CLOSE_UP, at)
+        close_ups.append(frame[box].copy())
         try:
-            checked = await asyncio.to_thread(checker, frame.copy(), what)
+            checked = await asyncio.to_thread(checker, frame[box].copy(), what)
         except FinderError as e:
             return {"error": str(e)}
         closer.append({"view": place["view"], "yes": bool(checked.get("yes"))})
         if checked.get("yes"):
-            # Where it sits in the close-up (the middle CLOSE_UP of the frame), as a last small turn.
-            fx = 0.5 + (checked.get("x", 0.5) - 0.5) * CLOSE_UP
-            fy = 0.5 + (checked.get("y", 0.5) - 0.5) * CLOSE_UP
-            chosen = dict(place, yaw=target_yaw(place["yaw"], fx), pitch=target_pitch(place["pitch"], fy),
+            # Where it sits in the close-up, back to the whole frame, as a last small turn (within reach).
+            h, w = frame.shape[:2]
+            fx = (box[1].start + checked.get("x", 0.5) * (box[1].stop - box[1].start)) / w
+            fy = (box[0].start + checked.get("y", 0.5) * (box[0].stop - box[0].start)) / h
+            chosen = dict(place, yaw=within(target_yaw(head[0], fx), REACH_YAW_DEG), pitch=target_pitch(head[1], fy),
                           where=checked.get("where") or place["where"])
-            close_picture = close_up(frame.copy())
+            close_picture = frame[box].copy()
             break
     i = chosen["view"] if chosen else None
     # Numbers only, never pictures or words: how many places were seen, how many closer looks, how long.
