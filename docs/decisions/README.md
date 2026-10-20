@@ -14,3 +14,4 @@ gets a dated amendment, or a new decision that replaces it.
 | [0007](0007-the-scam-check-two-narrow-questions.md) | The scam check: two narrow questions, the web's warnings matched by a strong model | 2026-10-14 |
 | [0008](0008-andy-runs-as-user-services.md) | Andy and its voice server run as user services | 2026-10-14 |
 | [0009](0009-four-private-links-each-with-its-own-token.md) | Four private links, each with its own token | 2026-10-14 |
+| [0010](0010-a-public-read-only-demo-of-the-screens.md) | A public, read-only demo of the screens, as a Hugging Face Space | 2026-10-20 |

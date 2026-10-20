@@ -2,7 +2,7 @@
 
 Fill in the final name and links before submitting. Every sentence must be true and checkable in the
 repository; numbers are from the run named beside them. Sections follow Devpost's project template.
-Last revised 2026-10-14; re-read against [rules-compliance.md](rules-compliance.md) before submitting.
+Last revised 2026-10-20 (round 4, from Devpost's judging session); re-read against [rules-compliance.md](rules-compliance.md) before submitting.
 
 ## Tagline (under 200 characters)
 
@@ -11,41 +11,39 @@ A small robot that reads the letter in your hand and finds your glasses: a compa
 ## Inspiration
 
 Three in four US adults aged 50 and over want to keep living in their own homes (AARP's Home and
-Community Preferences Survey, December 2024), and their families want to help without taking over. Voice assistants answer questions, but they don't look at you, don't read the letter in
+Community Preferences Survey, December 2024), and their families want to help without taking over. Scams
+reach them at home: adults 60 and over reported $2.4 billion lost to fraud in 2024, against about $600
+million in 2020 (FTC, *Protecting Older Consumers 2024–2025*, December 2025). Voice assistants answer questions, but they don't look at you, don't read the letter in
 your hand, and don't tell you which of your family looked at what you shared. We wanted a small robot
 that is honest about being a robot, useful every day, good company, and that keeps no recordings or
 transcripts: only what you ask it to keep.
 
 ## What it does
 
-Andy is a Reachy Mini that talks with you and keeps looking at you while it does: its head and body
-follow you, its antennas lift while you speak and lean while it thinks.
+Andy is a Reachy Mini that talks with you and keeps looking at you while it does. Three moments show what
+a robot can do that a phone can't:
 
-- **Your day, the same way every time.** The date (never guessed), reminders in your words said when
-  they're due, the morning plan, and the weather from the National Weather Service.
-- **Finds things in the room.** "Where did I leave my glasses?" Andy sweeps the room, NVIDIA Nemotron
-  Nano VL on a Nebius Serverless Endpoint reads four views at once, and Andy points with its head; the TV
-  shows the picture it saw them in.
-- **Reads the letter you hold up.** It reads it on the computer, explains it, and shows it in large
-  print on the screen. If a page asks for gift cards or rushes you, code (not the model) puts **Be
-  careful** first: "Don't call or pay yet. Check with family first."
-- **Looks things up and names the source, through Tavily.** "Look into whether the farmers market is on
-  Saturday" runs a Tavily research task while you carry on. The screen shows its planning and sources
-  live, and Andy tells you the dated answer when it's ready.
-- **Good company.** Andy follows research with older adults: short turns and open questions about your
-  life, never "Do you remember…?". It also has gentle jokes and riddles (its antennas wiggle after the
-  punchline), real public-domain stories read a part at a time with "Shall I go on?", and "On this day"
-  from Wikipedia. Hard decisions are thought through with Nemotron 3 Ultra.
-- **Shows you where to look.** A TV beside Andy shows the day, what Andy is doing and what it found,
-  with captions of its own words. When something new appears, Andy turns its head to the screen and
-  back to you.
-- **Family, on your terms.** Family see only what you ask Andy to share, and can send a message or a
-  photo. Andy tells you who looked. A helper can change settings from a phone, and Andy tells you who
-  changed what.
-- **English and Spanish**, in whichever you speak (with *usted*), and the screen switches too.
+- **"Can you read this for me?"** You hold up a letter. Andy reads it on this computer, explains it, and the
+  TV shows it in large print. If the page asks for gift cards or rushes you, code (not the model) puts
+  **Be careful** first: "Don't call or pay yet. Check with family first."
+- **"Where did I leave my glasses?"** Andy sweeps the room, NVIDIA Nemotron Nano VL on a Nebius Serverless
+  Endpoint reads four views at once, and Andy turns its head to point at them. The TV shows the four views
+  in the order it turned, the chosen one marked.
+- **"A man called saying my grandson is in jail and needs gift cards."** You don't paste anything: you say
+  it. Andy checks it against consumer-protection warnings found with Tavily, and the TV says what to do
+  first ("Don't reply, pay or give any details. Check with family first."), then why: the sign in the
+  message's own words, the warning and its site, and why Nemotron 3 Ultra judged it the same trick.
+
+Also: your day the same way every time (the date, reminders in your words, the weather); "look into it for
+me", a Tavily research task shown step by step on the TV while you carry on talking; good company (open
+questions about your life, jokes, real stories read a part at a time); family who see only what you share,
+with Andy telling you who looked; and English and Spanish.
 
 ## What's new here
 
+- **A scam check where scams reach people at home.** Phone filters and paste-in checkers see a text or an
+  email; Andy hears about the phone call and reads the letter in your hand, and its spoken suite tests that
+  it recognises the trick when you just mention it.
 - **A language model that moves a robot's body to find things,** with nothing trained: Nemotron Nano VL
   reads four views as structured output, and Andy turns its head to the one it chose.
 - **A scam check measured four ways, on Nebius:** on 120 messages read aloud, three runs as Nebius
@@ -68,10 +66,23 @@ follow you, its antennas lift while you speak and lean while it thinks.
 - **How do I delete it?** Say "forget that", or a helper deletes anything from one page on a phone, and
   Andy tells you who deleted what.
 
+## Accessibility
+
+- Nothing to read, tap or install for the person: everything is said, and the TV shows what Andy says.
+- All of Andy's words as captions, on by default; large type in Atkinson Hyperlegible (made by the Braille
+  Institute for low-vision readers); every text colour at 7:1 (WCAG AAA) against the worst case behind it,
+  tested.
+- A calm screen with no movement or see-through panels; the TV's remote reaches every control.
+- Letters in large print; pace and volume set by voice; talk over Andy and it stops.
+- English and Spanish, with *usted*; the family and settings pages for helpers in the same look, 7:1, with
+  48 px targets.
+
 ## How we built it
 
-- **Hearing:** NVIDIA Parakeet TDT 0.6B v3, locally, inside Hugging Face's speech-to-speech server;
-  0.02–0.08 s per utterance.
+- **On this computer, beside the robot:** hearing with NVIDIA Parakeet TDT 0.6B v3 (0.02–0.08 s an
+  utterance) and speaking with Qwen3-TTS, together about 7.1 GB of GPU memory; the wake phrase offline
+  (Vosk); letters read with Tesseract, so only the text leaves; face following and every body behaviour.
+  The finder takes each frame only once the head has stopped and settled.
 - **Conversation and 35 tools:** NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory (zero data
   retention on), 0.6–0.8 s per reply measured on the robot. **NVIDIA Nemotron 3 Ultra** for hard
   questions (2.1 s) and as the suite's judge. Lightning's **structured output** turns letters into
@@ -120,7 +131,7 @@ follow you, its antennas lift while you speak and lean while it thinks.
     naming it, in English and Spanish.
   - **Consent:** checked in code before anything is remembered.
   - **Scam pages:** warnings decided from the page's own words.
-- **Engineering:** more than 490 tests, a pre-commit hook that blocks failing tests and key-like strings, an
+- **Engineering:** nearly 800 tests (789 on 2026-10-20), a pre-commit hook that blocks failing tests and key-like strings, an
   independent code and privacy review with every finding fixed and tested, and each choice between
   alternatives recorded in `docs/decisions/`.
 
@@ -160,6 +171,16 @@ follow you, its antennas lift while you speak and lean while it thinks.
 
 ## What we learned
 
+About the problem:
+- **A topic is not a trick.** A grandchild's recital invitation and a "grandchild in trouble" scam share
+  their words. A warning about the topic flagged 24 ordinary messages; asking whether it is the same trick,
+  with a stronger model, flagged none.
+- **The action has to come first.** Someone worried about a letter needs "don't pay yet" before the
+  reasons, so the TV puts it first and the evidence under it.
+- **Questions can feel like tests.** Research with older adults steers away from "Do you remember…?", so
+  Andy asks open questions about a person's life instead.
+
+About building it:
 - **Measure the product, not just the model:** Andy's real profile, tools and urgent-words check, three runs
   each, failures published.
 - **Put hard rules in code and judgment in the model.** That covers scam warnings, numbers on a screen,
@@ -168,6 +189,15 @@ follow you, its antennas lift while you speak and lean while it thinks.
   3 Ultra could tell the same trick from the same topic; a bigger model without the web caught fewer.
 - **Make it look current and keep it readable.** Glass looks good until text sits on it, so the screen
   is tested against its worst case.
+
+## What doesn't work yet
+
+- No study with older adults yet; a pilot with an ethics review comes next.
+- The finder isn't measured at home yet (the tries are recorded and scored by `evals/finder_eval.py`).
+- The scam check missed 2 of 60 scams. It never calls a message safe.
+- About one different suite case fails each run; every failure is in the scorecards.
+- Body language while thinking is built but off until tested on the robot.
+- It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 
 ## What it costs
 
@@ -179,7 +209,9 @@ share them across households or run them on the home GPU.
 ## What's next
 
 - A pilot with older adults and their families, with an ethics review.
-- More languages: Parakeet already hears 25 European languages; next, waking Andy in Spanish.
+- More languages: Parakeet already hears 25 European languages; Andy wakes and talks in English and
+  Spanish today.
+- Hearing and speaking already run on the home GPU; next, an NVIDIA Jetson beside the robot.
 - The finder measured from real tries at home, and a stronger room search where it misses.
 - Publishing Andy as a one-click Reachy Mini app on Hugging Face.
 
@@ -187,7 +219,9 @@ share them across households or run them on the home GPU.
 
 The robot is a Pollen Robotics Reachy Mini, so the video shows everything live, on the robot, with no cuts
 in the pauses. To check more:
-1. The screens with no robot, GPU or keys: `uv sync && uv run python scripts/demo_screen.py`.
+1. The screens with no robot, GPU or keys: `uv sync && uv run python scripts/demo_screen.py`, then
+   `http://127.0.0.1:8093/`. *[Add the Hugging Face Space's link here once it is up: the same pages,
+   read-only, in any browser.]*
 2. The scorecards in `evals/results/` (its README says which is which), and the scam check rerun with one
    Token Factory key against the Tavily warnings we saved (the README's "Judging it in five minutes").
 3. The real robot, live on a video call, any time until judging ends: ask, and we'll show it.

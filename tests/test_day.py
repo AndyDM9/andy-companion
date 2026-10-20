@@ -45,7 +45,7 @@ def test_one_reminder_reads_naturally():
 def test_settings_default_and_stick():
     assert settings.get() == {"pace": "normal", "volume": None, "last_morning": None, "place": None,
                             "news_sources": [], "events_pages": [], "captions": True, "language": "en",
-                              "coords": None, "screen_photos": True, "night_from": 21, "night_to": 7, "night_clock": "hours",
+                              "coords": None, "screen_photos": True, "screen_hints": True, "night_from": 21, "night_to": 7, "night_clock": "hours",
                               "screen_calm": False, "tv_yaw": None, "tv_height": "level", "tv_glance": True,
                               "offers": True, "last_offer": None, "events_suggestion": None,
                               "greet_arrival": True, "last_greeting": None, "person_name": None}

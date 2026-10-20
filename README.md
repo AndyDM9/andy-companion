@@ -10,8 +10,10 @@ no recordings or transcripts: only what you ask it to keep.
 
 **Judging it in five minutes:**
 1. **Watch the video** (link above, once published): everything on it is live, on the robot.
-2. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open the
-   TV screen, the family page and the settings page it prints (sample data; no robot, GPU or keys).
+2. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open
+   `http://127.0.0.1:8093/`: the TV, Under the hood, the family page and the settings page, on sample data
+   (no robot, GPU or keys).
+   <!-- Founder: once the Hugging Face Space is up (founder action 6.18), its link goes here as "or open it in your browser". -->
 3. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)
    (a Nebius Serverless Job) and the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
    (four ways, four Nebius Serverless Jobs); every failure is in them.
@@ -62,6 +64,8 @@ with its sources.
   written after the check was frozen, from this autumn's consumer-protection warnings; three runs as Nebius
   Serverless Jobs, 2026-10-14, [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)):
 
+  ![The scam check four ways: scams caught and ordinary messages flagged, of 60 each](docs/images/scam-check-four-ways.svg)
+
   | | Scams caught (of 60) | Ordinary flagged (of 60) |
   |---|---|---|
   | Nemotron 3.5 Lightning alone | 53.3 | 0 |
@@ -91,6 +95,41 @@ anyone safe, speak as a real person, or keep recordings or transcripts.
 active level of use (Token Factory's prices on 2026-10-14; the web within Tavily's free 1,000 credits), plus
 the hardware once. The eyes and the second look are not in that figure: they run on Nebius endpoints
 started when needed (about $1.55 an hour each while running). Every price and assumption: [docs/cost.md](docs/cost.md).
+
+## Accessibility
+
+Andy is used by voice, from across a room, by people of any eyesight or hearing, so access is the product:
+- **Nothing to read, tap or install for the person.** Everything is said; the TV only shows what Andy
+  says, and the family and settings pages are for helpers.
+- **All of Andy's words as captions** on the TV, at reading pace, three lines at a time, on by default.
+- **Readable from across the room:** large type in Atkinson Hyperlegible (made by the Braille Institute for
+  low-vision readers), and every text colour at 7:1 contrast (WCAG AAA) against the worst glow or photo
+  behind it, tested (`tests/test_screen_design.py`).
+- **A calm screen** in the settings: no movement and no see-through panels; the TV also follows the
+  system's reduced-motion setting.
+- **The TV's remote:** arrows and OK reach Settings and Under the hood; Back closes the menu.
+- **A letter in large print** on the TV, with what to do and by when.
+- **Pace and volume by voice**, "slower", "louder", and they stick; talk over Andy and it stops at once.
+- **English and Spanish**, with *usted*; the screen and pages switch too.
+- **The phone pages** for family and helpers: 17 px text or larger, 48 px targets, 7:1 text.
+
+## What runs where, and why that model
+
+**On this computer, beside the robot:** hearing (NVIDIA Parakeet TDT 0.6B v3, 0.02 to 0.08 s an utterance)
+and speaking (Qwen3-TTS, first audio in 0.10 to 0.33 s) on the GPU, about 7.1 GB of GPU memory together
+(measured 2026-10-20); the wake phrase, offline, in English and Spanish (Vosk); reading a letter
+(Tesseract: only its text leaves); following your face (Pollen's tracking); every body behaviour. When
+Andy looks around for something, each frame is taken only after the head has stopped and settled
+(0.6 s), so the model never reads a blurred view.
+
+**On Nebius, each model for a reason we measured:**
+
+| Model | Why this one |
+|---|---|
+| Nemotron 3.5 Lightning, Token Factory | Every turn: 0.6 to 0.8 s a reply with tool calls, at $0.06 per million input tokens |
+| Nemotron 3 Ultra, Token Factory | Only where judgment matters: in the scam check, Ultra told the same trick from the same topic (0 ordinary messages flagged, against 24 with Lightning); hard decisions; the suite's judge |
+| Nemotron Nano 12B v2 VL, Serverless Endpoint | Eyes: four views read at once as structured output; Token Factory has no NVIDIA vision model, so it runs on our own endpoint |
+| Nemotron 3.5 Content Safety, Serverless Endpoint | A second look for signs of crisis, with our own policy: 7 of 8 held-out sentences caught, against 5 of 8 with its standard categories, in about 0.55 s |
 
 ## Built on what older adults have said they want
 
@@ -180,6 +219,27 @@ are checked in code, not by the judge.
 Every suite run's scorecard, each failure with the judge's reason, is in [evals/results/](evals/results/);
 timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 
+## What doesn't work yet
+
+- **No study with older adults yet.** Andy is built on published research and measured with our own tests;
+  a pilot with an ethics review comes next.
+- **The finder isn't measured at home yet.** Tries can be recorded and scored (`evals/finder_eval.py`); the
+  scorecard will be in `evals/results/` when it exists. It finds things, not people.
+- **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
+  a message is safe, and always suggests checking with family first.
+- **The suite isn't perfect:** about one different case fails each run, and every failure is in its
+  scorecard.
+- **Body language while thinking** (a glance away, a tilt as a question ends) is built but off until it has
+  been tested with the robot (`ANDY_EXPRESSIVE=on`).
+- **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
+  yet.
+- **English and Spanish only.**
+- **The eyes and the second look** run on Nebius endpoints we start when needed; when they're stopped,
+  Andy says it can't see just now.
+- **The TV page** is tested in Chromium and has live regions for the state and the captions, but hasn't
+  been tried with a screen reader.
+- **Andy without a robot** (`scripts/andy-sim`) hasn't been tried on a computer with no robot attached.
+
 ## Privacy
 
 **In four answers:**
@@ -211,7 +271,8 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 ## Try it without a robot
 
 - **The screen and pages, on sample data:** `uv sync && uv run python scripts/demo_screen.py`, then open
-  the addresses it prints. No robot, GPU or keys.
+  the addresses it prints. No robot, GPU or keys. `--public` serves the same pages read-only for anyone
+  to open; `scripts/space.sh build` puts them together as a Hugging Face Space (`space/`).
 - **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
 - **The scam evaluation,** with only a Token Factory key, against the saved Tavily warnings:
   `uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`.

@@ -226,6 +226,7 @@ def test_a_match_shows_the_three_step_receipt(check_message, monkeypatch):
     assert out["scam_signs"] is True and "consumer.ftc.gov warns" in out["say"]
     card = board.showing()
     assert card["kind"] == "check" and card["title"] == "Be careful: a known scam"
+    assert card["lead"] == "Don't reply, pay or give any details. Check with family first."     # what to do, first (B24)
     steps = card["items"]
     assert [s["title"] for s in steps] == ["The sign", "The warning", "Why it matches"]
     assert all(s["tone"] == "caution" for s in steps)
@@ -274,6 +275,7 @@ def test_the_receipt_is_in_spanish_when_andy_speaks_spanish(check_message, monke
     check_message("Abuela, necesito dinero")
     card = board.showing()
     assert card["title"] == "Cuidado: una estafa conocida"
+    assert card["lead"] == "No responda, no pague ni dé ningún dato. Consúltelo antes con la familia."
     assert [s["title"] for s in card["items"]] == ["La señal", "El aviso", "Por qué coinciden"]
 
 
@@ -284,6 +286,7 @@ def test_the_no_sign_and_web_unavailable_cards_are_kept(check_message, monkeypat
         "scam_signs": False, "sign": "none", "evidence": "", "source": "", "matched": [], "matched_warnings": []})
     check_message("The pharmacy says your prescription is ready.")
     assert board.showing()["title"] == "No sign of a known kind of scam" and len(board.showing()["items"]) == 1
+    assert "lead" not in board.showing()                 # only a scam sign leads with what to do
 
 
 @pytest.mark.parametrize("said, kept", [

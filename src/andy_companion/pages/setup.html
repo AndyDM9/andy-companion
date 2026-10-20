@@ -269,6 +269,7 @@
       <div class="choices stack" style="margin-top:14px">
         <label><input type="checkbox" id="captions"> <span data-t="captions">Show Andy's words on the screen (captions)</span></label>
         <label><input type="checkbox" id="screen_photos"> <span data-t="photos">Show family photos when Andy is idle</span></label>
+        <label><input type="checkbox" id="screen_hints"> <span data-t="hints">Show an idea of what to ask Andy when the screen is quiet</span></label>
         <label><input type="checkbox" id="screen_calm"> <span data-t="calm">Calm screen: no movement, no see-through panels</span></label>
       </div>
       <p class="group" id="night-h" data-t="night">At night, show only a clock:</p>
@@ -379,6 +380,7 @@
     "greet": "Andy says “welcome back” when someone comes in after a few hours",
     "screen_h": "The screen",
     "captions": "Show Andy's words on the screen (captions)", "photos": "Show family photos when Andy is idle",
+    "hints": "Show an idea of what to ask Andy when the screen is quiet",
     "calm": "Calm screen: no movement, no see-through panels",
     "night": "At night, show only a clock:", "night_hours": "at these hours", "from": "from", "until": "until",
     "night_asleep": "while Andy sleeps", "night_never": "never",
@@ -449,6 +451,7 @@
     "greet": "Andy dice «bienvenido» cuando alguien entra después de unas horas",
     "screen_h": "La pantalla",
     "captions": "Mostrar en la pantalla lo que dice Andy (subtítulos)", "photos": "Mostrar fotos de la familia cuando Andy está en reposo",
+    "hints": "Mostrar una idea de qué decirle a Andy cuando la pantalla está en reposo",
     "calm": "Pantalla tranquila: sin movimiento ni paneles transparentes",
     "night": "Por la noche, mostrar solo un reloj:", "night_hours": "a estas horas", "from": "de", "until": "hasta",
     "night_asleep": "mientras Andy duerme", "night_never": "nunca",
@@ -476,6 +479,7 @@
       "the pages for what's on": "las páginas de actividades", "the language": "el idioma",
       "how fast Andy speaks": "lo rápido que habla Andy", "the volume": "el volumen", "the captions": "los subtítulos",
       "family photos on the screen": "las fotos de la familia en la pantalla",
+      "the ideas of what to ask Andy, on the screen": "las ideas de qué decirle a Andy, en la pantalla",
       "when the screen dims at night": "cuándo se atenúa la pantalla de noche",
       "when the screen brightens in the morning": "cuándo se ilumina la pantalla por la mañana",
       "when the night clock shows": "cuándo aparece el reloj de noche", "the calm screen": "la pantalla tranquila",
@@ -531,7 +535,8 @@
     language: radio("language", "en"), pace: radio("pace", "normal"),
     volume: { get: () => Number($("volume").value), set: (v) => { $("volume").value = v == null ? 80 : v; showVolume(); } },
     offers: box("offers", true), greet_arrival: box("greet_arrival", true),
-    captions: box("captions", true), screen_photos: box("screen_photos", true), screen_calm: box("screen_calm", false),
+    captions: box("captions", true), screen_photos: box("screen_photos", true),
+    screen_hints: box("screen_hints", true), screen_calm: box("screen_calm", false),
     night_clock: { get: () => chosen("night_clock") || "hours", set: (v) => { radio("night_clock", "hours").set(v); showNightHours(); } },
     night_from: hour("night_from"), night_to: hour("night_to"),
     tv_yaw: { get: () => { const side = chosen("tv_side") || "none", far = Number($("tv_far").value);

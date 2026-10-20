@@ -23,6 +23,11 @@ Factory/AI Cloud and the NVIDIA model "with audio… not just a passing mention"
 **The organisers' tip:** "hardware reacting live to real-world input is where this track can really
 shine".
 
+**The judges, live (Devpost's judging session, 2026-10-20; two of them judge our track):** the aha in under
+two minutes, a wow in 30 seconds; one story, not a list of integrations; local models in physical AI;
+limits said plainly read as rigour; and the packaging always takes longer than planned, so the cut gets
+the time, not new features.
+
 **Target length:** 2:50, never over 2:55 (time a rough cut). Andy's lines are never scripted; only the person's are planned. Robot shots are
 long, unedited takes.
 
@@ -66,7 +71,7 @@ uncut physical moment, Tavily named at the start, a dated problem line, privacy 
 | 4 | 1:35–2:00 | **Finding the glasses, one uncut take.** Someone off camera has hidden them; the TV clock is in shot. "Andy, where did I leave my glasses?" Andy sweeps the room, stops, points with its head; the TV shows the four views it read, in the order it turned, the chosen one marked: hold on it for a second | Andy, live. Caption: "NVIDIA Nemotron Nano VL on a Nebius Serverless Endpoint, four views read at once." Never cut the pause while it looks |
 | 5 | 2:00–2:10 | The daughter, on her phone, sends a photo; it appears on the TV | Andy: "Anna sent a photo, it's on your screen…" and describes it |
 | 6 | 2:10–2:18 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone |
-| 7 | 2:18–2:38 | Founder with the hood page from this shoot, then the architecture picture and the suite's scorecard | "Andy hears with NVIDIA Parakeet and talks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**, which answers in under a second (the hood page shows the whole turn). Hard questions go to **Nemotron 3 Ultra**; **Nemotron 3.5 Content Safety** gives a second look. Our suite of [N] spoken situations runs as a **Nebius Serverless Job**: [the final run's numbers, exactly]." |
+| 7 | 2:18–2:38 | Founder with the hood page from this shoot, then the architecture picture and the suite's scorecard | "Andy hears with NVIDIA Parakeet and speaks on this computer's GPU, and thinks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**, which answers in under a second (the hood page shows the whole turn). Hard questions go to **Nemotron 3 Ultra**; **Nemotron 3.5 Content Safety** gives a second look. Our suite of [N] spoken situations runs as a **Nebius Serverless Job**: [the final run's numbers, exactly]." |
 | 8 | 2:38–2:52 | Andy facing the person, the TV in the evening colours; a card with four short lines | "Your voice becomes words on this computer and is never recorded; the words go to Nemotron on Nebius, which keeps none of them. Andy keeps only what you ask it to, family see only what you share, and you can delete any of it from your phone." Then: "Andy is open source." Title card: the repository address (and "a Reachy Mini app" only once it is published) |
 
 **At least one minute of the robot operating:** shots 1, 3, 4, 5 and 6, about 2:05 in all.

@@ -459,6 +459,7 @@ def screen_state(now: Optional[datetime] = None, host: str = "") -> Dict[str, An
     state["night"] = night_now(s, hour)
     state["idle_photo"] = board.idle_photo() if s.get("screen_photos", True) and not state["night"] else None
     state["calm"] = bool(s.get("screen_calm", False))
+    state["hints"] = bool(s.get("screen_hints", True))
     return state
 
 
@@ -549,6 +550,14 @@ def _object(raw: bytes) -> dict:
     return data
 
 
+# The public demo of the screens (scripts/demo_screen.py --public, PLAN B26): every page opens on sample data,
+# and nothing a visitor sends is taken, so nothing one visitor types can reach another. Never set on a robot.
+READ_ONLY = False
+READ_ONLY_ERROR = "This is a public demo with sample data: nothing you send is kept or shown to anyone."
+# The demo's own front page at "/", listing the four pages; Andy's real server has none.
+INDEX: Optional[bytes] = None
+
+
 class Handler(BaseHTTPRequestHandler):
     timeout = 10        # a connection that stalls is dropped, so it can't hold a thread forever
 
@@ -591,6 +600,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
+        if url.path == "/" and INDEX is not None:
+            return self._send(200, INDEX, "text/html; charset=utf-8")
         if url.path == "/screen" and _ok(q.get("t"), "screen"):
             return self._page("screen.html")
         if url.path == "/api/screen" and _ok(q.get("t"), "screen"):
@@ -631,6 +642,8 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(404, b"Not found", "text/plain")
 
     def do_POST(self) -> None:  # noqa: N802
+        if READ_ONLY:
+            return self._json({"error": READ_ONLY_ERROR}, 403)
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         local = self.client_address[0] in ("127.0.0.1", "::1")

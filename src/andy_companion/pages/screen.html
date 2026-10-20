@@ -191,6 +191,10 @@
   .item .summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
                    font-size: clamp(19px, 1.8vw, 32px); margin: .5vh 0 0; line-height: 1.35; color: var(--soft); }
   /* A warning on a letter: the same mark as a weather alert, a bar at the start, never a red flash. */
+  /* What to do, before the reasons (the scam receipt): the card's one instruction, in the ink colour and bold,
+     on the panel itself, never over glass. */
+  .found .lead { font-size: clamp(22px, 2.1vw, 38px); font-weight: 700; line-height: 1.25; color: var(--ink);
+                 margin: -.6vh 0 1.4vh; }
   .item.caution { border-top: 0; border-left: 8px solid var(--mark); padding: 1.1vh 0 1.1vh 1.4vw; margin: .4vh 0 1vh; }
   .item.caution .summary { color: var(--ink); -webkit-line-clamp: 3; }
   .item.caution.short2 .summary { -webkit-line-clamp: 2; }       /* beside a caption on a small screen */
@@ -283,6 +287,7 @@
      screen like a TV's subtitles, so nothing on the screen moves when Andy starts or stops speaking and no
      empty band is kept for them. Andy's words only, never the person's. */
   :root { --cap-size: clamp(26px, 2.9vw, 50px); --cap-block: calc(var(--cap-size) * 1.28 * 3 + 3vh); }
+  :root { --ask-size: clamp(22px, 2.1vw, 38px); }
   .caption { position: fixed; left: 5vw; right: 5vw; bottom: 5vh; z-index: 5; margin: 0; padding: 1.5vh 2.2vw; background: var(--ink); color: var(--ground); border-radius: var(--r);
              font-size: var(--cap-size); line-height: 1.28; align-self: end;
              display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
@@ -292,6 +297,14 @@
   body.showing-code .caption { right: calc(5vw + (90vw - 2.4vw) * .59 + 2.4vw); font-size: clamp(20px, 1.9vw, 32px); }
   @media (prefers-reduced-motion: no-preference) { body:not(.calm).has-caption .caption { animation: rise .45s cubic-bezier(.2, .8, .2, 1) both; } }
 
+  /* "Try asking": when the screen is quiet in the day and Andy is awake, one thing to say to it, changing every
+     20 s, where the captions go (never with one); the cards keep clear of it. */
+  .ask { position: fixed; left: 5vw; bottom: 5vh; z-index: 4; margin: 0; max-width: 90vw; display: none;
+         padding: 1.1vh 1.8vw; border-radius: 999px; font-size: var(--ask-size); line-height: 1.3; color: var(--soft);
+         white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ask b { color: var(--ink); font-weight: 700; }
+  body.has-ask .ask { display: block; }
+  body.has-ask .below { padding-bottom: calc(var(--ask-size) * 1.3 + 2.2vh + 5vh); }
   /* The gear: Andy's settings (the code for a phone) and Under the hood, from the TV or its remote. */
   .gear { grid-column: 2; grid-row: 2; justify-self: end; align-self: end; display: inline-flex; align-items: center; gap: .5em;
           margin: 0; padding: .45em .9em; border-radius: 999px; font: inherit; font-size: clamp(16px, 1.5vw, 26px);
@@ -364,11 +377,13 @@
     <section class="found glass thick" id="found" aria-live="polite" aria-labelledby="found-h">
       <div class="top"><p class="kind" id="found-kind"></p><p class="how" id="found-how" hidden></p></div>
       <h2 id="found-h">&nbsp;</h2>
+      <p class="lead" id="found-lead" hidden></p>
       <div id="items"></div>
       <p class="source" id="found-source" hidden></p>
     </section>
   </main>
   <p class="caption" id="caption" aria-live="polite"></p>
+  <p class="ask glass" id="ask" aria-hidden="true"><span id="ask-label"></span> <b id="ask-what"></b></p>
   <div class="scrim" id="scrim" aria-hidden="true"></div>
   <div class="menu glass thick" id="menu" role="dialog" aria-modal="true" aria-labelledby="menu-h">
     <h2 id="menu-h">Andy's settings</h2>
@@ -400,7 +415,10 @@
                    looked: "Where I looked", note: "Family note", suggestion: "Suggested reminder" },
           where: "Andy looks here when it shows you something new.",
           order: "In the order I looked", view: "View", seenHere: "Seen here", seenToo: "Seen here too", notSeen: "Not seen",
-          noPicture: "No picture" },
+          noPicture: "No picture",
+          ask: { label: "Try asking:", list: ["“What's on today?”", "“Where did I leave my glasses?”", "“Can you read this letter for me?”",
+                 "“Tell me a joke.”", "“Remind me to call my sister at four.”", "“Does this message look like a scam?”",
+                 "“Look into whether the library is open on Sunday.”", "“Tell me a story.”", "“What happened on this day?”"] } },
     es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", site: "sitio leído", sites: "sitios leídos", credit: "crédito", credits: "créditos", and: "y",
           calls: { search: "búsqueda", extract: "extracción", crawl: "rastreo", map: "mapa", research: "investigación" },
           family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
@@ -415,7 +433,10 @@
                    looked: "Dónde miré", note: "Nota de la familia", suggestion: "Recordatorio sugerido" },
           where: "Andy mira aquí cuando le muestra algo nuevo.",
           order: "En el orden en que miré", view: "Vista", seenHere: "Visto aquí", seenToo: "También aquí", notSeen: "No visto",
-          noPicture: "Sin imagen" },
+          noPicture: "Sin imagen",
+          ask: { label: "Pruebe a decir:", list: ["“¿Qué hay hoy?”", "“¿Dónde dejé mis lentes?”", "“¿Me puede leer esta carta?”",
+                 "“Cuénteme un chiste.”", "“Recuérdeme llamar a mi hermana a las cuatro.”", "“¿Este mensaje parece una estafa?”",
+                 "“Averigüe si la biblioteca abre el domingo.”", "“Cuénteme un cuento.”", "“¿Qué pasó un día como hoy?”"] } },
   };
   let ui = UI.en;
   // The clock's words, the same as words.py (DAYS, MONTHS, PARTS_SHOWN; a test checks): the date in the order
@@ -550,7 +571,7 @@
       // shows changes, so nothing flickers between refreshes.
       const cardKey = showing.kind + "|" + showing.title;
       const views = VIEW_KINDS.includes(showing.kind) ? s.views : null;      // what Andy looked at, while it's kept
-      const contentKey = cardKey + "|" + JSON.stringify(showing.items) + "|" + (showing.qr ? "qr" : "") + "|" + document.documentElement.lang
+      const contentKey = cardKey + "|" + JSON.stringify(showing.items) + "|" + (showing.lead || "") + "|" + (showing.qr ? "qr" : "") + "|" + document.documentElement.lang
                          + "|" + JSON.stringify(views);
       if (cardKey !== foundKey) {
         foundKey = cardKey;
@@ -560,6 +581,8 @@
         foundContent = contentKey;
         text($("found-kind"), ui.kinds[showing.kind] || "");
         text($("found-h"), showing.kind === "where" ? ui.where : showing.title);
+        $("found-lead").hidden = !showing.lead;
+        text($("found-lead"), showing.lead || "");
         const items = $("items"); items.textContent = "";
         if (showing.kind === "code" && showing.qr) {
           text($("found-h"), "");
@@ -618,6 +641,7 @@
     // Up while Andy speaks and until the last page has had its time, then a few seconds more.
     const showCap = !!cap && (now - lastSpoke < 4000 || now < capSeenAt + captionLasts() * 1000 + 4000);
     document.body.classList.toggle("has-caption", showCap);
+    showAsk();
     if ($("caption").textContent !== cap) $("caption").textContent = cap;
     if (showing) fitItems();
     // The colour fades only when the part of the day changes, never when the page first opens.
@@ -808,7 +832,22 @@
   }
   function everySecond() {
     renderClock();
+    showAsk();
     if (performance.now() - lastOk > OFFLINE_AFTER_MS) setOffline(true);
+  }
+
+  // "Try asking" (PLAN B25): only when nothing is on the screen, no caption, not the night clock, the menu
+  // closed, and Andy awake and waiting, so whatever it suggests can be said at once.
+  let liveNow = "";
+  function showAsk() {
+    const b = document.body.classList;
+    const on = !!(lastS && lastS.hints && !lastS.showing && !lastS.night) && liveNow === "ready"
+               && !b.contains("has-caption") && !b.contains("menu-open") && !b.contains("offline-on");
+    b.toggle("has-ask", on);
+    if (!on || !ui.ask) return;
+    text($("ask-label"), ui.ask.label);
+    const what = ui.ask.list[Math.floor(Date.now() / 20000) % ui.ask.list.length];
+    if ($("ask-what").textContent !== what) text($("ask-what"), what);
   }
 
   // The state strip changes in a moment, so it is asked for more often than the rest of the screen.
@@ -819,6 +858,7 @@
       if (!r.ok || document.body.classList.contains("offline-on")) return;
       const s = await r.json();
       if (s.state === "speaking") lastSpoke = Date.now();
+      if (s.state !== liveNow) { liveNow = s.state; showAsk(); }
       text($("looking"), (ui.looking && ui.looking[s.looking]) || "");
       const key = s.state + "|" + s.label;
       if (key === lastState) return;

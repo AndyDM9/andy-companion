@@ -62,7 +62,7 @@ video, the Devpost form, the repository) is checked against this file first.
 
 | Rule | Status | Notes |
 |---|---|---|
-| Free access for testing until judging ends (2026-12-15) | 🔶 | The public repository with setup instructions; a judge brings their own Nebius and Tavily keys (`.env.example`) |
+| Free access for testing until judging ends (2026-12-15) | 🔶 | The public repository with setup instructions; a judge brings their own Nebius and Tavily keys (`.env.example`). The screens on sample data need no keys: locally (`scripts/demo_screen.py`) or, once the founder makes it, as a public read-only Hugging Face Space (decision 0010), which must stay up until 2026-12-15 |
 | Physical access to the hardware may be requested (the Reachy Mini is not a phone, tablet or computer) | 🔶 | Keep the robot and the desktop ready through 2026-12-15 |
 | After the deadline the submission cannot change | ⬜ | Tag the submitted commit (`hackathon-submission`) and link that tag on the form; later work goes after it |
 

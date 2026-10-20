@@ -75,7 +75,8 @@ and the [live test](live-test.md).
   each warning found: the same trick, not merely the same topic. Measured on 120 messages, three runs as
   Nebius Jobs: 58 of 60 scams caught, none of 60 ordinary messages flagged
   ([decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md)). On the TV, "Be careful: a known
-  scam" in three steps: the sign (with the message's own words, never its numbers or links), the warning
+  scam", then what to do ("Don't reply, pay or give any details. Check with family first."), then three
+  steps: the sign (with the message's own words, never its numbers or links), the warning
   Tavily found and its site, and why Nemotron 3 Ultra judged them the same trick. If the warnings can't be
   checked, Andy says so rather than "no sign".
 - **The town's events page** is found at setup from the town's own website (Tavily map, or a search within
@@ -117,6 +118,13 @@ so far and the number of sites read.
 Under Andy's state, a small line says what its head is turned to: "Looking at you" while it talks with you,
 "Looking at the screen" when it glances at the TV, "Looking around the room" while it searches, "Pointing
 at what it found". It says only that, never what the camera sees.
+
+When nothing is on the screen in the day and Andy is waiting, a line at the foot suggests one thing to say,
+a new one every 20 seconds: "Try asking: “Where did I leave my glasses?”". It goes while Andy speaks, and a
+helper can turn it off on the settings page.
+
+**Anyone can see the screens on sample data,** with no robot or keys: `scripts/demo_screen.py`, or the same
+pages hosted read-only as a Hugging Face Space ([decision 0010](decisions/0010-a-public-read-only-demo-of-the-screens.md)).
 
 At night the screen becomes a calm night clock with the date: family photos, reminders and the weather
 rest until morning, but anything Andy shows still appears in full. When is set on the settings page under

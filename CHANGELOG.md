@@ -3,6 +3,32 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-20
+
+### Added and changed (round 4: what the judges said in Devpost's judging session)
+
+The judges, two of them our track's NVIDIA judges, said what they look for (PLAN, round 4):
+- **The scam receipt says what to do first (B24):** under "Be careful: a known scam", "Don't reply, pay or
+  give any details. Check with family first." (Spanish too), then the three steps. Cards take an optional
+  `lead` line; only a scam sign uses it.
+- **"Try asking" on the TV (B25):** when nothing is showing in the day and Andy is awake and waiting, one
+  thing to say at the foot of the screen, a new one every 20 s, in the household's language; gone while
+  Andy speaks, at night, with the menu open or offline. The settings page can turn it off (`screen_hints`).
+- **A public demo of the screens (B26, decision 0010):** `scripts/demo_screen.py --public` serves the four
+  pages on sample data read-only (every POST refused with a plain sentence), with a front page at `/`, the
+  night clock off, New York time, and framing allowed only to huggingface.co. `space/` and
+  `scripts/space.sh build` make a Hugging Face Space of only what the demo needs; built and run in Docker
+  here. Without `--public`, the demo also gets the front page.
+- **The words (B27 to B29, B31):** the README and the Devpost text gain Accessibility, What runs where and
+  why that model (hearing and speaking take about 7.1 GB of GPU memory, measured), and What doesn't work
+  yet; the Devpost text leads with three moments, adds the FTC's 2024 figure, how the scam check differs
+  from a paste-in checker, and what we learned about the problem. "Waking in Spanish" left "What's next"
+  (it was done on 10-14).
+- **A chart of the scam check four ways (B30):** `scripts/make_charts.py` draws it from the scorecard (SVG
+  in the README, PNG for the Devpost gallery); a test keeps it equal to the scorecard.
+- 11 tests added and three receipt tests extended (789; 796 in the robot's environment). A comment in
+  `body/gaze.py` said "they" for Andy; now "it".
+
 ## 2026-10-14
 
 ### Added (round 3: the physical search and the scam check made visible; family suggestions and notes)

@@ -6,7 +6,7 @@ can play during the reply; the daemon's speech wobble composes on top either way
 while Andy talks, the head stays where they were.
 
 So, each control tick while Andy speaks: with no move playing, tracking keeps the head (weight 1,
-no anchor), so they follows the face as they does while listening, the wobble still on top; while a move
+no anchor), so it follows the face as it does while listening, the wobble still on top; while a move
 plays (an emotion mid-reply), Pollen's way: hold the current look as the anchor at weight 0, so the move
 shows; when it ends, tracking takes the head back. Seek keeps the head while it is searching, and
 nothing changes when tracking is off or Andy is silent: set_speaking(False) is Pollen's as before.

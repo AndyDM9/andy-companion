@@ -103,6 +103,25 @@ founder approved its ideas; these turn the physical and the web work into things
 | B22 | **Family notes on the TV:** when Andy passes on a family message, the TV shows it as a note with who sent it and when, for five minutes | What Nest Hub's Family Notes do, inside our rules (no presence shown back) | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
 | B23 | **The rest of the review's ideas:** Tavily research with a running count of sites read; "Andy is looking at…" on the TV from the head's pose | Smaller; done if B19 to B22 land cleanly | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in live test 3w) |
 
+### Round 4 (Claude), from Devpost's judging session (2026-10-20)
+
+The judges, two of them our track's NVIDIA judges, said what they look for: a live link they can click,
+the aha in under two minutes, onboarding, a baseline beside every number, local models in physical AI,
+limits published (they called it rigour), accessibility called out up front, one story rather than many
+integrations, and real users. The notes are kept privately. Code before the freeze on 2026-10-22; words
+until submission.
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B24 | **The scam receipt says what to do first:** "Don't reply, pay or give any details. Check with family first." above the three steps | The judges' main note on a scam checker they reviewed: the action was below the evidence | ✅ 2026-10-20 (tested in a browser on the demo; on the robot in live test 3x) |
+| B25 | **"Try asking…" on the TV:** when nothing is showing in the day, one thing to ask Andy at a time ("Where did I leave my glasses?"), in the household's language; settings can turn it off | Onboarding: a person, a relative or a judge sees what Andy can do without being told | ✅ 2026-10-20 (tested in a browser on the demo; on the robot in live test 3x) |
+| B26 | **A public demo of the screens:** `demo_screen.py --public` serves the four pages read-only (nothing a visitor types reaches anyone else), with a Dockerfile for a Hugging Face Space | Every project the judges reviewed had a link they clicked through; ours needed `uv sync` | ✅ 2026-10-20 (the image built and run in Docker, writes refused; the Space itself is the founder's, 6.18) |
+| B27 | **Accessibility, up front:** a section in the README and on Devpost | The judges: it counts if it is called out, and it gets missed otherwise | ✅ 2026-10-20 (README and Devpost text) |
+| B28 | **What doesn't work yet:** the limits, in one section of the README and on Devpost | The judges: published limits read as rigour | ✅ 2026-10-20 (README and Devpost text) |
+| B29 | **What runs where, and why that model:** this computer (hearing, speaking, waking, reading, following, with GPU memory and timings) and Nebius (each model, why that size, the number behind it) | The NVIDIA judges look for local models in physical AI and trade-offs between model sizes | ✅ 2026-10-20 (README and Devpost text; GPU memory measured) |
+| B30 | **A chart of the scam check four ways** (scams caught, ordinary messages flagged), drawn from the scorecard, for the README and the Devpost gallery | A number reads as real against its baseline | ✅ 2026-10-20 (`scripts/make_charts.py`; SVG in the README, PNG for the gallery) |
+| B31 | **The Devpost text, one story:** three moments first, the rest in one short list; "what we learned about the problem"; how Andy differs from a paste-in checker (you say it or hold it up; measured on ordinary messages); shorter sentences | The judges warned against many integrations without one story, and against "AI slop" | ✅ 2026-10-20 (the founder reads it before the draft goes in, 10-22) |
+
 ### Cleanup (Claude)
 
 | # | Item | Status |
@@ -119,6 +138,8 @@ founder approved its ideas; these turn the physical and the web work into things
 | Now | The live test on the robot | [live-test.md](live-test.md) |
 | Now | **The body language test (B8)** with Claude watching the logs: the research says presence matters to at least one Physical AI judge | [live-test.md](live-test.md) 3u |
 | This week | **One real session** with a relative who agrees to it in writing: about 20 unscripted minutes, one real moment for the video if they're willing, no claims about outcomes | founder action 6.17 |
+| By 2026-10-23 | **Two or three short sessions with older adults** (a relative, a neighbour), each agreeing in writing: what they asked first, what confused them, what they'd change. Claude writes down only what they agree to, and what changed because of it. The judges' most repeated advice was to talk to real users | founder action 6.17 |
+| After B26 | **The Hugging Face Space** for the public demo (the same account publishes the Reachy Mini app) | founder action 6.18 |
 | This week | Say yes or no to B10's spend (about $3 to $6) | |
 | Now | Photos and four 5-second clips of the real robot (the glance, following, finding glasses, the joke wiggle) | founder action 6.17 |
 | About 2026-10-20 | The name; the repository public, licence in About; a Hugging Face account; Claude publishes the app | [submission-checklist.md](submission-checklist.md) |

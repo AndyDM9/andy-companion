@@ -22,13 +22,15 @@ from andy_companion import board, settings
 # What each setting is called when Andy tells the person about a change (Andy's own voice).
 NAMES = {"person_name": "your name", "place": "the town", "news_sources": "the local news sites", "events_pages": "the pages for what's on",
          "language": "the language", "pace": "how fast I speak", "volume": "the volume", "captions": "the captions",
-         "screen_photos": "family photos on the screen", "night_from": "when the screen dims at night",
+         "screen_photos": "family photos on the screen",
+         "screen_hints": "the ideas of what to ask me, on the screen", "night_from": "when the screen dims at night",
          "night_to": "when the screen brightens in the morning", "night_clock": "when the night clock shows",
          "screen_calm": "the calm screen",
          "tv_yaw": "where the screen is", "tv_height": "how high the screen is", "tv_glance": "glancing at the screen",
          "offers": "offering a story or a riddle in the afternoon", "greet_arrival": "welcoming you back"}
 # The same, as the helper's page says it.
-SHOWN = {**NAMES, "person_name": "the name these pages use", "pace": "how fast Andy speaks", "greet_arrival": "welcoming them back"}
+SHOWN = {**NAMES, "person_name": "the name these pages use", "pace": "how fast Andy speaks", "greet_arrival": "welcoming them back",
+         "screen_hints": "the ideas of what to ask Andy, on the screen"}
 # When the screen becomes the calm night clock (the founder, 2026-10-14: "from what time till what time,
 # or maybe when Andy is sleeping").
 NIGHT_CLOCK = ("hours", "asleep", "off")
@@ -110,6 +112,8 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
         out["captions"] = bool(data["captions"])
     if "screen_photos" in data:
         out["screen_photos"] = bool(data["screen_photos"])
+    if "screen_hints" in data:
+        out["screen_hints"] = bool(data["screen_hints"])
     if "screen_calm" in data:
         out["screen_calm"] = bool(data["screen_calm"])
     if "tv_yaw" in data:
