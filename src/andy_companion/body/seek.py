@@ -15,6 +15,11 @@ follows the person: PERSON keeps the head turned toward them, and the body follo
 While they are gone it looks around again every RESCAN_EVERY_S, for RESCAN_FOR_S after they were last
 seen.
 
+A second speaker (2026-10-20, PLAN B45, "turn to whoever speaks"): while Andy follows one face, speech from more than
+SECOND_VOICE_DEG to the side for SECOND_VOICE_S, with Andy silent, turns the head to it (TURN, the old face no longer
+ending the turn until it arrives); a face there and tracking takes the new person. Nobody there (the TV, a radio):
+the head goes back to the first person and that direction is ignored for IGNORE_S. ANDY_TURN_TO_SPEAKER=off.
+
 States: FOLLOW (normal) -> TURN (toward the direction a voice came from) or SCAN (one slow look
 left and right) -> back to FOLLOW when a face is found, or HOME then REST (centre, normal
 tracking) when the search ends empty. A new voice from out of view starts a new TURN.
@@ -55,6 +60,11 @@ RESCAN_AFTER_S = (60.0, 120.0, 240.0)   # while they're away, look again after t
 
 
 VOICE_HOLD_S = 1.5   # keep the last voiced direction through short pauses between words
+SECOND_VOICE = os.environ.get("ANDY_TURN_TO_SPEAKER", "on").lower() not in ("off", "0", "false", "no")
+SECOND_VOICE_DEG = 40.0      # a voice this far from the face Andy follows is someone else
+SECOND_VOICE_S = 0.6         # ... heard for this long (one word is not a turn)
+SECOND_COOLDOWN_S = 8.0      # at most one such turn in this long
+IGNORE_S = 60.0              # a direction with nobody there (the TV) is not turned to again for this long
 
 
 def voiced_angle(reading, held: Optional[tuple], now: float) -> tuple:
@@ -113,6 +123,13 @@ class Seek:
     _person_cooldown_until: float = -1e18
     _speaking_before: bool = False
     _rested_at: Optional[float] = None
+    _second_since: Optional[float] = None     # when a second voice started being heard
+    _second_yaw: float = 0.0                  # its world yaw
+    _second_cooldown_until: float = -1e18
+    _for_voice: bool = False                  # the current TURN is toward a second speaker
+    _return_to: float = 0.0                   # where the first person was, to go back if nobody is there
+    _home_to: float = 0.0                     # where HOME goes (the centre, or back to the first person)
+    _ignored: list = field(default_factory=list)   # (world yaw, until): directions with nobody there
     log: list = field(default_factory=list)
 
     def _start(self, state: str, goal: float, head_world_yaw: float) -> Decision:
@@ -124,9 +141,34 @@ class Seek:
     def _stop(self, state: str) -> Decision:
         self.state = state
         self.log.append(state)
+        self._for_voice, self._home_to = False, 0.0
         if state == "REST":
             self._rested_at = self._last_t
         return Decision(weight=1.0)
+
+    def _second_voice(self, now: float, face: bool, head_world_yaw: float, user_speaking: bool, robot_speaking: bool,
+                      doa_angle: Optional[float]) -> Optional[Decision]:
+        """Turn to a second speaker: someone else talking well to the side while Andy follows a face."""
+        if not (SECOND_VOICE and face and self.state == "FOLLOW" and user_speaking and not robot_speaking
+                and doa_angle is not None):
+            self._second_since = None
+            return None
+        voice = voice_yaw(doa_angle)
+        world = head_world_yaw + voice
+        self._ignored = [(y, t) for y, t in self._ignored if t > now]
+        if abs(voice) < math.radians(SECOND_VOICE_DEG) or any(abs(world - y) < math.radians(20) for y, _ in self._ignored):
+            self._second_since = None
+            return None
+        if self._second_since is None or abs(world - self._second_yaw) > math.radians(20):
+            self._second_since, self._second_yaw = now, world
+            return None
+        if now - self._second_since < SECOND_VOICE_S or now < self._second_cooldown_until:
+            return None
+        self._second_since, self._second_cooldown_until = None, now + SECOND_COOLDOWN_S
+        self._for_voice, self._return_to, self._heard_from = True, head_world_yaw, voice
+        decision = self._start("TURN", world, head_world_yaw)
+        self.log[-1] = "TURN"
+        return decision
 
     def _rest(self) -> Decision:
         """The search ended empty: bring the head home gently first (HOME), then REST."""
@@ -169,9 +211,15 @@ class Seek:
             self._tracking_since = now
         if move_playing or head_world_yaw is None:
             return self._stop("FOLLOW") if seeking else Decision()
-        if face:
+        turned = self._second_voice(now, face, head_world_yaw, user_speaking, robot_speaking, doa_angle)
+        if turned is not None:
+            return turned
+        # Turning to a second speaker, the first person's face is still in view at the start: only a face once
+        # the head has arrived ends the turn (it is then the new person's).
+        turning_away = self.state == "TURN" and self._for_voice and self._arrived_at is None
+        if face and not turning_away:
             return self._stop("FOLLOW") if seeking else Decision()
-        if robot_speaking:
+        if robot_speaking and not (self.state == "TURN" and self._for_voice):   # answering the new speaker: keep turning
             # Not a snap back to the centre mid-search: bring the head home, then hand over.
             if not seeking:
                 return Decision()
@@ -244,9 +292,9 @@ class Seek:
 
         if self.state == "HOME":
             step = self.rate * dt
-            self._cmd += max(-step, min(step, -self._cmd))
+            self._cmd += max(-step, min(step, self._home_to - self._cmd))
             self._up = max(0.0, self._up - self.up_rate * dt)
-            if abs(self._cmd) <= HOME_TOLERANCE and self._up <= math.radians(2):
+            if abs(self._cmd - self._home_to) <= HOME_TOLERANCE and self._up <= math.radians(2):
                 return self._stop("REST")
             # Andy just stopped talking: Pollen's set_speaking(False) puts tracking back to full weight,
             # which snaps the head to the centre (review, 2026-10-07). Take it back at once.
@@ -259,6 +307,13 @@ class Seek:
         arrived = abs(self._goal - self._cmd) < 1e-3
         if arrived and self._arrived_at is None:
             self._arrived_at = now
+        if self.state == "TURN" and arrived and self._for_voice and now - self._arrived_at >= self.turn_hold:
+            # Nobody there (the TV, a radio): back to the first person, and leave that direction alone a while.
+            self._ignored.append((self._goal, now + IGNORE_S))
+            self.state, self._home_to, self._arrived_at = "HOME", self._return_to, None
+            self._for_voice = False
+            self.log.append("HOME")
+            return Decision(head_yaw=self._cmd, head_up=self._up)
         if self.state == "TURN" and arrived and now - self._arrived_at >= self.turn_hold:
             if not self._scanned_since_face:
                 self._scanned_since_face = True
