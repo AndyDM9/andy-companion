@@ -68,6 +68,11 @@ def _move_playing(manager) -> bool:
 def speaking_step(manager, face: bool, move_playing=None) -> None:
     """One control tick, after seek and idle.take_step."""
     state = manager.__dict__.setdefault("_andy_gaze", {"following": False})
+    from andy_companion.body import hold
+
+    if hold.active(manager):                          # a search owns the head
+        state["following"] = False
+        return
     if not ENABLED or not getattr(manager, "_head_tracking", False) or not getattr(manager, "_is_speaking", False):
         state["following"] = False
         state["logged"] = False                       # once per reply in the log

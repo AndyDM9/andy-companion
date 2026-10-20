@@ -118,6 +118,11 @@ def release_step(manager, now: float) -> None:
     RELEASE_AFTER_S, face following gets the head back (weight 1), so seek's own weight on the same
     tick wins. If Andy is speaking, Pollen's end of speech hands it back instead."""
     state = manager.__dict__.setdefault("_andy_idle_handoff", {"owned": False, "gone_since": None})
+    from andy_companion.body import hold
+
+    if hold.active(manager):            # between the search's moves the head stays the search's
+        state["gone_since"] = None
+        return
     if _owns_head(manager) or not state["owned"]:
         state["gone_since"] = None
         return

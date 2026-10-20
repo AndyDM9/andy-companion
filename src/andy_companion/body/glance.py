@@ -223,7 +223,9 @@ def watch() -> bool:
 
 def step(manager, now: float, antennas, *, listening: bool, move_playing: bool, tracking: bool) -> bool:
     """One control tick: queue a glance when one is due. True when it queued one."""
-    if not _seen["fresh"]:
+    from andy_companion.body import hold
+
+    if not _seen["fresh"] or hold.active(manager):       # never in the middle of a search
         return False
     watcher = manager.__dict__.setdefault("_andy_glance", Watcher())
     watcher.saw(_seen["key"], now)

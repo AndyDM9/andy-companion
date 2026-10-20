@@ -41,6 +41,11 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
   one move at a time and takes each picture after the head says it has arrived and has settled; the closer look turns
   as far as the head reaches (60 degrees, 35 down) and cuts the close-up around where the thing should show from there,
   not always the middle.
+- The next chair try's recording: three of the four views pointed at the founder's desk. Seek, mid-turn toward the
+  person as the search began, handed the head to the camera's face tracking at full weight on standing down, and
+  nothing switched it off. Now, while a search runs, seek, face following while speaking, the TV glance and the idle
+  hand-back all stand down (`body/hold.py`), and the search switches the camera's tracking off directly before each
+  picture.
 
 ### Changed (round 6: the screen's design pass before filming)
 

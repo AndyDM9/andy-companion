@@ -235,6 +235,15 @@ def read_view(frame: Any, what: str, asker: Callable) -> Dict[str, Any]:
             "where": top["where"] if top else "", "sightings": sightings}
 
 
+def quiet_tracking(robot: Any) -> None:
+    """The camera's own face tracking off, directly: a weight handed to it by another behaviour on the tick a search
+    began would otherwise pull the head toward the person for the whole search."""
+    try:
+        robot.stop_head_tracking()
+    except Exception:
+        pass
+
+
 def head_angles(robot: Any) -> Optional[tuple]:
     """Where the head is now: (yaw, pitch) in radians, or None if the robot can't say."""
     from andy_companion.body import glance
@@ -362,27 +371,32 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
     recorded tries: Pollen hands the head back to face tracking as Andy finishes saying "let me have a look
     around", mid-sweep, and one view came out pointed at the founder, the close-ups at the wrong places). It comes
     back only if it was on, once the last look has played out."""
+    from andy_companion.body import hold
+
     tracking = bool(getattr(manager, "_head_tracking", False)) and hasattr(manager, "set_head_tracking")
+    hold.begin(manager)                  # seek, face following, the glance and idle hand-back stand down
     if tracking:
         manager.set_head_tracking(False)
+    quiet_tracking(robot)
     out: Dict[str, Any] = {}
     try:
         out = await _find(what, robot, manager, **kw)
         return out
     finally:
-        if tracking:
-            back = BACK_TO_FACE_S + (POINT_HOLD_S if out.get("found") else 0.0)
+        back = BACK_TO_FACE_S + (POINT_HOLD_S if out.get("found") else 0.0)
 
-            def face_back() -> None:
+        def face_back() -> None:
+            hold.end(manager)
+            if tracking:
                 try:
                     manager.set_head_tracking(True)
                 except Exception:
                     pass   # following the face again is a help, never a reason to fail
 
-            try:
-                asyncio.get_running_loop().call_later(back, face_back)
-            except RuntimeError:
-                face_back()
+        try:
+            asyncio.get_running_loop().call_later(back, face_back)
+        except RuntimeError:
+            face_back()
 
 
 async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, checker: Callable = look_closer,
@@ -424,6 +438,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     poses: List[tuple] = []          # where the head really was for each view (yaw, pitch, radians)
     for deg in SWEEP_DEG:
         sent = (math.radians(deg), pitch)
+        quiet_tracking(robot)
         step = look.HoldLook(pose, antennas, sent[0], sent[1], HOLD_S)
         manager.queue_move(queueable(step))
         looking_at.set("room", step.duration + 1.0)
@@ -477,6 +492,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         # Look closer: the head at it as far as it can reach (2026-10-20: a chair 74 degrees to the side, past the
         # head's 65), still, then a close-up of a fresh frame around where it should show from there.
         aim = (within(place["yaw"], REACH_YAW_DEG), within(place["pitch"], REACH_PITCH_DEG))
+        quiet_tracking(robot)
         step = look.HoldLook(robot.get_current_head_pose(), antennas, aim[0], aim[1], CLOSER_HOLD_S)
         manager.queue_move(queueable(step))
         looking_at.set("room", step.duration + 0.5)
