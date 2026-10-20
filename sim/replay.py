@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import argparse
 import math
-import os
 import subprocess
 import sys
 import tempfile
@@ -162,7 +161,7 @@ def main(argv=None) -> int:
         film.add(film.room(*poses[i]), overlay(frames[i], boxes, spots), "2. Zooming in: six tiles per view, read at once",
                  f"View {i + 1}: NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory, {said}.", hold_s=1.4)
 
-    chosen, final_close = None, None
+    chosen = None
     for place in places[:finder.MAX_CLOSER]:
         aim = (finder.within(place["yaw"], finder.REACH_YAW_DEG), finder.within(place["pitch"], finder.REACH_PITCH_DEG))
         for k in range(1, 9):
@@ -183,7 +182,6 @@ def main(argv=None) -> int:
                  hold_s=1.6)
         if checked.get("yes"):
             chosen = finder.confirmed_place(place, {"frame": frame, "box": box, "head": aim, "checked": checked})
-            final_close = frame[box]
             break
     if chosen:
         err = fs.angle_between((chosen["yaw"], chosen["pitch"]), (truth["yaw"], truth["pitch"]))
