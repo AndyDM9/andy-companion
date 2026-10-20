@@ -125,7 +125,7 @@ def test_the_space_holds_only_the_demo(tmp_path):
     subprocess.run(["bash", str(ROOT / "scripts/space.sh"), "build", str(out)], cwd=ROOT, check=True,
                    capture_output=True, timeout=60)
     names = {p.relative_to(out).parts[0] for p in out.iterdir()}
-    assert names == {"Dockerfile", "README.md", "pyproject.toml", "uv.lock", "LICENSE", "scripts", "src"}
+    assert names == {"Dockerfile", "README.md", "pyproject.toml", "uv.lock", "LICENSE", "scripts", "src", "sim-search.mp4"}
     assert [p.name for p in (out / "scripts").iterdir()] == ["demo_screen.py"]
     assert not list(out.rglob(".env")) and not list(out.rglob("__pycache__"))
     again = subprocess.run(["bash", str(ROOT / "scripts/space.sh"), "build", str(out)], cwd=ROOT, capture_output=True, timeout=60)

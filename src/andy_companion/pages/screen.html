@@ -151,6 +151,8 @@
     body:not(.calm) .state[data-state="speaking"] .ant-l { animation: sway-l 1.6s ease-in-out infinite; }
     body:not(.calm) .state[data-state="speaking"] .ant-r { animation: sway-r 1.6s ease-in-out infinite; }
     body:not(.calm) .state[data-state="ready"] .eyes { animation: blink 6s ease-in-out infinite; }
+    body:not(.calm) .state[data-looking="wave"] .ant-l, body:not(.calm) .state[data-looking="wave"] .ant-r {
+      animation: wave-ant .62s ease-in-out infinite alternate; }
     body:not(.calm) .state[data-state="speaking"] .andy::after { content: ""; position: absolute; top: 20%; right: 0; bottom: -20%; left: 0;
                                                                  border-radius: 50%; border: 2px solid var(--orb); animation: ring 1.6s ease-out infinite; }
     body:not(.calm) #state-label { transition: opacity .25s; }
@@ -160,6 +162,7 @@
   @keyframes ponder { 50% { transform: rotate(26deg); } }
   @keyframes sway-l { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(4deg); } }
   @keyframes sway-r { 0%, 100% { transform: rotate(6deg); } 50% { transform: rotate(-4deg); } }
+  @keyframes wave-ant { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
   @keyframes blink { 0%, 94%, 100% { transform: none; } 97% { transform: scaleY(.15); } }
   @keyframes ring { from { transform: scale(.85); opacity: .7; } to { transform: scale(1.3); opacity: 0; } }
 
@@ -923,6 +926,7 @@
       if (s.state === "speaking") lastSpoke = Date.now();
       if (s.state !== liveNow) { liveNow = s.state; showAsk(); }
       text($("looking"), (ui.looking && ui.looking[s.looking]) || "");
+      $("state").dataset.looking = s.looking || "";      // Andy's drawing waves its antennas when it waves back
       const key = s.state + "|" + s.label;
       if (key === lastState) return;
       const pill = $("state");

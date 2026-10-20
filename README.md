@@ -8,26 +8,34 @@ no recordings or transcripts: only what you ask it to keep.
 
 > Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
 
-**Judging it in five minutes:**
-1. **Watch the video** (link above, once published): everything on it is live, on the robot.
-2. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open
+**Judging it without a robot** (you won't have a Reachy Mini; this is how to see the physical part anyway):
+1. **Watch the video** (link above, once published): everything on it is live, on the robot, with no cuts in the pauses.
+2. **Watch Andy's search in simulation** (20 s, below): Pollen's own MuJoCo scene, Andy's own search code, live
+   NVIDIA Nemotron 3.5 Super VL calls: it looks around, reads each view as six zoomed tiles, looks closer, points.
+   Measured the same way over 30 trials as Nebius Serverless Jobs (no false find in 7 without the duck; pointing
+   within 0.76° median). Run it yourself with a Token Factory key, no robot:
+   `cd sim && uv sync && cd .. && NEBIUS_API_KEY=… MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10`
+   (it fetches Pollen's scene from PyPI once; use `MUJOCO_GL=osmesa` without a GPU).
+3. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open
    `http://127.0.0.1:8093/`: the TV, Under the hood, the family page and the settings page, on sample data
    (no robot, GPU or keys).
    <!-- Founder: once the Hugging Face Space is up (founder action 6.18), its link goes here as "or open it in your browser". -->
-3. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)
+4. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)
    (a Nebius Serverless Job), the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
    (four ways, four Nebius Serverless Jobs, beside a [no-model baseline](evals/results/scam-word-rules-2026-10-20-1552.json)),
    and [54 real turns on the robot](evals/results/robot-timings-2026-10-20-1550.json); every failure is in them.
-4. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
+5. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
    `NEBIUS_API_KEY=… uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`
    (a few minutes; Tavily isn't called).
-5. **See the real robot live** on a video call, any time until 2026-12-15: ask, and we'll show it.
-6. **The code that matters:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
+6. **See the real robot live** on a video call, any time until 2026-12-15: ask, and we'll show it.
+7. **The code that matters:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
    ([finder.py](src/andy_companion/finder.py)), letters ([letters.py](src/andy_companion/letters.py)), the
    urgent-words net ([urgent.py](src/andy_companion/urgent.py)), privacy ([privacy.py](src/andy_companion/privacy.py)),
    and why each choice was made ([decisions](docs/decisions/README.md)).
 
 <!-- Founder: the video link and a photo or GIF of Andy beside the TV go here before submitting. -->
+
+![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
 
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
 shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter

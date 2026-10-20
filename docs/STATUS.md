@@ -33,6 +33,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md).
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-20 19:25 | Judging without a robot (round 9): a fresh clone from GitHub, 855 tests; the robot's environment 862; the Space's image built and run in Docker (every page 200, writes 403, the film on the front page); the simulation's film made with live model calls (found, 1.4° from the duck) | The demo's front page plays `sim-search.mp4`; the TV demo's keys scene and the waving drawing checked in a browser |
 | 2026-10-20 19:10 | The finder in simulation as two Nebius Serverless Jobs (`cloud/sim-job.sh`, decision 0013): Pollen's MuJoCo scene, a glasses-sized duck at random places, 30 trials each, software rendering | Zoomed in with the closer look: pointed 18 of 23 (58–90%), **false finds 0 of 7**, error median 0.76°; the old way: 19 of 23, **3 of 7**, 2.73°. On this computer's GPU: 21 of 23, 0 of 7, 0.8° against 23 of 23, 1 of 7, 1.5° |
 | 2026-10-20 17:11 | Zooming in at the desk (`evals/zoom_check.py`): a real pair of reading glasses in a CC0 room photo, 9 frames with them, 9 painted out | Old way (768 px) **0 of 9**; six full-size tiles **9 of 9**, no false sighting; closer look confirmed 8 of 9, wrongly 0 of 9; 24 tiles at once 1.8 s |
 | 2026-10-20 16:14 | The eyes side by side at the desk (`evals/eyes_check.py`, same pictures, three runs each) | Super VL on Token Factory: describe median 1.35 s, four views 2.08 s; Nano VL on our endpoint: 3.45 s and 2.28 s (3.69 s cold); both right on all four views; the endpoint stopped after |

@@ -38,6 +38,10 @@ Andy turns to them (the TV: "Turning to a voice"); a wave, and its antennas wave
 Andy turning straight to them; a grandchild teaching it a move with its antennas. The judges' research: an unprompted
 turn toward something real reads at once as attention. Fit one or two into shot 3's long take rather than adding time.
 
+**Judges have no robot (2026-10-20):** the video is where they see the physical part. Use the simulation's film
+(`docs/images/sim-search.mp4`, 20 s: Andy's own search in Pollen's MuJoCo scene, made by `sim/replay.py`) for two or
+three seconds in shot 7, beside the Serverless Jobs' numbers, never in place of the real robot.
+
 **Target length:** 2:50, never over 2:55 (time a rough cut). Andy's lines are never scripted; only the person's are planned. Robot shots are
 long, unedited takes.
 

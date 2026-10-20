@@ -243,14 +243,17 @@ households or run it on the home GPU. A scam check costs about $0.017.
 
 ## How to test it (for the judges)
 
-The robot is a Pollen Robotics Reachy Mini, so the video shows everything live, on the robot, with no cuts
-in the pauses. To check more:
-1. The screens with no robot, GPU or keys: `uv sync && uv run python scripts/demo_screen.py`, then
-   `http://127.0.0.1:8093/`. *[Add the Hugging Face Space's link here once it is up: the same pages,
-   read-only, in any browser.]*
-2. The scorecards in `evals/results/` (its README says which is which), and the scam check rerun with one
-   Token Factory key against the Tavily warnings we saved (the README's "Judging it in five minutes").
-3. The real robot, live on a video call, any time until judging ends: ask, and we'll show it.
+You won't have a Reachy Mini, so everything physical is shown three ways:
+1. **The video:** everything live on the robot, with no cuts in the pauses (at least a minute of the robot working).
+2. **Andy's search in simulation** (`docs/images/sim-search.gif`, 20 s, on the demo's front page too): Pollen's own
+   MuJoCo scene, Andy's own search code, live Nemotron 3.5 Super VL calls, from looking around to pointing. Measured
+   over 30 trials as Nebius Serverless Jobs; anyone with a Token Factory key can run it, no robot
+   (`sim/finder_sim.py`, the README says how).
+3. **The real robot, live on a video call,** any time until judging ends: ask, and we'll show it.
+
+And with no robot, GPU or keys: the screens on sample data, `uv sync && uv run python scripts/demo_screen.py`, then
+`http://127.0.0.1:8093/`. *[Add the Hugging Face Space's link here once it is up: the same pages, read-only, with the
+simulation's film on its front page.]* The scorecards are in `evals/results/` (its README says which is which).
 
 ## Built with
 

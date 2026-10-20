@@ -153,7 +153,7 @@ def test_andy_looks_closer_then_points_and_the_tv_shows_the_close_up():
         return {"yes": True, "x": 0.5, "y": 0.5, "where": "on the coffee table, by the remote"}
 
     out, robot, manager, posted = run(sweep + [close], checker)
-    assert out["found"] and out["looked_closer"] and out["where"] == "on the coffee table, by the remote"
+    assert out["found"] and out["looked_closer"] and out["where"] == "on the coffee table"   # the wider view's words
     assert robot.media.taken == 5 and checks == [(540, 960)]              # four views, then one close-up
     sweep_moves, closer, point = manager.moves[:4], manager.moves[4], manager.moves[5]
     assert len(manager.moves) == 6 and closer.hold_s == finder.CLOSER_HOLD_S and point.hold_s == finder.POINT_HOLD_S

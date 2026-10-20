@@ -19,6 +19,7 @@ fi
 mkdir -p "$OUT/scripts"
 cp "$ROOT/space/Dockerfile" "$ROOT/space/README.md" "$ROOT/pyproject.toml" "$ROOT/uv.lock" "$ROOT/LICENSE" "$OUT/"
 cp "$ROOT/scripts/demo_screen.py" "$OUT/scripts/"
+cp "$ROOT/docs/images/sim-search.mp4" "$OUT/"       # the simulated search's film, on the front page
 # The source as git has it: nothing ignored, no caches.
 git -C "$ROOT" archive HEAD src | tar -x -C "$OUT"
 echo "The Space's files are in $OUT (from commit $(git -C "$ROOT" rev-parse --short HEAD))."

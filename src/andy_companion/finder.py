@@ -399,8 +399,10 @@ def confirmed_place(place: Dict[str, Any], look_: Dict[str, Any]) -> Dict[str, A
     h, w = frame.shape[:2]
     fx = (box[1].start + checked.get("x", 0.5) * (box[1].stop - box[1].start)) / w
     fy = (box[0].start + checked.get("y", 0.5) * (box[0].stop - box[0].start)) / h
+    # Where it is, in words: the wider view's (it saw what is around it; a close-up has less to name, and in the
+    # simulation called a croissant "potato"), the close-up's only when the wider view said nothing.
     return dict(place, yaw=within(target_yaw(head[0], fx), REACH_YAW_DEG), pitch=target_pitch(head[1], fy),
-                where=checked.get("where") or place.get("where", ""))
+                where=place.get("where") or checked.get("where", ""))
 
 
 async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]:

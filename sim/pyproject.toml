@@ -7,6 +7,7 @@ dependencies = [
     "mujoco==3.3.0",                     # the version Pollen's reachy_mini[mujoco] pins
     "numpy>=1.26",
     "opencv-python-headless>=4.10,<5",
+    "pillow>=10",                        # captions for the replay (sim/replay.py)
 ]
 
 [tool.uv]

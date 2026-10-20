@@ -180,6 +180,14 @@ world, and "Serverless Jobs to run simulations … evaluate robot policies".
 Not taken: guided movement and reacting to falls or loud sounds (health and safety claims), Cosmos Reason 2 on an
 endpoint, emotions and dances in the model's hands, full-head teaching (the head may drop with its motors off).
 
+### Round 9 (Claude), judging without a robot (2026-10-20, the founder: "how will they review our Physical AI without Reachy Mini connected?")
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B51 | **Andy's search in simulation, as a film** (`sim/replay.py`; `docs/images/sim-search.*`) | Judges see the physical reasoning in 20 s without a robot | ✅ 2026-10-20 |
+| B52 | **The demo shows it:** the film on the front page and in the Space; the keys scene; the drawing waving | The link judges click carries the physical part too | ✅ 2026-10-20 (checked in a browser) |
+| B53 | **A judge can run the simulation** with only a Token Factory key (the scene fetched from PyPI) | Reproducible evidence, the track's "run simulations" | ✅ 2026-10-20 |
+
 ### Cleanup (Claude)
 
 | # | Item | Status |

@@ -10,7 +10,7 @@ you can see the screen as it is beside the robot. Under the hood
 shows sample turns with times of the kind measured on the robot (2026-10-13 and 14), so the page isn't
 empty without one. Nothing leaves this computer. Ctrl+C stops it, and the throwaway folder is deleted.
 
-`ANDY_DEMO_SCENE=found` (research, found, letter, scam, today, note, story or quiet) holds one scene, for
+`ANDY_DEMO_SCENE=found` (research, found, letter, scam, today, note, keys, story or quiet) holds one scene, for
 screenshots and for filming the screen.
 
 `--public` (or ANDY_DEMO_PUBLIC=1) is for a hosted copy that anyone can open (PLAN B26): it listens on every
@@ -39,7 +39,7 @@ PORT = int(os.environ.get("ANDY_DEMO_PORT") or (os.environ.get("PORT") if PUBLIC
 PAGES = [("/screen?t=demo-screen", "The TV beside Andy",
           "Open it full screen, on a big screen if you can. Every 20 seconds it shows another thing Andy puts up: "
           "a Tavily research answer, the glasses it found, a letter with a warning, a scam check, the day, a family "
-          "note, a story, and a quiet moment."),
+          "note, your keys where you left them, a story, and a quiet moment when Andy waves back."),
          ("/hood?t=demo-hood", "Under the hood",
           "Each turn stage by stage: how long hearing, thinking and each tool took, and where each ran."),
          ("/family?k=demo-family", "The family page",
@@ -53,6 +53,7 @@ CAPTIONS = {
     "found": "I think I see your glasses, on the table by the lamp. It's on your screen too.",
     "scam": "This shows a sign of a known scam: a grandson in trouble asking for money. The FTC warns about messages like this. Let's check with Anna first.",
     "note": "Anna sent you a note: she'll call you at six tonight.",
+    "keys": "They're still where you left them, on the hall table.",
 }
 
 
@@ -65,6 +66,12 @@ def index_page() -> bytes:
     extra = "".join(f'<p><a href="{html.escape(url)}">{label}</a></p>' for label, url in
                     (("The video", os.environ.get("ANDY_DEMO_VIDEO", "")), ("The code", os.environ.get("ANDY_DEMO_REPO", "")))
                     if url.startswith("https://"))
+    film = ""
+    if "/media/sim-search.mp4" in screen_server.MEDIA:
+        film = ('<figure><video src="/media/sim-search.mp4" autoplay muted loop playsinline controls width="100%"></video>'
+                "<figcaption>No robot here either, so this is Andy's own search for a rubber duck in simulation (Pollen's "
+                "MuJoCo scene): it looks around, reads each view as six zoomed tiles with NVIDIA Nemotron 3.5 Super VL, "
+                "looks closer, and points. The real robot is in the project's video.</figcaption></figure>")
     return f"""<!doctype html><html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:,"><title>Andy, on sample data</title>
 <style>
@@ -84,6 +91,8 @@ li span {{ display: block; color: var(--soft); margin-top: 4px; }}
 a {{ color: var(--mark); }}
 a:focus-visible {{ outline: 3px solid var(--mark); outline-offset: 3px; border-radius: 4px; }}
 .note {{ font-size: 1rem; }}
+figure {{ margin: 24px 0; }} video {{ border-radius: 14px; display: block; }}
+figcaption {{ color: var(--soft); font-size: 1rem; margin-top: 8px; }}
 </style>
 <main>
 <h1>Andy's screens, on sample data</h1>
@@ -91,6 +100,7 @@ a:focus-visible {{ outline: 3px solid var(--mark); outline-offset: 3px; border-r
 Mini, and it is built with NVIDIA Nemotron on Nebius Token Factory, and Tavily.</p>
 <p>No robot is connected here. These are Andy's real pages, running on made-up reminders, letters and
 messages.</p>
+{film}
 <ul>{links}</ul>
 {extra}
 <p class="note">Nothing you type on these pages is sent or kept.</p>
@@ -135,6 +145,11 @@ def scam() -> None:
         lead="Don't reply, pay or give any details. Check with family first.")
 
 
+def keys() -> None:
+    """A place the person had Andy keep, looked at first (PLAN B46)."""
+    board.show("seen", "Your house keys", [{"summary": "on the hall table, by the lamp"}])
+
+
 def note() -> None:
     board.show("note", "A note from Anna", [{"summary": "I'll call you at six tonight. Love, Anna", "when": "5:42 pm"}])
 
@@ -165,7 +180,7 @@ def research() -> None:
 
 
 # What the head is turned to in each scene, as the behaviours would say on the robot (body/looking_at.py).
-LOOKING = {"research": "screen", "found": "pointing"}
+LOOKING = {"research": "screen", "found": "pointing", "keys": "remembered"}
 
 
 def today_caption() -> str:
@@ -210,6 +225,10 @@ def main() -> int:
         # The Space's page shows the demo in a frame; Andy's own server lets no page frame it.
         screen_server.HEADERS["Content-Security-Policy"] = screen_server.HEADERS["Content-Security-Policy"].replace(
             "frame-ancestors 'none'", "frame-ancestors https://huggingface.co")
+    for film in (Path(__file__).resolve().parents[1] / "docs/images/sim-search.mp4", Path("sim-search.mp4")):
+        if film.is_file():           # in the repository, or beside the Space's Dockerfile
+            screen_server.MEDIA["/media/sim-search.mp4"] = (film.read_bytes(), "video/mp4")
+            break
     screen_server.INDEX = index_page()
     reminders.add("Call Rosa", minutes=20)
     reminders.add("Put the bins out", minutes=80)
@@ -233,7 +252,8 @@ def main() -> int:
     print(f"Under the hood:                      {base}/hood?t=demo-hood")
     print("Sample data only; Ctrl+C to stop.", flush=True)
     scenes = [("research", research), ("found", found), ("letter", letter), ("scam", scam), ("today", dayplan.show),
-              ("note", note), ("story", lambda: stories.start("lion")), ("quiet", board.clear_screen)]
+              ("note", note), ("keys", keys), ("story", lambda: stories.start("lion")),
+              ("quiet", board.clear_screen)]
     import signal
 
     def stop(*_):
@@ -253,7 +273,9 @@ def main() -> int:
             started = time.time()
             while time.time() - started < 20:
                 if name == "quiet":                # nothing showing, Andy waiting: the screen suggests what to ask
-                    screen_server.set_live({"state": "ready", "tool": ""})
+                    # ... after waving back at someone who waved as they came in (PLAN B49), for a few seconds.
+                    waved = time.time() - started < 4
+                    screen_server.set_live({"state": "ready", "tool": "", **({"looking": "wave"} if waved else {})})
                     screen_server.set_caption("", now=0)
                 else:
                     screen_server.set_live({"state": "speaking", "tool": "", "looking": LOOKING.get(name, "you")})

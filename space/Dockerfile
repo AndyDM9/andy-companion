@@ -14,6 +14,7 @@ COPY --chown=user pyproject.toml uv.lock LICENSE ./
 RUN uv sync --frozen --no-install-project
 COPY --chown=user src ./src
 COPY --chown=user scripts/demo_screen.py ./scripts/demo_screen.py
+COPY --chown=user sim-search.mp4 ./sim-search.mp4
 ENV ANDY_DEMO_PUBLIC=1 PORT=7860
 EXPOSE 7860
 CMD ["uv", "run", "--frozen", "--no-sync", "python", "scripts/demo_screen.py", "--public"]

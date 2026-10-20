@@ -23,7 +23,7 @@ from collections import deque
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import parse_qs, urlparse
 
 from andy_companion import board, clock, reminders
@@ -329,7 +329,7 @@ MAX_BODY = 4096
 HEADERS = {
     "Content-Security-Policy": ("default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
                                 "font-src 'self'; connect-src 'self'; "
-                                "img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"),
+                                "img-src 'self' data:; media-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"),
     "Referrer-Policy": "no-referrer",
     "X-Content-Type-Options": "nosniff",
     "Cache-Control": "no-store",
@@ -560,6 +560,8 @@ READ_ONLY = False
 READ_ONLY_ERROR = "This is a public demo with sample data: nothing you send is kept or shown to anyone."
 # The demo's own front page at "/", listing the four pages; Andy's real server has none.
 INDEX: Optional[bytes] = None
+# Files the demo's front page shows (scripts/demo_screen.py: the simulated search's film), by path; empty on the robot.
+MEDIA: Dict[str, Tuple[bytes, str]] = {}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -606,6 +608,9 @@ class Handler(BaseHTTPRequestHandler):
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         if url.path == "/" and INDEX is not None:
             return self._send(200, INDEX, "text/html; charset=utf-8")
+        if url.path in MEDIA:
+            body, kind = MEDIA[url.path]
+            return self._send(200, body, kind)
         if url.path == "/screen" and _ok(q.get("t"), "screen"):
             return self._page("screen.html")
         if url.path == "/api/screen" and _ok(q.get("t"), "screen"):

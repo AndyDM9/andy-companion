@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Added (round 9: judging without a robot)
+
+Judges may judge on the text, images and video alone, and won't have a Reachy Mini:
+- **Andy's search in simulation, as a film (B51):** `sim/replay.py` runs one of Andy's own searches in Pollen's
+  MuJoCo scene with live Nemotron 3.5 Super VL calls and films it: the room with an arrow for where Andy's eye points,
+  beside what the eye sees (the zoomed tiles, the sighting, the close-up, the point), captioned step by step;
+  `docs/images/sim-search.mp4` (1.2 MB) and `.gif` (3.7 MB). In the README's opening, the gallery list, the video plan.
+  Found because of it: the close-up's words for where a thing is were worse than the wider view's (a croissant called
+  "potato"); the finder now says where in the wider view's words.
+- **The demo shows it (B52):** the front page plays the film (`screen_server.MEDIA`, `media-src 'self'`), the Space
+  carries it, and the TV demo gained a scene for keys looked at where they were left and, in the quiet scene, Andy's
+  drawing waving its antennas when it waves back.
+- **A judge can run the simulation (B53):** without a robot or its environment, `sim/finder_sim.py` fetches Pollen's
+  scene from PyPI once (checked against its checksum); the README and the Devpost text say how, beside the video and
+  a live call.
+
 ### Added (round 8: Physical AI, from the judges' and the field's research)
 
 - **Turn to whoever speaks (B45):** while Andy follows one face, speech more than 40 degrees to the side for 0.6 s,

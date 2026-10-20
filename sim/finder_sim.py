@@ -45,16 +45,45 @@ OBJECTS = ("duck", "croissant", "apple")
 REST_Z = {"duck": 0.0, "croissant": 0.03, "apple": 0.03}             # where each rests on the table top (the scene's own)
 
 
+SCENE_VERSION = "1.12.0rc1"          # the robot's own reachy-mini (robot/pyproject.toml)
+CACHE = HERE / ".cache"
+
+
 def scene_dir() -> Path:
-    """Pollen's MJCF: ANDY_SIM_MJCF, else the robot environment's installed reachy_mini (1.12.0rc1)."""
+    """Pollen's MJCF: ANDY_SIM_MJCF; else the robot environment's installed reachy_mini; else fetched once from PyPI
+    (the wheel's descriptions only, into sim/.cache), so the simulation needs no robot and no robot environment."""
     if os.environ.get("ANDY_SIM_MJCF"):
         return Path(os.environ["ANDY_SIM_MJCF"])
     import glob
 
     found = glob.glob(str(HERE.parent / "robot/.venv/lib/python3*/site-packages/reachy_mini/descriptions/reachy_mini/mjcf"))
-    if not found:
-        raise SystemExit("No Reachy Mini MJCF: set ANDY_SIM_MJCF (pip download reachy-mini==1.12.0rc1 --no-deps).")
-    return Path(found[0])
+    if found:
+        return Path(found[0])
+    kept = CACHE / "reachy_mini/descriptions/reachy_mini/mjcf"
+    if not (kept / "scenes" / "minimal.xml").is_file():
+        fetch_scene(CACHE)
+    return kept
+
+
+def fetch_scene(into: Path, version: str = SCENE_VERSION) -> None:
+    """Pollen's reachy-mini wheel from PyPI, its descriptions (meshes, textures, MJCF) kept, nothing else."""
+    import io
+    import urllib.request
+    import zipfile
+
+    with urllib.request.urlopen(f"https://pypi.org/pypi/reachy-mini/{version}/json", timeout=30) as r:
+        meta = json.loads(r.read())
+    wheel = next(u for u in meta["urls"] if u["filename"].endswith(".whl"))
+    print(f"Fetching Pollen's Reachy Mini scene ({wheel['filename']}, {wheel['size'] / 1e6:.0f} MB) once…", flush=True)
+    with urllib.request.urlopen(wheel["url"], timeout=300) as r:
+        data = r.read()
+    import hashlib
+    if hashlib.sha256(data).hexdigest() != wheel["digests"]["sha256"]:
+        raise SystemExit("The downloaded wheel doesn't match PyPI's checksum.")
+    with zipfile.ZipFile(io.BytesIO(data)) as z:
+        for name in z.namelist():
+            if "/descriptions/" in name:
+                z.extract(name, into)
 
 
 def camera_quat(yaw: float, pitch: float):
