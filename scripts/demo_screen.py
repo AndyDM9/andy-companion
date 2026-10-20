@@ -234,6 +234,13 @@ def main() -> int:
     print("Sample data only; Ctrl+C to stop.", flush=True)
     scenes = [("research", research), ("found", found), ("letter", letter), ("scam", scam), ("today", dayplan.show),
               ("note", note), ("story", lambda: stories.start("lion")), ("quiet", board.clear_screen)]
+    import signal
+
+    def stop(*_):
+        raise KeyboardInterrupt
+
+    # Stopped from outside (a Space restarting, `kill`) as with Ctrl+C: the throwaway folder is deleted either way.
+    signal.signal(signal.SIGTERM, stop)
     # ANDY_DEMO_SCENE=found (or any name above) holds that one scene: for screenshots and for filming the screen.
     hold = os.environ.get("ANDY_DEMO_SCENE", "")
     if hold:

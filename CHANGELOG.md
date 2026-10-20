@@ -19,7 +19,8 @@ and wrong in two (decision 0005, amended; PLAN round 6):
   the chosen view of a search bigger, and the scam receipt's three steps never cut off with "…" and never left out.
 - **The quiet screen** centred in its space. The demo can hold one scene (`ANDY_DEMO_SCENE`), for screenshots and
   filming, and names the real coming Saturdays (it said "October 17" on October 20). The README's and the app page's
-  screenshots retaken; two more for the gallery (`tv-scam-receipt.png`, `tv-finder.png`).
+  screenshots retaken; two more for the gallery (`tv-scam-receipt.png`, `tv-finder.png`). Stopped from outside
+  (SIGTERM), the demo now deletes its throwaway folder too, as with Ctrl+C.
 - Found on the way: the robot's USB was reconnected by the founder; the daemon is running again and Andy woke.
 
 ### Added and changed (round 5: what is still missing to win, from the gap research)
