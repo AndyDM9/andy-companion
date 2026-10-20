@@ -161,7 +161,8 @@ def test_andy_looks_closer_then_points_and_the_tv_shows_the_close_up():
     want_yaw = finder.target_yaw(math.radians(-18), 0.7)
     assert glance._rpy(closer.end)[2] == pytest.approx(want_yaw, abs=0.01)
     assert glance._rpy(closer.end)[1] > math.radians(finder.PITCH_DEG)   # lower than the sweep: it was low in view
-    views, seen, chosen = posted[0]
+    assert posted[0] == ([None] * 4, [False] * 4, None)          # the TV cleared first: no old close-up to find
+    views, seen, chosen = posted[-1]
     assert chosen == 2 and seen == [False, False, True, False]
     import cv2
     shown = cv2.imdecode(np.frombuffer(views[2], np.uint8), cv2.IMREAD_COLOR)
@@ -180,7 +181,7 @@ def test_a_no_up_close_moves_on_and_then_says_it_was_not_them():
     assert not out["found"] and len(asked) == finder.MAX_CLOSER == 2
     assert "looked closer" in out["how"] and "No guessing" in out["how"]
     assert len(manager.moves) == 4 + 2                                    # the sweep, two closer looks, no point
-    assert posted[0][2] is None and board.showing()["kind"] == "looked"
+    assert posted[-1][2] is None and board.showing()["kind"] == "looked"
 
 
 def test_nothing_seen_means_no_closer_look_and_switched_off_eyes_up_close_are_said():

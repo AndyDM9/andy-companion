@@ -27,6 +27,10 @@ to 768 pixels, and the model reads a picture at the size it is sent (decision 00
   view taken about 18 degrees short of where the head was sent: a move can start late. Now the finder waits (up to
   1.5 s) until the head has arrived before each picture, reads each view from where the head really was, and a
   recorded try keeps its views and close-ups at full size with the head's angles, so the tries can be re-read zoomed in.
+- The floor try's recording showed a sighting "in the calendar widget on the screen": Andy's own TV still showing the
+  last search's close-up of the glasses, very likely the earlier confident miss. Now a search clears the TV first, both
+  questions say a picture on a TV, monitor, phone or photo is not the thing, and a sighting described as on a screen is
+  dropped in code.
 
 ### Changed (round 6: the screen's design pass before filming)
 

@@ -155,7 +155,8 @@ def test_the_finder_posts_all_four_small_views_to_the_screen(monkeypatch):
     out = asyncio.run(finder.find("glasses", robot, Manager(), asker=asker, poster=poster, queueable=lambda m: m,
                                   sleep=no_wait, clock=lambda: 0.0))
     assert out["found"]
-    url, body = sent[0]
+    assert sent[0][1]["views"] == [None] * 4                    # the TV cleared first (round 7)
+    url, body = sent[-1]
     assert "/api/views?t=" + board.tokens()["screen"] in url
     assert body["seen"] == [False, True, False, False] and body["chosen"] == 1 and len(body["views"]) == 4
     for b64 in body["views"]:

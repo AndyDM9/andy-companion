@@ -101,8 +101,9 @@ def test_andy_sweeps_finds_points_and_shows_what_it_saw(monkeypatch):
     assert point.hold_s == finder.POINT_HOLD_S
     assert out["found"] and out["where"] == "on the table by the lamp"
     assert out["say"] == "I think I see your reading glasses, on the table by the lamp." and "left or right" in out["how"]
-    views, seen, chosen = posted[0]                              # all four views to the screen, in the order Andy turned
-    assert len(posted) == 1 and len(views) == 4 and all(v[:2] == b"\xff\xd8" for v in views)
+    assert posted[0] == ([None] * 4, [False] * 4, None)               # the TV cleared first, then the four views
+    views, seen, chosen = posted[-1]                             # all four views to the screen, in the order Andy turned
+    assert len(posted) == 2 and len(views) == 4 and all(v[:2] == b"\xff\xd8" for v in views)
     assert seen == [False, False, True, False] and chosen == 2
     shown = board.showing()
     assert shown["kind"] == "seen" and shown["title"] == "Your reading glasses"
@@ -115,7 +116,7 @@ def test_not_found_says_so_kindly_and_points_nowhere(monkeypatch):
                                    poster=lambda views, seen, chosen: posted.append((views, seen, chosen)))
     assert not out["found"] and "No guessing" in out["how"] and len(manager.moves) == 4
     # The screen shows where Andy looked: the four views, none seen, none chosen.
-    assert len(posted) == 1 and len(posted[0][0]) == 4 and posted[0][1:] == ([False] * 4, None)
+    assert len(posted) == 2 and len(posted[-1][0]) == 4 and posted[-1][1:] == ([False] * 4, None)
     shown = board.showing()
     assert shown["kind"] == "looked" and shown["title"] == "I couldn't see your reading glasses"
 

@@ -69,7 +69,8 @@ ASK = ("You are the eyes of a home companion robot helping someone find their {w
        "Is their {what} visible? Answer as JSON: seen (true or false), x (where it is across the picture, "
        "0 at the left edge to 1 at the right edge), and where (a few plain words, like 'on the table by the "
        "lamp'), naming things near it and never left or right. Only say seen if you can actually see it. "
-       "Never describe any person. Also give y, where it is down the picture, 0 at the top to 1 at the bottom.")
+       "Never describe any person. Also give y, where it is down the picture, 0 at the top to 1 at the bottom. "
+       "Only the real thing in the room counts: a picture of it on a TV, monitor, phone, screen or photo is not it.")
 SCHEMA = {"type": "object", "additionalProperties": False, "required": ["seen", "x", "y", "where"],
           "properties": {"seen": {"type": "boolean"}, "x": {"type": "number"}, "y": {"type": "number"},
                          "where": {"type": "string"}}}
@@ -78,7 +79,8 @@ SCHEMA = {"type": "object", "additionalProperties": False, "required": ["seen", 
 CHECK = ("You are the eyes of a home companion robot. It has turned to look closely at something that may be the "
          "person's {what}. Look at this close-up. Is it clearly their {what}? Answer as JSON: answer ('yes', 'no' or "
          "'unsure'), x and y (where it is, 0 to 1 across and down), and where (a few plain words naming things near "
-         "it, never left or right). Say yes only if you are sure. Never describe any person.")
+         "it, never left or right). Say yes only if you are sure. A picture of it on a TV, monitor, phone, screen or "
+         "photo is not it: say no. Never describe any person.")
 CHECK_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["answer", "x", "y", "where"],
                 "properties": {"answer": {"type": "string", "enum": ["yes", "no", "unsure"]}, "x": {"type": "number"},
                                "y": {"type": "number"}, "where": {"type": "string"}}}
@@ -130,6 +132,15 @@ def look_closer(frame: Any, what: str, opener: Optional[Callable] = None) -> Dic
     return ask(close_up(frame), what, opener, check=True)
 
 
+# A sighting described as on a screen is a picture, not the thing: Andy's own TV shows the last close-up for two
+# minutes, and the founder's recorded try saw glasses "in the calendar widget on the screen" (2026-10-20).
+ON_SCREEN = re.compile(r"\b(screen|monitor|tv|television|display|widget|phone|tablet|laptop|computer|photo|picture|poster)s?\b", re.I)
+
+
+def on_screen(where: str) -> bool:
+    return bool(ON_SCREEN.search(where or ""))
+
+
 def _unit(value: Any) -> float:
     try:
         return min(1.0, max(0.0, float(value)))
@@ -149,15 +160,17 @@ def _json(text: str) -> Dict[str, Any]:
 def parse(text: str) -> Dict[str, Any]:
     """The model's JSON, made safe: x and y within 0..1, a short 'where', seen only if said plainly."""
     data = _json(text)
-    return {"seen": data.get("seen") is True, "x": _unit(data.get("x", 0.5)), "y": _unit(data.get("y", 0.5)),
-            "where": " ".join(str(data.get("where", "")).split())[:80]}
+    where = " ".join(str(data.get("where", "")).split())[:80]
+    return {"seen": data.get("seen") is True and not on_screen(where), "x": _unit(data.get("x", 0.5)),
+            "y": _unit(data.get("y", 0.5)), "where": where}
 
 
 def parse_check(text: str) -> Dict[str, Any]:
     """The close-up's answer: yes only when the model said exactly "yes"."""
     data = _json(text)
-    return {"yes": data.get("answer") == "yes", "x": _unit(data.get("x", 0.5)), "y": _unit(data.get("y", 0.5)),
-            "where": " ".join(str(data.get("where", "")).split())[:80]}
+    where = " ".join(str(data.get("where", "")).split())[:80]
+    return {"yes": data.get("answer") == "yes" and not on_screen(where), "x": _unit(data.get("x", 0.5)),
+            "y": _unit(data.get("y", 0.5)), "where": where}
 
 
 def tiles(frame: Any, cols: int = TILES[0], rows: int = TILES[1], overlap: float = OVERLAP) -> List[tuple]:
@@ -335,6 +348,11 @@ async def find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, ch
     except Exception:
         antennas = (0.0, 0.0)
     pitch = math.radians(PITCH_DEG)
+    try:   # the TV shows the last search's close-up for two minutes: clear it, or Andy finds the picture
+        board.clear_screen()
+        poster([None] * len(SWEEP_DEG), [False] * len(SWEEP_DEG), None)
+    except Exception:
+        pass
     pose = robot.get_current_head_pose()
     looks = []
     for deg in SWEEP_DEG:
