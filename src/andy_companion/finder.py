@@ -194,7 +194,7 @@ def read_view(frame: Any, what: str, asker: Callable) -> Dict[str, Any]:
     if errors:
         raise errors[0]
     sightings: List[Dict[str, Any]] = []
-    for (x0, y0, tw, th, _), a in zip(parts, said):
+    for (x0, y0, tw, th, _), a in zip(parts, said, strict=True):
         if not a.get("seen"):
             continue
         gx, gy = (x0 + a["x"] * tw) / w, (y0 + a.get("y", 0.5) * th) / h

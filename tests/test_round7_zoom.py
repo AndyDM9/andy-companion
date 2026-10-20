@@ -147,6 +147,7 @@ def test_andy_looks_closer_then_points_and_the_tv_shows_the_close_up():
     assert robot.media.taken == 5 and checks == [(1080, 1920)]            # four views, then one closer look
     sweep_moves, closer, point = manager.moves[:4], manager.moves[4], manager.moves[5]
     assert len(manager.moves) == 6 and closer.hold_s == finder.CLOSER_HOLD_S and point.hold_s == finder.POINT_HOLD_S
+    assert [round(math.degrees(glance._rpy(m.end)[2])) for m in sweep_moves] == [55, 18, -18, -55]
     want_yaw = finder.target_yaw(math.radians(-18), 0.7)
     assert glance._rpy(closer.end)[2] == pytest.approx(want_yaw, abs=0.01)
     assert glance._rpy(closer.end)[1] > math.radians(finder.PITCH_DEG)   # lower than the sweep: it was low in view
