@@ -5,6 +5,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-21
 
+### Changed (the records brought up to date)
+
+- **PLAN round 10** records the audits and the packaging (B54 to B58); STATUS gives the finder's home result under
+  M6 and the Devpost text's state under M10; the rules record points to `docs/credits.md`; the plan's Jetson row to
+  its new page; the documents' dates are current.
+
 ### Changed (the Devpost text and the README, to the shape of winning entries)
 
 Research on recent Devpost winners (a median story of about 990 words, the longest 1,810; Devpost's own headings;

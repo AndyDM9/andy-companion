@@ -36,7 +36,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | Fits the Physical AI track: an embodied agent that senses and acts, coordinated through an agent runtime; Serverless Jobs for evaluation, Serverless Endpoints for real-time inference | ✅ | A Reachy Mini that hears, sees, follows a face, turns, speaks; Pollen's conversation app as the agent runtime; Nebius Serverless Jobs for the suite, the scam evaluation and Andy's search in simulation; vision on Token Factory; content safety as a Serverless Endpoint (Nano VL eyes as an option) |
 | Installs and runs consistently, and works as shown and described | 🔶 | Fresh-clone install checked 2026-10-13 and again from GitHub on 2026-10-14 (all three environments, the tests, the doctor, the keyless demo with an empty home folder); re-check before going public; `scripts/doctor.py`; the live test (`docs/live-test.md`) before filming; the video shows only what works |
 | New, or significantly updated during the period, with an explanation | ✅ | Created 2026-10-13; the README's "Built during the hackathon" says what reuses the author's own earlier code (from 2026-10-05, also inside the period) |
-| Authorised to use every third-party SDK, API and data | ✅ | The README's "Licences and credits" lists each with its terms and the attribution it requires |
+| Authorised to use every third-party SDK, API and data | ✅ | [credits.md](credits.md) lists each with its terms and the attribution it requires, linked from the README's "Licences and credits" |
 
 ## Submission requirements
 

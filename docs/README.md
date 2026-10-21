@@ -2,7 +2,7 @@
 
 Everything written down about Andy, in two groups: what explains the product, and the records of how it was built
 and entered in the Nebius x NVIDIA Global AI Hackathon. Start with the [README](../README.md); this page says where
-everything else is. Last checked 2026-10-20.
+everything else is. Last checked 2026-10-21.
 
 ## Read first: the product
 

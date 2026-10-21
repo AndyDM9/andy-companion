@@ -1,7 +1,7 @@
 # The video
 
 The plan for the entry's video: the rules it must meet, the checklist before filming, the shots, and what
-happens after. Last revised 2026-10-20.
+happens after. Last revised 2026-10-21.
 
 **Rules** (Devpost, re-read 2026-10-13; every rule and how we meet it is in
 [rules-compliance.md](rules-compliance.md)):

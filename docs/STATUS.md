@@ -1,6 +1,6 @@
 # Status
 
-**Last updated 2026-10-20.** Update this file in the same commit as any change it describes.
+**Last updated 2026-10-21.** Update this file in the same commit as any change it describes.
 The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history is in [CHANGELOG.md](../CHANGELOG.md).
 
 ## At a glance
@@ -13,11 +13,11 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M3 | Body behaviours | ✅ Done 2026-10-13; more on 2026-10-20 | Looking at the person while speaking, following, sleep, quiet and wake, verified by the founder on the robot. Added 2026-10-20 and tested in code, awaiting the robot: turning to a second voice, waving back, moves taught by hand ([live-test.md](live-test.md) 3aa to 3dd) |
 | M4 | The day, the same way every time | ✅ Done 2026-10-13 | The day plan, reminders in the person's words, pace and volume that stick, jokes, stories and On this day; English and Spanish |
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
-| M6 | Eyes | 🔨 Built, awaiting the live test on the robot | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) |
+| M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20) |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space waiting on the founder's account |
 | M8 | Proof | 🔨 Built; final run before submitting | 94 spoken situations in 22 areas, Andy's real profile and its 38 tools, judged by Nemotron 3 Ultra: latest **92, 91, 94 of 94 as a Nebius Serverless Job** (2026-10-20). The scam check five ways, 54 real turns timed on the robot, the finder in simulation. Every run below and in [evals/results/](../evals/results/) |
 | M9 | Ship | 🔨 In progress | The Reachy Mini app packaged and passing Pollen's checker; the doctor and user services; a fresh clone installs and passes, and every command a judge is told to run works without keys or says what it needs (audited 2026-10-20). Left: the name, the history rewrite, the repository public, the app and the Space published |
-| M10 | Video and submission | 🔨 Prepared | The shot list ([video.md](video.md), 2:54 with a 72 s uncut take), the Devpost text ([submission.md](submission.md)) and the feedback ([feedback.md](feedback.md)) ready; filming 2026-10-24 to 10-26 |
+| M10 | Video and submission | 🔨 Prepared | The shot list ([video.md](video.md), 2:54 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 1,500 words since 2026-10-21) and the feedback ([feedback.md](feedback.md)) ready; the gallery planned, its four robot photos the founder's; the Devpost draft due 2026-10-22; filming 2026-10-24 to 10-26 |
 
 ## Accounts and keys
 

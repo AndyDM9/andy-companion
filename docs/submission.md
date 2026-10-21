@@ -2,7 +2,7 @@
 
 The text for the Devpost form, field by field. Every sentence is true and checkable in the repository; each number
 comes from the scorecard or measurement named in the README. Rewritten 2026-10-21 to the length and shape of
-recent winning entries (about 1,600 words, Devpost's own headings, each number said once); re-read against
+recent winning entries (about 1,500 words, Devpost's own headings, each number said once); re-read against
 [rules-compliance.md](rules-compliance.md) before submitting. The fuller story is in the [README](../README.md).
 
 ## Form fields
