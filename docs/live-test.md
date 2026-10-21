@@ -1,6 +1,8 @@
-# Live test on the robot
+# Robot test script
 
-The features built but not yet tried on the Reachy Mini, in an order that takes about 25
+The script for testing Andy on the real Reachy Mini, step by step: what to say, what should happen, and a column for
+what did. Steps are added as features are built, so a step without a result is one not yet tried on the robot;
+results go to [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md). In an order that takes about 25
 minutes. Say the words in quotes; tick what happened and write anything odd in the last column.
 Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md) afterwards.
 
@@ -8,7 +10,7 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 
 - [ ] Andy and the voice server running: `systemctl --user start andy-voice andy` (or `status`).
 - [ ] `robot/.venv/bin/python scripts/doctor.py --live`: everything green but the second look's endpoint, until it's started. **The robot's own daemon must say it is fine:** on 2026-10-20 it reported "Motor communication error! Check connections and power supply": check the robot's power and USB first.
-- [ ] `python scripts/settings.py links`: open the **screen** on the TV, the **family page** on a
+- [ ] `uv run python scripts/settings.py links`: open the **screen** on the TV, the **family page** on a
       phone, and **under the hood** on a laptop (its own link since 2026-10-14; the gear on the TV opens it too).
 - [ ] The eyes (sections 6 and 7) are Nemotron 3.5 Super VL on Token Factory since 2026-10-20: nothing to start.
       Only to try the older endpoint: `ANDY_VISION=endpoint` in the env file and `cloud/vision-endpoint.sh start`

@@ -1,5 +1,7 @@
 # What Andy does, in full
 
+Last checked 2026-10-20.
+
 The README has the short version. Each item here says what Andy does and, where it matters, what is
 decided in code rather than by the model. How each was tested is in the [changelog](../CHANGELOG.md)
 and the [live test](live-test.md).
@@ -50,8 +52,9 @@ and the [live test](live-test.md).
 ## Seeing
 
 - **"Where did I leave my glasses?"** Andy looks around the room, a little down where things are put
-  down, and NVIDIA Nemotron 3.5 Super VL on Token Factory reads the four views at once. Andy turns its head to point at it,
-  says "I think I see your glasses, on the table…", and the TV shows the picture it saw it in (held in
+  down, and NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of the four views as six zoomed tiles at once.
+  Andy turns its head straight at the best sighting, checks a close-up with a strict yes-or-no question, and only
+  then points at it and says "I think I see your glasses, on the table…", and the TV shows the picture it saw it in (held in
   memory for two minutes, never saved). Never for finding a person. If the eyes are switched off, Andy
   says so within a few seconds.
 - **A photo's story** (2026-10-20): when family send a photo, or you hold one up, Andy says what is in it and
@@ -179,5 +182,6 @@ plain page saying what to do, never a bare error.
 check in code sees the words. If Andy's reply misses 911 (or the 988 Lifeline), Andy is told to say an
 exact sentence naming it. If the model can't be reached, or its answer still leaves the number out, Andy
 plays that sentence from a recording on the robot. A "not" only cancels the words it directly governs, so
-"not sure why, but my chest hurts" still counts. In the suite, every crisis case got its line, 15 of 15,
-in English and Spanish. The list is fixed: phrasings it doesn't hold are missed.
+"not sure why, but my chest hurts" still counts. In the suite, every crisis case got its line, in English and Spanish:
+15 of 15 on 2026-10-13, and in all three runs of 2026-10-20 (one reply that day gave 988 but left out
+"someone you trust"). The list is fixed: phrasings it doesn't hold are missed.

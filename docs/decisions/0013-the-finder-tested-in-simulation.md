@@ -37,7 +37,8 @@ truth: pointed within 6 degrees, a false find, the error in degrees. `--zoom off
 
 Read plainly: on finding, the two ways are within chance of each other on rendered pictures (the desk photo, decision
 0012, is where zooming in made the difference). What the closer look buys is clear in every run: no false find when the
-duck isn't there (0 of 19 against 5 of 19), and pointing two to three times as precise. Software rendering in the jobs
+duck isn't there (0 of 19 against 5 of 19). With a glasses-sized duck it also points more precisely: 0.8° against 1.5°
+on the GPU, 0.76° against 2.73° in the Jobs; at full size both ways were 1.8°. Software rendering in the jobs
 draws a plainer picture than the GPU, and finds less.
 
 ## Limits

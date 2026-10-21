@@ -32,7 +32,7 @@ At the desk (`evals/zoom_check.py`, [scorecard](../../evals/results/zoom-check-2
 real pair of reading glasses, 9 with them painted out): the old way 0 of 9; full-size frames 6 of 9 (none of the
 three far ones, in the exploration before this decision); 3x2 tiles 9 of 9 with no false sighting; the closer look
 confirmed 8 of 9 and said yes to none of the 9 painted-out spots. The 24 tiles take about 1.8 s together, as one
-view did; the closer look adds about 2.5 s, and is something a viewer can see the robot do. About $0.009 a search.
+view did; the closer look adds about 2.5 s, and is something a viewer can see the robot do. About $0.005 a search, measured ([cost](../cost.md)).
 
 ## Revisit when
 

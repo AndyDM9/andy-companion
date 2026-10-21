@@ -276,7 +276,7 @@ def find_events_page(place: str, opener=None) -> Optional[Dict[str, str]]:
     pages = [u for u in map_site(site, "The calendar of community events and activities", opener)
              if EVENTS.search(u) and not SKIP_PATH.search(u)]
     if not pages:
-        # Some town sites refuse crawlers (harborbayfl.gov answers 403, and its map came back empty, 2026-10-14),
+        # Some town sites refuse crawlers (one town's .gov site answered 403, and its map came back empty, 2026-10-14),
         # but their pages are still in Tavily's search index: search within the town's own site instead.
         host = urlparse(site).netloc
         found = _post("/search", {"query": f"{place} events calendar"[:390], "search_depth": "basic", "max_results": 5,

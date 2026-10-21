@@ -12,7 +12,7 @@ with, by our own choice. Andy makes no therapeutic or health claim from any of i
   and shared history, with a way to make it forget by voice. In live use, what frustrated people was
   interruptions and replies that were slow, repetitive or superficial.
   ([Irfan et al. 2024](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2024.1363713/full);
-  [Irfan et al. 2025](https://onlineacademiccommunity.uvic.ca/implicitassociationtestsyessir/wp-content/uploads/sites/9812/2025/12/irfan.pdf))
+  Irfan et al. 2025, "Between reality and delusion", *Autonomous Robots* 49(1), [listed by KTH](https://www.kth.se/profile/sannaku/publications))
 - **Pauses.** Voice assistants tend to cut people off too early; the better choice is to wait, or to ask a
   short question. The same complaint about interruptions came up in the live use above.
 - **Pacing.** Older listeners expect a voice robot to speak a little more slowly, the more so the longer
@@ -80,13 +80,14 @@ none does listening body language ([the app store by likes](https://huggingface.
 The most-liked apps react physically to something the camera notices. NVIDIA's
 [Reachy Mini Jetson tutorial](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
 sweeps the body and settles before taking a frame. **What Andy does:** "where did I leave my glasses?"
-sweeps the room, reads four views in parallel with Nemotron Nano VL, and points with the head.
+sweeps the room, reads each of four views as six zoomed tiles (3 x 2) with Nemotron 3.5 Super VL on Token Factory,
+looks closer, then points with the head (decision 0012).
 
 ## Finding small things: zoom in, then look closer (researched 2026-10-20)
 
 The founder's first tries at home: Andy found the glasses some times and not others. The cause was in our code:
 each 1920x1080 frame was shrunk to 768 pixels before the model saw it, so a pair of glasses across a room (about 50
-to 80 pixels at 1080p, from the camera's calibration, `reachy_mini/media/camera_constants.py`) became 20 to 30.
+to 80 pixels at 1080p, from the camera's calibration in Pollen's SDK, `reachy_mini/media/camera_constants.py`) became 20 to 30.
 Nemotron 3.5 Super VL reads an image as 16-pixel patches at the size it is sent, without tiles of its own
 ([model card and processor config](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16), read
 2026-10-20), so what we threw away was gone.
@@ -101,7 +102,7 @@ What the research says works, and what Andy does (decision 0012):
   the peripheral-then-foveal search of robot vision ("Curious George", Meger et al., Robotics and Autonomous Systems
   2008, [abstract](https://users.isy.liu.se/cvl/perfo/abstracts/meger08.html)).
 - **No confidence numbers:** a vision model's own confidence is poorly calibrated
-  ([arXiv 2405.02917](https://arxiv.org/html/2405.02917v1)); a second look at a closer picture is the check.
+  ([arXiv 2405.02917](https://arxiv.org/html/2405.02917v1)); a closer look at a sharper picture is the check.
 - **No "enhance":** we found no evidence that sharpening, contrast stretching or super-resolution helps these
   models, and resampling is among the corruptions that hurt them most (VLM-RobustBench,
   [arXiv 2603.06148](https://arxiv.org/html/2603.06148)). More real pixels beat filters.
@@ -123,7 +124,7 @@ tries at home.
 |---|---|---|
 | Magpie TTS Multilingual 357M ([Hugging Face](https://huggingface.co/nvidia/magpie_tts_multilingual_357m)) | An NVIDIA voice, so every model in the speech loop is NVIDIA's | **Measured 2026-10-14, not switched:** on an RTX 3090 it makes speech 2.5 times faster than real time, but whole sentences at once (no streaming), so Andy's first sound would come 0.6 to 2 s after the reply starts, against 0.10 to 0.33 s now (`voice/magpie-eval/`, [timings](../evals/results/magpie-eval-2026-10-14-0932.json)). Shorter phrases or TensorRT could close the gap later |
 | Nemotron 3.5 ASR Streaming 0.6B ([Hugging Face](https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b)) | 40 locales with language detection | Later; Parakeet works well |
-| Cosmos Reason 2 ([Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-2B)) | Physical reasoning, pointing, boxes | Later; Nano VL already finds things |
+| Cosmos Reason 2 ([Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-2B)) | Physical reasoning, pointing, boxes | Later; Super VL already finds things |
 | Llama Nemotron Embed and Rerank | Cross-lingual memory search | Later; invisible without a demo |
 | Audio2Face-3D, Jetson | — | Not a fit (no face; no Jetson here) |
 
@@ -137,7 +138,7 @@ saying to move money "to keep it safe" ([WFSB, 2026-10-13](https://wfsb.com/2026
 texts with only a name and a question mark ([Malwarebytes, October 2026](https://malwarebytes.com/blog/threat-intel/2026/10/your-whos-this-reply-is-exactly-what-text-scammers-want));
 and the FTC's alerts on gold couriers, payment by gift card, wire or crypto, and toll notices
 ([consumer.ftc.gov](https://consumer.ftc.gov/consumer-alerts)). **What Andy does with it:** the check in
-[decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md), measured four ways.
+[decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md), measured five ways (word rules alone, two models alone, Tavily's warnings with each).
 
 ## Who it's for, in one number
 

@@ -2,6 +2,13 @@
 
 **Date:** 2026-10-13. **Status:** accepted.
 
+## Context
+
+A spoken companion lives or dies on the time from the end of your words to its first sound, and on what happens to
+those words. The robot's own app (Pollen's conversation app) expects an OpenAI-style realtime voice service; we
+wanted NVIDIA's models in that loop, hearing and speaking on the home GPU so audio never leaves the house, and the
+thinking on Nebius Token Factory.
+
 ## Decision
 
 Run Hugging Face's `speech-to-speech` (Apache-2.0) in `serve` mode as the voice server:
@@ -24,7 +31,7 @@ Pollen's Reachy Mini conversation app connects to it over the OpenAI Realtime pr
 | Option | Why not |
 |---|---|
 | Pollen's hosted voice backend | Not Nebius, not NVIDIA |
-| Nemotron Super as the main model | Slower; kept as the fallback for hard turns |
+| Nemotron Super as the main model | Slower; hard questions go to Nemotron 3 Ultra instead (`think_it_through`, `deeper.py`) |
 | Our own audio pipeline | Weeks of work the existing server already does |
 
 ## Revisit when

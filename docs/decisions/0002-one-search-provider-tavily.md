@@ -37,12 +37,13 @@ from the National Weather Service instead ([0004](0004-weather-from-the-national
 - A user needs something Tavily cannot do.
 - Tavily's terms change.
 
-## In use (updated 2026-10-14)
+## Amended 2026-10-14 (in use)
 
 All five endpoints now run in the product: `map` finds the town's events page at setup (with a search
 within the town's site when it refuses crawlers). Every search, extract, crawl and map asks for
 `include_usage`, so the TV shows the credits each answer used. A Spanish speaker's news and events ask
 for Spanish pages only (`language` with `filter_by_language`), then once without the filter. The scam
 check's design, and why the web's warnings are matched by a strong model, is
-[0007](0007-the-scam-check-two-narrow-questions.md). Nebius agreed to acquire Tavily in February 2026;
+[0007](0007-the-scam-check-two-narrow-questions.md). Nebius agreed to acquire Tavily in February 2026 ([Nebius newsroom](https://nebius.com/newsroom/nebius-announces-agreement-to-acquire-tavily-to-add-agentic-search-to-its-ai-cloud-platform),
+announced 2026-02-10);
 this decision predates it and doesn't depend on it.

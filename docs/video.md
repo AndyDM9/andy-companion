@@ -1,5 +1,8 @@
 # The video
 
+The plan for the entry's video: the rules it must meet, the checklist before filming, the shots, and what
+happens after. Last revised 2026-10-20.
+
 **Rules** (Devpost, re-read 2026-10-13; every rule and how we meet it is in
 [rules-compliance.md](rules-compliance.md)):
 - under three minutes;
@@ -54,7 +57,7 @@ long, unedited takes.
       (every name, number and amount invented; no real company on camera).
 - [ ] Just before the long take: `uv run python scripts/prepare_demo.py set --reminder-in 4` (the "call Rosa"
       reminder, and yesterday's "Sofia's piano recital"); after filming: `… clean`.
-- [ ] **`robot/.venv/bin/python scripts/doctor.py --live` says "Ready to film."** (both endpoints answer, Nemotron replies quickly, no audio drops, nothing talking over Andy, the computer not overloaded, the screen's place set).
+- [ ] **`robot/.venv/bin/python scripts/doctor.py --live` says "Ready to film."** (the second look's endpoint answers, the eyes are listed on Token Factory, Nemotron replies quickly, finder tries not kept, no audio drops, nothing talking over Andy, the computer not overloaded, the screen's place set).
 - [ ] `cloud/guard-endpoint.sh start` about 25 minutes before; `status` shows RUNNING and the model answers
       (the first start loads weights for about 8 minutes more); then `systemctl --user restart andy`. The eyes
       need nothing started: Nemotron 3.5 Super VL is on Token Factory (decision 0011).
@@ -75,7 +78,7 @@ long, unedited takes.
 - [ ] No music; no third-party logos in shot (cover any on mugs, books, screens); browser tabs and links
       not visible.
 - [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the TV if possible.
-- [ ] After filming: `cloud/vision-endpoint.sh stop` (and `cloud/guard-endpoint.sh stop`). If the
+- [ ] After filming: `cloud/guard-endpoint.sh stop`. If the
       settings code was filmed, "Make a new settings link".
 
 ## Shots
@@ -91,7 +94,7 @@ uncut physical moment, Tavily named at the start, a dated problem line, privacy 
 | 4 | 1:42–2:06 | **Finding the glasses, one uncut take.** Someone off camera has hidden them; the TV clock is in shot. "Andy, where did I leave my glasses?" Andy sweeps the room (about 12 to 20 s), turns to the best sighting and looks closer, then points with its head; the TV shows the four views in the order it turned, then **What I see**: hold on it for a second. If it took under 15 s: "And my keys?" Andy turns straight to where they were left (**Looking where they were left**) | Andy, live. Caption: "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory: four looks, each zoomed into six tiles, then a closer look before it says so." Never cut the pause while it looks |
 | 5 | 2:06–2:19 | The daughter, on her phone, sends an old family photo; it appears on the TV. **A photo story** (PLAN B35) | Andy: "Anna sent a photo, it's on your screen…", describes it and asks one question ("Where was it taken?"); the person answers in a sentence; Andy: "Shall I keep that story?" "Yes." Live; only the person's lines planned |
 | 6 | 2:19–2:25 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone |
-| 7 | 2:25–2:42 | Founder with the hood page from this shoot, then the architecture picture; **3 s of the simulation's film** (`docs/images/sim-search.mp4`, from the close-up to the point) beside its numbers; the scam chart and the suite's scorecard | About 50 words, timed: "Andy hears with NVIDIA Parakeet on this computer and thinks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**: about a second to its first sound. It sees with **Nemotron 3.5 Super VL**. Its search is tested in simulation as **Nebius Serverless Jobs**: no false find when the thing isn't there. The scam check, with **Nemotron 3 Ultra**, and our [N] spoken situations are measured the same way: [the final run's numbers, exactly]." On-screen text for the film: "Simulation, Pollen's MuJoCo scene: 0 false finds in 7, 0.8° from the truth (30 trials, Nebius Serverless Jobs)" |
+| 7 | 2:25–2:42 | Founder with the hood page from this shoot, then the architecture picture; **3 s of the simulation's film** (`docs/images/sim-search.mp4`, from the close-up to the point) beside its numbers; the scam chart and the suite's scorecard | About 50 words, timed: "Andy hears with NVIDIA Parakeet on this computer and thinks with **NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory**: about a second to its first sound. It sees with **Nemotron 3.5 Super VL**. Its search is tested in simulation as **Nebius Serverless Jobs**: no false find when the thing isn't there. The scam check, with **Nemotron 3 Ultra**, and our 94 spoken situations are measured the same way: [the final run's numbers, exactly; 92, 91 and 94 of 94 on 2026-10-20]." On-screen text for the film: "Simulation, Pollen's MuJoCo scene: 0 false finds in 7, 0.76° median from the truth (30 trials, Nebius Serverless Jobs)" |
 | 8 | 2:42–2:54 | Andy facing the person, the TV in the evening colours; a card with four short lines | "Your voice becomes words on this computer and is never recorded; the words go to Nemotron on Nebius, with zero data retention switched on. Andy keeps only what you ask it to, family see only what you share, and you can delete any of it from your phone." Then: "Andy is open source." Title card: the repository address (and "a Reachy Mini app" only once it is published) |
 
 **At least one minute of the robot operating:** the Physical AI track asks for "a 1-minute clip", one clip, so

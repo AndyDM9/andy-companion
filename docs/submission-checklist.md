@@ -1,6 +1,6 @@
 # Submission checklist
 
-From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-10-13 and checked again 2026-10-14. Every rule, our
+From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-10-13 and checked again 2026-10-14 and 2026-10-20. Every rule, our
 status and the evidence: [rules-compliance.md](rules-compliance.md). Tick an item only when it is true,
 in the same commit that makes it true.
 
@@ -17,11 +17,10 @@ in the same commit that makes it true.
 - [ ] Licence visible in the repository's About section
 - [x] README: setup instructions that work from a fresh clone (cloned from GitHub and checked 2026-10-14; again once public)
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
-- [x] No keys, secrets or personal data anywhere in the history (gitleaks, 108 commits, 2026-10-14)
+- [ ] No keys, secrets or personal data anywhere in the history: gitleaks found none in 108 commits on 2026-10-14; run it again over the rewritten history before going public (144 commits on 2026-10-20)
 
 ## Before making the repository public
 
-- [x] No keys in the history (gitleaks: 108 commits, no leaks, 2026-10-14)
 - [x] A fresh clone installs and passes its tests (2026-10-13; from GitHub, all three environments, 2026-10-14)
 - [x] No home address, phone number or private project names in the tree
 - [x] The commit author address: GitHub's noreply address on every commit (history rewritten 2026-10-13; 108 of 108 on 2026-10-14)
@@ -56,7 +55,7 @@ in the same commit that makes it true.
       2026-10-23 10:00 PT); editing continues afterwards
 - [ ] A gallery thumbnail, 3:2, at most 5 MB (a still of Andy beside the TV), and gallery images:
       the screen (`tv-glass-found.png`), the letter card (`tv-letter.png`), the scam check's receipt
-      (`tv-scam-receipt.png`), the four views Andy looked at (`tv-finder.png`), the hood page, the family page, the
+      (`tv-scam-receipt.png`), the four views Andy looked at (`tv-finder.png`), the hood page (`hood.png`), the family page at phone width (to take from the demo), the
       architecture picture, Andy's search in simulation (`sim-search.gif`, from `sim/replay.py`), and the scam check five ways (`docs/images/scam-check-five-ways.png`, from
       `scripts/make_charts.py`); all in `docs/images/`, the screens taken from the demo
       (`ANDY_DEMO_SCENE=scam scripts/demo_screen.py`, sample data only)

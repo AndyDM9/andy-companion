@@ -1,5 +1,8 @@
 # Plan
 
+The build plan, kept as a record: what was planned, why, and when it was done.
+Key: M = milestone, B = plan item, C = a step near submission, round N = one day's batch of work.
+
 **Goal:** a companion robot a family would want in their own parent's home, entered in the Nebius x NVIDIA
 Global AI Hackathon: the Physical AI track, and Best Use of Tavily. A project wins one Overall award, or one
 track award and one bonus award, never both (rules, section 8).
@@ -21,7 +24,7 @@ model. Stage two scores four criteria, equally weighted, 1 to 5.
 
 | Criterion | What answers it |
 |---|---|
-| Technological implementation | Five NVIDIA models across three Nebius products (Token Factory, two Serverless Endpoints, Serverless Jobs); Nemotron answering in 0.6 to 0.8 s, each turn timed on screen; the conversation suite and the scam check measured as Nebius Jobs; tested tools; rules in code between the model and the body |
+| Technological implementation | Six NVIDIA models (Parakeet, Nemotron 3.5 Lightning, Nemotron 3 Ultra, Nemotron 3.5 Super VL, Nemotron 3.5 Content Safety, and Nemotron Nano 12B v2 VL as an option) across Token Factory, Serverless Endpoints and Serverless Jobs; Nemotron answering in 0.6 to 0.8 s, each turn timed on screen; the conversation suite and the scam check measured as Nebius Serverless Jobs; tested tools; rules in code between the model and the body |
 | Design ("a complete product, not a proof of concept") | The person's side (voice and robot) **and** the family's side (a phone page); setup in a few commands; a published Reachy Mini app |
 | Potential impact | A real person and a real problem: older adults living at home, and the family who help. Honest wording, nothing claimed that is not measured |
 | Quality of the idea | A companion that says it is a robot, never imitates a person, never stores what it hears, and lets the person decide what family sees; a language model that moves the robot to find things; a scam check where the web finds the trick and a strong model tells it from the topic, measured both ways |
@@ -37,11 +40,11 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M2 | **Privacy floor** | No conversation text in any log; Andy's memory in its own store; nothing stored except what the person asks | 2026-10-16 · ✅ done 2026-10-13 |
 | M3 | **Body behaviours** | Andy keeps looking at the person while it speaks and while they move (gaze, body follow, seek, person finder), gentle idle moments, no confirmation moves, upward looks softened; chimes, quiet mode, wake word; each rewritten here from the earlier assistant's general-purpose modules, with tests | 2026-10-18 · ✅ done 2026-10-13 |
 | M4 | **The day, the same way every time** | A day plan said on request and each morning; pace and volume settings that stick | 2026-10-19 · ✅ done 2026-10-13 |
-| M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 · 🔶 built; live test, and Tavily credits (founder 6.3) |
+| M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 · 🔶 built; live test (Tavily pay-as-you-go since 2026-10-14) |
 | M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 · 🔶 built, finding things tested on the live model; live test on the robot |
 | M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 · 🔶 built; live test |
-| M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; Nebius Job 79/79/79 of 81; the scam check four ways as Nebius Jobs (2026-10-14); final suite run 2026-10-23 |
-| M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 · 🔶 app ready; repository public about 2026-10-20 |
+| M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; latest as a Nebius Serverless Job 92, 91, 94 of 94 (2026-10-20, [scorecard](../evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)); the scam check five ways, as Nebius Serverless Jobs (2026-10-14); final suite run 2026-10-23 |
+| M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 · 🔶 app ready; the repository goes public after the name decision |
 | M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 · 🔶 texts ready; filming 2026-10-24 to 10-26 |
 
 ## Road to October 30 (the deadline is 2026-10-30, 10:00 PT; a complete draft by 2026-10-22, final by 2026-10-27)
@@ -57,11 +60,11 @@ innovation research) and the founder's test on the robot. The research is in [re
 |---|---|---|---|
 | B1 | **A watchdog** in the supervisor: if one turn keeps reopening (a TV, a radio) or the microphone keeps dropping audio, restart Andy's app and log why; cap one turn's continuous speech | On 2026-10-13 Andy stopped answering in exactly these ways | ✅ 2026-10-14 (`watchdog.py`, `voice/serve.py` turn cap) |
 | B2 | **A health check**, one command before filming or a demo: the voice server, the robot, both endpoints, Token Factory, Tavily, the screen, a test turn; green or red in plain words | Nothing should fail on camera that a minute's check would have caught | ✅ 2026-10-14 (`scripts/doctor.py --live`) |
-| B3 | **A scam-check evaluation with real Tavily calls**: about 30 scam messages and 30 genuine ones, warnings found with and without Tavily, run as a Nebius Job; published | Makes the Tavily bonus undeniable (the review's ask) | ✅ 2026-10-14: with Tavily 39/40 scams (9/10 subtle, against 7 alone), 0/40 ordinary flagged, 38/39 sourced |
-| B4 | **Tavily `map` at setup**: find the town's events page from its website automatically | Tavily's fifth capability, in real use | ✅ 2026-10-14: live, harborbayfl.gov/Parks-Recreation/Events found in 3.8 s (the site refuses crawlers, so a search within it) |
+| B3 | **A scam-check evaluation with real Tavily calls**: about 30 scam messages and 30 genuine ones, warnings found with and without Tavily, run as a Nebius Serverless Job; published | Makes the Tavily bonus undeniable (the review's ask) | ✅ 2026-10-14: with Tavily 39/40 scams (9/10 subtle, against 7 alone), 0/40 ordinary flagged, 38/39 sourced |
+| B4 | **Tavily `map` at setup**: find the town's events page from its website automatically | Tavily's fifth capability, in real use | ✅ 2026-10-14: live, the town's own .gov events page (`/Parks-Recreation/Events`) found in 3.8 s (the site refuses crawlers, so a search within it) |
 | B5 | **Greeting on arrival**: "Welcome back" when someone is seen after a long absence, at most every few hours, a setting to turn it off; speech only, no head movement | ElliQ and Lovot's most-liked behaviour | ✅ 2026-10-14 (`speaker.welcome_back`; greet-1 4 of 4) |
 | B6 | **The cost per household**, with dated prices, in the README and Devpost text | Potential impact: "what does it cost to run?" | ✅ 2026-10-14 ([cost.md](cost.md): about $2.30 a month) |
-| B7 | **NVIDIA Magpie TTS**, evaluated beside Qwen3-TTS: time to first audio, the Spanish voice; switched only if as fast and the founder approves | Every model in the speech loop NVIDIA's | ✅ evaluated 2026-10-14: **not switched**; a short sentence takes 0.6 to 0.8 s before any sound (no streaming) against 0.10 to 0.33 s now. Samples in `voice/magpie-eval/out/` for the founder to hear |
+| B7 | **NVIDIA Magpie TTS**, evaluated beside Qwen3-TTS: time to first audio, the Spanish voice; switched only if as fast and the founder approves | Every model in the speech loop NVIDIA's | ✅ evaluated 2026-10-14: **not switched**; a short sentence takes 0.6 to 0.8 s before any sound (no streaming) against 0.10 to 0.33 s now. Samples in `voice/magpie-eval/out/` (not committed) for the founder to hear |
 | B8 | **The body language, safely**: test with the founder whether head motion during listening reaches the microphones; if so, move only while Andy speaks | Built and switched off on 2026-10-13 | ⬜ (needs the founder at the robot) |
 
 ### Round 2 (Claude), from the audits and research of 2026-10-14
@@ -74,7 +77,7 @@ same work serves the Physical AI track and the Tavily bonus.
 | # | Item | Why | Status |
 |---|---|---|---|
 | B9 | **The audit's fixes:** the events finder's key in the supervisor; "what's on" falling back when a crawl fails; the urgent-words net (negations, and a spoken fallback when the model is down); consent asked for properly; "forget" deleting only what was meant; Andy never starting to speak over the person; secrets off every command line; the hood page's own token; endpoints that fail fast when stopped; the dashboard app's settings | Each could fail on camera or for a judge | ✅ 2026-10-14 (130 more tests); the new Nebius secret calls are proved at the next endpoint `create` |
-| B10 | **The scam evaluation, fair and repeated:** a third arm (Nemotron 3 Ultra without Tavily), three runs each as a Nebius Serverless Job, and about 20 new messages modelled on this month's consumer-protection alerts, where finding recent warnings should matter | Today's gain (39 against 36) mixes Tavily with a second model and is one run; a rival scam entry exists | ✅ 2026-10-14: four arms, 120 messages (40 held out), three runs as Nebius Jobs: Andy 58 of 60, 0 flagged; Ultra alone 55.7; Lightning 53.3; Tavily + Lightning 60 but 24 flagged |
+| B10 | **The scam evaluation, fair and repeated:** a third arm (Nemotron 3 Ultra without Tavily), three runs each as a Nebius Serverless Job, and about 20 new messages modelled on this month's consumer-protection alerts, where finding recent warnings should matter | Today's gain (39 against 36) mixes Tavily with a second model and is one run; a rival scam entry exists | ✅ 2026-10-14: four arms, 120 messages (40 held out), three runs as Nebius Serverless Jobs: Andy 58 of 60, 0 flagged; Ultra alone 55.7; Lightning 53.3; Tavily + Lightning 60 but 24 flagged |
 | B11 | **The finder measured:** about 25 recorded sweeps with known answers, run as a Nebius Serverless Job; accuracy and time to point | Robotics judges ask "how well does it work?"; Nebius presents Serverless Jobs for physical AI | 🔨 built 2026-10-14 (`ANDY_FINDER_RECORD`, `evals/finder_eval.py`); the founder records about 25 tries (1.5 h). The frames are too big for a job's 64 KB, so it is scored on this computer |
 | B12 | **"How Andy found this"** on the screen: which Tavily call, depth, credits and time under each web answer (the sources were already named) | Shows the Tavily judges the integration plainly | ✅ 2026-10-14 (look-ups, news, what's on, scam checks, research) |
 | B13 | **Privacy in four plain answers** (where it's heard, what's kept, who sees it, how to delete) in the README, the Devpost text and the video's last shot | The question every review of a home robot asks | ✅ 2026-10-14 (README, Devpost text, the video's last shot) |
@@ -96,7 +99,7 @@ founder approved its ideas; these turn the physical and the web work into things
 
 | # | Item | Why | Status |
 |---|---|---|---|
-| B19 | **"What Andy looked at":** after a search for something, the TV shows the four views Nemotron Nano VL read, left to right as Andy turned, the chosen one marked, for two minutes, in memory only | Makes the robot's physical search visible in one glance: the Physical AI track's point | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
+| B19 | **"What Andy looked at":** after a search for something, the TV shows the four views Nemotron Nano VL read (Super VL since decision 0011), left to right as Andy turned, the chosen one marked, for two minutes, in memory only | Makes the robot's physical search visible in one glance: the Physical AI track's point | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
 | B20 | **The scam check's receipt:** under "Be careful", three steps on the TV: the sign Nemotron Lightning spotted (with the message's own words), the consumer-protection warning Tavily found (and its site), and why Nemotron Ultra judged it the same trick | Shows the Tavily judges, and anyone, why Andy said what it said | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
 | B21 | **A family suggestion the person accepts:** on the family page, "Suggest a reminder" (what, when); Andy says "Anna suggested: call the pharmacy at 3 pm. Shall I set it?", and sets it only after a yes | Family help without taking over: nothing is set behind the person's back | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
 | B22 | **Family notes on the TV:** when Andy passes on a family message, the TV shows it as a note with who sent it and when, for five minutes | What Nest Hub's Family Notes do, inside our rules (no presence shown back) | ✅ 2026-10-14 (tested in a browser on the demo; on the robot in the live test) |
@@ -114,10 +117,10 @@ until submission.
 |---|---|---|---|
 | B24 | **The scam receipt says what to do first:** "Don't reply, pay or give any details. Check with family first." above the three steps | The judges' main note on a scam checker they reviewed: the action was below the evidence | ✅ 2026-10-20 (tested in a browser on the demo; on the robot in live test 3x) |
 | B25 | **"Try asking…" on the TV:** when nothing is showing in the day, one thing to ask Andy at a time ("Where did I leave my glasses?"), in the household's language; settings can turn it off | Onboarding: a person, a relative or a judge sees what Andy can do without being told | ✅ 2026-10-20 (tested in a browser on the demo; on the robot in live test 3x) |
-| B26 | **A public demo of the screens:** `demo_screen.py --public` serves the four pages read-only (nothing a visitor types reaches anyone else), with a Dockerfile for a Hugging Face Space | Every project the judges reviewed had a link they clicked through; ours needed `uv sync` | ✅ 2026-10-20 (the image built and run in Docker, writes refused; the Space itself is the founder's, 6.18) |
+| B26 | **A public demo of the screens:** `demo_screen.py --public` serves the four pages read-only (nothing a visitor types reaches anyone else), with a Dockerfile for a Hugging Face Space | Every project the judges reviewed had a link they clicked through; ours needed `uv sync` | ✅ 2026-10-20 (the image built and run in Docker, writes refused; the Space itself is the founder's) |
 | B27 | **Accessibility, up front:** a section in the README and on Devpost | The judges: it counts if it is called out, and it gets missed otherwise | ✅ 2026-10-20 (README and Devpost text) |
 | B28 | **What doesn't work yet:** the limits, in one section of the README and on Devpost | The judges: published limits read as rigour | ✅ 2026-10-20 (README and Devpost text) |
-| B29 | **What runs where, and why that model:** this computer (hearing, speaking, waking, reading, following, with GPU memory and timings) and Nebius (each model, why that size, the number behind it) | The NVIDIA judges look for local models in physical AI and trade-offs between model sizes | ✅ 2026-10-20 (README and Devpost text; GPU memory measured) |
+| B29 | **What runs where, and why that model:** this computer (hearing, speaking, waking, reading, following, with GPU memory and timings) and Nebius (each model, why that size, the number behind it) | Judges in Devpost's public session asked for local models in physical AI and trade-offs between model sizes | ✅ 2026-10-20 (README and Devpost text; GPU memory measured) |
 | B30 | **A chart of the scam check four ways** (scams caught, ordinary messages flagged), drawn from the scorecard, for the README and the Devpost gallery | A number reads as real against its baseline | ✅ 2026-10-20 (`scripts/make_charts.py`; SVG in the README, PNG for the gallery) |
 | B31 | **The Devpost text, one story:** three moments first, the rest in one short list; "what we learned about the problem"; how Andy differs from a paste-in checker (you say it or hold it up; measured on ordinary messages); shorter sentences | The judges warned against many integrations without one story, and against "AI slop" | ✅ 2026-10-20 (the founder reads it before the draft goes in, 10-22) |
 
@@ -135,16 +138,16 @@ cost beside them. Code before the freeze on 2026-10-22.
 | B33 | **The scam numbers with rigour:** 95% intervals on every figure, a no-model baseline (keyword rules on the same 120 messages, no credits), the cost per 1,000 checks; the chart and texts redrawn; said plainly that the gain over the models alone is no false alarms, not more scams caught | A number reads as real beside its baseline and its uncertainty | ✅ 2026-10-20 (word rules 28 of 60 caught, 3 flagged; Andy 58 (89–99%), 0 (0–6%); about $17 per 1,000; the chart, README and Devpost text redrawn; `andy_companion.measure`) |
 | B34 | **The robot measured:** timings recorded on the robot during the live test (numbers only, never words: end of words to first sound, p50 and p95), and the finder scored from the founder's recorded tries on both vision models, with intervals and time to point | The track's bar is real trials with intervals; ours are all from the desk so far | 🔶 timings ✅ 2026-10-20 from Andy's own log: 54 real turns, median 1.06 s, 95% under 3.24 s (`evals/robot_timings.py`); the finder's `compare` built and tested, waiting for the founder's ~20 recorded tries |
 | B35 | **Photo stories:** when a photo comes from family or is held up, Andy asks one question about it; the story is kept only with a yes, and shared to family only with a second yes | Being remembered is what older adults value most in robot studies; it strengthens the family story without adding breadth | ✅ 2026-10-20 (profile and the photo tool's guidance; suite photo-1 to photo-4, 12 of 12 in a full run of 87, 88, 86 of 89; live test 3y). Sharing stays only-when-asked: an earlier try showed that offering made Andy share unasked |
-| B36 | **The local design, side by side with NVIDIA's Reachy Mini Jetson assistant:** what matches (frames taken only when the head is still, measured GPU memory), what differs, and what a Jetson port would need, as a plan, never a claim | The track's NVIDIA judges look for local models in physical AI | ✅ 2026-10-20 (README, "Beside NVIDIA's Reachy Mini Jetson assistant"; Devpost "What's next") |
+| B36 | **The local design, side by side with NVIDIA's Reachy Mini Jetson assistant:** what matches (frames taken only when the head is still, measured GPU memory), what differs, and what a Jetson port would need, as a plan, never a claim | Judges in Devpost's public session asked for local models in physical AI | ✅ 2026-10-20 (README, "Beside NVIDIA's Reachy Mini Jetson assistant"; Devpost "What's next") |
 | B37 | **Tavily session headers** (`X-Session-Id` per conversation) | Uses Tavily's newer request features; cheap | ✅ 2026-10-20 (random, renewed after 30 quiet minutes; `X-Human-Id` not sent, since one robot is one household's key; tried live) |
 | B38 | **The story leads with the robot and the family:** the video opens on a physical moment (the letter held up, the head turning to the glasses), the scam verdict one beat of three | Web-only scam checkers are many; a robot in a real home is not | ✅ 2026-10-20 in words (`docs/video.md`: the first caption leads with the letter and the robot; shot 5 a photo story); the filming is the founder's |
-| B39 | Stretch, only if B32 to B38 land by 10-22: **Cosmos Reason 2 2B on this computer** as the finder's third model and its offline fallback | A local NVIDIA model in the physical loop; needs the gated model accepted on Hugging Face | ⬜ not started: needs the founder's Hugging Face account (6.11) to accept the model's licence, and new code this close to the freeze is the risk the judges warned of; in "What's next" as a plan |
+| B39 | Stretch, only if B32 to B38 land by 10-22: **Cosmos Reason 2 2B on this computer** as the finder's third model and its offline fallback | A local NVIDIA model in the physical loop; needs the gated model accepted on Hugging Face | ⬜ not started: needs the founder's Hugging Face account to accept the model's licence, and new code this close to the freeze is the risk the judges warned of; in "What's next" as a plan |
 
 Not taken: music and radio (no copyrighted music in the video; after the hackathon), quizzes and movement
 to music (breadth), video calls (the person's camera to family), sending a scam's number or the letter
 itself to Tavily, Pollen's app 1.1.0 (a transcript RPC; no upgrade before filming), a speech-to-text switch.
 
-### Round 6 (Claude), the screen's design pass before filming (2026-10-20, the founder: "most beautiful front end")
+### Round 6 (Claude), the screen's design pass before filming (2026-10-20, asked for by the founder)
 
 | # | Item | Why | Status |
 |---|---|---|---|
@@ -157,12 +160,12 @@ itself to Tavily, Pollen's app 1.1.0 (a transcript RPC; no upgrade before filmin
 
 | # | Item | Why | Status |
 |---|---|---|---|
-| B44 | **Zoom in, then look closer:** six full-size tiles per view, read at once; the head turned at the best sighting for a close-up and a strict yes/no; the close-up on the TV (decision 0012) | The 768-pixel copy lost the glasses; the founder: "he can not find them from first try" | ✅ 2026-10-20 (desk: 0 of 9 before, 9 of 9 after; the robot's rate comes from the founder's recorded tries, 3t2) |
+| B44 | **Zoom in, then look closer:** six full-size tiles per view, read at once; the head turned at the best sighting for a close-up and a strict yes/no; the close-up on the TV (decision 0012) | The 768-pixel copy lost the glasses; the founder's tries didn't find them the first time | ✅ 2026-10-20 (desk: 0 of 9 before, 9 of 9 after; the robot's rate comes from the founder's recorded tries, 3t2) |
 
 Not taken yet (decision 0012, revisit with the recorded tries): a second, lower row of views; the camera's 4K mode
 (the daemon sets it once at start); a local detector first (OWLv2, or NanoOWL as the Jetson path); any "enhance" filter.
 
-### Round 8 (Claude), Physical AI: reacting to the room (2026-10-20, approved by the founder: "build 1 to 6")
+### Round 8 (Claude), Physical AI: reacting to the room (2026-10-20, approved by the founder)
 
 From research on the track and the field: the track rewards hardware reacting live to the real
 world, and "Serverless Jobs to run simulations … evaluate robot policies".
@@ -179,7 +182,7 @@ world, and "Serverless Jobs to run simulations … evaluate robot policies".
 Not taken: guided movement and reacting to falls or loud sounds (health and safety claims), Cosmos Reason 2 on an
 endpoint, emotions and dances in the model's hands, full-head teaching (the head may drop with its motors off).
 
-### Round 9 (Claude), judging without a robot (2026-10-20, the founder: "how will they review our Physical AI without Reachy Mini connected?")
+### Round 9 (Claude), judging without a robot (2026-10-20, the founder's question: how will judges see the physical part without a robot?)
 
 | # | Item | Why | Status |
 |---|---|---|---|
@@ -193,7 +196,7 @@ endpoint, emotions and dances in the model's hands, full-head teaching (the head
 |---|---|---|
 | C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 108 commits, no leaks (2026-10-14); a fresh clone of the private repository installs and passes (2026-10-14); again once public |
 | C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ✅ 2026-10-14 (four unused imports removed; ruff's error and bug checks pass) |
-| C3 | The final Nebius Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
+| C3 | The final Nebius Serverless Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
 | C4 | Pin the Reachy Mini app's `andy-companion` dependency to the `hackathon-submission` tag | ⬜ (10-27) |
 
 ### The founder
@@ -204,13 +207,12 @@ endpoint, emotions and dances in the model's hands, full-head teaching (the head
 | Now | **The robot's power and USB:** on 2026-10-20 its daemon reported "Motor communication error! Check connections and power supply" | |
 | Now | The live test on the robot | [live-test.md](live-test.md) |
 | With the live test | **About 20 recorded "find my glasses" tries (B34)**, as live test 3t2 says: hide something, ask, repeat (glasses, keys, the remote; a few out of sight on purpose); then Claude scores them, and reads the same tries with both vision models | [live-test.md](live-test.md) 3t2 |
-| Now | **The body language test (B8)** with Claude watching the logs: the research says presence matters to at least one Physical AI judge | [live-test.md](live-test.md) 3u |
-| This week | **One real session** with a relative who agrees to it in writing: about 20 unscripted minutes, one real moment for the video if they're willing, no claims about outcomes | founder action 6.17 |
-| By 2026-10-23 | **Two or three short sessions with older adults** (a relative, a neighbour), each agreeing in writing: what they asked first, what confused them, what they'd change. Claude writes down only what they agree to, and what changed because of it. The judges' most repeated advice was to talk to real users | founder action 6.17 |
-| After B26 | **The Hugging Face Space** for the public demo (the same account publishes the Reachy Mini app) | founder action 6.18 |
-| This week | Say yes or no to B10's spend (about $3 to $6) | |
-| Now | Photos and four 5-second clips of the real robot (the glance, following, finding glasses, the joke wiggle) | founder action 6.17 |
-| About 2026-10-20 | The name; the repository public, licence in About; a Hugging Face account; Claude publishes the app | [submission-checklist.md](submission-checklist.md) |
+| Now | **The body language test (B8)** with Claude watching the logs: presence is what the track rewards, by research on the field | [live-test.md](live-test.md) 3u |
+| This week | **One real session** with a relative who agrees to it in writing: about 20 unscripted minutes, one real moment for the video if they're willing, no claims about outcomes | (the founder's) |
+| By 2026-10-23 | **Two or three short sessions with older adults** (a relative, a neighbour), each agreeing in writing: what they asked first, what confused them, what they'd change. Claude writes down only what they agree to, and what changed because of it. The judges' most repeated advice was to talk to real users | (the founder's) |
+| After B26 | **The Hugging Face Space** for the public demo (the same account publishes the Reachy Mini app) | (the founder's) |
+| Now | Photos and four 5-second clips of the real robot (the glance, following, finding glasses, the joke wiggle) | (the founder's) |
+| After the name decision | The name; the repository public (its history rewritten first), licence in About; a Hugging Face account; Claude publishes the app | [submission-checklist.md](submission-checklist.md) |
 | By 2026-10-22 | **A complete draft submitted** on Devpost (the early eligibility check) | [submission.md](submission.md), [feedback.md](feedback.md) |
 | 2026-10-24 to 10-26 | Filming to the shot list; YouTube Public, "not made for kids", captions | [video.md](video.md) |
 | 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted; posts | [rules-compliance.md](rules-compliance.md) |
@@ -232,8 +234,8 @@ does; we do not claim outcomes we have not measured.
 
 | Risk | What we do |
 |---|---|
-| Lightning's tool calls are weak on a hard turn | Fall back to Nemotron Super for that turn |
+| Lightning's tool calls are weak on a hard turn | Hand hard questions to Nemotron 3 Ultra (`think_it_through`) |
 | Reasoning text spoken aloud | Thinking off; strip it in our wrapper if it ever appears |
-| No NVIDIA vision model on serverless Token Factory | Self-host one on a Nebius Serverless Endpoint (M6) |
+| No NVIDIA vision model on serverless Token Factory | Resolved by decision 0011: Nemotron 3.5 Super VL on Token Factory since 2026-10-20; the Nano VL endpoint stays as an option |
 | The robot is shared with another app | Only one program drives the robot at a time; tests stop the other |
 | Time | Milestones are in order of what the video needs; M6 and M8 can shrink without breaking the demo |

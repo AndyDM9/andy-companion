@@ -33,7 +33,7 @@ video, the Devpost form, the repository) is checked against this file first.
 |---|---|---|
 | A working application that runs on Nebius Token Factory or AI Cloud | ✅ | Every turn calls the Token Factory inference API (Nemotron 3.5 Lightning); the eyes are Nemotron 3.5 Super VL on Token Factory (2026-10-20); AI Cloud runs a Serverless Endpoint (the second look; Nano VL eyes as the option) and Serverless Jobs (the conversation suite; the scam evaluation, 2026-10-14; Andy's search in simulation, 2026-10-20) |
 | Uses at least one NVIDIA open model | ✅ | Parakeet TDT 0.6B v3, Nemotron 3.5 Lightning, Nemotron 3.5 Super VL, Nemotron Nano 12B v2 VL (the option), Nemotron 3.5 Content Safety, Nemotron 3 Ultra (judge) |
-| Fits the Physical AI track: an embodied agent that senses and acts, coordinated through an agent runtime; Serverless Jobs for evaluation, Serverless Endpoints for real-time inference | ✅ | A Reachy Mini that hears, sees, follows a face, turns, speaks; Pollen's conversation app as the agent runtime; the suite as a Serverless Job; vision and content safety as Serverless Endpoints |
+| Fits the Physical AI track: an embodied agent that senses and acts, coordinated through an agent runtime; Serverless Jobs for evaluation, Serverless Endpoints for real-time inference | ✅ | A Reachy Mini that hears, sees, follows a face, turns, speaks; Pollen's conversation app as the agent runtime; Nebius Serverless Jobs for the suite, the scam evaluation and Andy's search in simulation; vision on Token Factory; content safety as a Serverless Endpoint (Nano VL eyes as an option) |
 | Installs and runs consistently, and works as shown and described | 🔶 | Fresh-clone install checked 2026-10-13 and again from GitHub on 2026-10-14 (all three environments, the tests, the doctor, the keyless demo with an empty home folder); re-check before going public; `scripts/doctor.py`; the live test (`docs/live-test.md`) before filming; the video shows only what works |
 | New, or significantly updated during the period, with an explanation | ✅ | Created 2026-10-13; the README's "Built during the hackathon" says what reuses the author's own earlier code (from 2026-10-05, also inside the period) |
 | Authorised to use every third-party SDK, API and data | ✅ | The README's "Licences and credits" lists each with its terms and the attribution it requires |
@@ -42,10 +42,10 @@ video, the Devpost form, the repository) is checked against this file first.
 
 | Rule | Status | Action, owner, date |
 |---|---|---|
-| Working demo URL | ➖ | Not required for Physical AI; judged on the video, the repository and, if asked, the hardware. Even so, every project in the judging session had a link to click: the Hugging Face Space of the screens (founder action 6.18) |
+| Working demo URL | ➖ | Not required for Physical AI; judged on the video, the repository and, if asked, the hardware. Even so, every project in the judging session had a link to click: the Hugging Face Space of the screens (the founder's) |
 | Testing access, free, until judging ends; physical access to the hardware on request | 🔶 | The Space and the keyless demo; the rules say **physical access** to hardware on request: keep the robot and the desktop ready to the end of judging, and offer a live video call as well, not in place of it |
 | Text description of features and functionality | 🔶 | Draft in [submission.md](submission.md); final by 2026-10-26 |
-| **Public** repository on GitHub with all source, assets and instructions | ⬜ | Public after the name decision (founder, about 2026-10-20); go-public checklist in [submission-checklist.md](submission-checklist.md) |
+| **Public** repository on GitHub with all source, assets and instructions | ⬜ | Public after the name decision, its history rewritten first (the founder's, before 2026-10-27); go-public checklist in [submission-checklist.md](submission-checklist.md) |
 | Open-source licence file, **visible in the repository's About section** | 🔶 | `LICENSE` is Apache-2.0 and GitHub detects it; check it shows in About once public |
 | README with setup instructions and how to run it | ✅ | README "Setup" |
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |

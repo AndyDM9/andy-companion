@@ -5,7 +5,27 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
-### Changed (an audit of how judges see the entry, against the hackathon's rules)
+### Changed (a documentation audit: every document read against the code and the scorecards)
+
+- **A map of the documents** (`docs/README.md`): what to read first, which are build records, and a key to the
+  shorthand (M, B, rounds). The README's repository table gains `sim/`, `space/`, `reachy_app/` and `tests/`, and a
+  line of contents; its sections now put the technology and the measurements straight after what Andy does.
+- **Decisions:** a template (`docs/decisions/TEMPLATE.md`, which CLAUDE.md now points to); a status column in the
+  index showing what amends what; 0001 gains its context, 0003 its reasons and when to revisit; 0002's acquisition
+  note cites its source; 0011 and 0012 give the measured search cost; 0013's precision claim says what each run showed.
+- **Stale statements fixed:** the results README's "latest" run, Nano VL as the finder's eyes in research.md, a
+  Nemotron Super fallback that doesn't exist (0001), "four ways" for the scam check, "second look" used for three
+  different things (now only the Content Safety check), the evaluation list in architecture.md, the crisis line's
+  figures dated, the video plan's endpoint steps.
+- **PLAN and STATUS tidied:** a header and key; the milestone cells cut to their current state; the founder's quotes
+  paraphrased; private to-do references replaced; the done and resolved rows marked so.
+- **The founder's town out of the repository:** a fictional "Harbor Bay" in tests, sample data and recorded replies
+  (noted in the results README); `.net` examples on the reserved `.example` name, so nobody can register them;
+  records say "the town's own .gov site" instead of its address. The Reachy app page's screenshot and the README's
+  research screenshot retaken (both showed the town's site).
+- **The live test** is titled as the robot test script it is; feedback-notes points to feedback.md, its rows
+  complete; a cited paper now named by its journal rather than a mirror.
+
 
 Two reviews, the official rules and the live Devpost pages against our texts, and a fresh clone read as a judge
 would, then a walk through the public demo:
@@ -543,9 +563,9 @@ screen server (Playwright, 1920 × 1080 and 1280 × 720):
     verdicts name the consumer-protection source Andy says aloud.
   - Median search 3.1 s.
   - This is the "make the Tavily bonus undeniable" item; the README and the Devpost text carry it.
-- **The events finder, live:** for Harbor Bay it found the official site (harborbayfl.gov) in 1.3 s.
+- **The events finder, live:** for the founder's town it found the town's own .gov site in 1.3 s.
   The site refuses crawlers (403; Tavily map came back empty), so the finder now falls back to a Tavily
-  search within the town's own site, which found **harborbayfl.gov/Parks-Recreation/Events** in 3.8 s. 1 more
+  search within the town's own site, which found **its events page (`/Parks-Recreation/Events`)** in 3.8 s. 1 more
   test.
 - Tavily now appears **five ways** in the Devpost text: search, extract, crawl, map, research.
 
@@ -601,7 +621,7 @@ screen server (Playwright, 1920 × 1080 and 1280 × 720):
   on the town's own website", with a **Use it** button. Nothing changes until the helper saves.
   (`web.official_site`, `map_site`, `find_events_page`; `setup_page.suggest_events_page`;
   `events_suggestion` in the settings.)
-- A test caught that a real town site (harborbay.example) has no ".gov" or "city" in its address, so plain
+- A test caught that a town's own site (a .net address) has no ".gov" or "city" in its address, so plain
   addresses are accepted when nothing official-looking is found.
 - 3 tests (`tests/test_events_page.py`). The live check waits for Tavily credits (founder action 6.3).
 
@@ -1251,7 +1271,7 @@ empty home folder installs and passes. What it found is fixed and tested (`tests
   the answer waits in Andy's inbox and at the next quiet moment Andy says it, dated, with its sources
   named, while the key points and sources show on the screen. One at a time (asking twice in one turn
   counts once), ten a day. If the stream fails, the task is started again and collected when ready.
-  Live: "Is the farmers market still on this Saturday?" answered in 46 s from harborbayfl.gov ("not this
+  Live: "Is the farmers market still on this Saturday?" answered in 46 s from the town's own .gov site ("not this
   Saturday, October 17; first Saturday of each month, 9 to noon"). 8 tests; suite look-1 to look-3.
 - **Scam checks at advanced depth:** on a prize-scam letter, basic found nothing and advanced found
   four exact AARP and FTC warnings.

@@ -172,7 +172,7 @@ research, streamed to the TV step by step.
   exactly the two spoken sentences we asked for.
 - A search limited to consumer-protection sites found the right warning for a grandparent-scam message on
   the first try. Measured on 120 messages (three runs), Tavily's warnings matched by Nemotron 3 Ultra
-  caught 58 of 60 scams with no false alarm, against 55.7 for Ultra without the web.
+  caught 58 of 60 scams with no false alarm, against a mean of 55.7 of 60 over three runs for Ultra without the web.
 - The usage API lets the robot show credits used on its own status page.
 **Needs work:**
 - `safe_search` is rejected with the fast and ultra-fast depths (HTTP 400); a product for older adults

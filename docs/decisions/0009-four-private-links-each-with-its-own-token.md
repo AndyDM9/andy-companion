@@ -26,4 +26,4 @@ A link shown on camera or sent to the wrong person reveals only its own page.
 
 ## Revisit when
 
-- Accounts replace links (the company product, not this entry).
+- Accounts replace links (a later product, not this entry).

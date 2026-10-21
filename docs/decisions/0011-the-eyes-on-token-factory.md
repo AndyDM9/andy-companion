@@ -1,6 +1,6 @@
 # 0011: The eyes on Token Factory: Nemotron 3.5 Super VL, with our own endpoint as an option
 
-**Date:** 2026-10-20. **Status:** accepted.
+**Date:** 2026-10-20. **Status:** accepted; amended by [0012](0012-the-finder-zooms-in-then-looks-closer.md) (the search reads zoomed tiles).
 
 ## Context
 
@@ -31,7 +31,7 @@ Measured at the desk on 2026-10-20, three runs each, the same pictures
 
 | | Describe Andy's TV screen | Four views at once, for the glasses | Start |
 |---|---|---|---|
-| Nemotron 3.5 Super VL, Token Factory | median 1.35 s (1.34–1.51) | median 2.08 s (2.04–2.36); all four views right | none; about $0.0013 a search |
+| Nemotron 3.5 Super VL, Token Factory | median 1.35 s (1.34–1.51) | median 2.08 s (2.04–2.36); all four views right | none; about $0.0013 a search (before 0012's tiles; about $0.005 since) |
 | Nemotron Nano 12B v2 VL, our endpoint | median 3.45 s (3.02–3.50) | median 2.28 s (2.27–3.69, the first one cold); all four views right | about 15 minutes (23 checks 20 s apart after RUNNING, plus the image pull); $1.55 an hour while on |
 
 Both described the screen correctly; Super VL read its message word for word. One picture is not a measure of

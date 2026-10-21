@@ -10,7 +10,7 @@ Every change updates:
 3. **docs/submission-checklist.md:** tick an item only when the change makes it true.
 4. **docs/architecture.md:** whenever a part, a data flow or a boundary changes.
 
-A choice between real alternatives gets a short record in `docs/decisions/` (copy `0001`, number
+A choice between real alternatives gets a short record in `docs/decisions/` (copy `TEMPLATE.md`, number
 sequentially, and add it to `docs/decisions/README.md`). A milestone is done only when its "done when" in PLAN.md is true.
 
 ## Rules

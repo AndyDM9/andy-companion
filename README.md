@@ -29,7 +29,7 @@ no recordings or transcripts: only what you ask it to keep.
 3. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open
    `http://127.0.0.1:8093/`: the TV, Under the hood, the family page and the settings page, on sample data
    (no robot, GPU or keys).
-   <!-- Founder: once the Hugging Face Space is up (founder action 6.18), its link goes here as "or open it in your browser". -->
+   <!-- Founder: once the Hugging Face Space is up, its link goes here as "or open it in your browser". -->
 4. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)
    (94 situations, a Nebius Serverless Job), the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
    (each model alone and with Tavily's warnings, four Nebius Serverless Jobs, beside a [no-model baseline](evals/results/scam-word-rules-2026-10-20-1552.json)),
@@ -46,6 +46,8 @@ no recordings or transcripts: only what you ask it to keep.
 <!-- Founder: the video link and a photo or GIF of Andy beside the TV go here before submitting. -->
 
 ![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
+
+**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [what doesn't work yet](#what-doesnt-work-yet), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
 shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
@@ -132,80 +134,6 @@ active level of use (Token Factory's prices on 2026-10-14; the web within Tavily
 the hardware once. The eyes are on Token Factory, paid per picture (a search for your glasses about half a cent), so nothing
 runs while idle. The second look is not in that figure: it runs on a Nebius endpoint started when needed (about
 $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/cost.md).
-
-## Accessibility
-
-Andy is used by voice, from across a room, by people of any eyesight or hearing, so access is the product:
-- **Nothing to read, tap or install for the person.** Everything is said; the TV only shows what Andy
-  says, and the family and settings pages are for helpers.
-- **All of Andy's words as captions** on the TV, at reading pace, three lines at a time, on by default.
-- **Readable from across the room:** large type in Atkinson Hyperlegible (made by the Braille Institute for
-  low-vision readers), and every text colour at 7:1 contrast (WCAG AAA) against the worst glow or photo
-  behind it, tested (`tests/test_screen_design.py`).
-- **A calm screen** in the settings: no movement and no see-through panels; the TV also follows the
-  system's reduced-motion setting.
-- **The TV's remote:** arrows and OK reach Settings and Under the hood; Back closes the menu.
-- **A letter in large print** on the TV, with what to do and by when.
-- **Pace and volume by voice**, "slower", "louder", and they stick; talk over Andy and it stops at once.
-- **English and Spanish**, with *usted*; the screen and pages switch too.
-- **The phone pages** for family and helpers: 17 px text or larger, 48 px targets, 7:1 text.
-
-## What runs where, and why that model
-
-**On this computer, beside the robot:** hearing (NVIDIA Parakeet TDT 0.6B v3, 0.02 to 0.08 s an utterance)
-and speaking (Qwen3-TTS, first audio in 0.10 to 0.33 s) on the GPU, about 7.1 GB of GPU memory together
-(measured 2026-10-20); the wake phrase, offline, in English and Spanish (Vosk); reading a letter
-(Tesseract: only its text leaves); following your face (Pollen's tracking); every body behaviour. When
-Andy looks around for something, each frame is taken only after the head has stopped and settled
-(0.6 s), so the model never reads a blurred view.
-
-**On Nebius, each model for a reason we measured:**
-
-| Model | Why this one |
-|---|---|
-| Nemotron 3.5 Lightning, Token Factory | Every turn: 0.6 to 0.8 s a reply with tool calls, at $0.06 per million input tokens |
-| Nemotron 3 Ultra, Token Factory | Only where judgment matters: in the scam check, Ultra told the same trick from the same topic (0 ordinary messages flagged, against 24 with Lightning); hard decisions; the suite's judge |
-| Nemotron 3.5 Super VL, Token Factory | Eyes: four views read at once as structured output in about 2.1 s, a description in about 1.35 s, against 2.3 s and 3.45 s for Nano VL on our own endpoint, both right on every view ([desk check](evals/results/eyes-check-2026-10-20-1614.json)); on Token Factory since October 2026, so always on, nothing to start and nothing paid while idle. Nemotron Nano 12B v2 VL on our own Serverless Endpoint stays as an option (`ANDY_VISION=endpoint`, [decision 0011](docs/decisions/0011-the-eyes-on-token-factory.md)) |
-| Nemotron 3.5 Content Safety, Serverless Endpoint | A second look for signs of crisis, with our own policy: 7 of 8 held-out sentences caught, against 5 of 8 with its standard categories, in about 0.55 s |
-
-### Beside NVIDIA's Reachy Mini Jetson assistant
-
-NVIDIA's [Reachy Mini Jetson Assistant](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
-(Jetson AI Lab, read 2026-10-20) runs everything on the robot's own small computer. Andy makes different
-choices, and says why:
-
-| | The Jetson assistant | Andy |
-|---|---|---|
-| Computer | Jetson Orin Nano 8 GB, about 7.6 GB usable | A desktop with an NVIDIA GPU beside the robot; hearing and speaking use about 7.1 GB |
-| Starting a turn | Push-to-talk in a web page; Silero VAD | A spoken wake phrase, offline (Vosk), English and Spanish; then natural turn-taking, and you can talk over Andy |
-| Hearing | faster-whisper | NVIDIA Parakeet TDT 0.6B v3, on this computer |
-| Thinking and seeing | Cosmos Reason 2 2B, 4-bit (about 2.2 GB), llama.cpp, on the Jetson | Nemotron 3.5 Lightning, Nemotron 3 Ultra and Nemotron 3.5 Super VL on Nebius Token Factory, zero data retention |
-| Speaking | Kokoro | Qwen3-TTS, on this computer |
-| Moving | One 100 Hz controller, so face tracking and speaking gestures never fight | The same idea in Pollen's movement manager: one loop at 60 Hz is the only thing that sets the motors; following your face is blended in, and glances at the TV, the finder's sweep and the antennas wait in its one queue |
-| A picture for the model | Motion frozen briefly before the frame is chosen | The head stops and settles 0.6 s before each frame |
-| Published speed | None given | Median 1.06 s from your words being understood to Andy's first sound, 54 real turns ([scorecard](evals/results/robot-timings-2026-10-20-1550.json)) |
-
-**Why the difference:** the hard parts of Andy (telling a scam from an ordinary letter, judging a hard
-question, finding glasses in a cluttered room) are where model size showed in our measurements, and Token
-Factory runs the big models without a language model at home. The trade-off is that your words leave the house,
-with zero data retention; the Jetson assistant keeps everything local.
-
-**What a Jetson version would need** (a plan, not tried): hearing and speaking in well under 7.6 GB, so a
-smaller voice than Qwen3-TTS; thinking and seeing staying on Token Factory, so the Jetson needs no language
-model; and, for when the network is down, a small local model such as Cosmos Reason 2 2B to answer "where are my
-glasses?" offline. Offline Andy should do less, never more.
-
-## Built on what older adults have said they want
-
-Each principle comes from published research, and each has something you can see Andy do.
-
-| Principle | Source | What Andy does |
-|---|---|---|
-| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | Nemotron answers in 0.6 to 0.8 s; each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
-| Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
-| Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
-| The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
-| No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); research on patronising speech to older adults | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
 
 ## How it uses NVIDIA and Nebius
 
@@ -296,33 +224,50 @@ are checked in code, not by the judge.
 Every suite run's scorecard, each failure with the judge's reason, is in [evals/results/](evals/results/);
 timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 
-## What doesn't work yet
+## What runs where, and why that model
 
-- **No study with older adults yet.** Andy is built on published research and measured with our own tests;
-  a pilot with an ethics review comes next.
-- **The finder has no rate at home yet.** In a dozen tries during development (2026-10-19 and 20, the code
-  changing between them) it found the glasses on a table and on the floor; on a dark chair it said several times
-  that it couldn't see them, rather than guessing. Tries can be recorded and scored (`evals/finder_eval.py`). It
-  finds things, not people. In simulation it is measured
-  (decision 0013), but rendered pictures are cleaner than a room. From where Andy sits it can't look further than
-  60 degrees to either side without turning its body, so a chair beside it can be out of reach.
-- **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the
-  suite, not yet on camera with two people. The microphones can't tell a voice in front from one behind.
-- **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
-  a message is safe, and always suggests checking with family first.
-- **The suite isn't perfect:** about one different case fails each run, and every failure is in its
-  scorecard.
-- **Body language while thinking** (a glance away, a tilt as a question ends) is built but off until it has
-  been tested with the robot (`ANDY_EXPRESSIVE=on`).
-- **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
-  yet.
-- **English and Spanish only.**
-- **The second look** runs on a Nebius endpoint we start when needed. The eyes no longer do (they're on Token
-  Factory), but Super VL is newer to Andy than Nano VL: it is checked at the desk and in the suite, and the
-  finder's real measure is the recorded tries at home, read by both models.
-- **The TV page** is tested in Chromium and has live regions for the state and the captions, but hasn't
-  been tried with a screen reader.
-- **Andy without a robot** (`scripts/andy-sim`) hasn't been tried on a computer with no robot attached.
+**On this computer, beside the robot:** hearing (NVIDIA Parakeet TDT 0.6B v3, 0.02 to 0.08 s an utterance)
+and speaking (Qwen3-TTS, first audio in 0.10 to 0.33 s) on the GPU, about 7.1 GB of GPU memory together
+(measured 2026-10-20); the wake phrase, offline, in English and Spanish (Vosk); reading a letter
+(Tesseract: only its text leaves); following your face (Pollen's tracking); every body behaviour. When
+Andy looks around for something, each frame is taken only after the head has stopped and settled
+(0.6 s), so the model never reads a blurred view.
+
+**On Nebius, each model for a reason we measured:**
+
+| Model | Why this one |
+|---|---|
+| Nemotron 3.5 Lightning, Token Factory | Every turn: 0.6 to 0.8 s a reply with tool calls, at $0.06 per million input tokens |
+| Nemotron 3 Ultra, Token Factory | Only where judgment matters: in the scam check, Ultra told the same trick from the same topic (0 ordinary messages flagged, against 24 with Lightning); hard decisions; the suite's judge |
+| Nemotron 3.5 Super VL, Token Factory | Eyes: four views read at once as structured output in about 2.1 s, a description in about 1.35 s, against 2.3 s and 3.45 s for Nano VL on our own endpoint, both right on every view ([desk check](evals/results/eyes-check-2026-10-20-1614.json)); on Token Factory since October 2026, so always on, nothing to start and nothing paid while idle. Nemotron Nano 12B v2 VL on our own Serverless Endpoint stays as an option (`ANDY_VISION=endpoint`, [decision 0011](docs/decisions/0011-the-eyes-on-token-factory.md)) |
+| Nemotron 3.5 Content Safety, Serverless Endpoint | A second look for signs of crisis, with our own policy: 7 of 8 held-out sentences caught, against 5 of 8 with its standard categories, in about 0.55 s |
+
+### Beside NVIDIA's Reachy Mini Jetson assistant
+
+NVIDIA's [Reachy Mini Jetson Assistant](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
+(Jetson AI Lab, read 2026-10-20) runs everything on the robot's own small computer. Andy makes different
+choices, and says why:
+
+| | The Jetson assistant | Andy |
+|---|---|---|
+| Computer | Jetson Orin Nano 8 GB, about 7.6 GB usable | A desktop with an NVIDIA GPU beside the robot; hearing and speaking use about 7.1 GB |
+| Starting a turn | Push-to-talk in a web page; Silero VAD | A spoken wake phrase, offline (Vosk), English and Spanish; then natural turn-taking, and you can talk over Andy |
+| Hearing | faster-whisper | NVIDIA Parakeet TDT 0.6B v3, on this computer |
+| Thinking and seeing | Cosmos Reason 2 2B, 4-bit (about 2.2 GB), llama.cpp, on the Jetson | Nemotron 3.5 Lightning, Nemotron 3 Ultra and Nemotron 3.5 Super VL on Nebius Token Factory, zero data retention |
+| Speaking | Kokoro | Qwen3-TTS, on this computer |
+| Moving | One 100 Hz controller, so face tracking and speaking gestures never fight | The same idea in Pollen's movement manager: one loop at 60 Hz is the only thing that sets the motors; following your face is blended in, and glances at the TV, the finder's sweep and the antennas wait in its one queue |
+| A picture for the model | Motion frozen briefly before the frame is chosen | The head stops and settles 0.6 s before each frame |
+| Published speed | None given | Median 1.06 s from your words being understood to Andy's first sound, 54 real turns ([scorecard](evals/results/robot-timings-2026-10-20-1550.json)) |
+
+**Why the difference:** the hard parts of Andy (telling a scam from an ordinary letter, judging a hard
+question, finding glasses in a cluttered room) are where model size showed in our measurements, and Token
+Factory runs the big models without a language model at home. The trade-off is that your words leave the house,
+with zero data retention; the Jetson assistant keeps everything local.
+
+**What a Jetson version would need** (a plan, not tried): hearing and speaking in well under 7.6 GB, so a
+smaller voice than Qwen3-TTS; thinking and seeing staying on Token Factory, so the Jetson needs no language
+model; and, for when the network is down, a small local model such as Cosmos Reason 2 2B to answer "where are my
+glasses?" offline. Offline Andy should do less, never more.
 
 ## Privacy
 
@@ -352,6 +297,63 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
 - **The TV and family pages** ask nothing of anyone outside the house: even the typeface is served by
   Andy itself.
 - **Keys never enter this repository;** a pre-commit hook blocks key-like strings.
+
+## Accessibility
+
+Andy is used by voice, from across a room, by people of any eyesight or hearing, so access is the product:
+- **Nothing to read, tap or install for the person.** Everything is said; the TV only shows what Andy
+  says, and the family and settings pages are for helpers.
+- **All of Andy's words as captions** on the TV, at reading pace, three lines at a time, on by default.
+- **Readable from across the room:** large type in Atkinson Hyperlegible (made by the Braille Institute for
+  low-vision readers), and every text colour at 7:1 contrast (WCAG AAA) against the worst glow or photo
+  behind it, tested (`tests/test_screen_design.py`).
+- **A calm screen** in the settings: no movement and no see-through panels; the TV also follows the
+  system's reduced-motion setting.
+- **The TV's remote:** arrows and OK reach Settings and Under the hood; Back closes the menu.
+- **A letter in large print** on the TV, with what to do and by when.
+- **Pace and volume by voice**, "slower", "louder", and they stick; talk over Andy and it stops at once.
+- **English and Spanish**, with *usted*; the screen and pages switch too.
+- **The phone pages** for family and helpers: 17 px text or larger, 48 px targets, 7:1 text.
+
+## Built on what older adults have said they want
+
+Each principle comes from published research, and each has something you can see Andy do.
+
+| Principle | Source | What Andy does |
+|---|---|---|
+| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | Nemotron answers in 0.6 to 0.8 s; each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
+| Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
+| Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
+| The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
+| No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); research on patronising speech to older adults | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
+
+## What doesn't work yet
+
+- **No study with older adults yet.** Andy is built on published research and measured with our own tests;
+  a pilot with an ethics review comes next.
+- **The finder has no rate at home yet.** In a dozen tries during development (2026-10-19 and 20, the code
+  changing between them) it found the glasses on a table and on the floor; on a dark chair it said several times
+  that it couldn't see them, rather than guessing. Tries can be recorded and scored (`evals/finder_eval.py`). It
+  finds things, not people. In simulation it is measured
+  (decision 0013), but rendered pictures are cleaner than a room. From where Andy sits it can't look further than
+  60 degrees to either side without turning its body, so a chair beside it can be out of reach.
+- **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the
+  suite, not yet on camera with two people. The microphones can't tell a voice in front from one behind.
+- **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
+  a message is safe, and always suggests checking with family first.
+- **The suite isn't perfect:** about one different case fails each run, and every failure is in its
+  scorecard.
+- **Body language while thinking** (a glance away, a tilt as a question ends) is built but off until it has
+  been tested with the robot (`ANDY_EXPRESSIVE=on`).
+- **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
+  yet.
+- **English and Spanish only.**
+- **The second look** runs on a Nebius endpoint we start when needed. The eyes no longer do (they're on Token
+  Factory), but Super VL is newer to Andy than Nano VL: it is checked at the desk and in the suite, and the
+  finder's real measure is the recorded tries at home, read by both models.
+- **The TV page** is tested in Chromium and has live regions for the state and the captions, but hasn't
+  been tried with a screen reader.
+- **Andy without a robot** (`scripts/andy-sim`) hasn't been tried on a computer with no robot attached.
 
 ## Try it without a robot
 
@@ -414,9 +416,13 @@ Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's
 | `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
 | `cloud/` | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
 | `evals/` | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
+| `tests/` | About 860 tests (`uv run pytest`), run before every commit and push |
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The two user services: the voice server and Andy |
-| `docs/` | [Plan](docs/PLAN.md), [status](docs/STATUS.md), [architecture](docs/architecture.md), [decisions](docs/decisions/) |
+| `sim/` | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
+| `space/` | The public demo of the screens as a Hugging Face Space (Docker, sample data, no keys) |
+| `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page |
+| `docs/` | Every document, mapped in [docs/README.md](docs/README.md): features, architecture, [decisions](docs/decisions/README.md), research, cost, and the build records |
 
 ## Built during the hackathon
 

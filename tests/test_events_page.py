@@ -24,7 +24,7 @@ def tavily(answers):
 
 def test_the_town_s_events_page_is_found_on_its_own_website_with_map():
     opener, sent = tavily([
-        {"results": [{"url": "https://www.tripsite.com/sunny-isles"}, {"url": "https://www.harborbay.example/"}]},
+        {"results": [{"url": "https://www.tripsite.com/harbor-bay"}, {"url": "https://www.harborbay.example/"}]},
         {"base_url": "https://www.harborbay.example", "results": [
             "https://www.harborbay.example/news/2026/10/road-works", "https://www.harborbay.example/calendar/event/1234-tea-dance",
             "https://www.harborbay.example/calendar", "https://www.harborbay.example/parks/pelican-park", "https://www.harborbay.example/contact"]}])

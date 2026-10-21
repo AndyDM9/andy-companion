@@ -1,6 +1,7 @@
 # Architecture
 
-**Last updated 2026-10-20.**
+**Last updated 2026-10-20.** How Andy's parts fit together, for anyone reading or changing the code: the robot, the
+home computer, Nebius and the web; what each module owns, and what it must not reach into.
 
 ![How Andy works](images/architecture.svg)
 
@@ -30,7 +31,7 @@ The text diagram below shows the voice path in detail.
                     warning: the same trick, not merely the same topic)
  find_object, describe_view, describe_photo ──▶ Nemotron 3.5 Super VL on Token Factory (ANDY_VISION; or Nano VL
                     on our own Serverless Endpoint, started on demand)
- guard ──▶ Nemotron 3.5 Content Safety on a second Serverless Endpoint, beside each reply
+ guard ──▶ Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply
  think_it_through ──▶ Nemotron 3 Ultra on Token Factory
 ```
 
@@ -121,10 +122,18 @@ watchdog only logs).
 
 - `evals/run_suite.py`: the conversation suite (94 spoken situations, Andy's real profile and tools, judged
   by Nemotron 3 Ultra), locally or as a Nebius Serverless Job (`cloud/suite-job.sh`).
-- `evals/scam_eval.py`: the scam check with each model alone and with Tavily's warnings (Lightning, Ultra), four ways; `--word-rules` is the fifth, with no model, Tavily fetched once
+- `evals/scam_eval.py`: the scam check five ways: word rules alone (`--word-rules`), and Lightning and Ultra each alone and with Tavily's warnings; Tavily fetched once
   per message and the models run three times as Nebius Serverless Jobs, two at a time
   (`cloud/scam-job.sh`; a job's request may hold 64 KB, so four parts).
 - `evals/finder_eval.py`: the finder scored from recorded tries against the person's own labels.
+- `evals/zoom_check.py`: the finder's own code on 18 frames of one room photo, the old way against zoomed tiles and
+  the closer look (decision 0012).
+- `sim/finder_sim.py` and `sim/replay.py`: Andy's search in Pollen's MuJoCo scene, scored against the scene's truth,
+  as Nebius Serverless Jobs (`cloud/sim-job.sh`, decision 0013); and the film of one search.
+- `evals/eyes_check.py`: the two vision models side by side at the desk (decision 0011).
+- `evals/robot_timings.py`: the robot's real turns, from Andy's own log, numbers only.
+- `evals/guard_check.py`: the second look (Content Safety) on written sentences the word list misses.
+- `evals/build_tools.py`: writes `evals/tools.json`, exactly the tools the robot gives the model.
 - `scripts/doctor.py --live`: the health check before filming.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
   and `voice/serve.py` silences the transcript prints of every console in the voice server.

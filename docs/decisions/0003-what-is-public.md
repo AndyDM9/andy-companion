@@ -19,7 +19,18 @@ Andy reuses ideas and general-purpose code from an earlier private assistant on 
 
 **Each user brings their own keys:** Nebius and Tavily ([0002](0002-one-search-provider-tavily.md)).
 
+## Why
+
+The repository is public so judges and anyone else can check every claim against the code. Keys, private projects
+and anything a person said would be exposed by the same openness, so they are kept out by rule, not by care.
+
 ## How we keep to it
 
 - **Code from the private assistant** is copied module by module, with its private imports removed and personal examples rewritten. It is never copied as a whole folder.
 - **Every commit's history** is checked for keys before the repository goes public.
+- **Before going public** (2026-10-20), names, the founder's town and an endpoint address that had reached older
+  commits are rewritten out of the history, every commit's date kept.
+
+## Revisit when
+
+- Andy takes contributions from others: then a contributor guide and a review of what they may add.
