@@ -75,3 +75,12 @@ def test_the_doctor_says_finder_tries_are_kept_before_filming(monkeypatch):
     assert doctor.finder_recording({"ANDY_FINDER_RECORD": " /home/x/andy-finder-tries "}) == "/home/x/andy-finder-tries"
     monkeypatch.setenv("ANDY_FINDER_RECORD", "/elsewhere")
     assert doctor.finder_recording({}) == "/elsewhere"
+
+
+def test_the_hood_says_its_turns_are_samples_only_in_the_demo(monkeypatch):
+    monkeypatch.setattr(screen_server, "INDEX", None)
+    assert screen_server.hood_state()["sample"] is False
+    monkeypatch.setattr(screen_server, "INDEX", b"<p>the demo</p>")
+    assert screen_server.hood_state()["sample"] is True
+    page = (ROOT / "src/andy_companion/pages/hood.html").read_text()
+    assert "s.sample ? ui.sampleLede : ui.lede" in page and page.count("sampleLede:") == 2

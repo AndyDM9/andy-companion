@@ -86,6 +86,18 @@ def test_read_only_takes_nothing_and_the_front_page_is_served(monkeypatch):
             urllib.request.urlopen(req, timeout=5)
         assert e.value.code == 403 and "nothing you send is kept" in json.loads(e.value.read())["error"]
         assert not board.SHARED.exists() or "hello" not in board.SHARED.read_text()
+        # Opening the family page works, so a visitor sees the sample notes; the name is not kept anywhere.
+        looked = []
+        monkeypatch.setattr(board, "looked", lambda name: looked.append(name))
+        req = urllib.request.Request(f"{url}/api/family/look?k={board.tokens()['family']}", method="POST",
+                                     data=json.dumps({"name": "Visitor"}).encode(), headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            assert json.loads(r.read()) == {"ok": True}
+        assert looked == []
+        bad = urllib.request.Request(f"{url}/api/family/look?k=wrong", method="POST", data=b"{}")
+        with pytest.raises(urllib.error.HTTPError) as e:
+            urllib.request.urlopen(bad, timeout=5)
+        assert e.value.code == 403
     finally:
         httpd.shutdown()
 

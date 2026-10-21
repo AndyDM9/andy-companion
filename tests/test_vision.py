@@ -61,7 +61,7 @@ def test_large_pictures_are_made_smaller():
 
 def test_never_sends_over_plain_http(monkeypatch):
     monkeypatch.setenv("ANDY_VISION", "endpoint")
-    monkeypatch.setenv("ANDY_VISION_URL", "192.0.2.10:8000")
+    monkeypatch.setenv("ANDY_VISION_URL", "192.0.2.10:8000")       # a documentation address (RFC 5737)
     monkeypatch.setenv("ANDY_VISION_TOKEN", "secret-token")
     op = Opener()
     assert "secure" in vision.look(lambda: FRAME, opener=op)["error"] and op.requests == []

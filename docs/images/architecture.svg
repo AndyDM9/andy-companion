@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="Atkinson Hyperlegible, Verdana, sans-serif" role="img" aria-labelledby="t d">
   <title id="t">How Andy works</title>
-  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer, Parakeet hears, the voice server asks Nemotron, Andy's app adds its 35 tools (letters, stories, jokes, research), body behaviours including a glance at the screen, privacy and the urgent-words net, and text-to-speech speaks. Nemotron 3.5 Lightning on Nebius Token Factory reasons and calls tools. Nemotron Nano VL on a Nebius Serverless Endpoint sees, only when asked, and Nemotron 3.5 Content Safety on a second endpoint takes a second look at the person's words for signs of crisis. The conversation suite runs as a Nebius Serverless Job judged by Nemotron 3 Ultra. Tavily brings the web. A screen beside Andy and a family page on a phone complete it.</desc>
+  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer, Parakeet hears, the voice server asks Nemotron, Andy's app adds its 38 tools (letters, stories, jokes, research), body behaviours including a glance at the screen, privacy and the urgent-words net, and text-to-speech speaks. Nemotron 3.5 Lightning on Nebius Token Factory reasons and calls tools. Nemotron Nano VL on a Nebius Serverless Endpoint sees, only when asked, and Nemotron 3.5 Content Safety on a second endpoint takes a second look at the person's words for signs of crisis. The conversation suite runs as a Nebius Serverless Job judged by Nemotron 3 Ultra. Tavily brings the web. A screen beside Andy and a family page on a phone complete it.</desc>
   <rect width="1200" height="700" fill="#f7faf8"/>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4c5d4f"/></marker>
@@ -32,9 +32,9 @@
 
   <rect x="342" y="262" width="274" height="230" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
   <text x="358" y="290" font-size="16" font-weight="700" fill="#1d2a1f">Andy's app</text>
-  <text x="358" y="314" font-size="15" fill="#1d2a1f">35 tools: day, reminders, letters,</text>
+  <text x="358" y="314" font-size="15" fill="#1d2a1f">38 tools: day, reminders, letters,</text>
   <text x="358" y="336" font-size="15" fill="#1d2a1f">news, stories, jokes, photos, family</text>
-  <text x="358" y="358" font-size="15" fill="#1d2a1f">body: follows you, glances at the TV</text>
+  <text x="358" y="358" font-size="15" fill="#1d2a1f">body: follows you, finds things</text>
   <text x="358" y="380" font-size="15" fill="#1d2a1f">urgent-words net (911, 988)</text>
   <text x="358" y="402" font-size="15" fill="#1d2a1f">privacy: nothing said is logged</text>
   <text x="358" y="424" font-size="15" fill="#1d2a1f">supervisor: asleep, quiet, wake</text>
@@ -66,21 +66,21 @@
 
   <rect x="724" y="84" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="116" font-size="18" font-weight="700" fill="#24304f">Nebius Token Factory</text>
-  <text x="744" y="142" font-size="15" fill="#24304f">Nemotron 3.5 Lightning: talk, tools, structured</text>
-  <text x="744" y="164" font-size="15" fill="#24304f">output, 0.6–0.8 s; Nemotron 3 Ultra: hard questions</text>
+  <text x="744" y="142" font-size="15" fill="#24304f">Nemotron 3.5 Lightning: talk and tools, 0.6–0.8 s;</text>
+  <text x="744" y="164" font-size="15" fill="#24304f">Super VL: eyes, zoomed in; Ultra: hard questions</text>
   <text x="744" y="190" font-size="15" fill="#4c5d4f">zero data retention on</text>
 
   <rect x="724" y="236" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
-  <text x="744" y="268" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Endpoints (two)</text>
-  <text x="744" y="294" font-size="15" fill="#24304f">Nemotron Nano 12B v2 VL: eyes, only when asked</text>
-  <text x="744" y="316" font-size="15" fill="#24304f">Nemotron 3.5 Content Safety: a second look</text>
-  <text x="744" y="342" font-size="15" fill="#4c5d4f">one L40S each; token required twice; stopped idle</text>
+  <text x="744" y="268" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Endpoint</text>
+  <text x="744" y="294" font-size="15" fill="#24304f">Nemotron 3.5 Content Safety: a second look</text>
+  <text x="744" y="316" font-size="15" fill="#24304f">Nano 12B v2 VL: other eyes, if chosen</text>
+  <text x="744" y="342" font-size="15" fill="#4c5d4f">an L40S; a token required; stopped when idle</text>
 
   <rect x="724" y="388" width="428" height="128" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
-  <text x="744" y="420" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Job</text>
-  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite: 85 situations,</text>
-  <text x="744" y="468" font-size="15" fill="#24304f">judged by NVIDIA Nemotron 3 Ultra</text>
-  <text x="744" y="494" font-size="15" fill="#4c5d4f">English and Spanish; every failure published</text>
+  <text x="744" y="420" font-size="18" font-weight="700" fill="#24304f">Nebius Serverless Jobs</text>
+  <text x="744" y="446" font-size="15" fill="#24304f">The conversation suite and the scam check,</text>
+  <text x="744" y="468" font-size="15" fill="#24304f">judged by NVIDIA Nemotron 3 Ultra;</text>
+  <text x="744" y="494" font-size="15" fill="#4c5d4f">Andy's search in simulation; failures published</text>
 
   <rect x="724" y="540" width="428" height="110" rx="10" fill="#fff" stroke="#24304f" stroke-width="2"/>
   <text x="744" y="572" font-size="18" font-weight="700" fill="#24304f">Tavily</text>

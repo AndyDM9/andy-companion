@@ -77,7 +77,7 @@ robot.
 
 Among roughly the 50 most-liked Reachy Mini apps on Hugging Face, none searches a room for an object, and
 none does listening body language ([the app store by likes](https://huggingface.co/spaces?filter=reachy_mini&sort=likes)).
-The most-liked apps react physically to something the camera notices. a judge's
+The most-liked apps react physically to something the camera notices. NVIDIA's
 [Reachy Mini Jetson tutorial](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
 sweeps the body and settles before taking a frame. **What Andy does:** "where did I leave my glasses?"
 sweeps the room, reads four views in parallel with Nemotron Nano VL, and points with the head.

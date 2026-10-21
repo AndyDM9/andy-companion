@@ -115,8 +115,8 @@ must stay at 7:1 (WCAG AAA) against the worst case behind it, tested.
 
 ## Amended 2026-10-20 (a design pass before filming; PLAN round 6)
 
-The founder asked for the most beautiful screen we can make; the judges had faulted another entry for a warning
-buried under its evidence and for a stock look. Seen on the demo at TV size, the screen read well but was generic
+The founder asked for the most beautiful screen we can make; in Devpost's judging session, judges criticised a
+warning buried under its evidence, and a stock look. Seen on the demo at TV size, the screen read well but was generic
 in two places and wrong in two:
 - **Andy itself, drawn small, replaces the grey dot** in the state pill: a round head, two eyes, two antennas that
   do what the robot's do (lifted while you speak, leaning together while it thinks, a sway while it speaks, drooped

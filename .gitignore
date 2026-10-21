@@ -16,3 +16,11 @@ evals/results/.job.log
 voice/magpie-eval/.venv/
 voice/magpie-eval/out/
 evals/results/scam-parts-*/
+
+# Recordings never belong here (decision 0003): video and audio from filming, and the finder's recorded tries.
+# The simulation's film (docs/images/sim-search.mp4) is rendered, not recorded, and is tracked.
+*.mov
+*.mkv
+*.webm
+*.m4a
+andy-finder-tries/

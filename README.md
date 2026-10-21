@@ -2,14 +2,24 @@
 
 **A small home robot for older adults who live at home, and the family who help.** Andy runs on a
 Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It hears with NVIDIA
-Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory (which answers in 0.6 to 0.8 s), sees with Nemotron 3.5
-Super VL, also on Token Factory, and looks things up with Tavily. It says it's a robot, and it keeps
+Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory (on the robot, a median of 1.06 s from your words to
+its first sound), sees with Nemotron 3.5 Super VL, also on Token Factory, and looks things up with Tavily. It says it's a robot, and it keeps
 no recordings or transcripts: only what you ask it to keep.
 
 > Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
 
+**What's new here:**
+- **A language model that moves a robot's head to find things in a room,** with nothing trained: it looks around,
+  zooms in, looks closer and points, and it is tested in simulation as Nebius Serverless Jobs.
+- **A scam check for where scams reach people at home:** the letter in your hand or the call you mention. Tavily's
+  consumer-protection warnings, judged by Nemotron 3 Ultra, caught 58 of 60 scams and flagged none of 60 ordinary
+  messages, measured beside word rules and each model alone.
+- **Rules in code under the model:** **Be careful** on a risky letter whatever the model says, consent before
+  anything is remembered, and no recordings or transcripts.
+
 **Judging it without a robot** (you won't have a Reachy Mini; this is how to see the physical part anyway):
-1. **Watch the video** (link above, once published): everything on it is live, on the robot, with no cuts in the pauses.
+1. **Watch the video** (its link is the first thing below this list): everything on it is live, on the robot, with
+   no cuts in the pauses.
 2. **Watch Andy's search in simulation** (20 s, below): Pollen's own MuJoCo scene, Andy's own search code, live
    NVIDIA Nemotron 3.5 Super VL calls: it looks around, reads each view as six zoomed tiles, looks closer, points.
    Measured the same way over 30 trials as Nebius Serverless Jobs (no false find in 7 without the duck; pointing
@@ -20,9 +30,9 @@ no recordings or transcripts: only what you ask it to keep.
    `http://127.0.0.1:8093/`: the TV, Under the hood, the family page and the settings page, on sample data
    (no robot, GPU or keys).
    <!-- Founder: once the Hugging Face Space is up (founder action 6.18), its link goes here as "or open it in your browser". -->
-4. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)
-   (a Nebius Serverless Job), the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
-   (four ways, four Nebius Serverless Jobs, beside a [no-model baseline](evals/results/scam-word-rules-2026-10-20-1552.json)),
+4. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)
+   (94 situations, a Nebius Serverless Job), the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
+   (each model alone and with Tavily's warnings, four Nebius Serverless Jobs, beside a [no-model baseline](evals/results/scam-word-rules-2026-10-20-1552.json)),
    and [54 real turns on the robot](evals/results/robot-timings-2026-10-20-1550.json); every failure is in them.
 5. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
    `NEBIUS_API_KEY=… uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`
@@ -52,8 +62,9 @@ puts **Be careful** first, and Andy never reads out the page's numbers.
 **"Where did I leave my glasses?"** Andy looks around the room. NVIDIA Nemotron 3.5 Super VL on Token Factory
 reads the four views zoomed in, each as six tiles at the camera's full resolution (24 at once, about 1.8 s). Then
 Andy looks closer: it turns its head straight at what it saw, takes a close-up and checks it, and only then points
-at them and says "I think I see your glasses, on the table…". At the desk, the old way (one shrunk picture per view)
-found a real pair of reading glasses in 0 of 9 frames, zoomed in 9 of 9, with no false sighting
+at them and says "I think I see your glasses, on the table…". At the desk, on nine versions of one room photo with a
+real pair of reading glasses in it, the old way (one shrunk picture per view) found them in 0 of 9, zoomed in 9 of 9,
+with no false sighting in the nine without them: a direction, not a rate
 ([how we measured](docs/research.md#finding-small-things-zoom-in-then-look-closer-researched-2026-10-20)). The TV shows the picture it saw them in, held in memory for two
 minutes and never saved.
 
@@ -118,7 +129,7 @@ anyone safe, speak as a real person, or keep recordings or transcripts.
 
 **What it costs:** about **$2.30 a month** for one household's conversation, help and web lookups at an
 active level of use (Token Factory's prices on 2026-10-14; the web within Tavily's free 1,000 credits), plus
-the hardware once. The eyes are on Token Factory, paid per picture (about 1,000 tokens a view), so nothing
+the hardware once. The eyes are on Token Factory, paid per picture (a search for your glasses about half a cent), so nothing
 runs while idle. The second look is not in that figure: it runs on a Nebius endpoint started when needed (about
 $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/cost.md).
 
@@ -194,7 +205,7 @@ Each principle comes from published research, and each has something you can see
 | Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
 | The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
-| No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); elderspeak research | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
+| No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); research on patronising speech to older adults | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
 
 ## How it uses NVIDIA and Nebius
 
@@ -208,7 +219,7 @@ Each principle comes from published research, and each has something you can see
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
-| The conversation suite | 89 spoken situations, 20 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
+| The conversation suite | 94 spoken situations, 22 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
 | The scam check, measured five ways | Word rules alone, Lightning, Ultra, and Tavily's warnings with each; 120 messages, three runs, 95% intervals | **Nebius Serverless Jobs**, four of them, two at a time ([cloud/scam-job.sh](cloud/scam-job.sh)); the word rules need no model |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`, and one conversation's requests share an `X-Session-Id`; credits shown on `/hood` | Tavily API |
 
@@ -216,7 +227,7 @@ Each principle comes from published research, and each has something you can see
 
 - **One key, every Nemotron model.** Andy talks with Nemotron 3.5 Lightning and the suite's judge is
   Nemotron 3 Ultra, both through the same Token Factory API: trying a model is changing its name, and
-  the judge reads all 81 situations three times in a few minutes.
+  the judge reads all 94 situations three times in a few minutes.
 - **No language-model GPU at home.** The desktop's graphics cards keep hearing and speaking local
   (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, 0.6 to 0.8 s per reply, measured on the
   robot.
@@ -252,18 +263,19 @@ only, in memory; never the words. In English or Spanish, like the household.
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 89 spoken situations in 20 areas, English and Spanish,
+**The conversation suite** ([evals/](evals/)): 94 spoken situations in 22 areas, English and Spanish,
 judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Latest, as a Nebius Serverless Job: 79, 79 and 79 of 81** (2026-10-13, 23:03;
-  [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)). The one case that
-  failed every run (think-1) was then fixed, and a case for a person also called Andy added. The final
-  Job run comes before submitting.
-- **On this computer, 2026-10-20, after photo stories were added:** 87, 88 and 86 of 89
-  ([scorecard](evals/results/suite-2026-10-20-round5-local.json)); the four photo cases passed every run.
+- **Latest, as a Nebius Serverless Job: 92, 91 and 94 of 94** (2026-10-20, with photo stories, places and
+  taught moves; [scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)). Five cases failed once each, never twice: two calls that didn't
+  happen (act-2, think-1), a share without reading the message back (share-2), a crisis reply without
+  "someone you trust" (crisis-3), and a photo read as a letter (photo-4). The final Job run comes before
+  submitting.
+- **Before, as a Job:** 79, 79 and 79 of 81 (2026-10-13;
+  [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)).
 - **Baseline:** 27 of 36, before any fixes.
 - **What the suite has found**, each fixed and recorded in [evals/suite.json](evals/suite.json):
   - Andy said it had no camera, and once invented a time;
@@ -333,8 +345,9 @@ timings are dated measurements in [docs/STATUS.md](docs/STATUS.md).
   - your words to Nebius Token Factory (zero data retention on), and to your own Content Safety
     endpoint;
   - searches to Tavily, with scam-check messages' numbers and links removed first;
-  - a camera picture to your own Nebius endpoint only when you ask "what do you see?", ask Andy to find
-    something, or a family photo is described; it is not kept there;
+  - a camera picture to Nebius Token Factory (zero data retention on; or your own endpoint, if you choose it)
+    only when you ask "what do you see?", ask Andy to find something, or a family photo is described; it is not
+    kept there;
   - a letter is read on this computer, and only its text goes to Token Factory.
 - **The TV and family pages** ask nothing of anyone outside the house: even the typeface is served by
   Andy itself.
@@ -429,6 +442,10 @@ This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own ter
 | NVIDIA Nemotron 3.5 Content Safety (second look) | OpenMDW-1.1, Gemma Terms of Use and Prohibited Use Policy | NVIDIA, Google (Gemma) |
 | Qwen3-TTS (speaking) | Apache-2.0 | Qwen team, Alibaba |
 | Pollen Robotics' Reachy Mini SDK and conversation app | Apache-2.0 | Pollen Robotics |
+| Pollen's MuJoCo scene for the Reachy Mini (`sim/`: fetched from the `reachy_mini` package on PyPI at run time, never stored in this repository) | Apache-2.0, with the package | Pollen Robotics |
+| MuJoCo (the simulation) | Apache-2.0 | Google DeepMind |
+| OpenCV (camera pictures, the wave) and Tesseract (reading letters) | Apache-2.0 each | OpenCV team; Tesseract contributors |
+| vLLM (serving models on our own Nebius endpoints) | Apache-2.0 | vLLM project |
 | Hugging Face speech-to-speech | Apache-2.0 | Hugging Face |
 | Vosk and its small English model (wake phrase) | Apache-2.0 | Alpha Cephei |
 | segno (the settings QR code) | BSD-3-Clause | Lars Heuer |

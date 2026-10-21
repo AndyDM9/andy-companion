@@ -1,9 +1,8 @@
 # Plan
 
-**Goal:** win the Nebius x NVIDIA Global AI Hackathon with a companion robot that a judge would want in
-their own parent's home. A project wins one Overall award, or one track award and one bonus award, never
-both (rules, section 8), so we aim for the Grand Prize, and the same work serves the Physical AI track with
-Best Use of Tavily.
+**Goal:** a companion robot a family would want in their own parent's home, entered in the Nebius x NVIDIA
+Global AI Hackathon: the Physical AI track, and Best Use of Tavily. A project wins one Overall award, or one
+track award and one bonus award, never both (rules, section 8).
 
 **Deadline:** submissions close **2026-10-30, 10:00 PT**. We submit by **2026-10-27**.
 
@@ -105,10 +104,10 @@ founder approved its ideas; these turn the physical and the web work into things
 
 ### Round 4 (Claude), from Devpost's judging session (2026-10-20)
 
-The judges, two of them our track's NVIDIA judges, said what they look for: a live link they can click,
+Devpost's public judging session said what judges look for: a live link they can click,
 the aha in under two minutes, onboarding, a baseline beside every number, local models in physical AI,
 limits published (they called it rigour), accessibility called out up front, one story rather than many
-integrations, and real users. The notes are kept privately. Code before the freeze on 2026-10-22; words
+integrations, and real users. Code before the freeze on 2026-10-22; words
 until submission.
 
 | # | Item | Why | Status |
@@ -128,7 +127,7 @@ What is missing is mostly evidence a judge can see, not features: the rules let 
 images and video alone, and the strongest Physical AI entries count real trials with intervals. Two
 build findings: Nemotron 3.5 Super VL is now on serverless Token Factory (tried 2026-10-20: 2.2 s to
 describe a screen, no endpoint to start), and our scam numbers need intervals, a no-model baseline and a
-cost beside them. The research notes are kept privately. Code before the freeze on 2026-10-22.
+cost beside them. Code before the freeze on 2026-10-22.
 
 | # | Item | Why | Status |
 |---|---|---|---|
@@ -165,12 +164,12 @@ Not taken yet (decision 0012, revisit with the recorded tries): a second, lower 
 
 ### Round 8 (Claude), Physical AI: reacting to the room (2026-10-20, approved by the founder: "build 1 to 6")
 
-From the judges' and the field's research (kept privately): the track rewards hardware reacting live to the real
+From research on the track and the field: the track rewards hardware reacting live to the real
 world, and "Serverless Jobs to run simulations … evaluate robot policies".
 
 | # | Item | Why | Status |
 |---|---|---|---|
-| B45 | **Turn to whoever speaks:** a second voice well to the side turns the head; nobody there, back | a judge's non-verbal behaviour; a judge's presence; a judge's assistant has no sound direction | ✅ 2026-10-20 (tests; on the robot in live test 3aa) |
+| B45 | **Turn to whoever speaks:** a second voice well to the side turns the head; nobody there, back | Attention shown without words, and presence; NVIDIA's Reachy Mini Jetson assistant has no sound direction | ✅ 2026-10-20 (tests; on the robot in live test 3aa) |
 | B46 | **Remember where I put it:** a place kept after a yes, looked at first when asked | Human–object interaction | ✅ 2026-10-20 (suite 18 of 18; live test 3bb) |
 | B47 | **Teach Andy a move by hand** (antennas), kept by name, played back | Puppetry and demonstration data | ✅ 2026-10-20 (suite 12 of 12; live test 3cc) |
 | B48 | **The finder in simulation, as Nebius Serverless Jobs** (decision 0013) | The track's text; the tie-break on technology | ✅ 2026-10-20 (two jobs: zoomed in 0 false finds in 7, error 0.76°; old way 3 in 7) |

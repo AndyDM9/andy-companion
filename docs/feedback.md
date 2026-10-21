@@ -5,11 +5,11 @@ win the Most Valuable Feedback award, judged on completeness, viability and pote
 product below says what we used it for, what worked, what needs work, how onboarding felt (zero to hello
 world), and whether we'd build with it again, and why: the organisers' own list ("How to build a winning
 project", Devpost update). Every point is from [feedback-notes.md](feedback-notes.md), dated and
-reproducible. Revised 2026-10-14; finish before submitting.
+reproducible. Revised 2026-10-20; finish before submitting.
 
 ## Nebius Token Factory
 
-**Used for:** every conversation turn of a home companion robot (Nemotron 3.5 Lightning, 35 tools),
+**Used for:** every conversation turn of a home companion robot (Nemotron 3.5 Lightning, 38 tools),
 hard questions (Nemotron 3 Ultra), the judge of our test suite (Ultra), and structured output for screen
 cards and content vetting.
 **Worked:**
@@ -32,7 +32,7 @@ cards and content vetting.
 **Used for:** Andy's voice conversation with tool calls, in English and Spanish.
 **Worked:** correct tool calls in 0.62 to 0.83 s with thinking off; fast enough that a robot feels
 immediate.
-**Needs work**, each found by our conversation suite (now 89 spoken situations):
+**Needs work**, each found by our conversation suite (now 94 spoken situations):
 - **Tool choice changes with the size of the tool list:** with 17 tools it always called the clock;
   with the robot's real 27 it once invented a time.
 - **Persona rules weaken after tool results:** a broad "call tools first" rule led it to agree to speak
@@ -55,7 +55,7 @@ came back instead); with thinking off it returned exactly the schema in 0.73 to 
 
 ## NVIDIA Nemotron 3 Ultra
 
-**Used for:** the judge of our conversation suite (three runs of 81 cases per check), and
+**Used for:** the judge of our conversation suite (three runs of all 94 cases per check), and
 "think it through" for decisions.
 **Worked:** reliable judgments with reasons we could act on; balanced, short answers in 2.1 s.
 **Needs work:** as a judge it passed a reply that read out a scam letter's phone number, although the
@@ -66,7 +66,7 @@ help. Evaluation guidance should say to check hard constraints deterministically
 LLM judge.
 **Onboarding (zero to hello world):** the same key and endpoint as Lightning, only the model name changed, so routing hard turns
 to Ultra was one line.
-**Would we build with it again?** Yes: it judged 89 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
+**Would we build with it again?** Yes: it judged 94 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
 
 ## NVIDIA Nemotron 3.5 Content Safety
 
@@ -118,6 +118,9 @@ minutes), then 3.5 s per description.
 
 **Used for:** speech to text, locally, in Hugging Face's speech-to-speech server.
 **Worked:** 0.02 to 0.08 s per utterance on the desktop's GPU. Excellent for a home robot.
+**Needs work:** nothing we could measure in the model itself. What a home robot misses is who is speaking: with two
+people in the room Andy can't tell their words apart, so it keeps nothing about a person in company. Speaker turns
+from the same model, on the same GPU, would be the next thing we'd use.
 **Onboarding (zero to hello world):** it worked out of the box in speech-to-speech. The only work was privacy: the server prints
 every transcript to the console whatever `--log_transcripts` says, so we filter those prints.
 **Would we build with it again?** Yes: 0.02 to 0.08 s per utterance on a home GPU is what makes a spoken robot feel immediate.
@@ -135,15 +138,19 @@ mention.
 
 ## Nebius AI Cloud (Serverless Endpoints and Jobs)
 
-**Used for:** two endpoints (eyes, content safety) and a CPU job that runs the whole conversation suite.
-**Worked:** the job runs our whole suite (81 cases, three runs, about four minutes) and leaves a
+**Used for:** two endpoints (content safety; Nano VL eyes until 2026-10-20, now the option) and CPU jobs: the
+whole conversation suite, the scam evaluation (four jobs), and Andy's search in simulation (MuJoCo with software
+rendering, two jobs of 30 trials each).
+**Worked:** the job runs our whole suite (94 cases, three runs, a few minutes) and leaves a
 scorecard; we stop the endpoints between uses, and stopped they cost nothing for compute.
 **Needs work:**
 - **An endpoint's plain IP:port reaches the container directly and bypasses the endpoint token.** Mark the
   HTTPS address as the one to use, and say the IP:port isn't covered.
 - **New accounts have no CPU quota in eu-north1** (the only L40S region), so our first job failed with
   ResourceExhausted. We moved it to eu-west2.
-- **Jobs accept at most 64 KB of injected files.** We ship a compressed bundle.
+- **Jobs accept at most 64 KB of injected files.** We ship a compressed bundle, and on 2026-10-20 the suite's
+  outgrew it (49.6 KB gzipped is 66 KB in base64); xz brought it to 44 KB. A way to mount a folder or object
+  storage into a job would end this.
 - **AI Cloud bills separately from Token Factory.** That means a second card and a top-up.
 - **A job's whole request may hold 64 KB, and a new account may run two VMs at once.** Our scam evaluation
   needed four parts, two at a time; a third job at once failed with QuotaExceeded. The Jobs guide should

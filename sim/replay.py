@@ -47,11 +47,18 @@ def font(size: int, bold: bool = False):
     return ImageFont.load_default()
 
 
+def fit(d, text: str, width: float, size: int, bold: bool = False):
+    """The largest font from `size` down that keeps `text` on one line within `width`."""
+    while size > 22 and d.textlength(text, font=font(size, bold)) > width:
+        size -= 2
+    return font(size, bold)
+
+
 class Film:
     def __init__(self, scene: fs.Scene):
         self.s, self.frames = scene, []
         self.rgba = scene.m.geom_rgba.copy()
-        self.big, self.small = font(30, True), font(22)
+        self.big, self.small, self.tag = font(46, True), font(34), font(30, True)   # read at a third of the size
 
     def room(self, yaw: float, pitch: float, colour=(1.0, 0.65, 0.15, 1.0), length: float = 0.9):
         """Pollen's room from a free camera, Andy visible, an arrow from its eye along (yaw, pitch)."""
@@ -82,14 +89,18 @@ class Film:
 
         left = cv2.resize(room, PANEL, interpolation=cv2.INTER_AREA)
         right = cv2.resize(eye, PANEL, interpolation=cv2.INTER_AREA)
-        top = np.hstack([left, right])
-        bar = Image.new("RGB", (PANEL[0] * 2, 110), (20, 28, 46))
+        top = Image.fromarray(np.ascontiguousarray(np.hstack([left, right])[:, :, ::-1]))
+        d = ImageDraw.Draw(top)
+        for x, tag in ((0, "The room, in simulation"), (PANEL[0], "What Andy's eye sees")):
+            w = d.textlength(tag, font=self.tag)
+            d.rounded_rectangle((x + 20, 20, x + 52 + w, 72), 12, fill=(20, 28, 46))
+            d.text((x + 36, 27), tag, font=self.tag, fill=INK)
+        bar = Image.new("RGB", (PANEL[0] * 2, 150), (20, 28, 46))
         d = ImageDraw.Draw(bar)
-        d.text((28, 16), title, font=self.big, fill=INK)
-        d.text((28, 62), line, font=self.small, fill=SOFT)
-        d.text((PANEL[0] * 2 - 330, 16), "Andy's own search, in simulation", font=self.small, fill=SOFT)
-        d.text((PANEL[0] * 2 - 330, 62), "left: the room · right: Andy's eye", font=self.small, fill=SOFT)
-        frame = np.vstack([top, np.array(bar)[:, :, ::-1]])
+        room = PANEL[0] * 2 - 72
+        d.text((36, 18), title, font=fit(d, title, room, 46, True), fill=INK)
+        d.text((36, 90), line, font=fit(d, line, room, 34), fill=SOFT)
+        frame = np.vstack([np.array(top), np.array(bar)])[:, :, ::-1]
         for _ in range(max(n, int(hold_s * FPS))):
             self.frames.append(frame)
 
@@ -188,7 +199,7 @@ def main(argv=None) -> int:
         eye = scene.look(chosen["yaw"], chosen["pitch"])
         film.add(film.room(chosen["yaw"], chosen["pitch"], colour=(0.35, 0.86, 0.63, 1.0)), overlay(eye, spots=[(0.5, 0.5)]),
                  f"4. Pointing: \"I think I see your {what}, {chosen['where']}.\"",
-                 f"{err:.1f}° from where the duck really is. The TV shows the close-up.", hold_s=3.0)
+                 f"{err:.1f}° from where the duck really is. On the robot, the TV shows the close-up.", hold_s=3.0)
     else:
         film.add(film.room(*prev), scene.look(*prev), "4. Not confirmed up close", "Andy says it couldn't see it, never a guess.",
                  hold_s=2.5)

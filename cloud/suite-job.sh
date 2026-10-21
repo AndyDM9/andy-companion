@@ -33,7 +33,8 @@ run() {
   # Nebius limits a job's injected files to 64 KB in all (2026-10-13), so they travel as one
   # compressed bundle, unpacked in the container before the suite runs.
   BUNDLE="$(mktemp)"; trap 'rm -f "$BUNDLE"' EXIT
-  tar -C "$ROOT" -czf - "${FILES[@]}" | base64 -w0 > "$BUNDLE"
+  # xz, not gzip: by 2026-10-20 the gzip bundle had grown to 49.6 KB, over the limit once base64 is added.
+  tar -C "$ROOT" -cf - "${FILES[@]}" | xz -9e | base64 -w0 > "$BUNDLE"
   echo "Bundle: $(wc -c < "$BUNDLE") bytes for ${#FILES[@]} files"
   nebius ai job create --async --name "$NAME" --parent-id "$PROJECT" \
     --image python:3.12-slim \

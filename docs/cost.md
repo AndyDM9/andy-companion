@@ -18,11 +18,14 @@ scales with use: twice the talking is about twice the conversation line.
 
 ## The eyes
 
-Since 2026-10-20 the eyes are NVIDIA Nemotron 3.5 Super VL on Token Factory, paid per picture: about 1,000
-input tokens a view (measured: 814 to 1,078 for one view at 768 px wide; 478 for half a view) and under 40
-output tokens, so a four-view search for the glasses is about 4,000 tokens. At Token Factory's price (its models
-API, 2026-10-20: $0.30 per million input tokens, $0.90 per million output, served from us-north1), a search is
-about **$0.0013** and a description about $0.0003. Nothing runs, and nothing is paid, while idle.
+Since 2026-10-20 the eyes are NVIDIA Nemotron 3.5 Super VL on Token Factory, paid per picture. A description is
+one picture, about 1,000 input tokens (814 to 1,078 measured at 768 px wide) and under 40 output. A search reads
+each of its four views as six tiles at full resolution: measured on a 1920 x 1080 view (2026-10-20), 3,636 input
+tokens and about 190 output a view, and 651 in and 33 out for each closer look (one or two). A search is about
+**15,000 to 16,000 input tokens and 800 output**. At Token Factory's price (its models API, 2026-10-20: $0.30 per
+million input tokens, $0.90 per million output, served from us-north1), a search is about **$0.005** and a
+description about $0.0003; three searches a day would add about $0.50 a month to the total above. Nothing runs,
+and nothing is paid, while idle.
 
 ## The scam check, per check (measured 2026-10-20)
 
@@ -53,7 +56,7 @@ Both are open questions for after the hackathon; we haven't measured either.
 ## How to redo this
 
 Token Factory lists each model's price per token in its models API (`GET /v1/models`, `pricing`). The
-7,514 input tokens are one real request with Andy's instructions and all 35 tools (2026-10-14). Tavily's
+7,514 input tokens are one real request with Andy's instructions and the 35 tools it had then (2026-10-14; 38 now). Tavily's
 monthly use shows on Andy's `/hood` page, and since 2026-10-14 each web answer on the TV shows the
 credits Tavily reported for it (a basic search measured at 1 credit, live), so the web line can be
 checked against real use.

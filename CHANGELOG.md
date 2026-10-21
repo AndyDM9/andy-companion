@@ -5,6 +5,32 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Changed (an audit of how judges see the entry, against the hackathon's rules)
+
+Two reviews, the official rules and the live Devpost pages against our texts, and a fresh clone read as a judge
+would, then a walk through the public demo:
+- **The suite as a Nebius Serverless Job again:** 92, 91 and 94 of 94 (all of version 2026-10-20c: photo stories,
+  places, taught moves), put in the README, the Devpost text, STATUS and the hood's proof line; its code bundle had
+  outgrown the 64 KB limit, so it now travels as xz (44 KB) and unpacks with Python's tarfile.
+- **The public demo:** the family page opened only to a "public demo" error, so a visitor saw nothing shared; now
+  it opens, and the name is never read or kept. Under the hood said "timed live on this robot" over sample turns;
+  in the demo it now says they are samples. The sample town is the metro area, not a street-level place.
+- **The simulation's film** re-rendered with captions readable at a third of their size, and the panels labelled
+  on the picture ("The room, in simulation", "What Andy's eye sees").
+- **The Devpost text** opens with "For the judges": the Physical AI track, each judging criterion with
+  technology first (the tie-breaker), the conversation app named as the agent runtime; Tavily has its own
+  section; the desk test's caveat sits beside its number; "independent review" now says a separate AI reviewer.
+- **The README** gains "What's new here", leads with the robot's measured 1.06 s, says where a camera picture goes
+  now (Token Factory), and credits MuJoCo, Pollen's scene, OpenCV, Tesseract and vLLM.
+- **Pictures:** the architecture diagram redrawn for Super VL, the Jobs and 38 tools; the hood and research
+  screenshots retaken from the demo; 19 unused screenshots removed (one showed a stock photo).
+- **The eyes' cost measured again:** a search is now about 15,000 input tokens, about half a cent, not 4,000.
+- **The video plan:** shot 3 is the track's one-minute clip on its own, 72 s uncut; the plan retimed to 2:54.
+- **Private matter out of the public files:** judges' names beside what we built for them, the company's name, the
+  founder's town; a real endpoint address in a test replaced with a documentation address; recordings ignored.
+- **feedback.md and rules-compliance.md** brought up to date (Super VL, the simulation Jobs, Parakeet's one gap,
+  physical access on request, the two Bonus Awards that can't both be won).
+
 ### Changed (packaging, after the freeze on new features)
 
 - **The video plan** (`docs/video.md`) brought up to the zoomed search and round 8: the turn to a voice and the wave
@@ -156,7 +182,7 @@ judge can see; judges may score on the text, images and video alone (PLAN, round
 
 ### Added and changed (round 4: what the judges said in Devpost's judging session)
 
-The judges, two of them our track's NVIDIA judges, said what they look for (PLAN, round 4):
+Devpost's public judging session said what judges look for (PLAN, round 4):
 - **The scam receipt says what to do first (B24):** under "Be careful: a known scam", "Don't reply, pay or
   give any details. Check with family first." (Spanish too), then the three steps. Cards take an optional
   `lead` line; only a scam sign uses it.

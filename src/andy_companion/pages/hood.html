@@ -182,6 +182,7 @@
     en: {
       title: "Under the hood", back: "← Back to Andy's screen",
       lede: "Each of Andy's turns, timed live on this robot: only the numbers are kept, in memory, never the words.",
+      sampleLede: "No robot here: these are sample turns, with times of the kind measured on the robot. On the robot each turn is timed live, and only the numbers are kept, in memory, never the words.",
       what: "From the end of your words to Andy's first sound, last turn", waiting: "waiting for a turn",
       median: "Middle of recent turns without a tool", empty: "Talk to Andy, and each turn appears here.",
       hearWho: "NVIDIA Parakeet", hearWhere: "hearing, on this computer",
@@ -218,6 +219,7 @@
     es: {
       title: "Por dentro", back: "← Volver a la pantalla de Andy",
       lede: "Cada turno de Andy, medido en directo en este robot: solo se guardan los números, en memoria, nunca las palabras.",
+      sampleLede: "Aquí no hay robot: son turnos de ejemplo, con tiempos como los medidos en el robot. En el robot cada turno se mide en directo, y solo se guardan los números, en memoria, nunca las palabras.",
       what: "Del final de sus palabras al primer sonido de Andy, último turno", waiting: "esperando un turno",
       median: "Mediana de los turnos recientes sin herramienta", empty: "Hable con Andy y cada turno aparecerá aquí.",
       hearWho: "NVIDIA Parakeet", hearWhere: "oír, en esta computadora",
@@ -410,6 +412,7 @@
   function draw(s) {
     WHERE = s.where || WHERE;
     say("v-eyes", s.eyes === "endpoint" ? ui.stack.eyesEndpoint : ui.stack.eyes[1]);   // which eyes ANDY_VISION chose
+    say("lede", s.sample ? ui.sampleLede : ui.lede);
     drawProof(s.proof);
     drawHealth(s.health);
     drawTavily(s.tavily);

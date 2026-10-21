@@ -175,7 +175,7 @@ def research() -> None:
     board.show("research", "Is the farmers market on this Saturday?", [
         {"title": f"Not this Saturday, {spoken(saturday)}"}, {"title": "First Saturday of each month, 9 am to noon"},
         {"title": f"Next market: Saturday, {spoken(first_saturday)}"},
-        {"title": "Sources", "summary": "harborbayfl.gov, miamifarmersmarket.org"}],
+        {"title": "Sources", "summary": "miamidade.gov, the market's own page"}],
         how={"calls": ["research"], "depth": "mini", "seconds": 23.4, "credits": None, "sites": 9})
 
 
@@ -218,7 +218,7 @@ def main() -> int:
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(KeyboardInterrupt()))
     board._write(board.TOKENS, {"screen": "demo-screen", "family": "demo-family", "setup": "demo-setup", "hood": "demo-hood"})
     state.awake()
-    settings.update(place="Harbor Bay, Florida", night_from=23, night_to=6)
+    settings.update(place="Miami, Florida", night_from=23, night_to=6)
     if PUBLIC:            # visitors come at any hour, from anywhere: never only a clock
         settings.update(night_clock="off")
         screen_server.READ_ONLY = True

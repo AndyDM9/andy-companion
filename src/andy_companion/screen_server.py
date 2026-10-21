@@ -308,6 +308,8 @@ def hood_state() -> Dict[str, Any]:
         # Each turn with its split: Nemotron's part (the reply less the tools Andy waited for), computed here.
         "turns": [{**t, "think_ms": think_ms(t)} for t in reversed(turns[-8:])],
         "count": len(turns),
+        # The demo of the screens (it has its own front page): its turns are samples, not this robot's.
+        "sample": INDEX is not None,
         "language": language,
         "where": where(language),
         "eyes": vision.choice(),
@@ -651,10 +653,14 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(404, b"Not found", "text/plain")
 
     def do_POST(self) -> None:  # noqa: N802
-        if READ_ONLY:
-            return self._json({"error": READ_ONLY_ERROR}, 403)
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
+        if READ_ONLY:
+            # Opening the family page is let through so a visitor sees the sample notes, but the name is never
+            # read or kept: "Anna looked" would show one visitor's words to the next.
+            if url.path == "/api/family/look" and _ok(q.get("k"), "family"):
+                return self._json({"ok": True})
+            return self._json({"error": READ_ONLY_ERROR}, 403)
         local = self.client_address[0] in ("127.0.0.1", "::1")
         if url.path == "/api/screen/settings-code" and _ok(q.get("t"), "screen"):
             # The gear on the TV: the QR code appears, for two minutes. Each new code retires the settings
