@@ -34,7 +34,20 @@ three far ones, in the exploration before this decision); 3x2 tiles 9 of 9 with 
 confirmed 8 of 9 and said yes to none of the 9 painted-out spots. The 24 tiles take about 1.8 s together, as one
 view did; the closer look adds about 2.5 s, and is something a viewer can see the robot do. About $0.005 a search, measured ([cost](../cost.md)).
 
+## Measured at home (2026-10-20)
+
+Nine tries on the robot in the founder's home, with the pair he hid ([scorecard](../../evals/results/finder-eval-2026-10-20-2037.json)): pointed at
+them 3 times (95% interval 12 to 65%), never at a wrong place, missed 6, all on a chair. In 5 of the 6 the sweep
+saw them and the closer look said no. The same saved views read again with today's tiles
+([compare](../../evals/results/finder-compare-2026-10-20-2037.json)): the sweep's best view holds glasses in 7 of 9, and a wrong view in 2, which the closer look is there to stop. So the zoomed sweep works in a real
+room, and the closer look loses a chair beyond the head's reach: the chair sits about 74 degrees to the side, past
+the 60 the head turns, so the close-up is cut where the thing should be from a head that can't face it, and that
+guess is furthest off there.
+
 ## Revisit when
+
+- The closer look beyond reach (above): a larger close-up when the sighting is past the head's reach, or the body
+  turning to face it; measured on the same kind of tries before trusting it.
 
 - The robot's recorded tries (`finder_eval.py compare`) show where it still misses: then a second, lower row of
   views, 4K stills, or a local detector first (option 5, with NanoOWL as the Jetson path).

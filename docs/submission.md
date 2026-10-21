@@ -235,9 +235,11 @@ About building it:
 ## What doesn't work yet
 
 - No study with older adults yet; a pilot with an ethics review comes next.
-- The finder has no rate at home yet. In a dozen tries during development (2026-10-19 and 20, the code changing
-  between them) it found the glasses on a table and on the floor, and on a dark chair it said several times that it
-  couldn't see them, rather than guessing. The tries are scored by `evals/finder_eval.py`. Zooming in is measured at
+- Finding things at home misses more than it finds. In 9 tries on the robot with the pair the founder hid
+  (2026-10-20, during development), Andy pointed at them 3 times (95% interval 12 to 65%) and never at the wrong
+  place. All 6 misses were a pair on a chair: the sweep saw it in 5, but the closer look didn't confirm it, so Andy
+  said it couldn't see them. Read again with today's code, the sweep alone picks a view holding glasses in 7 of 9
+  and a wrong one in 2; the closer look on a low chair is the next fix. Zooming in is measured at
   the desk on one room and one pair of glasses (0 of 9 before, 9 of 9 after): a direction, not a rate.
 - Turning to a second voice, waving back, remembered places and moves taught by hand are tested in code; on the
   robot they wait on the founder's live test, and the TV's sound can mislead the turn to a voice.

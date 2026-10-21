@@ -1,0 +1,35 @@
+{
+ "ran": "2026-10-20T20:37:20-04:00",
+ "what": "the same 9 labelled home tries (finder-eval-2026-10-20-2037.json), each view read again with today's zoomed tiles; the sweep's choice only, before any closer look",
+ "note": "other glasses on the desk shared some views, so a right view is one holding glasses, not always the pair hidden",
+ "tries": 9,
+ "eyes": {
+  "token-factory": {
+   "labelled": 9,
+   "unlabelled": 0,
+   "in_sight": {
+    "tries": 9,
+    "right": 7,
+    "right_95": [
+     45.3,
+     93.7
+    ],
+    "wrong_view": 2,
+    "missed": 0
+   },
+   "out_of_sight": {
+    "tries": 0,
+    "said_not_seen": 0,
+    "said_not_seen_95": null,
+    "pointed_at_nothing": 0
+   },
+   "median_to_point_s": 1.86,
+   "views_right": 32,
+   "views": 36,
+   "views_right_95": [
+    74.7,
+    95.6
+   ]
+  }
+ }
+}

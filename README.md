@@ -331,10 +331,13 @@ Each principle comes from published research, and each has something you can see
 
 - **No study with older adults yet.** Andy is built on published research and measured with our own tests;
   a pilot with an ethics review comes next.
-- **The finder has no rate at home yet.** In a dozen tries during development (2026-10-19 and 20, the code
-  changing between them) it found the glasses on a table and on the floor; on a dark chair it said several times
-  that it couldn't see them, rather than guessing. Tries can be recorded and scored (`evals/finder_eval.py`). It
-  finds things, not people. In simulation it is measured
+- **Finding things at home misses more than it finds.** In 9 tries on the robot with the pair the founder hid
+  (2026-10-20, during development; [scorecard](evals/results/finder-eval-2026-10-20-2037.json)), Andy pointed at them 3 times (95% interval 12 to 65%) and
+  **never at the wrong place**. The 6 misses were all a pair on a chair: the sweep saw it in 5 of them, but the
+  closer look didn't confirm it, so Andy said it couldn't see them rather than guess. Read again with today's code,
+  the sweep alone picks a view holding glasses in 7 of 9 and a wrong one in 2, which is what the closer look is
+  there to stop ([compare](evals/results/finder-compare-2026-10-20-2037.json)): the closer look is where the chair is
+  lost, and it is the next thing to fix. It finds things, not people. In simulation it is measured
   (decision 0013), but rendered pictures are cleaner than a room. From where Andy sits it can't look further than
   60 degrees to either side without turning its body, so a chair beside it can be out of reach.
 - **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the

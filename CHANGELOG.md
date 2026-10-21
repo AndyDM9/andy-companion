@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Measured (the finder at home)
+
+- **The founder's recorded tries scored** (`evals/finder_eval.py`): 9 tries on the robot with the pair he hid, Andy
+  pointed at them 3 times (95% interval 12 to 65%), never at the wrong place; all 6 misses were a pair on a chair
+  about 74 degrees to the side, past the head's reach, seen by the sweep in 5 of them but not confirmed up close.
+  Read again with today's tiles, the sweep alone is right in 7 of 9 and wrong in 2. The README, the Devpost text
+  and decision 0012 now say this instead of "no rate yet"; the next fix is the closer look beyond reach.
+- **Finder recording turned off** (the line removed from the env file, Andy restarted, the doctor's "Finder tries
+  not kept" passes) and every picture of the room deleted after scoring; only numbers and try names were kept.
+
 ### Fixed (a systems audit: every command a judge is told to run, from a fresh clone)
 
 - **`--help` runs nothing else**, in every script: before, `doctor.py --help` ran the real checks (one Tavily search),

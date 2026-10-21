@@ -1,0 +1,116 @@
+{
+ "ran": "2026-10-20T20:37:09-04:00",
+ "where": "the founder's home, on the robot, 2026-10-20, during development; the pair he hid each time",
+ "labels": "by Claude from the saved views, one line a try; the pictures were deleted after scoring",
+ "left_out": "one try whose four views were the same picture (the head did not turn): a robot fault, not the search",
+ "note": "every miss was a pair on the chair; in 5 of the 6 the sweep saw it and the closer look did not confirm it, so Andy said it couldn't see it rather than guess",
+ "labelled": 9,
+ "unlabelled": 1,
+ "in_sight": {
+  "tries": 9,
+  "right": 3,
+  "right_95": [
+   12.1,
+   64.6
+  ],
+  "wrong_view": 0,
+  "missed": 6
+ },
+ "out_of_sight": {
+  "tries": 0,
+  "said_not_seen": 0,
+  "said_not_seen_95": null,
+  "pointed_at_nothing": 0
+ },
+ "median_to_point_s": 12.36,
+ "rows": [
+  {
+   "try": "try-20261020-173103-022",
+   "truth": [
+    0,
+    1,
+    2
+   ],
+   "chosen": 1,
+   "outcome": "right",
+   "to_point_s": 12.36
+  },
+  {
+   "try": "try-20261020-173154-556",
+   "truth": [
+    0,
+    1,
+    2
+   ],
+   "chosen": 1,
+   "outcome": "right",
+   "to_point_s": 11.46
+  },
+  {
+   "try": "try-20261020-174150-901",
+   "truth": [
+    0
+   ],
+   "chosen": null,
+   "outcome": "missed",
+   "to_point_s": null
+  },
+  {
+   "try": "try-20261020-174224-210",
+   "truth": [
+    0
+   ],
+   "chosen": null,
+   "outcome": "missed",
+   "to_point_s": null
+  },
+  {
+   "try": "try-20261020-174247-551",
+   "truth": [
+    2,
+    3
+   ],
+   "chosen": null,
+   "outcome": "missed",
+   "to_point_s": null
+  },
+  {
+   "try": "try-20261020-174837-064",
+   "truth": [
+    0
+   ],
+   "chosen": null,
+   "outcome": "missed",
+   "to_point_s": null
+  },
+  {
+   "try": "try-20261020-174858-125",
+   "truth": [
+    0
+   ],
+   "chosen": null,
+   "outcome": "missed",
+   "to_point_s": null
+  },
+  {
+   "try": "try-20261020-175040-399",
+   "truth": [
+    0,
+    1,
+    2
+   ],
+   "chosen": 1,
+   "outcome": "right",
+   "to_point_s": 19.57
+  },
+  {
+   "try": "try-20261020-181324-620",
+   "truth": [
+    1
+   ],
+   "chosen": null,
+   "outcome": "missed",
+   "to_point_s": null
+  }
+ ]
+}
