@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-21
 
+### Changed (the Devpost text and the README, to the shape of winning entries)
+
+Research on recent Devpost winners (a median story of about 990 words, the longest 1,810; Devpost's own headings;
+galleries led by the real device, every image captioned) and judges' advice (about five minutes a project):
+- **The Devpost text** (`docs/submission.md`): 3,844 words to about 1,500 on Devpost's headings, each number said
+  once, the form fields apart from the story, a plain-words "For the judges" block; "What's new", privacy,
+  accessibility and the costs folded in where they belong.
+- **The README's first screen:** badges, a pitch of about 70 words, the film, four measured numbers, "what's new",
+  and a three-line "judging it without a robot"; the seven-step list's commands moved to "Try it without a robot",
+  the code links to "Repository". The Jetson comparison's table (`docs/jetson-comparison.md`) and the licences
+  (`docs/credits.md`) have their own pages.
+- **The gallery plan:** twelve images in order, the real robot's photos first, each with its caption;
+  `architecture.png` rendered for Devpost, which takes no SVG.
+- **The video plan:** the audience and "built with NVIDIA Nemotron on Nebius" on screen by 0:10; the event's name in
+  the YouTube title.
+
 ### Changed (the documents a judge opens from a folder)
 
 - **READMEs for `cloud/`, `evals/` and `sim/`**, where the Nebius Jobs, the measurements and the simulation live:

@@ -53,12 +53,22 @@ in the same commit that makes it true.
 
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by
       2026-10-23 10:00 PT); editing continues afterwards
-- [ ] A gallery thumbnail, 3:2, at most 5 MB (a still of Andy beside the TV), and gallery images:
-      the screen (`tv-glass-found.png`), the letter card (`tv-letter.png`), the scam check's receipt
-      (`tv-scam-receipt.png`), the four views Andy looked at (`tv-finder.png`), the hood page (`hood.png`), the family page at phone width (`family-page.png`), the
-      architecture picture, Andy's search in simulation (`sim-search.gif`, from `sim/replay.py`), and the scam check five ways (`docs/images/scam-check-five-ways.png`, from
-      `scripts/make_charts.py`); all in `docs/images/`, the screens taken from the demo
-      (`ANDY_DEMO_SCENE=scam scripts/demo_screen.py`, sample data only)
+- [ ] **The gallery**, in this order, every image with a one-sentence caption (the winners of 2025 and 2026 led with
+      the real device and captioned every picture). The thumbnail is image 1, 3:2, at most 5 MB.
+      1. *(founder)* Andy beside the TV, a letter held up: "Andy reads the letter in your hand; the TV shows it in large print."
+      2. *(founder)* Andy's head turned to real glasses: "Asked where the glasses are, Andy looks around, looks closer, and points."
+      3. *(founder)* A grandchild moving Andy's antennas: "A move taught by hand, played back by name."
+      4. *(founder)* The robot in its room, the TV beside it: "A home robot, not a speaker."
+      5. `tv-letter.png`: "A risky letter: Be careful first, decided in code, then what the page says."
+      6. `tv-scam-receipt.png`: "A scam check: what to do first, then the sign, the warning Tavily found and its source."
+      7. `tv-finder.png`: "What Andy looked at: the four views in the order it turned, and where it saw them."
+      8. `sim-search.gif` (or a still from it): "Andy's own search in Pollen's MuJoCo simulation, run as Nebius Serverless Jobs."
+      9. `family-page.png`: "The family's page: only what was shared, and a message for Andy to pass on."
+      10. `hood.png`: "Under the hood: each turn timed, stage by stage, and where each stage ran."
+      11. `scam-check-five-ways.png` (from `scripts/make_charts.py`): "The scam check five ways, with 95% intervals."
+      12. `architecture.png` (rendered from the SVG: `rsvg-convert -w 1800 -b white`): "What runs at home, and what runs on Nebius."
+      The screens come from the demo (sample data only); the robot's photos show no one who hasn't agreed, and no
+      third-party logos or screens.
 - [ ] "Built with": every sponsor tool (up to 25 tags; the list is in [submission.md](submission.md))
 - [ ] Feedback from [feedback.md](feedback.md)
 

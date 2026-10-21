@@ -15,6 +15,8 @@ everything else is. Last checked 2026-10-20.
 | [cost.md](cost.md) | What Andy costs one household a month, every price dated and every assumption stated |
 | [../evals/results/](../evals/results/README.md) | Every scorecard: the conversation suite, the scam check, the robot's timings, the eyes, the simulation |
 | [feedback.md](feedback.md) | Our feedback on Nebius Token Factory, AI Cloud, the NVIDIA models and Tavily |
+| [jetson-comparison.md](jetson-comparison.md) | Andy beside NVIDIA's Reachy Mini Jetson assistant, part by part |
+| [credits.md](credits.md) | Every model, library, service and text Andy uses, with its licence and credit |
 
 ## Records: how it was built and entered
 

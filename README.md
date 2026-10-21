@@ -1,51 +1,35 @@
 # Andy Companion
 
-**A small home robot for older adults who live at home, and the family who help.** Andy runs on a
-Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It hears with NVIDIA
-Parakeet, talks with NVIDIA Nemotron on Nebius Token Factory (on the robot, a median of 1.06 s from your words to
-its first sound), sees with Nemotron 3.5 Super VL, also on Token Factory, and looks things up with Tavily. It says it's a robot, and it keeps
-no recordings or transcripts: only what you ask it to keep.
+[![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-1c5244)](LICENSE)
+[![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
 
-> Built for the Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track.
+**A small home robot for older adults who live at home, and the family who help.** It reads the letter in your
+hand, looks around the room for your glasses, and turns to whoever is speaking. Built with NVIDIA Nemotron on Nebius
+Token Factory, and Tavily, on a Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It says it's a
+robot, and keeps no recordings or transcripts: only what you ask it to keep.
+
+<!-- Founder: the video's thumbnail, linked to YouTube, and a photo of Andy beside the TV go here before submitting. -->
+
+![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
+
+- **1.06 s** median from your words to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
+- **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
+- **No false find** in 7 simulated searches without the object, against 3 the old way, as Nebius Serverless Jobs ([decision 0013](docs/decisions/0013-the-finder-tested-in-simulation.md))
+- **About $2.30 a month** for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
 - **A language model that moves a robot's head to find things in a room,** with nothing trained: it looks around,
   zooms in, looks closer and points, and it is tested in simulation as Nebius Serverless Jobs.
-- **A scam check for where scams reach people at home:** the letter in your hand or the call you mention. Tavily's
-  consumer-protection warnings, judged by Nemotron 3 Ultra, caught 58 of 60 scams and flagged none of 60 ordinary
-  messages, measured beside word rules and each model alone.
+- **A scam check for where scams reach people at home:** the letter in your hand or the call you mention, with the
+  warning's source named.
 - **Rules in code under the model:** **Be careful** on a risky letter whatever the model says, consent before
   anything is remembered, and no recordings or transcripts.
 
-**Judging it without a robot** (you won't have a Reachy Mini; this is how to see the physical part anyway):
-1. **Watch the video** (its link is the first thing below this list): everything on it is live, on the robot, with
-   no cuts in the pauses.
-2. **Watch Andy's search in simulation** (20 s, below): Pollen's own MuJoCo scene, Andy's own search code, live
-   NVIDIA Nemotron 3.5 Super VL calls: it looks around, reads each view as six zoomed tiles, looks closer, points.
-   Measured the same way over 30 trials as Nebius Serverless Jobs (no false find in 7 without the duck; pointing
-   within 0.76° median). Run it yourself with a Token Factory key, no robot:
-   `cd sim && uv sync && cd .. && NEBIUS_API_KEY=… MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10`
-   (it fetches Pollen's scene from PyPI once; use `MUJOCO_GL=osmesa` without a GPU).
-3. **See the screens with no keys at all:** `uv sync && uv run python scripts/demo_screen.py`, then open
-   `http://127.0.0.1:8093/`: the TV, Under the hood, the family page and the settings page, on sample data
-   (no robot, GPU or keys).
-   <!-- Founder: once the Hugging Face Space is up, its link goes here as "or open it in your browser". -->
-4. **Read the evidence:** the [conversation suite's scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)
-   (94 situations, a Nebius Serverless Job), the [scam check's](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)
-   (each model alone and with Tavily's warnings, four Nebius Serverless Jobs, beside a [no-model baseline](evals/results/scam-word-rules-2026-10-20-1552.json)),
-   and [54 real turns on the robot](evals/results/robot-timings-2026-10-20-1550.json); every failure is in them.
-5. **Rerun the scam check yourself** with only a Token Factory key, against the Tavily warnings we saved:
-   `NEBIUS_API_KEY=… uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`
-   (a few minutes; Tavily isn't called).
-6. **See the real robot live** on a video call, any time until 2026-12-15: ask, and we'll show it.
-7. **The code that matters:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
-   ([finder.py](src/andy_companion/finder.py)), letters ([letters.py](src/andy_companion/letters.py)), the
-   urgent-words net ([urgent.py](src/andy_companion/urgent.py)), privacy ([privacy.py](src/andy_companion/privacy.py)),
-   and why each choice was made ([decisions](docs/decisions/README.md)).
-
-<!-- Founder: the video link and a photo or GIF of Andy beside the TV go here before submitting. -->
-
-![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
+**Judging it without a robot:** watch the video (everything live on the robot, no cuts in the pauses); watch the
+search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
+open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
+failures included ([evals/results/](evals/results/README.md)); or ask for the real robot live on a video call, any
+time until 2026-12-15.
 
 **Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [what doesn't work yet](#what-doesnt-work-yet), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 
@@ -249,18 +233,7 @@ Andy looks around for something, each frame is taken only after the head has sto
 
 NVIDIA's [Reachy Mini Jetson Assistant](https://www.jetson-ai-lab.com/tutorials/reachy-mini-jetson-assistant)
 (Jetson AI Lab, read 2026-10-20) runs everything on the robot's own small computer. Andy makes different
-choices, and says why:
-
-| | The Jetson assistant | Andy |
-|---|---|---|
-| Computer | Jetson Orin Nano 8 GB, about 7.6 GB usable | A desktop with an NVIDIA GPU beside the robot; hearing and speaking use about 7.1 GB |
-| Starting a turn | Push-to-talk in a web page; Silero VAD | A spoken wake phrase, offline (Vosk), English and Spanish; then natural turn-taking, and you can talk over Andy |
-| Hearing | faster-whisper | NVIDIA Parakeet TDT 0.6B v3, on this computer |
-| Thinking and seeing | Cosmos Reason 2 2B, 4-bit (about 2.2 GB), llama.cpp, on the Jetson | Nemotron 3.5 Lightning, Nemotron 3 Ultra and Nemotron 3.5 Super VL on Nebius Token Factory, zero data retention |
-| Speaking | Kokoro | Qwen3-TTS, on this computer |
-| Moving | One 100 Hz controller, so face tracking and speaking gestures never fight | The same idea in Pollen's movement manager: one loop at 60 Hz is the only thing that sets the motors; following your face is blended in, and glances at the TV, the finder's sweep and the antennas wait in its one queue |
-| A picture for the model | Motion frozen briefly before the frame is chosen | The head stops and settles 0.6 s before each frame |
-| Published speed | None given | Median 1.06 s from your words being understood to Andy's first sound, 54 real turns ([scorecard](evals/results/robot-timings-2026-10-20-1550.json)) |
+choices ([side by side](docs/jetson-comparison.md)):
 
 **Why the difference:** the hard parts of Andy (telling a scam from an ordinary letter, judging a hard
 question, finding glasses in a cluttered room) are where model size showed in our measurements, and Token
@@ -367,6 +340,9 @@ Each principle comes from published research, and each has something you can see
 - **The screen and pages, on sample data:** `uv sync && uv run python scripts/demo_screen.py`, then open
   the addresses it prints. No robot, GPU or keys. `--public` serves the same pages read-only for anyone
   to open; `scripts/space.sh build` puts them together as a Hugging Face Space (`space/`).
+- **Andy's search in simulation,** with only a Token Factory key, no robot: `cd sim && uv sync && cd ..`, then
+  `NEBIUS_API_KEY=… MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10` (it fetches Pollen's
+  scene from PyPI once; `MUJOCO_GL=osmesa` without a GPU). More in [sim/](sim/README.md).
 - **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
 - **The scam evaluation,** with only a Token Factory key, against the saved Tavily warnings:
   `uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`.
@@ -414,6 +390,11 @@ Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's
 
 ## Repository
 
+**The code that matters most:** the scam check ([scamcheck.py](src/andy_companion/scamcheck.py)), finding things
+([finder.py](src/andy_companion/finder.py)), letters ([letters.py](src/andy_companion/letters.py)), the urgent-words
+net ([urgent.py](src/andy_companion/urgent.py)), privacy ([privacy.py](src/andy_companion/privacy.py)), and why each
+choice was made ([decisions](docs/decisions/README.md)).
+
 | Path | What it is |
 |---|---|
 | `src/andy_companion/` | Andy's own code: clock, reminders, speaker, body behaviours, privacy, web, the scam check, reading, vision and the finder, the urgent-words net (with its recordings), screen, supervisor and watchdog |
@@ -444,28 +425,8 @@ unmodified) and Hugging Face's speech-to-speech server.
 
 ## Licences and credits
 
-This repository is Apache-2.0 ([LICENSE](LICENSE)). It uses, under their own terms:
-
-| What | Licence or terms | Credit |
-|---|---|---|
-| NVIDIA Parakeet TDT 0.6B v3 (hearing) | CC-BY-4.0 | NVIDIA, [model card](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) |
-| NVIDIA Nemotron 3.5 Lightning and Nemotron 3 Ultra | Used through Nebius Token Factory under its terms; NVIDIA's model licences | NVIDIA, Nebius |
-| NVIDIA Nemotron 3.5 Super VL (eyes, since 2026-10-20) | Used through Nebius Token Factory under its terms; NVIDIA's model licence | NVIDIA, Nebius |
-| NVIDIA Nemotron Nano 12B v2 VL FP8 (eyes on our own endpoint, the option) | NVIDIA's open model licence ([model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-FP8)) | NVIDIA |
-| NVIDIA Nemotron 3.5 Content Safety (second look) | OpenMDW-1.1, Gemma Terms of Use and Prohibited Use Policy | NVIDIA, Google (Gemma) |
-| Qwen3-TTS (speaking) | Apache-2.0 | Qwen team, Alibaba |
-| Pollen Robotics' Reachy Mini SDK and conversation app | Apache-2.0 | Pollen Robotics |
-| Pollen's MuJoCo scene for the Reachy Mini (`sim/`: fetched from the `reachy_mini` package on PyPI at run time, never stored in this repository) | Apache-2.0, with the package | Pollen Robotics |
-| MuJoCo (the simulation) | Apache-2.0 | Google DeepMind |
-| OpenCV (camera pictures, the wave) and Tesseract (reading letters) | Apache-2.0 each | OpenCV team; Tesseract contributors |
-| vLLM (serving models on our own Nebius endpoints) | Apache-2.0 | vLLM project |
-| Hugging Face speech-to-speech | Apache-2.0 | Hugging Face |
-| Vosk and its small English model (wake phrase) | Apache-2.0 | Alpha Cephei |
-| segno (the settings QR code) | BSD-3-Clause | Lars Heuer |
-| Tavily API (the web) | Tavily's terms of service | Tavily |
-| National Weather Service API (the weather) | US government work, public domain | NOAA / NWS |
-| Open-Meteo geocoding (the town's coordinates, once) | Free non-commercial use; data CC-BY-4.0 (GeoNames) | Open-Meteo, GeoNames |
-| Atkinson Hyperlegible (the screens' typeface), bundled in `src/andy_companion/pages/fonts/` and served by Andy itself | SIL Open Font License (`fonts/OFL.txt`) | Braille Institute |
-| Wikipedia's On this day (fetched at runtime, never stored in this repository) | CC BY-SA 4.0 | "According to Wikipedia" said aloud; "Wikipedia (CC BY-SA 4.0)" on the screen |
-| The stories (`src/andy_companion/story_texts.json`): *The Aesop for Children* (1919), O. Henry's *The Four Million* (1906), Kipling's *Just So Stories* (1902) | Public domain in the United States; texts from Project Gutenberg with its header and licence removed, as its licence allows | The authors, named on screen as each story is read |
-| Sample landscapes (`scripts/settings.py sample-photos`, downloaded only on request, never in this repository) | Unsplash License, via Lorem Picsum | Each photographer, credited on screen |
+Andy's own code is under the Apache-2.0 licence ([LICENSE](LICENSE)). Every model, library, service and text it
+uses, with its terms and the credit it asks for, is listed in [docs/credits.md](docs/credits.md): NVIDIA's models
+under their licences and through Nebius Token Factory's terms, Pollen Robotics' Reachy Mini SDK, conversation app
+and MuJoCo scene (Apache-2.0), Tavily's terms, the National Weather Service (public domain), Wikipedia (CC BY-SA 4.0)
+and public-domain stories.
