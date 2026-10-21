@@ -3,6 +3,15 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-21
+
+### Changed (the documents a judge opens from a folder)
+
+- **READMEs for `cloud/`, `evals/` and `sim/`**, where the Nebius Jobs, the measurements and the simulation live:
+  what each script runs, what it measured, how to run it; linked from the README's repository table.
+- **The Reachy Mini app's page and card** gain the physical side (looking for your glasses, turning to whoever
+  speaks, waving back), and the Hugging Face Space's card links the code and mentions the simulation's film.
+
 ## 2026-10-20
 
 ### Changed (packaging: the gallery, the tagline, the narration)

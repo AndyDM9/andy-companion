@@ -421,12 +421,12 @@ Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's
 | `profiles/companion/` | Who Andy is and what it never does |
 | `voice/` | The voice server (Parakeet, Nemotron on Token Factory, text-to-speech) |
 | `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
-| `cloud/` | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
-| `evals/` | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
+| [`cloud/`](cloud/README.md) | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
+| [`evals/`](evals/README.md) | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
 | `tests/` | About 860 tests (`uv run pytest`), run before every commit and push |
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The two user services: the voice server and Andy |
-| `sim/` | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
+| [`sim/`](sim/README.md) | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
 | `space/` | The public demo of the screens as a Hugging Face Space (Docker, sample data, no keys) |
 | `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page |
 | `docs/` | Every document, mapped in [docs/README.md](docs/README.md): features, architecture, [decisions](docs/decisions/README.md), research, cost, and the build records |

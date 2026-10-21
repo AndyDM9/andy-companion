@@ -15,7 +15,8 @@ tags:
 
 A home companion robot for older adults who live at home, and the family who help. Andy talks
 and keeps looking at you, knows the day, keeps reminders in your words, reads a letter you hold
-up, looks things up with sources, speaks English and Spanish, and keeps no recordings or transcripts.
+up, looks around the room for your glasses and points with its head, turns to whoever speaks, looks things up
+with sources, speaks English and Spanish, and keeps no recordings or transcripts.
 
 It hears with NVIDIA Parakeet, thinks with NVIDIA Nemotron on Nebius Token Factory, and sees with
 Nemotron 3.5 Super VL, also on Token Factory.

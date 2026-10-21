@@ -17,3 +17,7 @@ Pollen Robotics Reachy Mini and is built with NVIDIA Nemotron on Nebius Token Fa
 This Space runs Andy's real screen server on made-up data, with no robot, model or keys: the TV beside
 Andy, Under the hood, the family page and the settings page. It is read-only: nothing a visitor types is
 kept or shown to anyone.
+
+Its front page also plays a 20-second film of Andy's own search, in Pollen's MuJoCo simulation, with live calls to
+NVIDIA Nemotron 3.5 Super VL. The code, the measurements and how to run everything:
+https://github.com/AndyDM9/andy-companion
