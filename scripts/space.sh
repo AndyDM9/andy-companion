@@ -10,7 +10,7 @@
 #   git remote add origin https://huggingface.co/spaces/<you>/<name> && git push -u origin main
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-[ "${1:-}" = "build" ] || { sed -n '2,12p' "$0" >&2; exit 2; }
+[ "${1:-}" = "build" ] || { sed -n '2,10p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 OUT="${2:-$HOME/andy-space}"
 if [ -e "$OUT" ] && [ -n "$(ls -A "$OUT" 2>/dev/null)" ]; then
   echo "$OUT is not empty; choose a new folder." >&2

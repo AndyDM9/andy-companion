@@ -27,7 +27,7 @@ sys.path.insert(0, str(HERE.parent / "src"))
 import numpy as np  # noqa: E402
 
 import finder_sim as fs  # noqa: E402
-from andy_companion import finder  # noqa: E402
+from andy_companion import finder, vision  # noqa: E402
 
 FPS = 15
 PANEL = (960, 540)
@@ -141,6 +141,10 @@ def main(argv=None) -> int:
     ap.add_argument("--duck-scale", type=float, default=0.5)
     ap.add_argument("--out", default=str(HERE.parent / "docs/images/sim-search.mp4"))
     args = ap.parse_args(argv)
+    if vision.eyes() is None:              # before the scene is built: a clear line, not a traceback
+        print("Needs NEBIUS_API_KEY (a Nebius Token Factory key): NVIDIA Nemotron 3.5 Super VL reads what Andy sees.",
+              file=sys.stderr)
+        return 2
     what = "rubber duck"
     scene = fs.Scene(args.seed, args.duck_scale)
     truth = scene.place(True)

@@ -28,6 +28,9 @@ SAMPLES = [(1016, "Philippe Wuyts"), (1018, "Andrew Ridley"), (1036, "Wolfgang L
 
 
 def main(argv: list[str]) -> int:
+    if {"-h", "--help"} & set(argv):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     if not argv or argv[0] == "show":
         print(json.dumps({k: v for k, v in settings.get().items() if k != "last_morning"}, indent=2))
         return 0

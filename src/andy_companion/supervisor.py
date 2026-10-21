@@ -140,7 +140,8 @@ def run_app(should_stop: Optional[Callable[[], bool]] = None, poll_s: float = PO
     a stop the supervisor chose is never taken for a crash."""
     # The app hears Ctrl-C (SIGINT) even when Andy was started in the background, where it would be ignored.
     proc = subprocess.Popen([str(ROOT / "scripts" / "run-robot.sh"), *sys.argv[1:]],
-                            preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_DFL))
+                            # In the child before exec: only a signal reset. Kept as it has run on the robot since 2026-10-14.
+                            preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_DFL))  # noqa: PLW1509
     try:
         while True:
             try:

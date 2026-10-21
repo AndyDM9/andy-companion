@@ -46,8 +46,8 @@ WHERE: Dict[str, Dict[str, str]] = {
     "think_it_through": {"en": "Nemotron 3 Ultra on Token Factory", "es": "Nemotron 3 Ultra en Token Factory"},
     "describe_view": {"en": "Nemotron 3.5 Super VL, Token Factory", "es": "Nemotron 3.5 Super VL, Token Factory"},
     "describe_photo": {"en": "Nemotron 3.5 Super VL, Token Factory", "es": "Nemotron 3.5 Super VL, Token Factory"},
-    "find_object": {"en": "Nemotron 3.5 Super VL, Token Factory, four views at once, zoomed in, then a closer look",
-                    "es": "Nemotron 3.5 Super VL, Token Factory, cuatro vistas a la vez, ampliadas, y una mirada más de cerca"},
+    "find_object": {"en": "Nemotron 3.5 Super VL, Token Factory, four views as 24 zoomed tiles, then a closer look",
+                    "es": "Nemotron 3.5 Super VL, Token Factory, cuatro vistas en 24 recortes ampliados, y una mirada más de cerca"},
     "weather": {"en": "National Weather Service (weather.gov)", "es": "Servicio Meteorológico Nacional (weather.gov)"},
     "remember_place": {"en": "Nemotron 3.5 Super VL, Token Factory, then kept on this computer",
                        "es": "Nemotron 3.5 Super VL, Token Factory, y se guarda en esta computadora"},
@@ -81,8 +81,8 @@ def think_ms(turn: Dict[str, Any]) -> Optional[int]:
 # The eyes when ANDY_VISION chooses the person's own endpoint instead of Token Factory (vision.eyes).
 ON_ENDPOINT = {"describe_view": {"en": "Nemotron Nano VL on our Nebius endpoint", "es": "Nemotron Nano VL en nuestro endpoint de Nebius"},
                "describe_photo": {"en": "Nemotron Nano VL on our Nebius endpoint", "es": "Nemotron Nano VL en nuestro endpoint de Nebius"},
-               "find_object": {"en": "Nemotron Nano VL on our Nebius endpoint, four views at once, zoomed in, then a closer look",
-                               "es": "Nemotron Nano VL en nuestro endpoint de Nebius, cuatro vistas a la vez, ampliadas, y una mirada más de cerca"}}
+               "find_object": {"en": "Nemotron Nano VL on our Nebius endpoint, four views as 24 zoomed tiles, then a closer look",
+                               "es": "Nemotron Nano VL en nuestro endpoint de Nebius, cuatro vistas en 24 recortes ampliados, y una mirada más de cerca"}}
 
 
 def where(language: str = "en") -> Dict[str, str]:

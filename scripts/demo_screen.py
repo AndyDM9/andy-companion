@@ -28,8 +28,11 @@ import time
 from datetime import date
 from pathlib import Path
 
-DATA = Path(tempfile.mkdtemp(prefix="andy-demo-"))
-os.environ["ANDY_DATA_DIR"] = str(DATA)          # before Andy's modules load
+if __name__ == "__main__":                        # run as the demo: its own throwaway folder, before Andy's modules load
+    DATA = Path(tempfile.mkdtemp(prefix="andy-demo-"))
+    os.environ["ANDY_DATA_DIR"] = str(DATA)
+else:                                             # imported (a test): nothing made, changed or ever deleted
+    DATA = Path(os.environ.get("ANDY_DATA_DIR") or Path(tempfile.gettempdir()) / "andy-imported-demo")
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from andy_companion import board, dayplan, letters, moments, reminders, screen_server, settings, state, stories  # noqa: E402
@@ -66,6 +69,8 @@ def index_page() -> bytes:
     extra = "".join(f'<p><a href="{html.escape(url)}">{label}</a></p>' for label, url in
                     (("The video", os.environ.get("ANDY_DEMO_VIDEO", "")), ("The code", os.environ.get("ANDY_DEMO_REPO", "")))
                     if url.startswith("https://"))
+    privacy = ("Nothing you type on these pages is sent or kept." if PUBLIC else
+               "Nothing you type here leaves this computer, and all of it is deleted when the demo stops.")
     film = ""
     if "/media/sim-search.mp4" in screen_server.MEDIA:
         film = ('<figure><video src="/media/sim-search.mp4" autoplay muted loop playsinline controls width="100%"></video>'
@@ -103,7 +108,7 @@ messages.</p>
 {film}
 <ul>{links}</ul>
 {extra}
-<p class="note">Nothing you type on these pages is sent or kept.</p>
+<p class="note">{privacy}</p>
 </main></html>""".encode()
 
 
@@ -212,6 +217,9 @@ def letter() -> None:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     import signal
 
     # A kill (SIGTERM) cleans up like Ctrl+C, so the throwaway folder never stays behind.
@@ -285,7 +293,8 @@ def main() -> int:
     except KeyboardInterrupt:
         return 0
     finally:
-        shutil.rmtree(DATA, ignore_errors=True)
+        if DATA.name.startswith("andy-demo-"):       # only the folder this demo made, never one it was given
+            shutil.rmtree(DATA, ignore_errors=True)
 
 
 if __name__ == "__main__":

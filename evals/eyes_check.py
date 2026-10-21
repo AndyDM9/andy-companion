@@ -5,7 +5,8 @@
 Two things, three times each, for each of the eyes named (vision.eyes; the endpoint must be started first):
 - describing Andy's own TV screenshot (docs/images/tv-letter.png), as "what do you see?";
 - finding the named thing in PICTURE cut into four views (left and right halves, top and bottom halves), asked
-  all at once as the finder does, with what each view said.
+  all at once as the finder did before decision 0012 (it now reads each view as six zoomed tiles; zoom_check.py
+  measures that), with what each view said.
 PICTURE is any picture you may use with the thing in it; the scorecard keeps only its file name, the times and the
 answers. The finder's real measure is the robot's own tries (evals/finder_eval.py compare).
 """
@@ -51,6 +52,9 @@ def check(eyes: str, picture, what: str, runs: int = 3) -> dict:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     if len(sys.argv) < 4:
         print(__doc__)
         return 2

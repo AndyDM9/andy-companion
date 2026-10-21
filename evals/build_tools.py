@@ -43,6 +43,9 @@ def load(name: str):
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     specs = []
     for name in profile_tools(PROFILE.read_text()):
         tool = load(name)

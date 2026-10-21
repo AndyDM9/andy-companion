@@ -344,7 +344,8 @@ Each principle comes from published research, and each has something you can see
 - **The suite isn't perfect:** about one different case fails each run, and every failure is in its
   scorecard.
 - **Body language while thinking** (a glance away, a tilt as a question ends) is built but off until it has
-  been tested with the robot (`ANDY_EXPRESSIVE=on`).
+  been tested with the robot (to try it: `ANDY_EXPRESSIVE=on ./scripts/andy`, an environment variable, not
+  an env-file setting).
 - **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
   yet.
 - **English and Spanish only.**

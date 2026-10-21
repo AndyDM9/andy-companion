@@ -149,8 +149,14 @@ def compare(folder: Path, eyes_list: list, asker=None) -> dict:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     if len(sys.argv) >= 4 and sys.argv[1] == "compare":
         folder, eyes_list = Path(sys.argv[2]).expanduser(), sys.argv[3:]
+        if not folder.is_dir():
+            print(f"No folder of tries at {folder}.", file=sys.stderr)
+            return 2
         card = {"ran": datetime.now().astimezone().isoformat(timespec="seconds"), **compare(folder, eyes_list)}
         for eyes, c in card["eyes"].items():
             s = c["in_sight"]
@@ -164,6 +170,9 @@ def main() -> int:
         print(__doc__)
         return 2
     folder = Path(sys.argv[2]).expanduser()
+    if not folder.is_dir():
+        print(f"No folder of tries at {folder} (the finder keeps them where ANDY_FINDER_RECORD points).", file=sys.stderr)
+        return 2
     if sys.argv[1] == "sheet":
         print(f"Open {sheet(folder)} and write labels.csv beside it.")
         return 0

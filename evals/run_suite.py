@@ -318,7 +318,7 @@ def run_case(case: dict, system: str) -> dict:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--suite", default=str(HERE / "suite.json"))
     ap.add_argument("--profile", default=str(HERE.parent / "profiles" / "companion" / "profile.md"))
     ap.add_argument("--out", default="")
@@ -326,12 +326,18 @@ def main(argv=None) -> int:
     ap.add_argument("--model-only", action="store_true", help="leave out Andy's urgent-words net")
     ap.add_argument("--only", default="", help="comma-separated case ids, to try new cases cheaply")
     args = ap.parse_args(argv)
+    if not os.environ.get("NEBIUS_API_KEY"):
+        print("Needs NEBIUS_API_KEY (a Nebius Token Factory key): the model and the judge run there.", file=sys.stderr)
+        return 2
     global WITH_NET
     WITH_NET = not args.model_only and urgent is not None
     suite = json.loads(Path(args.suite).read_text())
     if args.only:
         wanted = {c.strip() for c in args.only.split(",") if c.strip()}
         suite["cases"] = [c for c in suite["cases"] if c["id"] in wanted]
+        if not suite["cases"]:
+            print(f"No case has the id {', '.join(sorted(wanted))}.", file=sys.stderr)
+            return 2
     system = profile_prompt(Path(args.profile))
     runs = []
     for _ in range(max(1, args.runs)):

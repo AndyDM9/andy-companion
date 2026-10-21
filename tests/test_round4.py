@@ -109,11 +109,11 @@ def test_andy_s_own_server_has_no_front_page_and_is_not_read_only():
 
 def test_the_demo_front_page_lists_the_four_pages():
     code = ("import shutil, sys; sys.argv = ['demo']; sys.path.insert(0, 'scripts'); import demo_screen; "
-            "print(demo_screen.index_page().decode()); shutil.rmtree(demo_screen.DATA)")
+            "print(demo_screen.index_page().decode())")          # imported: the demo made no folder to remove
     page = subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, timeout=60, check=True).stdout
     for href in ("/screen?t=demo-screen", "/hood?t=demo-hood", "/family?k=demo-family", "/setup?s=demo-setup"):
         assert f'href="{href}"' in page
-    assert "Nothing you type on these pages is sent or kept." in page and "built with NVIDIA Nemotron" in page
+    assert "Nothing you type here leaves this computer" in page and "built with NVIDIA Nemotron" in page
     assert "powered by" not in page.lower()
 
 

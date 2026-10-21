@@ -1,7 +1,6 @@
 """The demo's setup script: what it adds, it removes; the letters name no real company."""
 
 import importlib.util
-import json
 import re
 from pathlib import Path
 

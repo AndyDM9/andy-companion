@@ -62,6 +62,9 @@ def port_open(port: int) -> bool:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     e = env()
     mode = stat.S_IMODE(ENV_FILE.stat().st_mode) if ENV_FILE.exists() else None
     check("Private env file", mode == 0o600, str(ENV_FILE) if mode else "missing",
@@ -106,7 +109,8 @@ def main() -> int:
 
     from andy_companion import state
     s = state.current()
-    check("Andy", True, s["mode"] + (" (until a set time)" if s.get("until") else ""))
+    print(f"• Andy's last state: {s['mode']}" + (" (until a set time)" if s.get("until") else "")
+          + " (information, not a check; --live checks the app is running)")
 
     eyes = (e.get("ANDY_VISION") or "token-factory").strip().lower().replace("_", "-")
     if eyes not in ("endpoint", "off"):

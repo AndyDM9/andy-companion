@@ -27,6 +27,16 @@ from functools import wraps
 from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger("andy.guard")
+
+# Tasks started here are held until they finish: the event loop keeps only a weak reference to a task, so one
+# nobody holds can be collected before it runs to the end.
+_TASKS: set = set()
+
+
+def _keep(task: "asyncio.Task") -> "asyncio.Task":
+    _TASKS.add(task)
+    task.add_done_callback(_TASKS.discard)
+    return task
 TIMEOUT_S = 4.0
 # A stopped endpoint fails every turn; one line when it goes, one when it comes back, and a reminder every
 # QUIET_S while it stays away, rather than a line per turn.
@@ -180,12 +190,12 @@ def install(handler_class=None, check: Callable[[str], Optional[Dict[str, Any]]]
             if enabled and str(text).strip() and not urgent.is_urgent(text):
                 turn = Turn(urgent.crisis_frame_for(text))
                 self._andy_guard_turn = turn
-                loop.create_task(look(self, turn, str(text)))
+                _keep(loop.create_task(look(self, turn, str(text))))
             return
         turn = getattr(self, "_andy_guard_turn", None)
         if role == "assistant" and turn is not None and turn.reply is None:
             turn.reply = str(text)
-            loop.create_task(follow(self, turn))
+            _keep(loop.create_task(follow(self, turn)))
 
     emit._andy_guard = True
     handler_class._emit_transcript = emit

@@ -221,6 +221,10 @@ def main(argv=None) -> int:
     ap.add_argument("--close-up", type=float, default=None, help="the close-up's share of the frame (finder.CLOSE_UP)")
     ap.add_argument("--out", default="")
     args = ap.parse_args(argv)
+    if vision.eyes() is None:              # before the scene is built: a clear line, not a traceback
+        print("Needs NEBIUS_API_KEY (a Nebius Token Factory key): NVIDIA Nemotron 3.5 Super VL reads what Andy sees.",
+              file=sys.stderr)
+        return 2
     os.environ["ANDY_FINDER_ZOOM"] = args.zoom
     if args.close_up:
         finder.CLOSE_UP = args.close_up

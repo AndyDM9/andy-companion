@@ -17,6 +17,7 @@ cd "$ROOT"
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 if [ -f "$ENV_FILE" ]; then
   TAVILY_API_KEY="$(sed -n 's/^TAVILY_API_KEY=//p' "$ENV_FILE" | tail -1)"
+  TAVILY_PROJECT="$(sed -n 's/^TAVILY_PROJECT=//p' "$ENV_FILE" | tail -1)"      # X-Project-ID; web.py's default if empty
   ANDY_VISION_URL="$(sed -n 's/^ANDY_VISION_URL=//p' "$ENV_FILE" | tail -1)"
   ANDY_VISION_TOKEN="$(sed -n 's/^ANDY_VISION_TOKEN=//p' "$ENV_FILE" | tail -1)"
   ANDY_GUARD_URL="$(sed -n 's/^ANDY_GUARD_URL=//p' "$ENV_FILE" | tail -1)"
@@ -26,6 +27,7 @@ if [ -f "$ENV_FILE" ]; then
   # Off unless the env file names a folder: the finder then keeps each try there for scoring (live test 3t2).
   ANDY_FINDER_RECORD="${ANDY_FINDER_RECORD:-$(sed -n 's/^ANDY_FINDER_RECORD=//p' "$ENV_FILE" | tail -1)}"
   export ANDY_FINDER_RECORD
+  [ -n "$TAVILY_PROJECT" ] && export TAVILY_PROJECT
   export TAVILY_API_KEY ANDY_VISION ANDY_VISION_URL ANDY_VISION_TOKEN ANDY_GUARD_URL ANDY_GUARD_TOKEN NEBIUS_API_KEY
 fi
 export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"

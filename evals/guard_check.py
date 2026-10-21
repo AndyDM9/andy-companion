@@ -98,7 +98,7 @@ def measure(policy: bool) -> dict:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--out", default="")
     args = ap.parse_args(argv)
     if guard._config() is None:

@@ -804,7 +804,8 @@ def serve(host: Optional[str] = None, port: Optional[int] = None) -> ThreadingHT
     host = host if host is not None else os.environ.get("ANDY_SCREEN_HOST", "0.0.0.0")
     port = port if port is not None else int(os.environ.get("ANDY_SCREEN_PORT", "8090"))
     httpd = ThreadingHTTPServer((host, port), Handler)
-    threading.Thread(target=httpd.serve_forever, name="andy-screen", daemon=True).start()
+    # A short poll, so stopping the server (tests, the demo) takes a twentieth of a second, not half of one.
+    threading.Thread(target=lambda: httpd.serve_forever(poll_interval=0.05), name="andy-screen", daemon=True).start()
     threading.Thread(target=_housekeeping, name="andy-screen-tidy", daemon=True).start()
     logger.info("Andy's screen is served on port %d", port)
     return httpd

@@ -120,6 +120,9 @@ def clean() -> int:
 
 
 def main(argv=None) -> int:
+    if {"-h", "--help"} & set((sys.argv[1:] if argv is None else argv)):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     args = list(sys.argv[1:] if argv is None else argv)
     if not args or args[0] not in ("check", "letters", "set", "clean"):
         print(__doc__)

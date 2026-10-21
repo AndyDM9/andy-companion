@@ -170,6 +170,9 @@ def show(card: dict) -> None:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     args = sys.argv[1:]
     if "--word-rules" in args:      # no model, no web: nothing to pay for
         msgs = messages()

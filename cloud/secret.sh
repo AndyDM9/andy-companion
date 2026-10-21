@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Sourced by the cloud scripts: store a value in Nebius MysteryBox without it ever being on a command line,
 # where any process on this shared computer could read it (`ps`, /proc). The value comes on stdin and
 # reaches the Nebius CLI inside a request file only this user can read, removed as soon as the call ends.

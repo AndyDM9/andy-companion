@@ -7,9 +7,10 @@ name = "andy_companion_app"
 version = "0.1.0"
 description = "Andy: a home companion for older adults who live at home, and the family who help. NVIDIA Nemotron on Nebius."
 readme = "README.md"
+license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "reachy-mini",
+    "reachy-mini==1.12.0rc1",                  # the SDK Andy is tested on
     "reachy_mini_conversation_app @ git+https://github.com/pollen-robotics/reachy_mini_conversation_app@v1.0.1",
     "andy-companion[robot] @ git+https://github.com/AndyDM9/andy-companion@main",
 ]

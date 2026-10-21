@@ -3,8 +3,13 @@ name = "andy-companion"
 version = "0.1.0"
 description = "A home companion robot on Reachy Mini, with NVIDIA Nemotron on Nebius Token Factory"
 license = "Apache-2.0"
+readme = "README.md"
+authors = [{ name = "AndyDM9" }]
 requires-python = ">=3.12,<3.13"
 dependencies = []
+
+[project.urls]
+Repository = "https://github.com/AndyDM9/andy-companion"
 
 [project.optional-dependencies]
 # Everything the robot side needs (the Reachy Mini dashboard app installs this).

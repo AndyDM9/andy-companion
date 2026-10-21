@@ -273,7 +273,9 @@ def test_a_recorded_try_keeps_full_size_views_the_close_up_and_where_the_head_wa
     assert json.loads((kept / "try.json").read_text())["poses_deg"][0] == [55.0, 15.0]
 
 
-def test_face_following_is_off_for_the_whole_search_and_comes_back_after_the_point():
+def test_face_following_is_off_for_the_whole_search_and_comes_back_after_the_point(monkeypatch):
+    monkeypatch.setattr(finder, "POINT_HOLD_S", 0.05)       # the same order of events, without waiting 4.5 s
+    monkeypatch.setattr(finder, "BACK_TO_FACE_S", 0.05)
     """The founder's recorded tries: face tracking took the head back mid-sweep and one view pointed at him."""
     class TrackingManager(Manager):
         def __init__(self):

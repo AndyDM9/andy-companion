@@ -14,6 +14,8 @@ PROJECT="${NEBIUS_JOB_PROJECT:-${NEBIUS_PROJECT:-$(nebius config get parent-id 2
 SECRET="andy-token-factory"
 TRIALS="${1:-30}"
 SCALE="${2:-0.35}"
+# Anything but numbers (--help included) prints the usage: nothing is stored or started, so nothing is paid.
+if ! [[ $TRIALS =~ ^[0-9]+$ && $SCALE =~ ^[0-9.]+$ ]]; then sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; exit 2; fi
 SEED="${ANDY_SIM_SEED:-21}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 

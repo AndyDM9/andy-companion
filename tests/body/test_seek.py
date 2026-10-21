@@ -369,7 +369,7 @@ def test_the_look_around_sweeps_slower_than_a_turn_to_a_voice():
     while s.state != "SCAN":
         t += 0.05
         s.step(t, **_common())
-    start, began = s._cmd, t
+    start = s._cmd
     t += 1.0
     s.step(t, **_common())
     swept = abs(s._cmd - start)

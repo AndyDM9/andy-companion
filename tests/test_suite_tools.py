@@ -81,6 +81,7 @@ def test_the_scorecard_line_for_the_job_log_stays_short(monkeypatch, capsys):
     fake = {"id": case["id"], "area": case["area"], "pass": False, "why": "w" * 900, "reply": "r" * 900,
             "tools": [], "seconds": 1.0, "net": False}
     monkeypatch.setattr(run_suite, "run_case", lambda c, system: {**fake, "id": c["id"], "area": c["area"]})
+    monkeypatch.setenv("NEBIUS_API_KEY", "not-used")             # run_case is replaced: nothing is called
     run_suite.main(["--runs", "3"])
     line = [x for x in capsys.readouterr().out.splitlines() if x.startswith("SCORECARD_JSON ")][0]
     assert len(line) < 16000 and json.loads(line[len("SCORECARD_JSON "):])["per_run"] == [0, 0, 0]

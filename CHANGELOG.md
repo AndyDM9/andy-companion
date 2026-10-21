@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Fixed (a systems audit: every command a judge is told to run, from a fresh clone)
+
+- **`--help` runs nothing else**, in every script: before, `doctor.py --help` ran the real checks (one Tavily search),
+  `make_charts.py` redrew the tracked charts, `robot_timings.py` wrote a scorecard, `demo_screen.py` started a server.
+  `cloud/sim-job.sh --help` took "--help" as a trial count and would have started two paid Jobs; it and
+  `scam-job.sh` now print their usage on anything they can't use. `space.sh` and `make_gif.sh` print clean usage.
+- **No key, a clear line instead of a traceback:** the simulation (`finder_sim.py`, `replay.py`) and the suite
+  (`run_suite.py`, which also refuses an `--only` that matches no case); `finder_eval.py` names a missing folder.
+- **Tests:** each run left three folders in /tmp (about 470 had built up; removed), because importing the demo made
+  one and changed the data folder mid-run; now the demo makes its folder only when run, deletes only a folder it
+  made, and the tests' folder goes when the run ends. The suite takes 13 s instead of 44 (the screen server's
+  shutdown poll, and one test that waited 4.7 s for real); what Andy is looking at no longer carries between tests.
+- **Background tasks held until they finish** in the urgent-words net and the second look (the event loop keeps only
+  a weak reference); four real lint findings fixed; the doctor's "Andy" line is information, not a passing check.
+- **The finder's label on Under the hood** says "four views as 24 zoomed tiles, then a closer look", in both languages.
+- **`.env.example`** lists every setting the code reads, with `ANDY_FINDER_RECORD` marked for testing only;
+  `run-robot.sh` passes `TAVILY_PROJECT`; the package metadata gains a readme, the repository link and, for the
+  Reachy Mini app, its licence and the SDK version Andy is tested on. The demo's front page says what is true in
+  each mode: nothing kept in public, deleted on stop locally.
+
 ### Changed (a documentation audit: every document read against the code and the scorecards)
 
 - **A map of the documents** (`docs/README.md`): what to read first, which are build records, and a key to the

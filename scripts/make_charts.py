@@ -92,6 +92,9 @@ def scam_chart(card: dict, baseline: dict) -> str:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     import shutil
     import subprocess
 

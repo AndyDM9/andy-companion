@@ -28,6 +28,16 @@ from typing import Callable, Optional
 
 logger = logging.getLogger("andy.urgent")
 
+# Tasks started here are held until they finish: the event loop keeps only a weak reference to a task, so one
+# nobody holds can be collected before it runs to the end.
+_TASKS: set = set()
+
+
+def _keep(task: "asyncio.Task") -> "asyncio.Task":
+    _TASKS.add(task)
+    task.add_done_callback(_TASKS.discard)
+    return task
+
 URGENT = [r"\bchest\b(\W+\w+){0,4}?\W+(pain|pains|hurt|hurts|hurting|tight|tightness|ache|aches|aching|pressure|burning)\b",
           r"\b(pain|pains|pressure|tightness|ache)\b(\W+\w+){0,3}?\W+(my |the )?chest\b", r"heart attack",
           r"can'?t breathe", r"cannot breathe", r"can not breathe", r"chest is killing me", r"(trouble|difficulty) breathing", r"short of breath",
@@ -230,7 +240,7 @@ def install(handler_class=None) -> bool:
             if is_urgent(text):
                 self._andy_urgent_pending = frame_for(text)
                 try:
-                    asyncio.get_running_loop().create_task(_no_reply(self, self._andy_urgent_pending))
+                    _keep(asyncio.get_running_loop().create_task(_no_reply(self, self._andy_urgent_pending)))
                 except RuntimeError:
                     pass
             return
@@ -247,7 +257,7 @@ def install(handler_class=None) -> bool:
                     loop = asyncio.get_running_loop()
                 except RuntimeError:
                     return
-                loop.create_task(_follow_up(self, frame, reply=text))
+                _keep(loop.create_task(_follow_up(self, frame, reply=text)))
 
     emit._andy_urgent = True
     handler_class._emit_transcript = emit

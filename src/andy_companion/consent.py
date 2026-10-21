@@ -56,7 +56,7 @@ def heard(words: str) -> None:
     _last["words"] = " ".join(str(words or "").split())[:400]
 
 
-def asked(words: str = None) -> bool:
+def asked(words: "str | None" = None) -> bool:
     text = " ".join((_last["words"] if words is None else str(words)).replace("’", "'").lower().split())
     if not text or REFUSED.search(KEEPING.sub(" ", text)):
         return False

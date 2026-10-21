@@ -21,6 +21,8 @@ AT_ONCE="${ANDY_JOBS_AT_ONCE:-2}"
 STAMP="${ANDY_SCAM_STAMP:-$(date +%Y%m%d-%H%M%S)}"
 ONLY="${ANDY_SCAM_ONLY:-$(seq -s ' ' 1 "$PARTS")}"
 KEEP="$ROOT/evals/results/scam-parts-$STAMP"
+# A warnings file that isn't there (--help included) prints the usage before anything is made, stored or started.
+if [ ! -f "$WARNINGS" ] || ! [[ $RUNS =~ ^[0-9]+$ ]]; then sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 2; fi
 mkdir -p "$KEEP"
 
 # shellcheck source=cloud/secret.sh

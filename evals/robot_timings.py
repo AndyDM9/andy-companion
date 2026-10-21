@@ -48,6 +48,9 @@ def summary(found: dict) -> dict:
 
 
 def main() -> int:
+    if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
+        print(__doc__)
+        return 0
     log = subprocess.run(["journalctl", "--user", "-u", "andy", "-o", "short-iso", "--no-pager"],
                          capture_output=True, text=True).stdout.splitlines()
     card = {"ran": datetime.now().astimezone().isoformat(timespec="seconds"),
