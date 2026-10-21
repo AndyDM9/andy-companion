@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-20
 
+### Changed (packaging: the gallery, the tagline, the narration)
+
+- **The family page on a phone** (`docs/images/family-page.png`, from the demo at 390 px, twice the resolution), in
+  the README beside the family feature and in the gallery list: the gallery had no picture of the family's side.
+- **The tagline says "looks for your glasses"**, not "finds": at home it found them 3 times in 9 (198 characters,
+  under Devpost's 200; the fixed phrase "and the family who help" kept).
+- **The narration fits its shots:** read at 2.5 words a second, shots 2, 7 and 8 held 65, about 75 and 56 words for
+  14, 17 and 12 seconds; now 34, 41 and 30, with the numbers and the privacy details moved to on-screen text, and
+  Nebius Token Factory, the NVIDIA models and Tavily still named aloud.
+
 ### Measured (the finder at home)
 
 - **The founder's recorded tries scored** (`evals/finder_eval.py`): 9 tries on the robot with the pair he hid, Andy

@@ -121,6 +121,9 @@ with its sources.
   search (basic), 1.4 s, 1 credit"); a Spanish speaker gets Spanish pages first.
 - **Family, on your terms:** family see only what you share, Andy tells you who looked, and a helper sets
   Andy up from a phone, with Andy telling you who changed what.
+
+  <img src="docs/images/family-page.png" width="260" alt="The family page on a phone (sample data): Hello, Anna; what was shared with you; send a message for Andy to say">
+
 - **A screen beside it**, readable from across the room, with captions of Andy's own words and every
   text colour at 7:1 contrast, tested.
 

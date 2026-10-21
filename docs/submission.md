@@ -6,7 +6,7 @@ Last revised 2026-10-20 (rounds 4 to 9: Devpost's judging session, the gap resea
 
 ## Tagline (under 200 characters)
 
-A small robot that reads the letter in your hand and finds your glasses: a companion for older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius, and Tavily.
+A small robot that reads the letter in your hand and looks for your glasses: a companion for older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius, and Tavily.
 
 ## For the judges
 
@@ -20,7 +20,7 @@ Entered in the **Physical AI track**, and for Best Use of Tavily.
   the TV beside it, and family see only what was shared. Every text colour reaches 7:1.
 - **Potential impact:** older adults who live at home, and the family who help, where scams reach them: the
   letter in the hand and the phone call.
-- **Quality of the idea:** a robot, not a speaker. It reads the letter you hold up and finds your glasses, says it
+- **Quality of the idea:** a robot, not a speaker. It reads the letter you hold up and looks for your glasses, says it
   is a robot, and keeps only what you ask it to.
 - **Without a robot:** the video; a 20-second film of Andy's own search in simulation; the screens on sample data;
   and the real robot live on a video call ("How to test it", below).

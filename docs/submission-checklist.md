@@ -55,7 +55,7 @@ in the same commit that makes it true.
       2026-10-23 10:00 PT); editing continues afterwards
 - [ ] A gallery thumbnail, 3:2, at most 5 MB (a still of Andy beside the TV), and gallery images:
       the screen (`tv-glass-found.png`), the letter card (`tv-letter.png`), the scam check's receipt
-      (`tv-scam-receipt.png`), the four views Andy looked at (`tv-finder.png`), the hood page (`hood.png`), the family page at phone width (to take from the demo), the
+      (`tv-scam-receipt.png`), the four views Andy looked at (`tv-finder.png`), the hood page (`hood.png`), the family page at phone width (`family-page.png`), the
       architecture picture, Andy's search in simulation (`sim-search.gif`, from `sim/replay.py`), and the scam check five ways (`docs/images/scam-check-five-ways.png`, from
       `scripts/make_charts.py`); all in `docs/images/`, the screens taken from the demo
       (`ANDY_DEMO_SCENE=scam scripts/demo_screen.py`, sample data only)
