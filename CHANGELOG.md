@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Security (dependencies audited)
+
+`pip-audit` over every environment's lock file. Updated where a fix exists and nothing pins it: certifi
+2026.10.23, filelock 4.2.4 and setuptools 84.2.1 (Andy's and the robot's environments), brotli 1.2.1, certifi and
+filelock (the voice server). Tests pass; the voice server and Andy restarted on them and answered. Not updated, and
+why: in the voice server Hugging Face's speech-to-speech 1.0.0 pins `nltk==3.10.0` and `torch==2.11.0` (which pins
+setuptools below 82), and pillow 13 is a major change to its speech pipeline days before filming; the voice server
+handles only audio and Andy's own reply text, loads only the published NVIDIA models, and listens on 127.0.0.1, so
+the advisories (untrusted images, untrusted model files, text parsing) don't reach it. The offline eyes' vLLM 0.32.0
+pins setuptools too. accelerate's advisory has no fix released yet.
+
 ### Checked before going public (two independent reviews), and corrected
 
 The repository and the Space were made public, then private again within minutes at the founder's request for one
