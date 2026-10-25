@@ -187,12 +187,19 @@ mention.
 whole conversation suite, the scam evaluation (four jobs), and Andy's search in simulation (MuJoCo with software
 rendering, two jobs of 30 trials each).
 **Worked:** the job runs our whole suite (94 cases, three runs, a few minutes) and leaves a
-scorecard; we stop the endpoints between uses, and stopped they cost nothing for compute.
+scorecard; we stop the endpoints between uses, and stopped they cost nothing for compute. **MysteryBox with endpoints
+works well:** we remade the content-safety endpoint with its token in MysteryBox (`--token-secret` for the HTTPS
+check, `--env-secret` for vLLM's own key), so the token is on no command line and in no endpoint spec, and both the
+HTTPS address and the plain IP:port refused a request without it (2026-10-25).
 **Needs work:**
 - **An endpoint's plain IP:port reaches the container directly and bypasses the endpoint token.** Mark the
   HTTPS address as the one to use, and say the IP:port isn't covered.
 - **New accounts have no CPU quota in eu-north1** (the only L40S region), so our first job failed with
-  ResourceExhausted. We moved it to eu-west2.
+  ResourceExhausted. We moved it to eu-west2. It came back on 2026-10-25: the CLI's default project is still the
+  eu-north1 one, so a job started without `--parent-id` went there and failed with "Quota limit exceeded …
+  compute.instance.non-gpu.vcpu (limit 0, requested 2)", naming a quota but not the region or a region that has it.
+  Saying "this project's region has no CPU quota; eu-west2 does" in that error, or defaulting jobs to a region with
+  quota, would save every new account the same detour.
 - **The cheapest GPU isn't easy to find:** L40S is offered only in eu-north1, and the endpoints guide's only example
   is an H100. Showing the cheapest GPU per region in the endpoint form would cut a prototype's cost at once.
 - **Jobs accept at most 64 KB of injected files.** We ship a compressed bundle, and on 2026-10-20 the suite's
