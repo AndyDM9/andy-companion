@@ -17,7 +17,7 @@ setting() {
 for name in NEBIUS_API_KEY NEBIUS_BASE_URL ANDY_MODEL ANDY_VOICE_GPU ANDY_MAX_TURN_S; do
   [ -n "${!name:-}" ] || printf -v "$name" '%s' "$(setting "$name")"
 done
-: "${NEBIUS_API_KEY:?NEBIUS_API_KEY is not set in $ENV_FILE}"
+[ -n "$NEBIUS_API_KEY" ] || { echo "No NEBIUS_API_KEY in $ENV_FILE: add your Nebius Token Factory key there." >&2; exit 1; }
 [ -z "$ANDY_MAX_TURN_S" ] || export ANDY_MAX_TURN_S            # read by serve.py
 # The key reaches serve.py through the environment, never this command line, where `ps` would show it.
 export NEBIUS_API_KEY

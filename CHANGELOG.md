@@ -5,6 +5,27 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### A judge's-eye pass on the submission
+
+An independent read as a skeptical judge (five minutes: the Devpost text, the README's first screen, the planned
+video) scored it Tech 4, Design 3, Impact 3, Idea 4, and named what would move each. Done from it:
+- **"For the judges"** rewritten in the track's words: the agent runtime, Token Factory with the measured 1.06 s,
+  Serverless Jobs for the simulation and the 94 situations, the Serverless Endpoint's second check, the design and
+  accessibility, and the limits in one line; Cosmos says "not yet on the robot" there too.
+- **The three moments match the video** (the letter with Tavily's warning, the glasses, "look into it for me"), the
+  phone-call check one sentence; accessibility its own line; jargon out ("tiles", "the old way", "the duck",
+  "second look"); the offline eyes one sentence; the hardware story says which GPU does what; "What's next for Andy"
+  as Devpost names it.
+- **The README's first screen:** the title "Andy"; under the opening, links to the screens, to ask for the real
+  robot live (a new issue form, `.github/ISSUE_TEMPLATE/live-demo.yml`) and to every scorecard; "Why a robot" above
+  the numbers; the 94-situation result in place of a small simulated count.
+- **The video plan:** the untested beats are tried on the robot the day before and cut if they fail; the keys beat
+  only after its test; shot 7 names the Serverless Endpoint; shot 8 shows the limits; the gallery cut to eight, the
+  robot first, the taught move only once tried.
+- **Checked as a judge would:** the simulation with today's code (5 of 5, no false find in 3, 0.78°), the Space
+  rebuilt from this commit (every page, writes refused), all five pages in a browser (no script errors, the name
+  gates open), the README's setup in a fresh copy with an empty home, and every link in every Markdown file.
+
 ### Hardened before going public (three best-practice reviews)
 
 Three independent reviews (the package and its pages; the scripts and setup; the repository as a stranger finds

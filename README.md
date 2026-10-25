@@ -1,4 +1,4 @@
-# Andy Companion
+# Andy
 
 [![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-1c5244)](LICENSE)
 [![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
@@ -8,11 +8,19 @@ hand and looks around the room for your glasses. Built with NVIDIA Nemotron on N
 Token Factory, and Tavily, on a Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It says it's a
 robot, and keeps no recordings or transcripts: only what you ask it to keep.
 
+**[Open Andy's screens, no keys](https://huggingface.co/spaces/andydm/andy-companion)** ·
+**[Ask to see the real robot live](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)** ·
+**[Read every scorecard](evals/results/README.md)**
+
+**Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
+shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
+in your hand. Ask where your glasses are, and it looks around the room and points at them with its head.
+
 ![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **No false find** in 7 simulated searches without the object, against 3 the old way, as Nebius Serverless Jobs ([decision 0013](docs/decisions/0013-the-finder-tested-in-simulation.md))
+- **93, 92 and 92 of 94** spoken situations passed, judged by NVIDIA Nemotron 3 Ultra, run as Nebius Serverless Jobs ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -26,14 +34,10 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 **Judging it without a robot:** watch the video (every robot shot live, no cuts in the pauses); watch the
 search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
 open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
-failures included ([evals/results/](evals/results/README.md)); or ask for the real robot live on a video call, any
-time until 2026-12-15.
+failures included ([evals/results/](evals/results/README.md)); or [ask for the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml),
+any time until 2026-12-15.
 
 **Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
-
-**Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
-shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
-in your hand. Ask where your glasses are, and it looks around the room and points at them with its head.
 
 ## Three moments
 

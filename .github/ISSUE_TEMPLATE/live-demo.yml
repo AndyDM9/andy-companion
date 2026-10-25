@@ -1,0 +1,23 @@
+name: Ask to see Andy live
+description: A video call with the real robot, any time until judging ends (2026-12-15).
+title: "Live demo request"
+labels: ["live demo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for looking at Andy. Say when suits you and what you'd like to see (the letter, the glasses, a look-up,
+        the family page), and we'll reply here with a time and a private call link. Please don't put a phone number
+        or email address in this public issue.
+  - type: textarea
+    id: when
+    attributes:
+      label: When suits you (with your time zone)
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What you'd like to see
+    validations:
+      required: false

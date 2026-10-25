@@ -2,7 +2,7 @@
 
 The text for the Devpost form, field by field. Every sentence is true and checkable in the repository; each number
 comes from the scorecard or measurement named in the README. Rewritten 2026-10-21 to the length and shape of
-recent winning entries (about 1,900 words now, Devpost's own headings, each number said once); re-read against
+recent winning entries (about 2,000 words now, Devpost's own headings, each number said once); re-read against
 [rules-compliance.md](rules-compliance.md) before submitting. Every number links to its scorecard or source; the
 links point at the `hackathon-submission` tag on GitHub, so they work once the tag is pushed and the repository is public. The fuller story is in the [README](../README.md).
 
@@ -14,7 +14,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Track:** Physical AI. **Bonus prize:** Best Use of Tavily.
 - **Video:** *[the YouTube link: public, "not made for kids"]*
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
-- **Try it:** *[the Hugging Face Space's link]*
+- **Try it:** https://huggingface.co/spaces/andydm/andy-companion (public with the repository)
 - **Built with:** nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs,
   nvidia-nemotron, nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety,
   nvidia-parakeet, nemotron-nano-vl, nvidia-cosmos, cosmos-reason-2, vllm, tavily, reachy-mini, pollen-robotics, mujoco, qwen3-tts, hugging-face,
@@ -28,16 +28,20 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 
 ### For the judges
 
-A small home robot that reads the letter in your hand and looks around the room for your glasses. Entered in the **Physical AI track**.
-- **Track fit:** Andy is an embodied agent that senses and acts: Pollen's Reachy Mini conversation app is its agent
-  runtime, NVIDIA Nemotron on Nebius decides (with NVIDIA Cosmos Reason 2 as its eyes when offline), and the robot
-  hears, sees, turns its head and points.
-- **Technology:** NVIDIA Nemotron models on Nebius Token Factory talk, see and judge; a vision model's answers move
-  the robot's head; Nebius Serverless Jobs test it all, including Andy's search in simulation.
+Andy is a small home robot for older adults who live at home, and the family who help: it reads the letter in your
+hand, looks around the room for your glasses, and looks things up for you. Every robot shot in the video is live,
+with no cuts in the pauses. Entered in the **Physical AI track**.
+- **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
+  Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. NVIDIA Cosmos
+  Reason 2 is its eyes when the network is down (tried on the home computer, not yet on the robot).
+- **Nebius:** Token Factory answers every turn (a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json)
+  from your words to Andy's first sound, 54 turns on the robot). **Serverless Jobs** run Andy's search in Pollen's
+  MuJoCo simulation, scored against the scene's truth, and 94 spoken situations; a **Serverless Endpoint** serves
+  NVIDIA Nemotron Content Safety as a second check on what the person says.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
-- **Impact:** older adults who live at home, and the family who help, at the letter and the phone call where scams
-  reach them.
-- **Idea:** a robot, not a speaker, honest about being one, keeping only what you ask it to.
+  Captions on by default, 7:1 contrast, and talking over Andy stops it. [Try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
+- **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
+  with older adults yet.
 
 ### Inspiration
 
@@ -50,23 +54,26 @@ recordings or transcripts: only what you ask it to keep.
 
 ### What it does
 
-Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three moments show what a robot can
-do that a phone can't:
+Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three moments, all in the video,
+show what a robot can do that a phone can't:
 
 - **"Can you read this for me?"** You hold up a letter. Andy reads it and the TV shows it in large print. If the
-  page asks for gift cards or rushes you, code, not the model, puts **Be careful** first: "Don't call or pay yet.
-  Check with family first."
+  page asks for a fee or gift cards, or rushes you, code, not the model, puts **Be careful** first: "Don't call or
+  pay yet. Check with family first." Then Andy offers to look it up, and the TV shows the consumer-protection warning
+  Tavily found, with its source.
 - **"Where did I leave my glasses?"** Andy looks around the room, reads each view zoomed in, turns its head straight
   at the best sighting, checks a close-up, and only then points and says where. If it isn't sure, it says it
   couldn't see them. Nothing was trained: a vision model's answers move the robot.
-- **"A man called saying my grandson is in jail and needs gift cards."** You just say it. Andy checks it against
-  consumer-protection warnings found with Tavily, and the TV says what to do first, then why, with the warning's
-  source.
+- **"Could you look into whether the farmers market is on this Saturday?"** Andy says it will, and carries on
+  talking with you while the TV shows Tavily's research step by step; within a minute it tells you the answer and
+  where it found it.
 
-Andy also keeps reminders in your words, researches a question on the TV
-while you carry on talking, turns a family photo into a story, and speaks English and Spanish. Family see only what
-you share, and Andy tells you who looked. Captions are on by default, every text colour reaches 7:1 contrast, and
-talking over Andy stops it.
+Andy also checks a message you only mention ("a man called saying my grandson is in jail"), keeps reminders in your
+words, turns a family photo into a story, and speaks English and Spanish. Family see only what you share, and Andy
+tells you who looked.
+
+**Made to be easy to use:** captions on by default, every text colour at 7:1 contrast, talk over Andy and it stops,
+and "slower", "louder" or "be quiet for an hour" stick.
 
 New and tested in code, not yet tried on the robot: turning to a second person speaking, waving back with its
 antennas when you wave, a move taught by hand, and remembering where you put your keys (after a yes).
@@ -78,21 +85,19 @@ antennas when you wave, a move taught by hand, and remembering where you put you
   understood to Andy's first sound (54 real turns).
 - **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 tools; NVIDIA Nemotron 3
   Ultra takes hard questions and judges the tests. Zero data retention is on.
-- **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed tiles, all 24
-  at once in about 1.8 s, each a structured answer, then a strict yes or no about the close-up. On one room photo, zooming
-  in took the search from [0 of 9 to 9 of 9](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/zoom-check-2026-10-20-1711.json).
-- **Seeing offline:** when Token Factory can't be reached, the same questions go to NVIDIA Cosmos Reason 2 8B on the
-  home computer's second GPU, so Andy can still look for your glasses; nothing leaves the house (tried end to end on
-  this computer, not yet on the robot). In 30 simulated searches on this computer, where Super VL pointed 21 of 23
-  times, it pointed at the duck [22 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1524-on-small0.35.json), never at the wrong place, and never
-  claimed a find that wasn't there; the 2B model, small enough for a Jetson, 18 of 23 ([decision 0015](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
+- **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed-in parts, all 24
+  at once in about 1.8 s, then a strict yes or no about a close-up. On one room photo, zooming in took the search
+  from [0 of 9 to 9 of 9](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/zoom-check-2026-10-20-1711.json).
+- **Seeing offline:** when Token Factory can't be reached, NVIDIA Cosmos Reason 2 on the home computer answers the
+  same questions: in 30 simulated searches it pointed at the hidden object [22 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1524-on-small0.35.json)
+  and never claimed a find that wasn't there (tried on the computer, not yet on the robot).
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
-  behaviours plug into it without forking it. Rules that must hold are in code, under the model: the scam warning,
-  consent before anything is kept, and the 911 or 988 line when someone says urgent words.
+  behaviours plug into it without forking it. What must always hold is enforced in code, not left to the model: the scam warning,
+  consent before anything is kept or shared, and the 911 or 988 line when someone says urgent words.
 - **Measured as Nebius Serverless Jobs:** a suite of 94 spoken situations judged by Nemotron 3 Ultra ([93, 92 and 92
-  of 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, scored against
-  the scene's truth: with the closer look, [no false find in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json) trials without the object, against [3 in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json) the old way.
-- **A second look** at the person's words, NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, caught
+  of 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, for a
+  glasses-sized object hidden at random and scored against the scene's truth: with the close-up check, [no false find in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json) searches without the object, against [3 in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json) without that check.
+- **A second check** on the person's words, NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, caught
   [7 of 8](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/guard-content-safety-2026-10-25.json) urgent phrasings our word list missed.
 
 ### How Andy uses Tavily
@@ -147,7 +152,7 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
   [18 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1506-on-small0.35.json), three at the wrong place. Neither
   has been tried on the robot with the network unplugged. GR00T and Sonic, the track's other models, are for robots with arms or legs.
 
-### What's next
+### What's next for Andy
 
 A pilot with older adults and their families; more languages (Parakeet already hears 25); an NVIDIA Jetson beside
 the robot with the big models staying on Token Factory; the body turn tried at home for things beside Andy;
@@ -156,7 +161,8 @@ and Andy published as a one-click Reachy Mini app on Hugging Face.
 ### Path to shipping
 
 - **Hardware, once:** a Reachy Mini Lite ($399 listed by Hugging Face, read 2026-10-25), a TV the household already
-  has, and today a computer with an 8 GB NVIDIA GPU, which most homes don't have. That computer is likely the biggest
+  has, and today a computer with an 8 GB NVIDIA GPU for hearing and speaking (the offline eyes need more: about 14 GB
+  for the 2B model, a whole 24 GB GPU for the 8B), which most homes don't have. That computer is likely the biggest
   cost, and the reason for the Jetson plan.
 - **Running, monthly:** about [$2.30 a month, estimated](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/cost.md) from list prices for one household's
   conversation and web lookups, not from a bill; the eyes add about half a cent a search.
@@ -172,6 +178,7 @@ and Andy published as a one-click Reachy Mini app on Hugging Face.
 1. **The video:** the real robot, live, at least a minute of it uncut.
 2. **Andy's search in simulation:** a 20-second film on the demo's front page and in the README; anyone with a
    Token Factory key can rerun it, no robot.
-3. **The screens:** the TV, the family page and the settings page on sample data, in the browser, no keys
-   *[the Space's link]*.
-4. **The real robot:** live on a video call any time until judging ends, and access to the hardware on request.
+3. **The screens:** the TV, the family page and the settings page on sample data, in the browser, no keys:
+   https://huggingface.co/spaces/andydm/andy-companion.
+4. **The real robot:** live on a video call any time until judging ends ([ask here](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)),
+   and access to the hardware on request.
