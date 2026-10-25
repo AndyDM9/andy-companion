@@ -57,6 +57,10 @@ in the same commit that makes it true.
 
 ## The Devpost form
 
+- [ ] **Before pasting the final text:** the letter (live-test 3k, 3l), the research streamed to the TV (3e) and the
+      photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; "Three moments, filmed live on the
+      robot" is true only then. A moment that doesn't work leaves the video and the text says "not yet tried on the
+      robot".
 - [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
       `uv run python scripts/devpost.py --ref hackathon-submission --check` once the tag is pushed, and paste again.
       Every link opens (2026-10-25: 18 of 19 from here; ftc.gov refuses this network, its two pages confirmed from

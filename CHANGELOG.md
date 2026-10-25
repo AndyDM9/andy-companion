@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### A second judge's-eye read, and the Devpost text corrected and shortened
+
+A fresh, independent read as a judge scored the entry Tech 4, Design 4 (up from 3 in the morning's read), Impact 3,
+Idea 4, and found claims that had drifted from the evidence over the day's edits. Corrected in the Devpost text:
+- **Tavily's gain:** each model alone also flagged none of the 60 ordinary messages, so what Tavily adds is the named
+  source (170 of 174 verdicts), kept without false alarms only when Ultra does the matching; not "no false alarms".
+- **The latency:** 1.06 s from the words being *understood* to Andy's first sound (the README's 0.94 s is when the
+  reply's text starts, now said so).
+- **The offline eyes:** Cosmos's 22 of 23 beside Super VL's 21 on the *same* trials, and less precise; the "about
+  14 GB" for the 2B model was what vLLM reserved, not what it needs (about 4 GB of weights; a Jetson not measured).
+- **The second check:** a Serverless Endpoint started when needed, about $1.55 an hour while running, not in the
+  $2.30 a month.
+- **The first 150 words** now carry the problem (the FTC's $3 billion), the three moments, two measured results and
+  the track; repetition cut (about 2,190 words to about 1,970); "Content Safety" named the same everywhere.
+The video plan: shot 1's caption says every *robot* shot is live (shot 7 shows the simulation); shot 7's narration
+opens with the eight models at home. The checklist: "filmed live on the robot" may be submitted only once the letter,
+the research and the photo story are recorded as tried on the robot.
+
 ### Every model, and where it runs
 
 A judge wants to see local models; Andy runs eight, but the README's table named only Parakeet and Cosmos, and the

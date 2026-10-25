@@ -180,8 +180,8 @@ search in Pollen's MuJoCo simulation. The details, and why each model, follow.
   Nemotron 3 Ultra, both through the same Token Factory API: trying a model is changing its name, and
   the judge reads all 97 situations three times.
 - **No language-model GPU at home.** The desktop's graphics cards keep hearing and speaking local
-  (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, and on the robot the reply starts a median 0.94 s after
-  the words are understood (62 turns, [timings](evals/results/robot-timings-2026-10-20-1550.json)).
+  (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, and on the robot the reply's text starts a median 0.94 s after
+  the words are understood (62 turns), its first sound 1.06 s (54 turns; [timings](evals/results/robot-timings-2026-10-20-1550.json)).
 - **Zero data retention**, switched on in Token Factory, so a household's conversation is not kept by
   the model service either.
 - **The same suite runs on Nebius AI Cloud** as a Serverless Job, and so does the scam evaluation (the
