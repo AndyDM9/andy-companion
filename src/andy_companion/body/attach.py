@@ -167,7 +167,7 @@ def follow_with_body() -> bool:
             antennas = wave.step(self, (float(antennas[0]), float(antennas[1])), tracking=tracking,
                                  speaking=bool(getattr(self, "_is_speaking", False)) or listening,
                                  move_playing=move_owns_body)
-        head = gaze.soften_look_up(head)
+        head = gaze.look_up_cap(head, move_owns_body)
         return send(self, head, antennas, follower.step(now, yaw, float(body_yaw), tracking, move_owns_body))
 
     issue_with_body_follow._andy_body_follow = True

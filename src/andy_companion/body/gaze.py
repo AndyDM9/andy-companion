@@ -15,9 +15,10 @@ ANDY_SPEAK_FOLLOW=off restores Pollen's pause.
 
 `soften_look_up`: Pollen's recorded emotions tilt the head up to 22.5 degrees (attentive1, thoughtful1,
 laughing1, welcoming2 ...), made for a robot sitting low and looking up at a person. With Andy at the
-person's head height every pose sent is softened
-above MAX_LOOK_UP (smoothly, so the gesture keeps its shape); looking down and turning are untouched.
-Face tracking itself is the daemon's and isn't affected. ANDY_MAX_LOOK_UP_DEG=off sends poses as they are.
+person's head height, a pose sent while such a move plays is softened above MAX_LOOK_UP (smoothly, so the
+gesture keeps its shape); looking down and turning are untouched. Following a face is never capped (`look_up_cap`):
+until 2026-10-25 every pose was, so when the person stood up Andy couldn't look up at them (the founder, on the
+robot). ANDY_MAX_LOOK_UP_DEG=off sends every pose as it is.
 """
 
 from __future__ import annotations
@@ -32,6 +33,12 @@ ENABLED = os.environ.get("ANDY_SPEAK_FOLLOW", "on").strip().lower() != "off"
 SEEKING = ("TURN", "SCAN", "PERSON", "HOME")
 _cap = os.environ.get("ANDY_MAX_LOOK_UP_DEG", "10").strip().lower()
 MAX_LOOK_UP = None if _cap == "off" else math.radians(float(_cap))
+
+
+def look_up_cap(pose, move_playing: bool, limit=None):
+    """The head pose to send: softened above MAX_LOOK_UP only while a move (a recorded emotion) plays; as it is while
+    following a face, which may look up as far as the person is (someone standing beside a robot on a table)."""
+    return soften_look_up(pose, limit) if move_playing else pose
 
 
 def soften_look_up(pose, limit=None):

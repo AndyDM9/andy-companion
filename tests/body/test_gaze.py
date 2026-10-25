@@ -101,3 +101,14 @@ def test_pollens_look_up_is_softened_below_ten_degrees():
 
 def test_the_person_follow_no_longer_looks_up_at_head_height():
     assert seek.Seek().up_max == 0.0
+
+
+def test_following_a_face_may_look_up_and_only_a_playing_move_is_capped():
+    """The founder stood up and Andy couldn't look up at them (2026-10-25): tracking is never capped."""
+    import math
+    import numpy as np
+    up = _pose(0, -25, 0)
+    limit = math.radians(10)
+    assert np.allclose(gaze.look_up_cap(up, False, limit), up)                       # following a face
+    _, pitch, _ = _angles(gaze.look_up_cap(up, True, limit))                         # an emotion playing
+    assert -10.0 - 1e-6 <= pitch < 0

@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (from the founder's first tries of looking up and waving on the robot)
+
+- **Andy couldn't look up at someone standing.** The 10° cap on looking up was meant for Pollen's recorded emotions
+  (made for a robot below the person) but was applied to every head pose, face following included, so a standing
+  face left the top of the picture and Andy kept losing and re-finding them (the log: "seek FOLLOW -> PERSON" again
+  and again). Now only a playing move is capped (`gaze.look_up_cap`); following a face looks up as far as the robot
+  can. A test.
+- **The wave back was missed.** The log shows the waves seen ("wave: waving back" at 19:10 and 19:12); the answer,
+  20° for 2.5 s, was too small to notice. Now about 29° and two swings in 3.4 s, the peak still under the antennas'
+  2 rad/s (the test keeps it so).
+
 ### Added (the Devpost draft, ready to paste)
 
 `scripts/devpost.py` prints the form's fields from `docs/submission.md` in the form's order (the story at Devpost's

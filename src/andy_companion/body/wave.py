@@ -37,7 +37,9 @@ MOVING_SHARE = 0.6                 # of the pictures in the window, the zone mov
 ZONE_MOTION = 0.04                 # share of a zone's pixels moving, to count as moving
 FACE_STILL = 0.08                  # the face's zone moving less than this: they are standing still
 COOLDOWN_S = 20.0
-WAVE_S, WAVE_HZ, AMP_RAD, EASE_S = 2.5, 0.8, 0.35, 0.4
+# Bigger and longer since the founder missed it on the robot (2026-10-25): about 29 degrees, two swings in 3.4 s,
+# the peak still about 1.7 rad/s, under the antennas' 2.
+WAVE_S, WAVE_HZ, AMP_RAD, EASE_S = 3.4, 0.55, 0.5, 0.45
 
 
 def zones(face_x: float, face_y: float, w: int, h: int) -> dict:
