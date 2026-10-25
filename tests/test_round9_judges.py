@@ -77,6 +77,19 @@ def test_the_doctor_says_finder_tries_are_kept_before_filming(monkeypatch):
     assert doctor.finder_recording({}) == "/elsewhere"
 
 
+def test_the_doctor_names_another_app_driving_the_robot():
+    spec = importlib.util.spec_from_file_location("doctor_for_tests", ROOT / "scripts" / "doctor.py")
+    doctor = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(doctor)
+    listing = ('0 0 127.0.0.1:35124 127.0.0.1:8000 users:(("python",pid=212582,fd=4))\n'
+               '0 0 127.0.0.1:35130 127.0.0.1:8000 users:(("python",pid=211584,fd=3))\n'
+               '0 0 127.0.0.1:35131 127.0.0.1:8000 users:(("python",pid=211584,fd=5))\n')
+    who = {212582: ("andy.service", True), 211584: ("other-robot-app.service", False)}.get
+    assert doctor.other_robot_apps(listing, who) == ["other-robot-app.service"]       # once, however many sockets
+    assert doctor.other_robot_apps(listing.splitlines()[0], who) == []
+    assert doctor.other_robot_apps("", who) == []
+
+
 def test_the_hood_says_its_turns_are_samples_only_in_the_demo(monkeypatch):
     monkeypatch.setattr(screen_server, "INDEX", None)
     assert screen_server.hood_state()["sample"] is False

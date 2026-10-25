@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Added (the doctor names another app driving the robot)
+
+The head and antennas shook on the robot this afternoon: another conversation app on this desktop was connected to
+the robot's daemon at the same time as Andy, started by its own wake word when Andy said its name in its greeting.
+Stopping it (and what starts it) ended the shaking. `scripts/doctor.py --live` now checks **"Only Andy drives the
+robot"**: any program other than Andy's own connected to the daemon (127.0.0.1:8000), named by its service, is a ✗
+with the fix. Tried with a stand-in connection from a throwaway service: named and failed; without it, passed. The
+live test's "Before" says so. A test in `tests/test_round9_judges.py`.
+
 ### Fixed (the offline eyes on the real path: settings loaded, the hood told)
 
 Found by installing `andy-eyes` and checking it beside Andy's real start-up, not the tests alone:

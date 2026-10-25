@@ -8,6 +8,10 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 
 ## Before
 
+- [ ] **No other robot app running, and nothing that starts one.** On 2026-10-25 another conversation app on this
+      desktop was started by its own wake word when Andy said its name, and the two together made the head and
+      antennas shake. Stop it and its wake listener first; the doctor's "Only Andy drives the robot" names any other
+      program connected to the robot.
 - [ ] Andy and the voice server running: `systemctl --user start andy-voice andy` (or `status`).
 - [ ] `robot/.venv/bin/python scripts/doctor.py --live`: everything green but the second look's endpoint, until it's started. **The robot's own daemon must say it is fine:** on 2026-10-20 it reported "Motor communication error! Check connections and power supply": check the robot's power and USB first.
 - [ ] `uv run python scripts/settings.py links`: open the **screen** on the TV, the **family page** on a

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import socket
 import stat
@@ -195,6 +196,10 @@ def live(e: dict) -> None:
     from andy_companion import settings, watchdog
     running = subprocess.run(["pgrep", "-f", "scripts/run_andy.py"], capture_output=True).returncode == 0
     check("Andy's app running", running, "", "./scripts/andy, and say \"Andy, wake up\" if it is asleep")
+    others = other_robot_apps()
+    check("Only Andy drives the robot", not others, ", ".join(others),
+          "stop the other app (systemctl --user stop <its service>), and anything that starts it, such as its own "
+          "wake word; two apps moving the head at once make it and the antennas shake")
     try:
         h = json.loads(watchdog.HEALTH.read_text())
         age = time.time() - h.get("at", 0)
@@ -218,6 +223,38 @@ def live(e: dict) -> None:
     check("Finder tries not kept", not recording, f"each search's pictures go to {recording}" if recording else "",
           "the room and anyone filmed would be kept: remove the ANDY_FINDER_RECORD line from the env file, "
           "then systemctl --user restart andy")
+
+
+def other_robot_apps(listing: str | None = None, who=None) -> list:
+    """Programs other than Andy connected to the robot's daemon (127.0.0.1:8000), each by its service or name.
+    Two apps commanding the head at once make the head and antennas shake: on 2026-10-25 another conversation app,
+    started by its own wake word when Andy said its name, did that."""
+    if listing is None:
+        try:
+            listing = subprocess.run(["ss", "-tnpH", "state", "established", "( dport = :8000 )"],
+                                     capture_output=True, text=True, timeout=5).stdout
+        except (OSError, subprocess.SubprocessError):
+            return []
+    who = who or _program
+    found = []
+    for pid in sorted({int(x) for x in re.findall(r"pid=(\d+)", listing)}):
+        name, andy = who(pid)
+        if not andy and name not in found:
+            found.append(name)
+    return found
+
+
+def _program(pid: int) -> tuple:
+    """(its service, else its command's name; whether it is Andy's own)."""
+    proc = Path("/proc") / str(pid)
+    try:
+        cmd = proc.joinpath("cmdline").read_bytes().replace(b"\0", b" ").decode(errors="replace")
+        groups = proc.joinpath("cgroup").read_text()
+    except OSError:
+        return f"process {pid}", False
+    unit = next((part for part in reversed(groups.strip().split("/")) if part.endswith(".service")), "")
+    andy = unit == "andy.service" or "scripts/run_andy.py" in cmd or "andy_companion.supervisor" in cmd
+    return unit or (cmd.split()[0].rsplit("/", 1)[-1] if cmd.strip() else f"process {pid}"), andy
 
 
 def finder_recording(e: dict) -> str:

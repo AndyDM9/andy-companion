@@ -77,6 +77,10 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
 - **The robot itself (2026-10-20):** Pollen's daemon reported "Motor communication error! Check connections and
   power supply"; the founder reconnected the USB the same evening, the daemon is running again and Andy woke.
+- **Two apps on the robot at once (2026-10-25):** the head and antennas shook while another conversation app on this
+  desktop was connected too; its own wake word started it when Andy said its name. Stopped for now (not disabled, so
+  it returns after a reboot); the doctor's live check now names any such app. Before filming, keep it and its wake
+  listener stopped, or disabled at login.
 - Letters in Spanish need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
 - `scripts/andy-sim` (Andy without a robot, Pollen's `--mockup-sim`) is not verified: on this desktop the
