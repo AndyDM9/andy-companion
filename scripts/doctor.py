@@ -220,7 +220,7 @@ def live(e: dict) -> None:
     check("Screen's place set (the glance)", settings.get().get("tv_yaw") is not None, "",
           "settings page → Where the screen is → Save and show me")
     recording = finder_recording(e)
-    check("Finder tries not kept", not recording, f"each search's pictures go to {recording}" if recording else "",
+    check("Finder tries not kept", not recording, f"each search's and look's pictures go to {recording}" if recording else "",
           "the room and anyone filmed would be kept: remove the ANDY_FINDER_RECORD line from the env file, "
           "then systemctl --user restart andy")
 

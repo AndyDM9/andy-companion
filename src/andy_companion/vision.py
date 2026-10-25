@@ -254,9 +254,35 @@ def look(get_frame: Callable[[], Any], question: str = "", opener: Optional[Call
     if frame is None:
         return {"error": "The camera did not give a picture."}
     try:
-        return {"description": describe(frame, question, opener)}
+        description = describe(frame, question, opener)
     except VisionError as e:
         return {"error": str(e)}
+    record_look(frame, description, used())
+    return {"description": description}
+
+
+def record_look(frame: Any, description: str, eyes_used: str, folder: Optional[str] = None) -> Optional[str]:
+    """Testing only, like the finder's tries: when ANDY_FINDER_RECORD names a folder, keep what "what do you see?"
+    sent (the view and its middle, as sent) and what the eyes said, to see why a thing wasn't recognised (2026-10-25).
+    Never the person's words. Off by default; the doctor warns while it is on; delete the folder after looking."""
+    import json
+    import time
+    from pathlib import Path
+
+    folder = folder or os.environ.get("ANDY_FINDER_RECORD", "")
+    if not folder:
+        return None
+    try:
+        out = Path(folder).expanduser() / (time.strftime("look-%Y%m%d-%H%M%S") + f"-{int(time.time() * 1000) % 1000:03d}")
+        out.mkdir(parents=True, exist_ok=True)
+        os.chmod(out, 0o700)
+        (out / "view.jpg").write_bytes(jpeg(frame, VIEW_WIDTH))
+        (out / "middle.jpg").write_bytes(jpeg(middle(frame), MIDDLE_WIDTH, 90))
+        (out / "look.json").write_text(json.dumps({"said": description, "eyes": eyes_used,
+                                                   "size": list(frame.shape[:2])}, indent=1))
+        return str(out)
+    except Exception:          # recording is a help for testing, never a reason to fail the person
+        return None
 
 
 def describe_photo(photo_id: str, opener: Optional[Callable] = None) -> dict:

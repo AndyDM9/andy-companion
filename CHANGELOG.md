@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Added (seeing why a thing wasn't recognised)
+
+On the robot Andy named the toy gorilla but not a robot statue. The log showed four looks, each 2.1 to 2.4 s on Super
+VL, all answered, the camera working; it can't show what was seen, by design. Asked the same way about a toy robot
+(CC BY-SA, Osaka Tin Toy Institute) placed in the room photo at 130, 200 and 300 px, Andy's code said "a small toy
+robot, black with red hands and feet" every time: the model can. So the testing switch that keeps the finder's tries
+(`ANDY_FINDER_RECORD`, off by default, the doctor warns while it's on) now also keeps each "what do you see?" look:
+the view and its middle as sent, and what the eyes said, never the person's words. A test checks the question is
+never kept.
+
 ### Public
 
 After a final sweep (gitleaks over every commit and file, none of the env file's secrets anywhere, no private term,

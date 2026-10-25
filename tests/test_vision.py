@@ -161,3 +161,17 @@ def test_a_photo_that_cannot_be_read_is_said_plainly(tmp_path, monkeypatch):
     broken.write_bytes(b"not a picture")
     monkeypatch.setattr(board, "photo_path", lambda photo_id: broken)
     assert vision.describe_photo("p1", opener=Opener()) == {"error": "I couldn't open that photo."}
+
+
+def test_a_look_is_kept_only_when_testing_and_never_the_question(endpoint, tmp_path, monkeypatch):
+    import json
+
+    monkeypatch.delenv("ANDY_FINDER_RECORD", raising=False)
+    assert "description" in vision.look(lambda: FRAME, "what's my secret question?", opener=Opener())
+    assert not list(tmp_path.iterdir())
+    monkeypatch.setenv("ANDY_FINDER_RECORD", str(tmp_path))
+    vision.look(lambda: FRAME, "what's my secret question?", opener=Opener())
+    (look,) = tmp_path.iterdir()
+    assert sorted(p.name for p in look.iterdir()) == ["look.json", "middle.jpg", "view.jpg"]
+    kept = (look / "look.json").read_text()
+    assert json.loads(kept)["said"] == "A cup of tea on a wooden table." and "secret question" not in kept
