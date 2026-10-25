@@ -48,7 +48,7 @@ cards and content vetting.
 **Used for:** Andy's voice conversation with tool calls, in English and Spanish.
 **Worked:** correct tool calls in 0.62 to 0.83 s with thinking off; fast enough that a robot feels
 immediate.
-**Needs work**, each found by our conversation suite (now 94 spoken situations):
+**Needs work**, each found by our conversation suite (now 97 spoken situations):
 - **Tool choice changes with the size of the tool list:** with 17 tools it always called the clock;
   with the robot's real 27 it once invented a time.
 - **Persona rules weaken after tool results:** a broad "call tools first" rule led it to agree to speak
@@ -71,7 +71,7 @@ came back instead); with thinking off it returned exactly the schema in 0.73 to 
 
 ## NVIDIA Nemotron 3 Ultra
 
-**Used for:** the judge of our conversation suite (three runs of all 94 cases per check), and
+**Used for:** the judge of our conversation suite (three runs of all 97 cases per check), and
 "think it through" for decisions.
 **Worked:** reliable judgments with reasons we could act on; balanced, short answers in 2.1 s.
 **Needs work:** as a judge it passed a reply that read out a scam letter's phone number, although the
@@ -82,7 +82,7 @@ help. Evaluation guidance should say to check hard constraints deterministically
 LLM judge.
 **Onboarding (zero to hello world):** the same key and endpoint as Lightning, only the model name changed, so routing hard turns
 to Ultra was one line.
-**Would we build with it again?** Yes: it judged 94 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
+**Would we build with it again?** Yes: it judged 97 spoken situations three times in minutes with reasons we could act on, and answers a hard question in about two seconds.
 
 ## NVIDIA Nemotron 3.5 Content Safety
 
@@ -186,7 +186,7 @@ mention.
 **Used for:** two endpoints (content safety; Nano VL eyes until 2026-10-20, now the option) and CPU jobs: the
 whole conversation suite, the scam evaluation (four jobs), and Andy's search in simulation (MuJoCo with software
 rendering, two jobs of 30 trials each).
-**Worked:** the job runs our whole suite (94 cases, three runs, a few minutes) and leaves a
+**Worked:** the job runs our whole suite (97 cases, three runs, a few minutes) and leaves a
 scorecard; we stop the endpoints between uses, and stopped they cost nothing for compute. **MysteryBox with endpoints
 works well:** we remade the content-safety endpoint with its token in MysteryBox (`--token-secret` for the HTTPS
 check, `--env-secret` for vLLM's own key), so the token is on no command line and in no endpoint spec, and both the

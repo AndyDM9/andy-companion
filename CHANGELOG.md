@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Checked (every count against the current state)
+
+After the day's changes, every number in the docs was compared with the repository: 923 tests collected, 38 tools,
+97 suite cases. The live descriptions now say so (the architecture, the evals index, the feedback, the plan's M8 line,
+the README's test count); dated measurements (the cost measured with 35 tools on 2026-10-14, the early runs) stay as
+they were on their day.
+
 ### The suite at 97 cases; account numbers hidden in every letter; tomorrow's reminder on the TV
 
 - **The suite as a Nebius Serverless Job, 97 cases** (with the medicine reminders): **96, 95 and 92 of 97**

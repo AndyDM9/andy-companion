@@ -125,7 +125,7 @@ watchdog only logs).
 
 ## Evaluation
 
-- `evals/run_suite.py`: the conversation suite (94 spoken situations, Andy's real profile and tools, judged
+- `evals/run_suite.py`: the conversation suite (97 spoken situations, Andy's real profile and tools, judged
   by Nemotron 3 Ultra), locally or as a Nebius Serverless Job (`cloud/suite-job.sh run`).
 - `evals/scam_eval.py`: the scam check five ways: word rules alone (`--word-rules`), and Lightning and Ultra each alone and with Tavily's warnings; Tavily fetched once
   per message and the models run three times as Nebius Serverless Jobs, two at a time
