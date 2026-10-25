@@ -14,7 +14,8 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Track:** Physical AI. **Bonus prize:** Best Use of Tavily.
 - **Video:** *[the YouTube link: public, "not made for kids"]*
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
-- **Try it:** https://huggingface.co/spaces/andydm/andy-companion (public with the repository)
+- **Try it:** https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
+  https://huggingface.co/spaces/andydm/andy-companion-app (the Reachy Mini app)
 - **Built with:** nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs,
   nvidia-nemotron, nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety,
   nvidia-parakeet, nemotron-nano-vl, nvidia-cosmos, cosmos-reason-2, vllm, tavily, reachy-mini, pollen-robotics, mujoco, qwen3-tts, hugging-face,
@@ -47,8 +48,8 @@ with no cuts in the pauses. Entered in the **Physical AI track**.
 ### Inspiration
 
 Three in four US adults aged 50 and over want to keep living in their own homes ([AARP, December 2024](https://www.aarp.org/press/releases/2024-12-10-new-aarp-report-majority-adults-50-plus-age-place-policies-communities-catch-up.html)), and their
-families want to help without taking over. Scams reach them there: adults 60 and over reported $2.4 billion lost to
-fraud in 2024, four times 2020's figure ([FTC, December 2025](https://www.ftc.gov/news-events/news/press-releases/2025/12/ftc-issues-annual-report-congress-agencys-actions-protect-older-adults)). Voice assistants answer questions, but they don't look
+families want to help without taking over. Scams reach them there: adults 60 and over reported over $3 billion lost to
+fraud in 2025, up from $2.4 billion in 2024 ([FTC, October 2026](https://www.ftc.gov/system/files/ftc_gov/pdf/2026-older-adults-report-10192026.pdf)). Voice assistants answer questions, but they don't look
 at you, don't read the letter in your hand, and don't tell you which of your family looked at what you shared. We
 wanted a small robot that is useful every day, good company, honest about being a robot, and that keeps no
 recordings or transcripts: only what you ask it to keep.

@@ -465,7 +465,7 @@ choice was made ([decisions](docs/decisions/README.md)).
 | [`cloud/`](cloud/README.md) | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
 | [`evals/`](evals/README.md) | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
 | `tests/` | About 880 tests (`uv run pytest`), run before every commit and push |
-| `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), settings links, the demo screen, captions and GIFs for the video |
+| `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), the Devpost form's fields with every link checked (`devpost.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The three user services: the voice server, Andy, and the offline eyes |
 | `local-eyes/` | The offline eyes: NVIDIA Cosmos Reason 2 served by vLLM on 127.0.0.1, in their own environment |
 | `.githooks/` | The pre-commit hook: the tests, and a check for key-like strings and env files |

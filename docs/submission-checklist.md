@@ -57,6 +57,10 @@ in the same commit that makes it true.
 
 ## The Devpost form
 
+- [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
+      `uv run python scripts/devpost.py --ref hackathon-submission --check` once the tag is pushed, and paste again.
+      Every link opens (2026-10-25: 18 of 19 from here; ftc.gov refuses this network, its two pages confirmed from
+      another).
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by
       2026-10-23 10:00 PT); editing continues afterwards
 - [ ] **The gallery**, at most eight images, the real robot first, every image with a one-sentence caption (judges

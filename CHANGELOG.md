@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Added (the Devpost draft, ready to paste)
+
+`scripts/devpost.py` prints the form's fields from `docs/submission.md` in the form's order (the story at Devpost's
+heading level, the feedback from `docs/feedback.md`), with the evidence links at a ref that exists (`main` for the
+draft, the submission tag at the end), counts the tagline (198 of 200) and the tags (25), and with `--check` opens
+every link as a logged-out visitor. Found: the FTC's December 2025 page is now joined by its October 2026 report,
+so the Inspiration quotes the newest figure (over $3 billion reported lost by people 60 and over in 2025, up from
+$2.4 billion in 2024); ftc.gov refuses this computer's network (its home page too), so both FTC pages were confirmed
+from another. "Try it" lists the public Space and the Reachy Mini app. Tests in `tests/test_devpost.py`.
+
 ### Looked at, on the robot (the testing switch, then off and deleted)
 
 Five looks recorded at the founder's request, each named specifically by Super VL: sunglasses with yellow lenses, a
