@@ -32,7 +32,7 @@ in the same commit that makes it true.
 - [x] Passes Pollen's checker, `robot/.venv/bin/reachy-mini-app-assistant check reachy_app`, including a
       test install in a clean environment (2026-10-13); `tests/test_reachy_app.py` keeps it so
 - [x] Its own landing page (the screen, what Andy does, how it's built, what it keeps, what it needs)
-- [ ] A Hugging Face account, and `hf auth login` on the desktop (founder)
+- [x] A Hugging Face account, and `hf auth login` on the desktop with a write token (2026-10-25)
 - [ ] After the repository is public: `robot/.venv/bin/reachy-mini-app-assistant publish reachy_app`,
       public (the app installs `andy-companion` from GitHub, so it can't install while the repository
       is private)

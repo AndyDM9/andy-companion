@@ -85,4 +85,5 @@ FAQ adds that calling an NVIDIA model through another provider does not count (o
 23 judges listed. Checked again 2026-10-25 (the rules and updates pages, read through Tavily since Devpost refuses a plain fetch): no
 change to the rules, dates or criteria, and no update since the judges' "Will It Ship?" recording. The README's and
 Devpost text's finder limits reworded the same day for the body turn (decision 0016), saying plainly it is checked
-against Pollen's kinematics and not yet on the robot.
+against Pollen's kinematics and not yet on the robot. The Space (testing access) needs Hugging Face PRO for a Docker
+Space since this year; the founder subscribes, and it stays up through 2026-12-15 (decision 0010, amended).
