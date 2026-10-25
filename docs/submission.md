@@ -77,8 +77,8 @@ tells you who looked.
 **Made to be easy to use:** captions on by default, every text colour at 7:1 contrast, talk over Andy and it stops,
 and "slower", "louder" or "be quiet for an hour" stick.
 
-New and tested in code, not yet tried on the robot: turning to a second person speaking, waving back with its
-antennas when you wave, a move taught by hand, and remembering where you put your keys (after a yes).
+Wave at Andy and its antennas wave back (tried on the robot). New and tested in code, not yet tried on the robot:
+turning to a second person speaking, a move taught by hand, and remembering where you put your keys (after a yes).
 
 ### How we built it
 
@@ -144,8 +144,8 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look at things past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- Turning to a voice, waving back, moves taught by hand and remembering where things are: tested in code and the
-  suite, not yet tried on the robot.
+- Turning to a voice, moves taught by hand and remembering where things are: tested in code and the suite, not yet
+  tried on the robot.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.

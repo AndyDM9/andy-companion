@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (waving back, tuned on the robot)
+
+The founder's waves weren't answered after the first two. A counts-only diagnostic (`ANDY_WAVE_DEBUG=1`, off by
+default, never a picture) showed why: the person sways and the head follows them, so the face's zone moved in a third
+of the pictures, and each time the detector wiped its count (it never passed 1 swing of the 3 needed). Now a picture
+with some face motion is skipped, only a large one (walking, leaning) starts again, and two swings in 2.5 s count;
+the diagnostic also counts pictures the camera hadn't renewed (none were). The antennas' real positions, read from the
+daemon during the next tries: **46° to 85° of swing** on each wave back, which the founder saw. A test for a wave
+with the face wobbling now and then; walking past and a still room still aren't waves. The README, the Devpost text
+and the app's page now say waving back was tried on the robot.
+
 ### Fixed (from the founder's first tries of looking up and waving on the robot)
 
 - **Andy couldn't look up at someone standing.** The 10° cap on looking up was meant for Pollen's recorded emotions

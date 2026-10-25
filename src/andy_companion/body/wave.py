@@ -21,21 +21,29 @@ import os
 import threading
 import time
 from collections import deque
-from typing import Any, Callable, Optional, Tuple
+from typing import Any, Callable, Dict, Optional, Tuple
 
 import numpy as np
 
 logger = logging.getLogger("andy.wave")
 
 ENABLED = os.environ.get("ANDY_WAVE", "on").strip().lower() not in ("off", "0", "false", "no")
+# ANDY_WAVE_DEBUG=1: every DEBUG_EVERY_S, why no wave was seen, in counts only (never a picture), for tuning on the
+# robot (2026-10-25: the founder's waves weren't answered after the first two).
+DEBUG = os.environ.get("ANDY_WAVE_DEBUG", "").strip().lower() in ("1", "on", "yes", "true")
+DEBUG_EVERY_S = 5.0
 WATCH_HZ = 8.0
 SMALL = (320, 180)                 # the pictures compared, grey: cheap, and enough for a hand
 DIFF = 25                          # brightness change that counts as motion
-WINDOW_S = 2.0
-REVERSALS = 3
+# Tuned on the robot (2026-10-25, ANDY_WAVE_DEBUG): a real wave moved the face's zone in a third of the pictures (the
+# person sways, the head follows them), and wiping the count each time left it at 1 swing of 3. Now a picture with
+# some face motion is skipped, only a large one (walking, leaning) starts again, and two swings in 2.5 s will do.
+WINDOW_S = 2.5
+REVERSALS = 2
 MOVING_SHARE = 0.6                 # of the pictures in the window, the zone moving in this many
 ZONE_MOTION = 0.04                 # share of a zone's pixels moving, to count as moving
-FACE_STILL = 0.08                  # the face's zone moving less than this: they are standing still
+FACE_STILL = 0.08                  # the face's zone moving less than this: a picture to read
+FACE_MOVED = 0.3                   # more than this: the person moved (walking, leaning), not a hand: start again
 COOLDOWN_S = 20.0
 # Bigger and longer since the founder missed it on the robot (2026-10-25): about 29 degrees, two swings in 3.4 s,
 # the peak still about 1.7 rad/s, under the antennas' 2.
@@ -61,6 +69,8 @@ class WaveDetector:
     def __init__(self) -> None:
         self.previous: Optional[np.ndarray] = None
         self.seen: deque = deque()          # (time, side moving, its middle x) per picture, for WINDOW_S
+        self.why = ""                       # the last picture's verdict, for ANDY_WAVE_DEBUG
+        self.turns = 0
 
     def reset(self) -> None:
         self.previous = None
@@ -73,6 +83,9 @@ class WaveDetector:
         previous, self.previous = self.previous, grey
         if previous is None:
             return False
+        if np.array_equal(grey, previous):             # the camera hadn't a new picture yet: nothing to compare
+            self.why = "same picture as before"
+            return False
         moving = cv2.absdiff(grey, previous) > DIFF
         z = zones(face_x, face_y, SMALL[0], SMALL[1])
 
@@ -80,8 +93,13 @@ class WaveDetector:
             x0, y0, x1, y1 = b
             return float(moving[y0:y1, x0:x1].mean()) if x1 > x0 and y1 > y0 else 0.0
 
-        if share(z["face"]) > FACE_STILL:              # the person moved, not only a hand: start again
+        face = share(z["face"])
+        if face > FACE_MOVED:                          # the person moved, not only a hand: start again
             self.seen.clear()
+            self.why = "person moved"
+            return False
+        if face > FACE_STILL:                          # a sway, or the head following them: skip this picture only
+            self.why = "face area moved"
             return False
         best = max(("left", "right"), key=lambda k: share(z[k]))
         middle = None
@@ -89,6 +107,7 @@ class WaveDetector:
             x0, y0, x1, y1 = z[best]
             ys, xs = np.nonzero(moving[y0:y1, x0:x1])
             middle = float(xs.mean()) + x0 if len(xs) else None
+        self.why = "hand motion" if middle is not None else "still"
         self.seen.append((now, best if middle is not None else None, middle))
         while self.seen and now - self.seen[0][0] > WINDOW_S:
             self.seen.popleft()
@@ -110,6 +129,7 @@ class WaveDetector:
             if last and (step > 0) != (last > 0):
                 turns += 1
             last = step
+        self.turns = turns
         return turns >= REVERSALS
 
 
@@ -143,23 +163,41 @@ class WaveWatcher:
         self._get_frame, self._get_face, self._active, self._wave_back, self._clock = (
             get_frame, get_face, active, wave_back, clock)
         self.detector, self.last = WaveDetector(), -1e9
+        self.counts: Dict[str, int] = {}
+        self.most_turns, self.counted_since = 0, clock()
         self._stop = threading.Event()
         self.thread = threading.Thread(target=self._run, name="andy-wave", daemon=True)
         self.thread.start()
 
+    def _count(self, why: str, now: float) -> None:
+        """ANDY_WAVE_DEBUG: tally why, and log the tally every DEBUG_EVERY_S (counts only)."""
+        if not DEBUG:
+            return
+        self.counts[why] = self.counts.get(why, 0) + 1
+        self.most_turns = max(self.most_turns, self.detector.turns)
+        if now - self.counted_since >= DEBUG_EVERY_S:
+            logger.info("wave watch: %s; most swings %d of %d", ", ".join(f"{k} {v}" for k, v in sorted(self.counts.items())),
+                        self.most_turns, REVERSALS)
+            self.counts, self.most_turns, self.counted_since = {}, 0, now
+
     def look_once(self) -> bool:
         now = self._clock()
         if not self._active() or now - self.last < COOLDOWN_S:
+            self._count("paused (speaking, listening, a move, tracking off)" if not self._active() else "resting", now)
             self.detector.reset()
             return False
         face = self._get_face()
         if not getattr(face, "detected", False) or face.x is None or face.y is None:
+            self._count("no face", now)
             self.detector.reset()
             return False
         frame = self._get_frame()
         if frame is None:
+            self._count("no picture", now)
             return False
-        if self.detector.feed(frame, float(face.x), float(face.y), now):
+        seen = self.detector.feed(frame, float(face.x), float(face.y), now)
+        self._count(self.detector.why or "first picture", now)
+        if seen:
             self.last = now
             self.detector.reset()
             logger.info("wave: waving back")

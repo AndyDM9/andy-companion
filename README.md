@@ -66,7 +66,7 @@ with its sources.
 
 - **Talks and keeps looking at you**, in English or Spanish, with body language from research: its
   antennas lift while you speak and lean while it thinks.
-- **Notices the room by itself** (new; tested in code, not yet tried on the robot): when someone else speaks from the side, Andy turns to them (and back if nobody is
+- **Notices the room by itself** (new; waving back tried on the robot, turning to a voice not yet): when someone else speaks from the side, Andy turns to them (and back if nobody is
   there, such as the TV); wave at it and its antennas wave back. The TV says what it noticed ("Turning to a voice",
   "Waving back").
 - **Remembers where you put things, if you want** (new; tested in code and the suite, not yet tried on the robot): "my keys are here" gets "Shall I remember where they are?";
@@ -341,7 +341,7 @@ What doesn't work yet, and what our numbers don't show.
   (decision 0013), but rendered pictures are cleaner than a room. Since 2026-10-25 (decision 0016) Andy turns its
   body as well as its head to look closer at something past the head's 60 degrees, as Pollen's kinematics allow;
   checked against those kinematics, not yet on the robot.
-- **Turning to a voice, waving back, moves taught by hand and remembering where things are are new** (2026-10-20):
+- **Turning to a voice, moves taught by hand and remembering where things are are new** (2026-10-20):
   tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.

@@ -42,6 +42,19 @@ def test_a_still_room_a_hand_held_up_and_a_person_walking_are_not():
     assert not run([picture(1100 + 30 * i) for i in range(24)])              # one sweep across, no turning back
 
 
+def test_a_wave_still_counts_when_the_face_wobbles_now_and_then():
+    """On the robot the person sways and the head follows them: the face's zone moved in a third of the pictures
+    (2026-10-25). Those pictures are skipped, not a reason to start again."""
+    xs = [1350 + 120 * math.sin(2 * math.pi * 1.5 * i / wave.WATCH_HZ) for i in range(24)]
+    frames = [picture(x, face_shift=30 if i % 3 == 2 else 0) for i, x in enumerate(xs)]
+    d = wave.WaveDetector()
+    whys, seen = [], False
+    for i, f in enumerate(frames):
+        seen = d.feed(f, 0.0, -0.05, i / wave.WATCH_HZ) or seen
+        whys.append(d.why)
+    assert "face area moved" in whys and seen
+
+
 def test_the_wave_back_is_gentle_and_ends():
     t = {"now": 0.0}
     back = wave.WaveBack(clock=lambda: t["now"])
