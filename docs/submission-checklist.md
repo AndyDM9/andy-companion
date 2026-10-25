@@ -12,9 +12,9 @@ in the same commit that makes it true.
 
 ## The repository
 
-- [ ] Public on GitHub
+- [x] Public on GitHub (2026-10-25, after the history rewrite and three reviews)
 - [x] Open-source licence file at the top level (Apache-2.0)
-- [ ] Licence visible in the repository's About section
+- [x] Licence visible in the repository's About section (Apache-2.0, checked logged out, 2026-10-25)
 - [x] README: setup instructions that work from a fresh clone (cloned from GitHub and checked 2026-10-14; again once public)
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
 - [x] No keys, secrets or personal data anywhere in the history: private matter rewritten out on 2026-10-25, then gitleaks over every commit: no leaks, and no key value anywhere
@@ -23,7 +23,7 @@ in the same commit that makes it true.
 
 - [x] Best-practice reviews of the code, the scripts and the repository (2026-10-25): every must-fix and should-fix
       done (see the CHANGELOG); dependencies audited with `pip-audit`
-- [ ] When it goes public: GitHub's private vulnerability reporting, secret scanning and push protection turned on
+- [x] When it goes public: GitHub's private vulnerability reporting, secret scanning and push protection turned on (2026-10-25)
 - [ ] At submission: the video's thumbnail (linked to YouTube) and a photo of Andy beside the TV at the top of the README
 - [x] A fresh clone installs and passes its tests (2026-10-13; from GitHub, all three environments, 2026-10-14)
 - [x] No home address, phone number or private project names in the tree
@@ -37,11 +37,10 @@ in the same commit that makes it true.
       test install in a clean environment (2026-10-13); `tests/test_reachy_app.py` keeps it so
 - [x] Its own landing page (the screen, what Andy does, how it's built, what it keeps, what it needs)
 - [x] A Hugging Face account, and `hf auth login` on the desktop with a write token (2026-10-25)
-- [ ] The demo Space public: uploaded **private** to `andydm/andy-companion` on 2026-10-25 (PRO), every page 200, writes 403;
-      make it public with the repository
-- [ ] After the repository is public: `robot/.venv/bin/reachy-mini-app-assistant publish reachy_app`,
-      public (the app installs `andy-companion` from GitHub, so it can't install while the repository
-      is private)
+- [x] The demo Space public: `andydm/andy-companion` (PRO), public with the repository on 2026-10-25, every page 200
+      logged out, writes 403
+- [x] The app published, public: [andydm/andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app) (2026-10-25, Pollen's checks passed with a fresh install
+      from GitHub; published from a clean copy of the tracked files, so no build leftovers or git history)
 - [ ] At submission: pin the app's `andy-companion` dependency to the `hackathon-submission` tag instead
       of `main`, so an install during judging gets exactly what was submitted
 

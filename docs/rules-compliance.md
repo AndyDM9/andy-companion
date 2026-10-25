@@ -43,10 +43,10 @@ video, the Devpost form, the repository) is checked against this file first.
 | Rule | Status | Action, owner, date |
 |---|---|---|
 | Working demo URL | ➖ | Not required for Physical AI; judged on the video, the repository and, if asked, the hardware. Even so, every project in the judging session had a link to click: the Hugging Face Space of the screens (the founder's) |
-| Testing access, free, until judging ends; physical access to the hardware on request | 🔶 | The Space and the keyless demo; the rules say **physical access** to hardware on request: keep the robot and the desktop ready to the end of judging, and offer a live video call as well, not in place of it |
+| Testing access, free, until judging ends; physical access to the hardware on request | ✅ | The public Space (https://huggingface.co/spaces/andydm/andy-companion) on sample data, no keys, read-only; the Reachy Mini app (https://huggingface.co/spaces/andydm/andy-companion-app); the repository's setup; a live call on request (a GitHub issue form) and the robot kept ready through 2026-12-15 |
 | Text description of features and functionality | 🔶 | Draft in [submission.md](submission.md); final by 2026-10-26 |
-| **Public** repository on GitHub with all source, assets and instructions | ⬜ | Public after the name decision, its history rewritten first (the founder's, before 2026-10-27); go-public checklist in [submission-checklist.md](submission-checklist.md) |
-| Open-source licence file, **visible in the repository's About section** | 🔶 | `LICENSE` is Apache-2.0 and GitHub detects it; check it shows in About once public |
+| **Public** repository on GitHub with all source, assets and instructions | ✅ | Public since 2026-10-25, after the history rewrite (private matter out, gitleaks clean) and three best-practice reviews; secret scanning, push protection and private vulnerability reporting on |
+| Open-source licence file, **visible in the repository's About section** | ✅ | `LICENSE` is Apache-2.0; GitHub shows it in About (checked logged out, 2026-10-25); the app's Space carries it too |
 | README with setup instructions and how to run it | ✅ | README "Setup" |
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |
 | Video under three minutes | 🔶 | [video.md](video.md): 2:54 as planned (retimed 2026-10-20); time a rough cut |

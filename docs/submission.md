@@ -39,7 +39,8 @@ with no cuts in the pauses. Entered in the **Physical AI track**.
   MuJoCo simulation, scored against the scene's truth, and 94 spoken situations; a **Serverless Endpoint** serves
   NVIDIA Nemotron Content Safety as a second check on what the person says.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
-  Captions on by default, 7:1 contrast, and talking over Andy stops it. [Try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
+  Captions on by default, 7:1 contrast, and talking over Andy stops it. Installs on a Reachy Mini as an
+  [app from Hugging Face](https://huggingface.co/spaces/andydm/andy-companion-app). [Try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
 - **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
   with older adults yet.
 
@@ -156,7 +157,7 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
 
 A pilot with older adults and their families; more languages (Parakeet already hears 25); an NVIDIA Jetson beside
 the robot with the big models staying on Token Factory; the body turn tried at home for things beside Andy;
-and Andy published as a one-click Reachy Mini app on Hugging Face.
+and Andy listed among the official Reachy Mini apps.
 
 ### Path to shipping
 

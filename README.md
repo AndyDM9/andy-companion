@@ -471,7 +471,7 @@ choice was made ([decisions](docs/decisions/README.md)).
 | `.githooks/` | The pre-commit hook: the tests, and a check for key-like strings and env files |
 | [`sim/`](sim/README.md) | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
 | `space/` | The public demo of the screens as a Hugging Face Space (Docker, sample data, no keys) |
-| `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page |
+| `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page, published on Hugging Face ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)) |
 | `docs/` | Every document, mapped in [docs/README.md](docs/README.md): features, architecture, [decisions](docs/decisions/README.md), research, cost, and the build records |
 
 ## Built during the hackathon

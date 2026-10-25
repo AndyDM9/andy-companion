@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Public
+
+After a final sweep (gitleaks over every commit and file, none of the env file's secrets anywhere, no private term,
+the wording rules, no logo files, the licence): the repository is public, its About giving the description, the
+Space as its homepage, topics and the Apache-2.0 licence; GitHub's secret scanning, push protection and private
+vulnerability reporting on; the empty wiki and projects tabs off. The demo Space is public. The Reachy Mini app is
+published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)): Pollen's checks passed with a fresh install from GitHub, and it went up from
+a clean copy of the tracked files (Pollen's tool would otherwise make a git repository inside `reachy_app/`, and
+uploaded its check's build folders, removed after). Everything checked as a logged-out visitor.
+
 ### A judge's-eye pass on the submission
 
 An independent read as a skeptical judge (five minutes: the Devpost text, the README's first screen, the planned
