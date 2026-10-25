@@ -86,20 +86,21 @@ ON_ENDPOINT = {"describe_view": {"en": "Nemotron Nano VL on our Nebius endpoint"
 
 
 # The eyes when Cosmos on this computer answered: chosen (ANDY_VISION=local), or the fallback (decision 0015).
-ON_LOCAL = {"describe_view": {"en": "Cosmos Reason 2 2B, on this computer", "es": "Cosmos Reason 2 2B, en esta computadora"},
-            "describe_photo": {"en": "Cosmos Reason 2 2B, on this computer", "es": "Cosmos Reason 2 2B, en esta computadora"},
-            "find_object": {"en": "Cosmos Reason 2 2B, on this computer, four views as 24 zoomed tiles, then a closer look",
-                            "es": "Cosmos Reason 2 2B, en esta computadora, cuatro vistas en 24 recortes ampliados, y una mirada más de cerca"}}
+ON_LOCAL = {"describe_view": {"en": "{model}, on this computer", "es": "{model}, en esta computadora"},
+            "describe_photo": {"en": "{model}, on this computer", "es": "{model}, en esta computadora"},
+            "find_object": {"en": "{model}, on this computer, four views as 24 zoomed tiles, then a closer look",
+                            "es": "{model}, en esta computadora, cuatro vistas en 24 recortes ampliados, y una mirada más de cerca"}}
 
 
-def where(language: str = "en") -> Dict[str, str]:
-    """Each tool's place, in the household's language, with the eyes that answered last (vision.used): the ones
-    ANDY_VISION chose, or Cosmos here when the fallback took over."""
+def where(language: str = "en", eyes: str = "") -> Dict[str, str]:
+    """Each tool's place, in the household's language, with the eyes that answered last: `eyes` as Andy's turn
+    reported it (the screen runs in the supervisor's process), else vision.used() here; the ones ANDY_VISION
+    chose, or Cosmos here when the fallback took over."""
     from andy_companion import vision
 
     lg = "es" if language == "es" else "en"
-    places = {**WHERE, **{"endpoint": ON_ENDPOINT, "local": ON_LOCAL}.get(vision.used(), {})}
-    return {name: w[lg] for name, w in places.items()}
+    places = {**WHERE, **{"endpoint": ON_ENDPOINT, "local": ON_LOCAL}.get(eyes or vision.used(), {})}
+    return {name: w[lg].replace("{model}", vision.local_size()) for name, w in places.items()}
 
 
 class TurnClock:
@@ -173,6 +174,10 @@ class TurnClock:
                 "total_ms": round((self.first_sound - (self.stopped if self.stopped is not None else self.heard)) * 1000),
                 "tools": self.tools[:6],
             }
+            if EYES & {t["name"] for t in self.tools}:
+                from andy_companion import vision
+
+                turn["eyes"] = vision.used()     # one of three names, for the hood: which eyes answered
             self._reset()
             return turn
         return None

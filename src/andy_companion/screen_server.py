@@ -203,6 +203,8 @@ def add_turn(data: Dict[str, Any]) -> Dict[str, Any]:
              if isinstance(t, dict) and TOOL_NAME.match(str(t.get("name", ""))) and _ms(t.get("ms")) is not None]
     turn = {"at": int(_t.time()), "hearing_ms": _ms(data.get("hearing_ms")), "reply_ms": reply,
             "total_ms": _ms(data.get("total_ms")) if _ms(data.get("total_ms")) is not None else reply, "tools": tools}
+    if data.get("eyes") in EYES_NAMES:
+        _eyes["used"] = data["eyes"]
     _turns.append(turn)
     _count(turn)
     return turn
@@ -211,6 +213,10 @@ def add_turn(data: Dict[str, Any]) -> Dict[str, Any]:
 # Since Andy started (this process): counts only, for the hood's tally line. Memory only; the recent turns
 # above keep 40, these keep counting.
 _tally: Dict[str, int] = {"turns": 0, "nebius": 0, "tavily": 0, "eyes": 0}
+# Which eyes answered Andy's last look, as its turn said (decision 0015): the hood names them, so Cosmos on this
+# computer answering for Token Factory is never passed off as Token Factory. One of three names, nothing else.
+EYES_NAMES = ("token-factory", "endpoint", "local")
+_eyes: Dict[str, str] = {"used": ""}
 
 
 def _count(turn: Dict[str, Any]) -> None:
@@ -311,7 +317,7 @@ def hood_state() -> Dict[str, Any]:
         # The demo of the screens (it has its own front page): its turns are samples, not this robot's.
         "sample": INDEX is not None,
         "language": language,
-        "where": where(language),
+        "where": where(language, _eyes["used"]),
         "eyes": vision.choice(),
         "tally": dict(_tally),
         "proof": proof(),

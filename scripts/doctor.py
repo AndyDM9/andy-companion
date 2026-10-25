@@ -115,11 +115,12 @@ def main() -> int:
     eyes = (e.get("ANDY_VISION") or "token-factory").strip().lower().replace("_", "-")
     # Cosmos Reason 2 on this computer (decision 0015): needed when chosen, a fallback otherwise.
     here = port_open(int(e.get("ANDY_LOCAL_EYES_PORT", "8095")))
+    cosmos = "Cosmos Reason 2 8B" if "8b" in e.get("ANDY_LOCAL_EYES_MODEL", "").lower() else "Cosmos Reason 2 2B"
     if eyes == "local":
-        check("Eyes (Cosmos Reason 2 2B, this computer)", here, "answering" if here else "not running",
+        check(f"Eyes ({cosmos}, this computer)", here, "answering" if here else "not running",
               "local-eyes/run.sh (cd local-eyes && uv sync, once)")
     elif (e.get("ANDY_VISION_FALLBACK") or "").strip().lower() == "local":
-        check("Offline eyes (Cosmos Reason 2 2B, the fallback)", True,
+        check(f"Offline eyes ({cosmos}, the fallback)", True,
               "running" if here else "not running, so no fallback: local-eyes/run.sh")
     if eyes not in ("endpoint", "off", "local"):
         check("Eyes (Nemotron 3.5 Super VL, Token Factory)", bool(e.get("NEBIUS_API_KEY")),

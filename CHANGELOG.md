@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (the offline eyes on the real path: settings loaded, the hood told)
+
+Found by installing `andy-eyes` and checking it beside Andy's real start-up, not the tests alone:
+- **The fallback could not switch on in Andy.** `app_mode.APP_KEYS`, the settings Andy's process copies from the env
+  file, lacked `ANDY_VISION_FALLBACK`, `ANDY_LOCAL_EYES_URL` and `ANDY_LOCAL_EYES_MODEL`; added.
+- **The hood would have named Token Factory while Cosmos answered.** The hood page runs in the supervisor's process,
+  where `vision.used()` never sees Andy's pictures. A finished turn that used the eyes now carries which ones answered
+  (`token-factory`, `endpoint` or `local`; the screen server keeps only those three names), and `turns.where` uses it.
+  `ANDY_LOCAL_EYES_MODEL` is a supervisor setting too, so the label says 8B when 8B runs.
+- **The labels said 2B whatever ran:** the hood, the doctor and `andy-eyes.service` now name the model served.
+- **Tried on this computer** with the 8B server as a service and Token Factory made unreachable on purpose: settings
+  loaded as Andy loads them, the TV screenshot described correctly in 1.8 s by Cosmos, and the hood said "Cosmos
+  Reason 2 8B, on this computer". Not yet on the robot. Two tests added (`tests/test_local_eyes.py`).
+
 ### Added (the offline eyes: NVIDIA Cosmos Reason 2 2B on this computer, decision 0015)
 
 The founder chose to build PLAN B39 after all (amending decision 0014), with the licence accepted and the desktop's

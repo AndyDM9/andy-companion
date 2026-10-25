@@ -1,5 +1,5 @@
 [Unit]
-Description=Andy's offline eyes (NVIDIA Cosmos Reason 2 2B on this computer, the fallback; decision 0015)
+Description=Andy's offline eyes (NVIDIA Cosmos Reason 2 on this computer, 2B or 8B as the env file says; decision 0015)
 After=network-online.target
 
 [Service]

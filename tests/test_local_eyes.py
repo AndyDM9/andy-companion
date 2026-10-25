@@ -71,6 +71,8 @@ def test_offline_the_fallback_answers_and_the_hood_says_so(eyes, monkeypatch):
     assert "Authorization" not in op.requests[1][2]                # the Token Factory key never goes to it
     assert vision.used() == "local"
     assert turns.where()["describe_view"] == "Cosmos Reason 2 2B, on this computer"
+    monkeypatch.setenv("ANDY_LOCAL_EYES_MODEL", "nvidia/Cosmos-Reason2-8B")    # the hood names the model served
+    assert turns.where()["find_object"].startswith("Cosmos Reason 2 8B, on this computer, four views")
     vision.describe(FRAME, opener=Opener("A cup."))                  # back online: the cloud's name again
     assert turns.where()["describe_view"] == "Nemotron 3.5 Super VL, Token Factory"
 
@@ -127,3 +129,38 @@ def test_the_server_listens_only_here_and_logs_no_requests():
     command = (ROOT / "local-eyes" / "run.sh").read_text().split("\nexec ", 1)[1]
     assert "--host 127.0.0.1" in command and '"${ANDY_LOCAL_EYES_MODEL:-nvidia/Cosmos-Reason2-2B}"' in command
     assert "--served-model-name cosmos-reason2" in command and "--enable-log-requests" not in command
+
+
+def test_andys_process_loads_the_offline_eyes_settings_and_the_supervisor_the_models_name():
+    from andy_companion import app_mode
+
+    assert {"ANDY_VISION_FALLBACK", "ANDY_LOCAL_EYES_URL", "ANDY_LOCAL_EYES_MODEL"} <= set(app_mode.APP_KEYS)
+    assert "ANDY_LOCAL_EYES_MODEL" in app_mode.SUPERVISOR_KEYS and "ANDY_VISION_FALLBACK" not in app_mode.SUPERVISOR_KEYS
+
+
+def test_a_turn_that_looked_tells_the_screen_which_eyes_answered(eyes, monkeypatch):
+    # Andy's process: the turn says which eyes answered, by name only.
+    monkeypatch.setattr(vision, "_used", "local")
+    t = iter(range(100))
+    clock = turns.TurnClock(clock=lambda: next(t), wall=lambda: 0)
+    for reason in ("user_speech_stopped", "user_transcription_completed"):
+        clock.mark(reason)
+    clock.tool("find_object", 4.8)
+    clock.mark("assistant_audio_delta")
+    turn = clock.mark("assistant_transcript_done")
+    assert turn["eyes"] == "local"
+
+    # The supervisor's process, where the screen runs and vision.used() never saw the fallback.
+    from andy_companion import screen_server
+
+    monkeypatch.setattr(vision, "_used", "")
+    monkeypatch.setattr(screen_server, "_eyes", {"used": ""})
+    monkeypatch.setattr(screen_server, "_turns", type(screen_server._turns)(maxlen=40))
+    monkeypatch.setenv("ANDY_LOCAL_EYES_MODEL", "nvidia/Cosmos-Reason2-8B")
+    assert screen_server.hood_state()["where"]["find_object"].startswith("Nemotron 3.5 Super VL")
+    screen_server.add_turn(json.loads(json.dumps(turn)))
+    assert screen_server.hood_state()["where"]["find_object"].startswith("Cosmos Reason 2 8B, on this computer")
+    screen_server.add_turn({**turn, "eyes": "Cosmos Reason 2 8B, said a stranger"})    # not one of the names: ignored
+    assert screen_server._eyes["used"] == "local"
+    screen_server.add_turn({**turn, "eyes": "token-factory"})                          # back online
+    assert screen_server.hood_state()["where"]["find_object"].startswith("Nemotron 3.5 Super VL")

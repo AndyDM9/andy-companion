@@ -49,7 +49,9 @@ right.
   without it.
 - The 8B model was measured the same afternoon (below).
 - New code in the robot's loop five days before the deadline: the fallback is off unless set, and tested
-  (`tests/test_local_eyes.py`). It has not yet been tried on the robot.
+  (`tests/test_local_eyes.py`). Tried end to end on this computer with Token Factory unreachable (2026-10-25, after
+  fixing the settings Andy loads and how the hood, in the supervisor's process, learns which eyes answered); not yet
+  on the robot.
 
 ## Revisit when
 
