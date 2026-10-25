@@ -25,7 +25,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | One Overall Award, **or** one Track Award plus one Bonus Award | ✅ | Never both (section 8). The entry is in the Physical AI track and for Best Use of Tavily. Most Valuable Feedback is a Bonus Award too, so it and the Tavily prize can't both be won |
 | Best Use of Tavily: a functional runtime call to the Tavily API | ✅ | Search, extract, crawl, map and research at runtime (`src/andy_companion/web.py`, `looking.py`); the scam check measured with and without it (2026-10-14) |
 | City Winner Awards | ➖ | Only the 20 listed Builders & Brews cities; the founder's city is not one of them |
-| Most Valuable Feedback: complete the feedback section | 🔶 | Notes kept as we build in [feedback-notes.md](feedback-notes.md); [feedback.md](feedback.md) final 2026-10-25, to paste on the form |
+| Most Valuable Feedback: complete the feedback section | ✅ | [feedback.md](feedback.md), product by product, with first-hand findings to 2026-10-25; `scripts/devpost.py` prints it for the form |
 
 ## Project requirements
 
@@ -44,7 +44,7 @@ video, the Devpost form, the repository) is checked against this file first.
 |---|---|---|
 | Working demo URL | ➖ | Not required for Physical AI; judged on the video, the repository and, if asked, the hardware. Even so, every project in the judging session had a link to click: the Hugging Face Space of the screens (the founder's) |
 | Testing access, free, until judging ends; physical access to the hardware on request | ✅ | The public Space (https://huggingface.co/spaces/andydm/andy-companion) on sample data, no keys, read-only; the Reachy Mini app (https://huggingface.co/spaces/andydm/andy-companion-app); the repository's setup; a live call on request (a GitHub issue form) and the robot kept ready through 2026-12-15 |
-| Text description of features and functionality | 🔶 | Draft in [submission.md](submission.md); final by 2026-10-26 |
+| Text description of features and functionality | ✅ | [submission.md](submission.md), revised after a judge's-eye read (2026-10-25); `scripts/devpost.py` prints the form's fields with every link checked |
 | **Public** repository on GitHub with all source, assets and instructions | ✅ | Public since 2026-10-25, after the history rewrite (private matter out, gitleaks clean) and three best-practice reviews; secret scanning, push protection and private vulnerability reporting on |
 | Open-source licence file, **visible in the repository's About section** | ✅ | `LICENSE` is Apache-2.0; GitHub shows it in About (checked logged out, 2026-10-25); the app's Space carries it too |
 | README with setup instructions and how to run it | ✅ | README "Setup" |
@@ -55,16 +55,16 @@ video, the Devpost form, the repository) is checked against this file first.
 | The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
 | Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
 | All materials in English, or with an English translation | 🔶 | Captions throughout; any Spanish gets **English subtitles** (Spanish moved to a social clip on 2026-10-14; `scripts/draft_captions.py` drafts the SRT and marks Spanish lines) |
-| Identify the track | 🔶 | Physical AI, on the form; and in the Devpost text's first block, "For the judges" (2026-10-20), with a "Track fit" line naming Pollen's conversation app as the agent runtime (2026-10-25); said on screen in the video's shot 7 |
+| Identify the track | ✅ | Physical AI: chosen on the form, and in the Devpost text's first block, "For the judges", with a "Track fit" line naming Pollen's conversation app as the agent runtime; said on screen in the video's shot 7 |
 | Sponsor names, not logos | ✅ | Nebius allows naming its products but not implying approval; NVIDIA and Nebius logos need written consent. We name the tools in words, use no logos, and say "built with", never "powered by" or "partnered with" (checked in the README, the app page and the Devpost texts, 2026-10-13, and again 2026-10-25) |
-| Feedback on Token Factory, AI Cloud and the NVIDIA tools | 🔶 | [feedback.md](feedback.md), revised 2026-10-20 (each product's use, what worked, what needs work, the first call; Super VL and the simulation Jobs added), from [feedback-notes.md](feedback-notes.md) |
+| Feedback on Token Factory, AI Cloud and the NVIDIA tools | ✅ | [feedback.md](feedback.md): each product's use, what worked, what needs work, the first call; final 2026-10-25 |
 | Original work, solely owned, no one else's rights infringed | ✅ | Our code; open source used under its licences and built upon (Pollen's app is extended, not copied); no material from any other project or company |
 
 ## Testing and judging
 
 | Rule | Status | Notes |
 |---|---|---|
-| Free access for testing until judging ends (2026-12-15) | 🔶 | The public repository with setup instructions; a judge brings their own Nebius and Tavily keys (`.env.example`). The screens on sample data need no keys: locally (`scripts/demo_screen.py`) or, once the founder makes it, as a public read-only Hugging Face Space (decision 0010), which must stay up until 2026-12-15 |
+| Free access for testing until judging ends (2026-12-15) | ✅ | Public since 2026-10-25: the repository with its setup (an anonymous clone installs and passes), the screens on sample data with no keys (https://huggingface.co/spaces/andydm/andy-companion, PRO through 2026-12-15) and the Reachy Mini app; a judge brings their own Nebius and Tavily keys (`.env.example`) |
 | Physical access to the hardware may be requested (the Reachy Mini is not a phone, tablet or computer) | 🔶 | Keep the robot and the desktop ready through 2026-12-15 |
 | After the deadline the submission cannot change | ⬜ | Tag the submitted commit (`hackathon-submission`) and link that tag on the form; later work goes after it |
 
