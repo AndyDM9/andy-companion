@@ -4,6 +4,6 @@
 set -e
 cd /andy
 # Python's tarfile, so the slim image needs no xz tool; "r:*" reads a gzip or an xz bundle.
-python3 -c "import base64, io, tarfile; tarfile.open(fileobj=io.BytesIO(base64.b64decode(open('bundle.b64').read())), mode='r:*').extractall()"
+python3 -c "import base64, io, tarfile; tarfile.open(fileobj=io.BytesIO(base64.b64decode(open('bundle.b64').read())), mode='r:*').extractall(filter='data')"
 RUNS="$1"; shift
 exec python3 evals/run_suite.py --runs "$RUNS" "$@"

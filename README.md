@@ -8,8 +8,6 @@ hand and looks around the room for your glasses. Built with NVIDIA Nemotron on N
 Token Factory, and Tavily, on a Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It says it's a
 robot, and keeps no recordings or transcripts: only what you ask it to keep.
 
-<!-- Founder: the video's thumbnail, linked to YouTube, and a photo of Andy beside the TV go here before submitting. -->
-
 ![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
@@ -273,7 +271,8 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
     kept there;
   - a letter is read on this computer, and only its text goes to Token Factory.
 - **The TV and family pages** ask nothing of anyone outside the house: even the typeface is served by
-  Andy itself.
+  Andy itself. They are served on the home network over plain HTTP, each page behind its own long token, and the
+  server refuses anyone connecting from outside private, loopback or link-local addresses.
 - **Keys never enter this repository;** a pre-commit hook blocks key-like strings.
 
 ## Accessibility
@@ -395,44 +394,55 @@ What doesn't work yet, and what our numbers don't show.
 ## Setup
 
 **You need:**
-- Ubuntu 24.04 with an NVIDIA GPU (8 GB or more) for the voice server;
+- Ubuntu 24.04 (or a similar Linux) with an NVIDIA GPU of 8 GB or more for the voice server, and a recent NVIDIA
+  driver (the CUDA 13 wheels need one; checked with 595);
+- [uv](https://docs.astral.sh/uv/), which brings Python 3.12 for each environment;
 - a Reachy Mini with Pollen's daemon running ([Pollen's guide](https://huggingface.co/docs/reachy_mini));
-- `tesseract-ocr` (and `tesseract-ocr-spa` for letters in Spanish), `pulseaudio-utils` (the wake listener
-  uses `parec`), and [uv](https://docs.astral.sh/uv/);
-- a Nebius Token Factory key and a Tavily key.
+- `tesseract-ocr` (and `tesseract-ocr-spa` for letters in Spanish) and `pulseaudio-utils` (the wake listener
+  uses `parec`);
+- a [Nebius Token Factory](https://tokenfactory.nebius.com/) key and a [Tavily](https://app.tavily.com/) key.
 
-1. **Keys.** Copy `.env.example` to `~/.config/companion-hackathon/.env` and fill it in. Then
-   `chmod 600` it. Turn on zero data retention in Token Factory's organisation settings.
-2. **Voice server.** `cd voice && uv sync && ./run.sh`. It uses the first GPU; to use another, put
-   `ANDY_VOICE_GPU=1` (its number) in the env file.
-   The first start downloads the speech models (NVIDIA Parakeet, Qwen3-TTS, the turn detector) from
-   Hugging Face, so it takes longer; later starts load them from the cache. To keep it running and
-   restart it on failure: `scripts/install-services.sh`, then `systemctl --user start andy-voice andy`.
-3. **Robot side.** `cd robot && uv sync`, then from the repository root run `./scripts/andy`.
-4. **Your home.** `python scripts/settings.py links` prints four private addresses on your home
+Every command runs from the repository's root.
+
+1. **Keys.** `mkdir -p -m 700 ~/.config/companion-hackathon && cp .env.example ~/.config/companion-hackathon/.env && chmod 600 ~/.config/companion-hackathon/.env`,
+   then fill it in (plain `NAME=value` lines). Turn on zero data retention in Token Factory's organisation settings.
+2. **The two environments.** `(cd voice && uv sync)` and `(cd robot && uv sync)`. The voice server's first start
+   downloads the speech models (NVIDIA Parakeet, Qwen3-TTS, the turn detector) from Hugging Face, so it takes longer;
+   later starts load them from the cache. It uses the first GPU; to use another, put `ANDY_VOICE_GPU=1` (its number)
+   in the env file.
+3. **Run Andy, one way or the other, never both.** Only one program may drive the robot: stop any other robot app
+   first (the doctor's "Only Andy drives the robot" check names one).
+   - **By hand,** to try it: `voice/run.sh` in one terminal, `./scripts/andy` in another.
+   - **As user services,** restarted on failure: `scripts/install-services.sh`, then
+     `systemctl --user start andy-voice andy` (and `scripts/install-services.sh --enable` to start them at login).
+4. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing; with `--live`, that
+   everything answers now.
+5. **Your home.** `python3 scripts/settings.py links` prints four private addresses on your home
    network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
    language, pace, volume and captions. Open **the screen** on a TV, and send **the family page**
    to family. **Under the hood** has its own link, which opens only that page; the gear on the TV
    opens it too.
-5. **Optional: eyes and the second look.** With the [Nebius CLI](https://docs.nebius.com/cli), run
+6. **Optional: eyes and the second look.** With the [Nebius CLI](https://docs.nebius.com/cli), run
    `cloud/vision-endpoint.sh create` (and `cloud/guard-endpoint.sh create`), then `status` until it is
-   RUNNING. `create` keeps the endpoint's token in Nebius MysteryBox secrets, never on a command line.
-   Run `stop` when you're done; a stopped endpoint costs nothing for compute.
+   RUNNING. `create` asks first (it is billed by the hour) and keeps the endpoint's token in Nebius MysteryBox
+   secrets, never on a command line. Run `stop` when you're done; a stopped endpoint costs nothing for compute.
    **Offline eyes:** NVIDIA Cosmos Reason 2 2B on this computer, for when the network is down. Accept its licence on
    [Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-2B) with this computer's Hugging Face login, then
-   `cd local-eyes && uv sync && ./run.sh` (a second GPU, or a 24 GB one; about 14 GB with the default share), and put
-   `ANDY_VISION_FALLBACK=local` in the env file. With a whole 24 GB GPU free, the 8B model points better: accept
-   [its licence](https://huggingface.co/nvidia/Cosmos-Reason2-8B) too and set the three `ANDY_LOCAL_EYES_*` lines in
-   `.env.example`. `ANDY_VISION=local` uses it always
+   `(cd local-eyes && uv sync)` and `local-eyes/run.sh` (a second GPU, or a 24 GB one; about 14 GB with the default
+   share), and put `ANDY_VISION_FALLBACK=local` in the env file. With a whole 24 GB GPU free, the 8B model points
+   better: accept [its licence](https://huggingface.co/nvidia/Cosmos-Reason2-8B) too and set the three
+   `ANDY_LOCAL_EYES_*` lines in `.env.example`. `ANDY_VISION=local` uses it always
    ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
-6. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing.
-   To start Andy at login: `scripts/install-services.sh --enable`.
-7. **Optional: the suite on Nebius.** `cloud/suite-job.sh run`, or locally
-   `set -a; . ~/.config/companion-hackathon/.env; set +a; uv run python evals/run_suite.py --runs 3`
-   (it reads `NEBIUS_API_KEY` from the environment).
+7. **Optional: the suite on Nebius.** `cloud/suite-job.sh run` (it asks before starting the billed job), or locally
+   `NEBIUS_API_KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' ~/.config/companion-hackathon/.env)" uv run python evals/run_suite.py --runs 3`
+   (the key read from the env file, never typed where the shell's history keeps it).
 
 Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's environment:
 `uv run --project robot --with pytest python -m pytest tests`.
+
+**Contributing:** contributions aren't taken yet ([decision 0003](docs/decisions/0003-what-is-public.md)). Anyone
+editing a copy runs `git config core.hooksPath .githooks` once, so the tests and the key check run before each
+commit. To report a security problem, see [SECURITY.md](SECURITY.md).
 
 ## Repository
 
@@ -452,7 +462,9 @@ choice was made ([decisions](docs/decisions/README.md)).
 | [`evals/`](evals/README.md) | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
 | `tests/` | About 880 tests (`uv run pytest`), run before every commit and push |
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), settings links, the demo screen, captions and GIFs for the video |
-| `systemd/` | The two user services: the voice server and Andy |
+| `systemd/` | The three user services: the voice server, Andy, and the offline eyes |
+| `local-eyes/` | The offline eyes: NVIDIA Cosmos Reason 2 served by vLLM on 127.0.0.1, in their own environment |
+| `.githooks/` | The pre-commit hook: the tests, and a check for key-like strings and env files |
 | [`sim/`](sim/README.md) | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
 | `space/` | The public demo of the screens as a Hugging Face Space (Docker, sample data, no keys) |
 | `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page |

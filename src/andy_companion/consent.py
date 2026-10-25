@@ -11,6 +11,11 @@ remember that"). A yes must open the answer and be the answer: "Yes please" and 
 remember my sister's name?" and "I can't remember where I put them" are questions and worries. When
 in doubt nothing is saved and Andy asks. The last words are held in memory for this check only; they
 are never written down or logged.
+
+Sharing with family is gated the same way (2026-10-25 review): telling other people matters more than
+remembering, and the profile alone let a share through without reading it back (the suite's share-2).
+`share_with_family` runs only if the person's last words were a clear yes, the answer to "Shall I share
+that?", or plainly asked to share ("share that with my daughter", "compártelo"), and said no "no".
 """
 
 from __future__ import annotations
@@ -46,6 +51,17 @@ YES = re.compile(r"^\W*(yes|yeah|yep|yup|sure|of course|please do|please|ok|okay
                  r"definitely|absolutely|s[ií] por favor|s[ií] claro|sí|claro|vale|por favor|de acuerdo|perfecto|"
                  r"bueno|dale)\b(\W*(" + CLOSER + r"))*\W*$")
 BARE_SI = re.compile(r"^\W*si\W*($|[,.!]\s*(claro|por favor|gracias|vale)?\W*$)")
+SHARING = ("share_with_family",)
+# A plain request to pass something to family, said to Andy.
+SHARE_ASKED = re.compile(
+    LEAD + r"(share|send|tell|let|comparte|comp[aá]rte(lo|la)|env[ií]a|env[ií]a(lo|la|selo|sela)|manda|m[aá]nda(lo|la|selo|sela)|"
+    r"dile|d[ií]selo|d[ií]gale|cu[eé]nta(le|selo))\b"
+    r"|\b(please|can you|could you|would you|will you|i want you to|i'?d like you to|puedes|puede|podr[ií]as|"
+    r"quiero que) (share|send|tell|let|compartir|compartas|enviar|env[ií]es|mandar|mandes|decirle|digas)\b"
+    r"|\bwith (my|the) family\b|\bcon (mi|la) familia\b")
+NOT_SHARED = {"shared": False,
+              "say": "Not shared: the person has not said yes. Say back what you would share and ask \"Shall I share that?\"; "
+                     "share only after they say yes."}
 NOT_SAVED = {"saved": False,
              "say": "Not saved: the person has not asked. Ask \"Shall I remember that?\" and save only after they say yes."}
 
@@ -61,6 +77,14 @@ def asked(words: "str | None" = None) -> bool:
     if not text or REFUSED.search(KEEPING.sub(" ", text)):
         return False
     return bool(ASKED.search(text) or YES.search(text) or BARE_SI.search(text))
+
+
+def asked_to_share(words: "str | None" = None) -> bool:
+    """A clear yes, or a plain request to share, with no "no" in it."""
+    text = " ".join((_last["words"] if words is None else str(words)).replace("’", "'").lower().split())
+    if not text or REFUSED.search(text):
+        return False
+    return bool(YES.search(text) or BARE_SI.search(text) or SHARE_ASKED.search(text))
 
 
 def install(handler_class=None, routine_class=None) -> bool:
@@ -89,8 +113,11 @@ def install(handler_class=None, routine_class=None) -> bool:
 
     @wraps(run)
     async def gated(self, *args, **kwargs) -> Any:
-        if getattr(self, "tool_name", "") in SAVING and not asked():
+        name = getattr(self, "tool_name", "")
+        if name in SAVING and not asked():
             return dict(NOT_SAVED)
+        if name in SHARING and not asked_to_share():
+            return dict(NOT_SHARED)
         return await run(self, *args, **kwargs)
 
     routine_class.__call__ = gated

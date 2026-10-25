@@ -572,7 +572,7 @@
     }
     translate();
     const found = v.events_suggestion;
-    const showFound = !!(found && found.page && !(v.events_pages || []).length);
+    const showFound = !!(found && /^https?:\/\//i.test(found.page || "") && !(v.events_pages || []).length);
     $("events-found").hidden = !showFound;
     if (showFound) { const a = $("events-found-link"); a.href = found.page; text(a, found.page); }
     if (!$("tv").dataset.seen) { $("tv").open = v.tv_yaw == null; $("tv").dataset.seen = "1"; }

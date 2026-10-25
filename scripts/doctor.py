@@ -1,7 +1,7 @@
 """Check every part Andy needs, and say plainly what to fix.
 
-    python scripts/doctor.py           the setup
-    python scripts/doctor.py --live    and, before filming or a demo, that everything answers now
+    uv run python scripts/doctor.py           the setup
+    uv run python scripts/doctor.py --live    and, before filming or a demo, that everything answers now
 
 Reads the keys from the private env file without printing them. Makes one tiny request to Token
 Factory and to Tavily to prove the keys work (a fraction of a cent). --live also asks both Nebius

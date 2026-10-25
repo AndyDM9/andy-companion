@@ -6,8 +6,10 @@ one moves to the same time the next day. Nothing else about the conversation is 
 
 from __future__ import annotations
 
+import contextlib
 import fcntl
 import json
+import logging
 import os
 import secrets
 import tempfile
@@ -24,10 +26,20 @@ REPEATS = (None, "daily")
 
 
 def _load() -> List[Dict[str, Any]]:
+    """The reminders; a file that can't be read as them is set aside (never overwritten) and Andy starts afresh."""
     try:
-        return json.loads(STORE.read_text())
-    except (OSError, json.JSONDecodeError):
+        items = json.loads(STORE.read_text())
+    except FileNotFoundError:
         return []
+    except (OSError, ValueError):            # ValueError covers a broken file and bad UTF-8 (2026-10-25 review)
+        items = None
+    if isinstance(items, list):
+        return items
+    with contextlib.suppress(OSError):
+        aside = STORE.with_name(f"reminders.unreadable-{int(time.time())}.json")
+        os.replace(STORE, aside)
+        logging.getLogger("andy.reminders").warning("The reminders file couldn't be read; set aside as %s", aside.name)
+    return []
 
 
 def _save(items: List[Dict[str, Any]]) -> None:

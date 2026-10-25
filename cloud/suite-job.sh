@@ -28,11 +28,12 @@ secret() {
 }
 
 run() {
+  confirm_paid "Runs the suite as a Nebius Serverless Job: a 2-vCPU VM for up to an hour, and the Token Factory calls of $RUNS runs."
   secret
   NAME="andy-suite-$(date +%Y%m%d-%H%M%S)"
   # Nebius limits a job's injected files to 64 KB in all (2026-10-13), so they travel as one
   # compressed bundle, unpacked in the container before the suite runs.
-  BUNDLE="$(mktemp)"; trap 'rm -f "$BUNDLE"' EXIT
+  BUNDLE="$(mktemp)"; trap 'rm -f "$BUNDLE"; jobs_left' EXIT; trap 'exit 130' INT TERM
   # xz, not gzip: by 2026-10-20 the gzip bundle had grown to 49.6 KB, over the limit once base64 is added.
   tar -C "$ROOT" -cf - "${FILES[@]}" | xz -9e | base64 -w0 > "$BUNDLE"
   echo "Bundle: $(wc -c < "$BUNDLE") bytes for ${#FILES[@]} files"
@@ -45,6 +46,7 @@ run() {
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 2vcpu-8gb --disk-size 20Gi \
     --timeout 1h --restart-policy never >/dev/null
+  STARTED_JOBS+=("$NAME")
   echo "Job $NAME started; waiting for it to finish…"
   for _ in $(seq 1 120); do
     STATE="$(nebius ai job get-by-name --name "$NAME" --parent-id "$PROJECT" --format json | python3 -c 'import json,sys; print(json.load(sys.stdin).get("status",{}).get("state",""))')"
@@ -56,12 +58,21 @@ run() {
   mkdir -p "$ROOT/evals/results"
   nebius ai job logs "$ID" 2>/dev/null > "$ROOT/evals/results/.job.log" || nebius ai job logs --id "$ID" > "$ROOT/evals/results/.job.log"
   grep -v '^SCORECARD_JSON' "$ROOT/evals/results/.job.log" | grep -vE '^\s*$' | tail -25
+  JOBS_DONE=1                                   # finished, whatever its state
   OUT="$ROOT/evals/results/$(date +%Y-%m-%d)-nebius-job-$NAME.json"
-  grep -o 'SCORECARD_JSON .*' "$ROOT/evals/results/.job.log" | tail -1 | sed 's/^SCORECARD_JSON //' | python3 -c '
+  # Saved only when the log holds a whole scorecard; otherwise the log is kept to see why, and the run fails.
+  if grep -o 'SCORECARD_JSON .*' "$ROOT/evals/results/.job.log" | tail -1 | sed 's/^SCORECARD_JSON //' | python3 -c '
 import json, sys
 card = json.loads(sys.stdin.read()); card["ran_on"] = "Nebius Serverless Job, cpu-d3 2vcpu-8gb"; card["job"] = sys.argv[1]
-print(json.dumps(card, indent=2))' "$NAME" > "$OUT" && echo "Scorecard saved: ${OUT#$ROOT/}"
-  rm -f "$ROOT/evals/results/.job.log"
+print(json.dumps(card, indent=2))' "$NAME" > "$OUT.tmp" 2>/dev/null; then
+    mv "$OUT.tmp" "$OUT"; rm -f "$ROOT/evals/results/.job.log"
+    echo "Scorecard saved: ${OUT#"$ROOT"/}"
+  else
+    rm -f "$OUT.tmp"; mv "$ROOT/evals/results/.job.log" "$ROOT/evals/results/$NAME.log"
+    echo "No scorecard in the job's log (kept: evals/results/$NAME.log)." >&2
+    exit 1
+  fi
 }
 
-case "${1:-run}" in run) run ;; secret) secret ;; *) echo "usage: $0 run|secret" >&2; exit 2 ;; esac
+# Nothing starts without a word: run alone prints the usage (2026-10-25: a bare run used to start a billed job).
+case "${1:-}" in run) run ;; secret) secret ;; *) sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;; esac

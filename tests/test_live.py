@@ -40,7 +40,9 @@ def test_changes_are_sent_and_a_heartbeat_keeps_the_screen_sure():
 
     live.report_loop(send=sent.append, rounds=12, sleep=tick, now=lambda: t[0])
     import time
-    time.sleep(0.05)
+    deadline = time.monotonic() + 5                      # sends may run on threads: wait until they've landed
+    while len(sent) < 2 and time.monotonic() < deadline:
+        time.sleep(0.01)
     assert sent and all(x == {"live": {"state": "ready", "tool": ""}} for x in sent)
     assert 2 <= len(sent) <= 4                       # first, then about every 5 s, not every tick
 

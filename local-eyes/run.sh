@@ -8,9 +8,21 @@
 #                                must be accepted there first, with this computer's Hugging Face login
 set -euo pipefail
 cd "$(dirname "$0")"
-# The env file may choose the model, the GPU and its share (ANDY_LOCAL_EYES_*); no key is needed here.
+# The env file may choose the model, the GPU and its share (ANDY_LOCAL_EYES_*); no key is needed here, and none is read.
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
-if [ -r "$ENV_FILE" ]; then set -a; . "$ENV_FILE"; set +a; fi
+# Only the settings this server uses come from the env file, never the whole file (it holds other keys); a name
+# already set in the shell wins. Plain NAME=value lines; one pair of surrounding quotes is dropped.
+setting() {
+  local v
+  v="$(sed -n "s/^$1=//p" "$ENV_FILE" | tail -1)"
+  v="${v%\"}"; v="${v#\"}"; v="${v%\'}"; v="${v#\'}"
+  printf '%s' "$v"
+}
+if [ -r "$ENV_FILE" ]; then
+  for name in ANDY_LOCAL_EYES_MODEL ANDY_LOCAL_EYES_GPU ANDY_LOCAL_EYES_PORT ANDY_LOCAL_EYES_CONTEXT ANDY_LOCAL_EYES_MEMORY; do
+    [ -n "${!name:-}" ] || printf -v "$name" '%s' "$(setting "$name")"
+  done
+fi
 # The 2B model unless ANDY_LOCAL_EYES_MODEL names another (nvidia/Cosmos-Reason2-8B: about 17.5 GB of weights, a
 # whole 24 GB GPU, with ANDY_LOCAL_EYES_MEMORY=0.92 and ANDY_LOCAL_EYES_CONTEXT=12288). GPU 0 unless
 # ANDY_LOCAL_EYES_GPU picks another. The model card asks for a 24 GB GPU; on a computer with one GPU, lower

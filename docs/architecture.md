@@ -70,11 +70,11 @@ watchdog only logs).
 | `profiles/companion/` | Who Andy is, how it speaks, what it never does, which tools it may use | Contain any person's data |
 | `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
 | `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments, the antennas' thinking lean, a glance at the TV when something new shows on it (`glance.py`: only once the screen's place is set, never while the person speaks); what the head is turned to for the TV's line (`looking_at.py`: you, the screen, the room or pointing, set by each move for as long as it lasts) | Store any frame, image or identity; send a picture anywhere |
-| `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, how it looks (the time of day's colours, glass or the calm screen), what the person shared, messages and looks from family; captions paged over the foot of the screen; how each web answer was found; the gear menu (the settings code, Under the hood); "Try asking" when the screen is quiet. Four private links, each with its own token: screen, family, settings, hood. `READ_ONLY` and `INDEX` exist only for the public demo (`scripts/demo_screen.py --public`, `space/`, decision 0010): every POST refused, a front page at `/` | Show or share anything the person did not ask to share; log a URL or token; let the hood link reach the screen or the settings |
+| `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, how it looks (the time of day's colours, glass or the calm screen), what the person shared, messages and looks from family; captions paged over the foot of the screen; how each web answer was found; the gear menu (the settings code, Under the hood); "Try asking" when the screen is quiet. Four private links, each with its own token: screen, family, settings, hood. `READ_ONLY` and `INDEX` exist only for the public demo (`scripts/demo_screen.py --public`, `space/`, decision 0010): every POST refused, a front page at `/` Served on the home network only: a client outside private, loopback, link-local or home-VPN (100.64/10) addresses is refused, the public demo excepted; family sends are limited to 20 a minute; a photo's size is read from its header before it is decoded (2026-10-25). | Show or share anything the person did not ask to share; log a URL or token; let the hood link reach the screen or the settings |
 | `setup_page.py` (+ `/setup`) | What a helper may change from a phone (town, news sites, what's-on pages, language, pace, volume, captions), its checks, and telling the person who changed what | Change reminders, memories or what is shared; change anything without a name and a notice to the person |
 | `live.py` | What Andy is doing right now (ready, hearing, thinking, working with the tool's name, speaking), and what its head is turned to (one of four names from `body/looking_at.py`), sent to the screen server on change | Send words or tool arguments |
 | `kept.py` | Everything Andy keeps about the person, listed and deletable from the settings page | Delete without a name and a notice to the person |
-| `consent.py` | Saving tools (`remember`, `remember_moment`) run only when the person's last words asked or said yes | Keep or log the words beyond the check |
+| `consent.py` | Saving tools (`remember`, `remember_moment`, `remember_place`) run only when the person's last words asked or said yes; `share_with_family` only after a clear yes or a plain request to share (2026-10-25) | Keep or log the words beyond the check |
 | `health.py` | The hood page's health tiles: daemon, voice server, Andy's mode, weather, Tavily credits, Nebius endpoints | Read keys or words; hold up a page while checking |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers, tool names and which eyes answered (one of three names) |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
@@ -126,7 +126,7 @@ watchdog only logs).
 ## Evaluation
 
 - `evals/run_suite.py`: the conversation suite (94 spoken situations, Andy's real profile and tools, judged
-  by Nemotron 3 Ultra), locally or as a Nebius Serverless Job (`cloud/suite-job.sh`).
+  by Nemotron 3 Ultra), locally or as a Nebius Serverless Job (`cloud/suite-job.sh run`).
 - `evals/scam_eval.py`: the scam check five ways: word rules alone (`--word-rules`), and Lightning and Ultra each alone and with Tavily's warnings; Tavily fetched once
   per message and the models run three times as Nebius Serverless Jobs, two at a time
   (`cloud/scam-job.sh`; a job's request may hold 64 KB, so four parts).
@@ -134,7 +134,7 @@ watchdog only logs).
 - `evals/zoom_check.py`: the finder's own code on 18 frames of one room photo, the old way against zoomed tiles and
   the closer look (decision 0012).
 - `sim/finder_sim.py` and `sim/replay.py`: Andy's search in Pollen's MuJoCo scene, scored against the scene's truth,
-  as Nebius Serverless Jobs (`cloud/sim-job.sh`, decision 0013); and the film of one search.
+  as Nebius Serverless Jobs (`cloud/sim-job.sh run`, decision 0013); and the film of one search.
 - `evals/eyes_check.py`: the two vision models side by side at the desk (decision 0011).
 - `evals/robot_timings.py`: the robot's real turns, from Andy's own log, numbers only.
 - `evals/guard_check.py`: the second look (Content Safety) on written sentences the word list misses.

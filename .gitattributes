@@ -1,0 +1,12 @@
+# Line endings normalised to LF; generated files collapsed in diffs and left out of the language statistics.
+* text=auto eol=lf
+*.lock linguist-generated=true
+evals/results/*.json linguist-generated=true
+*.png binary
+*.gif binary
+*.jpg binary
+*.mp4 binary
+*.wav binary
+*.ttf binary
+*.otf binary
+*.woff2 binary

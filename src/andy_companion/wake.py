@@ -63,7 +63,10 @@ def triggers_for(mode: str, language: str = "en"):
 
 def mic_source(sim: Optional[bool] = None) -> Optional[str]:
     """The robot's microphones; without a robot (ANDY_SIM, scripts/andy-sim), this computer's default one."""
-    out = subprocess.run(["pactl", "list", "short", "sources"], capture_output=True, text=True).stdout
+    try:                            # a hung sound server must not stop Andy waking for a reminder
+        out = subprocess.run(["pactl", "list", "short", "sources"], capture_output=True, text=True, timeout=5).stdout
+    except (OSError, subprocess.SubprocessError):
+        out = ""
     for line in out.splitlines():
         parts = line.split("\t")
         if len(parts) > 1 and "Reachy_Mini_Audio" in parts[1] and not parts[1].endswith(".monitor"):

@@ -4,6 +4,7 @@ emoji: 🤖
 colorFrom: green
 colorTo: blue
 sdk: static
+license: apache-2.0
 pinned: false
 short_description: A home companion for older adults and the family who help
 tags:

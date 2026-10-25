@@ -214,7 +214,7 @@ def tavily_usage_loop(every_s: float = 600.0, rounds: Optional[int] = None, slee
 
 
 def interrupted(seconds_left: float) -> None:
-    """The person talked over Andy and his voice stopped; tell the hood page how much was cut."""
+    """The person talked over Andy and its voice stopped; tell the hood page how much was cut."""
     threading.Thread(target=send, args=({"interrupt_ms": round(seconds_left * 1000)},), daemon=True).start()
 
 

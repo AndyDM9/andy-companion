@@ -178,6 +178,36 @@ def test_files_that_are_not_photos_are_refused():
     assert board.photo_path("../../etc/passwd") is None
 
 
+def test_a_small_file_claiming_a_huge_picture_is_refused_before_it_is_decoded(monkeypatch):
+    """A few hundred bytes of PNG can decode to gigabytes; its size is read from the header first (2026-10-25)."""
+    import struct
+    import zlib
+
+    def chunk(kind, body):
+        return struct.pack(">I", len(body)) + kind + body + struct.pack(">I", zlib.crc32(kind + body))
+
+    bomb = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 8000, 8000, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(b"\x00" * 24001 * 10)) + chunk(b"IEND", b""))
+    assert len(bomb) < 1000 and board.image_size(bomb) == (8000, 8000)
+    import cv2
+    decoded = []
+    monkeypatch.setattr(cv2, "imdecode", lambda *a: decoded.append(1))
+    with pytest.raises(ValueError, match="too large"):
+        board.save_photo("Anna", bomb)
+    assert decoded == [] and board.next_for_person() is None
+    with pytest.raises(ValueError, match="JPEG, PNG or WebP"):
+        board.save_photo("Anna", b"GIF89a" + b"\x00" * 40)
+
+
+def test_a_photos_size_is_read_from_its_header():
+    import cv2
+    import numpy as np
+    img = np.zeros((300, 500, 3), np.uint8)
+    for ext in (".jpg", ".png", ".webp"):
+        assert board.image_size(cv2.imencode(ext, img)[1].tobytes()) == (500, 300), ext
+    assert board.image_size(b"\xff\xd8\xff") is None and board.image_size(b"") is None
+
+
 def test_photos_are_deleted_after_a_week():
     out = board.save_photo("Anna", _png())
     path = board.photo_path(out["photo"])
@@ -292,3 +322,66 @@ def test_a_card_says_how_it_was_found_in_names_and_numbers_only():
     assert "how" not in board.showing(now=1001)
     page = (Path(__file__).resolve().parents[1] / "src/andy_companion/pages/screen.html").read_text()
     assert 'id="found-how"' in page and 'how: "Found with Tavily"' in page and 'how: "Encontrado con Tavily"' in page
+
+
+def test_the_pages_open_only_on_the_home_network(server, monkeypatch):
+    for host in ("127.0.0.1", "::1", "192.168.1.20", "10.0.0.5", "169.254.1.1", "100.101.5.6", "::ffff:192.168.1.9"):
+        assert screen_server.home_network(host), host
+    for host in ("8.8.8.8", "2001:4860::1", "not-an-address"):
+        assert not screen_server.home_network(host), host
+    k = board.tokens()["family"]
+    assert get(server + f"/family?k={k}")[0] == 200
+    monkeypatch.setattr(screen_server, "home_network", lambda host: False)        # a visitor from the internet
+    with pytest.raises(urllib.error.HTTPError) as e:
+        get(server + f"/family?k={k}")
+    assert e.value.code == 403
+    with pytest.raises(urllib.error.HTTPError) as e:
+        post(server + f"/api/family/message?k={k}", {"name": "Anna", "text": "hi"})
+    assert e.value.code == 403 and board.next_for_person() is None
+    monkeypatch.setattr(screen_server, "READ_ONLY", True)                         # the public demo opens anywhere
+    assert get(server + f"/family?k={k}")[0] == 200
+
+
+def test_an_unexpected_error_answers_500_and_logs_only_its_kind(server, monkeypatch, caplog):
+    def broken():
+        raise RuntimeError("words the person said")
+    monkeypatch.setattr(screen_server, "live_state", broken)
+    with pytest.raises(urllib.error.HTTPError) as e:
+        get(server + f"/api/state?t={board.tokens()['screen']}")
+    assert e.value.code == 500
+    assert "RuntimeError" in caplog.text and "words the person said" not in caplog.text
+
+
+def test_a_flood_of_messages_never_pushes_out_a_change_notice():
+    board.settings_changed("Anna", ["volume"])
+    for i in range(board.MAX_INBOX + 10):
+        board.family_message("Leo", f"hello {i}")
+    items = board._read(board.INBOX, [])
+    assert len(items) == board.MAX_INBOX and items[0]["type"] == "settings"
+
+
+def test_family_sends_are_limited_to_a_few_a_minute(monkeypatch):
+    monkeypatch.setattr(screen_server, "_family_sends", screen_server.deque(maxlen=screen_server.FAMILY_PER_MINUTE))
+    assert all(screen_server.family_allowed(now=100.0 + i) for i in range(screen_server.FAMILY_PER_MINUTE))
+    assert not screen_server.family_allowed(now=130.0)
+    assert screen_server.family_allowed(now=200.0)                    # a minute on
+
+
+def test_only_the_newest_photos_are_kept(monkeypatch):
+    ids = [board.save_photo("Anna", _png())["photo"] for _ in range(5)]
+    monkeypatch.setattr(board, "MAX_PHOTOS", 3)
+    for k, i in enumerate(ids):                                        # make their ages distinct
+        os.utime(board.photo_path(i), (1000 + k, 1000 + k))
+    board.tidy_photos(now=1010)
+    assert [board.photo_path(i) is not None for i in ids] == [False, False, True, True, True]
+
+
+def test_showing_the_settings_code_from_the_tv_is_told_to_the_person(server):
+    t = board.tokens()["screen"]
+    assert post(server + f"/api/screen/settings-code?t={t}", {})[0] == 200
+    entry = board.next_for_person()
+    assert entry["type"] == "code"
+    assert "settings code was shown" in speaker.family_frame(entry)
+    board.delivered(entry)
+    assert post(server + f"/api/screen/settings-code?t={t}", {})[0] == 200      # already up: not again
+    assert board.next_for_person() is None

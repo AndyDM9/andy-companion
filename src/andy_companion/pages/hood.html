@@ -424,8 +424,10 @@
     $("talked-over").hidden = !iv.count;
     if (iv.count) say("talked-over", ui.talked(iv.count));
     const latest = s.turns[0];
-    $("big").innerHTML = latest ? (latest.total_ms / 1000).toFixed(2) + "<small> s</small>"
-                                : `<small>${ui.waiting}</small>`;
+    // Built from text nodes, never markup, like every other page (2026-10-25 review).
+    const big = $("big"), unit = document.createElement("small");
+    unit.textContent = latest ? " s" : ui.waiting;
+    big.replaceChildren(...(latest ? [document.createTextNode((latest.total_ms / 1000).toFixed(2)), unit] : [unit]));
     const m = s.median || {};
     $("median-row").hidden = m.total_ms == null || s.turns.length < 2;
     say("median", secs(m.total_ms));

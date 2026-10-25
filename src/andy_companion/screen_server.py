@@ -12,8 +12,10 @@ library only. Opening the family page tells the person who looked.
 from __future__ import annotations
 
 import base64
+import contextlib
 import binascii
 import hmac
+import ipaddress
 import json
 import logging
 import os
@@ -23,7 +25,7 @@ from collections import deque
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import parse_qs, urlparse
 
 from andy_companion import board, clock, reminders
@@ -170,7 +172,7 @@ def set_tavily(data: Dict[str, Any]) -> Dict[str, Any]:
     return clean
 
 
-# Times the person talked over Andy and he stopped: how much of his reply was cut. Memory only.
+# Times the person talked over Andy and it stopped: how much of its reply was cut. Memory only.
 _interrupts: "deque[Dict[str, int]]" = deque(maxlen=40)
 
 
@@ -334,6 +336,7 @@ def hood_state() -> Dict[str, Any]:
 
 
 MAX_BODY = 4096
+MAX_SETUP_BODY = 16384          # the settings page: two lists of 20 sites of 200 characters fit (review)
 HEADERS = {
     "Content-Security-Policy": ("default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
                                 "font-src 'self'; connect-src 'self'; "
@@ -555,8 +558,11 @@ def _no_constant(name: str) -> None:
 
 
 def _object(raw: bytes) -> dict:
-    """A request body as a JSON object; anything else (a list, NaN, Infinity) is a ValueError."""
-    data = json.loads(raw or b"{}", parse_constant=_no_constant)
+    """A request body as a JSON object; anything else (a list, NaN, Infinity) is a ValueError, in plain words."""
+    try:
+        data = json.loads(raw or b"{}", parse_constant=_no_constant)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        raise ValueError("Something went wrong; please try again.") from None
     if not isinstance(data, dict):
         raise ValueError("Something went wrong; please try again.")
     return data
@@ -570,6 +576,42 @@ READ_ONLY_ERROR = "This is a public demo with sample data: nothing you send is k
 INDEX: Optional[bytes] = None
 # Files the demo's front page shows (scripts/demo_screen.py: the simulated search's film), by path; empty on the robot.
 MEDIA: Dict[str, Tuple[bytes, str]] = {}
+
+
+# Andy's pages are for the home: the TV, the family's phones on its Wi-Fi, a helper beside the robot. They are served
+# on the home network over plain HTTP behind long per-page tokens, and a visitor from anywhere else is refused, so a
+# computer with a public address (a cloud machine) never serves them to the internet (2026-10-25 review). 100.64/10 is
+# allowed too: a home VPN such as Tailscale gives its devices those addresses.
+_HOME_RANGES = (ipaddress.ip_network("100.64.0.0/10"),)
+
+
+def home_network(host: str) -> bool:
+    """Whether a client's address is this computer, the home network, or a home VPN."""
+    try:
+        ip = ipaddress.ip_address(host.split("%", 1)[0])
+    except ValueError:
+        return False
+    if getattr(ip, "ipv4_mapped", None):
+        ip = ip.ipv4_mapped
+    return ip.is_loopback or ip.is_private or ip.is_link_local or any(ip in net for net in _HOME_RANGES)
+
+
+# What family send (messages, photos, suggestions, "looked"): at most FAMILY_PER_MINUTE a minute, so the link can't
+# flood Andy's inbox or disk (2026-10-25 review). In memory only.
+FAMILY_PER_MINUTE = 20
+_family_sends: "deque[float]" = deque(maxlen=FAMILY_PER_MINUTE)
+_family_lock = threading.Lock()
+
+
+def family_allowed(now: Optional[float] = None) -> bool:
+    import time as _t
+
+    now = _t.monotonic() if now is None else now
+    with _family_lock:
+        if len(_family_sends) == FAMILY_PER_MINUTE and now - _family_sends[0] < 60:
+            return False
+        _family_sends.append(now)
+        return True
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -612,6 +654,26 @@ class Handler(BaseHTTPRequestHandler):
         self._send(404, expired_page(path), "text/html; charset=utf-8")
 
     def do_GET(self) -> None:  # noqa: N802
+        self._guarded(self._get)
+
+    def do_POST(self) -> None:  # noqa: N802
+        self._guarded(self._post)
+
+    def _guarded(self, route: Callable[[], None]) -> None:
+        """Only the home network (the public demo excepted), and an error answers 500 with nothing in the log but
+        its kind: never the address or the body, which hold tokens and words."""
+        if not READ_ONLY and not home_network(str(self.client_address[0])):
+            return self._send(403, b"Andy's pages open only on the home network.", "text/plain; charset=utf-8")
+        try:
+            route()
+        except (BrokenPipeError, ConnectionResetError, TimeoutError):
+            return                       # the visitor went away, or stalled past the timeout
+        except Exception as e:
+            logger.warning("screen request failed: %s", type(e).__name__)
+            with contextlib.suppress(Exception):
+                self._send(500, b"Something went wrong; please try again.", "text/plain; charset=utf-8")
+
+    def _get(self) -> None:
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         if url.path == "/" and INDEX is not None:
@@ -658,7 +720,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, path.read_bytes(), "image/jpeg")
         return self._send(404, b"Not found", "text/plain")
 
-    def do_POST(self) -> None:  # noqa: N802
+    def _post(self) -> None:
         url = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(url.query).items()}
         if READ_ONLY:
@@ -674,6 +736,7 @@ class Handler(BaseHTTPRequestHandler):
             showing = board.showing()
             if not (showing and showing.get("kind") == "code"):
                 board.show_settings_code()
+                board.code_shown()
             return self._json({"ok": True})
         if url.path == "/api/views" and _ok(q.get("t"), "screen") and local:
             length = self._length()
@@ -712,7 +775,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"ok": True})
         if url.path.startswith("/api/setup") and _ok(q.get("s"), "setup"):
             length = self._length()
-            if not 0 <= length <= MAX_BODY:
+            if not 0 <= length <= MAX_SETUP_BODY:
                 return self._json({"error": "That is too long."}, 413)
             try:
                 data = _object(self.rfile.read(length))
@@ -754,6 +817,8 @@ class Handler(BaseHTTPRequestHandler):
             except (TypeError, AttributeError, OverflowError):
                 return self._json({"error": "Something went wrong; please try again."}, 400)
             return self._send(404, b"Not found", "text/plain")
+        if url.path.startswith("/api/family/") and _ok(q.get("k"), "family") and not family_allowed():
+            return self._json({"error": "That's a lot at once; please wait a minute and try again."}, 429)
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
         length = self._length()

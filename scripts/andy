@@ -4,5 +4,6 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ANDY_APP_PYTHON="${ANDY_APP_PYTHON:-$ROOT/robot/.venv/bin/python}"   # cd robot && uv sync
+[ -x "$ANDY_APP_PYTHON" ] || { echo "First: (cd robot && uv sync)" >&2; exit 1; }
 export ANDY_APP_PYTHON PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
 exec "$ANDY_APP_PYTHON" -m andy_companion.supervisor "$@"

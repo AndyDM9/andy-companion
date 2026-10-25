@@ -21,24 +21,27 @@ AT_ONCE="${ANDY_JOBS_AT_ONCE:-2}"
 STAMP="${ANDY_SCAM_STAMP:-$(date +%Y%m%d-%H%M%S)}"
 ONLY="${ANDY_SCAM_ONLY:-$(seq -s ' ' 1 "$PARTS")}"
 KEEP="$ROOT/evals/results/scam-parts-$STAMP"
+# A path from anywhere, or from the repository's root as the usage shows.
+[ -f "$WARNINGS" ] || [ ! -f "$ROOT/$WARNINGS" ] || WARNINGS="$ROOT/$WARNINGS"
 # A warnings file that isn't there (--help included) prints the usage before anything is made, stored or started.
 if [ ! -f "$WARNINGS" ] || ! [[ $RUNS =~ ^[0-9]+$ ]]; then sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 2; fi
 mkdir -p "$KEEP"
 
 # shellcheck source=cloud/secret.sh
 . "$ROOT/cloud/secret.sh"
+confirm_paid "Runs the scam evaluation as Nebius Serverless Jobs ($PARTS parts, $AT_ONCE at a time): 2-vCPU VMs for up to an hour each, and the Token Factory calls."
 KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' "$ENV_FILE" | tail -1)"
 [ -n "$KEY" ] || { echo "No NEBIUS_API_KEY in $ENV_FILE" >&2; exit 1; }
 printf '%s' "$KEY" | store_secret "$SECRET" NEBIUS_API_KEY "Token Factory key for Andy's evaluations"
 unset KEY
 
-WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
+WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"; jobs_left' EXIT; trap 'exit 130' INT TERM
 
 launch() {   # part number → a job running this part's messages
   local k="$1" name="andy-scam-$STAMP-$1"
   mkdir -p "$WORK/$k/evals/results" "$WORK/$k/src/andy_companion"
   # Only what the check reads: each message's warnings without their links, for this part's messages.
-  python3 - "$ROOT/evals/scam_messages.json" "$ROOT/$WARNINGS" "$k" "$PARTS" "$WORK/$k/warnings.json" <<'PY'
+  python3 - "$ROOT/evals/scam_messages.json" "$WARNINGS" "$k" "$PARTS" "$WORK/$k/warnings.json" <<'PY'
 import json, sys
 msgs, wfile, k, n, out = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4]), sys.argv[5]
 ids = {m["id"] for m in json.load(open(msgs))["messages"][k - 1::n]}
@@ -55,7 +58,7 @@ PY
 #!/bin/sh
 set -e
 cd /andy
-python3 -c "import base64, io, tarfile; tarfile.open(fileobj=io.BytesIO(base64.b64decode(open('bundle.b64').read())), mode='r:xz').extractall()"
+python3 -c "import base64, io, tarfile; tarfile.open(fileobj=io.BytesIO(base64.b64decode(open('bundle.b64').read())), mode='r:xz').extractall(filter='data')"
 ANDY_IN_JOB=1 exec python3 evals/scam_eval.py --warnings warnings.json --runs $RUNS --part $k/$PARTS
 SH
   nebius ai job create --async --name "$name" --parent-id "$PROJECT" \
@@ -66,6 +69,7 @@ SH
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 2vcpu-8gb --disk-size 20Gi \
     --timeout 1h --restart-policy never >/dev/null
+  STARTED_JOBS+=("$name")
   echo "Part $k: job $name started ($(wc -c < "$WORK/bundle-$k.b64") bytes)"
 }
 
@@ -116,6 +120,7 @@ print(json.dumps(card))' "$name" "$(basename "$WARNINGS")" "$log" > "$KEEP/part-
 collect_only="${ANDY_SCAM_COLLECT:-}"
 for k in $collect_only; do finish "$k"; done
 
+# shellcheck disable=SC2086  # the part numbers, one word each
 set -- $ONLY
 while [ $# -gt 0 ]; do
   batch=()
@@ -124,9 +129,10 @@ while [ $# -gt 0 ]; do
   for k in "${batch[@]}"; do finish "$k"; done
 done
 
+JOBS_DONE=1
 shopt -s nullglob; kept=("$KEEP"/part-*.json); have="${#kept[@]}"
 if [ "$have" -eq "$PARTS" ]; then
   cd "$ROOT" && python3 evals/scam_eval.py --merge "$KEEP"/part-*.json
 else
-  echo "$have of $PARTS parts have scorecards in ${KEEP#$ROOT/}; run the missing ones again (see above)."
+  echo "$have of $PARTS parts have scorecards in ${KEEP#"$ROOT"/}; run the missing ones again (see above)."
 fi

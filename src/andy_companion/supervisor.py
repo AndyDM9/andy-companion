@@ -209,6 +209,7 @@ def wait_asleep() -> str:
 
 
 def main() -> int:
+    os.umask(0o077)              # the screen's files, photos and notes: the owner's alone (privacy.owner_only_files)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
     from andy_companion import app_mode
 

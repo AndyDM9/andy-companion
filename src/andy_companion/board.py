@@ -18,7 +18,9 @@ import json
 import re
 import os
 import secrets
+import struct
 import tempfile
+import threading
 import time
 from datetime import datetime
 from pathlib import Path
@@ -33,7 +35,12 @@ INBOX = DATA_DIR / "inbox.json"
 TOKENS = DATA_DIR / "tokens.json"
 PHOTOS = DATA_DIR / "photos"
 PHOTO_DAYS = 7
+MAX_PHOTOS = 60                 # kept at once; the oldest go first (2026-10-25 review)
 MAX_PHOTO_BYTES = 8 * 1024 * 1024
+# A photo's size is read from its header before it is decoded: a small file can claim a huge picture (a few KB of
+# PNG decode to gigabytes), and OpenCV's own limit is fixed once it has loaded (2026-10-25 review). One at a time.
+MAX_PHOTO_PIXELS = 40_000_000
+_decoding = threading.BoundedSemaphore(1)
 SHOW_FOR_S = 5 * 60            # then the screen goes back to the day and family photos
 MAX_SHARED = 30
 MAX_TEXT = 600
@@ -147,6 +154,12 @@ def show_settings_code(now: Optional[float] = None) -> None:
     _write(SCREEN, {"kind": "code", "title": "Andy's settings", "items": [], "at": now, "until": now + CODE_FOR_S})
 
 
+def code_shown(now: Optional[float] = None) -> None:
+    """The settings code was shown from the TV's menu (anyone with the screen can): the person is told, as for every
+    change, since scanning it gives control of Andy for two minutes (2026-10-25 review, decision 0009)."""
+    _inbox_add({"type": "code", "name": "the TV", "at": now or time.time()})
+
+
 CHECK_FOR_S = 20
 
 
@@ -169,9 +182,9 @@ def share(note: str, now: Optional[float] = None) -> Dict[str, Any]:
     note = _tidy(note)
     if not note:
         raise ValueError("What should I share?")
-    items = _read(SHARED, [])
     item = {"id": secrets.token_hex(3), "note": note, "at": now or time.time()}
-    _write(SHARED, (items + [item])[-MAX_SHARED:])
+    with locked(SHARED):        # the settings page deletes from another process (2026-10-25 review)
+        _write(SHARED, (_read(SHARED, []) + [item])[-MAX_SHARED:])
     return item
 
 
@@ -180,11 +193,12 @@ def shared() -> List[Dict[str, Any]]:
 
 
 def unshare(note_id: str) -> bool:
-    items = _read(SHARED, [])
-    kept = [i for i in items if i["id"] != note_id]
-    if len(kept) == len(items):
-        return False
-    _write(SHARED, kept)
+    with locked(SHARED):
+        items = _read(SHARED, [])
+        kept = [i for i in items if i["id"] != note_id]
+        if len(kept) == len(items):
+            return False
+        _write(SHARED, kept)
     return True
 
 
@@ -203,10 +217,21 @@ def locked(path: Path) -> Iterator[None]:
             fcntl.flock(lock, fcntl.LOCK_UN)
 
 
+MAX_INBOX = 50
+# The person always hears who changed or deleted what (decision 0009): those notes are never pushed out by others.
+KEPT_UNTIL_SAID = ("settings", "deleted", "code")
+
+
 def _inbox_add(entry: Dict[str, Any]) -> None:
+    """Add an entry, keeping at most MAX_INBOX: the oldest ordinary entries go first, never a change notice."""
     with locked(INBOX):
-        items = _read(INBOX, [])
-        _write(INBOX, (items + [entry])[-50:])
+        items = _read(INBOX, []) + [entry]
+        while len(items) > MAX_INBOX:
+            old = next((i for i, e in enumerate(items) if e.get("type") not in KEPT_UNTIL_SAID), None)
+            if old is None:
+                break
+            items.pop(old)
+        _write(INBOX, items)
 
 
 def family_message(name: str, text: str = "", link: str = "", now: Optional[float] = None) -> None:
@@ -314,6 +339,15 @@ def research_ready(topic: str, say: str, points: List[str], sources: List[Dict[s
                 "failed": bool(failed), "at": now or time.time()})
 
 
+def clear_pending() -> int:
+    """Drop what is waiting to be said (messages, photos' notes, suggestions, answers), keeping change notices."""
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        kept = [e for e in items if e.get("type") in KEPT_UNTIL_SAID]
+        _write(INBOX, kept)
+    return len(items) - len(kept)
+
+
 def next_for_person() -> Optional[Dict[str, Any]]:
     items = _read(INBOX, [])
     return items[0] if items else None
@@ -332,7 +366,7 @@ def delivered(entry: Dict[str, Any]) -> None:
 def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] = None) -> Dict[str, Any]:
     """Keep a photo family sent: decoded and re-encoded as a plain JPEG (which drops hidden data such
     as the place it was taken), at most 1600 pixels wide, deleted after PHOTO_DAYS."""
-    os.environ.setdefault("OPENCV_IO_MAX_IMAGE_PIXELS", str(40_000_000))   # set before cv2 loads
+    os.environ.setdefault("OPENCV_IO_MAX_IMAGE_PIXELS", str(MAX_PHOTO_PIXELS))   # if cv2 hasn't loaded yet
     import cv2
     import numpy as np
 
@@ -341,7 +375,16 @@ def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] =
         raise ValueError("A name is needed.")
     if not data or len(data) > MAX_PHOTO_BYTES:
         raise ValueError("The photo must be smaller than 8 MB.")
-    img = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+    size = image_size(data)
+    if size is None:
+        raise ValueError("Send the photo as a JPEG, PNG or WebP.")
+    if size[0] * size[1] > MAX_PHOTO_PIXELS:
+        raise ValueError("That photo is too large to show; send a smaller copy.")
+    with _decoding:
+        try:
+            img = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+        except cv2.error:
+            img = None
     if img is None or min(img.shape[:2]) < 32:
         raise ValueError("That file is not a photo Andy can show.")
     h, w = img.shape[:2]
@@ -355,6 +398,41 @@ def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] =
     _inbox_add({"type": "photo", "name": name, "caption": caption, "photo": photo_id, "at": now})
     tidy_photos(now)
     return {"photo": photo_id}
+
+
+def image_size(data: bytes) -> Optional[tuple]:
+    """(width, height) from a JPEG, PNG or WebP file's header, without decoding it; None for anything else."""
+    try:
+        if data[:8] == b"\x89PNG\r\n\x1a\n" and data[12:16] == b"IHDR":
+            return struct.unpack(">II", data[16:24])
+        if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+            chunk = data[12:16]
+            if chunk == b"VP8X":
+                return 1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little")
+            if chunk == b"VP8L":
+                bits = int.from_bytes(data[21:25], "little")
+                return 1 + (bits & 0x3FFF), 1 + ((bits >> 14) & 0x3FFF)
+            if chunk == b"VP8 ":
+                w, h = struct.unpack("<HH", data[26:30])
+                return w & 0x3FFF, h & 0x3FFF
+            return None
+        if data[:2] == b"\xff\xd8":
+            i = 2
+            while i + 9 < len(data):
+                if data[i] != 0xFF:
+                    return None
+                marker = data[i + 1]
+                if marker in (0xD8, 0x01) or 0xD0 <= marker <= 0xD7:      # no length: skip the marker
+                    i += 2
+                    continue
+                length = struct.unpack(">H", data[i + 2:i + 4])[0]
+                if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):   # a frame header: its size
+                    h, w = struct.unpack(">HH", data[i + 5:i + 9])
+                    return w, h
+                i += 2 + length
+    except struct.error:
+        return None
+    return None
 
 
 def _store_photo(jpeg: bytes, meta: Dict[str, Any]) -> str:
@@ -391,11 +469,13 @@ def photo_path(photo_id: str) -> Optional[Path]:
 
 
 def tidy_photos(now: Optional[float] = None) -> int:
+    """Delete photos older than PHOTO_DAYS, and the oldest beyond MAX_PHOTOS."""
     now = now or time.time()
     gone = 0
-    for p in PHOTOS.glob("*.jpg") if PHOTOS.is_dir() else []:
-        if now - p.stat().st_mtime > PHOTO_DAYS * 86400:
-            p.unlink()
+    photos = sorted(PHOTOS.glob("*.jpg"), key=lambda p: p.stat().st_mtime) if PHOTOS.is_dir() else []
+    for i, p in enumerate(photos):
+        if now - p.stat().st_mtime > PHOTO_DAYS * 86400 or i < len(photos) - MAX_PHOTOS:
+            p.unlink(missing_ok=True)
             p.with_suffix(".json").unlink(missing_ok=True)
             gone += 1
     return gone

@@ -285,6 +285,10 @@ def find_events_page(place: str, opener=None) -> Optional[Dict[str, str]]:
         pages = [u for u in pages if EVENTS.search(u) and not SKIP_PATH.search(u)]
     if not pages:
         return None
+    # Only web addresses: the page is a link on the settings page (2026-10-25 review).
+    pages = [u for u in pages if urlparse(u).scheme in ("http", "https")]
+    if not pages:
+        return None
     # Shortest first: the calendar's own page rather than one event on it.
     page = min(pages, key=lambda u: (0 if re.search(r"calendar|events", u, re.I) else 1, len(u)))
     return {"site": site, "page": page.rstrip("/")}

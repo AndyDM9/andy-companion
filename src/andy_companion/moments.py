@@ -16,6 +16,7 @@ import tempfile
 from datetime import date, timedelta
 from typing import Any, Dict, List, Optional
 
+from andy_companion.board import locked
 from andy_companion.reminders import DATA_DIR
 
 FILE = DATA_DIR / "moments.json"
@@ -65,9 +66,10 @@ def add(what: str, day: str, today: Optional[date] = None) -> Dict[str, Any]:
     if not text:
         raise ValueError("What should I remember?")
     on = parse_day(day, today)
-    items = [m for m in _load() if not _expired(m, today)]
     item = {"id": secrets.token_hex(3), "what": text, "on": on.isoformat()}
-    _save((items + [item])[-MAX_MOMENTS:])
+    with locked(FILE):          # the settings page deletes from another process (2026-10-25 review)
+        items = [m for m in _load() if not _expired(m, today)]
+        _save((items + [item])[-MAX_MOMENTS:])
     return item
 
 
@@ -76,10 +78,11 @@ def _expired(m: Dict[str, Any], today: Optional[date] = None) -> bool:
 
 
 def tidy(today: Optional[date] = None) -> int:
-    items = _load()
-    kept = [m for m in items if not _expired(m, today)]
-    if len(kept) != len(items):
-        _save(kept)
+    with locked(FILE):
+        items = _load()
+        kept = [m for m in items if not _expired(m, today)]
+        if len(kept) != len(items):
+            _save(kept)
     return len(items) - len(kept)
 
 
@@ -113,11 +116,12 @@ def matching(text_or_id: str) -> List[Dict[str, Any]]:
 
 def remove(item_id: str) -> bool:
     """Delete the one moment with this id (the settings page knows ids)."""
-    items = _load()
-    kept = [m for m in items if m["id"] != str(item_id)]
-    if len(kept) == len(items):
-        return False
-    _save(kept)
+    with locked(FILE):
+        items = _load()
+        kept = [m for m in items if m["id"] != str(item_id)]
+        if len(kept) == len(items):
+            return False
+        _save(kept)
     return True
 
 

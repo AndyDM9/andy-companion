@@ -5,8 +5,20 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
-set -a; . "$ENV_FILE"; set +a
+[ -r "$ENV_FILE" ] || { echo "No env file at $ENV_FILE: copy .env.example there, chmod 600 it, add NEBIUS_API_KEY" >&2; exit 1; }
+# Only the settings this server uses come from the env file, never the whole file (it holds other keys); a name
+# already set in the shell wins. Plain NAME=value lines; one pair of surrounding quotes is dropped.
+setting() {
+  local v
+  v="$(sed -n "s/^$1=//p" "$ENV_FILE" | tail -1)"
+  v="${v%\"}"; v="${v#\"}"; v="${v%\'}"; v="${v#\'}"
+  printf '%s' "$v"
+}
+for name in NEBIUS_API_KEY NEBIUS_BASE_URL ANDY_MODEL ANDY_VOICE_GPU ANDY_MAX_TURN_S; do
+  [ -n "${!name:-}" ] || printf -v "$name" '%s' "$(setting "$name")"
+done
 : "${NEBIUS_API_KEY:?NEBIUS_API_KEY is not set in $ENV_FILE}"
+[ -z "$ANDY_MAX_TURN_S" ] || export ANDY_MAX_TURN_S            # read by serve.py
 # The key reaches serve.py through the environment, never this command line, where `ps` would show it.
 export NEBIUS_API_KEY
 # The first GPU unless ANDY_VOICE_GPU (in the env file or the shell) picks another: a computer with one

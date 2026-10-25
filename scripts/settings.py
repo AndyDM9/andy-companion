@@ -1,13 +1,13 @@
 """Set Andy up for a home: where it is, and which local news and event pages to prefer.
 
-    python scripts/settings.py show
-    python scripts/settings.py place "Springfield, Illinois"
-    python scripts/settings.py news add sj-r.com          (a local paper's site)
-    python scripts/settings.py events add https://library.example.org/events
-    python scripts/settings.py links                     (the screen, family, under-the-hood and settings addresses)
-    python scripts/settings.py new-family-link           (the old family link stops working)
-    python scripts/settings.py sample-photos             (six sample landscapes for the idle screen)
-    python scripts/settings.py remove-sample-photos
+    python3 scripts/settings.py show
+    python3 scripts/settings.py place "Springfield, Illinois"
+    python3 scripts/settings.py news add sj-r.com          (a local paper's site)
+    python3 scripts/settings.py events add https://library.example.org/events
+    python3 scripts/settings.py links                     (the screen, family, under-the-hood and settings addresses)
+    python3 scripts/settings.py new-family-link           (the old family link stops working)
+    python3 scripts/settings.py sample-photos             (six sample landscapes for the idle screen)
+    python3 scripts/settings.py remove-sample-photos
 
 Kept in Andy's own owner-only settings file on this computer, never in the repository.
 """

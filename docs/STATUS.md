@@ -86,6 +86,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   listener stopped, or disabled at login.
 - **The finder's body turn (decision 0016, 2026-10-25)** is checked against Pollen's kinematics and in tests, not
   yet on the robot: try live-test 3t3 (glasses on a chair beside Andy) before filming shot 4.
+- **Known dependency advisories** we can't fix yet (speech-to-speech pins nltk and torch; vLLM pins setuptools;
+  accelerate has no fix): why they don't reach Andy is in [SECURITY.md](../SECURITY.md).
 - Letters in Spanish need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
 - `scripts/andy-sim` (Andy without a robot, Pollen's `--mockup-sim`) is not verified: on this desktop the

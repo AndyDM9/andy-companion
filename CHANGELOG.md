@@ -5,6 +5,39 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Hardened before going public (three best-practice reviews)
+
+Three independent reviews (the package and its pages; the scripts and setup; the repository as a stranger finds
+it) found no leaked key, no injection into the pages, no path traversal and no conversation text in Andy's logs.
+Fixed, with tests (909 pass):
+- **Photos family send:** the size is read from the file's header before decoding and anything over 40 megapixels
+  refused (a 312-byte PNG claimed 8000 x 8000 and could have used gigabytes), one decode at a time, a decoder error
+  answered as "not a photo"; at most 60 photos kept.
+- **Sharing with family is gated in code**, as remembering is: `share_with_family` runs only after a clear yes or a
+  plain request to share, with no "no" (the suite's share-2 had shared without reading back).
+- **The screen server** refuses clients from outside the home network (private, loopback, link-local, a home VPN's
+  100.64/10; the public demo excepted), answers an unexpected error with a 500 and logs only its kind, limits family
+  sends to 20 a minute, never lets a flood push out a "who changed or deleted what" note, tells the person when the
+  settings code is shown from the TV's menu, gives JSON errors in plain words, and lets a long settings save through.
+- **Stores:** places, moments, shared notes and fact deletes take the same file lock as reminders (the settings page
+  deletes from another process); an unreadable reminders file is set aside, never overwritten; "Delete everything"
+  also clears messages and answers waiting to be said; every file Andy's processes create is owner-only (Pollen's
+  remember had left `memory.json` readable by others, inside Andy's owner-only folder).
+- **Logs:** nothing says urgent or crisis words were heard, not even when.
+- **Small:** a taught move can't leave the antennas limp; `pactl` can't hang the wake listener; the events page found
+  at setup must be a web address; the hood's number built from text, not markup; two tests that slept now wait.
+- **Scripts:** the voice server and the offline eyes read only their own settings from the env file, never the whole
+  file (it holds other keys); the job scripts need an explicit `run`, ask before anything billed (`ANDY_YES=1` for
+  unattended runs) and name any job left running if stopped early; a failed suite run keeps its log and fails instead
+  of saving an empty scorecard; the endpoint scripts ask before creating, remind how to stop, write the env file
+  owner-only from the start; the pre-commit hook also catches Hugging Face tokens, endpoint tokens, private keys and
+  a staged `.env`; the services back off to five minutes on repeated failure; the installer prints its usage on a
+  wrong argument; `space.sh` builds from the commit; tar extraction uses the safe filter.
+- **Repository:** the README's setup runs in order from the root, one way or the other (by hand or as services, never
+  both), with the prerequisites; `python3`; credits for Cosmos Reason 2, the Spanish wake model, Silero VAD and
+  Smart Turn, and where the recorded sentences and the simulation's renders come from; `SECURITY.md`;
+  `.gitattributes`; the app's own licence; package keywords and classifiers.
+
 ### Security (dependencies audited)
 
 `pip-audit` over every environment's lock file. Updated where a fix exists and nothing pins it: certifi

@@ -45,7 +45,7 @@ def test_each_item_can_be_deleted_and_everything_at_once(tmp_path):
     assert kept.delete("fact", fact) and kept.summary()["fact"] == []
     assert json.loads((tmp_path / "memory.json").read_text())["version"] == 1      # Pollen's format kept
     counts = kept.delete_everything()
-    assert counts == {"reminder": 1, "moment": 1, "fact": 0, "shared": 1, "photo": 1, "place": 0}
+    assert counts == {"reminder": 1, "moment": 1, "fact": 0, "shared": 1, "photo": 1, "place": 0, "pending": 0}
     assert all(not v for v in kept.summary().values())
     assert kept.words_for(counts) == ["a reminder", "a remembered moment", "a shared note", "a photo from family"]
 
@@ -149,3 +149,47 @@ def test_a_yes_that_starts_a_new_sentence_is_not_consent(words):
 def test_a_yes_with_a_short_closer_is_consent(words):
     from andy_companion import consent
     assert consent.asked(words) is True
+
+
+@pytest.mark.parametrize("words, ok", [
+    ("Yes", True), ("Yes please", True), ("Sí, por favor", True), ("Sure, go ahead", True),
+    ("Please share that with my daughter", True), ("Share it with the family", True), ("Tell my son I'm feeling better", True),
+    ("Can you send that to my family?", True), ("Compártelo con mi familia", True), ("Díselo a mi hija", True),
+    ("No", False), ("No, don't share that", False), ("Not now", False), ("Mejor no", False),
+    ("My daughter is coming on Friday", False), ("I had a lovely walk today", False), ("", False),
+])
+def test_sharing_needs_a_yes_or_a_plain_request(words, ok):
+    assert consent.asked_to_share(words) is ok
+
+
+def test_the_gate_stops_an_unasked_share():
+    class Handler:
+        def _emit_transcript(self, role, text, final=True):
+            pass
+
+    ran = []
+
+    class Routine:
+        def __init__(self, name):
+            self.tool_name = name
+
+        async def __call__(self, manager):
+            ran.append(self.tool_name)
+            return {"shared": True}
+
+    consent.install(Handler, Routine)
+    h = Handler()
+    h._emit_transcript("user", "My granddaughter's recital went really well")
+    assert asyncio.run(Routine("share_with_family")(None)) == consent.NOT_SHARED and ran == []
+    h._emit_transcript("user", "Yes, please")                  # the answer to "Shall I share that?"
+    assert asyncio.run(Routine("share_with_family")(None)) == {"shared": True}
+
+
+def test_delete_everything_also_clears_what_was_waiting_to_be_said(tmp_path, monkeypatch):
+    monkeypatch.setattr(board, "INBOX", tmp_path / "inbox.json")
+    board.family_message("Anna", "Call me tonight")
+    board.research_ready("Is the market on Saturday?", "Not this week.", [], [])
+    board.settings_changed("Leo", ["volume"])
+    counts = kept.delete_everything()
+    assert counts["pending"] == 2 and kept.words_for({"pending": 2}) == ["2 messages waiting to be said"]
+    assert [e["type"] for e in board._read(board.INBOX, [])] == ["settings"]      # who changed what is still said

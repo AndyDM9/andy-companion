@@ -74,7 +74,7 @@ video, the Devpost form, the repository) is checked against this file first.
 |---|---|---|
 | The sponsor and Devpost may use the entrants' name, likeness and voice for three years | ✅ | Accepted by entering; anyone else in the video agrees in writing first |
 | No personal data in submission materials | 🔶 | No real addresses, phone numbers or private links in the video. **The settings code is a private link: after filming it, press "Make a new settings link".** Family photos only with the family's agreement |
-| No harmful code | ✅ | Tests, a pre-commit check for key-like strings, an independent code and privacy review (2026-10-13, every finding fixed); the history rewritten before going public (2026-10-25: private matter out of every commit, dates kept), then gitleaks over all 161 commits: none |
+| No harmful code | ✅ | Tests; three best-practice reviews of the code, the scripts and the repository, every must-fix and should-fix done, and every dependency audited (2026-10-25, [SECURITY.md](../SECURITY.md)); a pre-commit check for key-like strings and env files, an independent code and privacy review (2026-10-13, every finding fixed); the history rewritten before going public (2026-10-25: private matter out of every commit, dates kept), then gitleaks over all 161 commits: none |
 
 ## Kept current
 

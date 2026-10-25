@@ -87,3 +87,12 @@ def test_spoken_time():
     assert reminders.spoken_time(datetime(2026, 10, 13, 17, 30).timestamp(), now=NOW) == "17:30 today"
     assert reminders.spoken_time(datetime(2026, 10, 14, 9, 0).timestamp(), now=NOW) == "09:00 tomorrow"
     assert reminders.spoken_time(datetime(2026, 10, 16, 9, 0).timestamp(), now=NOW) == "09:00 on Friday"
+
+
+def test_an_unreadable_reminders_file_is_set_aside_never_overwritten(tmp_path, monkeypatch):
+    store = tmp_path / "reminders.json"
+    monkeypatch.setattr(reminders, "STORE", store)
+    store.write_bytes(b'[{"text": "call Rosa", "due": 17')          # cut off part-way
+    assert reminders._load() == []
+    aside = list(tmp_path.glob("reminders.unreadable-*.json"))
+    assert len(aside) == 1 and aside[0].read_bytes().startswith(b'[{"text": "call Rosa"') and not store.exists()

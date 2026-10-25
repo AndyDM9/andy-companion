@@ -76,7 +76,10 @@ def test_only_andys_words_are_captioned():
         h._emit_transcript("user", "my private words", True)
         h._emit_transcript("assistant", "Good afternoon!", True)
         h._emit_transcript("assistant", "partial", False)
-        time.sleep(0.1)
+        deadline = time.monotonic() + 5                  # the send runs on its own thread: wait for it, not a guess
+        while not sent and time.monotonic() < deadline:
+            time.sleep(0.01)
+        time.sleep(0.05)                                 # and a moment for any wrong second send to show
     finally:
         c.send = original
     assert sent == ["Good afternoon!"]

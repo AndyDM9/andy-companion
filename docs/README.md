@@ -2,7 +2,7 @@
 
 Everything written down about Andy, in two groups: what explains the product, and the records of how it was built
 and entered in the Nebius x NVIDIA Global AI Hackathon. Start with the [README](../README.md); this page says where
-everything else is. Last checked 2026-10-21.
+everything else is. Last checked 2026-10-25.
 
 ## Read first: the product
 
@@ -17,6 +17,7 @@ everything else is. Last checked 2026-10-21.
 | [feedback.md](feedback.md) | Our feedback on Nebius Token Factory, AI Cloud, the NVIDIA models and Tavily |
 | [jetson-comparison.md](jetson-comparison.md) | Andy beside NVIDIA's Reachy Mini Jetson assistant, part by part |
 | [credits.md](credits.md) | Every model, library, service and text Andy uses, with its licence and credit |
+| [../SECURITY.md](../SECURITY.md) | How to report a vulnerability, what's in scope, and the dependency advisories not yet fixed |
 
 ## Records: how it was built and entered
 
@@ -29,8 +30,9 @@ everything else is. Last checked 2026-10-21.
 | [rules-compliance.md](rules-compliance.md) | The hackathon's rules, one by one, and how this entry meets each |
 | [submission-checklist.md](submission-checklist.md) | What must be done before submitting |
 | [submission.md](submission.md) | The Devpost text |
-| [video.md](video.md) | The video's plan and shot list |
+| [video.md](video.md) | The video's plan and shot list: the plan of record |
+| [video-script.md](video-script.md) | An alternative cut of the video, used only where the founder chooses it |
 | [feedback-notes.md](feedback-notes.md) | The dated notes [feedback.md](feedback.md) was written from |
 
-**A key to the shorthand in the records:** M1 to M10 are milestones (STATUS); B1 to B53 are plan items (PLAN); a
+**A key to the shorthand in the records:** M1 to M10 are milestones (STATUS); B1 to B58 are plan items (PLAN); a
 "round" is one day's batch of work from a review or research pass (PLAN, CHANGELOG).

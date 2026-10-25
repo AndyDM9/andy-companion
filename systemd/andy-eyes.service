@@ -8,6 +8,10 @@ WorkingDirectory=@ROOT@/local-eyes
 ExecStart=@ROOT@/local-eyes/run.sh
 Restart=on-failure
 RestartSec=30
+# The waits grow to five minutes, so a setting that can't work (no env file, no key) isn't retried every few
+# seconds for ever, and the robot still comes back by itself after anything passing (systemd 254 or newer).
+RestartSteps=5
+RestartMaxDelaySec=300
 # vLLM logs no request text (local-eyes/run.sh); keep the journal short anyway.
 LogRateLimitIntervalSec=30
 LogRateLimitBurst=200

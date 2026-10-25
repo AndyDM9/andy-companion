@@ -122,3 +122,22 @@ def test_every_console_in_the_voice_server_drops_what_was_heard():
         console.print(f"[green]ASSISTANT: {SECRET}")
         console.print("[green]Pipeline ready[/green]")
     assert printed == ["[green]Pipeline ready[/green]"] * 2
+
+
+def test_files_andy_creates_are_the_owners_alone(tmp_path, monkeypatch):
+    import os
+    import stat
+
+    from andy_companion import privacy
+    memory = tmp_path / "memory.json"
+    memory.write_text("{}")
+    os.chmod(memory, 0o664)                                  # as Pollen's remember left it
+    monkeypatch.setattr(privacy, "MEMORY_FILE", memory)
+    before = os.umask(0o022)
+    try:
+        privacy.owner_only_files()
+        (tmp_path / "new.json").write_text("{}")
+        assert stat.S_IMODE(os.stat(tmp_path / "new.json").st_mode) == 0o600
+        assert stat.S_IMODE(os.stat(memory).st_mode) == 0o600
+    finally:
+        os.umask(before)

@@ -21,6 +21,10 @@ in the same commit that makes it true.
 
 ## Before making the repository public
 
+- [x] Best-practice reviews of the code, the scripts and the repository (2026-10-25): every must-fix and should-fix
+      done (see the CHANGELOG); dependencies audited with `pip-audit`
+- [ ] When it goes public: GitHub's private vulnerability reporting, secret scanning and push protection turned on
+- [ ] At submission: the video's thumbnail (linked to YouTube) and a photo of Andy beside the TV at the top of the README
 - [x] A fresh clone installs and passes its tests (2026-10-13; from GitHub, all three environments, 2026-10-14)
 - [x] No home address, phone number or private project names in the tree
 - [x] The endpoints recreated with `create` (token in MysteryBox), so no token is in their start settings (2026-10-25: the old two deleted, the second look remade and checked: 401 without the token at both addresses)

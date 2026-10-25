@@ -27,6 +27,8 @@ from pathlib import Path
 from typing import Callable, Optional
 
 logger = logging.getLogger("andy.urgent")
+# Nothing here logs that urgent or crisis words were heard, not even when (2026-10-25 review): routine lines are at
+# DEBUG, which the journal doesn't keep, and a failure says only that a sentence could not be played.
 
 # Tasks started here are held until they finish: the event loop keeps only a weak reference to a task, so one
 # nobody holds can be collected before it runs to the end.
@@ -269,7 +271,7 @@ async def _no_reply(handler, frame: str, wait_s: Optional[float] = None) -> None
     await asyncio.sleep(NO_REPLY_S if wait_s is None else wait_s)
     if getattr(handler, "_andy_urgent_pending", False) == frame:
         handler._andy_urgent_pending = False
-        logger.info("Urgent words got no reply; following up")
+        logger.debug("A follow-up is due; playing it")
         await _follow_up(handler, frame)
 
 
@@ -293,9 +295,9 @@ async def _play(handler, frame: str, play: Callable[[str], bool], pause: Optiona
     except Exception:
         played = False
     if played:
-        logger.info("Urgent-words sentence played from its recording")
+        logger.debug("A recorded sentence played")
     else:
-        logger.warning("Urgent-words recording could not be played")
+        logger.warning("A recorded sentence could not be played")
 
 
 async def _follow_up(handler, frame: str = FRAME, reply: Optional[str] = None,
@@ -316,10 +318,10 @@ async def _follow_up(handler, frame: str = FRAME, reply: Optional[str] = None,
         await handler.say(frame)
         answer = await asyncio.wait_for(heard, timeout=REPLY_WAIT_S if wait_s is None else wait_s)
     except Exception as e:  # never the words, only the type
-        logger.warning("Urgent-words follow-up got no reply: %s", type(e).__name__)
+        logger.warning("A follow-up could not be said: %s", type(e).__name__)
     finally:
         handler._andy_urgent_reply = None
     if model_failed(answer) or needs_followup(answer, frame):
         await _play(handler, frame, play)
     else:
-        logger.info("Urgent-words follow-up said")
+        logger.debug("A follow-up was said")

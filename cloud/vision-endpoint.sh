@@ -9,17 +9,23 @@
 #
 # Needs the Nebius CLI with a profile for an eu-north1 project (L40S is offered there).
 set -euo pipefail
+# shellcheck source=cloud/secret.sh
 . "$(cd "$(dirname "$0")" && pwd)/secret.sh"
 NAME="${ANDY_VISION_NAME:-andy-vision}"
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 MODEL="nvidia/NVIDIA-Nemotron-Nano-12B-v2-VL-FP8"
 IMAGE="vllm/vllm-openai:v0.30.0"
 id_of() { nebius ai endpoint get-by-name --name "$NAME" --format json 2>/dev/null | python3 -c 'import json,sys; print(json.load(sys.stdin)["metadata"]["id"])'; }
-save() { # key value: replace or add one line in the private env file
-  touch "$ENV_FILE"; chmod 600 "$ENV_FILE"
-  grep -v "^$1=" "$ENV_FILE" > "$ENV_FILE.tmp" || true
-  printf '%s=%s\n' "$1" "$2" >> "$ENV_FILE.tmp"; mv "$ENV_FILE.tmp" "$ENV_FILE"; chmod 600 "$ENV_FILE"
-}
+save() ( # key value: replace or add one line in the private env file; every copy owner-only from the start
+  umask 077
+  mkdir -p "$(dirname "$ENV_FILE")"; touch "$ENV_FILE"; chmod 600 "$ENV_FILE"
+  tmp="$(mktemp "$ENV_FILE.XXXXXX")"; trap 'rm -f "$tmp"' EXIT
+  grep -v "^$1=" "$ENV_FILE" > "$tmp" || true
+  printf '%s=%s\n' "$1" "$2" >> "$tmp"; mv "$tmp" "$ENV_FILE"
+)
+PRICE="one L40S GPU, billed by the hour while running (about \$1.55 an hour, cloud/README.md)"
+STOP_NOTE="Billed by the hour from now until: $0 stop"
+need_id() { local id; id="$(id_of || true)"; [ -n "$id" ] || { echo "No endpoint called $NAME." >&2; exit 1; }; echo "$id"; }
 case "${1:-status}" in
   create)
     TOKEN="$(openssl rand -hex 32)"
@@ -27,6 +33,7 @@ case "${1:-status}" in
     # a pipe, secret.sh), and the endpoint reads it from there twice: --token-secret for Nebius's own check
     # at the HTTPS address, and VLLM_API_KEY, which vLLM reads in place of --api-key, for the plain IP:port.
     if [ -z "${DRY_RUN:-}" ]; then
+      confirm_paid "Creates and starts the endpoint $NAME: $PRICE."
       # A new token replaces the stored one, so never while an endpoint of this name exists: it would keep
       # reading the old one, and the new one would be lost if create then failed (review, 2026-10-14).
       if [ -n "$(id_of || true)" ]; then
@@ -51,6 +58,7 @@ case "${1:-status}" in
       --auth token --token-secret "$NAME-auth"
     [ -n "${DRY_RUN:-}" ] && exit 0
     echo "Created. Run '$0 status' until it is RUNNING; the URL is saved when it is."
+    echo "$STOP_NOTE"
     ;;
   status)
     nebius ai endpoint get-by-name --name "$NAME" --format json | python3 -c '
@@ -62,6 +70,7 @@ print("state:", s.get("state"), "| url:", (https or ["-"])[0])'
     URL="$(nebius ai endpoint get-by-name --name "$NAME" --format json | python3 -c 'import json,sys; s=json.load(sys.stdin).get("status",{}); print(next((e for e in s.get("public_endpoints", []) if e.startswith("https://")), ""))')"
     [ -n "$URL" ] && save ANDY_VISION_URL "$URL" || true
     ;;
-  start|stop|delete) nebius ai endpoint "$1" --id "$(id_of)" ;;
+  start) ID="$(need_id)"; nebius ai endpoint start --id "$ID"; echo "$STOP_NOTE" ;;
+  stop|delete) ID="$(need_id)"; nebius ai endpoint "$1" --id "$ID" ;;
   *) echo "usage: $0 create|start|stop|status|delete" >&2; exit 2 ;;
 esac

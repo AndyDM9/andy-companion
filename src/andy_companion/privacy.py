@@ -95,7 +95,16 @@ def own_memory_store() -> None:
     memory.memory_path_for_instance = andy_memory_path
 
 
+def owner_only_files() -> None:
+    """Every file this process creates is the owner's alone, Pollen's included (its remember tool made memory.json
+    readable by others, inside Andy's owner-only folder; 2026-10-25 review), and the memory file is made so now."""
+    os.umask(0o077)
+    if MEMORY_FILE.exists():
+        os.chmod(MEMORY_FILE, 0o600)
+
+
 def install() -> None:
+    owner_only_files()
     redact_records()
     own_memory_store()
 

@@ -18,6 +18,7 @@ from andy_companion.privacy import MEMORY_FILE
 
 KINDS = {"reminder": ("a reminder", "reminders"), "moment": ("a remembered moment", "remembered moments"),
          "fact": ("a remembered fact", "remembered facts"), "shared": ("a shared note", "shared notes"),
+         "pending": ("a message waiting to be said", "messages waiting to be said"),
          "photo": ("a photo from family", "photos from family"), "place": ("a remembered place", "remembered places")}
 
 
@@ -64,11 +65,12 @@ def delete(kind: str, item_id: str) -> bool:
     if kind == "moment":
         return moments.remove(item_id)          # by its exact id: never by words, which could match many
     if kind == "fact":
-        facts = _facts()
-        kept_facts = [f for f in facts if f["id"] != item_id]
-        if len(kept_facts) == len(facts):
-            return False
-        _write_facts(kept_facts)
+        with board.locked(MEMORY_FILE):     # Andy's own deletes, one at a time (Pollen's remember writes it too)
+            facts = _facts()
+            kept_facts = [f for f in facts if f["id"] != item_id]
+            if len(kept_facts) == len(facts):
+                return False
+            _write_facts(kept_facts)
         return True
     if kind == "shared":
         return board.unshare(item_id)
@@ -85,9 +87,12 @@ def delete(kind: str, item_id: str) -> bool:
 
 
 def delete_everything() -> Dict[str, int]:
+    """Everything listed, and what was waiting to be said: family messages and answers Andy looked into (they hold
+    words too; 2026-10-25 review). The notes saying who changed or deleted what stay, so the person hears this one."""
     counts = {}
     for kind, items in summary().items():
         counts[kind] = sum(1 for it in items if delete(kind, it["id"]))
+    counts["pending"] = board.clear_pending()
     return counts
 
 

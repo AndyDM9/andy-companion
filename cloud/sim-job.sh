@@ -3,7 +3,7 @@
 # Pollen's Reachy Mini MuJoCo scene rendered in software (OSMesa), the eyes on Token Factory. Two jobs, two at a time
 # (a new account's quota): the search zoomed in, and the old way (one shrunk picture per view), on the same seed.
 #
-#   cloud/sim-job.sh [trials, default 30] [duck scale, default 0.35]
+#   cloud/sim-job.sh run [trials, default 30] [duck scale, default 0.35]
 #
 # A job's request may hold 64 KB, so the code goes as one compressed bundle; the scene (24 MB) comes from PyPI
 # inside the job (reachy-mini==1.12.0rc1, the robot's own version, without its dependencies).
@@ -12,21 +12,25 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
 PROJECT="${NEBIUS_JOB_PROJECT:-${NEBIUS_PROJECT:-$(nebius config get parent-id 2>/dev/null || true)}}"
 SECRET="andy-token-factory"
+# Nothing starts without the word run, and anything but numbers after it (--help included) prints the usage:
+# nothing is stored or started, so nothing is paid.
+if [ "${1:-}" != run ]; then sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; exit 2; fi
+shift
 TRIALS="${1:-30}"
 SCALE="${2:-0.35}"
-# Anything but numbers (--help included) prints the usage: nothing is stored or started, so nothing is paid.
 if ! [[ $TRIALS =~ ^[0-9]+$ && $SCALE =~ ^[0-9.]+$ ]]; then sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; exit 2; fi
 SEED="${ANDY_SIM_SEED:-21}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
 # shellcheck source=cloud/secret.sh
 . "$ROOT/cloud/secret.sh"
+confirm_paid "Runs two Nebius Serverless Jobs ($TRIALS trials each): two 4-vCPU VMs for up to two hours, and the Token Factory calls."
 KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' "$ENV_FILE" | tail -1)"
 [ -n "$KEY" ] || { echo "No NEBIUS_API_KEY in $ENV_FILE" >&2; exit 1; }
 printf '%s' "$KEY" | store_secret "$SECRET" NEBIUS_API_KEY "Token Factory key for Andy's evaluations"
 unset KEY
 
-WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
+WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"; jobs_left' EXIT; trap 'exit 130' INT TERM
 mkdir -p "$WORK/b/sim" "$WORK/b/src/andy_companion"
 cp "$ROOT/sim/finder_sim.py" "$WORK/b/sim/"
 for f in __init__ finder vision reading measure; do cp "$ROOT/src/andy_companion/$f.py" "$WORK/b/src/andy_companion/"; done
@@ -41,7 +45,7 @@ apt-get update -qq >/dev/null && apt-get install -y -qq --no-install-recommends 
 pip install -q --no-cache-dir mujoco==3.3.0 numpy "opencv-python-headless>=4.10,<5" PyOpenGL >/dev/null
 pip download -q --no-deps reachy-mini==1.12.0rc1 -d /tmp/wheel >/dev/null
 cd /andy
-python3 -c "import base64, io, tarfile, zipfile, glob; tarfile.open(fileobj=io.BytesIO(base64.b64decode(open('bundle.b64').read())), mode='r:xz').extractall(); z = zipfile.ZipFile(glob.glob('/tmp/wheel/*.whl')[0]); [z.extract(n, '/andy/pkg') for n in z.namelist() if '/descriptions/' in n]"
+python3 -c "import base64, io, tarfile, zipfile, glob; tarfile.open(fileobj=io.BytesIO(base64.b64decode(open('bundle.b64').read())), mode='r:xz').extractall(filter='data'); z = zipfile.ZipFile(glob.glob('/tmp/wheel/*.whl')[0]); [z.extract(n, '/andy/pkg') for n in z.namelist() if '/descriptions/' in n]"
 export ANDY_SIM_MJCF=/andy/pkg/reachy_mini/descriptions/reachy_mini/mjcf MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa
 export ANDY_SIM_WHERE="Nebius Serverless Job, cpu-d3 4vcpu-16gb"
 exec python3 sim/finder_sim.py --trials $TRIALS --seed $SEED --zoom $zoom --duck-scale $SCALE --out -
@@ -54,6 +58,7 @@ SH
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 4vcpu-16gb --disk-size 20Gi \
     --timeout 2h --restart-policy never >/dev/null
+  STARTED_JOBS+=("$name")
   echo "Zoom $zoom: job $name started ($(wc -c < "$WORK/bundle.b64") bytes of code)"
 }
 
@@ -83,3 +88,4 @@ print(json.dumps(card, indent=1))' "$log" "$name" > "$out" 2>/dev/null \
 
 launch on; launch off
 finish on; finish off
+JOBS_DONE=1

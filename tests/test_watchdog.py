@@ -133,4 +133,29 @@ def test_the_voice_server_uses_the_first_gpu_unless_told_otherwise():
     """A judge's computer with one GPU has only GPU 0; the founder's sets ANDY_VOICE_GPU=1 in the env file."""
     run = (Path(__file__).resolve().parents[1] / "voice" / "run.sh").read_text()
     assert 'CUDA_VISIBLE_DEVICES="${ANDY_VOICE_GPU:-0}"' in run
-    assert run.index(". \"$ENV_FILE\"") < run.index("CUDA_VISIBLE_DEVICES")      # the env file can choose
+    reads = run.index("for name in NEBIUS_API_KEY NEBIUS_BASE_URL ANDY_MODEL ANDY_VOICE_GPU")
+    assert reads < run.index("CUDA_VISIBLE_DEVICES")                                # the env file can choose
+    assert '. "$ENV_FILE"' not in run and "set -a" not in run      # only its own settings, never the whole file
+
+
+def test_the_launchers_read_only_their_own_settings(tmp_path):
+    """Neither the voice server nor the offline eyes is handed the rest of the env file's keys (2026-10-25)."""
+    import os
+    import subprocess
+
+    root = Path(__file__).resolve().parents[1]
+    env = tmp_path / ".env"
+    env.write_text('NEBIUS_API_KEY="nb-abc"\nTAVILY_API_KEY=tvly-secret\nANDY_VOICE_GPU=1\nANDY_LOCAL_EYES_MODEL=x/8B\n')
+    for script, show in (("voice/run.sh", "NEBIUS_API_KEY CUDA_VISIBLE_DEVICES TAVILY_API_KEY"),
+                         ("local-eyes/run.sh", "ANDY_LOCAL_EYES_MODEL TAVILY_API_KEY NEBIUS_API_KEY")):
+        text = (root / script).read_text().split("\nexec ", 1)[0]
+        probe = tmp_path / "probe.sh"
+        probe.write_text(text + f'\nfor n in {show}; do echo "$n=${{!n:-}}"; done\n')
+        out = subprocess.run(["bash", str(probe)], cwd=root / script.split("/")[0], capture_output=True, text=True,
+                             env={"PATH": os.environ["PATH"], "HOME": str(tmp_path), "ANDY_ENV_FILE": str(env)})
+        assert out.returncode == 0, out.stderr
+        assert "TAVILY_API_KEY=\n" in out.stdout + "\n", (script, out.stdout)
+        if script.startswith("voice"):
+            assert "NEBIUS_API_KEY=nb-abc\n" in out.stdout and "CUDA_VISIBLE_DEVICES=1" in out.stdout
+        else:
+            assert "ANDY_LOCAL_EYES_MODEL=x/8B" in out.stdout and "NEBIUS_API_KEY=\n" in out.stdout

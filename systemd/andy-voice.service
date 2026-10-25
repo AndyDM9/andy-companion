@@ -8,6 +8,10 @@ WorkingDirectory=@ROOT@/voice
 ExecStart=@ROOT@/voice/run.sh
 Restart=on-failure
 RestartSec=10
+# The waits grow to five minutes, so a setting that can't work (no env file, no key) isn't retried every few
+# seconds for ever, and the robot still comes back by itself after anything passing (systemd 254 or newer).
+RestartSteps=5
+RestartMaxDelaySec=300
 # No conversation text is logged (voice/serve.py); keep the journal short anyway.
 LogRateLimitIntervalSec=30
 LogRateLimitBurst=200

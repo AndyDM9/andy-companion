@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77"]                # an SPDX licence string needs 77 or newer
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,8 @@ version = "0.1.0"
 description = "Andy: a home companion for older adults who live at home, and the family who help. NVIDIA Nemotron on Nebius."
 readme = "README.md"
 license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "AndyDM9" }]
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "reachy-mini==1.12.0rc1",                  # the SDK Andy is tested on
@@ -15,6 +17,9 @@ dependencies = [
     "andy-companion[robot] @ git+https://github.com/AndyDM9/andy-companion@main",
 ]
 keywords = ["reachy-mini-app"]
+
+[project.urls]
+Repository = "https://github.com/AndyDM9/andy-companion"
 
 [project.entry-points."reachy_mini_apps"]
 andy_companion_app = "andy_companion_app.main:AndyCompanionApp"

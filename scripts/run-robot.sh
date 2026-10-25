@@ -4,6 +4,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APP_PY="${ANDY_APP_PYTHON:-$ROOT/robot/.venv/bin/python}"   # cd robot && uv sync
+[ -x "$APP_PY" ] || { echo "First: (cd robot && uv sync)" >&2; exit 1; }
 export REACHY_MINI_CUSTOM_PROFILE=companion
 export REACHY_MINI_EXTERNAL_PROFILES_DIRECTORY="$ROOT/profiles"
 export REACHY_MINI_EXTERNAL_TOOLS_DIRECTORY="$ROOT/tools"

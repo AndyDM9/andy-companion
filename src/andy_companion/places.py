@@ -20,6 +20,7 @@ import tempfile
 import time
 from typing import Any, Dict, List, Optional
 
+from andy_companion.board import locked
 from andy_companion.reminders import DATA_DIR
 
 FILE = DATA_DIR / "places.json"
@@ -69,8 +70,9 @@ def keep(what: str, where: str, yaw: Optional[float] = None, pitch: Optional[flo
         raise ValueError("I need to know what it is and where.")
     item = {"id": secrets.token_hex(3), "what": what, "where": where, "at": now or time.time(),
             "yaw": None if yaw is None else round(float(yaw), 4), "pitch": None if pitch is None else round(float(pitch), 4)}
-    items = [p for p in _load() if _key(p["what"]) != _key(what)] + [item]
-    _save(items[-MAX_PLACES:])
+    with locked(FILE):          # the settings page deletes from another process (2026-10-25 review)
+        items = [p for p in _load() if _key(p["what"]) != _key(what)] + [item]
+        _save(items[-MAX_PLACES:])
     return item
 
 
@@ -79,21 +81,23 @@ def kept() -> List[Dict[str, Any]]:
 
 
 def remove(item_id: str) -> bool:
-    items = _load()
-    left = [p for p in items if p.get("id") != str(item_id)]
-    if len(left) == len(items):
-        return False
-    _save(left)
+    with locked(FILE):
+        items = _load()
+        left = [p for p in items if p.get("id") != str(item_id)]
+        if len(left) == len(items):
+            return False
+        _save(left)
     return True
 
 
 def forget(what: str) -> int:
     """Forget where a thing is (kept and last seen). Returns how many places were forgotten."""
     key = _key(what)
-    items = _load()
-    left = [p for p in items if _key(p["what"]) != key]
-    if len(left) != len(items):
-        _save(left)
+    with locked(FILE):
+        items = _load()
+        left = [p for p in items if _key(p["what"]) != key]
+        if len(left) != len(items):
+            _save(left)
     seen = _last_seen.pop(key, None)
     return len(items) - len(left) + (1 if seen else 0)
 
