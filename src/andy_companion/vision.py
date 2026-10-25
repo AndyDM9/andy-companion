@@ -46,10 +46,20 @@ NAMES = {"token-factory": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory"
          "local": "NVIDIA Cosmos Reason 2 2B on this computer"}
 # The eyes that answered last ("" before any picture): the hood names these, so a fallback is never hidden.
 _used = ""
-PROMPT = ("You are the eyes of a home companion robot, talking to an older adult. Describe what is in "
-          "this picture in two or three short, plain sentences, most important first. {ask} Never say "
-          "who a person is, or guess their age, health or mood; describe only what is there. If text is "
+PROMPT = ("You are the eyes of a home companion robot, talking to an older adult. {ask} If they ask about "
+          "something they are holding or showing you, say first what that thing is, as specifically as you can "
+          "(what it is, its colour, any words on it): it is usually the nearest thing, near the middle of the view. "
+          "Otherwise describe what is in the picture in two or three short, plain sentences, most important first. "
+          "Never say who a person is, or guess their age, health or mood; describe only what is there. If text is "
           "visible, mention it briefly. If the picture is too dark or blurry, say so.")
+# The camera's view at 1280 across, and its middle at full detail beside it: shrunk to 768 across, a small toy held up
+# became "a computer mouse" (2026-10-25). In a test, a toy gorilla 130 px tall in a 1920 px room was named 2 of 2 this
+# way, 1 of 2 at 768; about 0.7 s more. A family photo is the whole picture, so it goes alone.
+VIEW_WIDTH = 1280
+MIDDLE = (0.25, 0.75, 0.2, 0.95)                       # left, right, top, bottom: where a thing held up usually is
+MIDDLE_WIDTH = 1024
+MIDDLE_NOTE = (" The second picture is the middle of the first at full detail: use it for small things and anything "
+               "held up, and describe the scene once.")
 
 
 class VisionError(Exception):
@@ -210,14 +220,24 @@ def ready(e: Optional[Dict[str, Any]], opener: Optional[Callable] = None) -> str
     return ""
 
 
-def describe(frame: Any, question: str = "", opener: Optional[Callable] = None) -> str:
+def middle(frame: Any) -> Any:
+    """The middle of a camera view (MIDDLE), at full resolution."""
+    h, w = frame.shape[:2]
+    left, right, top, bottom = MIDDLE
+    return frame[int(h * top):int(h * bottom), int(w * left):int(w * right)]
+
+
+def describe(frame: Any, question: str = "", opener: Optional[Callable] = None, close: bool = True) -> str:
+    """What is in a picture, in a few sentences; with `close`, the camera's view sent with its middle at full detail."""
     e = eyes()
     why = ready(e, opener)
     if why:
         raise VisionError(why)
-    image = "data:image/jpeg;base64," + base64.b64encode(jpeg(frame)).decode()
+    pictures = [jpeg(frame, VIEW_WIDTH)] + ([jpeg(middle(frame), MIDDLE_WIDTH, 90)] if close else [])
     ask = f"They asked: {' '.join(question.split())[:200]}" if question.strip() else ""
-    content = [{"type": "text", "text": PROMPT.format(ask=ask)}, {"type": "image_url", "image_url": {"url": image}}]
+    content = [{"type": "text", "text": PROMPT.format(ask=ask) + (MIDDLE_NOTE if close else "")}]
+    content += [{"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + base64.b64encode(p).decode()}}
+                for p in pictures]
     try:
         return " ".join(answer(e, content, 160, 0.2, opener=opener).split())[:800]
     except Exception as e:   # never echo the request: it holds the picture
@@ -252,6 +272,7 @@ def describe_photo(photo_id: str, opener: Optional[Callable] = None) -> dict:
     if frame is None:   # imread gives None, not an error, for a file it cannot read
         return {"error": "I couldn't open that photo."}
     try:
-        return {"description": describe(frame, "This is a photo a family member sent.", opener), "how": PHOTO_HOW}
+        return {"description": describe(frame, "This is a photo a family member sent.", opener, close=False),
+                "how": PHOTO_HOW}
     except VisionError as e:
         return {"error": str(e)}

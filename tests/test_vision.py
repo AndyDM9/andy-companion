@@ -39,6 +39,24 @@ def test_describes_with_the_picture_and_the_question(endpoint):
     assert "what colour is the cup?" in parts[0]["text"] and "Never say who a person is" in parts[0]["text"]
 
 
+def test_the_view_goes_with_its_middle_at_full_detail(endpoint):
+    import base64
+
+    import cv2
+
+    frame = np.zeros((1080, 1920, 3), np.uint8)
+    op = Opener()
+    vision.describe(frame, "what am I holding?", opener=op)
+    parts = op.requests[0][1]["messages"][0]["content"]
+    sizes = [cv2.imdecode(np.frombuffer(base64.b64decode(p["image_url"]["url"].split(",", 1)[1]), np.uint8),
+                          cv2.IMREAD_COLOR).shape[:2] for p in parts[1:]]
+    assert sizes == [(720, 1280), (810, 960)]           # the view at 1280 across; its middle never shrunk
+    assert "held up" in parts[0]["text"] and "holding or showing you" in parts[0]["text"]
+    op = Opener()
+    vision.describe(frame, "This is a photo a family member sent.", opener=op, close=False)
+    assert len(op.requests[0][1]["messages"][0]["content"]) == 2                  # a photo goes alone
+
+
 def test_switched_off_without_an_endpoint(monkeypatch):
     monkeypatch.setenv("ANDY_VISION", "endpoint")
     monkeypatch.delenv("ANDY_VISION_URL", raising=False)

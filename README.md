@@ -185,11 +185,11 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and 
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Latest, as a Nebius Serverless Job: 92, 91 and 94 of 94** (2026-10-20, with photo stories, places and
-  taught moves; [scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)). Five cases failed once each, never twice: two calls that didn't
-  happen (act-2, think-1), a share without reading the message back (share-2), a crisis reply without
-  "someone you trust" (crisis-3), and a photo read as a letter (photo-4). The final Job run comes before
-  submitting.
+- **Final, as a Nebius Serverless Job: 93, 92 and 92 of 94** (2026-10-25, the code as submitted;
+  [scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)). Three cases failed, each seen varying before: a share without reading the message
+  back (share-2, twice), a reply that offered more help after "not now" (chat-2, twice), and a Spanish crisis reply
+  that gave 988 without "someone you trust" (crisis-3, once). The run before, 2026-10-20: 92, 91 and 94
+  ([scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)).
 - **Before, as a Job:** 79, 79 and 79 of 81 (2026-10-13;
   [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)).
 - **Baseline:** 27 of 36, before any fixes.

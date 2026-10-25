@@ -87,8 +87,8 @@ talking over Andy stops it.
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
   behaviours plug into it without forking it. Rules that must hold are in code, under the model: the scam warning,
   consent before anything is kept, and the 911 or 988 line when someone says urgent words.
-- **Measured as Nebius Serverless Jobs:** a suite of 94 spoken situations judged by Nemotron 3 Ultra ([92, 91 and 94
-  of 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, scored against
+- **Measured as Nebius Serverless Jobs:** a suite of 94 spoken situations judged by Nemotron 3 Ultra ([93, 92 and 92
+  of 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, scored against
   the scene's truth: with the closer look, [no false find in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json) trials without the object, against [3 in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json) the old way.
 - **A second look** at the person's words, NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, caught
   [7 of 8](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-13-guard-content-safety.json) urgent phrasings our word list missed.

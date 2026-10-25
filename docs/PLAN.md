@@ -208,7 +208,7 @@ No new features: reviews of how judges see the entry, and the fixes they found.
 |---|---|---|
 | C1 | gitleaks over every commit; a fresh-clone install from GitHub once public | 🔶 gitleaks: 108 commits, no leaks (2026-10-14); a fresh clone of the private repository installs and passes (2026-10-14); again once public |
 | C2 | Remove dead code (the review's three unused imports); mark finished milestones done in this file | ✅ 2026-10-14 (four unused imports removed; ruff's error and bug checks pass) |
-| C3 | The final Nebius Serverless Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ⬜ (10-23) |
+| C3 | The final Nebius Serverless Job run on 2026-10-23; its numbers into the README, the Devpost text and the video script in one commit | ✅ 2026-10-25: 93, 92, 92 of 94 |
 | C4 | Pin the Reachy Mini app's `andy-companion` dependency to the `hackathon-submission` tag | ⬜ (10-27) |
 
 ### The founder

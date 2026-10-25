@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Measured (the final conversation suite as a Nebius Serverless Job, PLAN C3)
+
+94 spoken situations, three runs, judged by Nemotron 3 Ultra: **93, 92 and 92 of 94**
+([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)). Failed: share-2 twice, chat-2
+twice, crisis-3 once, each seen varying in earlier runs. The numbers replace 2026-10-20's (92, 91, 94) in the README,
+the Devpost text, the video's shot 7, `cloud/README.md` and the results index. The first try went to the default
+project in eu-north1, which has no CPU quota for Jobs; the run used the eu-west2 project, as before.
+
+### Fixed ("What do you see?" sees small things: the view with its middle at full detail)
+
+On the robot the founder held up a small toy gorilla and Andy said it was a small computer mouse. "What do you see?"
+sent the camera's 1920-pixel view shrunk to 768 across, where a toy held up is a few dozen pixels: the problem the
+finder's zoomed tiles fixed for finding things (0 of 9 at 768 against 9 of 9, 2026-10-20), never applied to
+describing. Now `vision.describe` sends the view at 1280 across **and its middle at full resolution** (where a thing
+held up usually is), and the words ask it to say first what a thing held up or shown is, as specifically as it can.
+A family photo still goes alone (the whole picture matters). Measured with Super VL on Token Factory, a CC BY-SA toy
+gorilla photo placed into a CC0 room photo: 130 px tall, named "a small black stuffed gorilla" 2 of 2 (1 of 2 at
+768); 200 px tall, named; 80 px on a busy wall, still missed. About 2.4 s a look instead of 1.7. A test checks the
+two pictures' sizes. Andy restarted; the founder's own try is next.
+
 ### Added (the doctor names another app driving the robot)
 
 The head and antennas shook on the robot this afternoon: another conversation app on this desktop was connected to
