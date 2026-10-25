@@ -19,12 +19,13 @@ scales with use: twice the talking is about twice the conversation line.
 ## The eyes
 
 Since 2026-10-20 the eyes are NVIDIA Nemotron 3.5 Super VL on Token Factory, paid per picture. A description is
-one picture, about 1,000 input tokens (814 to 1,078 measured at 768 px wide) and under 40 output. A search reads
+the camera's view at 1280 px wide with its middle at full detail (since 2026-10-25): about 1,900 input tokens (1,898
+measured, against about 490 for the 768 px picture before) and under 60 output. A search reads
 each of its four views as six tiles at full resolution: measured on a 1920 x 1080 view (2026-10-20), 3,636 input
 tokens and about 190 output a view, and 651 in and 33 out for each closer look (one or two). A search is about
 **15,000 to 16,000 input tokens and 800 output**. At Token Factory's price (its models API, 2026-10-20: $0.30 per
 million input tokens, $0.90 per million output, served from us-north1), a search is about **$0.005** and a
-description about $0.0003; three searches a day would add about $0.50 a month to the total above. Nothing runs,
+description about $0.0006; three searches a day would add about $0.50 a month to the total above. Nothing runs,
 and nothing is paid, while idle.
 
 ## The scam check, per check (measured 2026-10-20)

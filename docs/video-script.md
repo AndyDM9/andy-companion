@@ -1,6 +1,7 @@
 # Video script: Nebius x NVIDIA Global AI Hackathon
 
-Drafted 2026-10-25. Runs 2:54. Builds on [video.md](video.md), adding the latency, the cost and a limitations beat, and cutting the "late husband" boundaries shot. Only people's lines are scripted; Andy answers live. Never cut a pause.
+Drafted 2026-10-25, an alternative cut: [video.md](video.md) is the plan of record (the shot list, the checks before
+filming and the rules), and this script is used only where the founder chooses it. Runs 2:54. Builds on [video.md](video.md), adding the latency, the cost and a limitations beat, and cutting the "late husband" boundaries shot. Only people's lines are scripted; Andy answers live. Never cut a pause.
 
 | # | Time | What we see | What is said |
 |---|---|---|---|

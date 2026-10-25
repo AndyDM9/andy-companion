@@ -203,8 +203,8 @@ def check_message(monkeypatch):
 
 
 SCAM = ("URGENT from Prize Center: you WON $25,000! Call 1-888-555-0199 or 305 555 0142 now, pay the fee at "
-        "www.prize-claims.com or bit.ly/win25 and email claims@prize-center.org with your account 4417123456789113.")
-EVIDENCE = "Call 1-888-555-0199 or 305 555 0142 now, pay the fee at www.prize-claims.com or bit.ly/win25 and email claims@prize-center.org"
+        "www.prize-claims.example or bit.ly/win25 and email claims@prize-center.example with your account 4417123456789113.")
+EVIDENCE = "Call 1-888-555-0199 or 305 555 0142 now, pay the fee at www.prize-claims.example or bit.ly/win25 and email claims@prize-center.example"
 WARNING = {"source": "consumer.ftc.gov", "title": "Fake prize, sweepstakes, and lottery scams", "summary": "…",
            "url": "https://consumer.ftc.gov/articles/fake-prize-sweepstakes-and-lottery-scams"}
 HOW = {"calls": ["search"], "depth": "advanced", "seconds": 2.4, "credits": 2}
@@ -301,7 +301,7 @@ def test_the_no_sign_and_web_unavailable_cards_are_kept(check_message, monkeypat
     ("call five five five one two one two today", "call … today"),
     ("visit www.prize.com or bit.ly/abc", "visit … or …"),
     ("go to prize help dot com", "go to prize …"),
-    ("email claims@prize-center.org", "email …"),
+    ("email claims@prize-center.example", "email …"),
     ("1-888-555-0199", ""),
     ("Grandma, I'm in jail and need bail money", "Grandma, I'm in jail and need bail money"),
 ])

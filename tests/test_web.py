@@ -176,7 +176,7 @@ def test_calls_outside_a_trace_note_nothing_and_unknown_credits_stay_unknown():
     assert web.traced(lambda: [])[1] == {}
 
 
-@pytest.mark.parametrize("host, official", [("www.harborbayfl.gov", True), ("cityofmiami.gov", True), ("www.townofsurfside.com", True),
+@pytest.mark.parametrize("host, official", [("www.harborbayfl.gov", True), ("cityofmiami.gov", True), ("www.townofharborbay.com", True),
                                             ("county.example.org", True), ("downtownstore.com", False), ("citysearch.com", False)])
 def test_a_towns_own_site_is_told_by_whole_labels(host, official):
     assert bool(web.OFFICIAL.search(host)) is official

@@ -181,7 +181,7 @@ def research() -> None:
     board.show("research", "Is the farmers market on this Saturday?", [
         {"title": f"Not this Saturday, {spoken(saturday)}"}, {"title": "First Saturday of each month, 9 am to noon"},
         {"title": f"Next market: Saturday, {spoken(first_saturday)}"},
-        {"title": "Sources", "summary": "miamidade.gov, the market's own page"}],
+        {"title": "Sources", "summary": "the market's own page (sample)"}],
         how={"calls": ["research"], "depth": "mini", "seconds": 23.4, "credits": None, "sites": 9})
 
 

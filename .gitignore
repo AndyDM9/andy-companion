@@ -24,3 +24,19 @@ evals/results/scam-parts-*/
 *.webm
 *.m4a
 andy-finder-tries/
+
+# Media from filming and captions drafts (transcripts) never go in; the simulation's film is the one video kept.
+*.mp4
+!docs/images/sim-search.mp4
+*.mp3
+*.ogg
+*.flac
+*.aac
+*.jpg
+*.jpeg
+*.heic
+*.srt
+# Credentials
+*.pem
+*.key
+credentials*.json

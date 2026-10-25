@@ -5,23 +5,39 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Checked before going public (two independent reviews), and corrected
+
+The repository and the Space were made public, then private again within minutes at the founder's request for one
+more detailed check first. A fresh clone of the rewritten history from GitHub installs all three environments and
+passes its tests, gitleaks finds no leaks, the keyless demo serves every page and refuses writes, and Pollen's
+checker passes the app. Two independent reviews read every file and image (privacy) and every claim against its
+scorecard (accuracy): all 208 relative links resolve and the numbers match their scorecards, and these were fixed:
+- **Said as working but not yet tried on the robot:** turning to a voice, waving back, moves taught by hand and
+  remembering where things are now say so in the README, the Devpost text and the app's page; so do the offline eyes.
+- **Corrected:** the sweep saw the chair in 5 of the 6 misses, not all 6; a leftover "[the robot test is next]";
+  "everything in the video is live" is now "every robot shot"; the Cosmos comparison names its trial set (seed 11,
+  Super VL 21 of 23); the reply time quotes 62 turns on the robot (median 0.94 s) instead of 9; the scam run's 2.7
+  minutes instead of "about six"; Ultra's intervals (84–97%, 0–7%, over what it answered); "120 messages read
+  aloud" is "written as a person would read them"; an unsourced launch price dropped; the test count; a STATUS
+  figure (the zoom-off run had 0 false finds in 7, not 1); the newer guard scorecard linked.
+- **Measured:** "what do you see?" since it sends the view's middle at full detail: median 2.43 s and 1,898 input
+  tokens (1.66 s and 493 before), about $0.0006 a description (`cost.md`).
+- **Private or over-sharing, toned down:** a real nearby town's site in a test (now `townofharborbay.com`), sample
+  scam domains on `.example`, the made-up market schedule no longer credited to a real county site (the screenshot
+  retaken at the same moment), prize-strategy wording in the plan, and what exactly was rewritten out of the history.
+- **`.gitignore`:** videos (but the simulation's film), audio, photos, caption drafts and credential files.
+- `video.md` is the plan of record; `video-script.md` an alternative cut.
+
 ### Decided (the name, and who enters)
 
-The project is **Andy**, entered by the founder as an individual with a personal account, as registered on Devpost;
-no company name in the entry or the repository (changing the entrant days before the deadline changes eligibility
-and who is paid, and the sponsor may use submission materials for three years). The founder confirms with counsel
-that the work is theirs to enter.
+The project is **Andy**, entered by the founder as an individual, as registered on Devpost.
 
 ### Rewritten (the history, before going public; decision 0003)
 
 Every earlier version of every file becomes readable once the repository is public, so private matter that had reached
-older commits was rewritten out of all 161 of them with `git filter-repo`, every commit's date and message kept and
-today's files byte-for-byte unchanged: a private note (dropped from every commit), the founder's company name and
-work address, three judges' names (each replaced with "a judge"), the founder's town and its sites (the fictional
-"Harbor Bay", as the current files already use), an endpoint's IP address (a documentation address), and the earlier
-assistant's name. Checked on the rewritten history before pushing: each term found 0 times, gitleaks 8.30.1 no leaks
-in any commit or the files, none of the env file's secret values anywhere. Force-pushed to GitHub with the founder's
-agreement; a bundle of the history before the rewrite is kept outside the repository. Commit hashes before today's
+older commits (personal and business details, and an old endpoint's address) was rewritten out of all of them with
+`git filter-repo`, every commit's date kept and today's files byte-for-byte unchanged. Checked before pushing: none
+of it left in any commit, and gitleaks 8.30.1 found no leaks in any commit or the files. Commit hashes from before the
 rewrite no longer exist; the records quote none of them.
 
 ### Hugging Face: signed in to publish; the Space needs PRO (decision 0010 amended)
@@ -277,8 +293,8 @@ would, then a walk through the public demo:
   screenshots retaken from the demo; 19 unused screenshots removed (one showed a stock photo).
 - **The eyes' cost measured again:** a search is now about 15,000 input tokens, about half a cent, not 4,000.
 - **The video plan:** shot 3 is the track's one-minute clip on its own, 72 s uncut; the plan retimed to 2:54.
-- **Private matter out of the public files:** judges' names beside what we built for them, the company's name, the
-  founder's town; a real endpoint address in a test replaced with a documentation address; recordings ignored.
+- **Private matter out of the public files:** personal and business details; a real endpoint address in a test
+  replaced with a documentation address; recordings ignored.
 - **feedback.md and rules-compliance.md** brought up to date (Super VL, the simulation Jobs, Parakeet's one gap,
   physical access on request, the two Bonus Awards that can't both be won).
 
@@ -793,7 +809,7 @@ screen server (Playwright, 1920 × 1080 and 1280 × 720):
   - **With Tavily:** **39 of 40** (9 of 10 subtle ones), still **0 of 40 flagged**, and 38 of 39 scam
     verdicts name the consumer-protection source Andy says aloud.
   - Median search 3.1 s.
-  - This is the "make the Tavily bonus undeniable" item; the README and the Devpost text carry it.
+  - This measures what Tavily adds; the README and the Devpost text carry it.
 - **The events finder, live:** for the founder's town it found the town's own .gov site in 1.3 s.
   The site refuses crawlers (403; Tavily map came back empty), so the finder now falls back to a Tavily
   search within the town's own site, which found **its events page (`/Parks-Recreation/Events`)** in 3.8 s. 1 more

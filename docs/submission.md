@@ -2,7 +2,7 @@
 
 The text for the Devpost form, field by field. Every sentence is true and checkable in the repository; each number
 comes from the scorecard or measurement named in the README. Rewritten 2026-10-21 to the length and shape of
-recent winning entries (about 1,500 words, Devpost's own headings, each number said once); re-read against
+recent winning entries (about 1,900 words now, Devpost's own headings, each number said once); re-read against
 [rules-compliance.md](rules-compliance.md) before submitting. Every number links to its scorecard or source; the
 links point at the `hackathon-submission` tag on GitHub, so they work once the tag is pushed and the repository is public. The fuller story is in the [README](../README.md).
 
@@ -28,8 +28,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 
 ### For the judges
 
-A small home robot that reads the letter in your hand, looks around the room for your glasses, and turns to whoever
-is speaking. Entered in the **Physical AI track**.
+A small home robot that reads the letter in your hand and looks around the room for your glasses. Entered in the **Physical AI track**.
 - **Track fit:** Andy is an embodied agent that senses and acts: Pollen's Reachy Mini conversation app is its agent
   runtime, NVIDIA Nemotron on Nebius decides (with NVIDIA Cosmos Reason 2 as its eyes when offline), and the robot
   hears, sees, turns its head and points.
@@ -64,11 +63,13 @@ do that a phone can't:
   consumer-protection warnings found with Tavily, and the TV says what to do first, then why, with the warning's
   source.
 
-Andy also notices the room: it turns to a second person speaking, and waves back with its antennas when you wave. It
-remembers where you put your keys if you say yes, keeps reminders in your words, researches a question on the TV
+Andy also keeps reminders in your words, researches a question on the TV
 while you carry on talking, turns a family photo into a story, and speaks English and Spanish. Family see only what
 you share, and Andy tells you who looked. Captions are on by default, every text colour reaches 7:1 contrast, and
 talking over Andy stops it.
+
+New and tested in code, not yet tried on the robot: turning to a second person speaking, waving back with its
+antennas when you wave, a move taught by hand, and remembering where you put your keys (after a yes).
 
 ### How we built it
 
@@ -81,8 +82,9 @@ talking over Andy stops it.
   at once in about 1.8 s, each a structured answer, then a strict yes or no about the close-up. On one room photo, zooming
   in took the search from [0 of 9 to 9 of 9](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/zoom-check-2026-10-20-1711.json).
 - **Seeing offline:** when Token Factory can't be reached, the same questions go to NVIDIA Cosmos Reason 2 8B on the
-  home computer's second GPU, so Andy can still find your glasses; nothing leaves the house. In the same simulated
-  searches it pointed at the duck [22 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1524-on-small0.35.json), never at the wrong place, and never
+  home computer's second GPU, so Andy can still look for your glasses; nothing leaves the house (tried end to end on
+  this computer, not yet on the robot). In 30 simulated searches on this computer, where Super VL pointed 21 of 23
+  times, it pointed at the duck [22 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1524-on-small0.35.json), never at the wrong place, and never
   claimed a find that wasn't there; the 2B model, small enough for a Jetson, 18 of 23 ([decision 0015](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
   behaviours plug into it without forking it. Rules that must hold are in code, under the model: the scam warning,
@@ -91,7 +93,7 @@ talking over Andy stops it.
   of 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, scored against
   the scene's truth: with the closer look, [no false find in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json) trials without the object, against [3 in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json) the old way.
 - **A second look** at the person's words, NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, caught
-  [7 of 8](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-13-guard-content-safety.json) urgent phrasings our word list missed.
+  [7 of 8](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/guard-content-safety-2026-10-25.json) urgent phrasings our word list missed.
 
 ### How Andy uses Tavily
 
@@ -99,7 +101,7 @@ Five of Tavily's APIs, each where it fits: **search** for local news and for sca
 sites; **extract** for links family send; **crawl** for what's on this week; **map** to find the town's events page at
 setup; and **research**, streamed step by step to the TV for "look into it for me".
 
-What Tavily adds, measured on 120 messages read aloud, three runs as Nebius Serverless Jobs: Tavily's warnings,
+What Tavily adds, measured on 120 messages written as a person would read them to Andy, three runs as Nebius Serverless Jobs: Tavily's warnings,
 matched by Nemotron 3 Ultra, caught **[58 of 60 scams and flagged none of 60 ordinary messages](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)**, naming a source in
 170 of 174 verdicts. Each model alone caught about as many, so the gain is a named source and no false alarms;
 matched by the smaller model, the same warnings flagged 24 ordinary messages. About [$17 per 1,000 checks](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/cost.md#the-scam-check-per-check-measured-2026-10-20).
@@ -118,7 +120,7 @@ matched by the smaller model, the same warnings flagged 24 ordinary messages. Ab
 
 ### Accomplishments that we're proud of
 
-Everything in the video is live on the real robot, with no cuts in the pauses. Every number has a dated scorecard
+Every robot shot in the video is live, with no cuts in the pauses. Every number has a dated scorecard
 in the repository, failures included. And Andy is honest: it says it is a robot, never speaks as anyone, asks
 before it remembers or shares, and claims only what the repository shows.
 
@@ -132,10 +134,11 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
 
 - **Finding things at home misses more than it finds.** In [9 tries on the robot](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/finder-eval-2026-10-20-2037.json), Andy pointed at the hidden glasses
   3 times and never at the wrong place; all 6 misses were a pair on a chair beyond the head's reach, which the sweep
-  saw but the closer look didn't confirm. Andy now turns its body to look at things past the head's reach; that is
-  checked against Pollen's kinematics, [the robot test is next].
+  saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look at things past the head's reach; that is
+  checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- Turning to a voice, waving back and moves taught by hand are tested in code; on camera with two people, not yet.
+- Turning to a voice, waving back, moves taught by hand and remembering where things are: tested in code and the
+  suite, not yet tried on the robot.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.

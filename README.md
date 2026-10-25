@@ -4,7 +4,7 @@
 [![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
 
 **A small home robot for older adults who live at home, and the family who help.** It reads the letter in your
-hand, looks around the room for your glasses, and turns to whoever is speaking. Built with NVIDIA Nemotron on Nebius
+hand and looks around the room for your glasses. Built with NVIDIA Nemotron on Nebius
 Token Factory, and Tavily, on a Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It says it's a
 robot, and keeps no recordings or transcripts: only what you ask it to keep.
 
@@ -25,7 +25,7 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 - **Rules in code under the model:** **Be careful** on a risky letter whatever the model says, consent before
   anything is remembered, and no recordings or transcripts.
 
-**Judging it without a robot:** watch the video (everything live on the robot, no cuts in the pauses); watch the
+**Judging it without a robot:** watch the video (every robot shot live, no cuts in the pauses); watch the
 search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
 open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
 failures included ([evals/results/](evals/results/README.md)); or ask for the real robot live on a video call, any
@@ -64,19 +64,19 @@ with its sources.
 
 - **Talks and keeps looking at you**, in English or Spanish, with body language from research: its
   antennas lift while you speak and lean while it thinks.
-- **Notices the room by itself:** when someone else speaks from the side, Andy turns to them (and back if nobody is
+- **Notices the room by itself** (new; tested in code, not yet tried on the robot): when someone else speaks from the side, Andy turns to them (and back if nobody is
   there, such as the TV); wave at it and its antennas wave back. The TV says what it noticed ("Turning to a voice",
   "Waving back").
-- **Remembers where you put things, if you want:** "my keys are here" gets "Shall I remember where they are?";
+- **Remembers where you put things, if you want** (new; tested in code and the suite, not yet tried on the robot): "my keys are here" gets "Shall I remember where they are?";
   later "where are my keys?" turns straight to that spot and checks up close before looking around.
-- **Learns a move by hand:** a grandchild moves Andy's antennas for six seconds, and "do Sofia's wave" plays it
+- **Learns a move by hand** (new; tested in code and the suite, not yet tried on the robot): a grandchild moves Andy's antennas for six seconds, and "do Sofia's wave" plays it
   back, gently (its antennas only).
 - **Your day:** the date (never guessed), reminders in your own words, the morning plan, and the weather
   from the National Weather Service.
 - **Good company:** short turns and open questions about your life (never "Do you remember…?"), gentle
   jokes and riddles, public-domain stories read a part at a time, On this day from Wikipedia, and "help me
   think it through" with Nemotron 3 Ultra.
-- **Scam checks, measured on Nebius** (120 messages read aloud, 60 scams and 60 ordinary; 40 of them
+- **Scam checks, measured on Nebius** (120 messages written as a person would read them to Andy, 60 scams and 60 ordinary; 40 of them
   written after the check was frozen, from this autumn's consumer-protection warnings; three runs as Nebius
   Serverless Jobs, 2026-10-14, [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); the
   word rules' [scorecard](evals/results/scam-word-rules-2026-10-20-1552.json)):
@@ -87,7 +87,7 @@ with its sources.
   |---|---|---|
   | Word rules alone (Andy's letter rules: gift cards, wire transfers, "act now"…; no model, no web) | 28 (35–59%) | 3 (2–14%) |
   | Nemotron 3.5 Lightning alone | 53.3 (78–95%) | 0 (0–6%) |
-  | Nemotron 3 Ultra alone, no web | 55.7 (83–97%; of the 59.7 it answered) | 0 (0–6%; of the 54.7 it answered) |
+  | Nemotron 3 Ultra alone, no web | 55.7 (84–97%; of the 59.7 it answered) | 0 (0–7%; of the 54.7 it answered) |
   | Tavily's warnings, matched by Lightning | 60 (94–100%) | 24 (29–53%) |
   | **Andy: Tavily's warnings, matched by Ultra** | **58 (89–99%)** | **0 (0–6%)** |
 
@@ -131,7 +131,7 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes: "what do you see?", family photos and finding things in the room | NVIDIA **Nemotron 3.5 Super VL**, structured output, reasoning off | **Nebius Token Factory**; or NVIDIA Nemotron Nano 12B v2 VL (FP8, vLLM 0.30.0) on our own **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)), with `ANDY_VISION=endpoint` |
-| Offline eyes, when Token Factory can't be reached | NVIDIA **Cosmos Reason 2 8B** on a free 24 GB GPU (2B beside the voice), the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house |
+| Offline eyes, when Token Factory can't be reached | NVIDIA **Cosmos Reason 2 8B** on a free 24 GB GPU (2B beside the voice), the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house. Tried end to end on this computer, not yet on the robot |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
@@ -143,14 +143,14 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 
 - **One key, every Nemotron model.** Andy talks with Nemotron 3.5 Lightning and the suite's judge is
   Nemotron 3 Ultra, both through the same Token Factory API: trying a model is changing its name, and
-  the judge reads all 94 situations three times in a few minutes.
+  the judge reads all 94 situations three times.
 - **No language-model GPU at home.** The desktop's graphics cards keep hearing and speaking local
-  (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, 0.6 to 0.8 s per reply, measured on the
-  robot.
+  (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, and on the robot the reply starts a median 0.94 s after
+  the words are understood (62 turns, [timings](evals/results/robot-timings-2026-10-20-1550.json)).
 - **Zero data retention**, switched on in Token Factory, so a household's conversation is not kept by
   the model service either.
 - **The same suite runs on Nebius AI Cloud** as a Serverless Job, and so does the scam evaluation (the
-  models three times against warnings Tavily fetched once, in about six minutes); the second look is a
+  models three times against warnings Tavily fetched once, in 2.7 minutes of model time); the second look is a
   Serverless Endpoint we start when needed and stop after; stopped, it costs nothing for compute.
 - **The newest NVIDIA vision model the week it arrived.** Nemotron 3.5 Super VL appeared on Token Factory in
   October 2026; Andy's eyes moved to it with one setting, and the same evaluation reads the robot's tries with
@@ -225,9 +225,9 @@ Andy looks around for something, each frame is taken only after the head has sto
 
 | Model | Why this one |
 |---|---|
-| Nemotron 3.5 Lightning, Token Factory | Every turn: 0.6 to 0.8 s a reply with tool calls, at $0.06 per million input tokens |
+| Nemotron 3.5 Lightning, Token Factory | Every turn: 0.6 to 0.8 s a reply with tool calls by API (2026-10-13), at $0.06 per million input tokens |
 | Nemotron 3 Ultra, Token Factory | Only where judgment matters: in the scam check, Ultra told the same trick from the same topic (0 ordinary messages flagged, against 24 with Lightning); hard decisions; the suite's judge |
-| Nemotron 3.5 Super VL, Token Factory | Eyes: four views read at once as structured output in about 2.1 s, a description in about 1.35 s, against 2.3 s and 3.45 s for Nano VL on our own endpoint, both right on every view ([desk check](evals/results/eyes-check-2026-10-20-1614.json)); on Token Factory since October 2026, so always on, nothing to start and nothing paid while idle. Nemotron Nano 12B v2 VL on our own Serverless Endpoint stays as an option (`ANDY_VISION=endpoint`, [decision 0011](docs/decisions/0011-the-eyes-on-token-factory.md)) |
+| Nemotron 3.5 Super VL, Token Factory | Eyes: four views read at once as structured output in about 2.1 s, a description in about 1.35 s (2.4 s since 2026-10-25, when it began sending the view's middle at full detail), against 2.3 s and 3.45 s for Nano VL on our own endpoint, both right on every view ([desk check](evals/results/eyes-check-2026-10-20-1614.json)); on Token Factory since October 2026, so always on, nothing to start and nothing paid while idle. Nemotron Nano 12B v2 VL on our own Serverless Endpoint stays as an option (`ANDY_VISION=endpoint`, [decision 0011](docs/decisions/0011-the-eyes-on-token-factory.md)) |
 | Nemotron 3.5 Content Safety, Serverless Endpoint | A second look for signs of crisis, with our own policy: 7 of 8 held-out sentences caught, against 5 of 8 with its standard categories, in about 0.55 s |
 
 ### Beside NVIDIA's Reachy Mini Jetson assistant
@@ -299,7 +299,7 @@ Each principle comes from published research, and each has something you can see
 
 | Principle | Source | What Andy does |
 |---|---|---|
-| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | Nemotron answers in 0.6 to 0.8 s; each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
+| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | On the robot the reply starts a median 0.94 s after the words are understood (62 turns); each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
 | Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
 | The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
@@ -310,7 +310,7 @@ Each principle comes from published research, and each has something you can see
 What it would take for a family to have one, as far as we know it today:
 
 - **Hardware, once:** a Reachy Mini Lite ($399 listed in [Hugging Face's Reachy Mini post](https://huggingface.co/blog/reachy-mini),
-  read 2026-10-25; $299 at launch), a TV or monitor the household already has, and today a computer with an 8 GB
+  read 2026-10-25), a TV or monitor the household already has, and today a computer with an 8 GB
   NVIDIA GPU beside the robot. Most homes don't have that computer: it is likely the biggest cost, and the reason
   for the Jetson plan.
 - **Running, monthly:** about **$2.30 a month, estimated** from list prices and assumed use, for one household's
@@ -338,8 +338,8 @@ What doesn't work yet, and what our numbers don't show.
   (decision 0013), but rendered pictures are cleaner than a room. Since 2026-10-25 (decision 0016) Andy turns its
   body as well as its head to look closer at something past the head's 60 degrees, as Pollen's kinematics allow;
   checked against those kinematics, not yet on the robot.
-- **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the
-  suite, not yet on camera with two people. The microphones can't tell a voice in front from one behind.
+- **Turning to a voice, waving back, moves taught by hand and remembering where things are are new** (2026-10-20):
+  tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
 - **The suite isn't perfect:** about one different case fails each run, and every failure is in its
@@ -359,8 +359,8 @@ What doesn't work yet, and what our numbers don't show.
 - **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
   yet.
 - **English and Spanish only.**
-- **The offline eyes are less precise and need a GPU of their own.** In the same 30 simulated searches, Cosmos
-  Reason 2 8B on this computer pointed at the duck 22 of 23 times (Super VL 21, inside the same interval), never at
+- **The offline eyes are less precise and need a GPU of their own.** In 30 simulated searches on this computer
+  (seed 11, the trials where Super VL pointed 21 of 23 times), Cosmos Reason 2 8B pointed at the duck 22 of 23 times (Super VL 21, inside the same interval), never at
   the wrong place, with a median error of 1.95° against Super VL's 0.78°, in 4.8 s against 3.2 s; it fills a 24 GB
   GPU. The 2B model fits beside the voice but pointed 18 of 23 times, three at the wrong place, 3.06°. Neither has
   yet been tried on the robot with the network unplugged ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
@@ -450,7 +450,7 @@ choice was made ([decisions](docs/decisions/README.md)).
 | `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
 | [`cloud/`](cloud/README.md) | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
 | [`evals/`](evals/README.md) | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
-| `tests/` | About 860 tests (`uv run pytest`), run before every commit and push |
+| `tests/` | About 880 tests (`uv run pytest`), run before every commit and push |
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The two user services: the voice server and Andy |
 | [`sim/`](sim/README.md) | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
