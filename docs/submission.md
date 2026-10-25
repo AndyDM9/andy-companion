@@ -37,7 +37,7 @@ with no cuts in the pauses. Entered in the **Physical AI track**.
   Reason 2 is its eyes when the network is down (tried on the home computer, not yet on the robot).
 - **Nebius:** Token Factory answers every turn (a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json)
   from your words to Andy's first sound, 54 turns on the robot). **Serverless Jobs** run Andy's search in Pollen's
-  MuJoCo simulation, scored against the scene's truth, and 94 spoken situations; a **Serverless Endpoint** serves
+  MuJoCo simulation, scored against the scene's truth, and 97 spoken situations; a **Serverless Endpoint** serves
   NVIDIA Nemotron Content Safety as a second check on what the person says.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
   Captions on by default, 7:1 contrast, and talking over Andy stops it. Installs on a Reachy Mini as an
@@ -97,8 +97,8 @@ turning to a second person speaking, a move taught by hand, and remembering wher
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
   behaviours plug into it without forking it. What must always hold is enforced in code, not left to the model: the scam warning,
   consent before anything is kept or shared, and the 911 or 988 line when someone says urgent words.
-- **Measured as Nebius Serverless Jobs:** a suite of 94 spoken situations judged by Nemotron 3 Ultra ([93, 92 and 92
-  of 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, for a
+- **Measured as Nebius Serverless Jobs:** a suite of 97 spoken situations judged by Nemotron 3 Ultra ([96, 95 and 92
+  of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) in three runs, every failure published); and Andy's own search in Pollen's MuJoCo simulation, for a
   glasses-sized object hidden at random and scored against the scene's truth: with the close-up check, [no false find in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json) searches without the object, against [3 in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json) without that check.
 - **A second check** on the person's words, NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, caught
   [7 of 8](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/guard-content-safety-2026-10-25.json) urgent phrasings our word list missed.

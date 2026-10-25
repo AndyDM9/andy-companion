@@ -385,3 +385,16 @@ def test_showing_the_settings_code_from_the_tv_is_told_to_the_person(server):
     board.delivered(entry)
     assert post(server + f"/api/screen/settings-code?t={t}", {})[0] == 200      # already up: not again
     assert board.next_for_person() is None
+
+
+def test_with_nothing_left_today_the_screen_shows_tomorrows_first_reminder():
+    """Set in the evening for 8 the next morning, a reminder must show it was set (2026-10-25)."""
+    from datetime import datetime
+    evening = datetime(2026, 10, 25, 19, 45)
+    assert screen_server.today_plan(evening)["tomorrow"] is None
+    reminders.add("take my blood pressure pills", at="08:00", repeat="daily", now=evening)
+    plan = screen_server.today_plan(evening)
+    assert plan["plan"] == [] and plan["tomorrow"] == {"time": "8:00 am", "what": "take my blood pressure pills", "daily": True}
+    assert plan["today"]["shown"]["tomorrow"] == "Tomorrow" and plan["today"]["shown"]["daily"] == "every day"
+    reminders.add("call Rosa", at="20:30", now=evening)                    # something still to come today: that one
+    assert screen_server.today_plan(evening)["tomorrow"] is None

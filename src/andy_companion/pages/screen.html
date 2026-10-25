@@ -597,13 +597,19 @@
     const nowS = serverNow() / 1000;
     const coming = s.plan.filter((p) => !p.done);
     const first = coming[0];
-    $("next-what").hidden = $("next-at").hidden = !first;
-    $("empty").hidden = !!first;
+    const tomorrow = !first && s.tomorrow;            // nothing left today: tomorrow's first, so it shows it was set
+    $("next-what").hidden = $("next-at").hidden = !(first || tomorrow);
+    $("empty").hidden = !!(first || tomorrow);
     text($("empty"), shown.empty);
     if (first) {
       text($("next-what"), first.what);
       const at = $("next-at"); at.textContent = "";
       at.append(first.time + " · ", make("strong", "", until(first.due, nowS)));
+    } else if (tomorrow) {
+      text($("next-what"), tomorrow.what);
+      const at = $("next-at"); at.textContent = "";
+      at.append(make("strong", "", `${shown.tomorrow || "Tomorrow"}, ${tomorrow.time}`),
+                tomorrow.daily ? ` · ${shown.daily || "every day"}` : "");
     }
     const later = $("later"); later.textContent = "";
     for (const p of s.plan) {

@@ -196,14 +196,16 @@ WARN_NOTE = ("Say the caution plainly and kindly, and offer check_message. Numbe
 
 
 def for_andy(result: Dict[str, Any], language: str = "en", summariser: Optional[Callable] = None) -> Dict[str, Any]:
-    """What read_letter gives the model: the page's text, the card on the screen, and, decided in code
-    before the model and whatever the card does, the warning signs, with the page's numbers hidden."""
+    """What read_letter gives the model: the page's text with its identifying numbers hidden (always: on
+    2026-10-25 Andy read an ordinary bill's account number aloud, once in three runs; amounts, dates and years
+    stay), the card on the screen, and, decided in code before the model and whatever the card does, the warning
+    signs. The warning check and the card read the page as it is."""
     text = result.get("text") or ""
     if not text:
         return result
+    result["text"] = mask(text)
     signs = warning_signs(text, "es" if language == "es" else "en")
     if signs:
-        result["text"] = mask(text)
         result["warning_signs"] = signs
         result["screen_note"] = WARN_NOTE
     try:
@@ -211,8 +213,6 @@ def for_andy(result: Dict[str, Any], language: str = "en", summariser: Optional[
     except Exception:
         return result                      # no card; Andy still explains it, and any warning stands
     show(c, language)
-    if c["warning"]:
-        result["text"] = mask(text)
     result["on_screen"] = {k: c[k] for k in ("sender", "about", "to_do", "by_when", "amount", "caution") if c.get(k)}
     result["screen_note"] = CARD_NOTE + (WARN_NOTE if c["warning"] else "")
     return result

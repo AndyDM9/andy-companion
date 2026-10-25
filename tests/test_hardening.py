@@ -67,13 +67,15 @@ def test_a_scam_page_s_numbers_are_hidden_even_when_the_card_fails(tmp_path, mon
     assert board.showing() is None                         # no card, but the warning stands
 
 
-def test_an_ordinary_page_is_passed_on_as_it_is_with_its_card(tmp_path, monkeypatch):
+def test_an_ordinary_page_is_passed_on_with_its_numbers_hidden_and_its_card(tmp_path, monkeypatch):
+    """Its amount, date and year stay; its account number doesn't (2026-10-25: read aloud once in three runs)."""
     monkeypatch.setattr(board, "SCREEN", tmp_path / "screen.json")
     page = "Florida Power & Light. Your bill of $86.40 is due on October 28, 2026. Account 4471-22."
     card = letters.card({"kind": "bill", "sender": "FPL", "about": "Electric bill", "to_do": "Pay the bill",
                          "by_when": "October 28", "amount": "$86.40", "caution": "", "suspicious": False}, page)
     out = letters.for_andy({"text": page}, "en", summariser=lambda t, lang: card)
-    assert out["text"] == page and "warning_signs" not in out
+    assert out["text"] == page.replace("4471-22", "•••") and "warning_signs" not in out
+    assert "$86.40" in out["text"] and "October 28, 2026" in out["text"]
     assert out["on_screen"]["sender"] == "FPL" and board.showing()["kind"] == "letter"
 
 

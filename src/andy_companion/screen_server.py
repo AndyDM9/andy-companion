@@ -22,7 +22,7 @@ import os
 import re
 import threading
 from collections import deque
-from datetime import datetime
+from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
@@ -390,12 +390,23 @@ def weather_card(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
 
 def today_plan(now: Optional[datetime] = None) -> Dict[str, Any]:
     now = now or datetime.now()
-    items = [r for r in reminders.pending() if datetime.fromtimestamp(r["due"]).date() == now.date()]
+    pending = reminders.pending()
+    items = [r for r in pending if datetime.fromtimestamp(r["due"]).date() == now.date()]
     plan = [{"time": datetime.fromtimestamp(r["due"]).strftime("%-I:%M %p").lower(), "what": r["text"],
              "done": r["due"] < now.timestamp(), "due": int(r["due"])} for r in items]
+    # Nothing left today: tomorrow's first, so a reminder set this evening for the morning shows it was set
+    # (2026-10-25: "every morning at eight" left the card saying "Nothing planned today").
+    tomorrow = None
+    if not any(p["due"] >= now.timestamp() for p in plan):
+        nxt = sorted((r for r in pending if datetime.fromtimestamp(r["due"]).date() == (now + timedelta(days=1)).date()),
+                     key=lambda r: r["due"])
+        if nxt:
+            tomorrow = {"time": datetime.fromtimestamp(nxt[0]["due"]).strftime("%-I:%M %p").lower(), "what": nxt[0]["text"],
+                        "daily": nxt[0].get("repeat") == "daily"}
     from andy_companion import settings
 
-    return {"today": clock.today(now, settings.get().get("language", "en")), "hour": now.hour, "plan": plan}
+    return {"today": clock.today(now, settings.get().get("language", "en")), "hour": now.hour, "plan": plan,
+            "tomorrow": tomorrow}
 
 
 def settings_qr(host: str) -> str:

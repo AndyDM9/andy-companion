@@ -20,7 +20,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **93, 92 and 92 of 94** spoken situations passed, judged by NVIDIA Nemotron 3 Ultra, run as Nebius Serverless Jobs ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json))
+- **96, 95 and 92 of 97** spoken situations passed, judged by NVIDIA Nemotron 3 Ultra, run as Nebius Serverless Jobs ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -137,7 +137,7 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
-| The conversation suite | 94 spoken situations, 22 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
+| The conversation suite | 97 spoken situations, 22 areas, English and Spanish | **Nebius Serverless Job** ([cloud/suite-job.sh](cloud/suite-job.sh)) |
 | The scam check, measured five ways | Word rules alone, Lightning, Ultra, and Tavily's warnings with each; 120 messages, three runs, 95% intervals | **Nebius Serverless Jobs**, four of them, two at a time ([cloud/scam-job.sh](cloud/scam-job.sh)); the word rules need no model |
 | The web | **Tavily**: search (news, look-ups, scam checks at advanced depth), extract (links family send), crawl (what's on), **map** (the town's events calendar, at setup), and **research**, streamed, for "look into it for me"; safe search on every search; every search, extract, crawl and research request tagged `X-Project-ID`, and one conversation's requests share an `X-Session-Id`; credits shown on `/hood` | Tavily API |
 
@@ -145,7 +145,7 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 
 - **One key, every Nemotron model.** Andy talks with Nemotron 3.5 Lightning and the suite's judge is
   Nemotron 3 Ultra, both through the same Token Factory API: trying a model is changing its name, and
-  the judge reads all 94 situations three times.
+  the judge reads all 97 situations three times.
 - **No language-model GPU at home.** The desktop's graphics cards keep hearing and speaking local
   (Parakeet, Qwen3-TTS); the thinking runs on Token Factory, and on the robot the reply starts a median 0.94 s after
   the words are understood (62 turns, [timings](evals/results/robot-timings-2026-10-20-1550.json)).
@@ -181,17 +181,20 @@ only, in memory; never the words. In English or Spanish, like the household.
 
 ![Under the hood (sample turns)](docs/images/hood.png)
 
-**The conversation suite** ([evals/](evals/)): 94 spoken situations in 22 areas, English and Spanish,
+**The conversation suite** ([evals/](evals/)): 97 spoken situations in 22 areas, English and Spanish,
 judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Final, as a Nebius Serverless Job: 93, 92 and 92 of 94** (2026-10-25, the code as submitted;
-  [scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)). Three cases failed, each seen varying before: a share without reading the message
-  back (share-2, twice), a reply that offered more help after "not now" (chat-2, twice), and a Spanish crisis reply
-  that gave 988 without "someone you trust" (crisis-3, once). The run before, 2026-10-20: 92, 91 and 94
-  ([scorecard](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)).
+- **Latest, as a Nebius Serverless Job: 96, 95 and 92 of 97** (2026-10-25, with the daily medicine reminders;
+  [scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)). Seven cases failed at least once, each but one seen varying before: a photo
+  read as a letter (photo-4, twice), and once each a search made as well as research (look-1), a hard question
+  answered without the bigger model (think-1), a riddle and a photo story without their tools (riddle-1, photo-1),
+  the Spanish crisis reply without "someone you trust" (crisis-3), and the new one, an ordinary bill's account
+  number read aloud (letter-3): Andy's code now hides such numbers in every letter it is given. The final run comes
+  at submission. Before that, 93, 92 and 92 of 94 ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)),
+  and 92, 91 and 94 ([2026-10-20](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)).
 - **Before, as a Job:** 79, 79 and 79 of 81 (2026-10-13;
   [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)).
 - **Baseline:** 27 of 36, before any fixes.

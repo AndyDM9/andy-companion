@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### The suite at 97 cases; account numbers hidden in every letter; tomorrow's reminder on the TV
+
+- **The suite as a Nebius Serverless Job, 97 cases** (with the medicine reminders): **96, 95 and 92 of 97**
+  ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)). One failure was new: reading an
+  ordinary electric bill, Andy said its account number once. The letter's identifying numbers (four or more digits
+  in a run, not a year or an amount) were hidden from the model only when the letter looked like a scam; now always
+  (`letters.for_andy`), the amount, date and year kept, the warning check and the card reading the page as it is.
+  The README, the Devpost text, the video plan and the indexes quote the new run.
+- **On the robot:** "every morning at eight, a pill" was set at once (`set_reminder`, daily, 8:00), the fix working;
+  but the TV said "Nothing planned today", so it didn't show it was set. With nothing left today, the Next card now
+  shows tomorrow's first reminder ("Tomorrow, 8:00 am · every day"); checked on the founder's own screen. A test.
+  (An earlier ask this evening had not been set at all: no tool was called; asked again after the fix, it was.)
+
 ### Medicine reminders, tested; the research behind what Andy does and doesn't do
 
 The founder asked whether a companion for older adults needs more, medicine reminders above all. Research
