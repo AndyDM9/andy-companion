@@ -31,6 +31,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-25 15:24 | The same 30 simulated trials with **NVIDIA Cosmos Reason 2 8B on this computer** (vLLM 0.32.0, GPU 0 at 0.92, 12,288-token context, about 21 GB) | **Pointed 22 of 23 (79–99%), false finds 0 of 7, none elsewhere**, error median 1.95° (p90 2.66°), 4.80 s a search ([scorecard](../evals/results/sim-finder-2026-10-25-1524-on-small0.35.json)). The desktop's offline eyes; 2B stays the default for one GPU or a Jetson |
 | 2026-10-25 15:30 | The endpoints remade without the token in their settings: both old ones deleted (each had it in its start arguments); `cloud/guard-endpoint.sh create` made the second look anew, its token in Nebius MysteryBox (the first real run of that path), RUNNING in about 13 minutes, then stopped. The eyes' endpoint not remade: the eyes are on Token Factory | HTTPS with the token 200; **without it, or with a wrong one, 401; the plain IP:port without it 401** (vLLM's key from MysteryBox); no token in the endpoint's spec. The second look re-measured: **policy 8/8 tuning, 7/8 held-out, 0 false alarms, 545 ms**; standard categories 5/8 and 5/8 ([scorecard](../evals/results/guard-content-safety-2026-10-25.json)), as on 2026-10-13 |
 | 2026-10-25 15:06 | The finder in simulation with **NVIDIA Cosmos Reason 2 2B on this computer** as the eyes (vLLM 0.32.0, GPU 0), the same 30 trials as Super VL's run on this GPU (seed 11, duck at 0.35, zoom on) | **Pointed 18 of 23 (58–90%), false finds 0 of 7**, 3 pointed elsewhere, error median 3.06° (p90 6.16°), median 2.13 s a search; Super VL on the same trials 21 of 23, 0 of 7, 0 elsewhere, 0.78°, 3.24 s ([scorecard](../evals/results/sim-finder-2026-10-25-1506-on-small0.35.json)). A description of the TV screen in about 0.5 s, right |
 | 2026-10-25 14:38 | Secrets before going public: gitleaks 8.30.1 over every commit (`--all`) and the working tree; the env file's own values searched for in the full history (not printed) | **No leaks in 151 commits or the tree (152 with bd46ece, rescanned); no key or token value anywhere in the history.** Still in history: an endpoint's public IP:port in two commits (150f9df, fc362ed), for the rewrite. Both endpoints STOPPED, made the old way with the token in their start settings |
@@ -83,6 +84,6 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   robot; until then the README calls it experimental.
 
 - The offline eyes (Cosmos Reason 2 2B, 2026-10-25) are measured in simulation only: try them on the robot with the
-  network unplugged, and Cosmos Reason 2 8B on the same trials once its licence is accepted.
+  network unplugged.
 
 The live test of everything built today is [live-test.md](live-test.md).

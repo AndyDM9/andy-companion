@@ -20,6 +20,10 @@ second RTX 3090 free:
 - **Measured** in Pollen's MuJoCo scene on the same 30 trials as Super VL: pointed 18 of 23 (Super VL 21), false finds
   0 of 7 (0), pointed elsewhere 3 (0), error 3.06° (0.78°), 2.13 s a search (3.24 s). The README's Limitations, the
   Devpost text, the feedback and the rules record say so; Cosmos joins the NVIDIA models listed.
+- **The 8B model measured** (the founder accepted its licence): the same 30 trials, pointed 22 of 23, none elsewhere,
+  0 false finds, 1.95°, 4.80 s, about 21 GB of GPU 0. It is the offline eyes on this desktop
+  (`ANDY_LOCAL_EYES_MODEL`, read by `local-eyes/run.sh`, which now reads the env file, and by `vision.name`); 2B
+  stays the default. A 16,384-token context didn't fit its cache at 0.92 of a 3090; 12,288 does.
 - `tests/test_local_eyes.py` (12 tests): the local address and no token, http only here, the fallback for describe
   and the finder, only unreachable eyes falling back, nothing changed without the setting, a fallback that isn't
   running never tried, the server bound to 127.0.0.1.

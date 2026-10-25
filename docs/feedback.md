@@ -139,6 +139,9 @@ back right in about 0.5 s. In Pollen's MuJoCo scene, on the same 30 searches as 
   images, and latency per GPU, would let builders plan a Jetson.
 - It points less precisely than Super VL (3.06° median error against 0.78°); the card's pointing coordinate format
   isn't stated, so we asked for our own JSON.
+- **The 8B model** fills a 24 GB GPU (about 21 GB with a 12,288-token context; 16,384 didn't fit) and, on the same
+  searches, pointed 22 of 23 times, never at the wrong place, 1.95° median error, in 4.8 s: for pointing, size
+  matters. A note on the card comparing the two sizes on grounding would help builders choose.
 **Onboarding (zero to hello world):** about 25 minutes: accept the licence, `uv sync` with vLLM, and the first start
 downloads and compiles in about 5 minutes.
 **Would we build with it again?** Yes: a small NVIDIA model that keeps a robot's eyes working with the network

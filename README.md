@@ -131,7 +131,7 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes: "what do you see?", family photos and finding things in the room | NVIDIA **Nemotron 3.5 Super VL**, structured output, reasoning off | **Nebius Token Factory**; or NVIDIA Nemotron Nano 12B v2 VL (FP8, vLLM 0.30.0) on our own **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)), with `ANDY_VISION=endpoint` |
-| Offline eyes, when Token Factory can't be reached | NVIDIA **Cosmos Reason 2 2B**, the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house |
+| Offline eyes, when Token Factory can't be reached | NVIDIA **Cosmos Reason 2 8B** on a free 24 GB GPU (2B beside the voice), the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
@@ -243,7 +243,7 @@ with zero data retention; the Jetson assistant keeps everything local.
 
 **What a Jetson version would need** (a plan, not tried): hearing and speaking in well under 7.6 GB, so a
 smaller voice than Qwen3-TTS; thinking and seeing staying on Token Factory, so the Jetson needs no language
-model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already Andy's offline eyes on this desktop
+model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already measured as Andy's offline eyes (this desktop uses the 8B one)
 ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), the model NVIDIA's Jetson design also runs. Offline Andy should do less, never more.
 
 ## Privacy
@@ -316,7 +316,7 @@ What it would take for a family to have one, as far as we know it today:
 - **Running, monthly:** about **$2.30 a month, estimated** from list prices and assumed use, for one household's
   conversation and web lookups, not from a bill; the eyes add about half a cent a search ([cost](docs/cost.md)).
 - **A Jetson port needs** ([above](#beside-nvidias-reachy-mini-jetson-assistant)): hearing and speaking in well
-  under 7.6 GB, thinking and seeing staying on Token Factory, and Cosmos Reason 2 2B (Andy's offline eyes today) for
+  under 7.6 GB, thinking and seeing staying on Token Factory, and Cosmos Reason 2 2B (the smaller of Andy's offline eyes) for
   when the network is down. Planned, not tried on a Jetson.
 - **Who pays:** we expect the family who help, not the person; that is a guess the pilot has to test.
 - **Before anyone relies on it:** a pilot with older adults and an ethics review, the finder's closer look fixed,
@@ -358,11 +358,11 @@ What doesn't work yet, and what our numbers don't show.
 - **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
   yet.
 - **English and Spanish only.**
-- **The offline eyes are less precise.** Cosmos Reason 2 2B on this computer, in the same 30 simulated searches,
-  pointed at the duck 18 of 23 times against Super VL's 21, three times at the wrong place, with a median error of
-  3.06° against 0.78°; like Super VL it claimed nothing when the duck wasn't there. It is the fallback, not the
-  default, it needs a second GPU (or a 24 GB one), and it hasn't yet been tried on the robot with the network
-  unplugged ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
+- **The offline eyes are less precise and need a GPU of their own.** In the same 30 simulated searches, Cosmos
+  Reason 2 8B on this computer pointed at the duck 22 of 23 times (Super VL 21, inside the same interval), never at
+  the wrong place, with a median error of 1.95° against Super VL's 0.78°, in 4.8 s against 3.2 s; it fills a 24 GB
+  GPU. The 2B model fits beside the voice but pointed 18 of 23 times, three at the wrong place, 3.06°. Neither has
+  yet been tried on the robot with the network unplugged ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
 - **Of the Physical AI track's NVIDIA models, Andy uses Nemotron, Cosmos Reason 2 and Parakeet.** GR00T and Sonic are
   policies for robots with arms or legs, which the Reachy Mini doesn't have. The agent runtime is Pollen's Reachy
   Mini conversation app, with Andy's profile, tools and rules plugged in.
@@ -420,7 +420,9 @@ What doesn't work yet, and what our numbers don't show.
    **Offline eyes:** NVIDIA Cosmos Reason 2 2B on this computer, for when the network is down. Accept its licence on
    [Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-2B) with this computer's Hugging Face login, then
    `cd local-eyes && uv sync && ./run.sh` (a second GPU, or a 24 GB one; about 14 GB with the default share), and put
-   `ANDY_VISION_FALLBACK=local` in the env file. `ANDY_VISION=local` uses it always
+   `ANDY_VISION_FALLBACK=local` in the env file. With a whole 24 GB GPU free, the 8B model points better: accept
+   [its licence](https://huggingface.co/nvidia/Cosmos-Reason2-8B) too and set the three `ANDY_LOCAL_EYES_*` lines in
+   `.env.example`. `ANDY_VISION=local` uses it always
    ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
 6. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing.
    To start Andy at login: `scripts/install-services.sh --enable`.

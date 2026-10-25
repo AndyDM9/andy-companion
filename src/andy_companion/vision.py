@@ -40,6 +40,7 @@ TOKEN_FACTORY_MODEL = "nvidia/Nemotron-3.5-Super-VL"
 TOKEN_FACTORY = "https://api.tokenfactory.nebius.com/v1/"
 LOCAL_MODEL = "cosmos-reason2"                          # local-eyes/run.sh's served name
 LOCAL = "http://127.0.0.1:8095"
+LOCAL_DEFAULT = "nvidia/Cosmos-Reason2-2B"              # ANDY_LOCAL_EYES_MODEL, read by local-eyes/run.sh too
 NAMES = {"token-factory": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory",
          "endpoint": "NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint",
          "local": "NVIDIA Cosmos Reason 2 2B on this computer"}
@@ -100,7 +101,15 @@ def eyes() -> Optional[Dict[str, Any]]:
 def name() -> str:
     """The eyes in use, in words, for the hood page and the doctor ('off' when there are none)."""
     e = eyes()
+    if e and e["name"] == "local":
+        return f"NVIDIA {local_size()} on this computer"
     return NAMES[e["name"]] if e else "off"
+
+
+def local_size() -> str:
+    """Which Cosmos local-eyes/run.sh serves, in words: 'Cosmos Reason 2 2B' unless ANDY_LOCAL_EYES_MODEL says 8B."""
+    model = os.environ.get("ANDY_LOCAL_EYES_MODEL", LOCAL_DEFAULT)
+    return "Cosmos Reason 2 8B" if "8b" in model.lower() else "Cosmos Reason 2 2B"
 
 
 def used() -> str:

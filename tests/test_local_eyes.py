@@ -33,7 +33,7 @@ class Opener:
 
 @pytest.fixture
 def eyes(monkeypatch):
-    for k in ("ANDY_VISION", "ANDY_VISION_MODEL", "NEBIUS_BASE_URL", "ANDY_VISION_FALLBACK", "ANDY_LOCAL_EYES_URL"):
+    for k in ("ANDY_VISION", "ANDY_VISION_MODEL", "NEBIUS_BASE_URL", "ANDY_VISION_FALLBACK", "ANDY_LOCAL_EYES_URL", "ANDY_LOCAL_EYES_MODEL"):
         monkeypatch.delenv(k, raising=False)
     monkeypatch.setenv("NEBIUS_API_KEY", "nb-key")
     monkeypatch.setattr(vision, "_used", "")
@@ -50,6 +50,8 @@ def test_local_when_chosen_stays_on_this_computer_with_no_token(eyes, monkeypatc
     assert url == "http://127.0.0.1:8095/v1/chat/completions" and body["model"] == "cosmos-reason2"
     assert "Authorization" not in headers and "chat_template_kwargs" not in body
     assert vision.name() == "NVIDIA Cosmos Reason 2 2B on this computer" and vision.used() == "local"
+    monkeypatch.setenv("ANDY_LOCAL_EYES_MODEL", "nvidia/Cosmos-Reason2-8B")      # served by run.sh from the same setting
+    assert vision.name() == "NVIDIA Cosmos Reason 2 8B on this computer"
 
 
 def test_plain_http_is_allowed_only_to_this_computer(eyes, monkeypatch):
@@ -123,5 +125,5 @@ def test_a_fallback_that_isnt_running_is_not_tried(eyes, monkeypatch):
 
 def test_the_server_listens_only_here_and_logs_no_requests():
     command = (ROOT / "local-eyes" / "run.sh").read_text().split("\nexec ", 1)[1]
-    assert "--host 127.0.0.1" in command and "nvidia/Cosmos-Reason2-2B" in command
+    assert "--host 127.0.0.1" in command and '"${ANDY_LOCAL_EYES_MODEL:-nvidia/Cosmos-Reason2-2B}"' in command
     assert "--served-model-name cosmos-reason2" in command and "--enable-log-requests" not in command

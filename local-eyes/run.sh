@@ -8,13 +8,18 @@
 #                                must be accepted there first, with this computer's Hugging Face login
 set -euo pipefail
 cd "$(dirname "$0")"
-# GPU 0 unless ANDY_LOCAL_EYES_GPU picks another. The model card asks for a 24 GB GPU; on a computer with one
-# GPU, lower ANDY_LOCAL_EYES_MEMORY so the voice server still fits beside it.
+# The env file may choose the model, the GPU and its share (ANDY_LOCAL_EYES_*); no key is needed here.
+ENV_FILE="${ANDY_ENV_FILE:-$HOME/.config/companion-hackathon/.env}"
+if [ -r "$ENV_FILE" ]; then set -a; . "$ENV_FILE"; set +a; fi
+# The 2B model unless ANDY_LOCAL_EYES_MODEL names another (nvidia/Cosmos-Reason2-8B: about 17.5 GB of weights, a
+# whole 24 GB GPU, with ANDY_LOCAL_EYES_MEMORY=0.92 and ANDY_LOCAL_EYES_CONTEXT=12288). GPU 0 unless
+# ANDY_LOCAL_EYES_GPU picks another. The model card asks for a 24 GB GPU; on a computer with one GPU, lower
+# ANDY_LOCAL_EYES_MEMORY so the voice server still fits beside it.
 export CUDA_VISIBLE_DEVICES="${ANDY_LOCAL_EYES_GPU:-0}"
-exec .venv/bin/vllm serve nvidia/Cosmos-Reason2-2B \
+exec .venv/bin/vllm serve "${ANDY_LOCAL_EYES_MODEL:-nvidia/Cosmos-Reason2-2B}" \
   --served-model-name cosmos-reason2 \
   --host 127.0.0.1 --port "${ANDY_LOCAL_EYES_PORT:-8095}" \
-  --max-model-len 32768 \
+  --max-model-len "${ANDY_LOCAL_EYES_CONTEXT:-32768}" \
   --limit-mm-per-prompt '{"image": 32}' \
   --gpu-memory-utilization "${ANDY_LOCAL_EYES_MEMORY:-0.6}" \
   --disable-uvicorn-access-log \

@@ -47,11 +47,27 @@ right.
 - Andy keeps its eyes when the network is down, on this desktop; with `ANDY_VISION=local`, no picture leaves the house.
 - A second GPU (or a 24 GB one) is needed for it beside the voice server; the 8 GB minimum in the README is for Andy
   without it.
-- The 8B model is untested: its licence is separate, and it is worth measuring the same way before choosing it.
+- The 8B model was measured the same afternoon (below).
 - New code in the robot's loop five days before the deadline: the fallback is off unless set, and tested
   (`tests/test_local_eyes.py`). It has not yet been tried on the robot.
 
 ## Revisit when
 
-- Cosmos Reason 2 8B is measured on the same trials.
 - The fallback is tried on the robot with the network unplugged.
+
+## Amended 2026-10-25: the 8B model measured
+
+The founder accepted the 8B licence the same afternoon. On the same 30 trials, with the whole of GPU 0
+(`ANDY_LOCAL_EYES_MEMORY=0.92`, a 12,288-token context so its cache fits; about 21 GB in use):
+
+| Eyes | Pointed at it | False finds (absent) | Pointed elsewhere | Median error | Median time |
+|---|---|---|---|---|---|
+| Nemotron 3.5 Super VL, Token Factory | 21 of 23 (73–98%) | 0 of 7 | 0 | 0.78° | 3.24 s |
+| Cosmos Reason 2 2B, this computer | 18 of 23 (58–90%) | 0 of 7 | 3 | 3.06° | 2.13 s |
+| Cosmos Reason 2 8B, this computer | 22 of 23 (79–99%) | 0 of 7 | 0 | 1.95° | 4.80 s |
+
+([8B](../../evals/results/sim-finder-2026-10-25-1524-on-small0.35.json).) The 8B model never pointed at the wrong place and found as
+often as Super VL (22 against 21 is inside the intervals, so no claim that it finds more); it is less precise than Super VL and slower.
+**On a computer with a whole 24 GB GPU free, such as this desktop, the 8B model is the offline eyes**
+(`ANDY_LOCAL_EYES_MODEL=nvidia/Cosmos-Reason2-8B` in the env file, read by `local-eyes/run.sh` and by Andy); 2B stays
+the default, for one GPU beside the voice server or a Jetson.
