@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Decided (the name, and who enters)
+
+The project is **Andy**, entered by the founder as an individual with a personal account, as registered on Devpost;
+no company name in the entry or the repository (changing the entrant days before the deadline changes eligibility
+and who is paid, and the sponsor may use submission materials for three years). The founder confirms with counsel
+that the work is theirs to enter.
+
 ### Rewritten (the history, before going public; decision 0003)
 
 Every earlier version of every file becomes readable once the repository is public, so private matter that had reached

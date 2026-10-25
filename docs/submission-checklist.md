@@ -25,7 +25,7 @@ in the same commit that makes it true.
 - [x] No home address, phone number or private project names in the tree
 - [x] The endpoints recreated with `create` (token in MysteryBox), so no token is in their start settings (2026-10-25: the old two deleted, the second look remade and checked: 401 without the token at both addresses)
 - [x] The commit author address: GitHub's noreply address on every commit (history rewritten 2026-10-13; 108 of 108 on 2026-10-14)
-- [ ] Final name and branding decided
+- [x] Final name and branding decided: **Andy**, entered by the founder as an individual, no company name (2026-10-25)
 
 ## The Reachy Mini app (`reachy_app/`)
 
