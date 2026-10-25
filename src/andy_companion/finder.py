@@ -64,7 +64,6 @@ SAME_PLACE_DEG = 6.0                       # sightings this close together are o
 ARRIVED_DEG = 2.5                          # the head is where it was sent when within this of it
 REACH_YAW_DEG, REACH_PITCH_DEG = 60.0, 35.0  # where the head can turn without the body (Pollen: 65 from the body)
 WAIT_ARRIVE_S, POLL_S = 1.5, 0.1           # how long to wait for a head that started its move late
-TIMEOUT_S = 40
 VIEW_WIDTH, VIEW_QUALITY = 480, 70         # the TV's strip: small enough for four in memory, clear at a glance
 ASK = ("You are the eyes of a home companion robot helping someone find their {what}. Look at this picture. "
        "Is their {what} visible? Answer as JSON: seen (true or false), x (where it is across the picture, "
@@ -115,12 +114,11 @@ def ask(frame: Any, what: str, opener: Optional[Callable] = None, check: bool = 
     picture = vision.jpeg(frame, TILE_WIDTH, TILE_QUALITY) if zoom() else vision.jpeg(frame)
     image = "data:image/jpeg;base64," + base64.b64encode(picture).decode()
     prompt, schema, name = (CHECK, CHECK_SCHEMA, "closer") if check else (ASK, SCHEMA, "found")
-    req = vision.request(e, [{"type": "text", "text": prompt.format(what=what)},
-                             {"type": "image_url", "image_url": {"url": image}}], 120, 0,
-                         {"response_format": {"type": "json_schema", "json_schema": {"name": name, "schema": schema}}})
     try:
-        with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
-            text = str(json.loads(r.read())["choices"][0]["message"]["content"])
+        text = vision.answer(e, [{"type": "text", "text": prompt.format(what=what)},
+                                 {"type": "image_url", "image_url": {"url": image}}], 120, 0,
+                             {"response_format": {"type": "json_schema", "json_schema": {"name": name, "schema": schema}}},
+                             opener)
     except Exception as e:   # never echo the request: it holds the picture
         if getattr(e, "code", None) in (404, 502, 503, 504):
             raise FinderError(SWITCHED_OFF) from None

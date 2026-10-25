@@ -6,7 +6,12 @@ Two places, chosen by ANDY_VISION (PLAN B32):
 - "endpoint": NVIDIA Nemotron Nano 12B v2 VL on the person's own Nebius Serverless Endpoint
   (cloud/vision-endpoint.sh, ANDY_VISION_URL and ANDY_VISION_TOKEN): a smaller model on its own GPU,
   started before a demo and stopped after.
+- "local": NVIDIA Cosmos Reason 2 2B served by vLLM on this computer (local-eyes/run.sh, decision 0015): no
+  network, so a picture never leaves the house; slower and smaller.
 - "off": no eyes.
+
+ANDY_VISION_FALLBACK=local sends a picture to Cosmos here when the chosen eyes can't be reached (the network is
+down, or the endpoint stopped), if it is running; otherwise nothing changes.
 
 Used only when the person asks what Andy sees. The picture goes over HTTPS and is not kept there (the
 account has zero data retention on) or here; the description comes back as text. People are never
@@ -19,6 +24,7 @@ import base64
 import json
 import os
 import socket
+import urllib.error
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 from urllib.parse import urlparse
@@ -32,8 +38,13 @@ CONNECT_S = 3.0
 MODEL = "nemotron-vl"                                   # the endpoint's served name (cloud/vision-endpoint.sh)
 TOKEN_FACTORY_MODEL = "nvidia/Nemotron-3.5-Super-VL"
 TOKEN_FACTORY = "https://api.tokenfactory.nebius.com/v1/"
+LOCAL_MODEL = "cosmos-reason2"                          # local-eyes/run.sh's served name
+LOCAL = "http://127.0.0.1:8095"
 NAMES = {"token-factory": "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory",
-         "endpoint": "NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint"}
+         "endpoint": "NVIDIA Nemotron Nano 12B v2 VL on a Nebius Serverless Endpoint",
+         "local": "NVIDIA Cosmos Reason 2 2B on this computer"}
+# The eyes that answered last ("" before any picture): the hood names these, so a fallback is never hidden.
+_used = ""
 PROMPT = ("You are the eyes of a home companion robot, talking to an older adult. Describe what is in "
           "this picture in two or three short, plain sentences, most important first. {ask} Never say "
           "who a person is, or guess their age, health or mood; describe only what is there. If text is "
@@ -45,15 +56,31 @@ class VisionError(Exception):
 
 
 def choice() -> str:
-    """Which eyes ANDY_VISION asks for: 'token-factory' (the default), 'endpoint' or 'off'."""
+    """Which eyes ANDY_VISION asks for: 'token-factory' (the default), 'endpoint', 'local' or 'off'."""
     c = os.environ.get("ANDY_VISION", "").strip().lower().replace("_", "-")
-    return c if c in ("token-factory", "endpoint", "off") else "token-factory"
+    return c if c in ("token-factory", "endpoint", "local", "off") else "token-factory"
+
+
+def local_eyes() -> Dict[str, Any]:
+    """Cosmos Reason 2 2B on this computer (local-eyes/run.sh): no token, and only ever this computer's address."""
+    url = os.environ.get("ANDY_LOCAL_EYES_URL", LOCAL).rstrip("/")
+    return {"name": "local", "url": url + "/v1/chat/completions", "token": "", "model": LOCAL_MODEL,
+            "extra": {}, "may_be_stopped": True}
+
+
+def fallback(e: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """The eyes to try when `e` can't be reached: Cosmos here, if ANDY_VISION_FALLBACK=local and `e` isn't it."""
+    if os.environ.get("ANDY_VISION_FALLBACK", "").strip().lower() != "local" or (e or {}).get("name") == "local":
+        return None
+    return local_eyes()
 
 
 def eyes() -> Optional[Dict[str, Any]]:
     """Where to send a picture: the full chat address, the bearer token, the model and any extra body
     fields; None when the eyes are off or their key is missing. The token is never logged or shown."""
     c = choice()
+    if c == "local":
+        return local_eyes()
     if c == "endpoint":
         url, token = os.environ.get("ANDY_VISION_URL", ""), os.environ.get("ANDY_VISION_TOKEN", "")
         if not (url and token):
@@ -76,6 +103,11 @@ def name() -> str:
     return NAMES[e["name"]] if e else "off"
 
 
+def used() -> str:
+    """Which eyes answered the last picture ('token-factory', 'endpoint' or 'local'), else the ones chosen."""
+    return _used or choice()
+
+
 def configured() -> bool:
     return eyes() is not None
 
@@ -85,15 +117,54 @@ def request(e: Dict[str, Any], content: List[Dict[str, Any]], max_tokens: int, t
     """One chat request to the eyes in `e`, with the picture in `content`."""
     body = {"model": e["model"], "max_tokens": max_tokens, "temperature": temperature,
             "messages": [{"role": "user", "content": content}], **e["extra"], **(extra or {})}
-    return urllib.request.Request(e["url"], method="POST", data=json.dumps(body).encode(),
-                                  headers={"Authorization": f"Bearer {e['token']}", "Content-Type": "application/json"})
+    headers = {"Content-Type": "application/json"}
+    if e["token"]:
+        headers["Authorization"] = f"Bearer {e['token']}"
+    return urllib.request.Request(e["url"], method="POST", data=json.dumps(body).encode(), headers=headers)
+
+
+def unavailable(err: BaseException) -> bool:
+    """Whether a failed call means the eyes couldn't be reached (worth the fallback), not that they refused it."""
+    if isinstance(err, urllib.error.HTTPError):
+        return err.code in (502, 503, 504)
+    return isinstance(err, (urllib.error.URLError, TimeoutError, ConnectionError, socket.timeout))
+
+
+def answer(e: Dict[str, Any], content: List[Dict[str, Any]], max_tokens: int, temperature: float,
+           extra: Optional[Dict[str, Any]] = None, opener: Optional[Callable] = None) -> str:
+    """The reply's text from the eyes in `e`; if they can't be reached, from the fallback (Cosmos here), when it
+    is set and running. Raises what the call raised. Never logs or echoes the request: it holds the picture."""
+    global _used
+    try:
+        text = _ask(e, content, max_tokens, temperature, extra, opener)
+        _used = e["name"]
+        return text
+    except Exception as err:
+        f = fallback(e)
+        if f is None or not unavailable(err) or (opener is None and not reachable(f["url"])):
+            raise
+        text = _ask(f, content, max_tokens, temperature, extra, opener)
+        _used = f["name"]
+        return text
+
+
+def _ask(e: Dict[str, Any], content: List[Dict[str, Any]], max_tokens: int, temperature: float,
+         extra: Optional[Dict[str, Any]], opener: Optional[Callable]) -> str:
+    req = request(e, content, max_tokens, temperature, extra)
+    with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
+        return str(json.loads(r.read())["choices"][0]["message"]["content"])
+
+
+def here(url: str) -> bool:
+    """Whether an address is this computer's own, where a picture travels no network at all."""
+    return urlparse(url).hostname in ("127.0.0.1", "localhost", "::1")
 
 
 def reachable(url: str, connect: Callable = socket.create_connection) -> bool:
     """Whether the endpoint takes a connection within CONNECT_S. Only a connection: nothing is sent."""
     parts = urlparse(url)
     try:
-        connect((parts.hostname, parts.port or 443), timeout=CONNECT_S).close()
+        connect((parts.hostname, parts.port or (80 if parts.scheme == "http" else 443)), timeout=CONNECT_S).close()
     except (OSError, ValueError, TypeError):
         return False
     return True
@@ -123,7 +194,7 @@ def ready(e: Optional[Dict[str, Any]], opener: Optional[Callable] = None) -> str
     that is stopped between demos (said at once, not after TIMEOUT_S)."""
     if e is None:
         return "My eyes in the cloud are switched off right now."
-    if not e["url"].startswith("https://"):   # the token and the picture never travel unencrypted
+    if not e["url"].startswith("https://") and not here(e["url"]):   # never unencrypted over a network
         return "My eyes in the cloud need a secure (https) address."
     if e["may_be_stopped"] and opener is None and not reachable(e["url"]):   # an opener is a test's stand-in
         return SWITCHED_OFF
@@ -137,12 +208,9 @@ def describe(frame: Any, question: str = "", opener: Optional[Callable] = None) 
         raise VisionError(why)
     image = "data:image/jpeg;base64," + base64.b64encode(jpeg(frame)).decode()
     ask = f"They asked: {' '.join(question.split())[:200]}" if question.strip() else ""
-    req = request(e, [{"type": "text", "text": PROMPT.format(ask=ask)},
-                      {"type": "image_url", "image_url": {"url": image}}], 160, 0.2)
+    content = [{"type": "text", "text": PROMPT.format(ask=ask)}, {"type": "image_url", "image_url": {"url": image}}]
     try:
-        with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
-            data = json.loads(r.read())
-        return " ".join(str(data["choices"][0]["message"]["content"]).split())[:800]
+        return " ".join(answer(e, content, 160, 0.2, opener=opener).split())[:800]
     except Exception as e:   # never echo the request: it holds the picture
         if getattr(e, "code", None) in (404, 502, 503, 504):   # a stopped endpoint answers like this
             raise VisionError(SWITCHED_OFF) from None

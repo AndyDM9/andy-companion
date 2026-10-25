@@ -23,7 +23,7 @@ in the same commit that makes it true.
 
 - [x] A fresh clone installs and passes its tests (2026-10-13; from GitHub, all three environments, 2026-10-14)
 - [x] No home address, phone number or private project names in the tree
-- [ ] The endpoints recreated with `create` (token in MysteryBox), so no token is in their start settings
+- [x] The endpoints recreated with `create` (token in MysteryBox), so no token is in their start settings (2026-10-25: the old two deleted, the second look remade and checked: 401 without the token at both addresses)
 - [x] The commit author address: GitHub's noreply address on every commit (history rewritten 2026-10-13; 108 of 108 on 2026-10-14)
 - [ ] Final name and branding decided
 

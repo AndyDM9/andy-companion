@@ -85,12 +85,20 @@ ON_ENDPOINT = {"describe_view": {"en": "Nemotron Nano VL on our Nebius endpoint"
                                "es": "Nemotron Nano VL en nuestro endpoint de Nebius, cuatro vistas en 24 recortes ampliados, y una mirada más de cerca"}}
 
 
+# The eyes when Cosmos on this computer answered: chosen (ANDY_VISION=local), or the fallback (decision 0015).
+ON_LOCAL = {"describe_view": {"en": "Cosmos Reason 2 2B, on this computer", "es": "Cosmos Reason 2 2B, en esta computadora"},
+            "describe_photo": {"en": "Cosmos Reason 2 2B, on this computer", "es": "Cosmos Reason 2 2B, en esta computadora"},
+            "find_object": {"en": "Cosmos Reason 2 2B, on this computer, four views as 24 zoomed tiles, then a closer look",
+                            "es": "Cosmos Reason 2 2B, en esta computadora, cuatro vistas en 24 recortes ampliados, y una mirada más de cerca"}}
+
+
 def where(language: str = "en") -> Dict[str, str]:
-    """Each tool's place, in the household's language, with the eyes ANDY_VISION chose."""
+    """Each tool's place, in the household's language, with the eyes that answered last (vision.used): the ones
+    ANDY_VISION chose, or Cosmos here when the fallback took over."""
     from andy_companion import vision
 
     lg = "es" if language == "es" else "en"
-    places = {**WHERE, **(ON_ENDPOINT if vision.choice() == "endpoint" else {})}
+    places = {**WHERE, **{"endpoint": ON_ENDPOINT, "local": ON_LOCAL}.get(vision.used(), {})}
     return {name: w[lg] for name, w in places.items()}
 
 

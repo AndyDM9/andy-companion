@@ -17,7 +17,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Try it:** *[the Hugging Face Space's link]*
 - **Built with:** nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs,
   nvidia-nemotron, nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety,
-  nvidia-parakeet, nemotron-nano-vl, vllm, tavily, reachy-mini, pollen-robotics, mujoco, qwen3-tts, hugging-face,
+  nvidia-parakeet, nemotron-nano-vl, nvidia-cosmos, cosmos-reason-2, vllm, tavily, reachy-mini, pollen-robotics, mujoco, qwen3-tts, hugging-face,
   python, opencv, tesseract, vosk, wikipedia
 - **Feedback** (mandatory; the ten best win a prize): [feedback.md](feedback.md), product by product.
 - **Prior work:** Built during the submission period, from 2026-10-13. It reuses general-purpose robot behaviour
@@ -31,7 +31,8 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 A small home robot that reads the letter in your hand, looks around the room for your glasses, and turns to whoever
 is speaking. Entered in the **Physical AI track**.
 - **Track fit:** Andy is an embodied agent that senses and acts: Pollen's Reachy Mini conversation app is its agent
-  runtime, NVIDIA Nemotron on Nebius decides, and the robot hears, sees, turns its head and points.
+  runtime, NVIDIA Nemotron on Nebius decides (with NVIDIA Cosmos Reason 2 as its eyes when offline), and the robot
+  hears, sees, turns its head and points.
 - **Technology:** NVIDIA Nemotron models on Nebius Token Factory talk, see and judge; a vision model's answers move
   the robot's head; Nebius Serverless Jobs test it all, including Andy's search in simulation.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
@@ -79,6 +80,9 @@ talking over Andy stops it.
 - **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed tiles, all 24
   at once in about 1.8 s, each a structured answer, then a strict yes or no about the close-up. On one room photo, zooming
   in took the search from [0 of 9 to 9 of 9](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/zoom-check-2026-10-20-1711.json).
+- **Seeing offline:** when Token Factory can't be reached, the same questions go to NVIDIA Cosmos Reason 2 2B on the
+  home computer's second GPU, so Andy can still find your glasses; nothing leaves the house. In the same simulated
+  searches it was faster (2.1 s against 3.2 s) and never claimed a find that wasn't there ([decision 0015](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
   behaviours plug into it without forking it. Rules that must hold are in code, under the model: the scam warning,
   consent before anything is kept, and the 911 or 988 line when someone says urgent words.
@@ -133,11 +137,10 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.
-- Of the Physical AI track's NVIDIA models, Andy uses Nemotron (and Parakeet). GR00T and Sonic are policies for
-  robots with arms or legs, which the Reachy Mini doesn't have. Cosmos Reason 2 2B was considered as an offline
-  fallback for finding things and isn't in yet: online, Super VL already finds them, and new code in the robot's
-  loop this close to the deadline was the bigger risk. It belongs in the Jetson version
-  ([decision 0014](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/0014-cosmos-considered-not-yet.md)).
+- The offline eyes are less precise: in the same 30 simulated searches, Cosmos Reason 2 2B pointed at the duck
+  [18 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1506-on-small0.35.json) against Super VL's 21, three times
+  at the wrong place; it is the fallback, needs a second GPU, and hasn't been tried on the robot with the network
+  unplugged. GR00T and Sonic, the track's other models, are for robots with arms or legs.
 
 ### What's next
 
@@ -153,7 +156,8 @@ and Andy published as a one-click Reachy Mini app on Hugging Face.
 - **Running, monthly:** about [$2.30 a month, estimated](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/cost.md) from list prices for one household's
   conversation and web lookups, not from a bill; the eyes add about half a cent a search.
 - **A Jetson port needs:** hearing and speaking in well under 7.6 GB (a smaller voice than Qwen3-TTS), thinking
-  and seeing staying on Token Factory, and a small local model for when the network is down. Planned, not tried.
+  and seeing staying on Token Factory, and Cosmos Reason 2 2B, Andy's offline eyes today, for when the network is
+  down. Planned, not tried on a Jetson.
 - **Who pays:** we expect the family who help, not the person; that is a guess the pilot has to test.
 - **Before anyone relies on it:** the pilot with an ethics review, the finder's closer look fixed, and the limits
   above.

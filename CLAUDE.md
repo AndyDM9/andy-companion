@@ -28,7 +28,8 @@ sequentially, and add it to `docs/decisions/README.md`). A milestone is done onl
 ## Running Andy
 
 On the desktop Andy and its voice server are user services ([decision 0008](docs/decisions/0008-andy-runs-as-user-services.md)):
-`systemctl --user start|stop|restart|status andy andy-voice`, logs with `journalctl --user -u andy`.
+`systemctl --user start|stop|restart|status andy andy-voice` (and `andy-eyes`, the offline eyes, once installed),
+logs with `journalctl --user -u andy`.
 Restart Andy after a change with `systemctl --user restart andy`; never start a second copy by hand while
 the service runs, and never stop a process by matching part of its command line. The desktop is shared:
 stop both services when the founder needs it for other work.

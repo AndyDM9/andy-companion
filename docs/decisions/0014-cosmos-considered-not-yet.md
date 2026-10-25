@@ -1,6 +1,6 @@
 # 0014: Cosmos Reason 2 considered for the finder, not added before submitting
 
-**Date:** 2026-10-25. **Status:** accepted.
+**Date:** 2026-10-25. **Status:** amended by 0015 (the founder chose to build it the same day).
 
 ## Context
 

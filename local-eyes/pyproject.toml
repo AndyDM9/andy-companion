@@ -1,0 +1,11 @@
+[project]
+name = "andy-companion-local-eyes"
+version = "0.1.0"
+description = "Andy's offline eyes: NVIDIA Cosmos Reason 2 2B served by vLLM on this computer (PLAN B39, decision 0015)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "vllm==0.32.0",                      # serves Qwen3-VL, which Cosmos Reason 2 is post-trained from
+]
+
+[tool.uv]
+package = false

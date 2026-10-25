@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Added (the offline eyes: NVIDIA Cosmos Reason 2 2B on this computer, decision 0015)
+
+The founder chose to build PLAN B39 after all (amending decision 0014), with the licence accepted and the desktop's
+second RTX 3090 free:
+- **`local-eyes/`**: its own environment (vLLM 0.32.0) and `run.sh`, serving `nvidia/Cosmos-Reason2-2B` on
+  127.0.0.1:8095 only, GPU 0 unless `ANDY_LOCAL_EYES_GPU`, no request text logged; `systemd/andy-eyes.service`,
+  installed by `scripts/install-services.sh` once `local-eyes/` is set up.
+- **`ANDY_VISION=local`** uses it always (no picture leaves the house); **`ANDY_VISION_FALLBACK=local`** sends a picture
+  to it only when the chosen eyes can't be reached (a network error, a timeout, 502, 503 or 504; never a 401 or 400).
+  `vision.answer` carries both "what do you see?" and the finder's structured questions; plain http only to this
+  computer; the Token Factory key never sent to it. The hood names the eyes that answered (`vision.used`), so a
+  fallback is never passed off as Token Factory. The doctor checks it; `.env.example` and the README's setup say how.
+- **Measured** in Pollen's MuJoCo scene on the same 30 trials as Super VL: pointed 18 of 23 (Super VL 21), false finds
+  0 of 7 (0), pointed elsewhere 3 (0), error 3.06° (0.78°), 2.13 s a search (3.24 s). The README's Limitations, the
+  Devpost text, the feedback and the rules record say so; Cosmos joins the NVIDIA models listed.
+- `tests/test_local_eyes.py` (12 tests): the local address and no token, http only here, the fallback for describe
+  and the finder, only unreachable eyes falling back, nothing changed without the setting, a fallback that isn't
+  running never tried, the server bound to 127.0.0.1.
+
 From two outside reviews of the entry before submitting: judges asked for clickable sources, and read published
 limits as rigour.
 
@@ -46,6 +65,12 @@ limits as rigour.
 - **gitleaks 8.30.1 over all 151 commits and the working tree: no leaks.** Separately, none of the env file's key
   or token values appears anywhere in the history. An endpoint's public IP:port is still in two older commits
   (removed from the tree on 2026-10-20), which the planned history rewrite removes (decision 0003).
+- **The endpoints remade without the token in their settings.** Both old ones (made before 2026-10-14, the token in
+  their start arguments) deleted; the second look created anew with `cloud/guard-endpoint.sh create`, its token in
+  Nebius MysteryBox, the first real run of that path. Checked: 401 without the token or with a wrong one, at the HTTPS
+  address and at the plain IP:port; no token in the spec. Re-measured as on 2026-10-13 (policy 7 of 8 held out, no
+  false alarm, 545 ms), then stopped. The eyes' endpoint isn't remade: the eyes are on Token Factory, and
+  `cloud/vision-endpoint.sh create` makes it the same way when wanted.
 
 ### Removed
 

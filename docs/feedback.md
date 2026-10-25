@@ -125,6 +125,25 @@ its price, region and limits, which made the cost page exact.
 image as a data URL, the first answer in 2.6 s.
 **Would we build with it again?** Yes: a bigger model, faster than our own endpoint, always on, and paid per picture.
 
+## NVIDIA Cosmos Reason 2 2B
+
+**Used for:** Andy's offline eyes since 2026-10-25: when Token Factory can't be reached, "what do you see?" and the
+finder's questions go to it on the home computer's second GPU, so nothing leaves the house.
+**Worked:** vLLM 0.32.0 served it on the first try with no special flags, and a description of Andy's TV screen came
+back right in about 0.5 s. In Pollen's MuJoCo scene, on the same 30 searches as Super VL, it pointed 18 of 23 times
+(Super VL 21), claimed nothing when the thing wasn't there, and answered faster (2.1 s against 3.2 s).
+**Needs work:**
+- The model card shows only a Transformers example; a vLLM serving line, as other NVIDIA cards give, would save the
+  first hour.
+- The card says 24 GB is the minimum, without saying for what: vLLM ran it with about 14 GB reserved. Memory for
+  images, and latency per GPU, would let builders plan a Jetson.
+- It points less precisely than Super VL (3.06° median error against 0.78°); the card's pointing coordinate format
+  isn't stated, so we asked for our own JSON.
+**Onboarding (zero to hello world):** about 25 minutes: accept the licence, `uv sync` with vLLM, and the first start
+downloads and compiles in about 5 minutes.
+**Would we build with it again?** Yes: a small NVIDIA model that keeps a robot's eyes working with the network
+down, and the one NVIDIA's Jetson design for the Reachy Mini runs.
+
 ## NVIDIA Nemotron Nano 12B v2 VL
 
 **Used for:** Andy's eyes until 2026-10-20 (now the option, `ANDY_VISION=endpoint`), describing what's in front of the camera, on a Nebius Serverless Endpoint.

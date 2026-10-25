@@ -1,0 +1,16 @@
+[Unit]
+Description=Andy's offline eyes (NVIDIA Cosmos Reason 2 2B on this computer, the fallback; decision 0015)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=@ROOT@/local-eyes
+ExecStart=@ROOT@/local-eyes/run.sh
+Restart=on-failure
+RestartSec=30
+# vLLM logs no request text (local-eyes/run.sh); keep the journal short anyway.
+LogRateLimitIntervalSec=30
+LogRateLimitBurst=200
+
+[Install]
+WantedBy=default.target

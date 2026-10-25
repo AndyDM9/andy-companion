@@ -113,7 +113,15 @@ def main() -> int:
           + " (information, not a check; --live checks the app is running)")
 
     eyes = (e.get("ANDY_VISION") or "token-factory").strip().lower().replace("_", "-")
-    if eyes not in ("endpoint", "off"):
+    # Cosmos Reason 2 on this computer (decision 0015): needed when chosen, a fallback otherwise.
+    here = port_open(int(e.get("ANDY_LOCAL_EYES_PORT", "8095")))
+    if eyes == "local":
+        check("Eyes (Cosmos Reason 2 2B, this computer)", here, "answering" if here else "not running",
+              "local-eyes/run.sh (cd local-eyes && uv sync, once)")
+    elif (e.get("ANDY_VISION_FALLBACK") or "").strip().lower() == "local":
+        check("Offline eyes (Cosmos Reason 2 2B, the fallback)", True,
+              "running" if here else "not running, so no fallback: local-eyes/run.sh")
+    if eyes not in ("endpoint", "off", "local"):
         check("Eyes (Nemotron 3.5 Super VL, Token Factory)", bool(e.get("NEBIUS_API_KEY")),
               "always on, nothing to start" if e.get("NEBIUS_API_KEY") else "no Token Factory key",
               "add NEBIUS_API_KEY to the env file")
@@ -174,7 +182,7 @@ def live(e: dict) -> None:
                   "Token Factory is slow right now; try again in a few minutes")
         except Exception as err:
             check("Nemotron replies quickly", False, type(err).__name__, "check the key and the network")
-        if eyes not in ("endpoint", "off"):   # the eyes on Token Factory: the model is listed for this key
+        if eyes not in ("endpoint", "off", "local"):   # the eyes on Token Factory: the model is listed for this key
             model = e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL")
             try:
                 code, listing = http(base + "/models", headers={"Authorization": f"Bearer {key}"}, timeout=10)
