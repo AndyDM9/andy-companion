@@ -18,11 +18,17 @@ The text diagram below shows the voice path in detail.
             │      │ OpenAI Realtime protocol (ws://127.0.0.1:8765)    │
             │      ▼                                                   │
             │ voice/: speech-to-speech                                 │
-            │   Smart Turn (end of turn) → NVIDIA Parakeet (speech to  │
-            │   text) → LLM client → Qwen3-TTS (text to speech)        │
+            │   Silero VAD + Smart Turn (end of turn) →                │
+            │   NVIDIA Parakeet (speech to text) → LLM client →        │
+            │   Qwen3-TTS (text to speech)                             │
             └───────────────│──────────────────────────────────────────┘
                             ▼ HTTPS, zero data retention
               Nebius Token Factory: NVIDIA Nemotron 3.5 Lightning
+
+ Also on this computer, offline: Vosk (the wake phrase, English and Spanish), Tesseract (reading a letter; only
+ its text leaves), YuNet on ONNX Runtime in Pollen's software (finding a face to follow, never recognising it), and
+ NVIDIA Cosmos Reason 2 (the eyes when the network is down, below). The full list, with what each is for and what we
+ measured: the README's "Every model, and where it runs".
 
  tools/ (local_news, look_up, whats_on, read_link, check_message, look_into; setup: events page)
       ──▶ HTTPS ──▶ Tavily (search, extract, crawl, map, research); safe search on every search,

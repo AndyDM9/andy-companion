@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Every model, and where it runs
+
+A judge wants to see local models; Andy runs eight, but the README's table named only Parakeet and Cosmos, and the
+diagram none of the offline ones. Now: a README section near the top, **"Every model, and where it runs"**, two tables
+(on this computer: NVIDIA Parakeet TDT 0.6B v3, Qwen3-TTS 12Hz 1.7B, Silero VAD and Smart Turn v3.2, Vosk, Tesseract,
+YuNet on ONNX Runtime, NVIDIA Cosmos Reason 2; on Nebius: five NVIDIA Nemotron models), each with what it does, where
+it runs and what we measured; the diagram (`architecture.svg` and its PNG for the gallery and the video's shot 7) with
+an "On this computer, offline" box; the Devpost text's first block and its build section naming the local models; the
+architecture notes and the Reachy Mini app's page likewise. Every name checked against what runs (the voice server's
+log, Pollen's face detector, the wake listener).
+
 ### Checked (every count against the current state)
 
 After the day's changes, every number in the docs was compared with the repository: 923 tests collected, 38 tools,

@@ -33,8 +33,10 @@ Andy is a small home robot for older adults who live at home, and the family who
 hand, looks around the room for your glasses, and looks things up for you. Every robot shot in the video is live,
 with no cuts in the pauses. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
-  Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. NVIDIA Cosmos
-  Reason 2 is its eyes when the network is down (tried on the home computer, not yet on the robot).
+  Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. Eight models run
+  on the computer beside the robot: NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 is its eyes
+  when the network is down (tried on the home computer, not yet on the robot), with local models for the wake
+  phrase, reading letters and finding a face.
 - **Nebius:** Token Factory answers every turn (a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json)
   from your words to Andy's first sound, 54 turns on the robot). **Serverless Jobs** run Andy's search in Pollen's
   MuJoCo simulation, scored against the scene's truth, and 97 spoken situations; a **Serverless Endpoint** serves
@@ -83,8 +85,11 @@ turning to a second person speaking, a move taught by hand, and remembering wher
 
 ### How we built it
 
-- **Hearing and speaking at home:** NVIDIA Parakeet and Qwen3-TTS on the home computer's GPU, so your voice never
-  leaves the house; only words do. On the robot, a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json) from the moment your words are
+- **Eight models at home, on the computer beside the robot:** NVIDIA Parakeet TDT 0.6B v3 (hearing) and Qwen3-TTS
+  (speaking) on its GPU, so your voice never leaves the house, only words do; Silero VAD and Smart Turn v3.2 (when
+  you've finished speaking); Vosk (the wake phrase, offline, English and Spanish); Tesseract (reading the letter);
+  YuNet (finding a face to follow, never recognising it); and NVIDIA Cosmos Reason 2 (seeing when the network is
+  down). Five NVIDIA Nemotron models on Nebius, below. On the robot, a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json) from the moment your words are
   understood to Andy's first sound (54 real turns).
 - **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 tools; NVIDIA Nemotron 3
   Ultra takes hard questions and judges the tests. Zero data retention is on.

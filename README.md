@@ -37,7 +37,7 @@ open the screens on sample data with no keys at all ([try it](#try-it-without-a-
 failures included ([evals/results/](evals/results/README.md)); or [ask for the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml),
 any time until 2026-12-15.
 
-**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
+**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [every model and where it runs](#every-model-and-where-it-runs), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 
 ## Three moments
 
@@ -123,6 +123,39 @@ active level of use, worked out from list prices (Token Factory's on 2026-10-14;
 credits) and our assumptions about use, not from a household's bill; plus the hardware once. The eyes are on Token Factory, paid per picture (a search for your glasses about half a cent), so nothing
 runs while idle. The second look is not in that figure: it runs on a Nebius endpoint started when needed (about
 $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/cost.md).
+
+## Every model, and where it runs
+
+Thirteen models: eight on the computer beside the robot, two of them NVIDIA's, so Andy hears, speaks, wakes,
+reads, follows a face and, when the network is down, sees, at home; and five NVIDIA Nemotron models on Nebius.
+
+**On this computer, beside the robot**
+
+| What it does | Model | Runs on | Measured |
+|---|---|---|---|
+| Hearing: speech to text | NVIDIA **Parakeet TDT 0.6B v3** | GPU, in the voice server ([speech-to-speech](https://github.com/huggingface/speech-to-speech)) | 0.02 to 0.08 s an utterance |
+| Speaking: text to speech | **Qwen3-TTS 12Hz 1.7B CustomVoice** (BF16, GGUF) | GPU, in the voice server | first audio in 0.10 to 0.33 s; hearing and speaking together about 7.1 GB of GPU memory |
+| Knowing when you've finished speaking | **Silero VAD** and **Smart Turn v3.2** | CPU, in the voice server | |
+| The wake phrase, while Andy sleeps or is quiet | **Vosk** small models, English 0.15 and Spanish 0.42 | CPU, offline | |
+| Reading the letter in your hand | **Tesseract** OCR, English and Spanish | CPU; only the text leaves | |
+| Finding a face to follow (detection, never recognition) | **YuNet** (Pollen's `face_detection_yunet_2026may`) on ONNX Runtime | CPU, in Pollen's robot software | |
+| Seeing when the network is down | NVIDIA **Cosmos Reason 2 8B** (2B on a smaller GPU) | GPU, vLLM on 127.0.0.1 only ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)) | in simulation pointed 22 of 23 (8B), 18 of 23 (2B); tried end to end on this computer, not yet on the robot |
+
+Seeing a wave, the head's glance and turning to a voice need no model: motion in OpenCV, and the robot's own
+microphones.
+
+**On Nebius**
+
+| What it does | Model | Runs on | Measured |
+|---|---|---|---|
+| Every turn: conversation and 38 tools | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
+| Eyes: what's in view, family photos, finding things | NVIDIA **Nemotron 3.5 Super VL** | Token Factory | zoomed in, the search went from 0 of 9 to 9 of 9 at the desk |
+| Hard questions, and the judge of the tests | NVIDIA **Nemotron 3 Ultra** | Token Factory | the scam check: 58 of 60 caught, none of 60 ordinary flagged |
+| A second check for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety** | Serverless Endpoint (our vLLM) | 7 of 8 held-out phrasings, no false alarm |
+| Eyes, as an option (`ANDY_VISION=endpoint`) | NVIDIA **Nemotron Nano 12B v2 VL** (FP8) | Serverless Endpoint | a description in 3.45 s |
+
+Nebius **Serverless Jobs** run the tests: the 97-situation conversation suite, the scam check five ways, and Andy's
+search in Pollen's MuJoCo simulation. The details, and why each model, follow.
 
 ## How it uses NVIDIA and Nebius
 

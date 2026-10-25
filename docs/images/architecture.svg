@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="Atkinson Hyperlegible, Verdana, sans-serif" role="img" aria-labelledby="t d">
   <title id="t">How Andy works</title>
-  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer, Parakeet hears, the voice server asks Nemotron, Andy's app adds its 38 tools (letters, stories, jokes, research), body behaviours including a glance at the screen, privacy and the urgent-words net, and text-to-speech speaks. Nemotron 3.5 Lightning on Nebius Token Factory reasons and calls tools. Nemotron Nemotron 3.5 Super VL on Token Factory sees, only when asked, and Nemotron 3.5 Content Safety on a second endpoint takes a second look at the person's words for signs of crisis. The conversation suite runs as a Nebius Serverless Job judged by Nemotron 3 Ultra. Tavily brings the web. A screen beside Andy and a family page on a phone complete it.</desc>
+  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer: the voice server, where NVIDIA Parakeet hears, Silero VAD and Smart Turn tell when the person has finished, and Qwen3-TTS speaks; Andy's app with its 38 tools, body behaviours, the urgent-words net, privacy, the supervisor and the screen server; and, on this computer and offline, NVIDIA Cosmos Reason 2 as the eyes when the network is down, Vosk for the wake phrase, Tesseract to read letters and YuNet to find a face to follow. On Nebius: Token Factory runs NVIDIA Nemotron 3.5 Lightning for talk and tools, Nemotron 3.5 Super VL for the eyes and Nemotron 3 Ultra for hard questions; a Serverless Endpoint runs Nemotron 3.5 Content Safety as a second look (and Nano 12B v2 VL as other eyes, if chosen); Serverless Jobs run the tests and Andy's search in simulation. Tavily brings the web. A screen beside Andy and a family page on a phone show what Andy found and what was shared.</desc>
   <rect width="1200" height="700" fill="#f7faf8"/>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4c5d4f"/></marker>
@@ -21,16 +21,16 @@
   <text x="466" y="164" font-size="15" text-anchor="middle" fill="#4c5d4f">head, antennas, body</text>
   <line x1="228" y1="132" x2="294" y2="132" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
 
-  <rect x="48" y="212" width="588" height="300" rx="10" fill="#fff" stroke="#cbd8c6"/>
+  <rect x="48" y="212" width="588" height="330" rx="10" fill="#fff" stroke="#cbd8c6"/>
   <text x="68" y="244" font-size="18" font-weight="700" fill="#1d2a1f">The home computer</text>
 
   <rect x="68" y="262" width="250" height="110" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
   <text x="84" y="290" font-size="16" font-weight="700" fill="#1d2a1f">Voice server</text>
   <text x="84" y="314" font-size="15" fill="#1d2a1f">NVIDIA Parakeet (hearing)</text>
-  <text x="84" y="336" font-size="15" fill="#1d2a1f">turn detection</text>
+  <text x="84" y="336" font-size="15" fill="#1d2a1f">Silero VAD, Smart Turn (turns)</text>
   <text x="84" y="358" font-size="15" fill="#1d2a1f">Qwen3-TTS (speaking)</text>
 
-  <rect x="342" y="262" width="274" height="230" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
+  <rect x="342" y="262" width="274" height="270" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
   <text x="358" y="290" font-size="16" font-weight="700" fill="#1d2a1f">Andy's app</text>
   <text x="358" y="314" font-size="15" fill="#1d2a1f">38 tools: day, reminders, letters,</text>
   <text x="358" y="336" font-size="15" fill="#1d2a1f">news, stories, jokes, photos, family</text>
@@ -39,26 +39,30 @@
   <text x="358" y="402" font-size="15" fill="#1d2a1f">privacy: nothing said is logged</text>
   <text x="358" y="424" font-size="15" fill="#1d2a1f">supervisor: asleep, quiet, wake</text>
   <text x="358" y="446" font-size="15" fill="#1d2a1f">in code: scam cards, consent</text>
-  <text x="358" y="468" font-size="15" fill="#1d2a1f">English and Spanish</text>
+  <text x="358" y="468" font-size="15" fill="#1d2a1f">screen server: the TV, family pages</text>
+  <text x="358" y="490" font-size="15" fill="#1d2a1f">English and Spanish</text>
   <line x1="466" y1="180" x2="466" y2="260" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
   <line x1="318" y1="316" x2="340" y2="316" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
 
-  <rect x="68" y="392" width="250" height="100" rx="8" fill="#f4f7f1" stroke="#cbd8c6"/>
-  <text x="84" y="420" font-size="16" font-weight="700" fill="#1d2a1f">Screen server</text>
-  <text x="84" y="444" font-size="15" fill="#1d2a1f">day, captions, cards, timings</text>
-  <text x="84" y="466" font-size="15" fill="#1d2a1f">family and settings pages</text>
-  <line x1="340" y1="440" x2="320" y2="440" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="68" y="384" width="250" height="148" rx="8" fill="#f4f7f1" stroke="#2f6f5e" stroke-width="2"/>
+  <text x="84" y="410" font-size="16" font-weight="700" fill="#1d2a1f">On this computer, offline</text>
+  <text x="84" y="434" font-size="15" fill="#1d2a1f">NVIDIA Cosmos Reason 2: eyes</text>
+  <text x="84" y="456" font-size="15" fill="#1d2a1f">when the network is down</text>
+  <text x="84" y="478" font-size="15" fill="#1d2a1f">Vosk: the wake phrase</text>
+  <text x="84" y="500" font-size="15" fill="#1d2a1f">Tesseract: reads the letter</text>
+  <text x="84" y="522" font-size="15" fill="#1d2a1f">YuNet: finds a face to follow</text>
+  <line x1="340" y1="458" x2="320" y2="458" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
 
-  <rect x="48" y="540" width="280" height="110" rx="10" fill="#24304f"/>
-  <text x="188" y="584" font-size="20" font-weight="700" text-anchor="middle" fill="#f3d78f">The screen beside Andy</text>
-  <text x="188" y="612" font-size="15" text-anchor="middle" fill="#c9cfe0">the day, what Andy found, captions</text>
-  <line x1="150" y1="494" x2="150" y2="538" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="48" y="560" width="280" height="104" rx="10" fill="#24304f"/>
+  <text x="188" y="604" font-size="20" font-weight="700" text-anchor="middle" fill="#f3d78f">The screen beside Andy</text>
+  <text x="188" y="632" font-size="15" text-anchor="middle" fill="#c9cfe0">the day, what Andy found, captions</text>
+  <line x1="400" y1="534" x2="250" y2="558" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)"/>
 
-  <rect x="356" y="540" width="280" height="110" rx="10" fill="#fff" stroke="#2f6f5e" stroke-width="2"/>
-  <text x="496" y="582" font-size="18" font-weight="700" text-anchor="middle" fill="#1d2a1f">Family, on a phone</text>
-  <text x="496" y="608" font-size="15" text-anchor="middle" fill="#4c5d4f">sees only what was shared;</text>
-  <text x="496" y="628" font-size="15" text-anchor="middle" fill="#4c5d4f">sends messages and photos</text>
-  <path d="M318 470 C 340 520, 400 520, 420 538" fill="none" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+  <line x1="520" y1="534" x2="520" y2="558" stroke="#4c5d4f" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+  <rect x="356" y="560" width="280" height="104" rx="10" fill="#fff" stroke="#2f6f5e" stroke-width="2"/>
+  <text x="496" y="600" font-size="18" font-weight="700" text-anchor="middle" fill="#1d2a1f">Family, on a phone</text>
+  <text x="496" y="626" font-size="15" text-anchor="middle" fill="#4c5d4f">sees only what was shared;</text>
+  <text x="496" y="646" font-size="15" text-anchor="middle" fill="#4c5d4f">sends messages and photos</text>
 
   <!-- the cloud -->
   <rect x="700" y="24" width="476" height="652" rx="14" fill="#eef0f7" stroke="#c9cfe0"/>
