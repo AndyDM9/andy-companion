@@ -28,8 +28,9 @@ and anything a person said would be exposed by the same openness, so they are ke
 
 - **Code from the private assistant** is copied module by module, with its private imports removed and personal examples rewritten. It is never copied as a whole folder.
 - **Every commit's history** is checked for keys before the repository goes public.
-- **Before going public** (2026-10-20), names, the founder's town and an endpoint address that had reached older
-  commits are rewritten out of the history, every commit's date kept.
+- **Before going public**, names, the founder's town and an endpoint address that had reached older commits are
+  rewritten out of the history, every commit's date kept (done 2026-10-25, with a private note, the company's name
+  and the earlier assistant's name; gitleaks clean after).
 
 ## Revisit when
 

@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Rewritten (the history, before going public; decision 0003)
+
+Every earlier version of every file becomes readable once the repository is public, so private matter that had reached
+older commits was rewritten out of all 161 of them with `git filter-repo`, every commit's date and message kept and
+today's files byte-for-byte unchanged: a private note (dropped from every commit), the founder's company name and
+work address, three judges' names (each replaced with "a judge"), the founder's town and its sites (the fictional
+"Harbor Bay", as the current files already use), an endpoint's IP address (a documentation address), and the earlier
+assistant's name. Checked on the rewritten history before pushing: each term found 0 times, gitleaks 8.30.1 no leaks
+in any commit or the files, none of the env file's secret values anywhere. Force-pushed to GitHub with the founder's
+agreement; a bundle of the history before the rewrite is kept outside the repository. Commit hashes before today's
+rewrite no longer exist; the records quote none of them.
+
 ### Hugging Face: signed in to publish; the Space needs PRO (decision 0010 amended)
 
 The desktop is signed in to Hugging Face with a write token (the old one could only read). Creating the demo Space
@@ -130,7 +142,7 @@ limits as rigour.
 
 - **gitleaks 8.30.1 over all 151 commits and the working tree: no leaks.** Separately, none of the env file's key
   or token values appears anywhere in the history. An endpoint's public IP:port is still in two older commits
-  (removed from the tree on 2026-10-20), which the planned history rewrite removes (decision 0003).
+  (removed from the tree on 2026-10-20), rewritten out of the history the same evening (decision 0003).
 - **The endpoints remade without the token in their settings.** Both old ones (made before 2026-10-14, the token in
   their start arguments) deleted; the second look created anew with `cloud/guard-endpoint.sh create`, its token in
   Nebius MysteryBox, the first real run of that path. Checked: 401 without the token or with a wrong one, at the HTTPS
@@ -140,9 +152,8 @@ limits as rigour.
 
 ### Removed
 
-- **A private note** that doesn't belong in a
-  repository going public (CLAUDE.md). Moved out of the repository; the history rewrite must drop it from bd46ece
-  too. `docs/video-script.md`, from the same commit, stays, with the agent runtime added to its numbers shot, and its
+- **A private note** that doesn't belong in a repository going public (CLAUDE.md), moved out of the repository and,
+  later the same day, out of its history. `docs/video-script.md`, from the same commit, stays, with the agent runtime added to its numbers shot, and its
   limits shot says only what the README's Limitations shows ("misses things in dim light" was never measured).
 
 ## 2026-10-21

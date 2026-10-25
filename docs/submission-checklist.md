@@ -17,7 +17,7 @@ in the same commit that makes it true.
 - [ ] Licence visible in the repository's About section
 - [x] README: setup instructions that work from a fresh clone (cloned from GitHub and checked 2026-10-14; again once public)
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
-- [ ] No keys, secrets or personal data anywhere in the history: gitleaks found none in 108 commits on 2026-10-14 and none in 151 on 2026-10-25 (no key value in the history either); an endpoint's IP:port is still in two older commits and a private note in bd46ece, so rewrite those out and run it again over the rewritten history before going public
+- [x] No keys, secrets or personal data anywhere in the history: the history rewritten on 2026-10-25 (a private note, the company, three judges' names, the town, an endpoint's IP), then gitleaks over all 161 commits: no leaks, and no key value anywhere
 
 ## Before making the repository public
 
