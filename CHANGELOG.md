@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Looked at, on the robot (the testing switch, then off and deleted)
+
+Five looks recorded at the founder's request, each named specifically by Super VL: sunglasses with yellow lenses, a
+camera lens, a watch with a red strap, and, three times, "a black camera" for a robot-shaped black bottle held to the
+side against a bright monitor: a backlit silhouette. A wider full-detail area gave the same answers (so the middle
+stays as it is); the object's light, not the framing, decided it. One answer had repeated part of Andy's own
+instruction aloud ("it is the nearest thing, near the middle of the view"): reworded so it can't be, and the five
+looks asked again gave the same names without it. The switch was then turned off and the pictures deleted.
+
 ### Added (seeing why a thing wasn't recognised)
 
 On the robot Andy named the toy gorilla but not a robot statue. The log showed four looks, each 2.1 to 2.4 s on Super
