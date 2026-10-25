@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Medicine reminders, tested; the research behind what Andy does and doesn't do
+
+The founder asked whether a companion for older adults needs more, medicine reminders above all. Research
+(`docs/research.md`): a 2026 systematic review of 21 studies (voice, control over privacy and data, companionship,
+help with daily tasks), a small study where a reminder device helped 13 of 18 people with mild memory problems take
+their medicines, the FDA's January 2026 general wellness guidance (a product's claims decide whether it is a device),
+ElliQ's program data, and why fall detection and monitoring stay out. No new feature before filming; instead three
+suite cases (version 2026-10-25a, 97 cases): a daily pill reminder in the person's words, in English (remind-4) and
+Spanish (es-6), and "did I take my pills?" (remind-5, no guessing). **They found a bug:** asked for the daily pill
+reminder, Andy asked "8 am or 8 pm?" instead of setting it, 3 times in 3: the rule "answer a medicine question without
+calling any tool" reached reminders too. The profile and `set_reminder` now say a medicine reminder is an ordinary
+reminder, set at once, with nothing about doses; the ten medicine and reminder cases then passed 3 times in 3, the
+dose cases included. The Devpost text mentions the reminder and the review. Spanish letters now read on this desktop
+(`tesseract-ocr-spa` installed; a Spanish test letter read word for word). `scripts/devpost.py` counts any 2xx answer
+as open (PubMed answers robots 203).
+
 ### Fixed (waving back, tuned on the robot)
 
 The founder's waves weren't answered after the first two. A counts-only diagnostic (`ANDY_WAVE_DEBUG=1`, off by

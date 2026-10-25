@@ -71,7 +71,8 @@ show what a robot can do that a phone can't:
   where it found it.
 
 Andy also checks a message you only mention ("a man called saying my grandson is in jail"), keeps reminders in your
-words, turns a family photo into a story, and speaks English and Spanish. Family see only what you share, and Andy
+words, every day if you like ("every morning at eight, my blood pressure pills": a reminder, never a dose), turns a
+family photo into a story, and speaks English and Spanish. Family see only what you share, and Andy
 tells you who looked.
 
 **Made to be easy to use:** captions on by default, every text colour at 7:1 contrast, talk over Andy and it stops,
@@ -133,7 +134,9 @@ before it remembers or shares, and claims only what the repository shows.
 
 ### What we learned
 
-Measure the product, not just the model: Andy's real profile and tools, three runs each, beside a baseline. Put hard
+What older adults want from a home robot, across 21 studies ([a 2026 systematic review](https://pubmed.ncbi.nlm.nih.gov/41538893/)):
+voice, control over their privacy and data, companionship and help with daily tasks, which is what Andy is built
+around; so we left out fall detection and health monitoring on purpose. Measure the product, not just the model: Andy's real profile and tools, three runs each, beside a baseline. Put hard
 rules in code and judgment in the model. And let the web find while a strong model judges: Tavily made the warnings
 available, and only Nemotron 3 Ultra told the same trick from the same topic.
 

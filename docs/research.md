@@ -146,6 +146,25 @@ Three in four US adults aged 50 and over want to stay in their current homes (AA
 Preferences Survey, 3,090 adults, fieldwork June to July 2024, released 2024-12-10:
 [press release](https://www.aarp.org/press/releases/2024-12-10-new-aarp-report-majority-adults-50-plus-age-place-policies-communities-catch-up.html)).
 
+## What older adults want from a home robot, and what we leave out (read 2026-10-25)
+
+The founder asked whether Andy needs more, medicine reminders above all. What we read, and what it changed:
+
+| Finding | Source | In Andy |
+|---|---|---|
+| Across 21 studies, older adults preferred voice interaction, control over privacy, data and autonomy, help with daily tasks, and a robot as an assistant or companion | Wu et al., *What matters most to older adults? A systematic review of preferences for socially assistive robots*, Archives of Gerontology and Geriatrics 143:106139 (January 2026), [PubMed 41538893](https://pubmed.ncbi.nlm.nih.gov/41538893/) | Voice first; what is kept, shared and deleted is the person's to decide; reminders, letters, look-ups and finding things; it says it is a robot |
+| The oldest prioritise reminders and daily help; the younger old, conversation and activities | *Companion Robots Supporting the Emotional Needs of the Elderly*, Information 16(11):948 (2025), [MDPI](https://www.mdpi.com/2078-2489/16/11/948) | Both: the day plan and reminders; stories, jokes, On this day, photo stories |
+| A reminder device improved how 13 of 18 people with mild memory problems took their medicines over three months (a small before-and-after study, no control group) | *Medication Reminder Device for the Elderly Patients With Mild Cognitive Impairment*, [PMC10697399](https://pmc.ncbi.nlm.nih.gov/articles/PMC10697399) | **Daily reminders in the person's words**, medicine included: "every morning at eight, my blood pressure pills". Tested since 2026-10-25 (suite remind-4, es-6) |
+| Whether software is a regulated medical device turns on its intended use and claims: general wellness is unrelated to diagnosing, treating or preventing a condition | FDA, *General Wellness: Policy for Low Risk Devices* (January 2026), summarised by the [AHA](https://www.aha.org/news/headline/2026-01-06-fda-issues-guidance-wellness-products-clinical-decision-support-software) | A reminder, never more: no doses, no tracking whether a pill was taken, no adherence or health claims. "Did I take my pills?" gets no guess (suite remind-5) |
+| ElliQ users in New York's program interacted about 30 times a day; uses were mostly companionship, then wellbeing activities (relaxation, games, memoirs, messages from staff). The 95% loneliness reduction is self-reported, from the vendor's program data | [NY State Office for the Aging](https://apps.cio.ny.gov/apps/mediacontact/public/view.cfm?parm=E4E6D5FF-C4A8-BF7F-60D8C2CB69442AF4&backButton=); [ElliQ, progress and lessons learned (PMC10917141)](https://pmc.ncbi.nlm.nih.gov/articles/PMC10917141) | Company without claims: jokes, stories, riddles, photo stories, family messages. Not yet: music, guided relaxation |
+| Fall detection and monitoring trade privacy for safety: "the more a system needs to know to recognize danger, the more of a person's private life it observes"; false alarms weigh on acceptance | [News & Observer, 2026](https://www.newsobserver.com/living/article317430217.html); [JMIR Human Factors 2026, e93003](https://humanfactors.jmir.org/2026/1/e93003) | Left out on purpose: no fall detection, no monitoring, no safety claims. Urgent words get the 911 or 988 line at once, and that is all |
+
+What it changed: no new feature days before filming (a new tool in the robot's loop is the bigger risk), but the medicine
+reminder that already worked is now tested, and the suite found it didn't: asked for a daily pill reminder, Andy asked
+"8 am or 8 pm?" instead of setting it, 3 times in 3, because the rule "answer a medicine question without calling any
+tool" reached reminders too. The profile and `set_reminder` now say a medicine reminder is an ordinary reminder; the
+ten medicine and reminder cases then passed 3 times in 3, the dose cases included.
+
 ## Tavily's newer options (read 2026-10-14)
 
 From [Tavily's changelog](https://docs.tavily.com/changelog): `filter_by_language` (August 2026) keeps only

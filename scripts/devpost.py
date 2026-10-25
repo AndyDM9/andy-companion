@@ -6,7 +6,7 @@
 
 docs/submission.md keeps its links at the hackathon-submission tag, so the submitted text never changes under a
 judge; until that tag is pushed they would not open, so a draft points them at another ref. --check opens every link
-as a logged-out visitor would (no token sent) and lists any that doesn't answer 200. Writes nothing.
+as a logged-out visitor would (no token sent) and lists any that doesn't open (any 2xx answer). Writes nothing.
 """
 
 from __future__ import annotations
@@ -57,7 +57,7 @@ def opens(url: str) -> int:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--ref", default="main", help="the git ref the evidence links point at (default: main)")
-    ap.add_argument("--check", action="store_true", help="open every link and list any that doesn't answer 200")
+    ap.add_argument("--check", action="store_true", help="open every link and list any that doesn't open (a 2xx answer)")
     args = ap.parse_args(argv)
     text = at_ref((ROOT / "docs" / "submission.md").read_text(), args.ref)
     f = fields(text)
@@ -78,11 +78,11 @@ def main(argv=None) -> int:
         urls = [u.rstrip(".,;") for u in links(text + feedback) if "[" not in u]
         with ThreadPoolExecutor(8) as pool:
             codes = dict(zip(urls, pool.map(opens, urls)))
-        bad = {u: c for u, c in codes.items() if c != 200}
+        bad = {u: c for u, c in codes.items() if not 200 <= c < 300}      # PubMed answers robots 203
         if any("ftc.gov" in u for u in bad):           # it refuses some networks (a VPN here, 2026-10-25), even its home
             print("--- ftc.gov refuses some networks outright; check its links from another one before calling them broken",
                   file=sys.stderr)
-        print(f"--- {len(urls)} links opened: {len(urls) - len(bad)} answer 200" +
+        print(f"--- {len(urls)} links opened: {len(urls) - len(bad)} open" +
               ("" if not bad else "; these don't:\n" + "\n".join(f"  {c}  {u}" for u, c in sorted(bad.items()))),
               file=sys.stderr)
         return 1 if bad else 0

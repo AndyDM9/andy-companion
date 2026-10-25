@@ -82,14 +82,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **The robot itself (2026-10-20):** Pollen's daemon reported "Motor communication error! Check connections and
   power supply"; the founder reconnected the USB the same evening, the daemon is running again and Andy woke.
 - **Two apps on the robot at once (2026-10-25):** the head and antennas shook while another conversation app on this
-  desktop was connected too; its own wake word started it when Andy said its name. Stopped for now (not disabled, so
-  it returns after a reboot); the doctor's live check now names any such app. Before filming, keep it and its wake
-  listener stopped, or disabled at login.
+  desktop was connected too; its own wake word started it when Andy said its name. That app and its wake listener are
+  now off at login (they can still be started by hand), and the doctor's live check names any such app.
 - **The finder's body turn (decision 0016, 2026-10-25)** is checked against Pollen's kinematics and in tests, not
   yet on the robot: try live-test 3t3 (glasses on a chair beside Andy) before filming shot 4.
 - **Known dependency advisories** we can't fix yet (speech-to-speech pins nltk and torch; vLLM pins setuptools;
   accelerate has no fix): why they don't reach Andy is in [SECURITY.md](../SECURITY.md).
-- Letters in Spanish need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
 - `scripts/andy-sim` (Andy without a robot, Pollen's `--mockup-sim`) is not verified: on this desktop the
   robot's own USB camera and microphone are plugged in, and the pretend robot's media server failed on them
