@@ -2,7 +2,7 @@
 
 The submission's feedback on Nebius Token Factory, AI Cloud and the NVIDIA tools is mandatory, and
 the ten most valuable win a prize. Each note is something we met while building, with the date,
-what happened, and what would have helped. Written up for the form in [feedback.md](feedback.md), the version to read; these are the dated notes behind it, last added 2026-10-20.
+what happened, and what would have helped. Written up for the form in [feedback.md](feedback.md), the version to read (final 2026-10-25); these are the dated notes behind it, last added 2026-10-20.
 
 | Date | Product | What we met | What would help |
 |---|---|---|---|

@@ -106,10 +106,11 @@ def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opene
         got = _ask(MATCH, f"Message: {message}\n\nWarnings:\n{listing}", MATCH_SCHEMA, opener, match_model)
         hits = sorted({int(i) for i in got.get("matches", []) if isinstance(i, int) and 1 <= i <= len(warnings)})
         out["matched"] = [warnings[i - 1].get("source", "") for i in hits]
-        # The matched warnings' own titles too, for the TV's receipt (tools/check_message.py): a Tavily
-        # result's title, never words from the message.
+        # The matched warnings' own titles and addresses too, for the TV's receipt (tools/check_message.py): a
+        # Tavily result's, never words or links from the message.
         out["matched_warnings"] = [{"title": " ".join(str(warnings[i - 1].get("title", "")).split())[:160],
-                                    "source": str(warnings[i - 1].get("source", ""))} for i in hits]
+                                    "source": str(warnings[i - 1].get("source", "")),
+                                    "url": str(warnings[i - 1].get("url", ""))} for i in hits]
         if hits:
             out["scam_signs"] = True
             out["source"] = out["matched"][0]

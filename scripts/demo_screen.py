@@ -144,7 +144,8 @@ def scam() -> None:
     board.show("check", "Be careful: a known scam", [
         {"title": "The sign", "summary": "A relative or friend in trouble asking for money: “I'm in jail… need bail money today”",
          "tone": "caution"},
-        {"title": "The warning", "summary": "consumer.ftc.gov: Scammers pretend to be your grandchild in trouble", "tone": "caution"},
+        {"title": "The warning", "summary": "consumer.ftc.gov: Don't open your door to grandparent scams", "tone": "caution",
+         "url": "https://consumer.ftc.gov/consumer-alerts/2021/04/dont-open-your-door-grandparent-scams"},
         {"title": "Why it matches", "summary": "NVIDIA Nemotron 3 Ultra compared them: the same trick, not just the same topic.",
          "tone": "caution"}], how={"calls": ["search"], "depth": "advanced", "seconds": 3.1, "credits": 2},
         lead="Don't reply, pay or give any details. Check with family first.")

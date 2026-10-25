@@ -205,11 +205,14 @@ def check_message(monkeypatch):
 SCAM = ("URGENT from Prize Center: you WON $25,000! Call 1-888-555-0199 or 305 555 0142 now, pay the fee at "
         "www.prize-claims.com or bit.ly/win25 and email claims@prize-center.org with your account 4417123456789113.")
 EVIDENCE = "Call 1-888-555-0199 or 305 555 0142 now, pay the fee at www.prize-claims.com or bit.ly/win25 and email claims@prize-center.org"
-WARNING = {"source": "consumer.ftc.gov", "title": "Fake prize, sweepstakes, and lottery scams", "summary": "…", "url": "https://x"}
+WARNING = {"source": "consumer.ftc.gov", "title": "Fake prize, sweepstakes, and lottery scams", "summary": "…",
+           "url": "https://consumer.ftc.gov/articles/fake-prize-sweepstakes-and-lottery-scams"}
 HOW = {"calls": ["search"], "depth": "advanced", "seconds": 2.4, "credits": 2}
 
 
 def no_message_numbers_links_or_emails(card, message=SCAM):
+    # The warning's own address (its "url", a Tavily result's) is the one link allowed, and never the message's.
+    card = {**card, "items": [{k: v for k, v in it.items() if k != "url"} for it in card["items"]]}
     text = json.dumps({k: card[k] for k in ("title", "items")}, ensure_ascii=False)
     for run in re.findall(r"\d+", message):                             # none of the message's numbers, anywhere
         assert not re.search(rf"(?<!\d){run}(?!\d)", text) or run in ("3", "5"), (run, text)   # model names: "3", "3.5"
@@ -224,7 +227,7 @@ def test_a_match_shows_the_three_step_receipt(check_message, monkeypatch):
     monkeypatch.setattr(scamcheck, "verdict", lambda message, found: {
         "scam_signs": True, "sign": "a fee to receive a prize, refund or inheritance", "evidence": EVIDENCE,
         "source": "consumer.ftc.gov", "matched": ["consumer.ftc.gov"],
-        "matched_warnings": [{"title": WARNING["title"], "source": "consumer.ftc.gov"}]})
+        "matched_warnings": [{"title": WARNING["title"], "source": "consumer.ftc.gov", "url": WARNING["url"]}]})
     out = check_message(SCAM)
     assert out["scam_signs"] is True and "consumer.ftc.gov warns" in out["say"]
     card = board.showing()
@@ -235,6 +238,7 @@ def test_a_match_shows_the_three_step_receipt(check_message, monkeypatch):
     assert all(s["tone"] == "caution" for s in steps)
     assert steps[0]["summary"] == "A fee to receive a prize, refund or inheritance: “Call … or … now, pay the fee at … or … and email …”"
     assert steps[1]["summary"] == "consumer.ftc.gov: Fake prize, sweepstakes, and lottery scams"
+    assert steps[1]["url"] == WARNING["url"] and "url" not in steps[0] and "url" not in steps[2]   # the source, a link
     assert steps[2]["summary"] == "NVIDIA Nemotron 3 Ultra compared them: the same trick, not just the same topic."
     assert card["how"]["calls"] == ["search"] and card["how"]["credits"] == 2      # the how line stays
     no_message_numbers_links_or_emails(card)
@@ -313,9 +317,27 @@ def test_the_verdict_names_the_matched_warnings_titles(monkeypatch):
         return io.BytesIO(json.dumps({"choices": [{"message": {"content": json.dumps(next(answers))}}]}).encode())
 
     warnings = [{"source": "bbb.org", "title": "Charity scams", "summary": "…"},
-                {"source": "consumer.ftc.gov", "title": "  Wrong number   texts ", "summary": "A friendly stranger…"}]
+                {"source": "consumer.ftc.gov", "title": "  Wrong number   texts ", "summary": "A friendly stranger…",
+                 "url": "https://consumer.ftc.gov/wrong-number"}]
     v = scamcheck.verdict("Hi, is this Margaret? Wrong number.", warnings, opener=opener)
-    assert v["matched_warnings"] == [{"title": "Wrong number texts", "source": "consumer.ftc.gov"}]
+    assert v["matched_warnings"] == [{"title": "Wrong number texts", "source": "consumer.ftc.gov",
+                                      "url": "https://consumer.ftc.gov/wrong-number"}]
+
+
+def test_the_screen_keeps_a_source_link_only_whole_and_https():
+    good = "https://consumer.ftc.gov/consumer-alerts/2021/04/dont-open-your-door-grandparent-scams"
+    board.show("check", "Warnings", [{"title": "a", "url": good}, {"title": "b", "url": "http://x.org/a"},
+                                     {"title": "c", "url": "javascript:alert(1)"}, {"title": "d", "url": "https://x.org/a b"},
+                                     ])
+    assert [it.get("url") for it in board.showing()["items"]] == [good, None, None, None]
+    board.show("check", "Warnings", [{"title": "e", "url": "https://x.org/" + "a" * 300}])
+    assert "url" not in board.showing()["items"][0]
+
+
+def test_the_tv_links_the_line_that_names_the_source_and_never_by_html():
+    assert 'const linked = /^https:\\/\\//.test(it.url || "") ? (steps || !it.title ? "summary" : "title") : "";' in PAGE
+    assert 'a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; a.tabIndex = -1;' in PAGE
+    assert "a.textContent = p.textContent" in PAGE and "innerHTML" not in PAGE
 
 
 def test_the_tv_numbers_a_receipt_s_steps_in_the_caution_look():

@@ -18,3 +18,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0011](0011-the-eyes-on-token-factory.md) | The eyes on Token Factory: Nemotron 3.5 Super VL, with our own endpoint as an option | 2026-10-20 | accepted; amended by 0012 |
 | [0012](0012-the-finder-zooms-in-then-looks-closer.md) | The finder zooms in, then looks closer | 2026-10-20 | accepted; amends 0011 |
 | [0013](0013-the-finder-tested-in-simulation.md) | The finder tested in simulation, as Nebius Serverless Jobs | 2026-10-20 | accepted |
+| [0014](0014-cosmos-considered-not-yet.md) | Cosmos Reason 2 considered for the finder, not added before submitting | 2026-10-25 | accepted |

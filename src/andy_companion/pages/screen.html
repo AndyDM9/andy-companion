@@ -297,6 +297,7 @@
   .view.chosen figcaption { align-items: flex-start; }
   .view .where { font-size: clamp(22px, 2.3vw, 42px); font-weight: 700; line-height: 1.2; color: var(--ink); min-width: 0; }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
+  .found .item a { color: inherit; text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .18em; }
   /* While Andy speaks the caption lies over the foot of the screen: the card keeps its own foot clear of
      it (three caption lines and their padding), and its list gives way instead. Not beside the settings
      code, where the caption keeps to the left column. */
@@ -455,6 +456,13 @@
   const $ = (id) => document.getElementById(id);
   function text(el, value) { el.textContent = value; return el; }
   function make(tag, cls, value) { const el = document.createElement(tag); if (cls) el.className = cls; return text(el, value || ""); }
+  function linkTo(p, url) {
+    if (!url) return p;
+    const a = document.createElement("a");
+    a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; a.tabIndex = -1;
+    a.textContent = p.textContent; p.textContent = ""; p.append(a);
+    return p;
+  }
   const cap1 = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
   // The page's own words, in the language chosen on the setup page.
@@ -674,8 +682,11 @@
           const box = make("article", it.tone === "caution" ? "item caution" + (steps ? " step" : "") : "item");
           const body = steps ? make("div", "body") : box;
           if (steps) box.append(make("span", "num", String(n + 1)), body);
-          if (it.title) body.append(make("p", "title", it.title));
-          if (it.summary) body.append(make("p", "summary", it.summary));
+          // The line that names a source links to its page (the receipt's warning, a search result's title):
+          // for a judge on the demo; on the TV it is the same words, underlined, and out of the remote's way.
+          const linked = /^https:\/\//.test(it.url || "") ? (steps || !it.title ? "summary" : "title") : "";
+          if (it.title) body.append(linkTo(make("p", "title", it.title), linked === "title" && it.url));
+          if (it.summary) body.append(linkTo(make("p", "summary", it.summary), linked === "summary" && it.url));
           if (it.when) body.append(make("p", "when", it.when));
           items.append(box);
         }

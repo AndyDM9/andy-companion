@@ -1,11 +1,27 @@
-# Feedback for the Devpost form (draft)
+# Feedback for the Devpost form
 
 The form's feedback on Token Factory, AI Cloud and the NVIDIA tools is mandatory; the ten most valuable
 win the Most Valuable Feedback award, judged on completeness, viability and potential impact. Each
 product below says what we used it for, what worked, what needs work, how onboarding felt (zero to hello
 world), and whether we'd build with it again, and why: the organisers' own list ("How to build a winning
 project", Devpost update). Every point is from [feedback-notes.md](feedback-notes.md), dated and
-reproducible. Revised 2026-10-20; finish before submitting.
+reproducible. Final 2026-10-25: paste it into the form as it is, the summary first.
+
+## The five that matter most
+
+If only five points are read, these are the ones that would save the next builder the most time, each with the
+change we would make:
+
+1. **AI Cloud endpoints: the plain IP:port bypasses the endpoint token.** Mark the HTTPS address as the one to use,
+   and say that the IP:port isn't covered by endpoint auth.
+2. **Token Factory: structured output is silently ignored when thinking is on.** Return an error, or apply the
+   schema after the reasoning, and say so in the structured-output guide.
+3. **Nemotron 3 Ultra: with a strict schema it can loop on blank space inside the JSON** (17 of 360 answers, the same
+   messages every run). Stop or repair the decoder when it loops on whitespace inside a schema.
+4. **Nemotron 3.5 Lightning: no default crisis line**, in English or Spanish, without a rule from the developer. A
+   default that names one (or asks the developer for one) in every supported language.
+5. **Serverless Jobs: the 64 KB request and the two-VM default aren't documented.** Say both in the Jobs guide, and
+   let a job mount a folder or object storage.
 
 ## Nebius Token Factory
 
@@ -79,6 +95,8 @@ crisis, on a Nebius Serverless Endpoint.
 - The standard categories caught 5 of 8, and filed "putting my pills aside for when I've had enough"
   under controlled substances. Indirect signs of self-harm deserve a place in the default taxonomy.
 - The card pins vLLM at or below 0.20.2.
+- The card doesn't say that the custom-policy mode works without reasoning, or how fast it is then (about 0.55 s
+  for us); both decide whether a guard can sit beside every spoken turn.
 - It isn't on serverless Token Factory, so a guard needs its own GPU.
 **Onboarding (zero to hello world):** on our own endpoint with the vLLM version the card names; its plain-text answer ("User
 Safety: unsafe", then the categories) needed a small parser, and the custom-policy mode worked without
@@ -98,6 +116,11 @@ its price, region and limits, which made the cost page exact.
   and 200 reasoning tokens. `chat_template_kwargs: {"enable_thinking": false}` fixes it; a line on the model's
   page would save the next person the surprise.
 - One region (us-north1) for now; a European household would want eu-north1.
+- **Small things need crops sent at full size.** It reads an image at the size it is sent (16-pixel patches, no
+  tiles of its own), so a 768-pixel copy of a room loses a pair of glasses: 0 of 9 at the desk, against 9 of 9 for
+  six full-size tiles per frame read at once (1.8 s for 24). A line on the model's page saying so would help every
+  robotics builder. A strict yes or no on a close-up confirmed 8 of 9 and wrongly confirmed none of 9 hard
+  negatives, a pattern worth showing in an example.
 **Onboarding (zero to hello world):** under five minutes: the same key and base URL as the conversation, an
 image as a data URL, the first answer in 2.6 s.
 **Would we build with it again?** Yes: a bigger model, faster than our own endpoint, always on, and paid per picture.
@@ -148,6 +171,8 @@ scorecard; we stop the endpoints between uses, and stopped they cost nothing for
   HTTPS address as the one to use, and say the IP:port isn't covered.
 - **New accounts have no CPU quota in eu-north1** (the only L40S region), so our first job failed with
   ResourceExhausted. We moved it to eu-west2.
+- **The cheapest GPU isn't easy to find:** L40S is offered only in eu-north1, and the endpoints guide's only example
+  is an H100. Showing the cheapest GPU per region in the endpoint form would cut a prototype's cost at once.
 - **Jobs accept at most 64 KB of injected files.** We ship a compressed bundle, and on 2026-10-20 the suite's
   outgrew it (49.6 KB gzipped is 66 KB in base64); xz brought it to 44 KB. A way to mount a folder or object
   storage into a job would end this.

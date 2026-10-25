@@ -25,7 +25,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | One Overall Award, **or** one Track Award plus one Bonus Award | ✅ | Never both (section 8). Aim: the Grand Prize; the same work serves the Physical AI track plus Best Use of Tavily. Most Valuable Feedback is a Bonus Award too, so it and the Tavily prize can't both be won |
 | Best Use of Tavily: a functional runtime call to the Tavily API | ✅ | Search, extract, crawl, map and research at runtime (`src/andy_companion/web.py`, `looking.py`); the scam check measured with and without it (2026-10-14) |
 | City Winner Awards | ➖ | Only the 20 listed Builders & Brews cities; the founder's city is not one of them |
-| Most Valuable Feedback: complete the feedback section | 🔶 | Notes kept as we build in [feedback-notes.md](feedback-notes.md); written up on the form |
+| Most Valuable Feedback: complete the feedback section | 🔶 | Notes kept as we build in [feedback-notes.md](feedback-notes.md); [feedback.md](feedback.md) final 2026-10-25, to paste on the form |
 
 ## Project requirements
 
@@ -55,7 +55,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
 | Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
 | All materials in English, or with an English translation | 🔶 | Captions throughout; any Spanish gets **English subtitles** (Spanish moved to a social clip on 2026-10-14; `scripts/draft_captions.py` drafts the SRT and marks Spanish lines) |
-| Identify the track | 🔶 | Physical AI, on the form; and in the Devpost text's first block, "For the judges" (2026-10-20) |
+| Identify the track | 🔶 | Physical AI, on the form; and in the Devpost text's first block, "For the judges" (2026-10-20), with a "Track fit" line naming Pollen's conversation app as the agent runtime (2026-10-25); said on screen in the video's shot 7 |
 | Sponsor names, not logos | ✅ | Nebius allows naming its products but not implying approval; NVIDIA and Nebius logos need written consent. We name the tools in words, use no logos, and say "built with", never "powered by" or "partnered with" (checked in the README, the app page and the Devpost texts, 2026-10-13) |
 | Feedback on Token Factory, AI Cloud and the NVIDIA tools | 🔶 | [feedback.md](feedback.md), revised 2026-10-20 (each product's use, what worked, what needs work, the first call; Super VL and the simulation Jobs added), from [feedback-notes.md](feedback-notes.md) |
 | Original work, solely owned, no one else's rights infringed | ✅ | Our code; open source used under its licences and built upon (Pollen's app is extended, not copied); no material from any other project or company |
@@ -74,7 +74,7 @@ video, the Devpost form, the repository) is checked against this file first.
 |---|---|---|
 | The sponsor and Devpost may use the entrants' name, likeness and voice for three years | ✅ | Accepted by entering; anyone else in the video agrees in writing first |
 | No personal data in submission materials | 🔶 | No real addresses, phone numbers or private links in the video. **The settings code is a private link: after filming it, press "Make a new settings link".** Family photos only with the family's agreement |
-| No harmful code | ✅ | Tests, a pre-commit check for key-like strings, an independent code and privacy review (2026-10-13, every finding fixed); gitleaks over every commit to be re-run before going public |
+| No harmful code | ✅ | Tests, a pre-commit check for key-like strings, an independent code and privacy review (2026-10-13, every finding fixed); gitleaks over every commit: none in 151 on 2026-10-25; re-run after the history rewrite, before going public |
 
 ## Kept current
 

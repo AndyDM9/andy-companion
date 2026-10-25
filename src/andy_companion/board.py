@@ -23,6 +23,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Iterator
+from urllib.parse import urlparse
 
 from andy_companion.reminders import DATA_DIR
 
@@ -57,6 +58,15 @@ def _write(path: Path, data: Any) -> None:
 
 def _tidy(text: Any, limit: int = MAX_TEXT) -> str:
     return " ".join(str(text or "").split())[:limit]
+
+
+def _link(url: Any) -> str:
+    """A source's address for the screen, kept only whole: https, a host, no spaces, at most 300 characters."""
+    value = str(url or "")
+    parts = urlparse(value)
+    if parts.scheme != "https" or not parts.netloc or len(value) > 300 or re.search(r"[\s\"'<>]", value):
+        return ""
+    return value
 
 
 # --- tokens: the screen, family, settings and under-the-hood links ----------------------------
@@ -98,6 +108,10 @@ def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float
     above the reasons (the scam receipt: the action first, the evidence after)."""
     clean_items = [{k: _tidy(v, 300) for k, v in item.items() if k in ("title", "source", "summary", "when", "published", "tone")}
                    for item in items[:4]]
+    for clean, item in zip(clean_items, items):        # a source's page, so the line can be a link
+        link = _link(item.get("url"))
+        if link:
+            clean["url"] = link
     card = {"kind": _tidy(kind, 20), "title": _tidy(title, 80), "items": clean_items, "at": now or time.time()}
     if lead:
         card["lead"] = _tidy(lead, 120)

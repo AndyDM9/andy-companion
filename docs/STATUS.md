@@ -1,6 +1,6 @@
 # Status
 
-**Last updated 2026-10-21.** Update this file in the same commit as any change it describes.
+**Last updated 2026-10-25.** Update this file in the same commit as any change it describes.
 The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history is in [CHANGELOG.md](../CHANGELOG.md).
 
 ## At a glance
@@ -16,8 +16,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20) |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space waiting on the founder's account |
 | M8 | Proof | 🔨 Built; final run before submitting | 94 spoken situations in 22 areas, Andy's real profile and its 38 tools, judged by Nemotron 3 Ultra: latest **92, 91, 94 of 94 as a Nebius Serverless Job** (2026-10-20). The scam check five ways, 54 real turns timed on the robot, the finder in simulation. Every run below and in [evals/results/](../evals/results/) |
-| M9 | Ship | 🔨 In progress | The Reachy Mini app packaged and passing Pollen's checker; the doctor and user services; a fresh clone installs and passes, and every command a judge is told to run works without keys or says what it needs (audited 2026-10-20). Left: the name, the history rewrite, the repository public, the app and the Space published |
-| M10 | Video and submission | 🔨 Prepared | The shot list ([video.md](video.md), 2:54 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 1,500 words since 2026-10-21) and the feedback ([feedback.md](feedback.md)) ready; the gallery planned, its four robot photos the founder's; the Devpost draft due 2026-10-22; filming 2026-10-24 to 10-26 |
+| M9 | Ship | 🔨 In progress | The Reachy Mini app packaged and passing Pollen's checker; the doctor and user services; a fresh clone installs and passes, and every command a judge is told to run works without keys or says what it needs (audited 2026-10-20); gitleaks clean over all 151 commits (2026-10-25). Left: the name, the history rewrite (an endpoint's IP:port in two older commits, and a private note in bd46ece), the endpoints recreated without the token in their settings, the repository public, the app and the Space published |
+| M10 | Video and submission | 🔨 Prepared | The shot list ([video.md](video.md), 2:54 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 1,500 words since 2026-10-21) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft due 2026-10-22; filming 2026-10-24 to 10-26 |
 
 ## Accounts and keys
 
@@ -31,6 +31,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-25 14:38 | Secrets before going public: gitleaks 8.30.1 over every commit (`--all`) and the working tree; the env file's own values searched for in the full history (not printed) | **No leaks in 151 commits or the tree (152 with bd46ece, rescanned); no key or token value anywhere in the history.** Still in history: an endpoint's public IP:port in two commits (150f9df, fc362ed), for the rewrite. Both endpoints STOPPED, made the old way with the token in their start settings |
 | 2026-10-20 19:25 | Judging without a robot (round 9): a fresh clone from GitHub, 855 tests; the robot's environment 862; the Space's image built and run in Docker (every page 200, writes 403, the film on the front page); the simulation's film made with live model calls (found, 1.4° from the duck) | The demo's front page plays `sim-search.mp4`; the TV demo's keys scene and the waving drawing checked in a browser |
 | 2026-10-20 19:10 | The finder in simulation as two Nebius Serverless Jobs (`cloud/sim-job.sh`, decision 0013): Pollen's MuJoCo scene, a glasses-sized duck at random places, 30 trials each, software rendering | Zoomed in with the closer look: pointed 18 of 23 (58–90%), **false finds 0 of 7**, error median 0.76°; the old way: 19 of 23, **3 of 7**, 2.73°. On this computer's GPU: 21 of 23, 0 of 7, 0.8° against 23 of 23, 1 of 7, 1.5° |
 | 2026-10-20 17:11 | Zooming in at the desk (`evals/zoom_check.py`): a real pair of reading glasses in a CC0 room photo, 9 frames with them, 9 painted out | Old way (768 px) **0 of 9**; six full-size tiles **9 of 9**, no false sighting; closer look confirmed 8 of 9, wrongly 0 of 9; 24 tiles at once 1.8 s |
@@ -72,7 +73,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - The new way the endpoint scripts store their tokens (Nebius MysteryBox secrets, 2026-10-14) is tested
   against a stand-in for the Nebius CLI only; the next `cloud/vision-endpoint.sh create` proves it. The
   endpoints that exist were made the old way, with the token in their start arguments; recreating them
-  clears that.
+  clears that (both STOPPED on 2026-10-25; to do before going public, with the founder's go-ahead).
 - The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
 - **The robot itself (2026-10-20):** Pollen's daemon reported "Motor communication error! Check connections and
   power supply"; the founder reconnected the USB the same evening, the daemon is running again and Andy woke.

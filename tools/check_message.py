@@ -85,13 +85,16 @@ def receipt(v: Dict[str, Any], web_error: bool, language: str = "en") -> List[Di
     else:
         sign = w["from_warning"]
     matched: Optional[Dict[str, str]] = next(iter(v.get("matched_warnings") or []), None)
+    step2: Dict[str, str] = {"title": w["warning"], "tone": "caution"}
     if matched:
         title = matched.get("title", "")
-        warning = f"{matched.get('source', '')}: {title}" if title else matched.get("source", "")
+        step2["summary"] = f"{matched.get('source', '')}: {title}" if title else matched.get("source", "")
+        if matched.get("url"):
+            step2["url"] = matched["url"]        # the warning's own page, a link on the screen (board keeps https only)
     else:
-        warning = w["unchecked"] if web_error else w["none_online"]
+        step2["summary"] = w["unchecked"] if web_error else w["none_online"]
     return [{"title": w["sign"], "summary": sign, "tone": "caution"},
-            {"title": w["warning"], "summary": warning, "tone": "caution"},
+            step2,
             {"title": w["why"] if matched else w["why_alone"], "summary": w["matched"] if matched else w["alone"],
              "tone": "caution"}]
 

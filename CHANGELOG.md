@@ -3,6 +3,57 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-25
+
+From two outside reviews of the entry before submitting: judges asked for clickable sources, and read published
+limits as rigour.
+
+### Added
+
+- **The scam check's source is a link.** The warning Andy matched keeps its page's address (`scamcheck.verdict`'s
+  `matched_warnings`, then the receipt's step 2); the board keeps an item's `url` only whole and `https`
+  (`board._link`); the TV links the line that names the source, built with `textContent`, `noopener noreferrer`,
+  and out of the remote's focus order. On the TV it is the same words, underlined; on the demo a judge can open the
+  FTC's page. The demo's sample warning is now a real FTC alert, and `docs/images/tv-scam-receipt.png` is retaken.
+  Tests: the link kept only when whole and https, the TV never building it from HTML, the message's own links still
+  never shown.
+- **README "Path to shipping"** and the same on Devpost: the hardware once (the Reachy Mini Lite's listed price,
+  dated), the estimated running cost, what a Jetson port needs, who we expect to pay, and what comes before anyone
+  relies on it.
+
+### Changed
+
+- **The latency is described as measured:** 1.06 s from the moment your words are understood (Parakeet's
+  transcript) to Andy's first sound, in the README and the Devpost text; the wait for the end of speech is not in it.
+- **The cost is labelled an estimate** from list prices and assumed use, not a bill, everywhere it is quoted.
+- **README "What doesn't work yet" is now "Limitations"**, and adds what the numbers don't show (the latency's start,
+  scam messages written for the test, a model as judge, nine tries at home, an estimated cost) and which of the
+  track's NVIDIA models Andy doesn't use and why (GR00T and Sonic need arms or legs; Cosmos Reason 2 2B considered,
+  not in yet).
+- **The Devpost text:** a "Track fit" line (Pollen's conversation app is the agent runtime), every number linked
+  to its scorecard at the `hackathon-submission` tag, the AARP and FTC figures linked to their sources.
+- **The video plan, shot 7:** the agent runtime said on screen, and a 3 s split screen of the simulation's point
+  beside the real robot's.
+- **`docs/feedback.md` is final:** "The five that matter most" first, and three dated notes it lacked (Super VL and
+  small objects, Content Safety's policy mode without reasoning, the cheapest GPU per region).
+- **Decision 0014: Cosmos Reason 2 considered for the finder, not added before submitting.** It would add an
+  offline fallback, not a better finder; it wouldn't fit beside the voice on an 8 GB GPU; new code in the robot's
+  loop is the bigger risk five days out. Added only if the submission work is done by 2026-10-28. The README and
+  Devpost now say why, not only that.
+
+### Checked
+
+- **gitleaks 8.30.1 over all 151 commits and the working tree: no leaks.** Separately, none of the env file's key
+  or token values appears anywhere in the history. An endpoint's public IP:port is still in two older commits
+  (removed from the tree on 2026-10-20), which the planned history rewrite removes (decision 0003).
+
+### Removed
+
+- **A private note** that doesn't belong in a
+  repository going public (CLAUDE.md). Moved out of the repository; the history rewrite must drop it from bd46ece
+  too. `docs/video-script.md`, from the same commit, stays, with the agent runtime added to its numbers shot, and its
+  limits shot says only what the README's Limitations shows ("misses things in dim light" was never measured).
+
 ## 2026-10-21
 
 ### Changed (the records brought up to date)

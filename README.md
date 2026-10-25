@@ -12,10 +12,10 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 
 ![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
 
-- **1.06 s** median from your words to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
+- **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
 - **No false find** in 7 simulated searches without the object, against 3 the old way, as Nebius Serverless Jobs ([decision 0013](docs/decisions/0013-the-finder-tested-in-simulation.md))
-- **About $2.30 a month** for one household's conversation and web lookups ([cost](docs/cost.md))
+- **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
 - **A language model that moves a robot's head to find things in a room,** with nothing trained: it looks around,
@@ -31,7 +31,7 @@ open the screens on sample data with no keys at all ([try it](#try-it-without-a-
 failures included ([evals/results/](evals/results/README.md)); or ask for the real robot live on a video call, any
 time until 2026-12-15.
 
-**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [what doesn't work yet](#what-doesnt-work-yet), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
+**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
 shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
@@ -116,9 +116,9 @@ Everything, in full: [docs/features.md](docs/features.md).
 **What Andy never does:** give medicine doses or medical advice, ask for money or passwords, claim to keep
 anyone safe, speak as a real person, or keep recordings or transcripts.
 
-**What it costs:** about **$2.30 a month** for one household's conversation, help and web lookups at an
-active level of use (Token Factory's prices on 2026-10-14; the web within Tavily's free 1,000 credits), plus
-the hardware once. The eyes are on Token Factory, paid per picture (a search for your glasses about half a cent), so nothing
+**What it costs, estimated:** about **$2.30 a month** for one household's conversation, help and web lookups at an
+active level of use, worked out from list prices (Token Factory's on 2026-10-14; the web within Tavily's free 1,000
+credits) and our assumptions about use, not from a household's bill; plus the hardware once. The eyes are on Token Factory, paid per picture (a search for your glasses about half a cent), so nothing
 runs while idle. The second look is not in that figure: it runs on a Nebius endpoint started when needed (about
 $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/cost.md).
 
@@ -303,7 +303,26 @@ Each principle comes from published research, and each has something you can see
 | The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
 | No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); research on patronising speech to older adults | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
 
-## What doesn't work yet
+## Path to shipping
+
+What it would take for a family to have one, as far as we know it today:
+
+- **Hardware, once:** a Reachy Mini Lite ($399 listed in [Hugging Face's Reachy Mini post](https://huggingface.co/blog/reachy-mini),
+  read 2026-10-25; $299 at launch), a TV or monitor the household already has, and today a computer with an 8 GB
+  NVIDIA GPU beside the robot. Most homes don't have that computer: it is likely the biggest cost, and the reason
+  for the Jetson plan.
+- **Running, monthly:** about **$2.30 a month, estimated** from list prices and assumed use, for one household's
+  conversation and web lookups, not from a bill; the eyes add about half a cent a search ([cost](docs/cost.md)).
+- **A Jetson port needs** ([above](#beside-nvidias-reachy-mini-jetson-assistant)): hearing and speaking in well
+  under 7.6 GB, thinking and seeing staying on Token Factory, and a small local model such as Cosmos Reason 2 2B for
+  when the network is down. Planned, not tried.
+- **Who pays:** we expect the family who help, not the person; that is a guess the pilot has to test.
+- **Before anyone relies on it:** a pilot with older adults and an ethics review, the finder's closer look fixed,
+  and the limits below.
+
+## Limitations
+
+What doesn't work yet, and what our numbers don't show.
 
 - **No study with older adults yet.** Andy is built on published research and measured with our own tests;
   a pilot with an ethics review comes next.
@@ -322,12 +341,27 @@ Each principle comes from published research, and each has something you can see
   a message is safe, and always suggests checking with family first.
 - **The suite isn't perfect:** about one different case fails each run, and every failure is in its
   scorecard.
+- **What the numbers measure, and what they don't:**
+  - the 1.06 s starts when your words are understood (Parakeet's transcript), not when you stop speaking: the wait
+    for the end of your words comes before it and is not in the figure;
+  - the scam check's 120 messages were written by us for the test (the 40 held out modelled on warnings published
+    this year) and given to the check as text, as a person would read them to Andy; they are not messages real
+    households received;
+  - the suite is judged by a model (Nemotron 3 Ultra), not by people, with hard rules checked in code beside it;
+  - the finder at home is 9 tries in one home, so its interval is wide;
+  - the cost is an estimate from list prices and assumed use ([cost](docs/cost.md)), not a measured bill.
 - **Body language while thinking** (a glance away, a tilt as a question ends) is built but off until it has
   been tested with the robot (to try it: `ANDY_EXPRESSIVE=on ./scripts/andy`, an environment variable, not
   an env-file setting).
 - **It needs a computer with an NVIDIA GPU** (8 GB or more) beside the robot. It doesn't run on a Jetson
   yet.
 - **English and Spanish only.**
+- **Of the Physical AI track's NVIDIA models, Andy uses Nemotron (and Parakeet).** GR00T and Sonic are policies for
+  robots with arms or legs, which the Reachy Mini doesn't have. Cosmos Reason 2 2B was considered as an offline
+  fallback for finding things and isn't in yet: online, Super VL already finds them; the voice uses about 7.1 GB of
+  the 8 GB GPU we ask for; and new code this close to the deadline was the bigger risk. It belongs in the Jetson
+  version ([decision 0014](docs/decisions/0014-cosmos-considered-not-yet.md)). The agent runtime is Pollen's
+  Reachy Mini conversation app, with Andy's profile, tools and rules plugged in.
 - **The second look** runs on a Nebius endpoint we start when needed. The eyes no longer do (they're on Token
   Factory), but Super VL is newer to Andy than Nano VL: it is checked at the desk and in the suite, and the
   finder's real measure is the recorded tries at home, read by both models.
