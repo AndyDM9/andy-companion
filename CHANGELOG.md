@@ -11,6 +11,8 @@ The desktop is signed in to Hugging Face with a write token (the old one could o
 was refused with 402: Docker Spaces on Hugging Face's free CPU now need a PRO subscription (static Spaces stay
 free, so the Reachy Mini app is unaffected). The founder chose PRO; the Space goes up private first, then public
 with the repository. The Space's files were built from 2373c78 and checked: no key, and nothing private.
+After the founder subscribed: the Space `andydm/andy-companion` created **private** and uploaded; built and running in
+about 20 s; the front page, the four pages, their data and the film all 200, a write 403.
 
 ### Changed (the finder turns its body to look past the head's reach, decision 0016)
 
