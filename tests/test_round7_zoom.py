@@ -331,8 +331,8 @@ def test_where_a_direction_shows_in_a_view_is_the_inverse_of_the_aim():
     assert (rows.start, rows.stop, cols.start, cols.stop) == (540, 1080, 0, 960)
 
 
-def test_something_past_the_heads_reach_is_looked_at_from_as_far_as_it_turns():
-    """The founder's chair: about 74 degrees to Andy's left, past the head's 65."""
+def _past_the_heads_reach():
+    """The founder's chair: far to Andy's left, past the head's 65 (2026-10-20, about 74 degrees)."""
     sweep = [frame_with_spot(0.15, 0.85), EMPTY, EMPTY, EMPTY]       # far left and low in the first view (55 deg)
     seen_at = []
 
@@ -341,12 +341,33 @@ def test_something_past_the_heads_reach_is_looked_at_from_as_far_as_it_turns():
         return {"yes": True, "x": 0.5, "y": 0.5, "where": "on the chair"}
 
     out, robot, manager, _ = run(sweep + [EMPTY], checker)
-    closer = manager.moves[4]
-    yaw, pitch = glance._rpy(closer.end)[2], glance._rpy(closer.end)[1]
-    assert math.degrees(yaw) == pytest.approx(finder.REACH_YAW_DEG, abs=0.01)          # as far as it can
+    closer, point = manager.moves[4], manager.moves[5]
+    return out, seen_at, [math.degrees(glance._rpy(m.end)[2]) for m in (closer, point)], glance._rpy(closer.end)[1]
+
+
+def test_something_past_the_heads_reach_is_faced_by_turning_the_body(monkeypatch):
+    monkeypatch.delenv("ANDY_FINDER_TURN", raising=False)
+    out, seen_at, (closer, point), pitch = _past_the_heads_reach()
+    there = math.degrees(finder.target_yaw(math.radians(55), 0.15))                # where it was seen: about 86 deg
+    assert there > 80 and closer == pytest.approx(there, abs=0.5)                   # straight at it (the body turns)
+    assert point == pytest.approx(there, abs=0.5) and point <= finder.TURN_YAW_DEG
     assert math.degrees(pitch) <= finder.REACH_PITCH_DEG + 1e-6
     assert out["found"] and seen_at == [(540, 960)]
-    assert math.degrees(glance._rpy(manager.moves[5].end)[2]) <= finder.REACH_YAW_DEG + 1e-6   # it points within reach
+
+
+def test_with_turning_off_the_head_looks_from_as_far_as_it_reaches(monkeypatch):
+    monkeypatch.setenv("ANDY_FINDER_TURN", "off")
+    out, seen_at, (closer, point), _ = _past_the_heads_reach()
+    assert closer == pytest.approx(finder.REACH_YAW_DEG, abs=0.01) and point <= finder.REACH_YAW_DEG + 1e-6
+    assert out["found"]
+
+
+def test_aim_is_straight_at_a_place_within_what_andy_can_turn(monkeypatch):
+    monkeypatch.delenv("ANDY_FINDER_TURN", raising=False)
+    place = {"yaw": math.radians(-130), "pitch": math.radians(50)}
+    yaw, pitch = finder.aim(place)
+    assert math.degrees(yaw) == pytest.approx(-finder.TURN_YAW_DEG) and math.degrees(pitch) == pytest.approx(35)
+    assert finder.aim({"yaw": 0.3, "pitch": 0.1}) == (0.3, 0.1)
 
 
 def test_the_sweep_sends_one_move_per_picture():

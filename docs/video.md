@@ -72,8 +72,9 @@ long, unedited takes.
       the screen's place is set (it glances there).
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) on a laptop in shot, or recorded
       at the same time for a corner inset: it shows the real timings of every turn filmed.
-- [ ] The glasses hidden by someone off camera just before shot 4, within about 60° of straight ahead and not
-      lower than the table's edge (the head's reach); not on a dark chair, where Andy missed them in tries.
+- [ ] The glasses hidden by someone off camera just before shot 4, not lower than the table's edge and not behind
+      Andy; within about 60° of straight ahead unless live-test 3t3 showed the body turn working (decision 0016),
+      when somewhere to the side shows the turn; not on a dark chair, where Andy missed them in tries.
 - [ ] The family page open on a second phone; **our own photo**, with the family's agreement (not a
       sample landscape).
 - [ ] A printed letter that asks for "a fee to release your prize", from a **made-up sender** (no real

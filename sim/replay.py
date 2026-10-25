@@ -178,7 +178,7 @@ def main(argv=None) -> int:
 
     chosen = None
     for place in places[:finder.MAX_CLOSER]:
-        aim = (finder.within(place["yaw"], finder.REACH_YAW_DEG), finder.within(place["pitch"], finder.REACH_PITCH_DEG))
+        aim = finder.aim(place)
         for k in range(1, 9):
             y = prev[0] + (aim[0] - prev[0]) * k / 8
             q = prev[1] + (aim[1] - prev[1]) * k / 8

@@ -31,7 +31,8 @@ The text diagram below shows the voice path in detail.
                     warning: the same trick, not merely the same topic)
  find_object, describe_view, describe_photo ──▶ Nemotron 3.5 Super VL on Token Factory (ANDY_VISION; or Nano VL
                     on our own Serverless Endpoint, started on demand); describe_view sends the view at 1280 across
-                    with its middle at full detail, find_object zoomed tiles and a closer look
+                    with its middle at full detail, find_object zoomed tiles and a closer look, turning the body
+                    past the head's reach (decision 0016)
       └─ unreachable, with ANDY_VISION_FALLBACK=local ──▶ Cosmos Reason 2 (2B, or 8B on this desktop) on this computer
                     (local-eyes/run.sh, vLLM on 127.0.0.1:8095, the second GPU; or always, ANDY_VISION=local)
  guard ──▶ Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, beside each reply

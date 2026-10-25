@@ -132,7 +132,8 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
 
 - **Finding things at home misses more than it finds.** In [9 tries on the robot](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/finder-eval-2026-10-20-2037.json), Andy pointed at the hidden glasses
   3 times and never at the wrong place; all 6 misses were a pair on a chair beyond the head's reach, which the sweep
-  saw but the closer look didn't confirm. That closer look is the next fix.
+  saw but the closer look didn't confirm. Andy now turns its body to look at things past the head's reach; that is
+  checked against Pollen's kinematics, [the robot test is next].
 - No study with older adults yet; a pilot with an ethics review comes next.
 - Turning to a voice, waving back and moves taught by hand are tested in code; on camera with two people, not yet.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
@@ -146,7 +147,7 @@ available, and only Nemotron 3 Ultra told the same trick from the same topic.
 ### What's next
 
 A pilot with older adults and their families; more languages (Parakeet already hears 25); an NVIDIA Jetson beside
-the robot with the big models staying on Token Factory; the closer look fixed for things beyond the head's reach;
+the robot with the big models staying on Token Factory; the body turn tried at home for things beside Andy;
 and Andy published as a one-click Reachy Mini app on Hugging Face.
 
 ### Path to shipping

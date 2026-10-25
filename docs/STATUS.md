@@ -83,6 +83,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   desktop was connected too; its own wake word started it when Andy said its name. Stopped for now (not disabled, so
   it returns after a reboot); the doctor's live check now names any such app. Before filming, keep it and its wake
   listener stopped, or disabled at login.
+- **The finder's body turn (decision 0016, 2026-10-25)** is checked against Pollen's kinematics and in tests, not
+  yet on the robot: try live-test 3t3 (glasses on a chair beside Andy) before filming shot 4.
 - Letters in Spanish need `tesseract-ocr-spa` installed (the founder's, with sudo).
 
 - `scripts/andy-sim` (Andy without a robot, Pollen's `--mockup-sim`) is not verified: on this desktop the

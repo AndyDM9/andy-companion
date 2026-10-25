@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Changed (the finder turns its body to look past the head's reach, decision 0016)
+
+At home all 6 of the finder's misses were glasses on a chair about 74° to the side, seen by the sweep but looked at
+closer and pointed at from 60°, the head's own reach. `finder.aim` now sends the closer look and the point straight
+at the place, up to 110°; Pollen's kinematics (automatic body yaw, on by default) turn the base to keep the head
+within 65° of it. Checked offline with Pollen's own solver: at 74° the body turns 9.5° and the head lands at 74.2°,
+at 86° 21.1° and 86.0°. The robot, the simulation and its film aim the same way. `ANDY_FINDER_TURN=off` keeps the
+old 60°. Tests: the founder's chair case faced squarely, the switch, and `aim`'s limits. Not yet tried on the
+robot: the live test's new step 3t3. Andy restarted.
+
 ### Measured (the final conversation suite as a Nebius Serverless Job, PLAN C3)
 
 94 spoken situations, three runs, judged by Nemotron 3 Ultra: **93, 92 and 92 of 94**

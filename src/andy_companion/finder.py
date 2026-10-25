@@ -63,6 +63,11 @@ MAX_CLOSER = 2                             # sightings looked at closer before s
 SAME_PLACE_DEG = 6.0                       # sightings this close together are one thing
 ARRIVED_DEG = 2.5                          # the head is where it was sent when within this of it
 REACH_YAW_DEG, REACH_PITCH_DEG = 60.0, 35.0  # where the head can turn without the body (Pollen: 65 from the body)
+# Past the head's reach Andy turns its body to look (2026-10-25): Pollen's kinematics keep the head within 65 degrees of
+# the base by turning the base (automatic body yaw, the daemon's default, up to 160), so a look sent further turns the
+# whole robot. At home every miss was a chair about 74 degrees to the side, seen by the sweep but looked at and pointed
+# at from 60 (2026-10-20). Covers all the sweep sees (about 95); ANDY_FINDER_TURN=off keeps the head's own reach.
+TURN_YAW_DEG = 110.0
 WAIT_ARRIVE_S, POLL_S = 1.5, 0.1           # how long to wait for a head that started its move late
 VIEW_WIDTH, VIEW_QUALITY = 480, 70         # the TV's strip: small enough for four in memory, clear at a glance
 ASK = ("You are the eyes of a home companion robot helping someone find their {what}. Look at this picture. "
@@ -101,6 +106,22 @@ def tidy_what(what: Any) -> str:
 def zoom() -> bool:
     """Zoomed tiles and a closer look (the default), or one shrunk frame per view (ANDY_FINDER_ZOOM=off)."""
     return os.environ.get("ANDY_FINDER_ZOOM", "on").strip().lower() not in ("off", "0", "no", "false")
+
+
+def turn() -> bool:
+    """Turning the body to look past the head's reach (the default), or the head alone (ANDY_FINDER_TURN=off)."""
+    return os.environ.get("ANDY_FINDER_TURN", "on").strip().lower() not in ("off", "0", "no", "false")
+
+
+def yaw_reach_deg() -> float:
+    """How far to the side Andy looks closer and points: with its body (TURN_YAW_DEG), or its head alone."""
+    return TURN_YAW_DEG if turn() else REACH_YAW_DEG
+
+
+def aim(place: Dict[str, Any]) -> tuple:
+    """Where to look for a place (yaw, pitch, radians): straight at it, as far as Andy can turn and tilt. The robot,
+    the simulation (sim/finder_sim.py) and its film (sim/replay.py) all aim this way."""
+    return within(place["yaw"], yaw_reach_deg()), within(place["pitch"], REACH_PITCH_DEG)
 
 
 def ask(frame: Any, what: str, opener: Optional[Callable] = None, check: bool = False) -> Dict[str, Any]:
@@ -364,19 +385,19 @@ BACK_TO_FACE_S = 1.0                       # after the last look, face following
 
 async def closer_look(robot: Any, manager: Any, antennas: tuple, place: Dict[str, Any], what: str, checker: Callable,
                       queueable: Callable, sleep: Callable) -> Optional[Dict[str, Any]]:
-    """One closer look at a place (yaw and pitch: where the thing should be): the head turned at it as far as it
-    can reach (2026-10-20: a chair 74 degrees to the side, past the head's 65), still, then the strict question
+    """One closer look at a place (yaw and pitch: where the thing should be): Andy turned straight at it, its body too
+    when it is past the head's reach (aim; 2026-10-20: a chair 74 degrees to the side), still, then the strict question
     about a close-up of a fresh frame around where it should show from there. Returns the frame, the close-up's box,
     where the head really was and the answer; None when the camera gave no picture. Raises FinderError."""
     from andy_companion.body import look, looking_at
 
-    aim = (within(place["yaw"], REACH_YAW_DEG), within(place["pitch"], REACH_PITCH_DEG))
+    to = aim(place)
     quiet_tracking(robot)
-    step = look.HoldLook(robot.get_current_head_pose(), antennas, aim[0], aim[1], CLOSER_HOLD_S)
+    step = look.HoldLook(robot.get_current_head_pose(), antennas, to[0], to[1], CLOSER_HOLD_S)
     manager.queue_move(queueable(step))
     looking_at.set(place.get("noticed", "closer"), step.duration + 0.5)
     await sleep(step.turn_s)
-    there = await arrive(robot, *aim, sleep)
+    there = await arrive(robot, *to, sleep)
     await sleep(SETTLE_S)
     try:
         frame = robot.media.get_frame()
@@ -385,21 +406,22 @@ async def closer_look(robot: Any, manager: Any, antennas: tuple, place: Dict[str
     if frame is None:
         return None
     frame = frame.copy()
-    head = there if there and abs(math.degrees(there[0] - aim[0])) < 25 else aim   # the head's own angles
+    head = there if there and abs(math.degrees(there[0] - to[0])) < 25 else to   # the head's own angles
     box = _close_box(frame, CLOSE_UP, where_in_view(place["yaw"], place["pitch"], *head))
     checked = await asyncio.to_thread(checker, frame[box].copy(), what)
     return {"frame": frame, "box": box, "head": head, "checked": checked}
 
 
 def confirmed_place(place: Dict[str, Any], look_: Dict[str, Any]) -> Dict[str, Any]:
-    """Where the thing sits in the close-up, back to the whole frame, as the head angles to point (within reach)."""
+    """Where the thing sits in the close-up, back to the whole frame, as the head angles to point (as far as Andy
+    turns, aim)."""
     frame, box, head, checked = look_["frame"], look_["box"], look_["head"], look_["checked"]
     h, w = frame.shape[:2]
     fx = (box[1].start + checked.get("x", 0.5) * (box[1].stop - box[1].start)) / w
     fy = (box[0].start + checked.get("y", 0.5) * (box[0].stop - box[0].start)) / h
     # Where it is, in words: the wider view's (it saw what is around it; a close-up has less to name, and in the
     # simulation called a croissant "potato"), the close-up's only when the wider view said nothing.
-    return dict(place, yaw=within(target_yaw(head[0], fx), REACH_YAW_DEG), pitch=target_pitch(head[1], fy),
+    return dict(place, yaw=within(target_yaw(head[0], fx), yaw_reach_deg()), pitch=target_pitch(head[1], fy),
                 where=place.get("where") or checked.get("where", ""))
 
 

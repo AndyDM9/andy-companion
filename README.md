@@ -335,8 +335,9 @@ What doesn't work yet, and what our numbers don't show.
   the sweep alone picks a view holding glasses in 7 of 9 and a wrong one in 2, which is what the closer look is
   there to stop ([compare](evals/results/finder-compare-2026-10-20-2037.json)): the closer look is where the chair is
   lost, and it is the next thing to fix. It finds things, not people. In simulation it is measured
-  (decision 0013), but rendered pictures are cleaner than a room. From where Andy sits it can't look further than
-  60 degrees to either side without turning its body, so a chair beside it can be out of reach.
+  (decision 0013), but rendered pictures are cleaner than a room. Since 2026-10-25 (decision 0016) Andy turns its
+  body as well as its head to look closer at something past the head's 60 degrees, as Pollen's kinematics allow;
+  checked against those kinematics, not yet on the robot.
 - **Turning to a voice, waving back and moves taught by hand are new** (2026-10-20): tested in code and in the
   suite, not yet on camera with two people. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that

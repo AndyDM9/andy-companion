@@ -180,7 +180,7 @@ def trial(scene: Scene, present: bool, what: str) -> dict:
         chosen = places[0]
     for place in places[:finder.MAX_CLOSER] if finder.zoom() else []:
         looks += 1
-        aim = (finder.within(place["yaw"], finder.REACH_YAW_DEG), finder.within(place["pitch"], finder.REACH_PITCH_DEG))
+        aim = finder.aim(place)
         frame = scene.look(*aim)
         box = finder._close_box(frame, finder.CLOSE_UP, finder.where_in_view(place["yaw"], place["pitch"], *aim))
         checked = finder.look_closer(frame[box].copy(), what)

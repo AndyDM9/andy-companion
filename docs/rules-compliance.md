@@ -82,4 +82,7 @@ This file changes in the same commit as anything it describes. Last full check: 
 second look the same evening at the Devpost page, its updates, FAQ and forum (no amendments since the
 morning). Checked again 2026-10-14 by the submission audit against the live pages: the rules unchanged; the
 FAQ adds that calling an NVIDIA model through another provider does not count (ours are called on Nebius);
-23 judges listed.
+23 judges listed. Checked again 2026-10-25 (the rules and updates pages, read through Tavily since Devpost refuses a plain fetch): no
+change to the rules, dates or criteria, and no update since the judges' "Will It Ship?" recording. The README's and
+Devpost text's finder limits reworded the same day for the body turn (decision 0016), saying plainly it is checked
+against Pollen's kinematics and not yet on the robot.
