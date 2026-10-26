@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (the words as they were heard reached the voice server's log)
+
+- **Found while looking into why Andy misunderstood:** the voice server's journal held the person's words as they
+  were heard ("Live: …"), 2,664 lines from 2026-10-15, against the rule that no conversation text is logged. Our
+  filter (voice/serve.py, `privacy.is_transcript_print`) dropped the upstream package's "USER:" and "ASSISTANT:"
+  prints (none in the journal), but a newer version of the package added live transcription printed as rich Text
+  with "Live:" before it, which the filter didn't know. It is dropped now, checked on the real upstream handler
+  (its own print function, through the filter: nothing out but ordinary lines) and in the privacy tests. What is
+  already in this computer's journal stays until the journal is cleared; the founder decides.
+- **Andy didn't understand names said with an accent:** speech recognition heard "Depeche Mode" as "depish mode"
+  (and labelled English as Russian, which changes nothing downstream: the language hint is off and the voice is
+  fixed). The profile now says what it hears may mishear a word, most often a name, and to take the likeliest
+  meaning and check it in a few words rather than say it doesn't understand. Tried against Nemotron 3.5 Lightning,
+  judged by Nemotron 3 Ultra, twice: "depish mode" and "the beetles" understood both times; "call doctor Mila at
+  for" asks the time instead of guessing four, which is kept (a reminder's time is asked, never invented).
+
 ### Fixed (a research that looped and could not be stopped)
 
 - **Seen on the robot: Andy researched the same question seven times in five minutes, and "stop searching" did

@@ -110,8 +110,10 @@ def install() -> None:
 
 
 # speech-to-speech logs transcripts as their length by default, but its Qwen3-TTS handler prints
-# every reply to the console ("ASSISTANT: ...") regardless. voice/serve.py drops those lines.
-TRANSCRIPT_PRINTS = ("ASSISTANT:", "USER:")
+# every reply to the console ("ASSISTANT: ...") regardless. voice/serve.py drops those lines. Its Parakeet
+# handler also prints the words as they are heard ("Live: ..."), a line printed as rich Text, not a string:
+# that one reached the journal from 2026-10-15 until 2026-10-25, when it was found and added here.
+TRANSCRIPT_PRINTS = ("ASSISTANT:", "USER:", "Live:")
 
 
 def is_transcript_print(text: object) -> bool:

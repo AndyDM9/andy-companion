@@ -88,11 +88,20 @@ def test_the_memory_store_is_andys_own_file(tmp_path, monkeypatch):
     (f"[green]ASSISTANT: {SECRET}", True),
     (f"[yellow]USER: {SECRET}", True),
     ("ASSISTANT: hi", True),
+    (f"[dim]Live: [/dim]{SECRET}", True),                 # the words as they are heard, 2026-10-25
     ("[green]✓ Pipeline stopped successfully[/green]", False),
     ("Shutting down gracefully...", False),
 ])
 def test_voice_server_transcript_prints_are_recognised(line, dropped):
     assert privacy.is_transcript_print(line) is dropped
+
+
+def test_the_live_transcript_printed_as_rich_text_is_dropped_too():
+    rich_text = pytest.importorskip("rich.text")
+    line = rich_text.Text()
+    line.append("Live: ", style="dim")
+    line.append(SECRET, style="yellow")                  # as the Parakeet handler builds it
+    assert privacy.is_transcript_print(line)
 
 
 def _serve_module():

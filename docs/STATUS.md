@@ -80,6 +80,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## Open problems
 
+- **The voice server's journal on this desktop holds 2,664 lines of heard words** ("Live: …", 2026-10-15 to 2026-10-25), from before the filter knew that line (fixed 2026-10-25). Clearing it removes every user service's journal on this computer (`journalctl --user --rotate --vacuum-time=1s`): the founder's call.
+
 - The robot is named after the person most likely to be spoken to near it in this household (the founder). While quiet, only "Andy, wake up" ends it (fixed 2026-10-13); while awake, Andy still answers anyone in the room, so a call or meeting near the robot should be held with Andy quiet or asleep.
 
 - The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
