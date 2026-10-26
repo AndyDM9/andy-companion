@@ -186,4 +186,7 @@ The refreshed screen preview links to the separate playground and still refuses 
 All three Spaces are RUNNING; hosted CPU/wheel and SDK checks passed on `bbf0d6d`. These publication
 checks do not tick the pending hardware, footage, user-session or final-access items.
 The host-page check found a query-routing bug in the guided app. Its fixed static route now accepts
-the host's theme query without expanding input or tool access; final embedded-page verification is pending.
+the host's theme query without expanding input or tool access.
+That fix is now deployed from `ab693be`: a logged-out browser loaded the embedded app and verified the
+sample proposal / No flow. CPU/wheel and SDK hosted jobs passed on that revision. Hardware/access and
+video items remain in progress; the hosting test does not change their status.

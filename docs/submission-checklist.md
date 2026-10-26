@@ -25,7 +25,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] Physical absent/TV-decoy/moved-object, full family-choice and local-vision recovery procedures prepared; anonymous first-use task measures specified
 - [x] New judge Space RUNNING and verified with live inference; funded secret configured server-side, source hashes match, six web steps and five refusal probes passed
 - [x] README/export/testing guide link to guided inference; published screen preview links to it while all 11 write probes remain 403; all three Spaces RUNNING
-- [ ] Logged-out Hugging Face landing-page iframe works with its appended theme query after the route fix is redeployed
+- [x] Logged-out Hugging Face landing-page iframe loads with its theme query; embedded real-model proposal / No flow verified after deploying `ab693be`
 - [ ] Standout physical challenges and brief user sessions actually completed, with all results retained in scope
 - [x] Reconnected robot reaches the conversation loop after fixing the SDK memory-tool collision
 - [x] Desktop and dashboard configuration paths have fresh-process SDK tests; dedicated SDK CI defined

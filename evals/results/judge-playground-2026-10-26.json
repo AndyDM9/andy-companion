@@ -123,5 +123,14 @@
       "expected": 404,
       "observed": 404
     }
-  ]
+  ],
+  "hosting_recheck": {
+    "ran": "2026-10-26T22:06:35+00:00",
+    "source_commit": "ab693be",
+    "space_commit": "3eebb03a7750f950f5d2146f251fb68bad0464ce",
+    "logged_out_host_page_iframe_ready": true,
+    "theme_query_application_200": true,
+    "embedded_no_keeps_sample_private": true,
+    "scope": "Hugging Face embedding integration; a real model prepares the sample proposal, No is enforced in code. No hardware or user study."
+  }
 }

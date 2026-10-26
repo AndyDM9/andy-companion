@@ -28,7 +28,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   private/shared sample state correctly. In three final absent rechecks, all reported a miss, but one
   still offered another search despite the one-pass instruction. No extra action runs; the UI and
   limitations state this distinction. Desktop/phone browser checks passed
-  Yes/No, no horizontal overflow and zero page errors. The separate judge Space is RUNNING, built from
+  Yes/No, no horizontal overflow and zero page errors. The separate judge Space is RUNNING, first published from
   `ccbe0a5` (Space `18038ee`). Public verification passed six steps/eight browser-state checks and five
   HTTP refusal probes; source hashes match. The clean Docker image served pages and correctly disabled
   inference without a key; its 17 files contain no household modules or secret files.
@@ -40,8 +40,11 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Screen preview refreshed from that commit (Space `a907b1d`): new guided link present, four pages 200,
   11 writes refused with 403. All three Spaces are RUNNING; a redacted 211-commit history scan is clean.
   A final logged-out host-page check caught the iframe's `?__theme=system` URL returning 404.
-  Static GET routing is fixed and two theme regressions added; the embedded-page recheck is pending redeploy.
-  After that fix: 40 playground regressions pass; full installed robot environment 1,095 passed / one skipped.
+  Static GET routing is fixed and two theme regressions added. Redeployed `ab693be` (Space `3eebb03`):
+  the logged-out host page loads the embedded app, and its real-model proposal / No flow keeps the sample private.
+  After that fix: 40 playground regressions, CPU 1,083 passed / 12 skipped, installed robot environment
+  1,095 passed / one skipped. Hosted CPU/wheel and SDK jobs passed on `ab693be`
+  ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40409666629)).
 - **Release snapshot audit:** final export now requires the tracked working files to match the release
   tag, including all three export inputs. An old tag with newer files or untracked final documents is
   rejected; 21 exporter regressions and the full CPU suite (1,043 passed / 12 skipped) pass.

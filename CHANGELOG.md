@@ -7,6 +7,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Judge playground published
 
+- Redeployed the theme-route fix from `ab693be` (Space `3eebb03`); a logged-out browser verified the
+  Hugging Face landing page's embedded app and its real-model proposal / No path. CPU 1,083 / 12 skipped,
+  installed robot environment 1,095 / one skipped; both hosted jobs passed on that source commit.
+  The public verification record now includes the separate hosting recheck and its source revision.
 - Fixed a host-integration bug caught by the logged-out Hugging Face page check: its iframe appends
   `?__theme=system`, which strict full-path matching rejected. Static GET routing now ignores the
   query while keeping the same fixed file map; POST inputs remain unchanged. Two theme regressions added.
