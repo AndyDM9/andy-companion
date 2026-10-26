@@ -27,7 +27,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   It later went to sleep cleanly. The founder has the refreshed private screen link (verified 200).
   Wake/answer/interruption observations and the revised task flows remain pending.
   Latest while awake: doctor **20/21**, with the optional second-check endpoint stopped; app/microphone,
-  screen and privacy checks pass. Six landscape samples restored for the idle panel; sample JPEG served 200.
+  screen and privacy checks pass. Six landscape samples restored to an empty gallery; sample JPEG served 200. Seven-day cleanup applies,
+  but the cause of the earlier empty gallery was not verified.
 - **Current text profile:** version e scored **94, 94, 95 of 97** with the renamed tool. Two memory offers fail
   each run; ambiguity before deletion and respecting "not now" each fail once. The new scorecard carries hashes.
   Local checks after the startup/demo fixes: CPU 1,011 passed / 12 skipped; robot environment 1,023 passed /

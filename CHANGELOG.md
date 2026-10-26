@@ -12,8 +12,8 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   Once Andy was awake, the live doctor improved to **20/21**: app running, zero audio drops, no competing
   robot app, screen responding and zero suspect voice-log lines. Only the optional second-check endpoint
   remained stopped; spoken task outcomes still await observation.
-- Restored six labelled landscape samples at the founder's request after the gallery had emptied under
-  the existing seven-day cleanup. Photo display is enabled; the screen API selects a sample and its JPEG
+- Restored six labelled landscape samples at the founder's request because the gallery was empty.
+  The existing seven-day cleanup applies to these samples; the cause of the earlier empty gallery was not verified. Photo display is enabled; the screen API selects a sample and its JPEG
   returns 200. They rotate on the right while idle, every three minutes, after a current card clears.
   No image or private link was added to the repository; filming still needs the founder's own photos with consent.
 - Published startup fixes in `8958439`; CPU CI passed, but the new clean SDK job exposed missing Cairo

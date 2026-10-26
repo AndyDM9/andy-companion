@@ -11,7 +11,7 @@ in the same commit that makes it true.
 - [x] Linux SDK build prerequisites documented and installed by the SDK CI job
 - [x] Hosted SDK startup job passes with the newly documented system prerequisites (`f96d390`, 42 checks)
 - [x] Awake robot preflight: 20/21 checks; app, audio health, private screen and voice-log check pass (optional second look stopped)
-- [x] Six labelled landscape placeholders restored locally; idle selection and JPEG serving verified (own photos still required for filming)
+- [x] Six labelled landscape placeholders restored to the empty gallery; idle selection/JPEG verified, seven-day cleanup applies (own photos still required for filming)
 - [x] Live household links are private random values again; the updated screen link returns 200
 - [x] Imported/cached demos are refused before they can seed household data
 - [x] Short judge testing instructions link from the README, demo and submission text

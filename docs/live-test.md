@@ -15,7 +15,7 @@ then passed 20/21 checks, with zero reported audio drops and zero suspect voice-
 optional second-check endpoint is stopped. This does not complete any spoken task in the table below.
 
 The private screen link was refreshed and verified on the LAN. Six labelled landscape samples were
-restored after the gallery emptied under seven-day cleanup; the idle API selects one and its JPEG
+restored to the empty gallery; seven-day cleanup applies. The idle API selects one and its JPEG
 returns 200. Samples are for setup, with the founder's own consented photos required for filming.
 
 ## Before
