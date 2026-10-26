@@ -13,6 +13,7 @@ in the same commit that makes it true.
 - [x] CPU GitHub Actions workflow defined, actions pinned and permissions read-only
 - [x] Hosted CPU CI passed on `c3a3f12` ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40381561500), October 26)
 - [x] A fixed 30-attempt physical finder plan and scorer are available (`evals/physical_trials.py`)
+- [x] The trial plan tests every object present and absent, both lighting conditions, and every position with each object present
 - [ ] The 30 physical attempts completed and scored, including absent objects and failures
 - [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption

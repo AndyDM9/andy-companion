@@ -32,7 +32,8 @@ def plan():
     objects = ("glasses", "keys", "remote")
     positions = ("centre", "left", "right", "side_70_90_degrees", "lower_shelf")
     return [{"trial": str(i + 1), "object": objects[i % 3], "position": positions[i % 5],
-             "light": "dim" if i % 4 == 3 else "ordinary", "present": "0" if i % 3 == 2 else "1",
+             "light": "ordinary" if i < 15 else "dim",
+             "present": "0" if (i // 3 + i % 3) % 3 == 2 else "1",
              "outcome": "", "seconds": ""} for i in range(30)]
 
 

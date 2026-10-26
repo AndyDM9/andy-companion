@@ -110,3 +110,5 @@ marked passed by a software test. The submission text now states the text suite'
 local vision fallback's boundary. The new confirmation and transient-state designs are decisions
 0018 and 0019. CPU CI passed on the pushed c3a3f12 revision; both published Spaces and the fresh app install were checked again. Physical validation waits for USB reconnection. Final evidence
 links, the tag, app pin, photographs, captions and actual submission remain on the checklist.
+The physical trial schedule was corrected to include every object both present and absent;
+its tested coverage is preparation, with no physical success rate claimed.

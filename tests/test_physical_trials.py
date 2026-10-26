@@ -8,6 +8,20 @@ trials = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(trials)
 
 
+def test_each_object_has_present_and_absent_trials_and_all_positions():
+    rows = trials.plan()
+    for name in ("glasses", "keys", "remote"):
+        selected = [row for row in rows if row["object"] == name]
+        present = [row for row in selected if row["present"] == "1"]
+        assert len(selected) == 10
+        assert len(present) in (6, 7)
+        assert len({row["position"] for row in present}) == 5
+        for presence in ("0", "1"):
+            assert {row["light"] for row in selected if row["present"] == presence} == {"ordinary", "dim"}
+        for position in {row["position"] for row in selected}:
+            assert {row["light"] for row in selected if row["position"] == position} == {"ordinary", "dim"}
+
+
 def test_all_planned_trials_count_including_errors_and_wrong_points():
     rows = trials.plan()
     for row in rows:

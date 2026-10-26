@@ -32,6 +32,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   text evaluations run the real consent gate around synthetic tools and keep input/code hashes.
 - **Evidence still needed:** 30 physical finder attempts (`evals/physical_trials.py`), short sessions with
   consenting potential users, checks of the revised flow on the robot, video and real photos on October 27.
+  The trial schedule now covers each object present and absent, both lighting conditions, and all
+  five positions with each object present; a regression test catches correlated object/presence cycles.
 - **New model findings:** proactive memory offers can be skipped, or the model can promise a note without calling a tool; the gate does not create a note in that case. The new text-suite
   runs are recorded separately from the October 25 profile; old scores are not proof of these changes.
 
@@ -47,6 +49,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-26 | **Physical trial plan coverage** | Each object present and absent in both lighting conditions; all five positions with each object present. Fixed the original schedule's remote/absent correlation. CPU tests 991 passed / 10 skipped; robot environment 1,000 passed / 1 skipped. Physical attempts still pending |
 | 2026-10-26 | **Published verification** | `c3a3f12` pushed; hosted CPU CI passed. Public screen Space updated from that commit: front page and four pages 200, pending-item UI present, transient writes 403; both Spaces RUNNING. App checker: fresh install, entrypoint registration and uninstall passed. Hardware interactions remain unverified while USB is disconnected |
 | 2026-10-26 | **Software and running services** | 990 passed / 10 skipped in the CPU environment; 999 passed / 1 skipped in the robot environment. Public demo: front page and four pages 200, writes 403. Existing Andy service restarted after confirming no other robot app connected. Doctor: 17/21; privacy check clean, cloud conversation and vision reachable, screen and local eyes running. Robot USB disconnected temporarily, explaining the daemon error, app not starting and stale microphone health; optional second-check endpoint stopped. Andy, voice and local-eyes services stopped while disconnected. Live checks resume after USB reconnection |
 | 2026-10-26 | **Current profile, text suite**, version 2026-10-26d, local API calls, real confirmation gate with synthetic tool results | **95, 95, 95 of 97**; moment-1 and photo-2 failed each run (memory offers). Gate tests reject unapproved writes. [Scorecard](../evals/results/suite-2026-10-26-final-local.json); hashes of the tested profile, tools, suite, runner and gate included. This is not a hardware test or a Serverless Job |

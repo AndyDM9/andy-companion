@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Physical trial coverage
+
+- Corrected the 30-attempt schedule: the original cycles made every remote trial an absent-object
+  test. Each object now has present and absent attempts in both lighting conditions, and present
+  attempts in all five positions. Added a regression test for this coverage; no physical results
+  have been recorded or claimed.
+- After the schedule correction: CPU suite 991 passed / 10 skipped; installed robot environment
+  1,000 passed / 1 skipped. The new coverage test and static checks pass without connecting a robot.
+
 ### Published verification
 
 - Pushed `c3a3f12`; GitHub Actions CPU checks passed. Published the read-only demo from that commit
