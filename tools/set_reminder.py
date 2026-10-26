@@ -12,7 +12,8 @@ class SetReminder(Tool):
     name = "set_reminder"
     description = (
         "Set a reminder that you will say out loud when it is due, only when the person asks. Use the "
-        "person's own words for 'what'. Give either 'minutes' from now, or 'at' as HH:MM on a 24-hour "
+        "person's own words for 'what', only what to do, without the time ('take a pill', not 'take a pill "
+        "at eight'). Give either 'minutes' from now, or 'at' as HH:MM on a 24-hour "
         "clock (today, or tomorrow if that time has passed). Use repeat='daily' only if they ask for "
         "every day ('every morning at eight' is at='08:00', repeat='daily'; 'every evening at nine' is "
         "'21:00'). Don't ask for a name for it or for am/pm when the words say. A reminder to take their "
@@ -22,7 +23,7 @@ class SetReminder(Tool):
     parameters_schema = {
         "type": "object",
         "properties": {
-            "what": {"type": "string", "description": "What to remind them of, in their words."},
+            "what": {"type": "string", "description": "What to remind them of, in their words, without the time."},
             "minutes": {"type": "number", "description": "Minutes from now."},
             "at": {"type": "string", "description": "Time of day, HH:MM, 24-hour."},
             "repeat": {"type": "string", "enum": ["daily"], "description": "Only if they ask for every day."},

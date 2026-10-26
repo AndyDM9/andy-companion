@@ -7,6 +7,11 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Fixed (the TV's design, checked in a browser at every size)
 
+- **A reminder's words kept its time**: "take a pill at eight o'clock in the morning" beside "Tomorrow, 8:00 am ·
+  daily". The reminder tool now asks for only what to do, and the store takes a time, part of the day or repeat
+  off the end of the words (and "remind me to" off the start), in English and Spanish, never when the time belongs
+  to the task ("buy bread for tomorrow") and never all the words (`reminders.just_what`, 13 cases tested). The
+  founder's reminder already set was shortened the same way. `evals/tools.json` regenerated.
 - **While Andy spoke with nothing on the big card, the caption lay over the day's two cards** (seen on the robot's
   screen: the weather's Monday line cut in half under it). The two cards now keep clear of the caption as they do of
   the "Try asking" line; tomorrow's forecast and its source line give way first, then a long alert shortens.

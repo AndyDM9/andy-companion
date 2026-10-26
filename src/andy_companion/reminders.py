@@ -11,6 +11,7 @@ import fcntl
 import json
 import logging
 import os
+import re
 import secrets
 import tempfile
 import time
@@ -79,9 +80,41 @@ def due_time(minutes: Optional[float] = None, at: Optional[str] = None, now: Opt
     raise ValueError("Say when: in how many minutes, or at what time.")
 
 
+# When it is due is kept as a time, so the words keep only what to do: "take a pill at eight o'clock in the morning"
+# was shown as "take a pill at eight o'clock in the…" beside "Tomorrow, 8:00 am" (2026-10-25). Only a time, a part
+# of the day or a repeat at the very end (or "remind me to" at the start) is taken off, and never all the words.
+_NUM = (r"(?:\d{1,2}(?::\d{2})?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon|midnight|"
+        r"una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|mediod[ií]a|medianoche)")
+_TAIL = re.compile(
+    r"[\s,]+(?:"
+    r"(?:at|by|around|about)\s+" + _NUM + r"(?:\s*(?:o'?clock|thirty|fifteen|forty[- ]five))?(?:\s*[ap]\.?\s?m\.?)?"
+    r"|" + r"\d{1,2}(?::\d{2})?\s*[ap]\.?\s?m\.?"
+    r"|in\s+the\s+(?:morning|afternoon|evening)|at\s+night|tonight|today|tomorrow(?:\s+(?:morning|afternoon|evening|night))?"
+    r"|this\s+(?:morning|afternoon|evening)|(?:every|each)\s+(?:day|morning|afternoon|evening|night)|daily"
+    r"|in\s+(?:\d+|a|an|one|two|three|five|ten|fifteen|twenty|thirty|forty[- ]five)\s+(?:minutes?|hours?)"
+    r"|a\s+las?\s+" + _NUM + r"(?:\s+y\s+(?:media|cuarto))?|(?:de|por)\s+la\s+(?:mañana|tarde|noche)"
+    r"|todos\s+los\s+d[ií]as|cada\s+(?:d[ií]a|mañana|tarde|noche)|a\s+diario|hoy|mañana|esta\s+(?:mañana|tarde|noche)"
+    r"|en\s+\d+\s+(?:minutos?|horas?)"
+    r")[\s.,!]*$", re.I)
+_KEEPS = re.compile(r"\b(?:for|until|till|before|after|from|since|para|hasta|antes\s+de|desde|del?)\s*$", re.I)
+_HEAD = re.compile(r"^(?:please\s+)?(?:remind\s+me\s+(?:to|about|that)|recu[eé]rdame(?:\s+que)?)\s+", re.I)
+
+
+def just_what(text: str) -> str:
+    """'remind me to take a pill at eight o'clock in the morning' -> 'take a pill'."""
+    out = _HEAD.sub("", text)
+    for _ in range(4):
+        shorter = _TAIL.sub("", out)
+        if shorter == out or _KEEPS.search(shorter):     # "buy bread for tomorrow": the time is part of what to do
+            break
+        out = shorter
+    out = out.strip(" ,.")
+    return out if len(out) >= 3 else text
+
+
 def add(text: str, minutes: Optional[float] = None, at: Optional[str] = None,
         repeat: Optional[str] = None, now: Optional[datetime] = None) -> Dict[str, Any]:
-    text = " ".join(str(text).split())[:MAX_TEXT]
+    text = just_what(" ".join(str(text).split())[:MAX_TEXT])
     if not text:
         raise ValueError("What should I remind you about?")
     if repeat not in REPEATS:

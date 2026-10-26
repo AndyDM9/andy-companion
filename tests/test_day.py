@@ -210,10 +210,10 @@ def test_the_plan_is_on_the_screen_too(monkeypatch, tmp_path):
 
 def test_a_full_day_fits_the_card_and_says_how_many_more():
     for at in ("09:00", "10:00", "11:00", "12:00", "13:00"):
-        reminders.add(f"thing at {at}", at=at, now=NOW)
+        reminders.add(f"thing number {at}", at=at, now=NOW)
     _, items = dayplan.card(NOW)
-    assert [i["title"] for i in items] == ["9:00 am · thing at 09:00", "10:00 am · thing at 10:00",
-                                           "11:00 am · thing at 11:00", "And 2 more today"]
+    assert [i["title"] for i in items] == ["9:00 am · thing number 09:00", "10:00 am · thing number 10:00",
+                                           "11:00 am · thing number 11:00", "And 2 more today"]
     _, items = dayplan.card(datetime(2026, 10, 13, 13, 30))
     assert items == [{"title": "No more reminders today."}]
 
