@@ -163,3 +163,8 @@ observed core flows, final access, frozen release and actual Devpost submission 
 Sources: [Official Rules](https://nebiusglobalaihackathon.devpost.com/rules),
 [FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs),
 [organiser updates](https://nebiusglobalaihackathon.devpost.com/updates).
+
+Further October 26 diagnostic review: configured voice probing and unavailable connection inspection
+now produce accurate preflight results. The README explicitly separates the current local synthetic
+text-suite score from the earlier profile's Serverless Job score. These checks add no claims about
+working hardware tasks, video compliance, free judge access or completed submission; those remain pending.

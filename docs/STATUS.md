@@ -22,6 +22,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Further preflight audit:** fixed default-only voice probing and a false pass when robot connection
+  ownership could not be inspected. Fifteen regressions pass; the full CPU suite is now **1,039 passed /
+  12 skipped**, and the installed robot environment **1,051 passed / one skipped**. Latest live preflight
+  remains **20/21**, optional second look 404; zero microphone drops and zero suspect voice-log lines.
+  Redacted gitleaks scan of 206 commits found no leaks.
+  M2/M5/M6/M7 still need observed task outcomes; the doctor does not certify those or readiness to film.
 - **Submission readiness: not yet.** The final exporter now blocks the placeholder YouTube field,
   missing `hackathon-submission` tag and app dependency still on main. Manual video, hardware-task,
   rights, access and actual form checks remain separate. Full physical trials and user sessions are

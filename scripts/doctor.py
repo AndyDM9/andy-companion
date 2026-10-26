@@ -21,6 +21,7 @@ import stat
 import subprocess
 import sys
 import urllib.request
+from urllib.parse import urlsplit
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,6 +60,24 @@ def port_open(port: int) -> bool:
         return s.connect_ex(("127.0.0.1", port)) == 0
 
 
+def voice_reachable(e: dict) -> bool:
+    """Probe the app's configured voice address without printing its URL or credentials.
+
+    This checks TCP availability, not a spoken turn or WebSocket authentication.
+    The upstream override takes precedence just as in app_mode.configure_env().
+    """
+    url = os.environ.get("HF_REALTIME_WS_URL", e.get("ANDY_VOICE_URL", "ws://127.0.0.1:8765/v1/realtime"))
+    try:
+        address = urlsplit(url)
+        if address.scheme not in ("ws", "wss") or not address.hostname:
+            return False
+        port = address.port or (443 if address.scheme == "wss" else 80)
+        with socket.create_connection((address.hostname, port), timeout=3):
+            return True
+    except (OSError, ValueError):
+        return False
+
+
 def main() -> int:
     if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
         print(__doc__)
@@ -92,8 +111,9 @@ def main() -> int:
     else:
         check("Tavily key", False, "missing", "add TAVILY_API_KEY to the env file")
 
-    check("Voice server", port_open(8765), "listening on 127.0.0.1:8765" if port_open(8765) else "not running",
-          "cd voice && uv sync && ./run.sh")
+    voice_up = voice_reachable(e)
+    check("Voice server", voice_up, "configured TCP address reachable; spoken turn not tested" if voice_up else
+          "configured address invalid or unreachable", "check ANDY_VOICE_URL / HF_REALTIME_WS_URL and start the voice server")
     try:
         code, body = http("http://127.0.0.1:8000/api/daemon/status", timeout=3)
         state = json.loads(body).get("state")
@@ -142,7 +162,7 @@ def main() -> int:
     bad = [r for r in results if not r[1]]
     print(f"\n{len(results) - len(bad)} of {len(results)} checks passed." + ("" if not bad else " Fix the ✗ lines above."))
     if "--live" in sys.argv:
-        print("Ready to film." if not bad else "Not ready to film yet.")
+        print("Preflight passed; verify spoken tasks and motion before filming." if not bad else "Preflight has failures.")
     return 1 if bad else 0
 
 
@@ -194,7 +214,9 @@ def live(e: dict) -> None:
     running = subprocess.run(["pgrep", "-f", "scripts/run_andy.py"], capture_output=True).returncode == 0
     check("Andy's app running", running, "", "./scripts/andy, and say \"Andy, wake up\" if it is asleep")
     others = other_robot_apps()
-    check("Only Andy drives the robot", not others, ", ".join(others),
+    check("Only Andy drives the robot", others == [],
+          "could not identify every robot connection" if others is None else ", ".join(others),
+          "check ss access and process visibility" if others is None else
           "stop the other app (systemctl --user stop <its service>), and anything that starts it, such as its own "
           "wake word; two apps moving the head at once make it and the antennas shake")
     try:
@@ -253,16 +275,21 @@ def lines_with_words(log: str) -> int:
                re.search(r"(?:^|\s)(?:USER|ASSISTANT|Live):", line))
 
 
-def other_robot_apps(listing: str | None = None, who=None) -> list:
+def other_robot_apps(listing: str | None = None, who=None) -> list | None:
     """Programs other than Andy connected to the robot's daemon (127.0.0.1:8000), each by its service or name.
     Two apps commanding the head at once make the head and antennas shake: on 2026-10-25 another conversation app,
-    started by its own wake word when Andy said its name, did that."""
+    started by its own wake word when Andy said its name, did that. None means ownership could not be checked."""
     if listing is None:
         try:
-            listing = subprocess.run(["ss", "-tnpH", "state", "established", "( dport = :8000 )"],
-                                     capture_output=True, text=True, timeout=5).stdout
+            result = subprocess.run(["ss", "-tnpH", "state", "established", "( dport = :8000 )"],
+                                    capture_output=True, text=True, timeout=5)
+            if result.returncode or result.stderr.strip():
+                return None
+            listing = result.stdout
         except (OSError, subprocess.SubprocessError):
-            return []
+            return None
+    if any(line.strip() and not re.search(r"pid=\d+", line) for line in listing.splitlines()):
+        return None
     who = who or _program
     found = []
     for pid in sorted({int(x) for x in re.findall(r"pid=(\d+)", listing)}):

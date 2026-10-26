@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Trustworthy preflight results
+
+- The doctor now probes the configured voice address, including the upstream WebSocket override,
+  instead of always testing port 8765. It labels this as a TCP check, not proof of a spoken turn.
+- An unavailable socket inspector, failed command or connection with hidden ownership now fails the
+  single-controller check instead of silently reporting no competing app. A passing preflight also
+  explicitly leaves spoken tasks and motion to be observed before filming.
+- Fifteen diagnostic regressions passed. Full suites: CPU **1,039 passed / 12 skipped**; installed robot
+  environment **1,051 passed / 1 skipped**. Live preflight remains **20/21**: the optional second-look
+  endpoint returns 404; voice address, robot daemon, app, microphone health, screen and privacy pass.
+  A redacted gitleaks scan found no leaks across 206 commits.
+  No robot behavior, model profile, stored household data or funded endpoint was changed.
+- Made the current local conversation score visible beside the older Serverless Job score in the
+  README's measurements, so the two profiles cannot be mistaken for one another.
+
 ### Submission readiness and judge access
 
 - Re-read the official rules, FAQ and organiser updates through Tavily. Deadline remains October 30,

@@ -226,7 +226,11 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools and the
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Latest, as a Nebius Serverless Job: 96, 95 and 92 of 97** (2026-10-25, with the daily medicine reminders;
+- **Current profile, local text suite: 94, 94 and 95 of 97** (2026-10-26;
+  [scorecard](evals/results/suite-2026-10-26-startup-local.json)), with synthetic tool results and the
+  real confirmation gate. Upcoming-event and photo-story memory offers fail each run; deletion
+  ambiguity and respecting "not now" each fail once. These are not physical robot trials.
+- **Earlier profile, latest Nebius Serverless Job: 96, 95 and 92 of 97** (2026-10-25, with the daily medicine reminders;
   [scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)). Seven cases failed at least once, each but one seen varying before: a photo
   read as a letter (photo-4, twice), and once each a search made as well as research (look-1), a hard question
   answered without the bigger model (think-1), a riddle and a photo story without their tools (riddle-1, photo-1),

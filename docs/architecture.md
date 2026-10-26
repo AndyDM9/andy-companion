@@ -72,6 +72,11 @@ Both app entry points load allowlisted settings with `app_mode.read_env` / `load
 configuring the voice connection; the desktop shell does not parse keys. The doctor shares that
 parser, existing environment values win, and the supervisor, app, doctor and link command use the
 configured screen port (decision 0020). The link command reads only the port, never API keys.
+The doctor probes the configured voice host/port, with `HF_REALTIME_WS_URL` taking precedence over
+`ANDY_VOICE_URL`, as in the app. This is TCP availability, not audio or WebSocket authentication.
+Its single-controller check fails when socket/process inspection is unavailable or ownership is hidden;
+it never treats an unknown connection as proof that Andy is the only controller. Preflight results
+remain separate from observing spoken tasks and motion on the robot.
 
 The fact tool is `remember_fact`, a unique external name: Pollen rejects a module named `remember`
 because it already has one (decision 0021). The dashboard defers Pollen's main import until Andy's

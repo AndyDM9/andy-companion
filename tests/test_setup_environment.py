@@ -80,6 +80,7 @@ def test_doctor_checks_the_configured_screen_port(monkeypatch, capsys):
     monkeypatch.setattr(doctor, "env", lambda: {"ANDY_SCREEN_PORT": "8094", "ANDY_VISION": "off"})
     ports = []
     monkeypatch.setattr(doctor, "port_open", lambda port: ports.append(port) or False)
+    monkeypatch.setattr(doctor, "voice_reachable", lambda env: False)
     monkeypatch.setattr(doctor, "http", lambda *args, **kwargs: (_ for _ in ()).throw(OSError()))
     monkeypatch.setattr(sys, "argv", ["doctor.py"])
     assert doctor.main() == 1
