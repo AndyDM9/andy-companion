@@ -172,3 +172,10 @@ The filming checklist and demo-preparation message explicitly require observed t
 The final export also requires tracked files and export inputs to match the release tag. Tag existence
 alone could otherwise allow text or code that judges would not receive. The command does not create,
 move or publish a tag; actual release publication and submission remain outstanding.
+
+October 26 approved standout work: a separate guided AI playground adds real Token Factory/NVIDIA
+inference to predefined invented examples. It clearly identifies simulated camera/OCR, search and
+family effects, so it cannot be mistaken for hardware evidence. The original preview stays read-only.
+The author supplies inference through a server secret; public operational limits make this supplemental
+software access, not the sole free working-project access required through judging. Decision 0023 and
+the physical/user-session procedures do not complete the pending video, hardware or access checks.

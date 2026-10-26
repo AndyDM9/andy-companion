@@ -27,3 +27,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0020](0020-one-settings-reader-for-desktop-and-dashboard.md) | One settings reader for desktop and dashboard | 2026-10-26 | accepted |
 | [0021](0021-external-memory-tool-has-a-unique-name.md) | The external memory tool has a unique name | 2026-10-26 | accepted; amends 0018 |
 | [0022](0022-judge-testing-without-sharing-provider-keys.md) | Judge testing does not require sharing provider keys | 2026-10-26 | accepted; clarifies 0003 |
+| [0023](0023-guided-inference-is-separate-from-the-household.md) | Guided judge inference is separate from the household | 2026-10-26 | accepted; extends 0022 |

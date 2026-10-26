@@ -22,6 +22,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Approved standout work:** built three isolated guided AI challenges (invented bill, family choice,
+  absent glasses), reusing the actual confirmation gate with simulated tool effects. Thirty-eight new
+  regressions pass. Local real-Nemotron checks exercised all three examples plus Yes/No; code preserved
+  private/shared sample state correctly. In three final absent rechecks, all reported a miss, but one
+  still offered another search despite the one-pass instruction. No extra action runs; the UI and
+  limitations state this distinction. Desktop/phone browser checks passed
+  Yes/No, no horizontal overflow and zero page errors. Separate Space created; publication is pending.
+  Physical challenges and anonymous first-use procedures are ready in live-test.md; observations still pending.
+  Full validation: CPU 1,081 passed / 12 skipped; installed robot environment 1,093 passed / one skipped;
+  Python checks and JavaScript syntax pass. The robot profile and its existing scorecard inputs are unchanged.
 - **Release snapshot audit:** final export now requires the tracked working files to match the release
   tag, including all three export inputs. An old tag with newer files or untracked final documents is
   rejected; 21 exporter regressions and the full CPU suite (1,043 passed / 12 skipped) pass.

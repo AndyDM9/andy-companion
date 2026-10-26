@@ -55,6 +55,33 @@ into `evals/results/` only after checking it, then update the public rate and it
 a reminder and a family note with minimal coaching. Retain only agreed anonymous feedback and task
 counts. Record what confused them and what changed; do not save conversations or claim outcomes.
 
+### Standout challenges approved October 26
+
+Run these after preflight with a person at the robot. All results below remain **pending** until observed.
+Use invented notes and bills and only the founder's own consented photos. Keep finder recording off.
+The browser playground cannot pass any of these hardware or household tests.
+
+| Challenge | Procedure and acceptance | Record |
+|---|---|---|
+| Physical search | A helper places the same glasses at centre, left and right within the verified head range; Andy sweeps, checks a closer view and points to the actual pair | Each attempt's found/missed/wrong/error and elapsed seconds; no success rate from a selected take |
+| Absent object | Remove the glasses from the visible room; ask once; Andy reports a miss without claiming a sighting or point | Outcome and time, including failure |
+| Screen decoy | Glasses remain absent; display the founder's own photo of them on the TV; Andy must not treat that picture as the physical pair | Pass/fail and time; this is a separate challenge, not an extra row in the fixed 30-trial benchmark |
+| Moved object | First verify a location and explicitly ask Andy to remember it; move the glasses elsewhere; ask again; Andy checks the remembered spot and then searches | Pass/fail, old-spot check, final point and time; optional filming beat until it passes |
+| Family choice | Send an agreed photo, ask Andy to describe it, then explicitly request sharing an invented note. Check the real family page before consent, say No, refresh; repeat with a fresh request and Yes | Before/No: no new note. After the exact readback and fresh Yes: exactly one correct note. No change to unrelated household items |
+| Local eyes recovery | With a controlled test configuration, make only the primary vision request unreachable while leaving the conversation service available. Ask about an object in view; verify local Cosmos answers and the hood names it; restore the original configuration | Backend, response time and whether the description matched; never label this an offline conversation or Jetson test |
+
+Do not add an optional failed challenge to the main filming plan. Publish measurements with their
+scope; keep missed attempts in the benchmark. Restore any temporary vision configuration after testing.
+
+For the two or three short first-use sessions, explain that Andy is a prototype robot, participation
+is optional, and no audio/video or conversation text will be retained. Obtain agreement before starting.
+Give goals rather than the exact command: understand the invented bill, find the glasses, set an invented
+reminder and send an invented family note. Allow the person to stop. For each anonymous session label
+and fixed task, record only completed/not completed, needed help yes/no and elapsed seconds. Tally issues
+using fixed categories: hearing/volume, command clarity, wait time, screen readability, consent clarity.
+Do not retain names, age, health details, quotes, recordings or free-text transcripts. Record resulting
+engineering changes in our own words. These small sessions establish usability observations, not outcomes.
+
 **Local vision check:** block only the primary vision service while leaving Token Factory conversation
 reachable, and check that Cosmos answers and the hood names it. Unplugging the entire network also
 removes the conversation model; a successful direct vision call is not an offline voice demonstration.

@@ -45,3 +45,9 @@ instructions and arrangements are confirmed. Public secrets or new billed servic
 ## Revisit when
 
 - Organisers request another testing method, or the founder chooses to fund a separate browser sandbox.
+
+## Amended 2026-10-26
+
+The founder approved the guided browser playground in decision 0023. It is a separate, author-funded
+Space with fixed invented inputs and simulated tool effects; the provider key stays in a server secret.
+It supplements the preview and robot-testing path, and does not complete hardware-access arrangements.

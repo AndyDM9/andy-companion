@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Guided judge challenges and physical evidence preparation
+
+- Implemented a separate judge playground approved by the founder: real Nemotron responses to three
+  fixed invented examples, simulated tool effects, the actual confirmation gate and isolated expiring
+  RAM sessions. No household settings, SDK, camera, motors or store are loaded (decision 0023).
+- Added fixed-input HTTP validation, same-origin browser requests, response/token/tool-round limits,
+  bounded inference concurrency and a per-process daily call allowance. No request/model text is logged;
+  errors are fixed codes. Credentials are read only from a deployment secret, never sent to the browser.
+- Added a minimal clean-archive Docker deployment and 38 regressions. Live local examples exercised the
+  bill, absent object and sharing Yes/No; the latter preserved private/shared sample state. The absent
+  wording remains variable: one of three final rechecks offered another search; no further action is
+  scheduled, and the interface states this known limitation. Desktop and phone browser
+  checks passed with zero page errors and no horizontal overflow. Publication remains pending.
+- Prepared observed physical counterexamples, a complete family-choice check, local-vision recovery,
+  and anonymous task-count procedures. No physical or user-session outcome was marked complete.
+- Full suites passed: CPU 1,081 / 12 skipped, installed robot environment 1,093 / one skipped.
+  Python checks and JavaScript syntax pass; the actual robot profile and evaluation hashes are unchanged.
 ### Final export matches the tagged code
 
 - Closed a release-check gap: merely having a tag did not prove it contained the files being exported.

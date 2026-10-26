@@ -20,6 +20,15 @@ it, and what it lets someone do. This is a small project kept by one person; exp
 
 The voice server (127.0.0.1:8765) and the offline eyes (127.0.0.1:8095) listen on this computer only.
 
+The separate guided judge playground (`scripts/judge_playground.py`, decision 0023) accepts only
+fixed challenge IDs and Yes/No choices. It uses a server-side provider secret, the public profile,
+three allowlisted schemas and the actual confirmation gate, with simulated effects. It has no
+household or SDK imports, camera/microphone input, arbitrary chat, file access route or remote motor
+control. Sessions stay in RAM, are isolated and expire while idle; inbound workers, inference
+concurrency, request/response sizes, output tokens and daily provider calls are bounded. The daily
+allowance resets on a process restart and is not a provider-account spending limit. Host/platform
+access metadata is separate from this application's policy of logging no request or model text.
+
 ## Known advisories in dependencies
 
 Every environment's lock file is audited with `pip-audit`, and updated where a fix exists and nothing pins it. Not
