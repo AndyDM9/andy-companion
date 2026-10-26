@@ -28,6 +28,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   remains **20/21**, optional second look 404; zero microphone drops and zero suspect voice-log lines.
   Redacted gitleaks scan of 206 commits found no leaks.
   M2/M5/M6/M7 still need observed task outcomes; the doctor does not certify those or readiness to film.
+  Demo preparation and the video checklist now use the same preflight wording and observation requirement.
 - **Submission readiness: not yet.** The final exporter now blocks the placeholder YouTube field,
   missing `hackathon-submission` tag and app dependency still on main. Manual video, hardware-task,
   rights, access and actual form checks remain separate. Full physical trials and user sessions are

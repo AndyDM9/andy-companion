@@ -66,7 +66,7 @@ long, unedited takes.
       (every name, number and amount invented; no real company on camera).
 - [ ] Just before the long take: `uv run python scripts/prepare_demo.py set --reminder-in 4` (the "call Rosa"
       reminder, and yesterday's "Sofia's piano recital"); after filming: `… clean`.
-- [ ] **`robot/.venv/bin/python scripts/doctor.py --live` says "Ready to film."** (the second look's endpoint answers, the eyes are listed on Token Factory, Nemotron replies quickly, finder tries not kept, no audio drops, nothing talking over Andy, the computer not overloaded, the screen's place set).
+- [ ] **`robot/.venv/bin/python scripts/doctor.py --live` reports "Preflight passed"**, then complete the observed core filming pass above. Preflight checks the second look's endpoint, eyes listed on Token Factory, Nemotron response time, finder recording off, audio drops, unanswered speech, computer load and the screen's place. It does not verify spoken task outcomes or motion.
 - [ ] `cloud/guard-endpoint.sh start` about 25 minutes before; `status` shows RUNNING and the model answers
       (the first start loads weights for about 8 minutes more); then `systemctl --user restart andy`. The eyes
       need nothing started: Nemotron 3.5 Super VL is on Token Factory (decision 0011).

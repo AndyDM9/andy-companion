@@ -7,6 +7,8 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Trustworthy preflight results
 
+- Aligned the video checklist and demo-preparation message with the doctor's new preflight wording;
+  both explicitly require observed spoken tasks and motion before filming.
 - The doctor now probes the configured voice address, including the upstream WebSocket override,
   instead of always testing port 8765. It labels this as a TCP check, not proof of a spoken turn.
 - An unavailable socket inspector, failed command or connection with hidden ownership now fails the

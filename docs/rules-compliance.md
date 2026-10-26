@@ -168,3 +168,4 @@ Further October 26 diagnostic review: configured voice probing and unavailable c
 now produce accurate preflight results. The README explicitly separates the current local synthetic
 text-suite score from the earlier profile's Serverless Job score. These checks add no claims about
 working hardware tasks, video compliance, free judge access or completed submission; those remain pending.
+The filming checklist and demo-preparation message explicitly require observed tasks after preflight.

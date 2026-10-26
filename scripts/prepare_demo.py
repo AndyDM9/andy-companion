@@ -81,7 +81,7 @@ def check() -> int:
         print("✗", p)
     for n in notes:
         print("•", n)
-    print("Then: robot/.venv/bin/python scripts/doctor.py --live, until it says \"Ready to film.\"")
+    print("Then: robot/.venv/bin/python scripts/doctor.py --live, until preflight passes; verify spoken tasks and motion before filming.")
     return 1 if problems else 0
 
 

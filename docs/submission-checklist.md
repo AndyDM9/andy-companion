@@ -25,7 +25,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] Linux SDK build prerequisites documented and installed by the SDK CI job
 - [x] Hosted SDK startup job passes with the newly documented system prerequisites (`f96d390`, 42 checks)
 - [x] Awake robot preflight: 20/21 checks; app, audio health, private screen and voice-log check pass (optional second look stopped)
-- [x] Preflight probes the configured voice address and fails when robot connection ownership cannot be checked (15 regressions; spoken tasks remain separate)
+- [x] Preflight probes the configured voice address and fails when robot connection ownership cannot be checked (15 regressions); demo preparation/video instructions require spoken tasks and motion separately
 - [x] Six labelled landscape placeholders restored to the empty gallery; idle selection/JPEG verified, seven-day cleanup applies (own photos still required for filming)
 - [x] Live household links are private random values again; the updated screen link returns 200
 - [x] Imported/cached demos are refused before they can seed household data
