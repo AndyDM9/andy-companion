@@ -22,15 +22,59 @@ GIVE_UP_S = 300.0
 PER_DAY = 10
 
 _lock = threading.Lock()
-_state: Dict[str, object] = {"busy": False, "day": "", "count": 0, "question": ""}
+_state: Dict[str, object] = {"busy": False, "day": "", "count": 0, "question": "", "answered_at": 0.0,
+                             "answered": ""}
+_stop = threading.Event()
 ALREADY = {"started": True, "say": "Already looking into it; carry on with the person."}
+# 2026-10-25, on the robot: each answer, as it was passed on, started the same research again, seven times in five
+# minutes, and "stop searching" had nothing to stop. Now an answer just told is never looked into again by itself,
+# and the person can stop it.
+AFTER_ANSWER_S = 30.0          # no new research this soon after an answer was passed on: that is the model, not them
+SAME_FOR_S = 600.0             # nor the same question again within ten minutes
+JUST_ANSWERED = {"started": False, "say": ("You have just told them the answer to that. Do not look it up again; "
+                                           "ask if there is something new they'd like you to look into.")}
+STOPPED = {"stopped": True, "say": "Say in a few words that you've stopped looking into it."}
+NOTHING_TO_STOP = {"stopped": False, "say": "Say you weren't looking anything up."}
+
+
+def _words(text: str) -> set:
+    return {w for w in "".join(c.lower() if c.isalnum() else " " for c in text).split() if len(w) > 2}
+
+
+def _same(a: str, b: str) -> bool:
+    """The same question, however it was worded: most of the words of either are in the other."""
+    wa, wb = _words(a), _words(b)
+    return bool(wa and wb) and len(wa & wb) / min(len(wa), len(wb)) >= 0.6
+
+
+def answered(topic: str, clock: Callable[[], float] = time.monotonic) -> None:
+    """An answer has just been passed on to Andy to say (speaker.py)."""
+    with _lock:
+        _state["answered_at"], _state["answered"] = clock(), topic
+
+
+def stop() -> Dict[str, object]:
+    """The person asked Andy to stop: the research stops streaming, and nothing of it is said."""
+    dropped = board.drop_pending("research")
+    with _lock:
+        busy = bool(_state["busy"])
+        if busy:
+            _stop.set()
+    shown = board.showing()
+    if shown and shown.get("kind") == "research":
+        board.clear_screen()
+    if busy or dropped:
+        logger.info("Stopped looking into a question")
+        return STOPPED
+    return NOTHING_TO_STOP
 
 
 def _today() -> str:
     return time.strftime("%Y-%m-%d")
 
 
-def start(question: str, place: str = "", language: str = "en", runner: Optional[Callable] = None) -> Dict[str, object]:
+def start(question: str, place: str = "", language: str = "en", runner: Optional[Callable] = None,
+          clock: Callable[[], float] = time.monotonic) -> Dict[str, object]:
     """Begin looking into it in the background. Returns what Andy should say now."""
     question = " ".join(str(question or "").split())
     if not question:
@@ -42,12 +86,17 @@ def start(question: str, place: str = "", language: str = "en", runner: Optional
             _state["day"], _state["count"] = _today(), 0
         if _state["busy"] and _state["question"] == question:
             return ALREADY                     # the model asked twice in one turn: once is enough
+        since = clock() - float(_state["answered_at"])
+        if _state["answered_at"] and (since < AFTER_ANSWER_S or (since < SAME_FOR_S and _same(question, str(_state["answered"])))):
+            logger.info("Not looking into it again: an answer was just passed on")
+            return JUST_ANSWERED
         if _state["busy"]:
             return {"started": False, "say": "I'm still looking into the last question; I'll tell you when it's ready."}
         if int(_state["count"]) >= PER_DAY:
             return {"started": False, "say": "That's all the looking into I can do today; ask me again tomorrow."}
         _state["busy"] = True
         _state["question"] = question
+        _stop.clear()
         _state["count"] = int(_state["count"]) + 1
     thread = threading.Thread(target=runner or run, args=(question, place, language), name="andy-looking", daemon=True)
     thread.start()
@@ -77,6 +126,8 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
     read = {"sites": 0}
 
     def on_step(kind: str, detail: str) -> None:
+        if _stop.is_set():                  # closes the stream: Tavily stops, and so does the spending
+            raise web.ResearchStopped("Stopped by the person.")
         if kind == "sites":                 # a running count, not a step of its own
             read["sites"] = int(detail) if str(detail).isdigit() else read["sites"]
             show_progress(topic, done, clock() - began, read["sites"])
@@ -91,10 +142,14 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
         show_progress(topic, [("Starting", "")])
         try:
             result = web.stream_research(question, place, language, on_step, opener)
+        except web.ResearchStopped:
+            return None
         except web.ResearchCutOff:
             result = None
         except web.WebError:
             result = _collect(question, place, language, opener, sleep, clock)
+        if _stop.is_set():                  # stopped as the answer came: it is not said
+            return None
         if result and result.get("say"):
             board.research_ready(topic, result["say"], result.get("points", []), result.get("sources", []))
             logger.info("Looked into a question: %d sources", len(result.get("sources", [])))
@@ -113,7 +168,7 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
 def _collect(question, place, language, opener, sleep, clock) -> Optional[Dict]:
     rid = web.start_research(question, place, language, opener)
     began = clock()
-    while clock() - began < GIVE_UP_S:
+    while clock() - began < GIVE_UP_S and not _stop.is_set():
         sleep(POLL_S)
         result = web.research_result(rid, opener)
         if result["status"] == "completed":

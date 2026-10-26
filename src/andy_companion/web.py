@@ -39,6 +39,10 @@ class ResearchCutOff(WebError):
     """The research stream broke after the research had begun: starting it again would pay for it twice."""
 
 
+class ResearchStopped(WebError):
+    """The person asked Andy to stop looking into it: nothing is collected, retried or said."""
+
+
 def configured() -> bool:
     return bool(os.environ.get("TAVILY_API_KEY", ""))
 

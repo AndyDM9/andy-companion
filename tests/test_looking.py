@@ -27,7 +27,8 @@ def data(tmp_path, monkeypatch):
     monkeypatch.setenv("TAVILY_API_KEY", "tvly-test")
     for name in ("SCREEN", "SHARED", "INBOX", "TOKENS"):
         monkeypatch.setattr(board, name, tmp_path / f"{name.lower()}.json")
-    looking._state.update(busy=False, day="", count=0, question="")
+    looking._state.update(busy=False, day="", count=0, question="", answered_at=0.0, answered="")
+    looking._stop.clear()
 
 
 def test_research_is_started_for_an_older_adult_with_a_spoken_answer_shape():

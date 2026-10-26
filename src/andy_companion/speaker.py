@@ -13,7 +13,7 @@ import time
 from datetime import datetime
 from typing import Any, Optional
 
-from andy_companion import board, chimes, dayplan, moments, reminders, settings
+from andy_companion import board, chimes, dayplan, looking, moments, reminders, settings
 
 logger = logging.getLogger("andy.speaker")
 
@@ -57,9 +57,10 @@ def research_frame(entry: dict) -> str:
     if entry.get("failed"):
         return head + f"Tell the person kindly that you could not finish looking into: {plain(entry.get('topic'))}. Offer to try again."
     names = ", ".join(dict.fromkeys(plain(s.get("source")) for s in entry.get("sources", []) if s.get("source")))
-    return head + (f"Tell the person you looked into: {plain(entry.get('topic'))}. Say this in your own warm words, "
-                   f"briefly: {plain(entry.get('say'))} Then say aloud where it came from, by name: \"from {names or 'the web'}\". "
-                   "Say the details are on the screen.")
+    return head + (f"This is the finished answer to what you looked into earlier ({plain(entry.get('topic'))}). It is "
+                   "complete: do not call look_into, look_up or any other search for it. Tell the person in your own warm "
+                   f"words, briefly: {plain(entry.get('say'))} Then say aloud where it came from, by name: "
+                   f"\"from {names or 'the web'}\". Say the details are on the screen.")
 
 
 def _plain(v: Any, limit: int = 600) -> str:
@@ -258,6 +259,7 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
             if entry.get("type") == "research":
                 if not entry.get("failed"):
                     board.show("research", entry.get("topic", "What I found"), research_items(entry))
+                looking.answered(entry.get("topic", ""))
                 await handler.say(research_frame(entry))
             elif entry.get("type") == "suggestion":
                 await handler.say(suggestion_frame(entry, now=now))

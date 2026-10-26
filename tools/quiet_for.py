@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Dict
 
-from andy_companion import state
+from andy_companion import looking, state
 from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 STOP_AFTER_S = 8.0  # time to say the confirmation before resting
@@ -29,6 +29,7 @@ class QuietFor(Tool):
             until = state.quiet_for(kwargs.get("minutes", 0))
         except ValueError as e:
             return {"error": str(e)}
+        await asyncio.to_thread(looking.stop)       # quiet means quiet: no answer arrives while they rest
         if deps.go_to_sleep is not None:
             async def rest() -> None:
                 await asyncio.sleep(STOP_AFTER_S)

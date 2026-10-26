@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (a research that looped and could not be stopped)
+
+- **Seen on the robot: Andy researched the same question seven times in five minutes, and "stop searching" did
+  nothing.** Each finished answer was handed over as "Tell the person you looked into: …", and the model took it as
+  a new request and started the same research again (with a quick search beside it), every 40 to 50 seconds;
+  nothing in the code refused, and no tool could stop a research once started. Now:
+  - the answer is handed over as finished: "It is complete: do not call look_into, look_up or any other search for it";
+  - the code refuses any research within 30 s of an answer being passed on, and the same question (however
+    worded) within 10 minutes, whatever the model does;
+  - "stop looking", "stop searching" or "never mind" (`look_into` with `stop=true`), and asking Andy to be quiet,
+    stop it: the Tavily stream is closed at its next step (so the spending stops), it is never retried another
+    way, the answer waiting to be said is dropped and its card leaves the screen.
+  Five tests replay it (`tests/test_looking_stop.py`); `evals/tools.json` regenerated.
+
 ### Fixed (the TV's design, checked in a browser at every size)
 
 - **A reminder started in lowercase** ("take a pill"). Lists now show each line in sentence case, as a to-do list is

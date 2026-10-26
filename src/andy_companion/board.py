@@ -339,6 +339,15 @@ def research_ready(topic: str, say: str, points: List[str], sources: List[Dict[s
                 "failed": bool(failed), "at": now or time.time()})
 
 
+def drop_pending(kind: str) -> int:
+    """Drop what is waiting to be said of one kind (a research answer the person asked Andy to stop)."""
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        kept = [e for e in items if e.get("type") != kind]
+        _write(INBOX, kept)
+    return len(items) - len(kept)
+
+
 def clear_pending() -> int:
     """Drop what is waiting to be said (messages, photos' notes, suggestions, answers), keeping change notices."""
     with locked(INBOX):
