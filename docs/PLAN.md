@@ -265,7 +265,7 @@ spoken task checks and physical finder trials remain pending. The current versio
 | B70 | Thirty planned real finder attempts, without speech or pictures; brief usability sessions | Recorder/scorer built; physical trials and sessions are the founder's |
 | B71 | Reconcile claims, local-vision limits, API-cost scope, filming date and outstanding evidence | Updated October 26; video and real photos remain October 27 work |
 | B72 | Final-export guard and judge access without shared provider credentials | Guard built; decision 0022; video, frozen release and final testing arrangements still pending |
-| B73 | Approved standout review: separate guided judge inference; physical counterexamples, family consent, local-vision recovery and brief user sessions | Playground built and testing; decision 0023; physical observations and sessions remain pending |
+| B73 | Approved standout review: separate guided judge inference; physical counterexamples, family consent, local-vision recovery and brief user sessions | Guided Space published and verified; decision 0023; physical observations and sessions remain pending |
 
 ## The video
 

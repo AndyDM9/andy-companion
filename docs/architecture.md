@@ -163,6 +163,8 @@ any data, and requires its own new temporary store; it must never replace a live
   token count, tool rounds and provider calls are bounded. The original screen Space stays read-only.
   The guided Space is `andydm/andy-companion-judge`; the screen preview links to it explicitly as a
   separate service, and public metadata exposes the model/profile/tools/prompt hashes, never credentials.
+  Static GET routes ignore cosmetic query strings such as the host iframe's `__theme`; those values
+  are never sent to the model. POST still accepts only the exact challenge endpoint and fixed ID/choice fields.
 - `docs/judging.md`: the short testing path from the README, public demo and submission text.
   CI starts the real public demo in a separate process with throwaway sample data, probes pages,
   assets, tokens and write refusal, then checks cleanup. CI also builds a wheel and checks its

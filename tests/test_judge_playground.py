@@ -220,6 +220,16 @@ def test_http_pages_headers_and_fixed_challenge_work(site, capsys):
     assert capsys.readouterr() == ("", "")
 
 
+@pytest.mark.parametrize("theme", ["system", "dark"])
+def test_huggingface_embedded_theme_url_serves_the_application(site, theme):
+    base, engine = site
+    with urlopen(base + "/?__theme=" + theme, timeout=3) as response:
+        page = response.read()
+        assert response.status == 200 and "text/html" in response.headers["Content-Type"]
+        assert b'src="/judge.js"' in page and b'id="run"' in page
+    assert engine.calls == 0
+
+
 @pytest.mark.parametrize("path,data,headers,status", [
     ("/api/run", b'{"challenge":"choice"}', {"Origin": "https://other.example", "Content-Type": "application/json"}, 403),
     ("/api/run", b'{"challenge":"choice"}', {"Content-Type": "text/plain"}, 415),

@@ -182,3 +182,8 @@ the physical/user-session procedures do not complete the pending video, hardware
 The guided Space is now public and RUNNING. Six live-model web steps, eight browser/state checks and
 five HTTP refusal probes passed; it is linked from the README and submission export with simulated
 effects and usage limits stated. No result is presented as a physical trial or a potential-user session.
+The refreshed screen preview links to the separate playground and still refuses all 11 tested writes.
+All three Spaces are RUNNING; hosted CPU/wheel and SDK checks passed on `bbf0d6d`. These publication
+checks do not tick the pending hardware, footage, user-session or final-access items.
+The host-page check found a query-routing bug in the guided app. Its fixed static route now accepts
+the host's theme query without expanding input or tool access; final embedded-page verification is pending.

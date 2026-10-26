@@ -36,6 +36,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Full validation: CPU 1,081 passed / 12 skipped; installed robot environment 1,093 passed / one skipped;
   Python checks and JavaScript syntax pass. The robot profile and its existing scorecard inputs are unchanged.
   Hosted CPU/wheel and SDK jobs passed on `ccbe0a5` ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40407314697)).
+  They also passed on `bbf0d6d` ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40408835078)).
+  Screen preview refreshed from that commit (Space `a907b1d`): new guided link present, four pages 200,
+  11 writes refused with 403. All three Spaces are RUNNING; a redacted 211-commit history scan is clean.
+  A final logged-out host-page check caught the iframe's `?__theme=system` URL returning 404.
+  Static GET routing is fixed and two theme regressions added; the embedded-page recheck is pending redeploy.
+  After that fix: 40 playground regressions pass; full installed robot environment 1,095 passed / one skipped.
 - **Release snapshot audit:** final export now requires the tracked working files to match the release
   tag, including all three export inputs. An old tag with newer files or untracked final documents is
   rejected; 21 exporter regressions and the full CPU suite (1,043 passed / 12 skipped) pass.

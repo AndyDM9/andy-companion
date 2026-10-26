@@ -7,6 +7,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Judge playground published
 
+- Fixed a host-integration bug caught by the logged-out Hugging Face page check: its iframe appends
+  `?__theme=system`, which strict full-path matching rejected. Static GET routing now ignores the
+  query while keeping the same fixed file map; POST inputs remain unchanged. Two theme regressions added.
+  All 40 playground regressions and the full installed robot environment (1,095 passed / one skipped) pass.
+- Refreshed the read-only screen preview from `bbf0d6d` (Space `a907b1d`): front page links to guided
+  inference, four preview pages return 200 and all 11 write probes return 403. All three Spaces are RUNNING.
+  Hosted CPU/wheel and SDK checks also passed on `bbf0d6d`; a redacted 211-commit history scan found no leaks.
 - Published [the separate guided AI Space](https://huggingface.co/spaces/andydm/andy-companion-judge)
   from `ccbe0a5` (Space `18038ee`), with the provider credential configured only as a server secret.
   The clean 17-file Docker package has no household modules or secret files; pages served 200 and

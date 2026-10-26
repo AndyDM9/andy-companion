@@ -46,11 +46,15 @@ def server(engine, address=("127.0.0.1", 8096), public_origin=""):
             self.wfile.write(data)
 
         def do_GET(self):
-            if self.path == "/api/status":
+            try:
+                path = urlsplit(self.path).path
+            except ValueError:
+                return self._send(400, {"error": "invalid_request"})
+            if path == "/api/status":
                 return self._send(200, engine.metadata())
-            if self.path in assets:
-                path, kind = assets[self.path]
-                return self._send(200, path.read_bytes(), kind)
+            if path in assets:
+                file, kind = assets[path]
+                return self._send(200, file.read_bytes(), kind)
             self._send(404, {"error": "not_found"})
 
         def do_POST(self):
