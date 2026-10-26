@@ -11,13 +11,13 @@ in the same commit that makes it true.
 - [x] Screen cards and research answers use authenticated local memory, with a cross-process test (decision 0019)
 - [x] Pending items are listed and deletable; delete everything clears the current card, captions and views
 - [x] CPU GitHub Actions workflow defined, actions pinned and permissions read-only
-- [ ] Hosted CI run passes after the changes are pushed
+- [x] Hosted CPU CI passed on `c3a3f12` ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40381561500), October 26)
 - [x] A fixed 30-attempt physical finder plan and scorer are available (`evals/physical_trials.py`)
 - [ ] The 30 physical attempts completed and scored, including absent objects and failures
 - [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
-- [ ] Final model evaluation after the last code/profile changes; distinguish its text scope from physical trials
+- [x] Current text profile evaluated locally, three runs of 95/97, input/code hashes recorded; final submission-time Serverless Job remains separate from physical trials
 - [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
 
 ## Stage one: pass/fail

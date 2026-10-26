@@ -108,5 +108,5 @@ weighted criteria, public repository and video requirements remain as recorded a
 October 27, as the founder chose. No video has been claimed as completed and no physical trial is
 marked passed by a software test. The submission text now states the text suite's scope and the
 local vision fallback's boundary. The new confirmation and transient-state designs are decisions
-0018 and 0019. CPU CI is defined; its hosted execution must be checked after pushing. Final evidence
+0018 and 0019. CPU CI passed on the pushed c3a3f12 revision; both published Spaces and the fresh app install were checked again. Physical validation waits for USB reconnection. Final evidence
 links, the tag, app pin, photographs, captions and actual submission remain on the checklist.

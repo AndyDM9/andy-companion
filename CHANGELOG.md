@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Published verification
+
+- Pushed `c3a3f12`; GitHub Actions CPU checks passed. Published the read-only demo from that commit
+  (Space commit `0387c8a`) and the app landing page (`6ad390f`). Both Spaces report RUNNING; the
+  front page and all four demo pages return 200, and public transient writes return 403.
+- The first hosted CI run passed 989 tests with 11 skips: its image lacked Tesseract. Added English
+  and Spanish OCR packages to the workflow so the real letter-reading regression runs there too.
+- Pollen's app checker passed the package checks and a fresh installation, entrypoint registration
+  and uninstallation. The local robot environment passed 999 tests with one skip; the CPU suite
+  passed 990 with ten skips. Physical validation is not included in those numbers.
+- Confirmed the running local service's new transient route, no old screen card and no disk-backed
+  research entries. The voice-log check found no suspect lines. Andy, voice and local eyes are now
+  stopped while USB is disconnected; they can resume after reconnection.
+
 ### Fixed after the project review
 
 - Bound saving and sharing confirmations to one proposed tool and its exact arguments, one spoken

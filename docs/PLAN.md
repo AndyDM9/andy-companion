@@ -252,7 +252,7 @@ take priority over new features. The submission tag and app pin wait for the fin
 | B66 | Bind each confirmation to one exact action and readback, with expiry and one-use permission | Built and regression-tested; decision 0018; robot check pending |
 | B67 | Keep cards and research in server memory; complete pending-item visibility and deletion | Built and tested across processes; decision 0019; service checked; USB reconnection required for live validation |
 | B68 | Fixed medicine-page response and a journal check that cannot pass on a read failure | Built and regression-tested; robot medicine-page check pending |
-| B69 | CPU CI and accurate evaluation scope, real consent gate in the text suite, input/code hashes | Workflow defined; hosted CI pending; new model runs retained separately |
+| B69 | CPU CI and accurate evaluation scope, real consent gate in the text suite, input/code hashes | Hosted CI passed on c3a3f12; current local text suite 95/97 three times; exploratory runs retained separately |
 | B70 | Thirty planned real finder attempts, without speech or pictures; brief usability sessions | Recorder/scorer built; physical trials and sessions are the founder's |
 | B71 | Reconcile claims, local-vision limits, API-cost scope, filming date and outstanding evidence | Updated October 26; video and real photos remain October 27 work |
 
