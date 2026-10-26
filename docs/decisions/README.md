@@ -24,3 +24,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0017](0017-the-voice-log-is-checked-not-trusted.md) | The voice log is checked, not only filtered | 2026-10-25 | accepted |
 | [0018](0018-one-confirmation-for-one-proposed-action.md) | One confirmation authorizes one exact proposed action, once | 2026-10-26 | accepted |
 | [0019](0019-transient-content-stays-in-the-screen-servers-memory.md) | Cards and research stay in the screen server's memory | 2026-10-26 | accepted |
+| [0020](0020-one-settings-reader-for-desktop-and-dashboard.md) | One settings reader for desktop and dashboard | 2026-10-26 | accepted |

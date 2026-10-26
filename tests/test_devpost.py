@@ -3,6 +3,8 @@
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("devpost_for_tests", ROOT / "scripts" / "devpost.py")
 devpost = importlib.util.module_from_spec(spec)
@@ -26,3 +28,12 @@ def test_a_draft_points_its_evidence_at_a_ref_that_exists():
     text = "[x](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/a.json)"
     assert devpost.at_ref(text, "main") == "[x](https://github.com/AndyDM9/andy-companion/blob/main/evals/results/a.json)"
     assert devpost.links(devpost.at_ref(text, "main")) == ["https://github.com/AndyDM9/andy-companion/blob/main/evals/results/a.json"]
+
+
+@pytest.mark.parametrize("status,blocked", [(404, False), (403, True)])
+def test_failed_citations_stay_failed_and_a_404_is_not_excused_as_blocking(monkeypatch, capsys, status, blocked):
+    monkeypatch.setattr(devpost, "opens", lambda url: status if "ftc.gov" in url else 200)
+    assert devpost.main(["--check"]) == 1
+    report = capsys.readouterr().err
+    assert f"{status}  https://www.ftc.gov/" in report
+    assert ("an FTC request was blocked" in report) == blocked

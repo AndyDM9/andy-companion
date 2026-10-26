@@ -37,8 +37,9 @@ def main(argv: list[str]) -> int:
     if argv[0] in ("links", "new-family-link"):
         import os
 
-        from andy_companion import screen_server
+        from andy_companion import app_mode, screen_server
 
+        app_mode.load_env(("ANDY_SCREEN_PORT",))
         if argv[0] == "new-family-link":
             board.new_family_link()
         t = board.tokens()

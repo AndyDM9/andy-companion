@@ -6,6 +6,11 @@ in the same commit that makes it true.
 
 ## October 26 review: before filming on October 27
 
+- [x] Short judge testing instructions link from the README, demo and submission text
+- [x] Anonymous fresh clone installs and passes; Docker demo serves pages/assets and refuses writes
+- [x] The full demo entry point and an isolated installed-wheel check have passed locally and are included in CI
+- [x] Documented settings pass regression checks without hardware; CPU simulation dependencies and keyless renderer check verified
+- [ ] Confirm the FTC report opens from another network before final submission (direct 404 here; content verified through Tavily)
 - [x] Reproduced sharing, transient-storage, medicine-card and journal-check gaps have regression tests
 - [x] Confirmation binds a spoken readback and fresh yes to one exact action, once (decision 0018)
 - [x] Screen cards and research answers use authenticated local memory, with a cross-process test (decision 0019)

@@ -12,14 +12,29 @@ each trial is scored against where the duck really is ([decision 0013](../docs/d
 | `replay.py` | One search filmed step by step, captioned (`docs/images/sim-search.mp4` and `.gif`) |
 | `../cloud/sim-job.sh` | The trials as Nebius Serverless Jobs: software rendering in a CPU container, both ways (zoomed in, and the old way) |
 
-**Run it** with a Token Factory key, no robot (the scene is fetched from PyPI once, checked against its checksum):
+**System libraries, on Linux:** CPU rendering needs `libosmesa6` and `libgl1` in addition to the Python
+packages. On Ubuntu/Debian: `sudo apt-get install libosmesa6 libgl1`. Without OSMesa, PyOpenGL can fail
+with `NoneType ... glGetError` before any trial starts. GPU rendering (`egl`) needs the NVIDIA driver
+and EGL libraries instead. No robot daemon is needed.
 
-    cd sim && uv sync && cd ..
-    NEBIUS_API_KEY=… MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10
-    NEBIUS_API_KEY=… MUJOCO_GL=egl uv run --project sim python sim/replay.py
+**Run it** with a Token Factory key in `NEBIUS_API_KEY` ([hidden-prompt example](../docs/judging.md#inspect-evidence-and-optionally-call-the-models)),
+no robot. Model calls consume your credits. The scene is fetched from PyPI once, checked against its checksum:
+
+    cd sim && uv sync --locked && cd ..
+    MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10
+    MUJOCO_GL=egl uv run --project sim python sim/replay.py
 
 `MUJOCO_GL=osmesa` renders without a GPU. `--zoom off` runs the old way, one shrunk picture per view;
 `--duck-scale 0.35` makes the duck about the size of a pair of glasses.
+
+**Check just the CPU renderer**, without a key, model call or robot, from the repository root:
+
+```bash
+MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa uv run --project sim python -c 'from sim.finder_sim import Scene; s=Scene(); f=s.look(0,0); print(f.shape); s.renderer.close()'
+```
+
+Expect `(1080, 1920, 3)`. This downloads the scene once if needed; it tests scene setup and rendering,
+not the vision model or finding accuracy. Verified in a fresh Python 3.12 CPU container on October 26.
 
 **Measured** (2026-10-20, 30 trials each as Nebius Serverless Jobs, the glasses-sized duck): zoomed in with the closer
 look, pointed 18 of 23 times with **no false find in 7** (error 0.76°); the old way 19 of 23, with 3 false finds in 7

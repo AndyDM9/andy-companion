@@ -13,7 +13,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | Advice | How the entry meets it |
 |---|---|
 | Solve a real problem for a real audience; talk to a few potential users | The problem, sourced (FTC, AARP, a 2026 systematic review of what older adults want). No study with older adults yet, said plainly in Limitations; talking with a few before submitting is on the founder's list |
-| The aha moment fast: two minutes in the project, 30 s in the demo | The video opens on the letter and **Be careful** (0:00–0:16); the README's first screen has the three moments |
+| The aha moment fast: two minutes in the project, 30 s in the demo | The video opens on the letter and **Be careful** (0:00–0:24); the README's first screen has the three moments |
 | One thing done well beats a big stack; every integration supports the main story | Every model and tool is named by the job it does for the person ("every model, and where it runs") |
 | Put the action first, a little onboarding, show which model does what | The TV suggests what to ask ("Try asking"); the hood page names the model at each step, and is in the video's long take |
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
@@ -60,9 +60,9 @@ video, the Devpost form, the repository) is checked against this file first.
 | Open-source licence file, **visible in the repository's About section** | ✅ | `LICENSE` is Apache-2.0; GitHub shows it in About (checked logged out, 2026-10-25); the app's Space carries it too |
 | README with setup instructions and how to run it | ✅ | README "Setup" |
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |
-| Video under three minutes | 🔶 | [video.md](video.md): 2:54 as planned (retimed 2026-10-20); time a rough cut |
+| Video under three minutes | 🔶 | [video.md](video.md): 2:56 as planned (retimed 2026-10-26); time a rough cut |
 | Video shows the project working on its device; Physical AI: **"a 1-minute clip"** of the robot operating | 🔶 | One clip: shot 3, 72 s, one take, never cut; with shots 1, 4, 5 and 6 the robot is live about 2:05 ([video.md](video.md)) |
-| Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-26. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
+| Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-27. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
 | The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
 | Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
 | All materials in English, or with an English translation | 🔶 | Captions throughout; any Spanish gets **English subtitles** (Spanish moved to a social clip on 2026-10-14; `scripts/draft_captions.py` drafts the SRT and marks Spanish lines) |
@@ -112,3 +112,12 @@ local vision fallback's boundary. The new confirmation and transient-state desig
 links, the tag, app pin, photographs, captions and actual submission remain on the checklist.
 The physical trial schedule was corrected to include every object both present and absent;
 its tested coverage is preparation, with no physical success rate claimed.
+
+The judge-access audit re-read the official rules through Tavily on October 26. The README, public
+demo and submission now link to `judging.md`: sample-only browser access without keys, reproducible
+software checks, optional paid API calls using the tester's own key, and the author's free live robot
+demonstration. Fresh-clone, Docker, installed-wheel and CPU renderer checks are recorded separately
+from hardware. The current profile is first in the scorecard index. The direct FTC report citation
+failed here but its exact source and figure were verified via extraction; opening it from another
+network remains a final check. No video, photo, physical result, final tag or completed submission
+has been inferred from these software checks. Setup configuration changes are recorded in decision 0020.

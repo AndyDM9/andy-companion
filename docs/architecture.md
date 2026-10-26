@@ -68,6 +68,11 @@ under the supervisor (`scripts/andy`), or as a Reachy Mini dashboard app (`reach
 supervisor: no wake phrase; the dashboard starts and stops it; it reads the env file itself, and its
 watchdog only logs).
 
+Both app entry points load allowlisted settings with `app_mode.read_env` / `load_env` before
+configuring the voice connection; the desktop shell does not parse keys. The doctor shares that
+parser, existing environment values win, and the supervisor, app, doctor and link command use the
+configured screen port (decision 0020). The link command reads only the port, never API keys.
+
 ## Parts, and what each owns
 
 | Part | Owns | Must not |
@@ -131,6 +136,10 @@ watchdog only logs).
 
 ## Evaluation
 
+- `docs/judging.md`: the short testing path from the README, public demo and submission text.
+  CI starts the real public demo in a separate process with throwaway sample data, probes pages,
+  assets, tokens and write refusal, then checks cleanup. CI also builds a wheel and checks its
+  pages, fonts, audio, profile and tools from an isolated installation with checkout imports disabled.
 - `evals/run_suite.py`: 97 text-based conversation and tool-selection cases, the real profile, tool
   definitions, confirmation gate and urgent-words net, with synthetic tool results, judged by Nemotron
   3 Ultra. It does not run a microphone, camera or motors. Run locally or as a Nebius Serverless Job

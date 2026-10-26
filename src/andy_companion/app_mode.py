@@ -18,30 +18,28 @@ def data_dir(name: str) -> Path:
     return shipped if shipped.is_dir() else PACKAGE.parents[1] / name
 
 
-# What the app needs from the private env file: the same names scripts/run-robot.sh passes on, plus where
-# the voice server is. The dashboard app has no run-robot.sh, so it reads them here.
+# What the app needs from the private env file, for both desktop and dashboard launches.
 APP_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "NEBIUS_API_KEY", "NEBIUS_BASE_URL", "ANDY_VISION",
             "ANDY_VISION_URL", "ANDY_VISION_TOKEN", "ANDY_FINDER_RECORD", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "ANDY_VOICE_URL",
-            "ANDY_VISION_FALLBACK", "ANDY_LOCAL_EYES_URL", "ANDY_LOCAL_EYES_MODEL", "ANDY_WAVE_DEBUG")
+            "ANDY_VISION_FALLBACK", "ANDY_LOCAL_EYES_URL", "ANDY_LOCAL_EYES_MODEL", "ANDY_WAVE_DEBUG",
+            "ANDY_SCREEN_PORT", "ANDY_VISION_MODEL", "ANDY_FINDER_TURN")
 # What the supervisor's own process needs: it hosts the screen server, whose setup page finds the town's
 # events calendar with Tavily (setup_page.suggest_events_page), and which eyes are chosen and which Cosmos runs
 # here (no key), for the hood page's "where it ran". The weather and the health tiles need no key.
-SUPERVISOR_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "ANDY_VISION", "ANDY_LOCAL_EYES_MODEL")
+SUPERVISOR_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "ANDY_VISION", "ANDY_LOCAL_EYES_MODEL", "ANDY_SCREEN_PORT")
 
 
 def env_file() -> Path:
     return Path(os.environ.get("ANDY_ENV_FILE") or Path.home() / ".config" / "companion-hackathon" / ".env")
 
 
-def load_env(names, path=None) -> list:
-    """Copy the named variables from the private env file into this process, never replacing one already
-    set (the shell, or run-robot.sh, wins). Returns the names loaded; values are never logged or returned.
-    A missing or unreadable file loads nothing: Andy runs without the features that need a key."""
+def read_env(names, path=None) -> dict:
+    """Read only allowlisted settings, without executing shell text or changing the environment."""
     path = Path(path) if path is not None else env_file()
     try:
         lines = path.read_text().splitlines()
     except (OSError, UnicodeDecodeError):
-        return []
+        return {}
     found = {}
     for line in lines:
         line = line.strip()
@@ -53,7 +51,14 @@ def load_env(names, path=None) -> list:
         value = value.strip()
         if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
             value = value[1:-1]
-        found[name] = value                  # the last line wins, as in run-robot.sh
+        found[name] = value                  # the last line wins
+    return found
+
+
+def load_env(names, path=None) -> list:
+    """Load named settings without replacing an existing environment variable. Return names only;
+    values are never logged. A missing or unreadable file loads nothing."""
+    found = read_env(names, path)
     loaded = [n for n, v in found.items() if v and n not in os.environ]
     for n in loaded:
         os.environ[n] = found[n]

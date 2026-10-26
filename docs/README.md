@@ -8,6 +8,7 @@ everything else is. Last checked 2026-10-26.
 
 | Document | What it says |
 |---|---|
+| [judging.md](judging.md) | Testing access: the public sample demo, a fresh clone, reproducible checks and how to request the real robot |
 | [features.md](features.md) | What Andy does, in full, feature by feature |
 | [architecture.md](architecture.md) | How the parts fit: the robot, the home computer, Nebius and the web; what each module owns and must not reach into |
 | [decisions/](decisions/README.md) | Why each choice was made, one record per decision, with the options weighed and when to revisit |

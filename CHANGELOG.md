@@ -5,6 +5,29 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Judge access and fresh-install audit
+
+- Added `docs/judging.md`, linked from the README, demo and submission text: public sample pages,
+  fresh-clone commands, expected results, evidence boundaries, optional API calls and real-robot access.
+  The scorecard index now leads with the current profile and labels the previous Serverless Job separately.
+- The demo always links back to its code and testing instructions, and no longer refers to an unfinished
+  video as if it existed. Port zero now prints the actual listening address for isolated automated checks.
+- Added a real-entry-point subprocess regression: pages, APIs, fonts and film load; write routes are refused;
+  visitor names are not kept; wrong tokens fail; temporary sample data is removed without touching a pre-existing
+  household folder. Added installed-wheel resource checks and a separate isolated wheel step in CI.
+- Unified desktop and dashboard settings loading (decision 0020). Fixed quoted keys, shell overrides, custom
+  voice addresses, configured screen ports, vision-model and finder-turn settings; the doctor and settings links
+  use the same parser/port. Regression checks use invented settings and no hardware or external APIs.
+- Documented missing OSMesa system libraries and a keyless renderer check; verified scene download and 1080p CPU
+  rendering in a fresh container. An anonymous clone of the preceding revision installed and passed 991 tests;
+  its Docker demo built and served all pages/assets with writes refused. The current CPU suite passes 1,009 tests
+  with 10 skips; the robot environment passes 1,018 with one skip, and the installed wheel passes all three
+  resource checks. No physical behavior is inferred.
+- All four optional environment locks validate, page JavaScript and embedded JSON parse, and gitleaks found no
+  leaks across 199 commits. Direct submission links: 19 of 20 opened before this guide was added; the FTC report
+  returned 404 here but its exact URL and cited figure were verified through Tavily extraction. Link checks still
+  fail on a non-2xx citation; 404 is no longer excused as network blocking. Final links must be rechecked at submission.
+
 ### Physical trial coverage
 
 - Corrected the 30-attempt schedule: the original cycles made every remote trial an absent-object

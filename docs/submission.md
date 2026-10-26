@@ -50,6 +50,8 @@ Serverless Jobs. The current hardened profile scored [95 of 97 in each of three 
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
 - **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
   with older adults yet. The planned video uses live robot shots, with no cuts in the pauses; filming is October 27.
+- **Testing access:** [short testing instructions](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md):
+  a public sample demo without keys, reproducible software checks, optional model evaluations and a free live robot demonstration on request.
 
 ### Inspiration
 

@@ -17,11 +17,19 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
 | M8 | Proof | 🔨 Built; final run before submitting | 97 spoken situations in 22 areas, Andy's real profile and its 38 tools, judged by Nemotron 3 Ultra: latest **96, 95, 92 of 97 as a Nebius Serverless Job** (2026-10-25; the final run at submission). The scam check five ways, 54 real turns timed on the robot, the finder in simulation. Every run below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
-| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:54 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
+| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
 ## October 26 review work
 
+- **Judge access:** [testing instructions](judging.md) now link from the README, demo and submission text.
+  An anonymous fresh clone installs; the Docker demo builds; real-entry subprocess and isolated wheel checks
+  join CI. The current scorecard is first in the evidence index. No browser was available in this audit;
+  HTTP/assets and JavaScript syntax were checked, with earlier visual checks retained separately.
+- **Setup consistency:** desktop and dashboard share one settings reader (decision 0020). Quoted keys,
+  shell overrides, custom voice addresses, screen ports and documented vision/finder options pass software
+  regressions; robot-side launch validation remains pending while USB is disconnected.
+  Current robot-environment tests: 1,018 passed / 1 skipped, without connecting to hardware.
 - **Consent:** one proposed payload, exact spoken readback, fresh yes, two-minute expiry and one use,
   scoped to the conversation. Tested with the installed dispatcher, without a robot. Robot verification pending.
 - **Privacy:** screen cards and research answers moved from disk to the screen server's memory, tested
@@ -49,6 +57,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-26 | **Judge access audit** | Current CPU suite 1,009 passed / 10 skipped; built wheel: three isolated resource checks pass. Anonymous clone of `1d0a4e8`: install and 991 tests pass; Docker demo pages/assets 200, writes 403. CPU simulation scene downloaded and rendered at 1920×1080 in a fresh container, without a key or robot. Four environment locks validate; page scripts/JSON parse; gitleaks: no leaks in 199 commits. Hosted checks of this audit revision and refreshed publication follow the push |
 | 2026-10-26 | **Physical trial plan coverage** | Each object present and absent in both lighting conditions; all five positions with each object present. Fixed the original schedule's remote/absent correlation. CPU tests 991 passed / 10 skipped; robot environment 1,000 passed / 1 skipped. Physical attempts still pending |
 | 2026-10-26 | **Published verification** | `c3a3f12` pushed; hosted CPU CI passed. Public screen Space updated from that commit: front page and four pages 200, pending-item UI present, transient writes 403; both Spaces RUNNING. App checker: fresh install, entrypoint registration and uninstall passed. Hardware interactions remain unverified while USB is disconnected |
 | 2026-10-26 | **Software and running services** | 990 passed / 10 skipped in the CPU environment; 999 passed / 1 skipped in the robot environment. Public demo: front page and four pages 200, writes 403. Existing Andy service restarted after confirming no other robot app connected. Doctor: 17/21; privacy check clean, cloud conversation and vision reachable, screen and local eyes running. Robot USB disconnected temporarily, explaining the daemon error, app not starting and stale microphone health; optional second-check endpoint stopped. Andy, voice and local-eyes services stopped while disconnected. Live checks resume after USB reconnection |
@@ -104,6 +113,9 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## Open problems
 
+- The direct FTC report URL returns 404 from this computer; Tavily extracted the exact report and confirmed
+  the cited 2025 loss figure. Re-check that source from another network before final submission. No citation
+  failure is treated as a successful link check.
 
 - The robot is named after the person most likely to be spoken to near it in this household (the founder). While quiet, only "Andy, wake up" ends it (fixed 2026-10-13); while awake, Andy still answers anyone in the room, so a call or meeting near the robot should be held with Andy quiet or asleep.
 

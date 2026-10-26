@@ -83,16 +83,6 @@ def test_no_env_file_loads_nothing(tmp_path, monkeypatch):
     assert app_mode.load_env(app_mode.APP_KEYS) == [] and "TAVILY_API_KEY" not in os.environ
 
 
-def test_the_app_reads_every_key_run_robot_passes_on():
-    """The dashboard app has no run-robot.sh, so app_mode must load the same names itself."""
-    import re
-    from pathlib import Path
-
-    script = (Path(__file__).resolve().parents[1] / "scripts" / "run-robot.sh").read_text()
-    passed = set(re.findall(r"s/\^([A-Z_]+)=//p", script))
-    assert passed and passed <= set(app_mode.APP_KEYS)
-
-
 # --- a reminder borrows Andy, then gives it back -----------------------------------------------------
 
 class Clock:

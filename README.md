@@ -12,6 +12,9 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 **[Ask to see the real robot live](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)** ·
 **[Read every scorecard](evals/results/README.md)**
 
+**[Testing instructions for judges](docs/judging.md):** a short route through the public demo,
+an anonymous fresh install, the tests and optional model evaluations, with expected results and limits.
+
 **Filming October 27:** the real-robot video and photographs will be added after filming.
 The images of screens below use sample data; the search animation is simulation.
 
@@ -437,8 +440,10 @@ What doesn't work yet, and what our numbers don't show.
   the addresses it prints. No robot, GPU or keys. `--public` serves the same pages read-only for anyone
   to open; `scripts/space.sh build` puts them together as a Hugging Face Space (`space/`).
 - **Andy's search in simulation,** with only a Token Factory key, no robot: `cd sim && uv sync && cd ..`, then
-  `NEBIUS_API_KEY=… MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10` (it fetches Pollen's
-  scene from PyPI once; `MUJOCO_GL=osmesa` without a GPU). More in [sim/](sim/README.md).
+  `MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10`, with the key in the environment
+  ([hidden prompt](docs/judging.md#inspect-evidence-and-optionally-call-the-models)). It fetches Pollen's
+  scene from PyPI once; CPU rendering needs OSMesa system libraries as well as `MUJOCO_GL=osmesa`.
+  A keyless renderer check and the dependencies are in [sim/](sim/README.md).
 - **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
 - **The scam evaluation,** with only a Token Factory key, against the saved Tavily warnings:
   `uv run python evals/scam_eval.py --warnings evals/results/scam-warnings-2026-10-14-1144.json --runs 1`.

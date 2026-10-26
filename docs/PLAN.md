@@ -45,7 +45,7 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 · 🔶 built; live test |
 | M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; latest as a Nebius Serverless Job 96, 95, 92 of 97 (2026-10-25, [scorecard](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)); the scam check five ways, as Nebius Serverless Jobs (2026-10-14); the final run at submission |
 | M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 · ✅ done 2026-10-25: public, the Space public, the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)) |
-| M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 · 🔶 texts ready; filming 2026-10-24 to 10-26 |
+| M10 | **Video and submission** | Under three minutes, at least one minute of the robot live; Devpost form complete with the tool feedback | 2026-10-27 · 🔶 texts ready; filming 2026-10-27 |
 
 ## Road to October 30 (the deadline is 2026-10-30, 10:00 PT; a complete draft by 2026-10-22, final by 2026-10-27)
 
@@ -246,6 +246,10 @@ No new features: reviews of how judges see the entry, and the fixes they found.
 
 The founder approved the review's recommendations and moved filming to October 27. Fixes and evidence
 take priority over new features. The submission tag and app pin wait for the final tested revision.
+
+The follow-up judge-access audit added the short testing guide, fresh anonymous install and Docker
+checks, subprocess demo and installed-wheel CI checks, CPU rendering prerequisites and consistent
+desktop/dashboard settings (decision 0020). Physical checks and the final submission remain pending.
 
 | # | Item | Status |
 |---|---|---|

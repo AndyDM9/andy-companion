@@ -77,10 +77,10 @@ def main(argv=None) -> int:
     if args.check:
         urls = [u.rstrip(".,;") for u in links(text + feedback) if "[" not in u]
         with ThreadPoolExecutor(8) as pool:
-            codes = dict(zip(urls, pool.map(opens, urls)))
+            codes = dict(zip(urls, pool.map(opens, urls), strict=True))
         bad = {u: c for u, c in codes.items() if not 200 <= c < 300}      # PubMed answers robots 203
-        if any("ftc.gov" in u for u in bad):           # it refuses some networks (a VPN here, 2026-10-25), even its home
-            print("--- ftc.gov refuses some networks outright; check its links from another one before calling them broken",
+        if any("ftc.gov" in u and code in (0, 403, 429) for u, code in bad.items()):
+            print("--- an FTC request was blocked or unavailable; verify the source from another network",
                   file=sys.stderr)
         print(f"--- {len(urls)} links opened: {len(urls) - len(bad)} open" +
               ("" if not bad else "; these don't:\n" + "\n".join(f"  {c}  {u}" for u, c in sorted(bad.items()))),

@@ -38,14 +38,11 @@ def check(name: str, ok: bool, detail: str = "", fix: str = "") -> None:
 
 
 def env() -> dict:
-    out = {}
-    try:
-        for line in ENV_FILE.read_text().splitlines():
-            if "=" in line and not line.lstrip().startswith("#"):
-                k, v = line.split("=", 1)
-                out[k.strip()] = v.strip()
-    except OSError:
-        pass
+    from andy_companion import app_mode
+
+    names = (*app_mode.APP_KEYS, "ANDY_LOCAL_EYES_PORT")
+    out = app_mode.read_env(names, ENV_FILE)
+    out.update({name: os.environ[name] for name in names if name in os.environ})
     return out
 
 
@@ -105,7 +102,7 @@ def main() -> int:
         check("Reachy Mini daemon", False, "not reachable on 127.0.0.1:8000", "start Pollen's Reachy Mini daemon")
     check("Robot environment", (ROOT / "robot/.venv/bin/python").exists(), "", "cd robot && uv sync")
     check("Tesseract (reading letters)", bool(shutil.which("tesseract")), "", "sudo apt install tesseract-ocr")
-    check("Screen and family page", port_open(int(os.environ.get("ANDY_SCREEN_PORT", "8090"))), "",
+    check("Screen and family page", port_open(int(e.get("ANDY_SCREEN_PORT") or "8090")), "",
           "they start with ./scripts/andy")
 
     from andy_companion import state

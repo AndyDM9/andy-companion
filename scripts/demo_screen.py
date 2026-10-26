@@ -66,8 +66,11 @@ def index_page() -> bytes:
 
     links = "".join(f'<li><a href="{href}">{html.escape(name)}</a><span>{html.escape(what)}</span></li>'
                     for href, name, what in PAGES)
-    extra = "".join(f'<p><a href="{html.escape(url)}">{label}</a></p>' for label, url in
-                    (("The video", os.environ.get("ANDY_DEMO_VIDEO", "")), ("The code", os.environ.get("ANDY_DEMO_REPO", "")))
+    repo = "https://github.com/AndyDM9/andy-companion"
+    extra = "".join(f'<p><a href="{html.escape(url, quote=True)}">{label}</a></p>' for label, url in
+                    (("The video", os.environ.get("ANDY_DEMO_VIDEO", "")),
+                     ("The code", os.environ.get("ANDY_DEMO_REPO", repo)),
+                     ("Testing instructions", f"{repo}/blob/main/docs/judging.md"))
                     if url.startswith("https://"))
     privacy = ("Nothing you type on these pages is sent or kept." if PUBLIC else
                "Nothing you type here leaves this computer, and all of it is deleted when the demo stops.")
@@ -76,7 +79,7 @@ def index_page() -> bytes:
         film = ('<figure><video src="/media/sim-search.mp4" autoplay muted loop playsinline controls width="100%"></video>'
                 "<figcaption>No robot here either, so this is Andy's own search for a rubber duck in simulation (Pollen's "
                 "MuJoCo scene): it looks around, reads each view as six zoomed tiles with NVIDIA Nemotron 3.5 Super VL, "
-                "looks closer, and points. The real robot is in the project's video.</figcaption></figure>")
+                "looks closer, and points. See the testing instructions for real-hardware access.</figcaption></figure>")
     return f"""<!doctype html><html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:,"><title>Andy, on sample data</title>
 <style>
@@ -252,8 +255,8 @@ def main() -> int:
         screen_server.add_turn(turn)
     screen_server.set_tavily({"plan": "sample", "used": 214, "limit": 1000,
                               "by": {"search": 160, "extract": 6, "crawl": 4, "map": 2, "research": 42}})
-    screen_server.serve(host="0.0.0.0" if PUBLIC else "127.0.0.1", port=PORT)
-    base = f"http://127.0.0.1:{PORT}"
+    server = screen_server.serve(host="0.0.0.0" if PUBLIC else "127.0.0.1", port=PORT)
+    base = f"http://127.0.0.1:{server.server_port}"
     print(f"Start here:                          {base}/" + (" (public: read-only)" if PUBLIC else ""))
     print(f"Andy's screen (open it full screen): {base}/screen?t=demo-screen")
     print(f"The family page:                     {base}/family?k=demo-family")
