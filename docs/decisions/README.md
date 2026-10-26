@@ -21,3 +21,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0014](0014-cosmos-considered-not-yet.md) | Cosmos Reason 2 considered for the finder, not added before submitting | 2026-10-25 | amended by 0015 |
 | [0015](0015-cosmos-on-this-computer-as-the-offline-eyes.md) | NVIDIA Cosmos Reason 2 2B on this computer, as the offline eyes | 2026-10-25 | accepted; amends 0014 |
 | [0016](0016-the-finder-turns-its-body-to-look.md) | The finder turns its body to look past the head's reach | 2026-10-25 | accepted; amends 0012 |
+| [0017](0017-the-voice-log-is-checked-not-trusted.md) | The voice log is checked, not only filtered | 2026-10-25 | accepted |

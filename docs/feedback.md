@@ -59,6 +59,10 @@ immediate.
   instead of calling the story tool.
 - **Register in Spanish:** it used *tú*, and guessed the listener's gender, with an older adult until
   told to use *usted*.
+- **A tool's own result can restart it:** when a background research answer was handed back as "Tell the person
+  you looked into: <the question>", it started the same research again, seven times in five minutes (2026-10-25,
+  on the robot), and "stop searching" had nothing to stop. Wording the hand-over as finished ("do not call it
+  again") and a guard in code fixed it; a note on tool re-invocation from tool results would help agent builders.
 - **Adversarial pages:** filling a structured card from a scam letter, it put the scam's own demand in
   "to do". The decision had to move into code.
 
@@ -167,7 +171,10 @@ minutes), then 3.5 s per description.
 people in the room Andy can't tell their words apart, so it keeps nothing about a person in company. Speaker turns
 from the same model, on the same GPU, would be the next thing we'd use.
 **Onboarding (zero to hello world):** it worked out of the box in speech-to-speech. The only work was privacy: the server prints
-every transcript to the console whatever `--log_transcripts` says, so we filter those prints.
+every transcript to the console whatever `--log_transcripts` says, so we filter those prints. A later version added
+live transcription ("Live: …", printed as rich Text) that our filter didn't know: heard words reached the journal for ten
+days (2026-10-15 to 25). Now our health check reads the log itself. An option that turns every transcript print off
+would end this for everyone.
 **Would we build with it again?** Yes: 0.02 to 0.08 s per utterance on a home GPU is what makes a spoken robot feel immediate.
 
 ## NVIDIA Magpie TTS Multilingual 357M (evaluated, not adopted)

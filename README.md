@@ -58,7 +58,7 @@ minutes and never saved.
 
 **"Could you look into whether the farmers market is on this Saturday?"** Andy starts Tavily's research
 agent and carries on talking. The TV shows each step as it happens, and Andy tells you the dated answer
-with its sources.
+with its sources. "Stop looking" or "never mind" stops it at once.
 
 ![Andy's screen: what it found, the next reminder, the weather, and its own words (sample data)](docs/images/tv-glass-found.png)
 

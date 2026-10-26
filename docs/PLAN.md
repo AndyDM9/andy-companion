@@ -202,6 +202,18 @@ No new features: reviews of how judges see the entry, and the fixes they found.
 | B57 | **The finder at home, measured** from the founder's tries: pointed 3 of 9, never wrong; recording off, pictures deleted | A real rate instead of "none yet" | ✅ 2026-10-20 |
 | B58 | **The Devpost text and README, short and clear:** about 1,500 words on Devpost's headings, the README's first screen, the gallery planned real robot first with captions, narration timed to its shots | Judges have about five minutes a project | ✅ 2026-10-21 |
 
+### Round 11 (Claude), found on the robot and its screen (2026-10-25 evening, the founder: "continue audit and verify")
+
+| # | Item | Why | Status |
+|---|---|---|---|
+| B59 | **The TV's design at every size:** the found card side by side (numbers on the pictures, one-line labels), the resting cards never cut off, the day's cards clear of the caption, lists in sentence case, caption pages broken where a sentence pauses; checked in a browser on every scene at three sizes | The founder's screenshots: words over numbers, card tops cut off, words under the caption | ✅ 2026-10-25 |
+| B60 | **The weather card:** the town as its title, one line a period, an alert as what and until when, the small card stepping aside | "Weather / Weather" and paragraphs cut at two lines, on the robot's screen | ✅ 2026-10-25 |
+| B61 | **A reminder's words keep only what to do** (English and Spanish, 13 cases) | "take a pill at eight o'clock in the morning" beside its own time | ✅ 2026-10-25 |
+| B62 | **A research never starts itself again, and can be stopped** ("stop looking", "never mind", "be quiet") | Seven researches in five minutes on the robot, and "stop searching" did nothing | ✅ 2026-10-25, to re-check on the robot |
+| B63 | **No heard words in any log, checked:** the "Live:" prints filtered; the doctor reads the voice log; this desktop's copies cleared | Ten days of heard words in the journal (decision 0017) | ✅ 2026-10-25 |
+| B64 | **A misheard name is checked, not refused** ("Depeche Mode, the band?") | Speech recognition mishears names said with an accent | ✅ 2026-10-25 (tried against the model twice) |
+| B65 | **The Devpost draft filled and saved** (story, tags, links, every answer, thumbnail, five captioned images, contribution); not submitted | Packaging takes longer than expected (the judges' advice) | ✅ 2026-10-25; the video and robot photos to add |
+
 ### Cleanup (Claude)
 
 | # | Item | Status |
@@ -221,11 +233,11 @@ No new features: reviews of how judges see the entry, and the fixes they found.
 | With the live test | **About 20 recorded "find my glasses" tries (B34)**, as live test 3t2 says: hide something, ask, repeat (glasses, keys, the remote; a few out of sight on purpose); then Claude scores them, and reads the same tries with both vision models | [live-test.md](live-test.md) 3t2 |
 | Now | **The body language test (B8)** with Claude watching the logs: presence is what the track rewards, by research on the field | [live-test.md](live-test.md) 3u |
 | This week | **One real session** with a relative who agrees to it in writing: about 20 unscripted minutes, one real moment for the video if they're willing, no claims about outcomes | (the founder's) |
-| By 2026-10-23 | **Two or three short sessions with older adults** (a relative, a neighbour), each agreeing in writing: what they asked first, what confused them, what they'd change. Claude writes down only what they agree to, and what changed because of it. The judges' most repeated advice was to talk to real users | (the founder's) |
+| By 2026-10-23 | **Two or three short sessions with older adults** (a relative, a neighbour), each agreeing in writing: what they asked first, what confused them, what they'd change. Claude writes down only what they agree to, and what changed because of it. The judges' most repeated advice was to talk to real users. *Still to do before submitting (2026-10-25)* | (the founder's) |
 | After B26 | **The Hugging Face Space** for the public demo (the same account publishes the Reachy Mini app) | (the founder's) |
 | Now | Photos and four 5-second clips of the real robot (the glance, following, finding glasses, the joke wiggle) | (the founder's) |
 | After the name decision | The name; the repository public (its history rewritten first), licence in About; a Hugging Face account; Claude publishes the app | [submission-checklist.md](submission-checklist.md) |
-| By 2026-10-22 | **A complete draft submitted** on Devpost (the early eligibility check) | [submission.md](submission.md), [feedback.md](feedback.md) |
+| By 2026-10-22 | **A complete draft submitted** on Devpost (the early eligibility check). *Missed; the draft was saved on 2026-10-25 (B65), to submit with the video* | [submission.md](submission.md), [feedback.md](feedback.md) |
 | 2026-10-24 to 10-26 | Filming to the shot list; YouTube Public, "not made for kids", captions | [video.md](video.md) |
 | 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted; posts | [rules-compliance.md](rules-compliance.md) |
 | 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | |

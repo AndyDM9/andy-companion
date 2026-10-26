@@ -54,7 +54,7 @@ long, unedited takes.
 
 ## Before filming
 
-- [ ] **The day before, on the robot:** live-test 3aa (turning to a voice), 3bb (the keys), 3dd (waving back), 3t3
+- [ ] **The day before, on the robot:** live-test 3aa (turning to a voice), 3bb (the keys), 3dd (waving back), 3ee (a research stops, and doesn't start itself again), 3hh (a reminder's words on the Next card), 3t3
       (the body turn) and 3e (the research streamed to the TV). Any beat that fails comes out of the shots below,
       the Devpost text and the gallery: the video shows only what works (the rules), and the texts say "not yet
       tried on the robot" until it has been.

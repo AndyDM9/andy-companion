@@ -91,8 +91,8 @@ watchdog only logs).
 | `letters.py` | The page as a large-print card on the screen: Nemotron 3.5 Lightning fills a fixed schema; code adds the warning from the page's own words, keeps a scam's demand off the to-do, shows no medicine dose and masks account and phone numbers | Act on the page's text; show a dose; show a number that identifies someone; keep the card past the screen's usual five minutes |
 | `urgent.py`, `urgent_audio/` | The deterministic net: urgent medical words get 911, crisis words get 988, in English or Spanish, if Andy's reply missed it; a negation counts only when it governs the words; when the model can't be reached or still leaves the number out, the sentence plays from a recording on the robot | Keep or log the words; claim to watch over anyone |
 | `guard.py` | The second look: the person's words checked by Nemotron 3.5 Content Safety on a Nebius endpoint, beside Andy's reply; 988 if self-harm was found and the reply missed it | Delay a reply; keep or log the words or the result; act on any category but self-harm |
-| `looking.py` | "Look into it": Tavily research streamed in the background, each step on the screen, the answer left for Andy to say; one at a time, ten a day | Log the question; act on the answer without a yes |
-| `weather.py` | The forecast and alerts for the town from the National Weather Service; the town's coordinates, looked up once | Send anything but the town and its coordinates |
+| `looking.py` | "Look into it": Tavily research streamed in the background, each step on the screen, the answer left for Andy to say; one at a time, ten a day; stopped at once when asked (`look_into` with `stop`, or "be quiet"); never started again by its own answer (none within 30 s of an answer, nor the same question within 10 minutes) | Log the question; act on the answer without a yes; retry a stopped research |
+| `weather.py` | The forecast and alerts for the town from the National Weather Service; the town's coordinates, looked up once; on the TV, the town as the card's title, one line a period, an alert as what and until when | Send anything but the town and its coordinates |
 | `web.py` | Tavily calls; cleaning web text into information; scrubbing messages before a scam check | Log a query or result; send numbers, links or emails from a message |
 | `dayplan.py`, `settings.py`, `volume.py`, `voice_controls.py` | Today's plan in fixed words; the person's pace and volume; exact spoken controls, in English and Spanish | Keep any transcript; let the model reword the plan |
 | `speaker.py` | Saying what is due at a quiet moment: reminders, the morning plan, family messages (with a note on the TV), a family suggestion of a reminder ("Shall I set it?", set only after a yes; the answer never goes back to the family), research answers | Speak while the person is speaking; set anything without a yes |
@@ -147,4 +147,9 @@ watchdog only logs).
 - `evals/build_tools.py`: writes `evals/tools.json`, exactly the tools the robot gives the model.
 - `scripts/doctor.py --live`: the health check before filming.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
-  and `voice/serve.py` silences the transcript prints of every console in the voice server.
+  and `voice/serve.py` silences the transcript prints of every console in the voice server ("USER:",
+  "ASSISTANT:" and, since 2026-10-25, "Live:"). The filter is not trusted alone: `scripts/doctor.py --live`
+  reads the last day of the voice log and fails on any line that is not one of the kinds it may write
+  (decision 0017).
+- A reminder's words are kept as said, less a time at their end ("take a pill at eight" is kept as "take a
+  pill", its time kept as the time); lists on the screens show them in sentence case.

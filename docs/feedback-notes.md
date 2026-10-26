@@ -2,7 +2,7 @@
 
 The submission's feedback on Nebius Token Factory, AI Cloud and the NVIDIA tools is mandatory, and
 the ten most valuable win a prize. Each note is something we met while building, with the date,
-what happened, and what would have helped. Written up for the form in [feedback.md](feedback.md), the version to read (final 2026-10-25); these are the dated notes behind it, last added 2026-10-20.
+what happened, and what would have helped. Written up for the form in [feedback.md](feedback.md), the version to read (final 2026-10-25); these are the dated notes behind it, last added 2026-10-25.
 
 | Date | Product | What we met | What would help |
 |---|---|---|---|
@@ -41,3 +41,5 @@ what happened, and what would have helped. Written up for the form in [feedback.
 | 2026-10-25 | NVIDIA Cosmos Reason 2 2B | Gated on Hugging Face (accepted at once). The card gives only a Transformers example and says a 24 GB GPU is the minimum; vLLM 0.32.0 served it on the first try with no special flags, about 14 GB reserved at 0.6 of a 3090, a description in about 0.5 s. Reasoning is asked for in the prompt, so a plain prompt gives a plain answer. In Pollen's MuJoCo scene, Andy's finder pointed 18 of 23 with it (Super VL 21), 0 false finds, 3.06° median error, 2.13 s | A vLLM serving line on the card, latency per GPU, and the memory it really needs for images; the pointing coordinate format stated |
 | 2026-10-20 | Tavily, session headers | `X-Session-Id` accepted on search, extract, crawl, map and research with no other change; one live search to check | — |
 | 2026-10-20 | Nemotron 3.5 Super VL, small objects | It reads an image at the size it is sent (16-pixel patches, no tiles of its own), so a 768-pixel copy of a room loses a pair of glasses: 0 of 9 at the desk, against 9 of 9 for six full-size tiles per frame read at once (1.8 s for 24). A line on the model's page about sending crops at full size for small things would help robotics builders. A strict yes/no on a close-up confirmed 8 of 9 and wrongly confirmed none of 9 hard negatives | — |
+| 2026-10-25 | Nemotron 3.5 Lightning, tool results | A background research's answer, handed back as "Tell the person you looked into: …", started the same research again, seven times in five minutes; "stop searching" had nothing to stop | A note on tool re-invocation from tool results; we word hand-overs as finished and guard in code |
+| 2026-10-25 | speech-to-speech (Hugging Face, upstream) | A newer Parakeet handler prints live transcription ("Live: …") as rich Text; our filter of "USER:"/"ASSISTANT:" missed it, and heard words reached the journal for ten days | One option that turns every transcript print off |

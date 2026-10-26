@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Submission (the Devpost draft, filled and saved; not submitted)
+
+- Filled with Playwright in a browser the founder logged in to (then closed and its profile deleted): the name and
+  pitch, the story (13,280 characters; Devpost's own template headings found above it and removed), 25 tags, three
+  links, every additional-info answer (facts from feedback.md and the compliance file; the founder's opinions as
+  recommended and accepted; the founder ticked the two declarations), a 3:2 thumbnail made from the real **Be
+  careful** card, five gallery images with captions under Devpost's 140 characters (`tv-finder.png` re-captured
+  with the new layout), and the founder's contribution, saying plainly that Claude Code was the coding assistant.
+  Still to add: the video, and the founder's robot photos first in the gallery.
+- Documents brought up to date with the evening's fixes: PLAN (round 11, B59 to B65), the live test (3ee to 3hh),
+  the architecture, the feedback (a tool result restarting its own tool; the speech package's new print), the
+  README, and decision 0017 (the voice log is checked, not only filtered).
+
 ### Fixed (the words as they were heard reached the voice server's log)
 
 - **Found while looking into why Andy misunderstood:** the voice server's journal held the person's words as they
