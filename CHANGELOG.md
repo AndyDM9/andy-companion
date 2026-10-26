@@ -7,6 +7,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Fixed (the TV's design, checked in a browser at every size)
 
+- **A reminder started in lowercase** ("take a pill"). Lists now show each line in sentence case, as a to-do list is
+  written: the TV's Next card and the day's list, and the settings page's list of what Andy keeps. Andy still keeps
+  the person's own words as said, since they are spoken inside sentences ("at eight, take a pill").
+- **The time beside a card lost its end** ("Tomorrow, 8:00 am · da…" in the narrow column): it wraps to a second line.
+- **A caption page began mid-phrase** ("26 at 9:00 AM ET: …"): a sentence too long for one page now breaks where it
+  pauses (after a comma, colon or dash), else between words, never between a word and the number after it.
 - **A reminder's words kept its time**: "take a pill at eight o'clock in the morning" beside "Tomorrow, 8:00 am ·
   daily". The reminder tool now asks for only what to do, and the store takes a time, part of the day or repeat
   off the end of the words (and "remind me to" off the start), in English and Spanish, never when the time belongs

@@ -99,3 +99,16 @@ def test_the_demo_names_the_real_coming_saturdays_and_can_hold_one_scene():
     assert demo.spoken(date(2026, 11, 7)) == "November 7"
     src = (ROOT / "scripts" / "demo_screen.py").read_text()
     assert 'hold = os.environ.get("ANDY_DEMO_SCENE", "")' in src and "October 17" not in src
+
+
+def test_a_reminder_starts_with_a_capital_on_the_screens():
+    """2026-10-25: "take a pill" in lowercase on the TV. Kept as said; lists show it in sentence case."""
+    assert 'text($("next-what"), sentence(first.what));' in PAGE and 'text($("next-what"), sentence(tomorrow.what));' in PAGE
+    assert 'make("span", "w", sentence(p.what))' in PAGE
+    setup = (ROOT / "src" / "andy_companion" / "pages" / "setup.html").read_text()
+    assert "it.text.charAt(0).toUpperCase() + it.text.slice(1)" in setup
+
+
+def test_a_long_caption_sentence_breaks_where_it_pauses():
+    assert "const cut = pauseAt(sentence, PAGE_CHARS);" in PAGE
+    assert "while (cut > max / 2 && /\\d/.test(sentence.charAt(cut + 1)))" in PAGE      # never "October | 26"

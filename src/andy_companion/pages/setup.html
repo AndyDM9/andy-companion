@@ -614,7 +614,8 @@
       group.append(text(make("h3"), `${t("k_" + kind)} (${items.length})`));
       const ul = make("ul", { className: "kept-list" });
       for (const it of items) {
-        const label = kind === "photo" ? t("photo_item") : it.text;
+        // Each line starts with a capital, as a list is written; Andy keeps their own words as said.
+        const label = kind === "photo" ? t("photo_item") : it.text.charAt(0).toUpperCase() + it.text.slice(1);
         const li = make("li"), tx = make("span", { className: "t" });
         tx.append(label, text(make("span", { className: "when" }), it.when || ""));
         const b = make("button", { type: "button", className: "quiet" });

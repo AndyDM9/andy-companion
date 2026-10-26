@@ -30,3 +30,4 @@ def test_a_reminder_set_with_the_time_in_its_words_shows_only_the_task(tmp_path,
     monkeypatch.setattr(reminders, "STORE", tmp_path / "reminders.json")
     item = reminders.add("take a pill at eight o'clock in the morning", at="08:00", repeat="daily")
     assert item["text"] == "take a pill" and reminders.pending()[0]["text"] == "take a pill"
+    # Kept in their words (said inside sentences: "at eight, take a pill"); lists show it in sentence case.

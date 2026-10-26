@@ -226,7 +226,9 @@
   body.has-showing .side .card, body.has-photo .side .card { flex: 0 1 auto; min-height: 0; overflow: hidden; }
   body.has-showing .next .what:not([hidden]), body.has-photo .next .what:not([hidden]) {
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  body.has-showing .next .at, body.has-photo .next .at { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* The time wraps rather than lose its end ("Tomorrow, 8:00 am · da…" in the narrow column, 2026-10-25). */
+  body.has-showing .next .at:not([hidden]), body.has-photo .next .at:not([hidden]) {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   body.has-showing .weather .alert:not([hidden]), body.has-photo .weather .alert:not([hidden]) {
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: clamp(18px, 1.6vw, 28px); }
   body.has-showing .weather .then, body.has-showing .weather .from,
@@ -505,6 +507,8 @@
   const token = new URLSearchParams(location.search).get("t");
   const $ = (id) => document.getElementById(id);
   function text(el, value) { el.textContent = value; return el; }
+  // A reminder starts with a capital, as a list of things to do is written, whoever set it and however it was said.
+  const sentence = (t) => (t ? t.charAt(0).toUpperCase() + t.slice(1) : t);
   function make(tag, cls, value) { const el = document.createElement(tag); if (cls) el.className = cls; return text(el, value || ""); }
   function linkTo(p, url) {
     if (!url) return p;
@@ -652,11 +656,11 @@
     $("empty").hidden = !!(first || tomorrow);
     text($("empty"), shown.empty);
     if (first) {
-      text($("next-what"), first.what);
+      text($("next-what"), sentence(first.what));
       const at = $("next-at"); at.textContent = "";
       at.append(first.time + " · ", make("strong", "", until(first.due, nowS)));
     } else if (tomorrow) {
-      text($("next-what"), tomorrow.what);
+      text($("next-what"), sentence(tomorrow.what));
       const at = $("next-at"); at.textContent = "";
       at.append(make("strong", "", `${shown.tomorrow || "Tomorrow"}, ${tomorrow.time}`),
                 tomorrow.daily ? ` · ${shown.daily || "daily"}` : "");
@@ -665,7 +669,7 @@
     for (const p of s.plan) {
       if (p === first) continue;
       const li = make("li", p.done ? "done" : "");
-      li.append(make("span", "t", p.time), make("span", "w", p.what));
+      li.append(make("span", "t", p.time), make("span", "w", sentence(p.what)));
       later.append(li);
     }
 
@@ -920,17 +924,27 @@
     const lines = document.body.classList.contains("has-showing") ? 2 : 3;
     return Math.max(40, Math.floor(perLine * lines * 0.85));
   }
+  // Where a long sentence breaks between pages: after a comma, colon or dash in the page's second half, else between
+  // words, never between a word and the number after it (2026-10-25: a page began "26 at 9:00 AM ET: …").
+  function pauseAt(sentence, max) {
+    const head = sentence.slice(0, max + 1);
+    const pauses = [...head.matchAll(/[,;:\u2013\u2014]\s/g)].map((m) => m.index + 1).filter((i) => i >= max / 2);
+    if (pauses.length) return pauses[pauses.length - 1];
+    let cut = head.lastIndexOf(" ");
+    while (cut > max / 2 && /\d/.test(sentence.charAt(cut + 1))) cut = sentence.lastIndexOf(" ", cut - 1);
+    return cut > 0 ? cut : max;
+  }
   function captionPages(text) {
     const PAGE_CHARS = pageChars();
     const sentences = (text.match(/[^.!?¡¿]+[.!?]*/g) || []).map((x) => x.trim()).filter(Boolean);
     const pages = [];
     let cur = "";
     for (let sentence of sentences) {
-      while (sentence.length > PAGE_CHARS) {          // a very long sentence is split between words
-        const cut = sentence.lastIndexOf(" ", PAGE_CHARS);
+      while (sentence.length > PAGE_CHARS) {          // a very long sentence is split where it pauses
+        const cut = pauseAt(sentence, PAGE_CHARS);
         if (cur) { pages.push(cur); cur = ""; }
-        pages.push(sentence.slice(0, cut > 0 ? cut : PAGE_CHARS));
-        sentence = sentence.slice(cut > 0 ? cut + 1 : PAGE_CHARS);
+        pages.push(sentence.slice(0, cut).trim());
+        sentence = sentence.slice(cut).trim();
       }
       if (cur && (cur + " " + sentence).length > PAGE_CHARS) { pages.push(cur); cur = sentence; }
       else cur = cur ? cur + " " + sentence : sentence;
