@@ -23,7 +23,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] Separate guided-inference playground implemented with fixed invented inputs, simulated tools, actual consent gate and request/session limits (38 regressions; follow-up wording remains variable and is disclosed)
 - [x] Desktop and phone browser checks of sample sharing Yes/No passed; no horizontal overflow or page errors
 - [x] Physical absent/TV-decoy/moved-object, full family-choice and local-vision recovery procedures prepared; anonymous first-use task measures specified
-- [ ] New judge Space published and verified with live inference; funded secret configured server-side
+- [x] New judge Space RUNNING and verified with live inference; funded secret configured server-side, source hashes match, six web steps and five refusal probes passed
 - [ ] Standout physical challenges and brief user sessions actually completed, with all results retained in scope
 - [x] Reconnected robot reaches the conversation loop after fixing the SDK memory-tool collision
 - [x] Desktop and dashboard configuration paths have fresh-process SDK tests; dedicated SDK CI defined

@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Judge playground published
+
+- Published [the separate guided AI Space](https://huggingface.co/spaces/andydm/andy-companion-judge)
+  from `ccbe0a5` (Space `18038ee`), with the provider credential configured only as a server secret.
+  The clean 17-file Docker package has no household modules or secret files; pages served 200 and
+  inference correctly reported disabled without a key.
+- Public live-Nemotron browser verification passed six steps: bill, sample share preparation/No,
+  preparation/Yes, absent-object search. Eight browser/state checks and five HTTP refusal probes
+  passed; source hashes match. The [record](evals/results/judge-playground-2026-10-26.json) contains
+  only synthetic-case metadata and timings, not a physical benchmark or participant session.
+- Added the judge link and its simulation/usage limits to the README, screen-preview front page,
+  testing guide and submission export. Public inference is outside the household cost estimate.
+  Hardware evidence, the video and final working-project access arrangements remain pending.
+- Hosted CPU/wheel and SDK startup jobs passed on `ccbe0a5`
+  ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40407314697)).
+
 ### Guided judge challenges and physical evidence preparation
 
 - Implemented a separate judge playground approved by the founder: real Nemotron responses to three
@@ -17,7 +33,7 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   bill, absent object and sharing Yes/No; the latter preserved private/shared sample state. The absent
   wording remains variable: one of three final rechecks offered another search; no further action is
   scheduled, and the interface states this known limitation. Desktop and phone browser
-  checks passed with zero page errors and no horizontal overflow. Publication remains pending.
+  checks passed with zero page errors and no horizontal overflow. Publication verification is recorded above.
 - Prepared observed physical counterexamples, a complete family-choice check, local-vision recovery,
   and anonymous task-count procedures. No physical or user-session outcome was marked complete.
 - Full suites passed: CPU 1,081 / 12 skipped, installed robot environment 1,093 / one skipped.

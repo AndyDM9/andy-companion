@@ -28,10 +28,14 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   private/shared sample state correctly. In three final absent rechecks, all reported a miss, but one
   still offered another search despite the one-pass instruction. No extra action runs; the UI and
   limitations state this distinction. Desktop/phone browser checks passed
-  Yes/No, no horizontal overflow and zero page errors. Separate Space created; publication is pending.
+  Yes/No, no horizontal overflow and zero page errors. The separate judge Space is RUNNING, built from
+  `ccbe0a5` (Space `18038ee`). Public verification passed six steps/eight browser-state checks and five
+  HTTP refusal probes; source hashes match. The clean Docker image served pages and correctly disabled
+  inference without a key; its 17 files contain no household modules or secret files.
   Physical challenges and anonymous first-use procedures are ready in live-test.md; observations still pending.
   Full validation: CPU 1,081 passed / 12 skipped; installed robot environment 1,093 passed / one skipped;
   Python checks and JavaScript syntax pass. The robot profile and its existing scorecard inputs are unchanged.
+  Hosted CPU/wheel and SDK jobs passed on `ccbe0a5` ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40407314697)).
 - **Release snapshot audit:** final export now requires the tracked working files to match the release
   tag, including all three export inputs. An old tag with newer files or untracked final documents is
   rejected; 21 exporter regressions and the full CPU suite (1,043 passed / 12 skipped) pass.

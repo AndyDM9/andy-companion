@@ -8,7 +8,8 @@ hand and looks around the room for your glasses. Built with NVIDIA Nemotron on N
 Token Factory, and Tavily, on a Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It says it's a
 robot, and keeps no recordings or transcripts: only what you ask it to keep.
 
-**[Open Andy's screens, no keys](https://huggingface.co/spaces/andydm/andy-companion)** ·
+**[Try guided AI examples, no keys](https://huggingface.co/spaces/andydm/andy-companion-judge)** ·
+**[Open Andy's screens](https://huggingface.co/spaces/andydm/andy-companion)** ·
 **[Ask to see the real robot live](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)** ·
 **[Read every scorecard](evals/results/README.md)**
 
@@ -39,6 +40,8 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 **Judging it without a robot:** the real-robot video is being prepared for October 27. Watch the
 search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
+try [three guided AI examples](https://andydm-andy-companion-judge.hf.space/) with real Nemotron replies
+and simulated camera/search/family effects, funded by the author with no visitor key;
 open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
 failures included ([evals/results/](evals/results/README.md)); or [ask for the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml),
 any time until 2026-12-15.

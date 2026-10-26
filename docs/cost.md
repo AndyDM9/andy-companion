@@ -21,6 +21,11 @@ robot and display, electricity, internet, maintenance, the optional hourly secon
 eyes priced below. If Tavily's free allowance is unavailable or shared with other use, include the paid web
 line. The developer's current pay-as-you-go account is not evidence that a household's web use will be free.
 
+The separate guided judge playground is author-funded and is outside this household estimate. It caps
+provider calls at 120 per UTC day per process, including failures, with at most two calls per web step.
+That operational allowance resets on a restart and is not a provider-account spending limit. Judges
+do not buy credits for the playground or the separately arranged real-robot test.
+
 ## The eyes
 
 Since 2026-10-20 the eyes are NVIDIA Nemotron 3.5 Super VL on Token Factory, paid per picture. A description is

@@ -69,6 +69,7 @@ def index_page() -> bytes:
     repo = "https://github.com/AndyDM9/andy-companion"
     extra = "".join(f'<p><a href="{html.escape(url, quote=True)}">{label}</a></p>' for label, url in
                     (("The video", os.environ.get("ANDY_DEMO_VIDEO", "")),
+                     ("Try guided AI examples (separate Space, simulated tools)", "https://andydm-andy-companion-judge.hf.space/"),
                      ("The code", os.environ.get("ANDY_DEMO_REPO", repo)),
                      ("Testing instructions", f"{repo}/blob/main/docs/judging.md"))
                     if url.startswith("https://"))

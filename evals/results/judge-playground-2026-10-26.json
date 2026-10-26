@@ -1,0 +1,127 @@
+{
+  "ran": "2026-10-26T21:50:47+00:00",
+  "scope": "Public guided playground, real Token Factory model calls and simulated effects; no hardware, household data or target-user session",
+  "source_commit": "ccbe0a5",
+  "space_commit": "18038ee13500d4c29e68d156a121dddd9a6a0e72",
+  "checks": {
+    "bill_tool": true,
+    "before_consent_private": true,
+    "no_keeps_private": true,
+    "yes_shares_sample": true,
+    "absent_tool": true,
+    "mobile_no_horizontal_overflow": true,
+    "page_errors_zero": true,
+    "all_effects_labelled_simulated": true
+  },
+  "steps": [
+    {
+      "challenge": "letter",
+      "reply_source": "model",
+      "tools": [
+        {
+          "name": "read_letter",
+          "simulated": true,
+          "confirmation_needed": false
+        }
+      ],
+      "awaiting_choice": false,
+      "sample_family_shared": false,
+      "seconds": 1.3
+    },
+    {
+      "challenge": "choice",
+      "reply_source": "confirmation code",
+      "tools": [
+        {
+          "name": "share_with_family",
+          "simulated": true,
+          "confirmation_needed": true
+        }
+      ],
+      "awaiting_choice": true,
+      "sample_family_shared": false,
+      "seconds": 0.69
+    },
+    {
+      "challenge": "choice",
+      "reply_source": "code",
+      "tools": [],
+      "awaiting_choice": false,
+      "sample_family_shared": false,
+      "seconds": 0.0
+    },
+    {
+      "challenge": "choice",
+      "reply_source": "confirmation code",
+      "tools": [
+        {
+          "name": "share_with_family",
+          "simulated": true,
+          "confirmation_needed": true
+        }
+      ],
+      "awaiting_choice": true,
+      "sample_family_shared": false,
+      "seconds": 0.67
+    },
+    {
+      "challenge": "choice",
+      "reply_source": "model",
+      "tools": [
+        {
+          "name": "share_with_family",
+          "simulated": true,
+          "confirmation_needed": false
+        }
+      ],
+      "awaiting_choice": false,
+      "sample_family_shared": true,
+      "seconds": 1.52
+    },
+    {
+      "challenge": "absent",
+      "reply_source": "model",
+      "tools": [
+        {
+          "name": "find_object",
+          "simulated": true,
+          "confirmation_needed": false
+        }
+      ],
+      "awaiting_choice": false,
+      "sample_family_shared": false,
+      "seconds": 1.66
+    }
+  ],
+  "profile_sha256": "1bdbf1b66c1d1b7808e89aaac7286696cefb3fe1de9ce0d69e1fb5bf1d3be37f",
+  "tools_sha256": "68bb62c6b094ec12bd31a1e11c566f5c19d63f4460b981430cf7230a1bc0de0a",
+  "prompt_sha256": "ac4f08cd1c7f0813cf9eba67f84b778337e7d422aa0d7a189bf3686c45da48a5",
+  "model": "nvidia/Nemotron-3_5-Lightning",
+  "protocol_checks": [
+    {
+      "path": "/api/run",
+      "expected": 400,
+      "observed": 400
+    },
+    {
+      "path": "/api/run",
+      "expected": 403,
+      "observed": 403
+    },
+    {
+      "path": "/api/run",
+      "expected": 413,
+      "observed": 413
+    },
+    {
+      "path": "/api/family",
+      "expected": 404,
+      "observed": 404
+    },
+    {
+      "path": "/.env",
+      "expected": 404,
+      "observed": 404
+    }
+  ]
+}

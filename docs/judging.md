@@ -1,7 +1,7 @@
 # Testing Andy
 
 Andy is a Reachy Mini companion robot built with NVIDIA Nemotron on Nebius and Tavily.
-Start with the public screens; the commands below let you inspect and test the software without hardware.
+Start with the guided AI examples or public screens; the commands below test the software without hardware.
 Last verified October 26, 2026. The real-robot video and photographs are being prepared for October 27.
 
 ## Testing costs and access
@@ -9,7 +9,7 @@ Last verified October 26, 2026. The real-robot video and photographs are being p
 Judges do not need to buy API credits for the author's live robot test: the author supplies the
 robot, computer and inference/web access during the session. Provider keys stay with the author.
 The optional reproduction commands below use the tester's own accounts; they are not the required
-judge-access path. The public Space previews the interfaces and is not an interactive AI or hardware test.
+judge-access path. The original screen Space previews the interfaces and is not an interactive AI or hardware test.
 
 The [official rules](https://nebiusglobalaihackathon.devpost.com/rules), checked October 26, exempt
 Physical AI from the hosted-demo-URL requirement, require free working-project testing access through
@@ -22,11 +22,31 @@ hands-on robot testing on request (decision 0022). The author prepares a test ho
 notes, reminders and documents, and consented photos; personal household data is not part of judge access.
 Only one program drives the robot, and the author remains present for hardware tests.
 
-An additional browser AI sandbox is optional and has not been deployed. If added after the core demo
-is complete, it should keep its provider key on the server, use separate temporary test data, allow
-only the demonstrated operations, and control request size and spending. It must clearly say which
-operations are simulated and must not expose the household or remote motor control. Funding and
-access must support judges completing their tests; a trial quota that cuts them off is not our access plan.
+The separate [guided AI playground](https://andydm-andy-companion-judge.hf.space/) is now available,
+funded by the author (decision 0023). It uses real Nemotron inference with fixed invented inputs and
+simulated effects. It supplements the real-robot testing arrangement; its public operational allowance
+is not represented as unrestricted access to the complete working project.
+
+## Try the guided AI examples
+
+No login, API key or payment is needed. Choose an invented bill, a sample family note or an absent-object
+search. Press **Try this example**. For the family note, nothing is shared until the exact proposal is
+shown and you choose Yes; choose No to verify the sample family state stays unchanged. Restart the
+example to try the other choice. Only that session's invented note can be shared.
+
+Nemotron chooses the available tool and generates replies; the actual confirmation gate supplies the
+visible readback. Camera/OCR results, room searches and family effects are simulated. No SDK or
+household settings/store is loaded. The example cannot prove physical accuracy or end-to-end voice use.
+The profile is the robot's public profile with an explicit software-demo boundary and one allowlisted
+tool per challenge; this is a different setup from the 97-case conversation evaluation.
+
+Sessions expire in memory after five idle minutes, and neither request nor reply text is written by
+this application. Provider calls, concurrent examples and output tokens are bounded. A busy/exhausted
+public allowance can be handled through the separate free real-robot access path above. The model can
+still offer a follow-up after an example ends; no additional work is scheduled. The interface makes
+that limitation visible. [Public verification](../evals/results/judge-playground-2026-10-26.json) covers
+six web steps, consent state, isolation-labelled effects, phone layout and protocol refusal checks;
+it is not a physical benchmark or a target-user session.
 
 ## Open the public demo
 

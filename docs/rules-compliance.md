@@ -179,3 +179,6 @@ family effects, so it cannot be mistaken for hardware evidence. The original pre
 The author supplies inference through a server secret; public operational limits make this supplemental
 software access, not the sole free working-project access required through judging. Decision 0023 and
 the physical/user-session procedures do not complete the pending video, hardware or access checks.
+The guided Space is now public and RUNNING. Six live-model web steps, eight browser/state checks and
+five HTTP refusal probes passed; it is linked from the README and submission export with simulated
+effects and usage limits stated. No result is presented as a physical trial or a potential-user session.

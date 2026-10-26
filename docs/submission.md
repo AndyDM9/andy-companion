@@ -14,10 +14,13 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Track:** Physical AI. **Bonus prize:** Best Use of Tavily.
 - **Video:** *[the YouTube link: public, "not made for kids"]*
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
-- **Try it:** https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
+- **Try it:** https://huggingface.co/spaces/andydm/andy-companion-judge (guided real AI with invented inputs and simulated tools),
+  https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
   https://huggingface.co/spaces/andydm/andy-companion-app (the Reachy Mini app)
 - **Testing instructions:** The public Space demonstrates the screens on sample data; it has no connected
-  robot or live model calls. For a free test of the real robot, request a session through
+  robot or live model calls. A separate guided playground at https://andydm-andy-companion-judge.hf.space/
+  provides author-funded real Nemotron replies to fixed invented examples, with simulated camera/search/family
+  effects and no visitor key. It supplements hardware access; public usage limits apply. For a free test of the real robot, request a session through
   https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml or contact the entrant through
   the organisers. The author supplies the robot, computer and API access during that session; judges do not
   need to purchase credits or receive provider keys. Hardware access can be arranged if requested by the
