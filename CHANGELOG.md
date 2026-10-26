@@ -7,6 +7,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Fixed (the TV's design, checked in a browser at every size)
 
+- **The weather card, while Andy spoke** (seen on the robot's screen): it read "Weather / Weather", its long NWS
+  paragraphs were cut at two lines, the small weather card beside it said it again, and that small card ran under
+  the caption. Now the card is titled with the town, each period is one line read from across the room ("Tonight ·
+  78°  Showers And Thunderstorms, 80% rain"; Andy says the long forecast), an alert comes first with the small
+  card's calm bar (never the scam-warning look) and only what and until when ("Rip Current Statement until
+  October 28 at 2:00AM EDT"; Andy is given the whole headline); the small weather card steps aside, and the day's
+  cards beside any card keep clear of the caption, the weather card stepping aside whole when it no longer fits.
 - **The found card's views ran into one another.** With the glasses seen in all four views, "Seen here too" under
   each narrow view wrapped into a thin column over the next view's number, and making room for the caption squeezed
   "where" into a column too ("on the / desk by / the"), which made the strip taller and squeezed it again. Now the

@@ -361,7 +361,7 @@ def _refresh_weather() -> None:
         found = weather.forecast(spot["lat"], spot["lon"], periods=2)
         _weather["card"] = {"periods": [{"name": p["name"], "temperature": p.get("temperature", ""), "short": p.get("short", ""),
                                          "rain": p.get("rain")} for p in found["periods"]],
-                            "alerts": found["alerts"][:1], "source": "weather.gov"}
+                            "alerts": [weather.short_alert(a) for a in found["alerts"][:1]], "source": "weather.gov"}
     except Exception:
         pass   # keep the last card; a stale forecast is replaced on the next try
     finally:

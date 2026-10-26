@@ -8,6 +8,7 @@ come from api.weather.gov. No key; only the town and its coordinates leave this 
 from __future__ import annotations
 
 import json
+import re
 import urllib.parse
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
@@ -58,6 +59,13 @@ def where(opener: Optional[Callable] = None) -> Dict[str, Any]:
     found = locate(place or "", opener)
     settings.update(coords=found)
     return found
+
+
+def short_alert(headline: str) -> str:
+    """For a screen: 'Rip Current Statement issued October 25 at 7:43AM EDT until October 28 at 2:00AM EDT by NWS
+    Miami FL' -> 'Rip Current Statement until October 28 at 2:00AM EDT'. Andy is given the whole headline."""
+    out = re.sub(r"\s+issued\s+.*?(?=\s+until\s+|\s+by\s+|$)", "", headline, count=1)
+    return re.sub(r"\s+by\s+NWS\b.*$", "", out).strip() or headline
 
 
 def forecast(lat: float, lon: float, periods: int = 3, opener: Optional[Callable] = None) -> Dict[str, Any]:

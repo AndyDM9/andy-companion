@@ -111,3 +111,43 @@ def test_the_weather_tile_refreshes_in_the_background_and_only_with_a_town(monke
             break
         time.sleep(0.01)
     assert screen_server.weather_card()["periods"][0]["temperature"] == "81°"
+
+
+def test_the_tv_card_is_titled_with_the_town_and_carries_the_temperatures(tmp_path, monkeypatch):
+    """2026-10-25: the card read "Weather / Weather", and the forecast beside it had no temperature."""
+    import asyncio
+    import importlib.util
+    import sys
+    import types
+    from pathlib import Path
+
+    from andy_companion import board, weather as w
+
+    core = types.ModuleType("reachy_mini_conversation_app.tools.core_tools")
+    core.Tool, core.ToolDependencies = type("Tool", (), {}), object
+    for name in ("reachy_mini_conversation_app", "reachy_mini_conversation_app.tools"):
+        monkeypatch.setitem(sys.modules, name, types.ModuleType(name))
+    monkeypatch.setitem(sys.modules, core.__name__, core)
+    spec = importlib.util.spec_from_file_location("andy_tool_weather", Path(__file__).resolve().parents[1] / "tools" / "weather.py")
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+    monkeypatch.setattr(board, "SCREEN", tmp_path / "screen.json")
+    monkeypatch.setattr(w, "where", lambda: {"place": "Miami, Florida", "lat": 25.77, "lon": -80.19})
+    monkeypatch.setattr(w, "forecast", lambda lat, lon: {
+        "periods": [{"name": "Tonight", "forecast": "Showers.", "short": "Showers", "temperature": "78°", "rain": 60},
+                    {"name": "Monday", "forecast": "Storms likely.", "short": "Storms", "temperature": "", "rain": None}],
+        "alerts": ["Rip Current Statement"], "source": "the National Weather Service"})
+    asyncio.run(tool.Weather()(None))
+    card = board.showing()
+    assert card["kind"] == "weather" and card["title"] == "Miami, Florida"
+    assert card["items"][0] == {"summary": "Rip Current Statement", "tone": "notice", "source": "weather.gov"}
+    assert [(i["title"], i["summary"]) for i in card["items"][1:]] == [("Tonight · 78°", "Showers, 60% rain"),
+                                                                       ("Monday", "Storms")]
+
+
+def test_an_alert_on_the_screen_keeps_what_and_until_when():
+    from andy_companion.weather import short_alert
+    assert short_alert("Rip Current Statement issued October 25 at 7:43AM EDT until October 28 at 2:00AM EDT by NWS Miami FL") \
+        == "Rip Current Statement until October 28 at 2:00AM EDT"
+    assert short_alert("Flood Watch issued October 25 at 3:10PM EDT by NWS Miami FL") == "Flood Watch"
+    assert short_alert("Heat Advisory") == "Heat Advisory"
