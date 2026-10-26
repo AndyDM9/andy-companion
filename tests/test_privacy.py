@@ -150,3 +150,20 @@ def test_files_andy_creates_are_the_owners_alone(tmp_path, monkeypatch):
         assert stat.S_IMODE(os.stat(memory).st_mode) == 0o600
     finally:
         os.umask(before)
+
+
+def test_the_doctor_finds_words_in_the_voice_log():
+    """2026-10-25: 'Live:' prints reached the journal for ten days, a long one over several lines."""
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location("doctor_for_privacy", Path(__file__).resolve().parents[1] / "scripts" / "doctor.py")
+    doctor = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(doctor)
+    clean = "\n".join([
+        "2026-10-25 20:55:54,573 - [pipeline 0] speech_to_speech.baseHandler - INFO - ParakeetTDTSTTHandler: 0.035 s",
+        "INFO:     connection open", "Language: en", "Shutting down gracefully...", "✓ Pipeline stopped successfully",
+        "/x/torch/nn/modules/rnn.py:1169: UserWarning: RNN module weights are not part of single contiguous chunk",
+        "  result = _VF.lstm(", ""])
+    assert doctor.lines_with_words(clean) == 0
+    heard = clean + "\nLive: what is the band called\nthat played here last night, the one with the long"
+    assert doctor.lines_with_words(heard) == 2           # the "Live:" line and the line it ran onto

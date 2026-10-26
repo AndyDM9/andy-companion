@@ -219,10 +219,35 @@ def live(e: dict) -> None:
           "close or pause heavy programs before filming (on 2026-10-13 a busy computer made the microphone drop audio)")
     check("Screen's place set (the glance)", settings.get().get("tv_yaw") is not None, "",
           "settings page → Where the screen is → Save and show me")
+    worded = lines_with_words(voice_log())
+    check("No words in the voice log", not worded, f"{worded} lines in the last day that may hold what was heard",
+          "a new print in the speech package: add its start to privacy.TRANSCRIPT_PRINTS, restart andy-voice, "
+          "and clear the journal (2026-10-25: 'Live:' lines reached it for ten days)")
     recording = finder_recording(e)
     check("Finder tries not kept", not recording, f"each search's and look's pictures go to {recording}" if recording else "",
           "the room and anyone filmed would be kept: remove the ANDY_FINDER_RECORD line from the env file, "
           "then systemctl --user restart andy")
+
+
+# What the voice server may write: its loggers' lines and a few fixed notices at start and stop. Any other line
+# could be words it heard, as its "Live:" prints were from 2026-10-15 to 10-25 (a long one over several lines).
+VOICE_LOG_OK = re.compile(
+    r"^(?:\d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d+ - |INFO: |Language: [a-z]{2}$|\[nltk_data\]|Using cache found in |"
+    r"Started |Stopping |Stopped |andy-voice\.service: |✓ Pipeline stopped|Shutting down gracefully|"
+    r"DeepFilterNet not available|/\S+\.py:\d+: \w*Warning: |\s+result = |\s*$)")
+
+
+def voice_log(since: str = "-24h") -> str:
+    try:
+        return subprocess.run(["journalctl", "--user", "-u", "andy-voice", "--since", since, "--no-pager", "-o", "cat"],
+                              capture_output=True, text=True, timeout=30).stdout
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def lines_with_words(log: str) -> int:
+    """How many lines of the voice server's log are not one of the kinds it may write (never what they say)."""
+    return sum(1 for line in log.splitlines() if not VOICE_LOG_OK.match(line))
 
 
 def other_robot_apps(listing: str | None = None, who=None) -> list:

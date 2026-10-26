@@ -13,7 +13,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   prints (none in the journal), but a newer version of the package added live transcription printed as rich Text
   with "Live:" before it, which the filter didn't know. It is dropped now, checked on the real upstream handler
   (its own print function, through the filter: nothing out but ordinary lines) and in the privacy tests. What is
-  already in this computer's journal stays until the journal is cleared; the founder decides.
+  already in this computer's journal stays until the journal is cleared; the founder decides. A sweep of every
+  service's log found the same words in `/var/log/syslog` (copied there by rsyslog), and lines without "Live:"
+  (a long print ran over several lines). The doctor now checks it: **No words in the voice log** fails on any line
+  in the last day that is not one of the kinds the voice server may write (842 before the fix, 0 since).
 - **Andy didn't understand names said with an accent:** speech recognition heard "Depeche Mode" as "depish mode"
   (and labelled English as Russian, which changes nothing downstream: the language hint is off and the voice is
   fixed). The profile now says what it hears may mishear a word, most often a name, and to take the likeliest
