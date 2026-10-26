@@ -4,6 +4,30 @@ Andy is a Reachy Mini companion robot built with NVIDIA Nemotron on Nebius and T
 Start with the public screens; the commands below let you inspect and test the software without hardware.
 Last verified October 26, 2026. The real-robot video and photographs are being prepared for October 27.
 
+## Testing costs and access
+
+Judges do not need to buy API credits for the author's live robot test: the author supplies the
+robot, computer and inference/web access during the session. Provider keys stay with the author.
+The optional reproduction commands below use the tester's own accounts; they are not the required
+judge-access path. The public Space previews the interfaces and is not an interactive AI or hardware test.
+
+The [official rules](https://nebiusglobalaihackathon.devpost.com/rules), checked October 26, exempt
+Physical AI from the hosted-demo-URL requirement, require free working-project testing access through
+December 15 and allow organisers to request hardware access. The final testing instructions and any
+hardware arrangement must be confirmed before submission; we do not treat the sample screens alone
+as proof of unrestricted access to the working robot.
+
+Our current approach is the public preview, the real-robot video, reproducible source, and author-funded
+hands-on robot testing on request (decision 0022). The author prepares a test household with invented
+notes, reminders and documents, and consented photos; personal household data is not part of judge access.
+Only one program drives the robot, and the author remains present for hardware tests.
+
+An additional browser AI sandbox is optional and has not been deployed. If added after the core demo
+is complete, it should keep its provider key on the server, use separate temporary test data, allow
+only the demonstrated operations, and control request size and spending. It must clearly say which
+operations are simulated and must not expose the household or remote motor control. Funding and
+access must support judges completing their tests; a trial quota that cuts them off is not our access plan.
+
 ## Open the public demo
 
 [Open Andy's screens](https://andydm-andy-companion.hf.space/) in a browser. No login, installation,
@@ -88,6 +112,7 @@ to run all 97 cases. No microphone, camera or motors are exercised. This sample 
 
 [Request a free live demonstration](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)
 with your time zone and the tasks you want to see. Do not put private contact details in the public issue.
+The organisers may also contact the entrant through the submission without using a public GitHub issue.
 The author provides the robot, its computer and the API access for that demonstration through judging
 (December 15, 2026). Physical hardware access can be arranged if requested by the organisers.
 
@@ -104,3 +129,8 @@ and short sessions with potential users remain pending. The submission tag and a
 will be set after the final validation. Until then, `main` changes; use `git rev-parse HEAD` to record
 which revision you tested. The [submission checklist](submission-checklist.md) and
 [limitations](../README.md#limitations) state the current gaps.
+
+Before final export, run `uv run python scripts/devpost.py --ref hackathon-submission --final`.
+It rejects a placeholder video, missing local tag or unpinned app, then checks public links. It does
+not verify YouTube visibility, duration, footage, photo rights, hardware results or actual submission;
+those remain manual checks in the checklist.

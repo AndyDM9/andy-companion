@@ -16,6 +16,13 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
 - **Try it:** https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
   https://huggingface.co/spaces/andydm/andy-companion-app (the Reachy Mini app)
+- **Testing instructions:** The public Space demonstrates the screens on sample data; it has no connected
+  robot or live model calls. For a free test of the real robot, request a session through
+  https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml or contact the entrant through
+  the organisers. The author supplies the robot, computer and API access during that session; judges do not
+  need to purchase credits or receive provider keys. Hardware access can be arranged if requested by the
+  organisers. Reproduction with your own equipment and keys is optional. Instructions and limits:
+  https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md
 - **Built with:** nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs,
   nvidia-nemotron, nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety,
   nvidia-parakeet, nemotron-nano-vl, nvidia-cosmos, cosmos-reason-2, vllm, tavily, reachy-mini, pollen-robotics, mujoco, qwen3-tts, hugging-face,

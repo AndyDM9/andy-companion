@@ -41,7 +41,7 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 | M3 | **Body behaviours** | Andy keeps looking at the person while it speaks and while they move (gaze, body follow, seek, person finder), gentle idle moments, no confirmation moves, upward looks softened; chimes, quiet mode, wake word; each rewritten here from the earlier assistant's general-purpose modules, with tests | 2026-10-18 · ✅ done 2026-10-13 |
 | M4 | **The day, the same way every time** | A day plan said on request and each morning; pace and volume settings that stick | 2026-10-19 · ✅ done 2026-10-13 |
 | M5 | **Tavily** | Local news with sources named aloud; read a link a relative sends; what's on this week; look up a suspicious message; Tavily is the only web provider ([0002](decisions/0002-one-search-provider-tavily.md)) | 2026-10-20 · 🔶 built; live test (Tavily pay-as-you-go since 2026-10-14) |
-| M6 | **Eyes** | A Nemotron vision model on a Nebius Serverless Endpoint describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 · 🔶 built, finding things tested on the live model; live test on the robot |
+| M6 | **Eyes** | A Nemotron vision model on Nebius (Token Factory by default, an endpoint as an option; decision 0011) describes the camera picture; **"Andy, read this letter for me"**: text read on the computer (Tesseract), then explained simply by Nemotron, with a Tavily lookup when a letter or message may be a scam | 2026-10-21 · 🔶 built, finding things tested on the live model; live test on the robot |
 | M7 | **Andy's screen and the family page** | A screen beside Andy (TV or monitor) shows what Andy is talking about: the day, reminders, news with its source, a picture; and a phone page for family showing only what the person chose to share, with Andy saying who looked | 2026-10-22 · 🔶 built; live test |
 | M8 | **Proof** | A conversation test suite run as a Nebius Serverless Job, judged by Nemotron Ultra; scorecard in the README | 2026-10-23 · 🔶 built; latest as a Nebius Serverless Job 96, 95, 92 of 97 (2026-10-25, [scorecard](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)); the scam check five ways, as Nebius Serverless Jobs (2026-10-14); the final run at submission |
 | M9 | **Ship** | README with setup, architecture diagram, published Reachy Mini app, repository public | 2026-10-24 · ✅ done 2026-10-25: public, the Space public, the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)) |
@@ -259,11 +259,12 @@ spoken task checks and physical finder trials remain pending. The current versio
 | # | Item | Status |
 |---|---|---|
 | B66 | Bind each confirmation to one exact action and readback, with expiry and one-use permission | Built and regression-tested; decision 0018; robot check pending |
-| B67 | Keep cards and research in server memory; complete pending-item visibility and deletion | Built and tested across processes; decision 0019; service checked; USB reconnection required for live validation |
+| B67 | Keep cards and research in server memory; complete pending-item visibility and deletion | Built and tested across processes; decision 0019; USB reconnected and startup fixed; live task flows still pending |
 | B68 | Fixed medicine-page response and a journal check that cannot pass on a read failure | Built and regression-tested; robot medicine-page check pending |
-| B69 | CPU CI and accurate evaluation scope, real consent gate in the text suite, input/code hashes | Hosted CI passed on c3a3f12; current local text suite 95/97 three times; exploratory runs retained separately |
+| B69 | CPU CI and accurate evaluation scope, real consent gate in the text suite, input/code hashes | CPU and SDK startup CI passed; current local text suite 94, 94, 95 of 97 (version e); exploratory runs retained separately |
 | B70 | Thirty planned real finder attempts, without speech or pictures; brief usability sessions | Recorder/scorer built; physical trials and sessions are the founder's |
 | B71 | Reconcile claims, local-vision limits, API-cost scope, filming date and outstanding evidence | Updated October 26; video and real photos remain October 27 work |
+| B72 | Final-export guard and judge access without shared provider credentials | Guard built; decision 0022; video, frozen release and final testing arrangements still pending |
 
 ## The video
 

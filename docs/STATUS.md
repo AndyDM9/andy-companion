@@ -22,6 +22,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Submission readiness: not yet.** The final exporter now blocks the placeholder YouTube field,
+  missing `hackathon-submission` tag and app dependency still on main. Manual video, hardware-task,
+  rights, access and actual form checks remain separate. Full physical trials and user sessions are
+  evidence-strengthening work, not explicit counts required by the official rules.
+  Export tests: 17 passed; CPU suite: 1,024 passed / 12 skipped. The real draft's three release blockers
+  are confirmed by `--final`, without starting a service, buying compute or submitting a form.
+- **Judge access:** decision 0022 distinguishes the free sample preview, optional own-key reproduction
+  and author-funded real-robot testing. Judges do not need to purchase credits for the latter. Final
+  access instructions and any organiser-requested hardware arrangement remain in progress. No raw
+  provider key or new public model service has been exposed. Both Spaces and all preview pages rechecked.
 - **USB reconnected:** daemon running after restart; Andy now gets past configuration and reached its
   conversation loop after the `remember_fact` collision fix (decision 0021). Fresh health showed zero drops.
   It later went to sleep cleanly. The founder has the refreshed private screen link (verified 200).

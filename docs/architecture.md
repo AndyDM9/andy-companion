@@ -143,6 +143,11 @@ any data, and requires its own new temporary store; it must never replace a live
 
 ## Evaluation
 
+- `scripts/devpost.py --ref hackathon-submission --final`: rejects a placeholder/non-video YouTube
+  address, absent local release tag, app dependency still on main, or oversized form fields, then
+  checks public links. It reads repository metadata only; it does not submit anything or certify video
+  rights, visibility, duration or hardware behavior. Judge access separates sample preview, optional
+  own-key reproduction and author-funded robot testing (decision 0022); no public model proxy is deployed.
 - `docs/judging.md`: the short testing path from the README, public demo and submission text.
   CI starts the real public demo in a separate process with throwaway sample data, probes pages,
   assets, tokens and write refusal, then checks cleanup. CI also builds a wheel and checks its

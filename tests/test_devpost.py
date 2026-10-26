@@ -2,6 +2,8 @@
 
 import importlib.util
 from pathlib import Path
+import re
+import subprocess
 
 import pytest
 
@@ -17,6 +19,9 @@ def test_the_form_fields_come_from_the_submission_text():
     assert 0 < len(f["Tagline"]) <= 200 and not f["Tagline"].startswith("(")
     tags = [t for t in f["Built with"].split(",") if t.strip()]
     assert 0 < len(tags) <= 25
+    testing = f["Testing instructions"]
+    assert "no connected" in testing and "do not" in testing and "purchase credits" in testing
+    assert "robot" in testing and "organisers" in testing
     story = f["About the project"]
     assert story.startswith("## For the judges") and "\n### " not in story          # Devpost's own heading level
     for heading in ("Inspiration", "What it does", "How we built it", "Challenges we ran into",
@@ -37,3 +42,75 @@ def test_failed_citations_stay_failed_and_a_404_is_not_excused_as_blocking(monke
     report = capsys.readouterr().err
     assert f"{status}  https://www.ftc.gov/" in report
     assert ("an FTC request was blocked" in report) == blocked
+
+
+@pytest.fixture
+def release_tree(tmp_path):
+    root = tmp_path / "release"
+    root.mkdir()
+    subprocess.run(["git", "init", "-q", str(root)], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                    "commit", "--allow-empty", "-qm", "test release"], check=True, capture_output=True)
+    (root / "reachy_app").mkdir()
+    (root / "reachy_app/pyproject.toml").write_text(
+        '[project]\ndependencies = ["andy-companion[robot] @ git+https://github.com/AndyDM9/andy-companion@main"]\n')
+    return root
+
+
+def test_final_export_blocks_a_draft_before_printing_or_network(release_tree, monkeypatch, capsys):
+    (release_tree / "docs").mkdir()
+    source = (ROOT / "docs/submission.md").read_text()
+    source = re.sub(r"^- \*\*Video:\*\*.*$", "- **Video:** *[the YouTube link]*", source, flags=re.M)
+    (release_tree / "docs/submission.md").write_text(source)
+    monkeypatch.setattr(devpost, "ROOT", release_tree)
+    monkeypatch.setattr(devpost, "opens", lambda url: pytest.fail("An incomplete final export should stop before networking"))
+    assert devpost.main(["--ref", "hackathon-submission", "--final"]) == 2
+    output = capsys.readouterr()
+    assert output.out == ""
+    assert "Video placeholder" in output.err and "Pin the app" in output.err
+
+
+def test_final_export_also_checks_public_links_after_local_release_checks(release_tree, monkeypatch, capsys):
+    (release_tree / "docs").mkdir()
+    source = (ROOT / "docs/submission.md").read_text()
+    source = re.sub(r"^- \*\*Video:\*\*.*$", "- **Video:** https://youtu.be/abcdefghijk", source, flags=re.M)
+    (release_tree / "docs/submission.md").write_text(source)
+    (release_tree / "docs/feedback.md").write_text("# Feedback\nInvented feedback.\n")
+    app = release_tree / "reachy_app/pyproject.toml"
+    app.write_text(app.read_text().replace("@main", "@hackathon-submission"))
+    subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
+    monkeypatch.setattr(devpost, "ROOT", release_tree)
+    checked = []
+
+    def opens(url):
+        checked.append(url)
+        return 404 if "/blob/hackathon-submission/" in url else 200
+
+    monkeypatch.setattr(devpost, "opens", opens)
+    assert devpost.main(["--ref", "hackathon-submission", "--final"]) == 1
+    assert any("/blob/hackathon-submission/" in url for url in checked)
+    assert "404" in capsys.readouterr().err
+
+
+def test_real_release_tag_and_app_pin_are_required(release_tree):
+    form = {"Video": "https://youtu.be/abcdefghijk", "Tagline": "An invented tagline", "Built with": "python"}
+    problems = devpost.final_problems(form, "hackathon-submission", release_tree)
+    assert any("missing locally" in p for p in problems) and any("Pin the app" in p for p in problems)
+    subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
+    app = release_tree / "reachy_app/pyproject.toml"
+    app.write_text(app.read_text().replace("@main", "@hackathon-submission"))
+    assert devpost.final_problems(form, "hackathon-submission", release_tree) == []
+    assert any("Use --ref" in p for p in devpost.final_problems(form, "main", release_tree))
+
+
+@pytest.mark.parametrize("url", ["*[the YouTube link]*", "https://youtube.com/", "https://youtube.com/watch?v=TODO",
+                                 "https://youtube.com/playlist?list=abcdefghijk", "https://youtube.com.evil.example/watch?v=abcdefghijk",
+                                 "http://youtu.be/abcdefghijk", "https://[broken"])
+def test_placeholders_and_nonvideo_links_are_not_final_video_urls(url):
+    assert not devpost.youtube_video(url)
+
+
+@pytest.mark.parametrize("url", ["https://youtu.be/abcdefghijk", "https://www.youtube.com/watch?v=abcdefghijk&t=1s",
+                                 "[Video](https://www.youtube.com/watch?v=abcdefghijk)"])
+def test_real_video_url_shapes_are_accepted_without_claiming_they_are_public(url):
+    assert devpost.youtube_video(url)

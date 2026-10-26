@@ -19,6 +19,11 @@ Andy reuses ideas and general-purpose code from an earlier private assistant on 
 
 **Each user brings their own keys:** Nebius and Tavily ([0002](0002-one-search-provider-tavily.md)).
 
+**Clarification 2026-10-26:** this describes independent installations. Judges can test the author's
+robot with the author's API access, without buying credits or receiving provider credentials
+([0022](0022-judge-testing-without-sharing-provider-keys.md)). Final access instructions and any
+hardware arrangements remain to be confirmed before submission.
+
 ## Why
 
 The repository is public so judges and anyone else can check every claim against the code. Keys, private projects

@@ -5,6 +5,30 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Submission readiness and judge access
+
+- Re-read the official rules, FAQ and organiser updates through Tavily. Deadline remains October 30,
+  10:00 PT; Physical AI needs at least one minute of hardware operation in the video. A hosted demo URL
+  is exempt for this track, while free working-project access and possible hardware requests still apply.
+- Clarified judge testing (decision 0022): author-funded robot/API access, with personal household data
+  excluded. Own-key reproduction is optional. Raw provider keys are not distributed, and the existing
+  public Space is explicitly a sample preview. Access compliance stays in progress until instructions
+  and any hardware arrangement are confirmed; no new public inference service has been deployed.
+- Added an explicit Testing instructions field to the Devpost export. Added `--final`: block a placeholder
+  video, missing local release tag, app dependency on main, or oversized fields, then check public links.
+  It makes no claim about video visibility/duration/rights, hardware outcomes or actual submission.
+  The current final export correctly fails on the video, tag and app pin; targeted regressions pass.
+- The filming checklist now prioritises the core letter, glasses, research, following/interruption and
+  photo flows; optional voice-turn, wave and memory demonstrations do not block the main take. The uncut
+  72-second take is our evidence plan, not an added claim about the wording of the rule.
+- The public preview and app are RUNNING; the preview's front and four pages return 200. Current main's
+  prior CI passed. Submission text links remain 20/21 from this network (the FTC citation is separately
+  source-verified). Physical trials, observed task passes, user sessions, video/photos and the final
+  tag/app pin still remain; the entry is not ready for final submission.
+- Verification for this change: 17 export regressions passed, and the CPU suite passed 1,024 tests
+  with 12 skips. The final guard was exercised on the real draft and reported the three expected
+  release blockers. No runtime robot behavior or provider credentials changed.
+
 ### After USB reconnection
 
 - Corrected hosted [CI on `f96d390`](https://github.com/AndyDM9/andy-companion/actions/runs/40392095129)

@@ -4,6 +4,20 @@ From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-1
 status and the evidence: [rules-compliance.md](rules-compliance.md). Tick an item only when it is true,
 in the same commit that makes it true.
 
+## Final readiness, checked October 26
+
+- [x] Rules, FAQ, deadline, judging criteria and prize-combination rule rechecked at the official sources
+- [x] Devpost export includes testing instructions distinguishing sample preview from author-funded robot access
+- [x] `--final` rejects a placeholder video, absent local release tag and app dependency on main before export
+- [ ] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually
+- [ ] Free judge testing instructions and any required hardware arrangement confirmed through December 15
+- [ ] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass
+- [ ] Devpost entry actually submitted and its confirmation checked (a saved draft is not a submission)
+
+The 30 finder trials and brief user sessions below strengthen the evidence; their counts are our
+plan, not explicit hackathon eligibility thresholds. An extra browser AI sandbox is optional; the
+Physical AI hosted-demo exemption does not remove the working-project access requirement.
+
 ## October 26 review: before filming on October 27
 
 - [x] Reconnected robot reaches the conversation loop after fixing the SDK memory-tool collision
@@ -92,7 +106,7 @@ in the same commit that makes it true.
       photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; The draft describes planned filming on October 27; it can describe completed footage only after recording. A moment that doesn't work leaves the video and the text says "not yet tried on the
       robot".
 - [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
-      `uv run python scripts/devpost.py --ref hackathon-submission --check` once the tag is pushed, and paste again.
+      `uv run python scripts/devpost.py --ref hackathon-submission --final` once the tag is pushed, and paste again.
       Every link opens (2026-10-25: 18 of 19 from here; ftc.gov refuses this network, its two pages confirmed from
       another).
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by

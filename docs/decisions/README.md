@@ -26,3 +26,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0019](0019-transient-content-stays-in-the-screen-servers-memory.md) | Cards and research stay in the screen server's memory | 2026-10-26 | accepted |
 | [0020](0020-one-settings-reader-for-desktop-and-dashboard.md) | One settings reader for desktop and dashboard | 2026-10-26 | accepted |
 | [0021](0021-external-memory-tool-has-a-unique-name.md) | The external memory tool has a unique name | 2026-10-26 | accepted; amends 0018 |
+| [0022](0022-judge-testing-without-sharing-provider-keys.md) | Judge testing does not require sharing provider keys | 2026-10-26 | accepted; clarifies 0003 |

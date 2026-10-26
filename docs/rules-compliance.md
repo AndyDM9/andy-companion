@@ -54,7 +54,7 @@ video, the Devpost form, the repository) is checked against this file first.
 | Rule | Status | Action, owner, date |
 |---|---|---|
 | Working demo URL | ➖ | Not required for Physical AI; judged on the video, the repository and, if asked, the hardware. Even so, every project in the judging session had a link to click: the Hugging Face Space of the screens (the founder's) |
-| Testing access, free, until judging ends; physical access to the hardware on request | ✅ | The public Space (https://huggingface.co/spaces/andydm/andy-companion) on sample data, no keys, read-only; the Reachy Mini app (https://huggingface.co/spaces/andydm/andy-companion-app); the repository's setup; a live call on request (a GitHub issue form) and the robot kept ready through 2026-12-15 |
+| Testing access, free, until judging ends; physical access to the hardware on request | 🔶 | Public sample preview and reproducible source are available. The author supplies the robot, computer and API access for free judge testing on request; optional own-key reproduction is separate. Final testing instructions and any organiser-requested hardware arrangement still need confirmation (decision 0022) |
 | Text description of features and functionality | ✅ | [submission.md](submission.md), revised after a judge's-eye read (2026-10-25), and checked against the evening's fixes the same day (one claim corrected: the console filter alone had not kept every heard word out of the log); `scripts/devpost.py` prints the form's fields with every link checked |
 | **Public** repository on GitHub with all source, assets and instructions | ✅ | Public since 2026-10-25, after the history rewrite (private matter out, gitleaks clean) and three best-practice reviews; secret scanning, push protection and private vulnerability reporting on |
 | Open-source licence file, **visible in the repository's About section** | ✅ | `LICENSE` is Apache-2.0; GitHub shows it in About (checked logged out, 2026-10-25); the app's Space carries it too |
@@ -75,7 +75,7 @@ video, the Devpost form, the repository) is checked against this file first.
 
 | Rule | Status | Notes |
 |---|---|---|
-| Free access for testing until judging ends (2026-12-15) | ✅ | Public since 2026-10-25: the repository with its setup (an anonymous clone installs and passes), the screens on sample data with no keys (https://huggingface.co/spaces/andydm/andy-companion, PRO through 2026-12-15) and the Reachy Mini app; a judge brings their own Nebius and Tavily keys (`.env.example`) |
+| Free access for testing until judging ends (2026-12-15) | 🔶 | The sample Space is free but has no live AI. Judges are offered an author-funded test of the working robot without buying credits or receiving provider keys. Confirm the final access instructions and hardware arrangement; do not treat a bring-your-own-key clone as the required free-access path |
 | Physical access to the hardware may be requested (the Reachy Mini is not a phone, tablet or computer) | 🔶 | Keep the robot and the desktop ready through 2026-12-15 |
 | After the deadline the submission cannot change | ⬜ | Tag the submitted commit (`hackathon-submission`) and link that tag on the form; later work goes after it |
 
@@ -138,3 +138,28 @@ The awake live preflight is 20/21, with the optional second-check endpoint stopp
 spoken tasks or finding trials as passed. Six sample landscapes were restored to the local idle screen,
 clearly labelled as samples. The existing filming requirement is unchanged: the founder's own photos,
 with consent. No private link, photo or conversation text was placed in the repository.
+
+## Final readiness audit, October 26
+
+The official rules, FAQ and updates were retrieved again; no deadline or prize-rule change was found.
+Section 4 exempts Physical AI from the hosted demo URL, while its Testing provision still requires
+free access to the working project through judging and permits hardware-access requests. A sample
+preview or a clone requiring the judge to buy credits is not, by itself, our free working-project
+access plan. Decision 0022 documents author-funded robot testing; final instructions and any hardware
+arrangement remain in progress. A public LLM endpoint and distribution of provider keys are not required.
+
+The four scoring criteria remain equally weighted: technological implementation, design, potential
+impact and quality of the idea. The grand prize is $20,000; the Physical AI track award is a Jetson
+Orin Nano, and the Tavily bonus is $3,000. The combination rule remains one Overall award OR one Track
+and one Bonus award. The FAQ confirms that the rest of the application need not be hosted on Nebius
+when its required NVIDIA-model runtime call is on Nebius.
+
+`scripts/devpost.py --ref hackathon-submission --final` checks release metadata and links, not legal
+eligibility or footage. It currently fails correctly on the video placeholder, absent tag and app
+pin. Thirty physical trials, short user sessions and a 72-second uncut take are our evidence plan;
+the official rules do not prescribe those trial/session counts or our exact shot plan. The video,
+observed core flows, final access, frozen release and actual Devpost submission remain outstanding.
+
+Sources: [Official Rules](https://nebiusglobalaihackathon.devpost.com/rules),
+[FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs),
+[organiser updates](https://nebiusglobalaihackathon.devpost.com/updates).

@@ -52,8 +52,11 @@ long, unedited takes.
 
 ## Before filming
 
-- [ ] **The day before, on the robot:** live-test 3aa (turning to a voice), 3bb (the keys), 3dd (waving back), 3ee (a research stops, and doesn't start itself again), 3hh (a reminder's words on the Next card), 3t3
-      (the body turn) and 3e (the research streamed to the TV). Any beat that fails comes out of the shots below,
+- [ ] **Core filming pass, on the robot:** the invented letter (3k/3l), research on the TV (3e),
+      stopping research without restarting it (3ee), the glasses search (3t), the photo delivery/description (3y),
+      following and voice interruption. If a reminder is included, check 3hh; if the side body turn is included,
+      check 3t3. Turning to a voice, waving back, remembered keys and memory offers are optional beats and do
+      not block the core take. Any beat that fails comes out of the shots below,
       the Devpost text and the gallery: the video shows only what works (the rules), and the texts say "not yet
       tried on the robot" until it has been.
 - [ ] **Only Andy drives the robot** (the doctor's check): no other robot app running, and nothing that starts one.
@@ -101,8 +104,8 @@ for the glasses search, and current measurement scope beside every score.
 | 6 | 2:32–2:48 | Architecture, a short clearly labelled simulation clip, and the measured results. | "Parakeet hears at home. Nemotron talks and sees on Nebius Token Factory. Serverless Jobs evaluate the search and conversation. Those tests are separate from these real robot scenes." Use current scores with their dates and scope, not the older profile's score as proof of the new code. |
 | 7 | 2:48–2:56 | Andy and the TV, then repository address. | "No recordings or transcripts. Kept and shared with your permission. Open source." Caption: "Limits and every scorecard in the repository. No study with older adults yet." |
 
-**At least one minute of the robot operating:** the Physical AI track asks for "a 1-minute clip", one clip, so
-shot 3 is that clip on its own: 72 s, one take, never cut (if the take runs short, keep filming until it passes
+**At least one minute of the robot operating:** the Physical AI track asks for a clip of at least one minute.
+Our proof plan uses shot 3 on its own: 72 s, one take, never cut (if the take runs short, keep filming until it passes
 70 s). The letter, search and family-photo shots add more real operation. The technical and simulation shots do not count as hardware footage.
 
 **Spanish** is no longer a shot (it cost 12 s and burned-in subtitles); it stays in the Devpost text and as
