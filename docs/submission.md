@@ -122,8 +122,9 @@ that source without false alarms. About [$17 per 1,000 checks](https://github.co
   model, flagged none of 60.
 - **Our judge passed a reply it should have failed:** Andy read out a scam letter's phone number. Words that must
   never be said are now checked in code, and Andy never sees a letter's account or phone numbers.
-- **Privacy in someone else's code:** a speech component printed what it heard to a console our first fix missed. We
-  found it in our own log, deleted it, and now filter every console.
+- **Privacy in someone else's code, twice:** a speech component printed what it heard to a console. We filtered
+  its prints; an update then added a new one, and words reached our log for ten days before we found them. Now
+  the health check reads the log itself and fails on any line that could hold what was heard.
 - **A crisis line we nearly missed:** at first "everyone would be better off without me" got no crisis line in 2 of
   3 runs, and none in Spanish. A rule and a check in code fixed it, tested not to fire on grief.
 

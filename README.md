@@ -295,7 +295,10 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
   Andy tells you who deleted what.
 
 - **No recordings or transcripts.** Andy's own log lines never contain what anyone says, and Pollen's
-  app's log records are redacted as they are made, at the normal log level (`tests/test_privacy.py`).
+  app's log records are redacted as they are made, at the normal log level (`tests/test_privacy.py`). The
+  voice server's speech package prints what it hears to its console; those prints are dropped, and the
+  health check (`scripts/doctor.py --live`) fails on any line of its log that could hold words (on 2026-10-25
+  it found that a package update had added a print the filter didn't know, for ten days; fixed and cleared).
 - **What Andy keeps,** in owner-only files on its own computer: reminders, facts and moments you asked it
   to remember (moments for 7 days), notes you shared with family, messages and photos family sent
   (photos for 7 days), your settings, a story bookmark, and joke numbers. A question you asked Andy to
@@ -500,7 +503,7 @@ choice was made ([decisions](docs/decisions/README.md)).
 | `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
 | [`cloud/`](cloud/README.md) | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
 | [`evals/`](evals/README.md) | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
-| `tests/` | About 920 tests (`uv run pytest`), run before every commit and push |
+| `tests/` | About 950 tests (`uv run pytest`), run before every commit and push |
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), the Devpost form's fields with every link checked (`devpost.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The three user services: the voice server, Andy, and the offline eyes |
 | `local-eyes/` | The offline eyes: NVIDIA Cosmos Reason 2 served by vLLM on 127.0.0.1, in their own environment |
