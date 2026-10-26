@@ -7,8 +7,9 @@
 docs/submission.md keeps its links at the hackathon-submission tag, so the submitted text never changes under a
 judge; until that tag is pushed they would not open, so a draft points them at another ref. --check opens every link
 as a logged-out visitor would (no token sent) and lists any that doesn't open (any 2xx answer). Writes nothing.
---final first rejects a missing YouTube URL, final tag or app pin, then opens the public links. It does
-not certify video visibility, duration, hardware behavior, rights, or the actual Devpost submission.
+--final first rejects a missing YouTube URL, final tag or app pin, then opens the public links. It requires
+the tracked working files and export inputs to match the tagged snapshot. It does not certify video
+visibility, duration, hardware behavior, rights, or the actual Devpost submission.
 """
 
 from __future__ import annotations
@@ -100,6 +101,21 @@ def final_problems(form: dict, ref: str, root: Path) -> list[str]:
         tag_exists = False
     if not tag_exists:
         problems.append(f"Create and publish the {FINAL_TAG} tag after final validation; it is missing locally.")
+    else:
+        try:
+            snapshot = subprocess.run(["git", "-C", str(root), "diff", "--quiet", f"refs/tags/{FINAL_TAG}", "--"],
+                                      capture_output=True, timeout=5)
+            matches = snapshot.returncode == 0
+            # git diff ignores untracked files: all three export inputs must exist in the tag too.
+            for path in ("docs/submission.md", "docs/feedback.md", "reachy_app/pyproject.toml"):
+                saved = subprocess.run(["git", "-C", str(root), "show", f"refs/tags/{FINAL_TAG}:{path}"],
+                                       capture_output=True, timeout=5)
+                matches = matches and saved.returncode == 0 and saved.stdout == (root / path).read_bytes()
+        except (OSError, subprocess.SubprocessError):
+            matches = False
+        if not matches:
+            problems.append("The working files differ from the release tag or its export inputs are missing. "
+                            "Validate and commit the final files before tagging; export from that unchanged snapshot.")
     try:
         project = tomllib.loads((root / "reachy_app/pyproject.toml").read_text())["project"]
         pinned = f"andy-companion[robot] @ git+{REPO}@{FINAL_TAG}" in project.get("dependencies", [])

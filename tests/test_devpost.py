@@ -57,6 +57,12 @@ def release_tree(tmp_path):
     return root
 
 
+def commit_release(root):
+    subprocess.run(["git", "-C", str(root), "add", "."], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                    "commit", "-qm", "final files"], check=True, capture_output=True)
+
+
 def test_final_export_blocks_a_draft_before_printing_or_network(release_tree, monkeypatch, capsys):
     (release_tree / "docs").mkdir()
     source = (ROOT / "docs/submission.md").read_text()
@@ -78,6 +84,7 @@ def test_final_export_also_checks_public_links_after_local_release_checks(releas
     (release_tree / "docs/feedback.md").write_text("# Feedback\nInvented feedback.\n")
     app = release_tree / "reachy_app/pyproject.toml"
     app.write_text(app.read_text().replace("@main", "@hackathon-submission"))
+    commit_release(release_tree)
     subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
     monkeypatch.setattr(devpost, "ROOT", release_tree)
     checked = []
@@ -96,11 +103,41 @@ def test_real_release_tag_and_app_pin_are_required(release_tree):
     form = {"Video": "https://youtu.be/abcdefghijk", "Tagline": "An invented tagline", "Built with": "python"}
     problems = devpost.final_problems(form, "hackathon-submission", release_tree)
     assert any("missing locally" in p for p in problems) and any("Pin the app" in p for p in problems)
-    subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
+    (release_tree / "docs").mkdir()
+    (release_tree / "docs/submission.md").write_text("Invented final submission.\n")
+    (release_tree / "docs/feedback.md").write_text("Invented final feedback.\n")
     app = release_tree / "reachy_app/pyproject.toml"
     app.write_text(app.read_text().replace("@main", "@hackathon-submission"))
+    commit_release(release_tree)
+    subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
     assert devpost.final_problems(form, "hackathon-submission", release_tree) == []
     assert any("Use --ref" in p for p in devpost.final_problems(form, "main", release_tree))
+
+
+@pytest.mark.parametrize("change", ["tracked", "staged", "new_commit", "untracked_input"])
+def test_final_export_rejects_files_that_are_not_in_its_tag(release_tree, change):
+    form = {"Video": "https://youtu.be/abcdefghijk", "Tagline": "Invented", "Built with": "python"}
+    docs = release_tree / "docs"
+    docs.mkdir()
+    (docs / "submission.md").write_text("Invented final submission.\n")
+    (docs / "feedback.md").write_text("Invented final feedback.\n")
+    app = release_tree / "reachy_app/pyproject.toml"
+    app.write_text(app.read_text().replace("@main", "@hackathon-submission"))
+    runtime = release_tree / "runtime.py"
+    runtime.write_text("# Invented version one\n")
+    if change == "untracked_input":
+        # Even otherwise clean exports must not accept required files absent from the snapshot.
+        subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
+    else:
+        commit_release(release_tree)
+        subprocess.run(["git", "-C", str(release_tree), "tag", "hackathon-submission"], check=True, capture_output=True)
+        assert devpost.final_problems(form, "hackathon-submission", release_tree) == []
+        runtime.write_text("# Invented version two\n")
+        if change == "staged":
+            subprocess.run(["git", "-C", str(release_tree), "add", "runtime.py"], check=True, capture_output=True)
+        elif change == "new_commit":
+            commit_release(release_tree)
+    assert any("working files differ" in p for p in devpost.final_problems(form, "hackathon-submission", release_tree))
 
 
 @pytest.mark.parametrize("url", ["*[the YouTube link]*", "https://youtube.com/", "https://youtube.com/watch?v=TODO",

@@ -22,6 +22,11 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Release snapshot audit:** final export now requires the tracked working files to match the release
+  tag, including all three export inputs. An old tag with newer files or untracked final documents is
+  rejected; 21 exporter regressions and the full CPU suite (1,043 passed / 12 skipped) pass.
+  The installed robot environment passed 1,055 / one skipped. The real final export still reports the
+  video, release tag and app-pin blockers; they remain pending.
 - **Further preflight audit:** fixed default-only voice probing and a false pass when robot connection
   ownership could not be inspected. Fifteen regressions pass; the full CPU suite is now **1,039 passed /
   12 skipped**, and the installed robot environment **1,051 passed / one skipped**. Latest live preflight

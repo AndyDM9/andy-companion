@@ -150,6 +150,7 @@ any data, and requires its own new temporary store; it must never replace a live
 
 - `scripts/devpost.py --ref hackathon-submission --final`: rejects a placeholder/non-video YouTube
   address, absent local release tag, app dependency still on main, or oversized form fields, then
+  requires tracked files and the three export inputs to match the tag's snapshot before it
   checks public links. It reads repository metadata only; it does not submit anything or certify video
   rights, visibility, duration or hardware behavior. Judge access separates sample preview, optional
   own-key reproduction and author-funded robot testing (decision 0022); no public model proxy is deployed.

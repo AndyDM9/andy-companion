@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Final export matches the tagged code
+
+- Closed a release-check gap: merely having a tag did not prove it contained the files being exported.
+  Final export now rejects tracked changes relative to the tag, including staged files and newer commits,
+  and requires submission text, feedback and the app manifest to exist in that snapshot and match it.
+- Four new regression cases reproduce stale tags, staged/unstaged changes and untracked export inputs;
+  all 21 exporter checks pass. Full CPU suite: 1,043 passed / 12 skipped; installed robot environment:
+  1,055 passed / one skipped. The real final export still reports video, tag and app-pin blockers.
+  No release tag was created and no submission was sent.
+
 ### Trustworthy preflight results
 
 - Aligned the video checklist and demo-preparation message with the doctor's new preflight wording;

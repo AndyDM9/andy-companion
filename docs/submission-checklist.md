@@ -26,6 +26,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] Hosted SDK startup job passes with the newly documented system prerequisites (`f96d390`, 42 checks)
 - [x] Awake robot preflight: 20/21 checks; app, audio health, private screen and voice-log check pass (optional second look stopped)
 - [x] Preflight probes the configured voice address and fails when robot connection ownership cannot be checked (15 regressions); demo preparation/video instructions require spoken tasks and motion separately
+- [x] Final exporter rejects a stale tag, staged/unstaged tracked changes and export inputs missing from the tag (21 exporter regressions)
 - [x] Six labelled landscape placeholders restored to the empty gallery; idle selection/JPEG verified, seven-day cleanup applies (own photos still required for filming)
 - [x] Live household links are private random values again; the updated screen link returns 200
 - [x] Imported/cached demos are refused before they can seed household data
@@ -108,6 +109,8 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       robot".
 - [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
       `uv run python scripts/devpost.py --ref hackathon-submission --final` once the tag is pushed, and paste again.
+      First commit the final text, feedback and app pin, validate, then tag/push that commit. Export from
+      that unchanged snapshot; the command rejects files that differ from the tag.
       Every link opens (2026-10-25: 18 of 19 from here; ftc.gov refuses this network, its two pages confirmed from
       another).
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by

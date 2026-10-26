@@ -169,3 +169,6 @@ now produce accurate preflight results. The README explicitly separates the curr
 text-suite score from the earlier profile's Serverless Job score. These checks add no claims about
 working hardware tasks, video compliance, free judge access or completed submission; those remain pending.
 The filming checklist and demo-preparation message explicitly require observed tasks after preflight.
+The final export also requires tracked files and export inputs to match the release tag. Tag existence
+alone could otherwise allow text or code that judges would not receive. The command does not create,
+move or publish a tag; actual release publication and submission remain outstanding.
