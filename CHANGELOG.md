@@ -5,6 +5,28 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (the TV's design, checked in a browser at every size)
+
+- **The found card's views ran into one another.** With the glasses seen in all four views, "Seen here too" under
+  each narrow view wrapped into a thin column over the next view's number, and making room for the caption squeezed
+  "where" into a column too ("on the / desk by / the"), which made the strip taller and squeezed it again. Now the
+  chosen view is large on the left, where the thing is beside it in large type, and the other views in a row under
+  that, each with its number on the picture and one line under it. When room is short the chosen view narrows and
+  the words beside it widen.
+- **The resting screen cut off the tops of its two cards** (on the robot's screen, with a long reminder and a long
+  rip-current statement, in a browser window 959 px tall): centred in the space below the clock and taller than it,
+  they ran past its top and bottom, and the "Try asking" line lay on the Next card. Their row is now never taller
+  than the space; a long reminder or warning keeps to three lines, the forecast to two, and what's left gives way
+  whole: the day's later reminders (those done first), then tomorrow's forecast and its source line.
+- **A scam check's third step lay under the caption at 1280 x 720.** The three steps always stay; when they still
+  don't fit, the warning band and what to do get smaller.
+- The under-the-hood page's smallest labels are at least 14 px on a phone.
+- Checked with a headless browser that lists any text on other text, cut off, under the caption or past the edge,
+  and any card cut by its frame or lying on another: every TV scene at 1920 x 1080, 1920 x 950 and 1280 x 720, the
+  live screen at four sizes, the settings menu, and the front, family, settings and under-the-hood pages on a
+  laptop and a phone, before and after entering a name. Nothing left but the settings menu lying over the page by
+  design.
+
 ### Fixed (glasses beside a phone or a monitor; the TV fitting its screen)
 
 - **Glasses on the keyboard weren't found.** Recorded (the testing switch, then off and the pictures deleted): the

@@ -72,7 +72,11 @@ def test_beside_a_card_the_caption_keeps_to_two_lines_and_the_card_takes_the_wid
     assert "body.has-showing .caption { -webkit-line-clamp: 2; }" in PAGE
     assert 'const lines = document.body.classList.contains("has-showing") ? 2 : 3;' in PAGE
     assert "body.has-showing .below { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); }" in PAGE
-    assert "body:not(.has-showing):not(.has-photo) .below { align-content: center; }" in PAGE
+    # Centred, but never taller than the space: centred and too tall, the cards' tops were cut off (2026-10-25).
+    assert "body:not(.has-showing):not(.has-photo) .below { align-content: center; grid-template-rows: minmax(0, auto); }" in PAGE
+    assert "function fitCards()" in PAGE and "fitCards();" in PAGE.split("if (showing) fitItems();")[1][:40]
+    # A scam check still too tall above a caption: the band and what to do get smaller, never a step fewer.
+    assert 'if (steps.length && !fits()) $("found").classList.add("tight");' in PAGE
 
 
 def load_demo():

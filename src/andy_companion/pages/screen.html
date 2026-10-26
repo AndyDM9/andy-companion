@@ -175,8 +175,18 @@
   body.has-showing .below, body.has-photo .below { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-content: stretch; }
   /* A card is the thing to read: it takes most of the width, and the day's two cards keep to a narrow column. */
   body.has-showing .below { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); }
-  /* Nothing to show and no photo: the two cards sit in the middle of the space below the clock, not at its top. */
-  body:not(.has-showing):not(.has-photo) .below { align-content: center; }
+  /* Nothing to show and no photo: the two cards sit in the middle of the space below the clock, not at its top.
+     Their row is as tall as they are but never taller than the space, so a long reminder or warning can't push
+     them past its top and bottom (2026-10-25: centred and too tall, their tops were cut off); what's in them
+     gives way a whole line at a time instead. */
+  body:not(.has-showing):not(.has-photo) .below { align-content: center; grid-template-rows: minmax(0, auto); }
+  body:not(.has-showing):not(.has-photo) .card { min-height: 0; overflow: hidden; }
+  body:not(.has-showing):not(.has-photo) .next .what:not([hidden]) {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  body:not(.has-showing):not(.has-photo) .weather .alert:not([hidden]) {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  body:not(.has-showing):not(.has-photo) .weather .then:not([hidden]) {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .side { display: contents; }
   body.has-showing .side, body.has-photo .side { display: flex; flex-direction: column; gap: 2.4vh; min-width: 0; }
   .card { padding: 3vh 2.4vw; min-width: 0; }
@@ -278,6 +288,10 @@
   .item.step.short1 .num { width: 1.3em; height: 1.3em; font-size: clamp(17px, 1.6vw, 28px); }
   .item.step.short1 .title { font-size: clamp(17px, 1.5vw, 26px); }
   .item.step.short1 .summary { font-size: clamp(18px, 1.6vw, 29px); }
+  /* Still too tall on a small screen: the warning's band and what to do get smaller, never the steps fewer. */
+  .found.tight h2 { font-size: clamp(24px, 2.4vw, 44px); margin: .4vh 0 1vh; }
+  .found.warn-title.tight h2 { padding: .8vh 1.2vw; }
+  .found.tight .lead { font-size: clamp(19px, 1.75vw, 32px); margin-bottom: .8vh; }
   /* Never cut off mid-word (the judges came for this evidence): at its shortest a step wraps to two lines. */
   .item.step.short1 > :last-child { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-width: 0; }
   .item.step.short1 .title, .item.step.short1 .summary { display: inline; -webkit-line-clamp: unset; }
@@ -289,25 +303,35 @@
   .views .order { font-size: clamp(16px, 1.4vw, 24px); color: var(--hush); margin: 0 0 1.2vh; }
   .strip { display: flex; align-items: flex-start; gap: 1.1vw; }
   .view { flex: 1 1 0; min-width: 0; margin: 0; }
-  .view.chosen { flex-grow: 4; }
-  /* One close-up alone (found where it was left) is held to the card's height, not the card's width at 16:9. */
-  .view.chosen:only-child { flex: 0 1 auto; width: min(100%, calc(44vh * 16 / 9)); }
+  /* With a view chosen: it large on the left; beside it where the thing is, in large type, and under that the
+     other views in a row, each with its number on it and one line under it. The card is wide and short above
+     the caption, so the chosen view gives way in width (--cw) and the words beside it gain the room. */
+  .views.has-chosen .strip { gap: 1.8vw; }
+  .views.has-chosen .view.chosen { flex: none; width: var(--cw, 56%); }
+  .views .beside { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2vh; }
+  .views .others { display: flex; gap: .9vw; }
+  .views .others .view { flex: 0 1 calc((100% - 1.8vw) / 3); }
   .view .pic { position: relative; padding-top: 56.25%; border-radius: max(8px, calc(var(--r) - 2.6vw)); overflow: hidden;
                background: var(--rule); }
   .view .pic.none { background: transparent; }
   .view .pic.none::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: inherit;
                            border: 2px dashed var(--rule); }
   .view img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .strip.has-chosen .view:not(.chosen) .pic { opacity: .82; }
+  .views.has-chosen .view:not(.chosen):not(.seen) img { opacity: .7; }
   .view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }
-  .view figcaption { display: flex; align-items: center; gap: .6em; margin: 1.1vh 0 0; font-size: clamp(16px, 1.45vw, 26px);
-                     color: var(--soft); }
-  .view .n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em;
-             border-radius: 50%; border: 2px solid var(--soft); font-weight: 700; font-variant-numeric: tabular-nums; }
-  .view.chosen .n { background: var(--mark); border-color: var(--mark); color: var(--panel); }
-  .view.seen .said { color: var(--mark); font-weight: 700; }
-  .view.chosen figcaption { align-items: flex-start; }
-  .view .where { font-size: clamp(22px, 2.3vw, 42px); font-weight: 700; line-height: 1.2; color: var(--ink); min-width: 0; }
+  .views .others .view.seen .pic { box-shadow: 0 0 0 2px var(--mark); }
+  /* Each view's number on its own picture, so it never meets a neighbour's words. */
+  .view .n { position: absolute; top: .35em; left: .35em; z-index: 1; display: flex; align-items: center; justify-content: center;
+             width: 1.7em; height: 1.7em; border-radius: 50%; font-size: clamp(15px, 1.35vw, 24px); font-weight: 700;
+             font-variant-numeric: tabular-nums; background: var(--panel); color: var(--ink); border: 2px solid var(--soft); }
+  .views .others .view .n { font-size: clamp(14px, 1.05vw, 19px); }
+  .view.chosen .n, .views .others .view.seen .n { background: var(--mark); border-color: var(--mark); color: var(--panel); }
+  .view figcaption { margin: .9vh 0 0; font-size: clamp(16px, 1.45vw, 26px); color: var(--soft);
+                     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .views .others figcaption { font-size: clamp(14px, 1.1vw, 20px); }
+  .view.seen figcaption { color: var(--mark); font-weight: 700; }
+  .views .where { margin: 0; font-size: clamp(24px, 2.4vw, 44px); font-weight: 700; line-height: 1.2; color: var(--ink);
+                  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .found .source { font-size: clamp(17px, 1.5vw, 26px); color: var(--hush); margin: 1.4vh 0 0; }
   .found .item a { color: inherit; text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .18em; }
   /* While Andy speaks the caption lies over the foot of the screen: the card keeps its own foot clear of
@@ -737,6 +761,7 @@
     showAsk();
     if ($("caption").textContent !== cap) $("caption").textContent = cap;
     if (showing) fitItems();
+    fitCards();
     // The colour fades only when the part of the day changes, never when the page first opens.
     if (!document.body.classList.contains("ready")) setTimeout(() => document.body.classList.add("ready"), 500);
   }
@@ -747,15 +772,20 @@
   function fitItems() {
     const box = $("items"), lines = [...box.querySelectorAll(".item")];      // never the photo or the code
     lines.forEach((el) => { el.style.display = ""; el.classList.remove("short2", "short1"); });
-    // What Andy looked at: its line about the order goes first, then the strip narrows (all its views together,
-    // never cut) until it and the words under the chosen view fit above the caption.
+    $("found").classList.remove("tight");
+    // What Andy looked at: its line about the order goes first, then the chosen view narrows (the words beside it
+    // widen), or with none chosen the whole strip, never cut, until it all fits above the caption.
     const views = box.querySelector(".views");
     if (views) {
       const strip = views.querySelector(".strip"), order = views.querySelector(".order");
       const room = () => views.offsetTop + views.offsetHeight <= box.offsetTop + box.clientHeight + 1;
-      strip.style.maxWidth = ""; order.style.display = "";
-      if (!room()) order.style.display = "none";
-      for (let w = 95; w >= 45 && !room(); w -= 5) strip.style.maxWidth = w + "%";
+      strip.style.maxWidth = ""; views.style.removeProperty("--cw");
+      if (order) { order.style.display = ""; if (!room()) order.style.display = "none"; }
+      if (views.classList.contains("has-chosen")) {           // the chosen view narrows; the words beside it widen
+        for (let w = 52; w >= 30 && !room(); w -= 4) views.style.setProperty("--cw", w + "%");
+      } else {
+        for (let w = 95; w >= 45 && !room(); w -= 5) strip.style.maxWidth = w + "%";
+      }
     }
     const order = lines.filter((el) => !el.classList.contains("caution")).reverse()
       .concat(lines.filter((el) => el.classList.contains("caution")).reverse());
@@ -767,6 +797,7 @@
     for (const cls of ["short2", "short1"]) {
       for (const el of steps.slice().reverse()) { if (fits()) break; el.classList.add(cls); }
     }
+    if (steps.length && !fits()) $("found").classList.add("tight");
     for (const el of order) {
       if (fits()) break;
       if (el.classList.contains("step")) continue;   // the receipt's three steps always stay (step 3 names Ultra)
@@ -777,17 +808,30 @@
       el.style.display = "none";
     }
   }
-  window.addEventListener("resize", () => { if (document.body.classList.contains("has-showing")) fitItems(); });
+  window.addEventListener("resize", () => { if (document.body.classList.contains("has-showing")) fitItems(); fitCards(); });
+
+  // The day's two cards keep inside the space below the clock: what's left of the day gives way a whole reminder
+  // at a time (those done first, then the last), then the weather's later forecast and its source line.
+  function fitCards() {
+    const next = document.querySelector(".next"), weather = $("weather");
+    const later = [...$("later").children], spare = [$("w-then"), $("w-from")];
+    later.concat(spare).forEach((el) => { el.style.display = ""; });
+    const over = (card) => card.scrollHeight > card.clientHeight + 1;
+    const order = later.filter((li) => li.classList.contains("done"))
+      .concat(later.filter((li) => !li.classList.contains("done")).reverse());
+    for (const li of order) { if (!over(next)) break; li.style.display = "none"; }
+    for (const el of spare.slice().reverse()) { if (!over(weather)) break; el.style.display = "none"; }
+  }
 
   let familyId = "", foundKey = "", foundContent = "";
   // What Andy looked at when it searched for something: the views from the screen server's memory (two minutes),
   // numbered in the order Andy turned, the one it chose ringed and wider, where the thing is under it.
   const VIEW_KINDS = ["seen", "looked"];
   function viewStrip(v, showing) {
-    const wrap = make("div", "views"), strip = make("div", "strip" + (v.chosen !== null ? " has-chosen" : ""));
+    const pick = v.chosen, wrap = make("div", "views" + (pick !== null ? " has-chosen" : "")), strip = make("div", "strip");
     const where = showing.kind === "seen" && showing.items[0] ? showing.items[0].summary || "" : "";
-    v.pictures.forEach((has, i) => {
-      const chosen = v.chosen === i, seen = !!v.seen[i];
+    const figs = v.pictures.map((has, i) => {
+      const chosen = pick === i, seen = !!v.seen[i];
       const said = !has ? ui.noPicture : chosen ? ui.seenHere : seen ? ui.seenToo : ui.notSeen;
       const fig = make("figure", "view" + (chosen ? " chosen" : "") + (seen && has ? " seen" : ""));
       const pic = make("div", "pic" + (has ? "" : " none"));
@@ -798,16 +842,21 @@
         img.onerror = () => img.remove();          // forgotten in the meantime: an empty frame, never a broken image
         pic.append(img);
       }
-      const cap = make("figcaption", "");
-      cap.append(make("span", "n", String(i + 1)));
-      // The chosen view's number has where the thing is beside it (its ring says "seen here"); beside it, the
-      // narrow views say only their number unless the thing was seen there too.
-      if (chosen && where) cap.append(make("span", "where", where));
-      else if (v.chosen === null || chosen || seen || !has) cap.append(make("span", "said", said));
-      fig.append(pic, cap);
-      strip.append(fig);
+      pic.append(make("span", "n", String(i + 1)));
+      fig.append(pic);
+      if (!chosen) fig.append(make("figcaption", "", said));   // the chosen view's words are where the thing is
+      return fig;
     });
-    wrap.append(make("p", "order", ui.order), strip);
+    if (v.pictures.length > 1) wrap.append(make("p", "order", ui.order));
+    if (pick === null) strip.append(...figs);
+    else {
+      const beside = make("div", "beside"), others = make("div", "others");
+      beside.append(make("p", "where", where || ui.seenHere));
+      figs.forEach((fig, i) => { if (i !== pick) others.append(fig); });
+      if (others.children.length) beside.append(others);
+      strip.append(figs[pick], beside);
+    }
+    wrap.append(strip);
     return wrap;
   }
   function showFamilyPhoto(fp) {

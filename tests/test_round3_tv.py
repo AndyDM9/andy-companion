@@ -172,10 +172,17 @@ def test_the_tv_draws_the_views_as_a_numbered_strip():
     strip = re.search(r"function viewStrip\(v, showing\) \{(.*?)\n  \}", PAGE, re.S).group(1)
     assert '"/view?t=" + encodeURIComponent(token) + "&i=" + i' in strip
     assert 'make("span", "n", String(i + 1))' in strip                  # numbered in the order Andy turned
-    assert 'chosen ? " chosen"' in strip and 'if (chosen && where) cap.append(make("span", "where", where));' in strip
+    assert 'chosen ? " chosen"' in strip and 'beside.append(make("p", "where", where || ui.seenHere));' in strip
     assert "img.onerror" in strip                                        # forgotten views: no broken image
     assert 'const VIEW_KINDS = ["seen", "looked"];' in PAGE
-    assert ".view.chosen { flex-grow: 4; }" in PAGE and ".view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }" in PAGE
+    assert ".view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }" in PAGE
+    # 2026-10-25: four views with "seen here too" under each narrow one ran into their numbers. The chosen view is
+    # large with the words beside it; the number sits on each picture; every label under a view is one line.
+    assert "pic.append(make(\"span\", \"n\", String(i + 1)));" in strip
+    assert ".view .n { position: absolute;" in PAGE
+    assert "white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }" in PAGE.split(".view figcaption {")[1][:200]
+    assert '.views.has-chosen .view.chosen { flex: none; width: var(--cw, 56%); }' in PAGE
+    assert 'views.style.setProperty("--cw", w + "%")' in PAGE
     assert "padding-top: 56.25%" in PAGE and not re.search(r"aspect-ratio\s*:", PAGE)   # Chromium 85 has none
     ui = PAGE[PAGE.index("const UI = {"):PAGE.index("let ui = UI.en;")]
     for key in ("order", "seenHere", "seenToo", "notSeen", "noPicture", "looked"):
