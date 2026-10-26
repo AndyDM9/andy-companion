@@ -66,7 +66,11 @@ in the same commit that makes it true.
       Every link opens (2026-10-25: 18 of 19 from here; ftc.gov refuses this network, its two pages confirmed from
       another).
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by
-      2026-10-23 10:00 PT); editing continues afterwards
+      2026-10-23 10:00 PT); editing continues afterwards. *Missed:* the draft was **saved** (not submitted) on
+      2026-10-25 as devpost.com/software/andy-b45hds: overview, story, 25 tags, three links and every additional-info
+      answer (the founder ticked the two declarations); still missing the video link, the thumbnail and the gallery.
+      Devpost's template headings were found above the story and removed; the preview renders every heading, list
+      and link
 - [ ] **The gallery**, at most eight images, the real robot first, every image with a one-sentence caption (judges
       seldom look past the first three or four). The thumbnail is image 1, 3:2, at most 5 MB.
       1. *(founder)* Andy beside the TV, a letter held up: "Andy reads the letter in your hand; the TV shows it in large print."
