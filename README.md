@@ -465,6 +465,9 @@ What doesn't work yet, and what our numbers don't show.
 - a Reachy Mini with Pollen's daemon running ([Pollen's guide](https://huggingface.co/docs/reachy_mini));
 - `tesseract-ocr` (and `tesseract-ocr-spa` for letters in Spanish) and `pulseaudio-utils` (the wake listener
   uses `parec`);
+- Cairo/GObject development files for the SDK's PyCairo/PyGObject dependencies. On Ubuntu 24.04, before
+  syncing the robot environment:
+  `sudo apt-get install build-essential pkg-config python3-dev libcairo2-dev libgirepository1.0-dev gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0`;
 - a [Nebius Token Factory](https://tokenfactory.nebius.com/) key and a [Tavily](https://app.tavily.com/) key.
 
 Every command runs from the repository's root.

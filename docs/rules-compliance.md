@@ -131,3 +131,6 @@ separate from earlier results. Startup and a small motor-response check are reco
 claiming finder accuracy, speech tasks or video evidence. Household links were refreshed privately;
 no link or token is in the repository. Imported demos cannot seed that store. The remaining live
 checks, filming, tag and submission are still pending.
+The first dedicated SDK CI run found a fresh-install prerequisite missing from Setup (Cairo/GObject
+development libraries). Those packages and GStreamer introspection are now included in the setup
+instructions and CI; a successful corrected hosted run remains to be verified.

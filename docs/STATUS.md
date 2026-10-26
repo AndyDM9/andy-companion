@@ -30,6 +30,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   each run; ambiguity before deletion and respecting "not now" each fail once. The new scorecard carries hashes.
   Local checks after the startup/demo fixes: CPU 1,011 passed / 12 skipped; robot environment 1,023 passed /
   one skipped; three isolated wheel checks pass. Dedicated SDK startup CI will run after the push.
+  On `8958439`, CPU CI passed; the new clean SDK job found missing Cairo headers. CI and Setup now include
+  Cairo/GObject development and GStreamer introspection packages; the corrected hosted run is pending.
 - **Judge access:** [testing instructions](judging.md) now link from the README, demo and submission text.
   An anonymous fresh clone installs; the Docker demo builds; real-entry subprocess and isolated wheel checks
   join CI. The current scorecard is first in the evidence index. No browser was available in this audit;

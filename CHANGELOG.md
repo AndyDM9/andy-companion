@@ -7,6 +7,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### After USB reconnection
 
+- Published startup fixes in `8958439`; CPU CI passed, but the new clean SDK job exposed missing Cairo
+  headers while building PyCairo. Added Cairo/GObject development and GStreamer introspection packages
+  before the SDK sync, and documented them in Setup. This is required on a fresh Linux installation;
+  the previous app checks used this desktop's existing system libraries.
+- Refreshed both public Spaces from the fix: screen `9e298cf`, app `dfad821`. Pollen's fresh app
+  installation, entrypoint registration and uninstallation checks passed again against pushed code.
 - The USB motor controller, camera and audio appeared; the daemon retained its disconnected state and
   recovered after a restart. With Andy stopped and no other robot app connected, a small motor test read
   a 1.76° head-yaw change for a requested 5°, antenna changes +3.16° / −3.52°, and a 0.36° head-yaw residual

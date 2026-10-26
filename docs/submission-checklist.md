@@ -8,6 +8,8 @@ in the same commit that makes it true.
 
 - [x] Reconnected robot reaches the conversation loop after fixing the SDK memory-tool collision
 - [x] Desktop and dashboard configuration paths have fresh-process SDK tests; dedicated SDK CI defined
+- [x] Linux SDK build prerequisites documented and installed by the SDK CI job
+- [ ] Hosted SDK startup job passes with the newly documented system prerequisites
 - [x] Live household links are private random values again; the updated screen link returns 200
 - [x] Imported/cached demos are refused before they can seed household data
 - [x] Short judge testing instructions link from the README, demo and submission text

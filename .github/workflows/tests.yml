@@ -24,6 +24,10 @@ jobs:
         with:
           version: '0.12.20'
           enable-cache: true
+      - name: Install SDK build and GStreamer introspection support
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libcairo2-dev libgirepository1.0-dev python3-dev pkg-config gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0
       - run: uv sync --project robot --locked
       - name: Load real SDK configuration and exercise the dispatcher without hardware
         run: uv run --project robot --with pytest python -m pytest tests/test_startup_config.py tests/test_confirmation_dispatch.py tests/test_suite_tools.py -q
