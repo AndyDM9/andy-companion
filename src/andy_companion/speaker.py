@@ -247,25 +247,25 @@ async def tick(handler: Any, since: float, now_mono: Optional[float] = None,
         return 0
     due = reminders.due(now)
     if not due:
-        entry = board.next_for_person()
+        entry = await asyncio.to_thread(board.next_for_person)
         if entry is not None:
             if entry.get("type") == "photo":
-                board.show_photo(entry.get("photo", ""), entry.get("name", ""), entry.get("caption", ""))
+                await asyncio.to_thread(board.show_photo, entry.get("photo", ""), entry.get("name", ""), entry.get("caption", ""))
             if entry.get("type") in ("message", "suggestion"):
                 try:
-                    family_card(entry, now=now)
+                    await asyncio.to_thread(family_card, entry, now=now)
                 except Exception:          # the words still go; the card is extra
                     logger.debug("family card failed", exc_info=True)
             if entry.get("type") == "research":
                 if not entry.get("failed"):
-                    board.show("research", entry.get("topic", "What I found"), research_items(entry))
+                    await asyncio.to_thread(board.show, "research", entry.get("topic", "What I found"), research_items(entry))
                 looking.answered(entry.get("topic", ""))
                 await handler.say(research_frame(entry))
             elif entry.get("type") == "suggestion":
                 await handler.say(suggestion_frame(entry, now=now))
             else:
                 await handler.say(family_frame(entry))
-            board.delivered(entry)
+            await asyncio.to_thread(board.delivered, entry)
             logger.info("Passed on an inbox %s", entry.get("type"))
             return 1
         said = await morning(handler, now, present)
@@ -310,7 +310,7 @@ async def morning(handler: Any, now: Optional[datetime] = None, present: Optiona
     from datetime import timedelta
     yesterday = "; ".join(m["what"] for m in moments.on_day(now.date() - timedelta(days=1)))
     try:
-        dayplan.show(now)                      # the same plan on the screen as Andy says it
+        await asyncio.to_thread(dayplan.show, now)                      # the same plan on the screen as Andy says it
     except Exception:
         pass
     await handler.say(morning_frame(dayplan.say(now) + await morning_weather(), yesterday))

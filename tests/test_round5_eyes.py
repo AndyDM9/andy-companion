@@ -101,7 +101,7 @@ def test_a_photo_comes_with_how_to_talk_about_it_and_the_suite_uses_the_same_wor
     monkeypatch.setattr(board, "photo_path", lambda pid: photo if pid == "p1" else None)
     out = vision.describe_photo("p1", opener=Opener("Two women on a beach."))
     assert out == {"description": "Two women on a beach.", "how": vision.PHOTO_HOW}
-    assert "one open question" in vision.PHOTO_HOW and "only after a yes" in vision.PHOTO_HOW
+    assert "one open question" in vision.PHOTO_HOW and "wait for a yes" in vision.PHOTO_HOW
     spec = importlib.util.spec_from_file_location("run_suite", Path(vision.__file__).parents[2] / "evals" / "run_suite.py")
     suite = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(suite)
@@ -112,5 +112,5 @@ def test_the_profile_keeps_a_photo_story_only_with_a_yes():
     from pathlib import Path
 
     text = (Path(vision.__file__).parents[2] / "profiles" / "companion" / "profile.md").read_text()
-    assert '"Shall I keep that' in text and "only after a yes, use remember" in text
+    assert "remember proposal" in text and "confirmation procedure above" in text
     assert "Share it with family only\n  if they ask." in text

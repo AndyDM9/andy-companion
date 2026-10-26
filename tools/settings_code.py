@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import Any, Dict
 
 from andy_companion import board
@@ -18,5 +19,5 @@ class SettingsCode(Tool):
     parameters_schema = {"type": "object", "properties": {}}
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
-        board.show_settings_code()
+        await asyncio.to_thread(board.show_settings_code)
         return {"shown": True, "for_minutes": 2}

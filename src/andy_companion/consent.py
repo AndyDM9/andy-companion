@@ -1,26 +1,18 @@
-"""Andy saves something about the person only when they asked, checked in code.
+"""One-use, action-bound confirmation for saving and sharing.
 
-The profile says to remember only what the person asks to remember, and to ask "Shall I remember
-that?" before keeping a moment. On 2026-10-13 Pollen's own `remember` tool still saved two facts
-from ordinary conversation. So saving tools are gated where every tool call passes: `remember` and
-`remember_moment` run only if the person's last words asked for it ("remember that…", "don't
-forget…") or were a clear yes ("yes", "please do", "sí"), and said no "no" ("No, please do not
-remember that"). A yes must open the answer and be the answer: "Yes please" and "Sí, claro" count,
-"OK so my sister is coming Friday" does not, and "si" without its accent counts only on its own
-("Si mañana llueve" is "if it rains tomorrow"). A word "remember" alone is not a request: "Do you
-remember my sister's name?" and "I can't remember where I put them" are questions and worries. When
-in doubt nothing is saved and Andy asks. The last words are held in memory for this check only; they
-are never written down or logged.
-
-Sharing with family is gated the same way (2026-10-25 review): telling other people matters more than
-remembering, and the profile alone let a share through without reading it back (the suite's share-2).
-`share_with_family` runs only if the person's last words were a clear yes, the answer to "Shall I share
-that?", or plainly asked to share ("share that with my daughter", "compártelo"), and said no "no".
+An explicit request can save one fact, moment or place. Sharing always requires a
+proposal, its exact spoken readback, and a fresh yes. Other saves use that procedure
+when offered. A confirmation expires in two minutes, belongs to one conversation,
+and authorizes only the exact tool and arguments that were proposed. Words and
+pending proposals live only in memory; none are logged or written down.
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
+import time
 from functools import wraps
 from typing import Any, Dict
 
@@ -53,12 +45,12 @@ YES = re.compile(r"^\W*(yes|yeah|yep|yup|sure|of course|please do|please|ok|okay
 BARE_SI = re.compile(r"^\W*si\W*($|[,.!]\s*(claro|por favor|gracias|vale)?\W*$)")
 SHARING = ("share_with_family",)
 # A plain request to pass something to family, said to Andy.
+_FAMILY = r"(?:my|the|our|mi|la|nuestra)\s+(?:family|daughter|son|wife|husband|sister|brother|familia|hija|hijo|esposa|esposo|hermana|hermano)\b"
 SHARE_ASKED = re.compile(
-    LEAD + r"(share|send|tell|let|comparte|comp[aá]rte(lo|la)|env[ií]a|env[ií]a(lo|la|selo|sela)|manda|m[aá]nda(lo|la|selo|sela)|"
-    r"dile|d[ií]selo|d[ií]gale|cu[eé]nta(le|selo))\b"
-    r"|\b(please|can you|could you|would you|will you|i want you to|i'?d like you to|puedes|puede|podr[ií]as|"
-    r"quiero que) (share|send|tell|let|compartir|compartas|enviar|env[ií]es|mandar|mandes|decirle|digas)\b"
-    r"|\bwith (my|the) family\b|\bcon (mi|la) familia\b")
+    LEAD + r"(?:share|send|tell|let|comparte|comp[aá]rtelo|env[ií]a|m[aá]ndalo|dile|d[ií]selo|d[ií]gale)\b"
+    r"[^.!?]{0,220}\b" + _FAMILY +
+    r"|\b(?:can you|could you|would you|will you|quiero que|puede|puedes)\s+"
+    r"(?:share|send|tell|compartir|compartas|enviar|env[ií]es|decirle|digas)\b[^.!?]{0,220}\b" + _FAMILY)
 NOT_SHARED = {"shared": False,
               "say": "Not shared: the person has not said yes. Say back what you would share and ask \"Shall I share that?\"; "
                      "share only after they say yes."}
@@ -66,10 +58,100 @@ NOT_SAVED = {"saved": False,
              "say": "Not saved: the person has not asked. Ask \"Shall I remember that?\" and save only after they say yes."}
 
 _last: Dict[str, str] = {"words": ""}
+CONFIRM_FOR_S = 120.0
+
+
+def _normal(text: str) -> str:
+    return " ".join(re.sub(r"[^\w\s]", " ", text.lower()).split())
+
+
+def _yes_to(text: str, name: str) -> bool:
+    if YES.fullmatch(text.lower()) or BARE_SI.fullmatch(text.lower()):
+        return True
+    verb = r"(?:share|send)" if name in SHARING else r"(?:keep|remember|save)"
+    return bool(re.fullmatch(r"\W*(?:yes|yeah|sure)[,\s]+(?:please\s+)?" + verb +
+                             r"\s+(?:it|that|this)(?:\s+please)?\W*", text.lower()))
+
+
+class Confirmation:
+    """One conversation's ephemeral, one-use permission. Nothing here is logged or saved."""
+
+    def __init__(self, clock=time.monotonic):
+        self.clock = clock
+        self.words = ""
+        self.pending = None
+        self.confirmed = False
+        self.used = False
+
+    def hear(self, words: str) -> None:
+        self.words = " ".join(str(words or "").split())[:400]
+        self.used = False
+        self.confirmed = bool(self.pending and self.pending["spoken"] and
+                              self.clock() < self.pending["until"] and
+                              _yes_to(self.words, self.pending["name"]))
+        if not self.confirmed:
+            self.pending = None
+
+    def said(self, words: str) -> None:
+        if self.pending and _normal(self.pending["question"]) == _normal(str(words)):
+            self.pending["spoken"] = True
+
+    def authorize(self, name: str, arguments: dict) -> dict | None:
+        if self.used:
+            return {"saved": False, "shared": False, "say": "That request was already handled. Do not repeat it."}
+        canonical = json.dumps(arguments, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        fingerprint = hashlib.sha256((name + canonical).encode()).hexdigest()
+        text = self.words.lower().replace("’", "'")
+        explicit = name in SAVING and asked(text) and bool(ASKED.search(text))
+        matched = bool(self.confirmed and self.pending and self.pending["fingerprint"] == fingerprint and
+                       self.clock() < self.pending["until"])
+        if explicit or matched:
+            self.used = True
+            self.pending = None
+            self.confirmed = False
+            return None
+        # The first call proposes the exact payload; it does not write anything. The
+        # assistant must read this question before a fresh yes can release this call.
+        fields = {"remember": ("fact",), "remember_moment": ("what", "day"),
+                  "remember_place": ("what", "said_where"), "share_with_family": ("note",)}
+        pieces = [str(arguments.get(k, "")).strip() for k in fields[name]]
+        content = "; ".join(p for p in pieces if p)
+        if len(content) > 600:
+            return {"error": "Keep the proposed content under 600 characters so the whole proposal can be read back."}
+        if not content or REFUSED.search(KEEPING.sub(" ", text)):
+            return dict(NOT_SHARED if name in SHARING else NOT_SAVED)
+        if name in SHARING and not (SHARE_ASKED.search(text) or self.confirmed):
+            return dict(NOT_SHARED)
+        if not self.pending and (YES.fullmatch(text) or BARE_SI.fullmatch(text)):
+            return dict(NOT_SHARED if name in SHARING else NOT_SAVED)
+        spanish = bool(re.search(r"\b(s[ií]|familia|hija|hijo|recuerda|guarde|compartir)\b", text))
+        verb = ("¿Quiere que comparta esto con su familia?" if name in SHARING else "¿Quiere que recuerde esto?") if spanish else (
+            "Shall I share this with your family?" if name in SHARING else "Shall I remember this?")
+        lead = ("Su nota dice" if spanish else "Your note says") if name in SHARING else (
+            "Lo que recordaré" if spanish else "The memory would be")
+        question = f"{lead}: “{content}”. {verb}"
+        self.pending = {"name": name, "fingerprint": fingerprint, "question": question, "spoken": False,
+                        "until": self.clock() + CONFIRM_FOR_S}
+        self.confirmed = False
+        return {"saved": False, "shared": False, "confirmation_needed": True,
+                "say": question, "how": "Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments."}
+
+
+_default = Confirmation()
+
+
+def _session(obj):
+    deps = getattr(obj, "deps", None)
+    if deps is None:
+        return _default
+    if not hasattr(deps, "_andy_confirmation"):
+        deps._andy_confirmation = Confirmation()
+    return deps._andy_confirmation
 
 
 def heard(words: str) -> None:
     _last["words"] = " ".join(str(words or "").split())[:400]
+    _default.hear(words)
 
 
 def asked(words: "str | None" = None) -> bool:
@@ -104,7 +186,9 @@ def install(handler_class=None, routine_class=None) -> bool:
     def emit(self, role: str, text: str, final: bool = True):
         previous(self, role, text, final)
         if role == "user" and final:
-            heard(text)
+            _session(self).hear(text)
+        elif role == "assistant" and final:
+            _session(self).said(text)
 
     emit._andy_consent = True
     handler_class._emit_transcript = emit
@@ -114,10 +198,16 @@ def install(handler_class=None, routine_class=None) -> bool:
     @wraps(run)
     async def gated(self, *args, **kwargs) -> Any:
         name = getattr(self, "tool_name", "")
-        if name in SAVING and not asked():
-            return dict(NOT_SAVED)
-        if name in SHARING and not asked_to_share():
-            return dict(NOT_SHARED)
+        if name in SAVING + SHARING:
+            try:
+                arguments = json.loads(getattr(self, "args_json_str", "{}"))
+            except (TypeError, ValueError):
+                return {"error": "Invalid confirmation arguments."}
+            if not isinstance(arguments, dict):
+                return {"error": "Invalid confirmation arguments."}
+            denied = _session(self).authorize(name, arguments)
+            if denied is not None:
+                return denied
         return await run(self, *args, **kwargs)
 
     routine_class.__call__ = gated

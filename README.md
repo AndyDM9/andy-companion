@@ -12,6 +12,9 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 **[Ask to see the real robot live](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)** ·
 **[Read every scorecard](evals/results/README.md)**
 
+**Filming October 27:** the real-robot video and photographs will be added after filming.
+The images of screens below use sample data; the search animation is simulation.
+
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
 shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
 in your hand. Ask where your glasses are, and it looks around the room and points at them with its head.
@@ -20,7 +23,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **96, 95 and 92 of 97** spoken situations passed, judged by NVIDIA Nemotron 3 Ultra, run as Nebius Serverless Jobs ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
+- **95 of 97 in each of three runs** of the current text suite, locally with the real confirmation gate; the previous profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-26-final-local.json), [previous](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -31,7 +34,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 - **Rules in code under the model:** **Be careful** on a risky letter whatever the model says, consent before
   anything is remembered, and no recordings or transcripts.
 
-**Judging it without a robot:** watch the video (every robot shot live, no cuts in the pauses); watch the
+**Judging it without a robot:** the real-robot video is being prepared for October 27. Watch the
 search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
 open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
 failures included ([evals/results/](evals/results/README.md)); or [ask for the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml),
@@ -127,7 +130,7 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 ## Every model, and where it runs
 
 Thirteen models: eight on the computer beside the robot, two of them NVIDIA's, so Andy hears, speaks, wakes,
-reads, follows a face and, when the network is down, sees, at home; and five NVIDIA Nemotron models on Nebius.
+reads and follows a face at home, with optional local vision; and five NVIDIA Nemotron models on Nebius.
 
 **On this computer, beside the robot**
 
@@ -139,7 +142,7 @@ reads, follows a face and, when the network is down, sees, at home; and five NVI
 | The wake phrase, while Andy sleeps or is quiet | **Vosk** small models, English 0.15 and Spanish 0.42 | CPU, offline | |
 | Reading the letter in your hand | **Tesseract** OCR, English and Spanish | CPU; only the text leaves | |
 | Finding a face to follow (detection, never recognition) | **YuNet** (Pollen's `face_detection_yunet_2026may`) on ONNX Runtime | CPU, in Pollen's robot software | |
-| Seeing when the network is down | NVIDIA **Cosmos Reason 2 8B** (2B on a smaller GPU) | GPU, vLLM on 127.0.0.1 only ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)) | in simulation pointed 22 of 23 (8B), 18 of 23 (2B); tried end to end on this computer, not yet on the robot |
+| Local vision fallback | NVIDIA **Cosmos Reason 2 8B** (2B on a smaller GPU) | GPU, vLLM on 127.0.0.1 only ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)) | in simulation pointed 22 of 23 (8B), 18 of 23 (2B); tried end to end on this computer, not yet on the robot |
 
 Seeing a wave, the head's glance and turning to a voice need no model: motion in OpenCV, and the robot's own
 microphones.
@@ -166,7 +169,7 @@ search in Pollen's MuJoCo simulation. The details, and why each model, follow.
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes: "what do you see?", family photos and finding things in the room | NVIDIA **Nemotron 3.5 Super VL**, structured output, reasoning off | **Nebius Token Factory**; or NVIDIA Nemotron Nano 12B v2 VL (FP8, vLLM 0.30.0) on our own **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)), with `ANDY_VISION=endpoint` |
-| Offline eyes, when Token Factory can't be reached | NVIDIA **Cosmos Reason 2 8B** on a free 24 GB GPU (2B beside the voice), the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house. Tried end to end on this computer, not yet on the robot |
+| Local eyes, when the primary vision service cannot be reached | NVIDIA **Cosmos Reason 2 8B** on a free 24 GB GPU (2B beside the voice), the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house. Tried end to end on this computer, not yet on the robot |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
@@ -289,7 +292,7 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
 **In four answers:**
 - **Where is it heard?** Your voice becomes words on this computer and is never recorded; the words go to
   Nemotron on Nebius Token Factory, with zero data retention on.
-- **What is kept?** Only what you ask Andy to keep (a reminder, a fact, a moment), on this computer.
+- **What is kept?** Reminders and memories you request, notes you choose to share, and messages and photos family send, on this computer; transient cards and research stay in memory.
 - **Who sees it?** Family see only what you ask Andy to share; Andy tells you who looked.
 - **How do I delete it?** Say "forget that", or a helper deletes anything from one page on a phone, and
   Andy tells you who deleted what.
@@ -297,13 +300,18 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
 - **No recordings or transcripts.** Andy's own log lines never contain what anyone says, and Pollen's
   app's log records are redacted as they are made, at the normal log level (`tests/test_privacy.py`). The
   voice server's speech package prints what it hears to its console; those prints are dropped, and the
-  health check (`scripts/doctor.py --live`) fails on any line of its log that could hold words (on 2026-10-25
+  health check (`scripts/doctor.py --live`) flags unexpected line formats and known transcript markers,
+  and fails if it cannot read the journal (on 2026-10-25
   it found that a package update had added a print the filter didn't know, for ten days; fixed and cleared).
 - **What Andy keeps,** in owner-only files on its own computer: reminders, facts and moments you asked it
   to remember (moments for 7 days), notes you shared with family, messages and photos family sent
-  (photos for 7 days), your settings, a story bookmark, and joke numbers. A question you asked Andy to
-  look into is kept until Andy tells you the answer. A helper can see and delete everything on one
-  page, and Andy tells you who deleted what.
+  (photos for 7 days), your settings, a story bookmark, and joke numbers. Current screen cards and research
+  questions and answers live only in the local screen server's memory; a restart forgets them. Pending
+  messages and answers are listed on the settings page. Delete everything also clears the current card,
+  captions and views. Andy tells you who deleted what.
+- **Permission belongs to one action:** sharing reads back the exact proposed note, waits for a fresh yes,
+  and permits that same note once, within two minutes. Saving offers use the same check; an explicit
+  request to remember one item can save it directly. An unrelated yes never authorizes sharing.
 - **What leaves the house,** only as each feature needs it:
   - your words to Nebius Token Factory (zero data retention on), and to your own Content Safety
     endpoint;
@@ -315,7 +323,8 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
   - a letter is read on this computer, and only its text goes to Token Factory.
 - **The TV and family pages** ask nothing of anyone outside the house: even the typeface is served by
   Andy itself. They are served on the home network over plain HTTP, each page behind its own long token, and the
-  server refuses anyone connecting from outside private, loopback or link-local addresses.
+  server refuses anyone connecting from outside private, loopback, link-local or home-VPN addresses.
+  Family outside the home need access through a household VPN; there is no public remote-family service.
 - **Keys never enter this repository;** a pre-commit hook blocks key-like strings.
 
 ## Accessibility
@@ -384,8 +393,12 @@ What doesn't work yet, and what our numbers don't show.
   tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **The suite isn't perfect:** about one different case fails each run, and every failure is in its
-  scorecard.
+- **The current text suite:** 95 of 97 in each of three local runs on October 26, with the actual
+  confirmation gate and synthetic tools ([scorecard](evals/results/suite-2026-10-26-final-local.json)).
+  Two memory-offer cases fail: Andy can ask another question or claim it will make a note without
+  preparing a proposal. The gate prevents an unapproved save, but the wording is still a limitation.
+  Explicit memory requests and confirmed writes passed. The older Serverless Job scores below use
+  the previous profile and test behavior.
 - **What the numbers measure, and what they don't:**
   - the 1.06 s starts when your words are understood (Parakeet's transcript), not when you stop speaking: the wait
     for the end of your words comes before it and is not in the figure;
@@ -405,7 +418,9 @@ What doesn't work yet, and what our numbers don't show.
   (seed 11, the trials where Super VL pointed 21 of 23 times), Cosmos Reason 2 8B pointed at the duck 22 of 23 times (Super VL 21, inside the same interval), never at
   the wrong place, with a median error of 1.95° against Super VL's 0.78°, in 4.8 s against 3.2 s; it fills a 24 GB
   GPU. The 2B model fits beside the voice but pointed 18 of 23 times, three at the wrong place, 3.06°. Neither has
-  yet been tried on the robot with the network unplugged ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
+  yet been tried on the robot with the primary vision service blocked. This is a vision fallback, not a
+  complete offline voice assistant: the conversation and its tool selection still require Token Factory
+  ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
 - **Of the Physical AI track's NVIDIA models, Andy uses Nemotron, Cosmos Reason 2 and Parakeet.** GR00T and Sonic are
   policies for robots with arms or legs, which the Reachy Mini doesn't have. The agent runtime is Pollen's Reachy
   Mini conversation app, with Andy's profile, tools and rules plugged in.
@@ -469,7 +484,7 @@ Every command runs from the repository's root.
    `cloud/vision-endpoint.sh create` (and `cloud/guard-endpoint.sh create`), then `status` until it is
    RUNNING. `create` asks first (it is billed by the hour) and keeps the endpoint's token in Nebius MysteryBox
    secrets, never on a command line. Run `stop` when you're done; a stopped endpoint costs nothing for compute.
-   **Offline eyes:** NVIDIA Cosmos Reason 2 2B on this computer, for when the network is down. Accept its licence on
+   **Local vision:** NVIDIA Cosmos Reason 2 2B on this computer; conversation still needs Token Factory. Accept its licence on
    [Hugging Face](https://huggingface.co/nvidia/Cosmos-Reason2-2B) with this computer's Hugging Face login, then
    `(cd local-eyes && uv sync)` and `local-eyes/run.sh` (a second GPU, or a 24 GB one; about 14 GB with the default
    share), and put `ANDY_VISION_FALLBACK=local` in the env file. With a whole 24 GB GPU free, the 8B model points
@@ -480,7 +495,8 @@ Every command runs from the repository's root.
    `NEBIUS_API_KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' ~/.config/companion-hackathon/.env)" uv run python evals/run_suite.py --runs 3`
    (the key read from the env file, never typed where the shell's history keeps it).
 
-Tests: `uv run pytest`; every test, the robot-side ones included, in the robot's environment:
+Tests: `uv run --locked pytest`; GitHub Actions runs the CPU suite on pushes and pull requests.
+Every test, the robot-side ones included, in the robot's environment:
 `uv run --project robot --with pytest python -m pytest tests`.
 
 **Contributing:** contributions aren't taken yet ([decision 0003](docs/decisions/0003-what-is-public.md)). Anyone

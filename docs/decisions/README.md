@@ -14,7 +14,7 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0007](0007-the-scam-check-two-narrow-questions.md) | The scam check: two narrow questions, the web's warnings matched by a strong model | 2026-10-14 | accepted |
 | [0008](0008-andy-runs-as-user-services.md) | Andy and its voice server run as user services | 2026-10-14 | accepted |
 | [0009](0009-four-private-links-each-with-its-own-token.md) | Four private links, each with its own token | 2026-10-14 | accepted |
-| [0010](0010-a-public-read-only-demo-of-the-screens.md) | A public, read-only demo of the screens, as a Hugging Face Space | 2026-10-20 | accepted; the Space waits on the founder's account |
+| [0010](0010-a-public-read-only-demo-of-the-screens.md) | A public, read-only demo of the screens, as a Hugging Face Space | 2026-10-20 | accepted; Space public since 2026-10-25 |
 | [0011](0011-the-eyes-on-token-factory.md) | The eyes on Token Factory: Nemotron 3.5 Super VL, with our own endpoint as an option | 2026-10-20 | accepted; amended by 0012 |
 | [0012](0012-the-finder-zooms-in-then-looks-closer.md) | The finder zooms in, then looks closer | 2026-10-20 | accepted; amends 0011 |
 | [0013](0013-the-finder-tested-in-simulation.md) | The finder tested in simulation, as Nebius Serverless Jobs | 2026-10-20 | accepted |
@@ -22,3 +22,5 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0015](0015-cosmos-on-this-computer-as-the-offline-eyes.md) | NVIDIA Cosmos Reason 2 2B on this computer, as the offline eyes | 2026-10-25 | accepted; amends 0014 |
 | [0016](0016-the-finder-turns-its-body-to-look.md) | The finder turns its body to look past the head's reach | 2026-10-25 | accepted; amends 0012 |
 | [0017](0017-the-voice-log-is-checked-not-trusted.md) | The voice log is checked, not only filtered | 2026-10-25 | accepted |
+| [0018](0018-one-confirmation-for-one-proposed-action.md) | One confirmation authorizes one exact proposed action, once | 2026-10-26 | accepted |
+| [0019](0019-transient-content-stays-in-the-screen-servers-memory.md) | Cards and research stay in the screen server's memory | 2026-10-26 | accepted |

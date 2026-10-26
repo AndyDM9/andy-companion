@@ -17,6 +17,16 @@ import pytest  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
+def _private_transient_state(monkeypatch):
+    from andy_companion import board, consent, transient
+    monkeypatch.setattr(transient, "owner", True)
+    monkeypatch.setattr(board, "_screen", None)
+    monkeypatch.setattr(board, "_research", [])
+    monkeypatch.setattr(board, "_generation", 0)
+    monkeypatch.setattr(consent, "_default", consent.Confirmation())
+
+
+@pytest.fixture(autouse=True)
 def _forget_last_seen_places():
     """Where Andy last saw things lives in memory (places._last_seen): never carried from one test to the next."""
     from andy_companion import places

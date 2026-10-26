@@ -10,6 +10,7 @@ NEXT = {
                  "with set_reminder only after they say yes."),
     "look_up": ("If the answer is about something they plan to do (a visit, an opening time, a deadline), offer "
                 "a reminder for it. Set it with set_reminder only after they say yes."),
-    "check_message": ("Offer to let their family know about this message with a short note on the family page "
-                      "(share_with_family). Say the exact words first, and share only after they say yes."),
+    "check_message": ("If they ask to let family know, call share_with_family once to prepare a short note. "
+                      "Read its confirmation question exactly, wait for a yes, and call it again unchanged. "
+                      "Nothing is shared by the proposal."),
 }

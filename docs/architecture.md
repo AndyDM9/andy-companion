@@ -1,6 +1,6 @@
 # Architecture
 
-**Last updated 2026-10-20.** How Andy's parts fit together, for anyone reading or changing the code: the robot, the
+**Last updated 2026-10-26.** How Andy's parts fit together, for anyone reading or changing the code: the robot, the
 home computer, Nebius and the web; what each module owns, and what it must not reach into.
 
 ![How Andy works](images/architecture.svg)
@@ -27,7 +27,7 @@ The text diagram below shows the voice path in detail.
 
  Also on this computer, offline: Vosk (the wake phrase, English and Spanish), Tesseract (reading a letter; only
  its text leaves), YuNet on ONNX Runtime in Pollen's software (finding a face to follow, never recognising it), and
- NVIDIA Cosmos Reason 2 (the eyes when the network is down, below). The full list, with what each is for and what we
+ NVIDIA Cosmos Reason 2 (local vision; conversation still requires Token Factory). The full list, with what each is for and what we
  measured: the README's "Every model, and where it runs".
 
  tools/ (local_news, look_up, whats_on, read_link, check_message, look_into; setup: events page)
@@ -76,11 +76,11 @@ watchdog only logs).
 | `profiles/companion/` | Who Andy is, how it speaks, what it never does, which tools it may use | Contain any person's data |
 | `tools/` + `src/andy_companion/` | The companion's own abilities: the clock, reminders and the speaker that says a due reminder unprompted | Move the robot except through the app's movement tools |
 | `src/andy_companion/body/` | Where Andy looks and turns: following the person while speaking and listening, finding them by voice or by sight, calm idle moments, the antennas' thinking lean, a glance at the TV when something new shows on it (`glance.py`: only once the screen's place is set, never while the person speaks); what the head is turned to for the TV's line (`looking_at.py`: you, the screen, the room or pointing, set by each move for as long as it lasts) | Store any frame, image or identity; send a picture anywhere |
-| `board.py`, `screen_server.py`, `pages/` | Andy's screen and the family page: what is shown, how it looks (the time of day's colours, glass or the calm screen), what the person shared, messages and looks from family; captions paged over the foot of the screen; how each web answer was found; the gear menu (the settings code, Under the hood); "Try asking" when the screen is quiet. Four private links, each with its own token: screen, family, settings, hood. `READ_ONLY` and `INDEX` exist only for the public demo (`scripts/demo_screen.py --public`, `space/`, decision 0010): every POST refused, a front page at `/` Served on the home network only: a client outside private, loopback, link-local or home-VPN (100.64/10) addresses is refused, the public demo excepted; family sends are limited to 20 a minute; a photo's size is read from its header before it is decoded (2026-10-25). | Show or share anything the person did not ask to share; log a URL or token; let the hood link reach the screen or the settings |
+| `board.py`, `transient.py`, `screen_server.py`, `pages/` | Cards and research in server memory, reached by the app over authenticated loopback HTTP, never files (decision 0019); Andy's screen and the family page: what is shown, how it looks (the time of day's colours, glass or the calm screen), what the person shared, messages and looks from family; captions paged over the foot of the screen; how each web answer was found; the gear menu (the settings code, Under the hood); "Try asking" when the screen is quiet. Four private links, each with its own token: screen, family, settings, hood. `READ_ONLY` and `INDEX` exist only for the public demo (`scripts/demo_screen.py --public`, `space/`, decision 0010): every POST refused, a front page at `/` Served on the home network only: a client outside private, loopback, link-local or home-VPN (100.64/10) addresses is refused, the public demo excepted; family sends are limited to 20 a minute; a photo's size is read from its header before it is decoded (2026-10-25). | Show or share anything the person did not ask to share; log a URL or token; let the hood link reach the screen or the settings |
 | `setup_page.py` (+ `/setup`) | What a helper may change from a phone (town, news sites, what's-on pages, language, pace, volume, captions), its checks, and telling the person who changed what | Change reminders, memories or what is shared; change anything without a name and a notice to the person |
 | `live.py` | What Andy is doing right now (ready, hearing, thinking, working with the tool's name, speaking), and what its head is turned to (one of four names from `body/looking_at.py`), sent to the screen server on change | Send words or tool arguments |
-| `kept.py` | Everything Andy keeps about the person, listed and deletable from the settings page | Delete without a name and a notice to the person |
-| `consent.py` | Saving tools (`remember`, `remember_moment`, `remember_place`) run only when the person's last words asked or said yes; `share_with_family` only after a clear yes or a plain request to share (2026-10-25) | Keep or log the words beyond the check |
+| `kept.py` | Persistent items and pending messages/research, listed and deletable; delete everything also clears the card, captions and views | Delete without a name and a notice to the person |
+| `consent.py` | Per-conversation, one-use permission bound to exact tool arguments and a spoken readback, expiring after two minutes (decision 0018). Explicit requests can save one item directly; sharing always requires confirmation. The first offered save or share is only a proposal; its tool runs after the matching confirmation. The tool wrapper rejects changed content and reused permission. | Keep or log the words beyond the check |
 | `health.py` | The hood page's health tiles: daemon, voice server, Andy's mode, weather, Tavily credits, Nebius endpoints | Read keys or words; hold up a page while checking |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers, tool names and which eyes answered (one of three names) |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
@@ -117,10 +117,10 @@ watchdog only logs).
 - Nebius Token Factory runs with zero data retention switched on.
 - No recording or transcript is stored. Owner-only in `~/.local/share/andy-companion/`: what the person
   asks Andy to remember (`memory.json`, `moments.json`, moments for 7 days), their reminders
-  (`reminders.json`), notes shared with family (`shared.json`), family messages and research answers
+  (`reminders.json`), notes shared with family (`shared.json`), family messages
   waiting to be said (`inbox.json`), family photos (`photos/`, 7 days), settings (`settings.json`), the
-  story bookmark (`story.json`) and joke numbers (`fun.json`). The card on the screen (`screen.json`) is
-  cleared when it expires, by a housekeeping thread, whether or not a TV is open.
+  story bookmark (`story.json`) and joke numbers (`fun.json`). Cards and research questions and answers live only in the screen server's memory. The app uses authenticated loopback HTTP (`transient.py`, decision 0019), with no disk fallback. Old
+  `screen.json` and old disk-backed research entries are removed on startup.
 - Captions of Andy's own words live only in the screen server's memory, for three minutes (long enough to read a story's part along to the end), never on disk or in a log.
 - Turn timings (numbers and tool names only) live only in the screen server's memory, last 40.
 - The services' journal holds the same redacted log lines: timings, token counts and tool names, no words
@@ -131,8 +131,12 @@ watchdog only logs).
 
 ## Evaluation
 
-- `evals/run_suite.py`: the conversation suite (97 spoken situations, Andy's real profile and tools, judged
-  by Nemotron 3 Ultra), locally or as a Nebius Serverless Job (`cloud/suite-job.sh run`).
+- `evals/run_suite.py`: 97 text-based conversation and tool-selection cases, the real profile, tool
+  definitions, confirmation gate and urgent-words net, with synthetic tool results, judged by Nemotron
+  3 Ultra. It does not run a microphone, camera or motors. Run locally or as a Nebius Serverless Job
+  (`cloud/suite-job.sh run`); input and code hashes accompany new scorecards.
+- `evals/physical_trials.py`: a fixed 30-attempt plan for the real finder; manual outcomes and timings,
+  all attempts retained, confidence intervals, no speech or pictures. A score requires all 30.
 - `evals/scam_eval.py`: the scam check five ways: word rules alone (`--word-rules`), and Lightning and Ultra each alone and with Tavily's warnings; Tavily fetched once
   per message and the models run three times as Nebius Serverless Jobs, two at a time
   (`cloud/scam-job.sh`; a job's request may hold 64 KB, so four parts).

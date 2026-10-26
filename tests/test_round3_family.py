@@ -65,6 +65,7 @@ def test_a_suggestion_needs_a_name_short_words_no_link_and_a_time_within_the_wee
 def test_a_suggestion_waits_in_the_inbox_as_its_own_kind():
     board.family_suggestion("  Anna ", " call   the pharmacy ", "Wednesday 15:00", at(15), now=T)
     entry = board.next_for_person()
+    assert entry.pop("id")
     assert entry == {"type": "suggestion", "name": "Anna", "what": "call the pharmacy", "when": "Wednesday 15:00",
                      "due": at(15), "at": T}
 

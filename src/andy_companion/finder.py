@@ -541,7 +541,7 @@ async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any]
     except Exception:
         pass   # the TV is a help, never a reason to stop
     where = chosen["where"] or hint.get("where", "")
-    board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
+    await asyncio.to_thread(board.show, "seen", f"Your {what}", [{"summary": where}] if where else [])
     places.saw(what, where, chosen["yaw"], chosen["pitch"])
     kept = "where you left them" if hint.get("told") else "where I last saw them"
     say = f"They're still {kept}" + (f", {where}" if where else "") + "."
@@ -568,7 +568,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         antennas = (0.0, 0.0)
     pitch = math.radians(PITCH_DEG)
     try:   # the TV shows the last search's close-up for two minutes: clear it, or Andy finds the picture
-        board.clear_screen()
+        await asyncio.to_thread(board.clear_screen)
         poster([None] * len(SWEEP_DEG), [False] * len(SWEEP_DEG), None)
     except Exception:
         pass
@@ -660,7 +660,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         await asyncio.to_thread(record, what, frames, results, None, {**seconds, "closer": closer}, None,
                                 [[round(math.degrees(a), 1) for a in ps] for ps in poses], close_ups)
         await asyncio.to_thread(show_views)
-        board.show("looked", f"I couldn't see your {what}", [])
+        await asyncio.to_thread(board.show, "looked", f"I couldn't see your {what}", [])
         if places:
             how = (f"Say kindly that you thought you saw something like their {what}, but when you looked closer it "
                    "wasn't them, and that the screen shows where you looked. Offer to look again if they move "
@@ -678,7 +678,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
                             [[round(math.degrees(a), 1) for a in ps] for ps in poses], close_ups)
     await asyncio.to_thread(show_views)
     where = chosen["where"]
-    board.show("seen", f"Your {what}", [{"summary": where}] if where else [])
+    await asyncio.to_thread(board.show, "seen", f"Your {what}", [{"summary": where}] if where else [])
     say = f"I think I see your {what}" + (f", {where}" if where else ", over there where I'm looking") + "."
     from andy_companion import places as kept_places
     kept_places.saw(what, where, chosen["yaw"], chosen["pitch"])     # in memory only: asked again soon, look there first

@@ -16,6 +16,11 @@ are from Nebius Token Factory's model list and Tavily's pricing page on **2026-1
 **Altogether: about $2.30 a month** for conversation, help and the web, at this level of use (the web free within Tavily's 1,000 monthly credits). The estimate
 scales with use: twice the talking is about twice the conversation line.
 
+This is an **API-use estimate**, not the total cost of owning or operating Andy. It excludes the computer,
+robot and display, electricity, internet, maintenance, the optional hourly second-check endpoint, and the
+eyes priced below. If Tavily's free allowance is unavailable or shared with other use, include the paid web
+line. The developer's current pay-as-you-go account is not evidence that a household's web use will be free.
+
 ## The eyes
 
 Since 2026-10-20 the eyes are NVIDIA Nemotron 3.5 Super VL on Token Factory, paid per picture. A description is

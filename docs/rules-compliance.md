@@ -99,3 +99,14 @@ Devpost text's finder limits reworded the same day for the body turn (decision 0
 against Pollen's kinematics and not yet on the robot. The README's first screen and the Devpost text revised again the
 same evening after a judge's-eye read (decision-free wording changes; every claim still linked to its evidence). The Space (testing access) needs Hugging Face PRO for a Docker
 Space since this year; the founder subscribes, and it stays up through 2026-12-15 (decision 0010, amended).
+
+
+## 2026-10-26 review changes
+
+Checked against the official rules retrieved on October 26: the technical requirement, four equally
+weighted criteria, public repository and video requirements remain as recorded above. Filming is now
+October 27, as the founder chose. No video has been claimed as completed and no physical trial is
+marked passed by a software test. The submission text now states the text suite's scope and the
+local vision fallback's boundary. The new confirmation and transient-state designs are decisions
+0018 and 0019. CPU CI is defined; its hosted execution must be checked after pushing. Final evidence
+links, the tag, app pin, photographs, captions and actual submission remain on the checklist.

@@ -741,6 +741,16 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"ok": True})
             return self._json({"error": READ_ONLY_ERROR}, 403)
         local = self.client_address[0] in ("127.0.0.1", "::1")
+        if url.path == "/api/transient" and _ok(q.get("t"), "screen") and local:
+            length = self._length()
+            if not 0 < length <= 16384:
+                return self._json({"error": "too long"}, 413)
+            try:
+                data = _object(self.rfile.read(length))
+                value = board.transient_action(str(data.get("action", "")), data.get("data"))
+            except (ValueError, TypeError, OverflowError):
+                return self._json({"error": "bad request"}, 400)
+            return self._json({"value": value})
         if url.path == "/api/screen/settings-code" and _ok(q.get("t"), "screen"):
             # The gear on the TV: the QR code appears, for two minutes. Each new code retires the settings
             # link, so a code already up stays: pressing again can't keep cancelling a helper's link.
@@ -883,9 +893,13 @@ def _housekeeping(every_s: float = 60.0, rounds: Optional[int] = None) -> None:
 
 
 def serve(host: Optional[str] = None, port: Optional[int] = None) -> ThreadingHTTPServer:
+    from andy_companion import transient
+
     host = host if host is not None else os.environ.get("ANDY_SCREEN_HOST", "0.0.0.0")
     port = port if port is not None else int(os.environ.get("ANDY_SCREEN_PORT", "8090"))
     httpd = ThreadingHTTPServer((host, port), Handler)
+    transient.owner = True
+    board.purge_legacy_transients()
     # A short poll, so stopping the server (tests, the demo) takes a twentieth of a second, not half of one.
     threading.Thread(target=lambda: httpd.serve_forever(poll_interval=0.05), name="andy-screen", daemon=True).start()
     threading.Thread(target=_housekeeping, name="andy-screen-tidy", daemon=True).start()

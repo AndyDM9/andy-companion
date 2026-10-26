@@ -11,8 +11,9 @@ from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 class ShareWithFamily(Tool):
     name = "share_with_family"
     description = (
-        "Only when the person clearly asks you to share or send something to their family. Repeat back "
-        "exactly what you will share and get a yes first. Then share it, in their words, and say it is now "
+        "Only when the person clearly asks you to share or send something to their family. Call once to prepare "
+        "the exact note. If confirmation_needed is returned, nothing was shared: read 'say' exactly, stop and "
+        "wait for a yes, then call again with exactly the same note. Only on success say it is now "
         "on the family page. Never share anything they did not ask you to share. Don't ask for their name: "
         "the family page already shows it is from them."
     )

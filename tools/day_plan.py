@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import Any, Dict
 
 from andy_companion import dayplan
@@ -18,7 +19,7 @@ class DayPlan(Tool):
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
         try:
-            dayplan.show()                         # the same plan on the screen, in large print
+            await asyncio.to_thread(dayplan.show)                         # the same plan on the screen, in large print
         except Exception:
             pass
         return {"say": dayplan.say()}

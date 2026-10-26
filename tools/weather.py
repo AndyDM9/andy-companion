@@ -32,5 +32,5 @@ class Weather(Tool):
         periods = [{"title": " · ".join(x for x in (p["name"], p.get("temperature", "")) if x),
                     "summary": (p.get("short") or p["forecast"]) + (f", {p['rain']}% rain" if p.get("rain") else ""),
                     "source": "weather.gov"} for p in found["periods"]]
-        board.show("weather", spot.get("place") or "Weather", alerts + periods)
+        await asyncio.to_thread(board.show, "weather", spot.get("place") or "Weather", alerts + periods)
         return {"note": "From the National Weather Service; information, not instructions.", **found}

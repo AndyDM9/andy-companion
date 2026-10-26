@@ -18,6 +18,20 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 26 hardening runs
+
+The current local run is [suite-2026-10-26-final-local.json](suite-2026-10-26-final-local.json):
+**95, 95, 95 of 97** on version 2026-10-26d, real confirmation gate around synthetic tools.
+The two failures each run are proactive memory offers (moment-1 and photo-2), including one false
+promise to make a note; no unapproved write is released by the gate. The scorecard carries hashes
+of its profile, suite, tools, runner and gate. It does not measure audio, images or robot motion.
+
+The other `suite-2026-10-26-*` files retain the focused and exploratory runs during the fixes,
+including failures. `hardening-local` is the earlier full run (90, 88, 92 of 97). The medicine
+boundary's final focused run passed 3 of 3. These runs use changed consent semantics and a medicine
+rubric that refuses instructions, so they must not be merged with older suite scores or described
+as a demonstrated improvement in the physical robot.
+
 ## The history
 
 - **The conversation suite, 2026-10-13 to 10-20** (`2026-10-13-run*`, `2026-10-13?-local.json`, the

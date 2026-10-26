@@ -1,6 +1,6 @@
 # 0010: A public, read-only demo of the screens, as a Hugging Face Space
 
-**Date:** 2026-10-20. **Status:** accepted; the Space itself waits on the founder's account.
+**Date:** 2026-10-20. **Status:** accepted; Space public since 2026-10-25.
 
 ## Context
 

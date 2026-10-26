@@ -348,7 +348,7 @@
     "j_screen": "The screen", "j_tv": "The TV's position",
     "kept_h": "What Andy remembers{for}",
     "kept_hint": "Everything Andy keeps, besides these settings. Andy tells {them} about anything you delete.",
-    "k_reminder": "Reminders", "k_moment": "Remembered moments", "k_fact": "Remembered facts", "k_shared": "Shared with family", "k_place": "Where things are",
+    "k_reminder": "Reminders", "k_moment": "Remembered moments", "k_fact": "Remembered facts", "k_shared": "Shared with family", "k_place": "Where things are", "k_pending": "Waiting to be said",
     "k_photo": "Photos from family", "photo_item": "Photo",
     "none_yet": "None yet: {list}.", "nothing_kept": "Andy keeps nothing yet besides these settings.",
     "delete": "Delete", "delete_armed": "Delete? Tap again", "delete_aria": "Delete {label}",
@@ -419,7 +419,7 @@
     "j_screen": "La pantalla", "j_tv": "Dónde está el televisor",
     "kept_h": "Lo que Andy recuerda{para}",
     "kept_hint": "Todo lo que Andy guarda, aparte de estos ajustes. Andy le cuenta{a} todo lo que usted borre.",
-    "k_reminder": "Recordatorios", "k_moment": "Momentos recordados", "k_fact": "Cosas recordadas", "k_shared": "Compartido con la familia", "k_place": "Dónde están las cosas",
+    "k_reminder": "Recordatorios", "k_moment": "Momentos recordados", "k_fact": "Cosas recordadas", "k_shared": "Compartido con la familia", "k_place": "Dónde están las cosas", "k_pending": "Pendiente de decir",
     "k_photo": "Fotos de la familia", "photo_item": "Foto",
     "none_yet": "Nada todavía: {list}.", "nothing_kept": "Andy todavía no guarda nada aparte de estos ajustes.",
     "delete": "Borrar", "delete_armed": "¿Borrar? Toque otra vez", "delete_aria": "Borrar {label}",
@@ -603,7 +603,7 @@
   }
 
   // --- What Andy remembers ----------------------------------------------------------------------------
-  const KEPT = ["reminder", "moment", "fact", "shared", "photo", "place"];
+  const KEPT = ["reminder", "moment", "fact", "shared", "photo", "place", "pending"];
   function renderKept(kept) {
     const box = $("kept"); box.replaceChildren();
     const empty = [];

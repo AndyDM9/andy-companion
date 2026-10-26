@@ -1,7 +1,7 @@
 # The video
 
 The plan for the entry's video: the rules it must meet, the checklist before filming, the shots, and what
-happens after. Last revised 2026-10-21.
+happens after. Last revised 2026-10-26; filming October 27.
 
 **Rules** (Devpost, re-read 2026-10-13; every rule and how we meet it is in
 [rules-compliance.md](rules-compliance.md)):
@@ -36,11 +36,9 @@ so this video is the entry. Web-only scam checkers are many; a robot in a real h
 physical moment (the letter in a hand, the head turning to the TV), keep the scam verdict one beat of three,
 and let the glasses and the family photo carry the rest.
 
-**Physical AI moments (2026-10-20, round 8), each a few seconds, live:** a second person speaks from the side and
-Andy turns to them (the TV: "Turning to a voice"); a wave, and its antennas wave back; "my keys are here" and, later,
-Andy turning straight to them; a grandchild teaching it a move with its antennas. The judges' research: an unprompted
-turn toward something real reads at once as attention. Placed (2026-10-20): the turn to a voice and the wave in shot
-3's long take, the keys at the end of shot 4 if the glasses are quick, the taught move as a social clip; none adds time.
+**Optional extra clips:** a turn to a second voice, a wave, remembered keys or a taught move can be
+recorded separately after its live test passes. The October 26 shot plan does not depend on them;
+the main continuous take concentrates on the day plan, research, following and interruption.
 
 **Judges have no robot (2026-10-20):** the video is where they see the physical part. Use the simulation's film
 (`docs/images/sim-search.mp4`, 20 s: Andy's own search in Pollen's MuJoCo scene, made by `sim/replay.py`) for two or
@@ -49,7 +47,7 @@ three seconds in shot 7, beside the Serverless Jobs' numbers, never in place of 
 **Narration** is timed at 2.5 words a second (an unhurried pace), each line under its shot's length; read it aloud
 with a stopwatch before filming.
 
-**Target length:** 2:54 as planned (retimed 2026-10-20 for a 72 s shot 3), never over 2:55 (time a rough cut). Andy's lines are never scripted; only the person's are planned. Robot shots are
+**Target length:** about 2:56, always under three minutes. Time the actual takes; omit an optional beat rather than cutting a robot pause. Andy's lines are never scripted; only the person's are planned. Robot shots are
 long, unedited takes.
 
 ## Before filming
@@ -71,8 +69,6 @@ long, unedited takes.
       need nothing started: Nemotron 3.5 Super VL is on Token Factory (decision 0011).
 - [ ] **Finder recording off** (the doctor's "Finder tries not kept"): the recorded tries would keep the room and
       everyone filmed. Remove the `ANDY_FINDER_RECORD` line from the env file, then restart Andy.
-- [ ] Early in the shoot, off camera or in shot 3(a): put the keys somewhere in Andy's view, "Andy, my keys are
-      here", and say yes when it asks to remember; shot 4 asks for them.
 - [ ] The voice server and `scripts/andy` are running. Andy's screen is on the TV beside the robot, and
       the screen's place is set (it glances there).
 - [ ] The under-the-hood page (`/hood`, from `scripts/settings.py links`) on a laptop in shot, or recorded
@@ -92,23 +88,22 @@ long, unedited takes.
 
 ## Shots
 
-Rewritten 2026-10-14, and 2026-10-20 for the zoomed search and the round 8 moments, from two audits and the research (the Devpost update's tip on live hardware, an
-uncut physical moment, Tavily named at the start, a dated problem line, privacy answered plainly).
+Revised October 26 for October 27 filming: fewer required behaviors in the long take, a full 30 seconds
+for the glasses search, and current measurement scope beside every score.
 
 | # | Time | What we see | What is said |
 |---|---|---|---|
-| 1 | 0:00–0:16 | **The hook, live.** The person holds up the prize letter. Andy turns to the TV, where **Be careful** appears, then back to the person, and offers to look it up; "yes"; the TV shows the warning Tavily found | Andy, live, in its own words, for example: "It asks for a fee to release a prize. Real organisations never do that. Shall I look it up?" … "Consumer-protection warnings describe exactly this trick. Let's check with Anna before paying anything." Caption from the first frame, the problem first (the organisers: "lead with the problem"), the robot before the scam: "A letter you're not sure about? Andy, a home robot, reads it with you. Every robot shot is live." By 0:10, a second line: "For older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius." |
-| 2 | 0:16–0:30 | The founder to camera, Andy behind | "Three in four Americans over fifty want to keep living at home. This is Andy, built with NVIDIA Nemotron on Nebius Token Factory, and Tavily. A robot, not a speaker: it turns to you." (34 words, about 14 s.) Caption: "AARP Home and Community Preferences Survey, 2024" |
-| 3 | 0:30–1:42 | **One long take, unedited, the hood page's timings in a corner.** (a) "What's on today?": the **Today** card, and Andy glances at it. (b) The person walks across the room asking "Could you look into whether the farmers market is on this Saturday?": Andy's head follows, and the TV shows **Tavily** research live (planning, searching, sources). (c) The reminder chime: "It's time to call Rosa." (d) Mid-answer, the person talks over Andy ("Andy, stop"): Andy stops at once and listens. (e) The daughter, coming in from the side, says something to her mother: Andy's head turns to her by itself (the TV: **Turning to a voice**), then back. (f) The research answer arrives: Andy tells it, naming the source. (g) The daughter waves goodbye; Andy's antennas wave back (**Waving back**) | Only the person's lines are planned; Andy is live. Voice-over if needed: "Every answer from the web comes through Tavily, with its sources named." If (e) or (g) doesn't happen, keep the take: never fake it |
-| 4 | 1:42–2:06 | **Finding the glasses, one uncut take.** Someone off camera has hidden them; the TV clock is in shot. "Andy, where did I leave my glasses?" Andy sweeps the room (about 12 to 20 s), turns to the best sighting and looks closer, then points with its head; the TV shows the four views in the order it turned, then **What I see**: hold on it for a second. If it took under 15 s, and only if live-test 3bb passed: "And my keys?" Andy turns straight to where they were left (**Looking where they were left**) | Andy, live. Caption: "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory: four looks, each zoomed into six tiles, then a closer look before it says so." Never cut the pause while it looks |
-| 5 | 2:06–2:19 | The daughter, on her phone, sends an old family photo; it appears on the TV. **A photo story** (PLAN B35) | Andy: "Anna sent a photo, it's on your screen…", describes it and asks one question ("Where was it taken?"); the person answers in a sentence; Andy: "Shall I keep that story?" "Yes." Live; only the person's lines planned |
-| 6 | 2:19–2:25 | Boundaries | "Be my late husband Harold for a while." Andy kindly says it's a robot and won't speak as anyone |
-| 7 | 2:25–2:42 | Founder with the hood page from this shoot, then the architecture picture, with the on-screen line "Agent runtime: Pollen's Reachy Mini conversation app, with Andy's tools and rules plugged in"; **3 s split screen: the simulation's film** (`docs/images/sim-search.mp4`, from the close-up to the point) **beside the real robot pointing in shot 4**, the same search on both sides, with the simulation's numbers; the scam chart and the suite's scorecard | "Eight models run right here: NVIDIA Parakeet hears, and NVIDIA Cosmos Reason 2 sees when the network is down. **NVIDIA Nemotron on Nebius Token Factory** thinks and sees, about a second to answer, and **Nebius Serverless Jobs** test its search in simulation." (40 words, about 16 s.) On screen under the architecture picture: "Eight models at home · five NVIDIA Nemotron models on Nebius · a Serverless Endpoint for the second check". Keep Cosmos's words to "tested on this computer" unless it was tried on the robot with the network unplugged before filming. On screen beside the scorecard: "97 situations, judged by NVIDIA Nemotron 3 Ultra: 96, 95 and 92 of 97" and beside the scam chart: "58 of 60 scams caught, none of 60 ordinary messages flagged". On-screen text for the film: "Simulation, Pollen's MuJoCo scene: 0 false finds in 7, 0.76° median from the truth (30 trials, Nebius Serverless Jobs)" |
-| 8 | 2:42–2:54 | Andy facing the person, the TV in the evening colours; a card with four short lines | "Your voice is never recorded. Andy keeps only what you ask it to, family see only what you share, and you can delete any of it. Andy is open source." (30 words, about 12 s.) The card's four lines: "Words, not recordings, on this computer" · "Nebius Token Factory, zero data retention on" · "Kept only when you say yes" · "Shared only with whom you choose". Then, small, under the card, the limits said plainly: "Not yet: a study with older adults; at home it found hidden glasses 3 of 9 times, never at the wrong place." Then the title card: the repository address (and "a Reachy Mini app" only once it is published) |
+| 1 | 0:00–0:24 | **Hook, live:** hold up the invented prize letter. Andy reads it; the TV shows **Be careful** and Andy glances at it. A web lookup follows only if it fits naturally. | Andy answers live. First caption: "Andy reads the letter in your hand. A home robot for older adults who live at home, and the family who help." No title slide before the robot. |
+| 2 | 0:24–0:36 | Founder with Andy and the TV in shot. | "Andy turns toward you, reads a letter you hold up, and looks around for your glasses. Built with NVIDIA Nemotron on Nebius Token Factory, and Tavily." |
+| 3 | 0:36–1:48 | **One 72-second take, uncut.** Ask for today's plan. Walk a little while asking Andy to research whether the farmers market is on Saturday. The TV shows progress; Andy follows. Interrupt one reply with "Andy, stop". Let the research answer arrive if it finishes during the take. | Only the person's requests are planned. Keep the pauses. The live hood page can be a small inset. A reminder, wave or turn to a second voice is optional, only if already verified; none is required for this take. If research finishes later, show its actual result elsewhere without implying it happened faster. |
+| 4 | 1:48–2:18 | **Glasses, uncut:** someone else places them within the verified search area. Andy sweeps, turns, checks and points; the TV shows its views. | Caption: "Look → choose a view → turn → check → point. NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory." Use the body turn only after live-test 3t3 passes. |
+| 5 | 2:18–2:32 | A family member sends an agreed photo; it appears on the TV and Andy describes it. | Live. The memory offer is optional: include it only if the revised confirmation flow passes on the robot. A photo arriving and being described is enough for this shot. |
+| 6 | 2:32–2:48 | Architecture, a short clearly labelled simulation clip, and the measured results. | "Parakeet hears at home. Nemotron talks and sees on Nebius Token Factory. Serverless Jobs evaluate the search and conversation. Those tests are separate from these real robot scenes." Use current scores with their dates and scope, not the older profile's score as proof of the new code. |
+| 7 | 2:48–2:56 | Andy and the TV, then repository address. | "No recordings or transcripts. Kept and shared with your permission. Open source." Caption: "Limits and every scorecard in the repository. No study with older adults yet." |
 
 **At least one minute of the robot operating:** the Physical AI track asks for "a 1-minute clip", one clip, so
 shot 3 is that clip on its own: 72 s, one take, never cut (if the take runs short, keep filming until it passes
-70 s). With shots 1, 4, 5 and 6 the robot is on screen about 2:05 in all.
+70 s). The letter, search and family-photo shots add more real operation. The technical and simulation shots do not count as hardware footage.
 
 **Spanish** is no longer a shot (it cost 12 s and burned-in subtitles); it stays in the Devpost text and as
 a social clip, with English subtitles.

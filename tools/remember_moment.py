@@ -12,9 +12,10 @@ class RememberMoment(Tool):
     name = "remember_moment"
     description = (
         "When the person mentions something coming up or just happened with a day (a visit, an appointment, "
-        "a grandchild's recital, a birthday), first ask 'Shall I remember that?'. Only after a yes, call "
-        "this with what it is, in their words, and the day (today, tomorrow, a weekday, or YYYY-MM-DD). "
-        "You will bring it up on the day and ask how it went the day after. Never call it without a yes."
+        "a grandchild's recital, a birthday), call this to prepare a proposal with what it is, in their words, "
+        "and the day (today, tomorrow, a weekday, or YYYY-MM-DD). If confirmation_needed is returned, nothing "
+        "was saved: read 'say' exactly, wait for a yes, then call again with the same arguments. "
+        "You will bring it up on the day and ask how it went the day after. Never claim it is saved before success."
     )
     parameters_schema = {
         "type": "object",

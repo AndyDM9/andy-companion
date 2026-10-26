@@ -242,6 +242,20 @@ No new features: reviews of how judges see the entry, and the fixes they found.
 | 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted; posts | [rules-compliance.md](rules-compliance.md) |
 | 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | |
 
+### Round 12 (Codex), the October 26 project review
+
+The founder approved the review's recommendations and moved filming to October 27. Fixes and evidence
+take priority over new features. The submission tag and app pin wait for the final tested revision.
+
+| # | Item | Status |
+|---|---|---|
+| B66 | Bind each confirmation to one exact action and readback, with expiry and one-use permission | Built and regression-tested; decision 0018; robot check pending |
+| B67 | Keep cards and research in server memory; complete pending-item visibility and deletion | Built and tested across processes; decision 0019; service checked; USB reconnection required for live validation |
+| B68 | Fixed medicine-page response and a journal check that cannot pass on a read failure | Built and regression-tested; robot medicine-page check pending |
+| B69 | CPU CI and accurate evaluation scope, real consent gate in the text suite, input/code hashes | Workflow defined; hosted CI pending; new model runs retained separately |
+| B70 | Thirty planned real finder attempts, without speech or pictures; brief usability sessions | Recorder/scorer built; physical trials and sessions are the founder's |
+| B71 | Reconcile claims, local-vision limits, API-cost scope, filming date and outstanding evidence | Updated October 26; video and real photos remain October 27 work |
+
 ## The video
 
 The shot list, rules and checklist are in [video.md](video.md) (rewritten 2026-10-14).

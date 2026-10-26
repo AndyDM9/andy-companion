@@ -8,6 +8,45 @@ Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md
 
 ## Before
 
+**October 27 priority pass:** stop other robot apps and their wake listeners first. Use the existing
+Andy service throughout, never a second copy. Before filming, verify these revised paths:
+
+1. Ask to share an invented note. The first tool call must only read back the note and ask. Say no:
+   nothing reaches family. Ask again and say yes: one note appears, once. A new topic or an unrelated
+   yes must not release an old proposal.
+2. Tell a photo story and explicitly ask Andy to remember one sentence. Then try the offered-memory
+   flow. Record whether the model offers it; automated text runs still show variation in that offer.
+3. Hold up an invented medicine label: only the pharmacist/doctor referral, no instructions on TV or
+   aloud. An ordinary invented bill and prize letter must still work as before.
+4. Research a simple public question, stop it, and confirm it does not restart itself. During another
+   research, delete everything on the settings page; the card, captions and pending answer must clear.
+5. Test the side body turn (3t3), voice interruption, and a due reminder. Record actual results in the
+   table and STATUS; passing software tests does not complete these hardware steps.
+
+**The 30-attempt finder measurement, without speech or pictures:**
+
+```bash
+uv run python evals/physical_trials.py init /tmp/andy-physical-trials.csv
+uv run python evals/physical_trials.py record /tmp/andy-physical-trials.csv 1 --outcome found --seconds 18
+uv run python evals/physical_trials.py score /tmp/andy-physical-trials.csv --out /tmp/andy-physical-scorecard.json
+```
+
+The `record` line is an example, not a result: use the actual outcome and elapsed seconds. Follow
+the CSV's 30 rows in order: 20 objects present and 10 absent, different positions and light. Time from
+the end of the spoken request to the point or final answer. `found`, `missed`, `wrong_point` and
+`error` are present-object outcomes; `absent`, `false_find` and `error` are absent-object outcomes.
+Keep every attempt, including mistakes. The scorer refuses incomplete plans. The file stores only
+fixed task labels, outcomes and times. `ANDY_FINDER_RECORD` stays off. Copy the completed scorecard
+into `evals/results/` only after checking it, then update the public rate and its interval together.
+
+**Brief usability sessions:** ask two or three consenting potential users to try a letter, a search,
+a reminder and a family note with minimal coaching. Retain only agreed anonymous feedback and task
+counts. Record what confused them and what changed; do not save conversations or claim outcomes.
+
+**Local vision check:** block only the primary vision service while leaving Token Factory conversation
+reachable, and check that Cosmos answers and the hood names it. Unplugging the entire network also
+removes the conversation model; a successful direct vision call is not an offline voice demonstration.
+
 - [ ] **No other robot app running, and nothing that starts one.** On 2026-10-25 another conversation app on this
       desktop was started by its own wake word when Andy said its name, and the two together made the head and
       antennas shake. Stop it and its wake listener first; the doctor's "Only Andy drives the robot" names any other

@@ -94,6 +94,7 @@ def test_the_gate_stops_an_unasked_save_and_lets_an_asked_one_through():
     class Routine:
         def __init__(self, name):
             self.tool_name = name
+            self.args_json_str = json.dumps({"note": "The recital went well"})
 
         async def __call__(self, manager):
             ran.append(self.tool_name)
@@ -181,8 +182,8 @@ def test_the_gate_stops_an_unasked_share():
     h = Handler()
     h._emit_transcript("user", "My granddaughter's recital went really well")
     assert asyncio.run(Routine("share_with_family")(None)) == consent.NOT_SHARED and ran == []
-    h._emit_transcript("user", "Yes, please")                  # the answer to "Shall I share that?"
-    assert asyncio.run(Routine("share_with_family")(None)) == {"shared": True}
+    h._emit_transcript("user", "Yes, please")                  # unrelated yes is not permission
+    assert asyncio.run(Routine("share_with_family")(None)) == consent.NOT_SHARED
 
 
 def test_delete_everything_also_clears_what_was_waiting_to_be_said(tmp_path, monkeypatch):

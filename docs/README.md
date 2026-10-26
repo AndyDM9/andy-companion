@@ -2,7 +2,7 @@
 
 Everything written down about Andy, in two groups: what explains the product, and the records of how it was built
 and entered in the Nebius x NVIDIA Global AI Hackathon. Start with the [README](../README.md); this page says where
-everything else is. Last checked 2026-10-25.
+everything else is. Last checked 2026-10-26.
 
 ## Read first: the product
 
@@ -31,7 +31,7 @@ everything else is. Last checked 2026-10-25.
 | [submission-checklist.md](submission-checklist.md) | What must be done before submitting |
 | [submission.md](submission.md) | The Devpost text |
 | [video.md](video.md) | The video's plan and shot list: the plan of record |
-| [video-script.md](video-script.md) | An alternative cut of the video, used only where the founder chooses it |
+| [video-script.md](video-script.md) | Narration notes linked to the single shot plan; the alternative cut is retired |
 | [feedback-notes.md](feedback-notes.md) | The dated notes [feedback.md](feedback.md) was written from |
 
 **A key to the shorthand in the records:** M1 to M10 are milestones (STATUS); B1 to B58 are plan items (PLAN); a

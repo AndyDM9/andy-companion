@@ -73,3 +73,11 @@ often as Super VL (22 against 21 is inside the intervals, so no claim that it fi
 **On a computer with a whole 24 GB GPU free, such as this desktop, the 8B model is the offline eyes**
 (`ANDY_LOCAL_EYES_MODEL=nvidia/Cosmos-Reason2-8B` in the env file, read by `local-eyes/run.sh` and by Andy); 2B stays
 the default, for one GPU beside the voice server or a Jetson.
+
+## Clarified 2026-10-26: local vision is not an offline conversation
+
+The fallback is inside `vision.answer`. Tool selection and ordinary replies still use Nemotron on
+Token Factory. A total network outage prevents a new voice request from reaching that tool. The
+next robot check therefore blocks the primary vision service while leaving conversation reachable,
+then verifies the local eyes and the name shown on the hood. A completely offline voice assistant
+is future work. The previous desktop test proved a vision call, not offline voice interaction.

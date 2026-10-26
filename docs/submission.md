@@ -33,12 +33,11 @@ Andy is a small home robot for older adults who live at home, and the family who
 letter and by phone: adults 60 and over reported over $3 billion lost to fraud in 2025 ([FTC](https://www.ftc.gov/system/files/ftc_gov/pdf/2026-older-adults-report-10192026.pdf)). Andy reads the
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
-messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) spoken situations passed; both as Nebius
-Serverless Jobs. Entered in the **Physical AI track**.
+messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) text cases passed with the previous profile; both evaluations ran as Nebius
+Serverless Jobs. The current hardened profile scored [95 of 97 in each of three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-final-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Eight models run
-  on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 sees when
-  the network is down (tried on the home computer, not yet on the robot), with local models for the wake phrase,
+  on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
   reading letters and finding a face.
 - **Nebius:** Token Factory answers every turn: a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json) from your words being understood to Andy's
   first sound, 54 turns on the robot. **Serverless Jobs** run Andy's search in Pollen's MuJoCo simulation, scored
@@ -50,7 +49,7 @@ Serverless Jobs. Entered in the **Physical AI track**.
   you", and talking over Andy stops it. Installs as a
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
 - **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
-  with older adults yet. Every robot shot in the video is live, with no cuts in the pauses.
+  with older adults yet. The planned video uses live robot shots, with no cuts in the pauses; filming is October 27.
 
 ### Inspiration
 
@@ -62,8 +61,9 @@ only what you ask it to keep.
 
 ### What it does
 
-Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three moments, filmed live on the robot
-for the video, show what a robot can do that a phone can't:
+Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three interactions bring the
+camera, moving body and TV together. Filming is planned for October 27; each interaction's current test status is
+recorded in the repository's live-test checklist:
 
 - **"Can you read this for me?"** You hold up a letter. Andy reads it and the TV shows it in large print. If the
   page asks for a fee or gift cards, or rushes you, code, not the model, puts **Be careful** first: "Don't call or
@@ -86,7 +86,7 @@ robot: turning to a second person speaking, a move taught by hand, and rememberi
 
 - **At home:** NVIDIA Parakeet TDT 0.6B v3 and Qwen3-TTS on the home computer's GPU, so your voice never leaves the
   house, only words do; Silero VAD and Smart Turn v3.2, Vosk, Tesseract and YuNet on its CPU; and NVIDIA Cosmos
-  Reason 2 for when the network is down.
+  Reason 2 for local vision; the conversation still calls Token Factory.
 - **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 tools; NVIDIA Nemotron 3
   Ultra takes hard questions and judges the tests. Zero data retention is on.
 - **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed-in parts, all 24
@@ -148,11 +148,15 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
+- Current text-suite runs on October 26 scored 95 of 97 each, with the real confirmation gate and synthetic tools.
+  Two memory-offer cases remain unreliable; a gate prevents unapproved writes. The older Serverless Job scores
+  in this draft predate these changes and must not be presented as current-profile results.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.
-- The offline eyes need a GPU of their own (the 8B model a whole 24 GB one) and haven't been tried on the robot with
-  the network unplugged. GR00T and Sonic, the track's other models, are for robots with arms or legs.
+- The local vision fallback needs a GPU of its own (the 8B model a whole 24 GB one) and hasn't been tried on the
+  robot with the primary vision service blocked. The voice conversation and tool selection still need Token
+  Factory: this is not a complete offline assistant. GR00T and Sonic are for robots with arms or legs.
 
 ### What's next for Andy
 

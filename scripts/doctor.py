@@ -219,10 +219,12 @@ def live(e: dict) -> None:
           "close or pause heavy programs before filming (on 2026-10-13 a busy computer made the microphone drop audio)")
     check("Screen's place set (the glance)", settings.get().get("tv_yaw") is not None, "",
           "settings page → Where the screen is → Save and show me")
-    worded = lines_with_words(voice_log())
-    check("No words in the voice log", not worded, f"{worded} lines in the last day that may hold what was heard",
-          "a new print in the speech package: add its start to privacy.TRANSCRIPT_PRINTS, restart andy-voice, "
-          "and clear the journal (2026-10-25: 'Live:' lines reached it for ten days)")
+    log = voice_log()
+    worded = lines_with_words(log) if log is not None else None
+    check("No words in the voice log", worded == 0,
+          "Could not read the voice journal" if worded is None else f"{worded} lines in the last day that may hold what was heard",
+          "check journalctl access and that the voice service has produced a readable journal" if worded is None else
+          "inspect the speech package's output filter and restart andy-voice; do not print or copy transcript lines")
     recording = finder_recording(e)
     check("Finder tries not kept", not recording, f"each search's and look's pictures go to {recording}" if recording else "",
           "the room and anyone filmed would be kept: remove the ANDY_FINDER_RECORD line from the env file, "
@@ -237,17 +239,21 @@ VOICE_LOG_OK = re.compile(
     r"DeepFilterNet not available|/\S+\.py:\d+: \w*Warning: |\s+result = |\s*$)")
 
 
-def voice_log(since: str = "-24h") -> str:
+def voice_log(since: str = "-24h") -> str | None:
     try:
-        return subprocess.run(["journalctl", "--user", "-u", "andy-voice", "--since", since, "--no-pager", "-o", "cat"],
-                              capture_output=True, text=True, timeout=30).stdout
+        result = subprocess.run(["journalctl", "--user", "-u", "andy-voice", "--since", since, "--no-pager", "-o", "cat"],
+                                capture_output=True, text=True, timeout=30)
+        if result.returncode or result.stderr.strip():
+            return None
+        return result.stdout
     except (OSError, subprocess.SubprocessError):
-        return ""
+        return None
 
 
 def lines_with_words(log: str) -> int:
     """How many lines of the voice server's log are not one of the kinds it may write (never what they say)."""
-    return sum(1 for line in log.splitlines() if not VOICE_LOG_OK.match(line))
+    return sum(1 for line in log.splitlines() if not VOICE_LOG_OK.match(line) or
+               re.search(r"(?:^|\s)(?:USER|ASSISTANT|Live):", line))
 
 
 def other_robot_apps(listing: str | None = None, who=None) -> list:

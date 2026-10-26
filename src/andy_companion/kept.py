@@ -55,6 +55,9 @@ def summary() -> Dict[str, List[Dict[str, str]]]:
         "shared": [{"id": s["id"], "text": s["note"], "when": _when(s["at"])} for s in board.shared()],
         "photo": [{"id": p.stem, "text": "Photo", "when": _when(p.stat().st_mtime)} for p in photos],
         "place": [{"id": p["id"], "text": f"{p['what']}: {p['where']}", "when": _when(p["at"])} for p in places.kept()],
+        "pending": [{"id": e["id"], "text": str(e.get("topic") or e.get("text") or e.get("what") or e.get("caption") or e.get("type", "")),
+                     "when": _when(e["at"])} for e in board.pending_entries()
+                    if e.get("id") and e.get("type") not in board.KEPT_UNTIL_SAID],
     }
 
 
@@ -76,6 +79,8 @@ def delete(kind: str, item_id: str) -> bool:
         return board.unshare(item_id)
     if kind == "place":
         return places.remove(item_id)
+    if kind == "pending":
+        return board.delete_pending(item_id)
     if kind == "photo":
         path = board.photo_path(item_id)
         if path is None:
@@ -91,8 +96,13 @@ def delete_everything() -> Dict[str, int]:
     words too; 2026-10-25 review). The notes saying who changed or deleted what stay, so the person hears this one."""
     counts = {}
     for kind, items in summary().items():
+        if kind == "pending":
+            continue
         counts[kind] = sum(1 for it in items if delete(kind, it["id"]))
     counts["pending"] = board.clear_pending()
+    board.clear_screen()
+    board._transient("clear-private")
+    places._last_seen.clear()
     return counts
 
 

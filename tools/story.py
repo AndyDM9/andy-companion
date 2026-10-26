@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import Any, Dict
 
 from andy_companion import stories
@@ -32,7 +33,7 @@ class Story(Tool):
         if action == "list":
             return {"stories": stories.catalogue(), "say": "Offer two or three, with how long each takes."}
         if action == "make_up":
-            return stories.make_up(kwargs.get("about") or "")
+            return await asyncio.to_thread(stories.make_up, kwargs.get("about") or "")
         if action == "carry_on":
-            return stories.carry_on()
-        return stories.start(kwargs.get("title") or "")
+            return await asyncio.to_thread(stories.carry_on)
+        return await asyncio.to_thread(stories.start, kwargs.get("title") or "")

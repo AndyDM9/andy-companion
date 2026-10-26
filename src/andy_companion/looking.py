@@ -121,12 +121,13 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
     Streams Tavily research; if the stream fails before the research begins, starts it again without
     streaming and collects the answer when ready. Once it has begun, a second one would pay twice."""
     topic = question[:120]
+    generation = board._transient("generation")
     done: list = []
     began = clock()
     read = {"sites": 0}
 
     def on_step(kind: str, detail: str) -> None:
-        if _stop.is_set():                  # closes the stream: Tavily stops, and so does the spending
+        if _stop.is_set() or board._transient("generation") != generation:
             raise web.ResearchStopped("Stopped by the person.")
         if kind == "sites":                 # a running count, not a step of its own
             read["sites"] = int(detail) if str(detail).isdigit() else read["sites"]
@@ -148,7 +149,7 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
             result = None
         except web.WebError:
             result = _collect(question, place, language, opener, sleep, clock)
-        if _stop.is_set():                  # stopped as the answer came: it is not said
+        if _stop.is_set() or board._transient("generation") != generation:
             return None
         if result and result.get("say"):
             board.research_ready(topic, result["say"], result.get("points", []), result.get("sources", []))
@@ -157,7 +158,8 @@ def run(question: str, place: str = "", language: str = "en", opener=None,
         board.research_ready(topic, "", [], [], failed=True)
         logger.info("Looking into a question did not finish")
     except Exception as e:   # any failure is told, so the promised answer is never left hanging
-        board.research_ready(topic, "", [], [], failed=True)
+        if board._transient("generation") == generation:
+            board.research_ready(topic, "", [], [], failed=True)
         logger.info("Looking into a question failed: %s", type(e).__name__)
     finally:
         with _lock:

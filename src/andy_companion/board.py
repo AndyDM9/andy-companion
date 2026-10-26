@@ -1,9 +1,10 @@
 """What Andy's screen shows, what the person shares with family, and what family sends back.
 
-Small owner-only files in Andy's folder, read by the screen server (screen_server.py):
+The current card and research answers live in the screen server's memory only. The
+conversation app reaches them through authenticated loopback HTTP (transient.py).
+The previous screen.json is removed on startup, never read or migrated.
 
-- screen.json: what Andy is showing now (news, a look-up, a letter's summary). It expires after
-  SHOW_FOR_S and is cleared, so the screen never becomes a record.
+Owner-only files in Andy's folder:
 - shared.json: notes the person explicitly asked Andy to share with family. Nothing else is shared.
 - inbox.json: messages, links and reminder suggestions family send to Andy, and who looked at the family
   page. The speaker says them to the person, then they are deleted: the person always hears who looked.
@@ -28,8 +29,9 @@ from typing import Any, Dict, List, Optional, Iterator
 from urllib.parse import urlparse
 
 from andy_companion.reminders import DATA_DIR
+from andy_companion import transient
 
-SCREEN = DATA_DIR / "screen.json"
+SCREEN = DATA_DIR / "screen.json"  # legacy cleanup only; never written
 SHARED = DATA_DIR / "shared.json"
 INBOX = DATA_DIR / "inbox.json"
 TOKENS = DATA_DIR / "tokens.json"
@@ -45,6 +47,59 @@ SHOW_FOR_S = 5 * 60            # then the screen goes back to the day and family
 MAX_SHARED = 30
 MAX_TEXT = 600
 NAME_LEN = 40
+_screen = None
+_research = []
+_generation = 0
+_transient_lock = threading.RLock()
+
+
+def transient_action(action: str, data: Any = None) -> Any:
+    """Allowlisted operations; the HTTP boundary accepts only this computer and its token."""
+    global _screen, _generation
+    with _transient_lock:
+        if action == "show":
+            if not isinstance(data, dict) or not isinstance(data.get("at"), (int, float)):
+                raise ValueError("Bad screen card")
+            _screen = data
+        elif action == "showing":
+            now = float(data) if data is not None else time.time()
+            if _screen and (now - _screen.get("at", 0) > SHOW_FOR_S or
+                            (_screen.get("until") and now > _screen["until"])):
+                _screen = None
+            return _screen
+        elif action == "clear":
+            _screen = None
+        elif action == "clear-private":
+            from andy_companion import screen_server
+            _screen = None
+            _research.clear()
+            _generation += 1
+            screen_server.set_caption("")
+            screen_server.forget_views()
+        elif action == "research":
+            if not isinstance(data, dict) or data.get("type") != "research":
+                raise ValueError("Bad research result")
+            data = {**data, "id": secrets.token_hex(8)}
+            _research.append(data)
+            del _research[:-MAX_INBOX]
+        elif action == "research-list":
+            return list(_research)
+        elif action == "generation":
+            return _generation
+        elif action == "research-delete":
+            before = len(_research)
+            _research[:] = [e for e in _research if data is not None and e["id"] != data]
+            return before - len(_research)
+        else:
+            raise ValueError("Unknown transient operation")
+    return None
+
+
+def _transient(action: str, data: Any = None, default=None):
+    try:
+        return transient.call(action, data)
+    except transient.Unavailable:
+        return default
 
 
 def _read(path: Path, default: Any) -> Any:
@@ -115,7 +170,7 @@ def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float
     above the reasons (the scam receipt: the action first, the evidence after)."""
     clean_items = [{k: _tidy(v, 300) for k, v in item.items() if k in ("title", "source", "summary", "when", "published", "tone")}
                    for item in items[:4]]
-    for clean, item in zip(clean_items, items):        # a source's page, so the line can be a link
+    for clean, item in zip(clean_items, items, strict=False):        # a source's page, so the line can be a link
         link = _link(item.get("url"))
         if link:
             clean["url"] = link
@@ -129,18 +184,11 @@ def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float
                        "seconds": float(how.get("seconds") or 0)}
         if isinstance(how.get("sites"), int) and not isinstance(how.get("sites"), bool) and 0 < how["sites"] < 1000:
             card["how"]["sites"] = how["sites"]
-    _write(SCREEN, card)
+    _transient("show", card)
 
 
 def showing(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
-    data = _read(SCREEN, None)
-    if not data:
-        return None
-    now = now or time.time()
-    if now - data.get("at", 0) > SHOW_FOR_S or (data.get("until") and now > data["until"]):
-        clear_screen()
-        return None
-    return data
+    return _transient("showing", now)
 
 
 CODE_FOR_S = 120
@@ -151,7 +199,7 @@ def show_settings_code(now: Optional[float] = None) -> None:
     is shown the setup link is made new, so a phone that saw an old code has no way in (review 2026-10-13)."""
     now = now or time.time()
     new_setup_link()
-    _write(SCREEN, {"kind": "code", "title": "Andy's settings", "items": [], "at": now, "until": now + CODE_FOR_S})
+    _transient("show", {"kind": "code", "title": "Andy's settings", "items": [], "at": now, "until": now + CODE_FOR_S})
 
 
 def code_shown(now: Optional[float] = None) -> None:
@@ -166,10 +214,11 @@ CHECK_FOR_S = 20
 def show_screen_check(now: Optional[float] = None) -> None:
     """A card for checking where the screen is: Andy glances at it when it appears (body.glance)."""
     now = now or time.time()
-    _write(SCREEN, {"kind": "where", "title": "Andy looks here", "items": [], "at": now, "until": now + CHECK_FOR_S})
+    _transient("show", {"kind": "where", "title": "Andy looks here", "items": [], "at": now, "until": now + CHECK_FOR_S})
 
 
 def clear_screen() -> None:
+    _transient("clear")
     try:
         SCREEN.unlink()
     except FileNotFoundError:
@@ -225,7 +274,7 @@ KEPT_UNTIL_SAID = ("settings", "deleted", "code")
 def _inbox_add(entry: Dict[str, Any]) -> None:
     """Add an entry, keeping at most MAX_INBOX: the oldest ordinary entries go first, never a change notice."""
     with locked(INBOX):
-        items = _read(INBOX, []) + [entry]
+        items = _read(INBOX, []) + [{**entry, "id": secrets.token_hex(8)}]
         while len(items) > MAX_INBOX:
             old = next((i for i, e in enumerate(items) if e.get("type") not in KEPT_UNTIL_SAID), None)
             if old is None:
@@ -332,7 +381,7 @@ def kept_deleted(name: str, what: List[str], now: Optional[float] = None) -> Non
 def research_ready(topic: str, say: str, points: List[str], sources: List[Dict[str, Any]], failed: bool = False,
                    now: Optional[float] = None) -> None:
     """An answer Andy looked into is ready to say (looking.py); kept until said, like a family message."""
-    _inbox_add({"type": "research", "topic": _tidy(topic, 120), "say": _tidy(say, 700),
+    _transient("research", {"type": "research", "topic": _tidy(topic, 120), "say": _tidy(say, 700),
                 "points": [_tidy(p, 160) for p in points[:4]],
                 "sources": [{"title": _tidy(s.get("title", ""), 140), "source": _tidy(s.get("source", ""), 60)}
                             for s in sources[:6]],
@@ -341,28 +390,60 @@ def research_ready(topic: str, say: str, points: List[str], sources: List[Dict[s
 
 def drop_pending(kind: str) -> int:
     """Drop what is waiting to be said of one kind (a research answer the person asked Andy to stop)."""
+    transient_dropped = _transient("research-delete", default=0) if kind == "research" else 0
     with locked(INBOX):
         items = _read(INBOX, [])
         kept = [e for e in items if e.get("type") != kind]
         _write(INBOX, kept)
-    return len(items) - len(kept)
+    return len(items) - len(kept) + transient_dropped
 
 
 def clear_pending() -> int:
     """Drop what is waiting to be said (messages, photos' notes, suggestions, answers), keeping change notices."""
+    transient_dropped = _transient("research-delete", default=0)
     with locked(INBOX):
         items = _read(INBOX, [])
         kept = [e for e in items if e.get("type") in KEPT_UNTIL_SAID]
         _write(INBOX, kept)
-    return len(items) - len(kept)
+    return len(items) - len(kept) + transient_dropped
 
 
 def next_for_person() -> Optional[Dict[str, Any]]:
-    items = _read(INBOX, [])
+    items = pending_entries()
     return items[0] if items else None
 
 
+def pending_entries() -> List[Dict[str, Any]]:
+    return sorted(_read(INBOX, []) + _transient("research-list", default=[]), key=lambda e: e.get("at", 0))
+
+
+def delete_pending(item_id: str) -> bool:
+    if not item_id:
+        return False
+    if _transient("research-delete", item_id, 0):
+        return True
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        keep = [e for e in items if e.get("id") != item_id or e.get("type") in KEPT_UNTIL_SAID]
+        if len(items) == len(keep):
+            return False
+        _write(INBOX, keep)
+    return True
+
+
+def purge_legacy_transients() -> None:
+    """Remove the previous disk-backed card and research results, without reading or logging their words."""
+    SCREEN.unlink(missing_ok=True)
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        if any(e.get("type") == "research" for e in items):
+            _write(INBOX, [e for e in items if e.get("type") != "research"])
+
+
 def delivered(entry: Dict[str, Any]) -> None:
+    if entry.get("type") == "research" and entry.get("id"):
+        _transient("research-delete", entry["id"])
+        return
     with locked(INBOX):
         items = _read(INBOX, [])
         if entry in items:
@@ -507,5 +588,5 @@ def idle_photo(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
 
 
 def show_photo(photo_id: str, name: str, caption: str = "", now: Optional[float] = None) -> None:
-    _write(SCREEN, {"kind": "photo", "title": f"A photo from {_tidy(name, NAME_LEN)}", "photo": photo_id,
+    _transient("show", {"kind": "photo", "title": f"A photo from {_tidy(name, NAME_LEN)}", "photo": photo_id,
                     "items": [{"summary": _tidy(caption, 140)}] if caption else [], "at": now or time.time()})

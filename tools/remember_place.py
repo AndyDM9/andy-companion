@@ -12,10 +12,10 @@ class RememberPlace(Tool):
     name = "remember_place"
     description = (
         "When the person tells you where they are putting or have put something ('my keys are here', 'I'm leaving "
-        "my glasses on the shelf'), first ask 'Shall I remember where they are?'. Only after a yes, call this with "
+        "my glasses on the shelf'), call this first to prepare a proposal with "
         "what (the thing, in a few words) and said_where (their own words for the place, if they said any). You "
-        "look to see it and keep where it is; later, when they ask where it is, you look there first. Never call "
-        "it without a yes."
+        "look to see it and keep where it is only when authorized. If confirmation_needed is returned, nothing "
+        "was saved: read 'say' exactly, wait for a yes, and call again unchanged. Later you look there first."
     )
     parameters_schema = {
         "type": "object",

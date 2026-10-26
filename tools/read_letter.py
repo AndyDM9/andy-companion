@@ -15,7 +15,8 @@ from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 class ReadLetter(Tool):
     name = "read_letter"
     description = (
-        "Only for paper or a label the person holds up to your camera. Never for words the person says or "
+        "Only for a written letter, bill or label the person holds up to your camera. Never for a photograph, "
+        "even printed on paper: use describe_view or describe_photo for photos. Never for words the person says or "
         "quotes aloud (for a suspicious message they read out, use check_message). When they hold up a letter, "
         "bill, card, notice or label and ask what it says: First say 'Hold it up facing me, nice and still', then call this. Then say who it is from, "
         "what it is about, and any date, amount or thing to do, in a few plain sentences; read word for "

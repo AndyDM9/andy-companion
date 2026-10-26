@@ -106,11 +106,38 @@ WORDS = {
            "medicine": "¿Preguntas sobre un medicamento? Consulte a su farmacéutico o a su médico."},
 }
 
+# A medicine page never goes to the conversation model or a free-text card. A model can
+# put instructions in any field, including a sender or description, so clearing just
+# the to-do cannot enforce this boundary. The page itself also decides, independently
+# of the model's kind classification.
+MEDICINE = re.compile(r"\b(?:medicine|medication|prescription|pharmacy|rx|pills?|tablets?|capsules?|dosage|"
+                      r"mg|mcg|medicamento|medicina|farmacia|receta|pastillas?|comprimidos?|c[aá]psulas?|dosis)\b"
+                      r"|\d\s*(?:mg|mcg|µg|μg|ml|iu|ui)\b", re.I)
+
+
+def medicine_page(text: str) -> bool:
+    return bool(MEDICINE.search(text or ""))
+
+
+def medicine_card(language: str = "en") -> Dict[str, Any]:
+    w = WORDS["es" if language == "es" else "en"]
+    return {**{f: "" for f in FIELDS}, "kind": "medicine", "warning": False, "caution": w["medicine"]}
+
+
+def medicine_reply(language: str = "en") -> Dict[str, Any]:
+    line = ("No puedo leer instrucciones de medicamentos. Consulte a su farmacéutico o médico." if language == "es" else
+            "I can't read medicine instructions. Please ask your pharmacist or doctor.")
+    return {"medicine": True, "read": True, "say": line,
+            "how": "The page was recognized as medicine. No page text is provided deliberately. Do not read it again. "
+                   "Say 'say' exactly: these are Andy's words, not writing on the label."}
+
 
 def card(raw: Dict[str, Any], page_text: str, language: str = "en") -> Dict[str, Any]:
     """What goes on the screen, made safe in code from the model's fields and the page's own words."""
     w = WORDS["es" if language == "es" else "en"]
     kind = raw.get("kind") if raw.get("kind") in KINDS else "other"
+    if kind == "medicine" or medicine_page(page_text):
+        return medicine_card(language)
     out = {f: mask(_tidy(raw.get(f))) for f in FIELDS}
     out["amount"] = _tidy(raw.get("amount"), 30)            # an amount is shown as written
     out["kind"] = kind
@@ -128,12 +155,12 @@ def card(raw: Dict[str, Any], page_text: str, language: str = "en") -> Dict[str,
     else:
         out["caution"] = ""
         out["warning"] = False
-    if kind == "medicine":
-        out.update(to_do="", by_when="", amount="", caution=w["medicine"])
     return out
 
 
 def summarise(text: str, language: str = "en", opener: Optional[Callable] = None) -> Dict[str, Any]:
+    if medicine_page(text):
+        return medicine_card(language)
     key = os.environ.get("NEBIUS_API_KEY", "")
     if not key:
         raise LetterError("The letter card needs the Token Factory key.")
@@ -143,7 +170,7 @@ def summarise(text: str, language: str = "en", opener: Optional[Callable] = None
     base = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
     body = {"model": MODEL, "temperature": 0, "max_tokens": 400, "chat_template_kwargs": {"enable_thinking": False},
             "messages": [{"role": "system", "content": BRIEF.format(lang="in Spanish" if language == "es" else "in English")},
-                         {"role": "user", "content": text}],
+                         {"role": "user", "content": mask(text)}],
             "response_format": {"type": "json_schema", "json_schema": {"name": "letter", "schema": SCHEMA, "strict": True}}}
     req = urllib.request.Request(base + "/chat/completions", method="POST", data=json.dumps(body).encode(),
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
@@ -203,6 +230,10 @@ def for_andy(result: Dict[str, Any], language: str = "en", summariser: Optional[
     text = result.get("text") or ""
     if not text:
         return result
+    if medicine_page(text):
+        c = medicine_card(language)
+        show(c, language)
+        return medicine_reply(language)
     result["text"] = mask(text)
     signs = warning_signs(text, "es" if language == "es" else "en")
     if signs:
@@ -213,6 +244,8 @@ def for_andy(result: Dict[str, Any], language: str = "en", summariser: Optional[
     except Exception:
         return result                      # no card; Andy still explains it, and any warning stands
     show(c, language)
+    if c["kind"] == "medicine":
+        return medicine_reply(language)
     result["on_screen"] = {k: c[k] for k in ("sender", "about", "to_do", "by_when", "amount", "caution") if c.get(k)}
     result["screen_note"] = CARD_NOTE + (WARN_NOTE if c["warning"] else "")
     return result

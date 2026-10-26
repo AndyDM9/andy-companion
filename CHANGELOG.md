@@ -3,6 +3,47 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-26
+
+### Fixed after the project review
+
+- Bound saving and sharing confirmations to one proposed tool and its exact arguments, one spoken
+  readback, a fresh yes, one conversation and a two-minute expiry. Unrelated "tell", "send" and
+  "with my family" sentences no longer open sharing. Sharing always gets a readback; explicit requests
+  can still remember one item directly. Added Andy's own memory tool, removing the upstream instruction
+  to save silently (decision 0018).
+- Removed disk-backed screen cards and research answers. The two processes use the existing local
+  server's memory over authenticated loopback HTTP, without a disk fallback. Old transient files are
+  removed at startup. Pending items are visible and individually deletable on the settings page;
+  delete everything also clears the card, captions and views. A running research cannot repopulate
+  deleted answers (decision 0019).
+- Medicine pages get a fixed referral to a pharmacist or doctor. Their text is not handed to the
+  conversation model, and free-text sender and description fields cannot leak instructions onto the TV.
+  Classification in code also applies when the card model calls a medicine page a bill or other page.
+- A failed or inaccessible journal read now fails the privacy check. Known transcript markers are
+  rejected even after a logger prefix; failures never print the suspect words.
+
+### Verification and preparation for filming
+
+- Added regression tests for the reproduced gaps, a real cross-process transport test, and an installed
+  dispatcher test using invented data and no robot connection.
+- Added a CPU GitHub Actions workflow with read-only permissions and pinned actions. Its hosted run
+  remains to be checked after pushing.
+- Added `evals/physical_trials.py`: 30 planned physical finder attempts, 20 with an object and 10 without,
+  fixed conditions, all misses and errors retained, confidence intervals and times, no speech or pictures.
+- Local screen HTTP calls run off the voice event loop so a slow screen cannot block voice handling.
+- The current full text suite scored 95, 95 and 95 of 97; two proactive-memory cases remain failures,
+  including a false promise to make a note without a tool call. Explicit writes remain gated.
+- The restarted service passes cloud, screen, local-vision and privacy checks; the live doctor reports
+  17/21 because the robot daemon is in error, the app cannot start, microphone health is stale and
+  the optional second-check endpoint is stopped. The founder confirmed USB was disconnected; Andy
+  and voice services are stopped until it is reconnected. Physical validation remains pending.
+- The text suite now runs the real confirmation gate around synthetic tool results, checks completed
+  writes separately from proposals, and records hashes of its inputs and code. Its new runs are kept
+  separately from the previous 97-case scorecards. It is not a microphone, camera or motor test.
+- Reconciled submission wording and current status with what is measured, and recorded filming on
+  October 27. The video, real robot photographs, physical trials and user feedback remain outstanding.
+
 ## 2026-10-25
 
 ### Submission (the Devpost draft, filled and saved; not submitted)

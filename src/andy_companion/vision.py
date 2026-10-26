@@ -194,7 +194,9 @@ SWITCHED_OFF = "My eyes are switched off right now, so I can't see. They can be 
 # How to talk about a photo (PLAN B35): one open question, and a story kept only after a yes.
 PHOTO_HOW = ("Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or "
              "what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then "
-             "ask 'Shall I keep that story?'; only after a yes, use remember with one short line in their words.")
+             "call remember to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, "
+             "wait for a yes, then call remember again with the same fact. Do this before asking another question. "
+             "Nothing is kept before confirmation.")
 
 
 def jpeg(frame: Any, width: int = 768, quality: int = 85) -> bytes:

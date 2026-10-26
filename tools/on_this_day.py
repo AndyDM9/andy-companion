@@ -24,7 +24,7 @@ class OnThisDay(Tool):
         except Exception:
             return {"error": "Nothing from today's date just now. Offer something else to talk about."}
         try:
-            onthisday.show(result, language=settings.get()["language"])
+            await asyncio.to_thread(onthisday.show, result, language=settings.get()["language"])
         except Exception:
             pass
         return result

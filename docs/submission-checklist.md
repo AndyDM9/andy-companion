@@ -4,6 +4,22 @@ From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-1
 status and the evidence: [rules-compliance.md](rules-compliance.md). Tick an item only when it is true,
 in the same commit that makes it true.
 
+## October 26 review: before filming on October 27
+
+- [x] Reproduced sharing, transient-storage, medicine-card and journal-check gaps have regression tests
+- [x] Confirmation binds a spoken readback and fresh yes to one exact action, once (decision 0018)
+- [x] Screen cards and research answers use authenticated local memory, with a cross-process test (decision 0019)
+- [x] Pending items are listed and deletable; delete everything clears the current card, captions and views
+- [x] CPU GitHub Actions workflow defined, actions pinned and permissions read-only
+- [ ] Hosted CI run passes after the changes are pushed
+- [x] A fixed 30-attempt physical finder plan and scorer are available (`evals/physical_trials.py`)
+- [ ] The 30 physical attempts completed and scored, including absent objects and failures
+- [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
+- [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
+- [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
+- [ ] Final model evaluation after the last code/profile changes; distinguish its text scope from physical trials
+- [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
+
 ## Stage one: pass/fail
 
 - [x] Runs on Nebius: a runtime call to the Token Factory inference API (Nemotron 3.5 Lightning)
@@ -58,8 +74,7 @@ in the same commit that makes it true.
 ## The Devpost form
 
 - [ ] **Before pasting the final text:** the letter (live-test 3k, 3l), the research streamed to the TV (3e) and the
-      photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; "Three moments, filmed live on the
-      robot" is true only then. A moment that doesn't work leaves the video and the text says "not yet tried on the
+      photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; The draft describes planned filming on October 27; it can describe completed footage only after recording. A moment that doesn't work leaves the video and the text says "not yet tried on the
       robot".
 - [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
       `uv run python scripts/devpost.py --ref hackathon-submission --check` once the tag is pushed, and paste again.

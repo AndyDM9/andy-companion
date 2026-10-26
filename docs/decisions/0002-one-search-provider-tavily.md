@@ -46,4 +46,4 @@ for Spanish pages only (`language` with `filter_by_language`), then once without
 check's design, and why the web's warnings are matched by a strong model, is
 [0007](0007-the-scam-check-two-narrow-questions.md). Nebius agreed to acquire Tavily in February 2026 ([Nebius newsroom](https://nebius.com/newsroom/nebius-announces-agreement-to-acquire-tavily-to-add-agentic-search-to-its-ai-cloud-platform),
 announced 2026-02-10);
-this decision predates it and doesn't depend on it.
+this choice does not depend on that acquisition.

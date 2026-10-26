@@ -1,6 +1,6 @@
 # What Andy does, in full
 
-Last checked 2026-10-20.
+Last checked 2026-10-26. Hardware steps without a result remain unverified on the robot.
 
 The README has the short version. Each item here says what Andy does and, where it matters, what is
 decided in code rather than by the model. How each was tested is in the [changelog](../CHANGELOG.md)
@@ -42,7 +42,9 @@ and the [live test](live-test.md).
 - **"Shall I remember that?"** When you mention something coming up (a recital, a visit), Andy asks
   first, and the morning after it asks how it went. Andy can remember a fact or a moment only after
   you ask or say yes; that is checked in code, not left to the model ("No, don't remember that" is a no).
-  "Forget the recital" forgets that one moment, and if several match, Andy asks which.
+  "Forget the recital" forgets that one moment, and if several match, Andy asks which. A memory offer
+  prepares the exact content first, reads it back, and accepts one fresh yes for that same content
+  within two minutes. Sharing always requires that readback, even when explicitly requested.
 - **"Welcome back."** When someone comes into view after two hours or more away, in the daytime, Andy says one
   warm sentence: at most every four hours, not in the first ten minutes, no questions about where you
   were, and a setting turns it off.
@@ -70,7 +72,9 @@ and the [live test](live-test.md).
     announces a prize, code (not the model) puts **Be careful** first. It never shows the page's demand
     as a thing to do, says "Don't call or pay yet. Check with family first", and hides the page's
     numbers from the model.
-  - It shows no dose from a medicine label, and hides account and phone numbers on the screen.
+  - A recognized medicine page gets only the fixed suggestion to ask a pharmacist or doctor; its text
+    and free-text card fields are not handed to the conversation model. Account and phone numbers
+    are hidden on ordinary cards.
 
 ## The world, with sources (Tavily)
 
@@ -165,8 +169,10 @@ plain page saying what to do, never a bare error.
   settings page has it.
 - **Family see only what you ask Andy to share,** can send Andy a message, a link or a photo, and Andy
   always tells you who looked.
-- **Everything Andy keeps, on one page.** Helpers see every reminder, remembered moment and fact, shared
-  note and photo, and can delete any of it; Andy tells you who deleted what.
+- **Everything Andy keeps, on one page.** Helpers see reminders, remembered moments and facts, shared
+  notes, photos and pending messages and research answers, and can delete them; Andy tells you who
+  deleted what. Delete everything clears the current card, captions and views too. Cards and research
+  live only in the local screen server's memory, never in a file.
 - **Set up from a phone, never behind your back.** A helper sets the town, news sites, language,
   voice, where the TV is and the screen's look on a settings page. Andy tells you who changed what, and
   you can ask it to change anything back.
