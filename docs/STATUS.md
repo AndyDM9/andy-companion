@@ -26,6 +26,9 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   An anonymous fresh clone installs; the Docker demo builds; real-entry subprocess and isolated wheel checks
   join CI. The current scorecard is first in the evidence index. No browser was available in this audit;
   HTTP/assets and JavaScript syntax were checked, with earlier visual checks retained separately.
+  [Hosted CI on `faf46f1`](https://github.com/AndyDM9/andy-companion/actions/runs/40385985605) passed all
+  1,009 CPU tests (10 skips) and three isolated wheel checks. The updated public demo and a fresh app install
+  passed; the direct submission link check opened 20 of 21 (FTC remains below).
 - **Setup consistency:** desktop and dashboard share one settings reader (decision 0020). Quoted keys,
   shell overrides, custom voice addresses, screen ports and documented vision/finder options pass software
   regressions; robot-side launch validation remains pending while USB is disconnected.
@@ -57,7 +60,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
-| 2026-10-26 | **Judge access audit** | Current CPU suite 1,009 passed / 10 skipped; built wheel: three isolated resource checks pass. Anonymous clone of `1d0a4e8`: install and 991 tests pass; Docker demo pages/assets 200, writes 403. CPU simulation scene downloaded and rendered at 1920×1080 in a fresh container, without a key or robot. Four environment locks validate; page scripts/JSON parse; gitleaks: no leaks in 199 commits. Hosted checks of this audit revision and refreshed publication follow the push |
+| 2026-10-26 | **Judge access audit** | `faf46f1`: hosted CPU suite 1,009 passed / 10 skipped; three isolated wheel checks pass. Anonymous clone of `1d0a4e8`: install and 991 tests pass; Docker demo builds. Updated Space `8d93b15`: pages/APIs/assets 200, eleven writes 403, wrong tokens 404, guide linked; both Spaces RUNNING. Fresh app installation/entrypoint/uninstallation passes. CPU simulation scene downloaded and rendered at 1920×1080 in a fresh container, without a key or robot. Four environment locks validate; page scripts/JSON parse; gitleaks: no leaks in 200 commits. Direct submission links 20/21; FTC report content verified separately |
 | 2026-10-26 | **Physical trial plan coverage** | Each object present and absent in both lighting conditions; all five positions with each object present. Fixed the original schedule's remote/absent correlation. CPU tests 991 passed / 10 skipped; robot environment 1,000 passed / 1 skipped. Physical attempts still pending |
 | 2026-10-26 | **Published verification** | `c3a3f12` pushed; hosted CPU CI passed. Public screen Space updated from that commit: front page and four pages 200, pending-item UI present, transient writes 403; both Spaces RUNNING. App checker: fresh install, entrypoint registration and uninstall passed. Hardware interactions remain unverified while USB is disconnected |
 | 2026-10-26 | **Software and running services** | 990 passed / 10 skipped in the CPU environment; 999 passed / 1 skipped in the robot environment. Public demo: front page and four pages 200, writes 403. Existing Andy service restarted after confirming no other robot app connected. Doctor: 17/21; privacy check clean, cloud conversation and vision reachable, screen and local eyes running. Robot USB disconnected temporarily, explaining the daemon error, app not starting and stale microphone health; optional second-check endpoint stopped. Andy, voice and local-eyes services stopped while disconnected. Live checks resume after USB reconnection |

@@ -121,3 +121,6 @@ from hardware. The current profile is first in the scorecard index. The direct F
 failed here but its exact source and figure were verified via extraction; opening it from another
 network remains a final check. No video, photo, physical result, final tag or completed submission
 has been inferred from these software checks. Setup configuration changes are recorded in decision 0020.
+The pushed `faf46f1` revision passed hosted CI (1,009 tests, 10 skips and three isolated wheel checks),
+fresh app installation checks and the refreshed public Space probes (`8d93b15`). The final direct
+submission-link check is 20/21, with the FTC source still requiring a check from another network.

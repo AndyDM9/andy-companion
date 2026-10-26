@@ -7,6 +7,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Judge access and fresh-install audit
 
+- Published `faf46f1` and verified [hosted CI](https://github.com/AndyDM9/andy-companion/actions/runs/40385985605):
+  1,009 passed / 10 skipped, plus all three isolated wheel checks. The fresh Reachy Mini app checker also passed
+  installation, entrypoint registration and uninstallation against the pushed code. Refreshed the public demo
+  (Space commit `8d93b15`): code/testing links present, pages/APIs/fonts/film 200, all 11 write probes 403,
+  missing/wrong tokens 404 and no retained visitor name. Both Spaces RUNNING. Final direct link check: 20/21,
+  with the same FTC citation unresolved on this network. Gitleaks after the push: no leaks in 200 commits.
 - Added `docs/judging.md`, linked from the README, demo and submission text: public sample pages,
   fresh-clone commands, expected results, evidence boundaries, optional API calls and real-robot access.
   The scorecard index now leads with the current profile and labels the previous Serverless Job separately.
