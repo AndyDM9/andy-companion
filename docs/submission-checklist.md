@@ -68,7 +68,10 @@ in the same commit that makes it true.
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by
       2026-10-23 10:00 PT); editing continues afterwards. *Missed:* the draft was **saved** (not submitted) on
       2026-10-25 as devpost.com/software/andy-b45hds: overview, story, 25 tags, three links and every additional-info
-      answer (the founder ticked the two declarations); still missing the video link, the thumbnail and the gallery.
+      answer (the founder ticked the two declarations); then the thumbnail (a stand-in: the name, the problem and
+      the real **Be careful** card, 3:2), gallery images 4 to 8 with their captions (each under Devpost's 140
+      characters; `tv-finder.png` re-captured with the new layout) and the founder's contribution. Still missing:
+      the video link, and the founder's robot photos as images 1 to 3 (then the thumbnail becomes photo 1).
       Devpost's template headings were found above the story and removed; the preview renders every heading, list
       and link
 - [ ] **The gallery**, at most eight images, the real robot first, every image with a one-sentence caption (judges
