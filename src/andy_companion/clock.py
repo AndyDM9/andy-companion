@@ -34,10 +34,10 @@ def today(now: Optional[datetime] = None, language: str = "en") -> Dict[str, str
         out["shown"] = {"weekday": words.weekday(now, "es"), "date": f"{now.day} de {words.month(now, 'es')}",
                         "part_of_day": words.PARTS["es"][part_of_day(now)], "today": "Hoy",
                         "empty": "Nada para hoy. Pídale a Andy que le recuerde algo.", "from": "De",
-                        "tomorrow": "Mañana", "daily": "todos los días"}
+                        "tomorrow": "Mañana", "daily": "a diario"}
     else:
         out["shown"] = {"weekday": weekday, "date": f"{now.strftime('%B')} {now.day}",
                         "part_of_day": part_of_day(now), "today": "Today",
                         "empty": "Nothing planned today. Ask Andy to remind you of something.", "from": "From",
-                        "tomorrow": "Tomorrow", "daily": "every day"}
+                        "tomorrow": "Tomorrow", "daily": "daily"}
     return out

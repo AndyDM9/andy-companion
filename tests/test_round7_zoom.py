@@ -390,3 +390,16 @@ def test_the_sweep_sends_one_move_per_picture():
     # Whenever the head was asked where it is during the sweep, the moves sent were one more than the pictures taken.
     during = [(t, m) for t, m in taken_with_moves if 1 <= m <= 4 and t < 4]
     assert during and all(m == t + 1 for t, m in during)
+
+
+@pytest.mark.parametrize("where, shown", [
+    ("in the calendar widget on the screen", True), ("on the TV", True), ("in a photo on the wall", True),
+    ("on the phone's screen", True), ("on the laptop screen", True), ("an image of glasses on the monitor", True),
+    ("displayed on the television", True), ("in the video", True),
+    ("keyboard, phone, headphones", False), ("on the desk in front of the keyboard", False),
+    ("near the monitor", False), ("next to the phone", False), ("on the desk near the keyboard and monitors", False),
+    ("on the computer desk", False), ("on the table by the lamp", False), ("beside the TV stand", False),
+])
+def test_only_a_thing_shown_on_a_screen_is_a_picture(where, shown):
+    """The founder's glasses lay near a phone, in front of monitors: thrown away until 2026-10-25."""
+    assert finder.on_screen(where) is shown

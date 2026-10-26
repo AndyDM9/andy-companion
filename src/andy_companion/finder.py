@@ -153,8 +153,14 @@ def look_closer(picture: Any, what: str, opener: Optional[Callable] = None) -> D
 
 
 # A sighting described as on a screen is a picture, not the thing: Andy's own TV shows the last close-up for two
-# minutes, and the founder's recorded try saw glasses "in the calendar widget on the screen" (2026-10-20).
-ON_SCREEN = re.compile(r"\b(screen|monitor|tv|television|display|widget|phone|tablet|laptop|computer|photo|picture|poster)s?\b", re.I)
+# minutes, and the founder's recorded try saw glasses "in the calendar widget on the screen" (2026-10-20). Only *on*
+# or *in* a screen or picture counts: until 2026-10-25 any mention did, so real glasses "near the keyboard, phone and
+# headphones", or in front of the monitors, were thrown away, in the sweep and up close (the founder's desk).
+_SHOWN_ON = (r"(?:screen|monitor|tv|television|display|widget|photo|photograph|picture|poster|wallpaper|video|"
+             r"(?:phone|tablet|laptop|computer)(?:'s)?\s+screen)")
+ON_SCREEN = re.compile(r"\b(?:on|in|inside|within|displayed on|shown on|showing on)\s+(?:the\s+|a\s+|an\s+|its\s+|your\s+)?"
+                       r"(?:\w+\s+){0,2}?" + _SHOWN_ON + r"s?\b(?!\s*(?:desk|table|stand|shelf|cabinet))"
+                       r"|\b(?:image|photo|picture|reflection) of\b|\bon[- ]screen\b|\bdisplayed\b", re.I)
 
 
 def on_screen(where: str) -> bool:

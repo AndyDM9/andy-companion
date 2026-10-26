@@ -395,6 +395,6 @@ def test_with_nothing_left_today_the_screen_shows_tomorrows_first_reminder():
     reminders.add("take my blood pressure pills", at="08:00", repeat="daily", now=evening)
     plan = screen_server.today_plan(evening)
     assert plan["plan"] == [] and plan["tomorrow"] == {"time": "8:00 am", "what": "take my blood pressure pills", "daily": True}
-    assert plan["today"]["shown"]["tomorrow"] == "Tomorrow" and plan["today"]["shown"]["daily"] == "every day"
+    assert plan["today"]["shown"]["tomorrow"] == "Tomorrow" and plan["today"]["shown"]["daily"] == "daily"
     reminders.add("call Rosa", at="20:30", now=evening)                    # something still to come today: that one
     assert screen_server.today_plan(evening)["tomorrow"] is None

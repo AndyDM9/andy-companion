@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-25
 
+### Fixed (glasses beside a phone or a monitor; the TV fitting its screen)
+
+- **Glasses on the keyboard weren't found.** Recorded (the testing switch, then off and the pictures deleted): the
+  sweep saw them, but the close-up said no, and a second search saw nothing. The model's answer was yes; our own rule
+  turned it into a no. The rule meant to throw away a sighting *on a screen* (glasses in a picture on Andy's TV) threw
+  away any sighting whose place merely *mentioned* a screen word: "keyboard, **phone**, headphones", "in front of the
+  **monitors**". On a desk that is nearly always. Now only a thing described as on or in a screen, photo or picture is
+  thrown away (`finder.on_screen`, 16 cases tested both ways); the rejected close-up then passed 3 times in 3.
+- **The TV ran off the bottom of the screen** beside a found card: a five-line reminder and a long flood warning in
+  the narrow column, and one close-up alone drawn at the card's full width. The row now fits the screen and gives way
+  inside; beside a card the reminder keeps to two lines, its time to one, the warning to two; a close-up alone is held
+  to the card's height; "daily" instead of "every day". Checked in a browser on the real screen and on every demo
+  scene at 1920 x 1080, 1920 x 950 and 1280 x 720: nothing past the bottom edge.
+
 ### A second judge's-eye read, and the Devpost text corrected and shortened
 
 A fresh, independent read as a judge scored the entry Tech 4, Design 4 (up from 3 in the morning's read), Impact 3,

@@ -209,6 +209,16 @@
   /* Beside a photo or a card, a long forecast ("Slight Chance Rain Showers then…") keeps to two lines. */
   body.has-showing .weather .sky, body.has-photo .weather .sky { display: -webkit-box; -webkit-line-clamp: 2;
                                                                -webkit-box-orient: vertical; overflow: hidden; }
+  /* The row fits the screen and what's in it gives way, so nothing runs off the bottom (2026-10-25: a reminder over
+     five lines and a long flood warning, beside a card, pushed both columns past the screen's edge). */
+  body.has-showing .below, body.has-photo .below { grid-template-rows: minmax(0, 1fr); }
+  body.has-showing .side, body.has-photo .side { min-height: 0; overflow: hidden; }
+  body.has-showing .side .card, body.has-photo .side .card { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+  body.has-showing .next .what:not([hidden]), body.has-photo .next .what:not([hidden]) {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  body.has-showing .next .at, body.has-photo .next .at { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  body.has-showing .weather .alert:not([hidden]), body.has-photo .weather .alert:not([hidden]) {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: clamp(18px, 1.6vw, 28px); }
   body.has-showing .weather .then, body.has-showing .weather .from,
   body.has-photo .weather .then, body.has-photo .weather .from { display: none; }
 
@@ -280,6 +290,8 @@
   .strip { display: flex; align-items: flex-start; gap: 1.1vw; }
   .view { flex: 1 1 0; min-width: 0; margin: 0; }
   .view.chosen { flex-grow: 4; }
+  /* One close-up alone (found where it was left) is held to the card's height, not the card's width at 16:9. */
+  .view.chosen:only-child { flex: 0 1 auto; width: min(100%, calc(44vh * 16 / 9)); }
   .view .pic { position: relative; padding-top: 56.25%; border-radius: max(8px, calc(var(--r) - 2.6vw)); overflow: hidden;
                background: var(--rule); }
   .view .pic.none { background: transparent; }
@@ -609,7 +621,7 @@
       text($("next-what"), tomorrow.what);
       const at = $("next-at"); at.textContent = "";
       at.append(make("strong", "", `${shown.tomorrow || "Tomorrow"}, ${tomorrow.time}`),
-                tomorrow.daily ? ` · ${shown.daily || "every day"}` : "");
+                tomorrow.daily ? ` · ${shown.daily || "daily"}` : "");
     }
     const later = $("later"); later.textContent = "";
     for (const p of s.plan) {
