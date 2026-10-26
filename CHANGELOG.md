@@ -17,6 +17,8 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   service's log found the same words in `/var/log/syslog` (copied there by rsyslog), and lines without "Live:"
   (a long print ran over several lines). The doctor now checks it: **No words in the voice log** fails on any line
   in the last day that is not one of the kinds the voice server may write (842 before the fix, 0 since).
+  The founder cleared this desktop's copies the same evening (this user's journal files, and the voice and eyes
+  servers' lines in syslog): none left.
 - **Andy didn't understand names said with an accent:** speech recognition heard "Depeche Mode" as "depish mode"
   (and labelled English as Russian, which changes nothing downstream: the language hint is off and the voice is
   fixed). The profile now says what it hears may mishear a word, most often a name, and to take the likeliest

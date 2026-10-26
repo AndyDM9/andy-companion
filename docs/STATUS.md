@@ -31,6 +31,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-25 21:06 | **The heard words cleared from this desktop's logs** (the founder ran the script, with sudo) | This user's 44 journal files removed; the voice and eyes servers' lines removed from syslog, syslog.1 and syslog.2.gz: 0 left in each, and the doctor's "No words in the voice log" passes. The script read today's syslog as binary from about 13:00 (no `grep -a`) and dropped the rest of that copy to 21:05; the system's own journal, which syslog copies, still holds that window |
 | 2026-10-25 20:52 | **A research loop on the robot**, found from the logs (tool names and times only) | The same question researched 7 times in 5 minutes: each answer, as it was passed on, started the research again; "stop searching" had nothing to stop. Stopped by restarting Andy; fixed in the hand-over's words, a guard in code (30 s after an answer, 10 minutes for the same question) and a real stop. To re-check on the robot |
 | 2026-10-25 20:40 | **The TV's design in a browser**: every scene at 1920 x 1080, 1920 x 950 and 1280 x 720, the live screen at four sizes, and the other pages on a laptop and a phone, checked for text on text, text cut off or under the caption, and cards cut or overlapping | Found and fixed: the found card's four views (labels over the numbers), the resting cards' tops cut off with a long reminder and warning, a scam step under the caption at 720p, 12 px labels on the hood page by phone; the weather card ("Weather / Weather", paragraphs cut, the small card repeating it under the caption), now the town, one line a period and a calm alert. Now clean everywhere |
 | 2026-10-25 20:12 | **Finding glasses on the robot** (live-test 3t), sunglasses on the desk by the keyboard, with the testing recording on, then off and the pictures deleted | Missed twice, then found (21.5 s): the model said yes, but the rule against things shown on screens threw out sightings whose place mentioned a phone or the monitors. After the fix: **found on the first close-up in 18.0 s**, 5 sightings across the 4 views |
@@ -80,7 +81,6 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## Open problems
 
-- **The voice server's journal on this desktop holds 2,664 lines of heard words** ("Live: …", 2026-10-15 to 2026-10-25), from before the filter knew that line (fixed 2026-10-25). Copies are in `/var/log/syslog`, `syslog.1` and `syslog.2.gz`. A script that removes this user's journal files and the voice and eyes servers' syslog lines, with sudo, is with the founder; until it is run, the doctor's "No words in the voice log" check fails.
 
 - The robot is named after the person most likely to be spoken to near it in this household (the founder). While quiet, only "Andy, wake up" ends it (fixed 2026-10-13); while awake, Andy still answers anyone in the room, so a call or meeting near the robot should be held with Andy quiet or asleep.
 
