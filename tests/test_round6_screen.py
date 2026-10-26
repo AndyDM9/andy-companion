@@ -77,6 +77,9 @@ def test_beside_a_card_the_caption_keeps_to_two_lines_and_the_card_takes_the_wid
     assert "function fitCards()" in PAGE and "fitCards();" in PAGE.split("if (showing) fitItems();")[1][:40]
     # A scam check still too tall above a caption: the band and what to do get smaller, never a step fewer.
     assert 'if (steps.length && !fits()) $("found").classList.add("tight");' in PAGE
+    # While Andy speaks over the day's two cards, they keep clear of the caption; a long alert shortens, never cut.
+    assert "body.has-caption:not(.has-showing):not(.has-photo) .below { padding-bottom: calc(var(--cap-block) + 4vh + 2vh); }" in PAGE
+    assert 'alert.style.webkitLineClamp = n;' in PAGE
 
 
 def load_demo():

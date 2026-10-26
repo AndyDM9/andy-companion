@@ -411,6 +411,9 @@
   .ask b { color: var(--ink); font-weight: 700; }
   body.has-ask .ask { display: block; }
   body.has-ask .below { padding-bottom: calc(var(--ask-size) * 1.3 + 2.2vh + 5vh); }
+  /* While Andy speaks over the day's two cards they keep clear of the caption too (its three lines), and what's
+     in them gives way a whole line at a time (fitCards); seen on the robot's screen, 2026-10-25. */
+  body.has-caption:not(.has-showing):not(.has-photo) .below { padding-bottom: calc(var(--cap-block) + 4vh + 2vh); }
   /* The gear: Andy's settings (the code for a phone) and Under the hood, from the TV or its remote. */
   .gear { grid-column: 2; grid-row: 2; justify-self: end; align-self: end; display: inline-flex; align-items: center; gap: .5em;
           margin: 0; padding: .45em .9em; border-radius: 999px; font: inherit; font-size: clamp(16px, 1.5vw, 26px);
@@ -829,6 +832,7 @@
     const next = document.querySelector(".next"), weather = $("weather");
     const later = [...$("later").children], spare = [$("w-then"), $("w-from")];
     later.concat(spare, [weather]).forEach((el) => { el.style.display = ""; });
+    const alert = $("w-alert"); alert.style.webkitLineClamp = "";
     const over = (card) => card.scrollHeight > card.clientHeight + 1;
     // Beside a card or a photo the weather steps aside whole when it no longer fits above the caption; Next stays.
     const side = document.querySelector(".side"), b = document.body.classList;
@@ -841,6 +845,7 @@
       .concat(later.filter((li) => !li.classList.contains("done")).reverse());
     for (const li of order) { if (!over(next)) break; li.style.display = "none"; }
     for (const el of spare.slice().reverse()) { if (!over(weather)) break; el.style.display = "none"; }
+    for (const n of ["2", "1"]) { if (!over(weather)) break; alert.style.webkitLineClamp = n; }   // an alert stays, shorter
   }
 
   let familyId = "", foundKey = "", foundContent = "";

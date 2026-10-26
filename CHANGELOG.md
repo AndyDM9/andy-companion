@@ -7,6 +7,9 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Fixed (the TV's design, checked in a browser at every size)
 
+- **While Andy spoke with nothing on the big card, the caption lay over the day's two cards** (seen on the robot's
+  screen: the weather's Monday line cut in half under it). The two cards now keep clear of the caption as they do of
+  the "Try asking" line; tomorrow's forecast and its source line give way first, then a long alert shortens.
 - **The weather card, while Andy spoke** (seen on the robot's screen): it read "Weather / Weather", its long NWS
   paragraphs were cut at two lines, the small weather card beside it said it again, and that small card ran under
   the caption. Now the card is titled with the town, each period is one line read from across the room ("Tonight ·
