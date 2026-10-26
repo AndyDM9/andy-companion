@@ -45,7 +45,9 @@ Serverless Jobs. Entered in the **Physical AI track**.
   against the scene's truth, and the tests; a **Serverless Endpoint**, started when needed, serves NVIDIA Nemotron
   3.5 Content Safety as a second check on what the person says.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
-  Captions on by default, 7:1 contrast, and talking over Andy stops it. Installs as a
+  **Built for ageing eyes and ears:** Atkinson Hyperlegible (the Braille Institute's typeface for low vision), no
+  text under 14 px, captions on by default at 7:1 contrast, a slower pace on request, louder at "I can't hear
+  you", and talking over Andy stops it. Installs as a
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
 - **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
   with older adults yet. Every robot shot in the video is live, with no cuts in the pauses.

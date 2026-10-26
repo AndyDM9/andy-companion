@@ -1,12 +1,23 @@
 # How this entry meets the hackathon's Official Rules
 
 The rules: <https://nebiusglobalaihackathon.devpost.com/rules> (read in full and checked against the
-live page on 2026-10-13, and again on 2026-10-20: the rules, FAQ and dates unchanged; the only new update was
-the judging session). They can be amended at any time and the live page prevails, so **re-read
+live page on 2026-10-13, again on 2026-10-20, and in full on 2026-10-25: the rules and dates unchanged; the only
+new update was the judges' advice from that session, checked against the entry below). They can be amended at any time and the live page prevails, so **re-read
 it before submitting** and update this file. Everything that touches the submission (the README, the
 video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
+
+## The judges' advice (update of about 2026-10-21, "Will It Ship?")
+
+| Advice | How the entry meets it |
+|---|---|
+| Solve a real problem for a real audience; talk to a few potential users | The problem, sourced (FTC, AARP, a 2026 systematic review of what older adults want). No study with older adults yet, said plainly in Limitations; talking with a few before submitting is on the founder's list |
+| The aha moment fast: two minutes in the project, 30 s in the demo | The video opens on the letter and **Be careful** (0:00–0:16); the README's first screen has the three moments |
+| One thing done well beats a big stack; every integration supports the main story | Every model and tool is named by the job it does for the person ("every model, and where it runs") |
+| Put the action first, a little onboarding, show which model does what | The TV suggests what to ask ("Try asking"); the hood page names the model at each step, and is in the video's long take |
+| Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
+| Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
 ## Dates
 
