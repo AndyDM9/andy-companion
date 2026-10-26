@@ -133,4 +133,8 @@ no link or token is in the repository. Imported demos cannot seed that store. Th
 checks, filming, tag and submission are still pending.
 The first dedicated SDK CI run found a fresh-install prerequisite missing from Setup (Cairo/GObject
 development libraries). Those packages and GStreamer introspection are now included in the setup
-instructions and CI; a successful corrected hosted run remains to be verified.
+instructions and CI; the corrected hosted run on `f96d390` passed CPU, SDK startup and wheel checks.
+The awake live preflight is 20/21, with the optional second-check endpoint stopped; this does not mark
+spoken tasks or finding trials as passed. Six sample landscapes were restored to the local idle screen,
+clearly labelled as samples. The existing filming requirement is unchanged: the founder's own photos,
+with consent. No private link, photo or conversation text was placed in the repository.

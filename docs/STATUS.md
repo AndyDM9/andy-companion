@@ -26,12 +26,15 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   conversation loop after the `remember_fact` collision fix (decision 0021). Fresh health showed zero drops.
   It later went to sleep cleanly. The founder has the refreshed private screen link (verified 200).
   Wake/answer/interruption observations and the revised task flows remain pending.
+  Latest while awake: doctor **20/21**, with the optional second-check endpoint stopped; app/microphone,
+  screen and privacy checks pass. Six landscape samples restored for the idle panel; sample JPEG served 200.
 - **Current text profile:** version e scored **94, 94, 95 of 97** with the renamed tool. Two memory offers fail
   each run; ambiguity before deletion and respecting "not now" each fail once. The new scorecard carries hashes.
   Local checks after the startup/demo fixes: CPU 1,011 passed / 12 skipped; robot environment 1,023 passed /
-  one skipped; three isolated wheel checks pass. Dedicated SDK startup CI will run after the push.
+  one skipped; three isolated wheel checks pass. Dedicated SDK startup CI is now passing.
   On `8958439`, CPU CI passed; the new clean SDK job found missing Cairo headers. CI and Setup now include
-  Cairo/GObject development and GStreamer introspection packages; the corrected hosted run is pending.
+  Cairo/GObject development and GStreamer introspection packages; the corrected [hosted run](https://github.com/AndyDM9/andy-companion/actions/runs/40392095129)
+  passed: CPU 1,011 / 12 skipped, SDK 42 passed, wheel three passed.
 - **Judge access:** [testing instructions](judging.md) now link from the README, demo and submission text.
   An anonymous fresh clone installs; the Docker demo builds; real-entry subprocess and isolated wheel checks
   join CI. The current scorecard is first in the evidence index. No browser was available in this audit;

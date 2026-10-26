@@ -6,6 +6,18 @@ results go to [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md). In an
 minutes. Say the words in quotes; tick what happened and write anything odd in the last column.
 Record the results in [STATUS.md](STATUS.md) and the [CHANGELOG](../CHANGELOG.md) afterwards.
 
+## October 26 connection checks
+
+USB motor, camera and audio devices appeared after reconnection. The daemon recovered after a
+restart; a small head/antenna response was measured before Andy started, with no other controller.
+A real-startup tool-name collision was fixed (`remember_fact`, decision 0021). The awake preflight
+then passed 20/21 checks, with zero reported audio drops and zero suspect voice-log lines; the
+optional second-check endpoint is stopped. This does not complete any spoken task in the table below.
+
+The private screen link was refreshed and verified on the LAN. Six labelled landscape samples were
+restored after the gallery emptied under seven-day cleanup; the idle API selects one and its JPEG
+returns 200. Samples are for setup, with the founder's own consented photos required for filming.
+
 ## Before
 
 **October 27 priority pass:** stop other robot apps and their wake listeners first. Use the existing

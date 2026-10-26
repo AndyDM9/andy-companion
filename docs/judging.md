@@ -43,6 +43,8 @@ the robot SDK or MuJoCo and are skipped in this small environment. To exercise t
 install `tesseract-ocr` and `tesseract-ocr-spa` through your Linux package manager; without Tesseract,
 that test adds one skip. [GitHub Actions](https://github.com/AndyDM9/andy-companion/actions/workflows/tests.yml)
 installs OCR support and runs the CPU suite, a separate-process public demo check and an installed-wheel check.
+It also installs the robot environment's native build prerequisites and tests real SDK configuration and
+dispatch in a separate job without connecting to hardware.
 Software tests do not certify physical behavior.
 
 To check the built distribution separately from the source checkout:

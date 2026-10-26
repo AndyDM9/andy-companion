@@ -7,6 +7,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### After USB reconnection
 
+- Corrected hosted [CI on `f96d390`](https://github.com/AndyDM9/andy-companion/actions/runs/40392095129)
+  passed: CPU 1,011 / 12 skipped, SDK startup/dispatch/specification 42 passed, isolated wheel three passed.
+  Once Andy was awake, the live doctor improved to **20/21**: app running, zero audio drops, no competing
+  robot app, screen responding and zero suspect voice-log lines. Only the optional second-check endpoint
+  remained stopped; spoken task outcomes still await observation.
+- Restored six labelled landscape samples at the founder's request after the gallery had emptied under
+  the existing seven-day cleanup. Photo display is enabled; the screen API selects a sample and its JPEG
+  returns 200. They rotate on the right while idle, every three minutes, after a current card clears.
+  No image or private link was added to the repository; filming still needs the founder's own photos with consent.
 - Published startup fixes in `8958439`; CPU CI passed, but the new clean SDK job exposed missing Cairo
   headers while building PyCairo. Added Cairo/GObject development and GStreamer introspection packages
   before the SDK sync, and documented them in Setup. This is required on a fresh Linux installation;
