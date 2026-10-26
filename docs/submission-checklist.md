@@ -6,6 +6,10 @@ in the same commit that makes it true.
 
 ## October 26 review: before filming on October 27
 
+- [x] Reconnected robot reaches the conversation loop after fixing the SDK memory-tool collision
+- [x] Desktop and dashboard configuration paths have fresh-process SDK tests; dedicated SDK CI defined
+- [x] Live household links are private random values again; the updated screen link returns 200
+- [x] Imported/cached demos are refused before they can seed household data
 - [x] Short judge testing instructions link from the README, demo and submission text
 - [x] Anonymous fresh clone installs and passes; Docker demo serves pages/assets and refuses writes
 - [x] The full demo entry point and an isolated installed-wheel check have passed locally and are included in CI
@@ -24,7 +28,7 @@ in the same commit that makes it true.
 - [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
-- [x] Current text profile evaluated locally, three runs of 95/97, input/code hashes recorded; final submission-time Serverless Job remains separate from physical trials
+- [x] Current text profile evaluated locally, three runs of 94, 94 and 95 of 97, input/code hashes recorded; final submission-time Serverless Job remains separate from physical trials
 - [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
 
 ## Stage one: pass/fail

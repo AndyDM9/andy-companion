@@ -16,7 +16,7 @@ import time
 from functools import wraps
 from typing import Any, Dict
 
-SAVING = ("remember", "remember_moment", "remember_place")
+SAVING = ("remember", "remember_fact", "remember_moment", "remember_place")
 # An explicit request to keep something, said to Andy.
 LEAD = r"(^|[.!?,;:]\s*)((please|andy|and|also|oh|ok|okay|so|now|yes|yeah|por favor|y|tambi[eé]n|s[ií])[,\s]+)*"
 ASKED = re.compile(
@@ -112,7 +112,7 @@ class Confirmation:
             return None
         # The first call proposes the exact payload; it does not write anything. The
         # assistant must read this question before a fresh yes can release this call.
-        fields = {"remember": ("fact",), "remember_moment": ("what", "day"),
+        fields = {"remember": ("fact",), "remember_fact": ("fact",), "remember_moment": ("what", "day"),
                   "remember_place": ("what", "said_where"), "share_with_family": ("note",)}
         pieces = [str(arguments.get(k, "")).strip() for k in fields[name]]
         content = "; ".join(p for p in pieces if p)

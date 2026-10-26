@@ -32,8 +32,8 @@ except ImportError:  # pragma: no cover
 # The photo tool's own guidance, copied (this file stays standard library only; a test keeps the two the same).
 PHOTO_HOW = ("Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or "
              "what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then "
-             "call remember to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, "
-             "wait for a yes, then call remember again with the same fact. Do this before asking another question. "
+             "call remember_fact to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, "
+             "wait for a yes, then call remember_fact again with the same fact. Do this before asking another question. "
              "Nothing is kept before confirmation.")
 BASE = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
 CANDIDATE = os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning")

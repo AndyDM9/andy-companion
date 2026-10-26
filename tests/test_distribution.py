@@ -25,7 +25,7 @@ class DistributionTests(unittest.TestCase):
 
     def test_profile_and_voice_tools_are_packaged(self):
         self.assertIn("robot", app_mode.data_dir("profiles").joinpath("companion/profile.md").read_text())
-        for tool in ("remember", "share_with_family", "find_object", "read_letter", "look_into"):
+        for tool in ("remember_fact", "share_with_family", "find_object", "read_letter", "look_into"):
             self.assertTrue(app_mode.data_dir("tools").joinpath(f"{tool}.py").is_file(), tool)
 
 

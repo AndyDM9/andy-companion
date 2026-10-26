@@ -13,6 +13,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  sdk-startup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: '0.12.20'
+          enable-cache: true
+      - run: uv sync --project robot --locked
+      - name: Load real SDK configuration and exercise the dispatcher without hardware
+        run: uv run --project robot --with pytest python -m pytest tests/test_startup_config.py tests/test_confirmation_dispatch.py tests/test_suite_tools.py -q
   cpu-tests:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

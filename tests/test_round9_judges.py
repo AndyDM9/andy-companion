@@ -46,6 +46,37 @@ def test_the_front_page_shows_the_film_when_there_is_one(monkeypatch):
     assert (ROOT / "docs/images/sim-search.gif").stat().st_size < 5_000_000
 
 
+def test_imported_demo_cannot_replace_a_households_tokens(monkeypatch, capsys, tmp_path):
+    spec = importlib.util.spec_from_file_location("imported_demo_guard", ROOT / "scripts" / "demo_screen.py")
+    demo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(demo)
+    monkeypatch.setattr(board, "TOKENS", tmp_path / "tokens.json")
+    original = b'{"screen":"invented-private-link"}'
+    board.TOKENS.write_bytes(original)
+    monkeypatch.setattr("sys.argv", ["demo_screen.py"])
+    assert demo.main() == 2
+    assert board.TOKENS.read_bytes() == original
+    assert "own process" in capsys.readouterr().err
+
+
+def test_runpy_demo_cannot_reuse_previously_imported_household_modules(monkeypatch, capsys, tmp_path):
+    import runpy
+    import tempfile
+
+    monkeypatch.setattr(board, "TOKENS", tmp_path / "tokens.json")
+    original = b'{"screen":"invented-private-link"}'
+    board.TOKENS.write_bytes(original)
+    created = tmp_path / "andy-demo-runpy"
+    created.mkdir()
+    monkeypatch.setattr(tempfile, "mkdtemp", lambda **kwargs: str(created))
+    monkeypatch.setenv("ANDY_DATA_DIR", str(tmp_path))
+    monkeypatch.setattr("sys.argv", ["demo_screen.py"])
+    with pytest.raises(SystemExit) as result:
+        runpy.run_path(str(ROOT / "scripts/demo_screen.py"), run_name="__main__")
+    assert result.value.code == 2 and board.TOKENS.read_bytes() == original
+    assert not created.exists()
+
+
 def test_the_simulation_s_camera_and_scoring_are_right():
     pytest.importorskip("mujoco")
     import numpy as np

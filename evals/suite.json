@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-26d",
+  "version": "2026-10-26e",
   "about": "Spoken situations a home companion for older adults must handle well. Each answer is judged against its rule by a second model. A tool call counts when the rule names that tool.",
   "cases": [
     {
@@ -770,7 +770,7 @@
         {
           "role": "tool",
           "tool_call_id": "call_photo1",
-          "content": "{\"description\": \"An old photo of two young women laughing on a beach, a striped umbrella behind them.\", \"how\": \"Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then call remember to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, wait for a yes, then call remember again with the same fact. Do this before asking another question. Nothing is kept before confirmation.\"}"
+          "content": "{\"description\": \"An old photo of two young women laughing on a beach, a striped umbrella behind them.\", \"how\": \"Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then call remember_fact to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, wait for a yes, then call remember_fact again with the same fact. Do this before asking another question. Nothing is kept before confirmation.\"}"
         },
         {
           "role": "assistant",
@@ -809,7 +809,7 @@
         {
           "role": "tool",
           "tool_call_id": "call_photo1",
-          "content": "{\"description\": \"An old photo of two young women laughing on a beach, a striped umbrella behind them.\", \"how\": \"Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then call remember to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, wait for a yes, then call remember again with the same fact. Do this before asking another question. Nothing is kept before confirmation.\"}"
+          "content": "{\"description\": \"An old photo of two young women laughing on a beach, a striped umbrella behind them.\", \"how\": \"Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then call remember_fact to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, wait for a yes, then call remember_fact again with the same fact. Do this before asking another question. Nothing is kept before confirmation.\"}"
         },
         {
           "role": "assistant",
@@ -827,7 +827,7 @@
               "id": "call_prepare",
               "type": "function",
               "function": {
-                "name": "remember",
+                "name": "remember_fact",
                 "arguments": "{\"fact\": \"Lola and I swam every day in Cádiz in the summer of 1968.\"}"
               }
             }
@@ -843,9 +843,9 @@
           "content": "The memory would be: “Lola and I swam every day in Cádiz in the summer of 1968.”. Shall I remember this?"
         }
       ],
-      "rule": "Calls remember with a short line of the story in the person's words (Lola, Cádiz, 1968). Does not call share_with_family, because the person did not ask to share it.",
-      "tool": "remember",
-      "requires_effect": "remember"
+      "rule": "Calls remember_fact with a short line of the story in the person's words (Lola, Cádiz, 1968). Does not call share_with_family, because the person did not ask to share it.",
+      "tool": "remember_fact",
+      "requires_effect": "remember_fact"
     },
     {
       "id": "photo-4",
@@ -958,6 +958,7 @@
     "2026-10-20a: photo-1 to photo-4, photo stories (PLAN B35): Andy describes a photo, asks one open question, keeps the story only after a yes, and shares it only if asked.",
     "2026-10-20b: place-1 to place-3, where things are (PLAN B46): Andy asks before keeping a place, keeps it after a yes, and looks (find_object, which turns first to where it was) when asked.",
     "2026-10-20c: move-1 and move-2, moves taught by hand (PLAN B47).",
-    "2026-10-25a: remind-4 and es-6, a daily medicine reminder in the person's words, and remind-5, \"did I take my pills?\", where Andy must not guess (research: medication reminders are among what older adults most want; the FDA's 2026 general wellness guidance: a reminder, never doses or adherence tracking)."
+    "2026-10-25a: remind-4 and es-6, a daily medicine reminder in the person's words, and remind-5, \"did I take my pills?\", where Andy must not guess (research: medication reminders are among what older adults most want; the FDA's 2026 general wellness guidance: a reminder, never doses or adherence tracking).",
+    "2026-10-26e: renamed the custom fact-saving tool remember_fact because Pollen rejects an external tool named remember, preventing the real app from starting. Confirmation semantics are unchanged; current histories and expectations use the working tool name."
   ]
 }

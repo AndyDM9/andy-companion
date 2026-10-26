@@ -5,6 +5,32 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### After USB reconnection
+
+- The USB motor controller, camera and audio appeared; the daemon retained its disconnected state and
+  recovered after a restart. With Andy stopped and no other robot app connected, a small motor test read
+  a 1.76° head-yaw change for a requested 5°, antenna changes +3.16° / −3.52°, and a 0.36° head-yaw residual
+  after restoring the starting pose. This is a response check, not calibrated pointing or a finder trial.
+- The first app launch exposed a startup blocker missed by installation tests: the new external `remember`
+  module collided with Pollen's built-in name. Renamed it `remember_fact` and updated the gate, profile,
+  descriptions, tool specification and synthetic histories (decision 0021). The dashboard now imports
+  Pollen's main module after Andy's configuration. Added fresh-process SDK startup and dispatcher regressions,
+  with a dedicated SDK CI job that connects to no hardware.
+- Andy reached its conversation loop: fresh health and zero reported audio drops, screen 200 locally and
+  on the LAN. It later exited cleanly into sleep. Wake, spoken answers, interruption and task outcomes await
+  the founder's observation. The latest doctor while asleep is 18/21: app not running, stale health while
+  asleep, and the optional second-check endpoint stopped; the voice-log check finds zero suspect lines.
+- The founder's old screen link was invalid. The live token file still contained fixed sample-demo tokens
+  (last modified October 25). Replaced all four with private random links and verified the new screen 200;
+  no address or token is recorded here. Added guards and tests preventing imported or runpy demos from
+  seeding household data. Existing saved items were retained.
+- New profile version `2026-10-26e` scored **94, 94 and 95 of 97** locally, with hashes and all failures retained
+  in `suite-2026-10-26-startup-local.json`. Two proactive memory offers fail throughout; one premature deletion
+  claim and one extra offer after "not now" also fail. The older 95/97 runs precede this startup fix.
+- Local checks after these fixes: 1,011 passed / 12 skipped in the CPU environment, 1,023 passed / one skipped
+  in the robot environment, and three isolated installed-wheel resource checks passed. All five current
+  evaluation artifact hashes match. These tests do not drive hardware.
+
 ### Judge access and fresh-install audit
 
 - Published `faf46f1` and verified [hosted CI](https://github.com/AndyDM9/andy-companion/actions/runs/40385985605):

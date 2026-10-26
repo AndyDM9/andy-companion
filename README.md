@@ -26,7 +26,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **95 of 97 in each of three runs** of the current text suite, locally with the real confirmation gate; the previous profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-26-final-local.json), [previous](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
+- **94, 94 and 95 of 97** of the current text suite, locally with the real confirmation gate; the previous profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-26-startup-local.json), [previous](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -154,7 +154,7 @@ microphones.
 
 | What it does | Model | Runs on | Measured |
 |---|---|---|---|
-| Every turn: conversation and 38 tools | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
+| Every turn: conversation, 38 profile tools and two SDK task controls | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
 | Eyes: what's in view, family photos, finding things | NVIDIA **Nemotron 3.5 Super VL** | Token Factory | zoomed in, the search went from 0 of 9 to 9 of 9 at the desk |
 | Hard questions, and the judge of the tests | NVIDIA **Nemotron 3 Ultra** | Token Factory | the scam check: 58 of 60 caught, none of 60 ordinary flagged |
 | A second check for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety** | Serverless Endpoint (our vLLM) | 7 of 8 held-out phrasings, no false alarm |
@@ -221,7 +221,7 @@ only, in memory; never the words. In English or Spanish, like the household.
 ![Under the hood (sample turns)](docs/images/hood.png)
 
 **The conversation suite** ([evals/](evals/)): 97 spoken situations in 22 areas, English and Spanish,
-judged by NVIDIA Nemotron 3 Ultra. The model gets exactly the robot's tools and their real descriptions
+judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools and their real descriptions; the SDK's two task-control tools are outside this suite
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
@@ -396,10 +396,12 @@ What doesn't work yet, and what our numbers don't show.
   tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **The current text suite:** 95 of 97 in each of three local runs on October 26, with the actual
-  confirmation gate and synthetic tools ([scorecard](evals/results/suite-2026-10-26-final-local.json)).
+- **The current text suite:** 94, 94 and 95 of 97 in three local runs on October 26, with the actual
+  confirmation gate and synthetic tools ([scorecard](evals/results/suite-2026-10-26-startup-local.json)).
   Two memory-offer cases fail: Andy can ask another question or claim it will make a note without
   preparing a proposal. The gate prevents an unapproved save, but the wording is still a limitation.
+  The latest run also prematurely claimed a deletion once before asking which item, and once made
+  another offer after "not now". All of these failures are retained in the scorecard.
   Explicit memory requests and confirmed writes passed. The older Serverless Job scores below use
   the previous profile and test behavior.
 - **What the numbers measure, and what they don't:**

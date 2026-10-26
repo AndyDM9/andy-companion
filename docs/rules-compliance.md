@@ -124,3 +124,10 @@ has been inferred from these software checks. Setup configuration changes are re
 The pushed `faf46f1` revision passed hosted CI (1,009 tests, 10 skips and three isolated wheel checks),
 fresh app installation checks and the refreshed public Space probes (`8d93b15`). The final direct
 submission-link check is 20/21, with the FTC source still requiring a check from another network.
+
+After USB reconnection, live startup exposed an external-tool name collision. The supported loader
+now uses `remember_fact` (decision 0021); new current-profile text scores are 94, 94 and 95 of 97,
+separate from earlier results. Startup and a small motor-response check are recorded as such, without
+claiming finder accuracy, speech tasks or video evidence. Household links were refreshed privately;
+no link or token is in the repository. Imported demos cannot seed that store. The remaining live
+checks, filming, tag and submission are still pending.

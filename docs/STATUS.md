@@ -9,7 +9,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 |---|---|---|---|
 | M0 | Andy talks through Nemotron | ✅ Done 2026-10-13 | Parakeet, Nemotron 3.5 Lightning on Token Factory and Qwen3-TTS on the robot; measured below |
 | M1 | Clock and reminders | ✅ Done 2026-10-13 | Verified on the robot: the time of day from the clock; a reminder set by voice, listed, and said unprompted when due |
-| M2 | Privacy floor | October 26 hardening tested in software; service checked; USB reconnection required for live validation | Previous live verification: no conversation text in any log, tool arguments not logged, no transcript printed by the voice server; Andy's memory only what the person asked it to keep |
+| M2 | Privacy floor | USB reconnected; startup fixed; voice and consent task checks pending | Previous live verification: no conversation text in any log, tool arguments not logged, no transcript printed by the voice server; Andy's memory only what the person asked it to keep |
 | M3 | Body behaviours | ✅ Done 2026-10-13; more on 2026-10-20 | Looking at the person while speaking, following, sleep, quiet and wake, verified by the founder on the robot. Added 2026-10-20 and tested in code, awaiting the robot: turning to a second voice, waving back, moves taught by hand ([live-test.md](live-test.md) 3aa to 3dd) |
 | M4 | The day, the same way every time | ✅ Done 2026-10-13 | The day plan, reminders in the person's words, pace and volume that stick, jokes, stories and On this day; English and Spanish |
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
@@ -22,6 +22,14 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **USB reconnected:** daemon running after restart; Andy now gets past configuration and reached its
+  conversation loop after the `remember_fact` collision fix (decision 0021). Fresh health showed zero drops.
+  It later went to sleep cleanly. The founder has the refreshed private screen link (verified 200).
+  Wake/answer/interruption observations and the revised task flows remain pending.
+- **Current text profile:** version e scored **94, 94, 95 of 97** with the renamed tool. Two memory offers fail
+  each run; ambiguity before deletion and respecting "not now" each fail once. The new scorecard carries hashes.
+  Local checks after the startup/demo fixes: CPU 1,011 passed / 12 skipped; robot environment 1,023 passed /
+  one skipped; three isolated wheel checks pass. Dedicated SDK startup CI will run after the push.
 - **Judge access:** [testing instructions](judging.md) now link from the README, demo and submission text.
   An anonymous fresh clone installs; the Docker demo builds; real-entry subprocess and isolated wheel checks
   join CI. The current scorecard is first in the evidence index. No browser was available in this audit;
@@ -31,7 +39,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   passed; the direct submission link check opened 20 of 21 (FTC remains below).
 - **Setup consistency:** desktop and dashboard share one settings reader (decision 0020). Quoted keys,
   shell overrides, custom voice addresses, screen ports and documented vision/finder options pass software
-  regressions; robot-side launch validation remains pending while USB is disconnected.
+  regressions; launch now reaches the conversation loop after the tool-name fix below.
   Current robot-environment tests: 1,018 passed / 1 skipped, without connecting to hardware.
 - **Consent:** one proposed payload, exact spoken readback, fresh yes, two-minute expiry and one use,
   scoped to the conversation. Tested with the installed dispatcher, without a robot. Robot verification pending.
@@ -60,11 +68,13 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-26 | **USB recovery and real startup** | USB motor/camera/audio visible; daemon recovered after restart. No competing robot app. Before starting Andy: requested head +5°, read +1.76°; antennas +3.16° / −3.52°; restored head residual +0.36°. App startup name collision fixed; fresh health with 0 drops and screen 200, then a clean sleep. Doctor while asleep 18/21; optional second look stopped; 0 suspect voice-log lines. This is not a voice-task or finder pass |
+| 2026-10-26 | **Current profile version e**, local text suite | **94, 94, 95 of 97**; moment-1 and photo-2 fail each run, moment-5 and chat-2 once. [Scorecard](../evals/results/suite-2026-10-26-startup-local.json), after the memory-tool rename; real gate and synthetic results, no physical task scoring |
 | 2026-10-26 | **Judge access audit** | `faf46f1`: hosted CPU suite 1,009 passed / 10 skipped; three isolated wheel checks pass. Anonymous clone of `1d0a4e8`: install and 991 tests pass; Docker demo builds. Updated Space `8d93b15`: pages/APIs/assets 200, eleven writes 403, wrong tokens 404, guide linked; both Spaces RUNNING. Fresh app installation/entrypoint/uninstallation passes. CPU simulation scene downloaded and rendered at 1920×1080 in a fresh container, without a key or robot. Four environment locks validate; page scripts/JSON parse; gitleaks: no leaks in 200 commits. Direct submission links 20/21; FTC report content verified separately |
 | 2026-10-26 | **Physical trial plan coverage** | Each object present and absent in both lighting conditions; all five positions with each object present. Fixed the original schedule's remote/absent correlation. CPU tests 991 passed / 10 skipped; robot environment 1,000 passed / 1 skipped. Physical attempts still pending |
 | 2026-10-26 | **Published verification** | `c3a3f12` pushed; hosted CPU CI passed. Public screen Space updated from that commit: front page and four pages 200, pending-item UI present, transient writes 403; both Spaces RUNNING. App checker: fresh install, entrypoint registration and uninstall passed. Hardware interactions remain unverified while USB is disconnected |
 | 2026-10-26 | **Software and running services** | 990 passed / 10 skipped in the CPU environment; 999 passed / 1 skipped in the robot environment. Public demo: front page and four pages 200, writes 403. Existing Andy service restarted after confirming no other robot app connected. Doctor: 17/21; privacy check clean, cloud conversation and vision reachable, screen and local eyes running. Robot USB disconnected temporarily, explaining the daemon error, app not starting and stale microphone health; optional second-check endpoint stopped. Andy, voice and local-eyes services stopped while disconnected. Live checks resume after USB reconnection |
-| 2026-10-26 | **Current profile, text suite**, version 2026-10-26d, local API calls, real confirmation gate with synthetic tool results | **95, 95, 95 of 97**; moment-1 and photo-2 failed each run (memory offers). Gate tests reject unapproved writes. [Scorecard](../evals/results/suite-2026-10-26-final-local.json); hashes of the tested profile, tools, suite, runner and gate included. This is not a hardware test or a Serverless Job |
+| 2026-10-26 | **Earlier profile, text suite**, version 2026-10-26d, local API calls, real confirmation gate with synthetic tool results | **95, 95, 95 of 97**; moment-1 and photo-2 failed each run (memory offers). Gate tests reject unapproved writes. [Scorecard](../evals/results/suite-2026-10-26-final-local.json); hashes of the tested profile, tools, suite, runner and gate included. This is not a hardware test or a Serverless Job |
 | 2026-10-25 21:35 | **The Devpost draft saved** (filled with Playwright, the founder logged in; not submitted) | devpost.com/software/andy-b45hds, 3 of 5 steps: overview, story (13,280 characters, rendered and checked), 25 tags, three links, every additional-info answer from docs/feedback.md and the compliance file, the founder's two declarations. Historical snapshot: the thumbnail and five sample gallery images were added later that evening; the video and real-robot photos remain |
 | 2026-10-25 21:06 | **The heard words cleared from this desktop's logs** (the founder ran the script, with sudo) | This user's 44 journal files removed; the voice and eyes servers' lines removed from syslog, syslog.1 and syslog.2.gz: 0 left in each, and the doctor's "No words in the voice log" passes. The script read today's syslog as binary from about 13:00 (no `grep -a`) and dropped the rest of that copy to 21:05; the system's own journal, which syslog copies, still holds that window |
 | 2026-10-25 20:52 | **A research loop on the robot**, found from the logs (tool names and times only) | The same question researched 7 times in 5 minutes: each answer, as it was passed on, started the research again; "stop searching" had nothing to stop. Stopped by restarting Andy; fixed in the hand-over's words, a guard in code (30 s after an answer, 10 minutes for the same question) and a real stop. To re-check on the robot |

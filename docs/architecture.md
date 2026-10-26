@@ -73,6 +73,13 @@ configuring the voice connection; the desktop shell does not parse keys. The doc
 parser, existing environment values win, and the supervisor, app, doctor and link command use the
 configured screen port (decision 0020). The link command reads only the port, never API keys.
 
+The fact tool is `remember_fact`, a unique external name: Pollen rejects a module named `remember`
+because it already has one (decision 0021). The dashboard defers Pollen's main import until Andy's
+configuration is set. CI also loads the real SDK configuration in fresh processes, without hardware.
+The runtime registry has 38 profile tools and the SDK's `task_status` / `task_cancel`; the text suite
+covers the profile tools. The sample demo refuses imported or cached household modules before seeding
+any data, and requires its own new temporary store; it must never replace a live household's links.
+
 ## Parts, and what each owns
 
 | Part | Owns | Must not |

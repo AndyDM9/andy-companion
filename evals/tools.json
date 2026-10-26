@@ -42,7 +42,7 @@
   "source": "pollen"
  },
  {
-  "name": "remember",
+  "name": "remember_fact",
   "description": "Keep one short fact only when asked or confirmed. An explicit request to remember can be saved directly. Otherwise call once to prepare a proposal. If confirmation_needed is returned, nothing was saved: read 'say' exactly, wait for a yes, then call again with the same fact. Never save silently. Never keep passwords, payment details or medicine instructions. Never claim success before the tool reports it.",
   "parameters": {
    "type": "object",

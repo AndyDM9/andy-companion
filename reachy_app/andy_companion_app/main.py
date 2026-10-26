@@ -16,7 +16,6 @@ import asyncio
 import threading
 
 from reachy_mini import ReachyMini, ReachyMiniApp
-from reachy_mini_conversation_app.main import parse_args, run as run_conversation
 
 from andy_companion import app_mode
 
@@ -29,6 +28,9 @@ class AndyCompanionApp(ReachyMiniApp):
 
     def run(self, reachy_mini: ReachyMini, stop_event: threading.Event) -> None:
         app_mode.install(screen=True)
+        # Pollen constructs its global Config on import. Andy must configure its external profile first.
+        from reachy_mini_conversation_app.main import parse_args, run as run_conversation
+
         asyncio.set_event_loop(asyncio.new_event_loop())
         args, _ = parse_args()
         run_conversation(args, robot=reachy_mini, app_stop_event=stop_event, settings_app=self.settings_app,

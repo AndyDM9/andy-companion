@@ -54,7 +54,7 @@ WHERE: Dict[str, Dict[str, str]] = {
     "content_safety": {"en": "Nemotron 3.5 Content Safety on Nebius, beside the reply",
                        "es": "Nemotron 3.5 Content Safety en Nebius, junto a la respuesta"},
 }
-LOCAL = ("head_tracking", "idle_do_nothing", "go_to_sleep", "remember", "forget", "get_today", "set_reminder",
+LOCAL = ("head_tracking", "idle_do_nothing", "go_to_sleep", "remember", "remember_fact", "forget", "get_today", "set_reminder",
          "list_reminders", "cancel_reminder", "quiet_for", "day_plan", "set_pace", "set_volume", "share_with_family",
          "remember_moment", "forget_moment", "what_you_remember", "captions", "set_language", "settings_code",
          "tell_joke", "story", "task_status", "forget_place", "gesture")

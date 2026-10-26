@@ -6,7 +6,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 | Question | The scorecard to read |
 |---|---|
-| How does the current profile do in conversation? | [suite-2026-10-26-final-local.json](suite-2026-10-26-final-local.json): 95, 95 and 95 of 97, local API calls with the real confirmation gate and synthetic tools; input/code hashes and failures included. No audio, camera or motors |
+| How does the current profile do in conversation? | [suite-2026-10-26-startup-local.json](suite-2026-10-26-startup-local.json): 94, 94 and 95 of 97, local API calls with the real confirmation gate and synthetic tools; input/code hashes and failures included. No audio, camera or motors |
 | Which conversation run was on Nebius Serverless Jobs? | [2026-10-25-nebius-job-andy-suite-20261025-193648.json](2026-10-25-nebius-job-andy-suite-20261025-193648.json): 96, 95 and 92 of 97 on the previous profile; this is historical evidence, not a test of the October 26 revision (before: [93, 92, 92 of 94](2026-10-25-nebius-job-andy-suite-20261025-170439.json); [92, 91, 94](2026-10-20-nebius-job-andy-suite-20261020-195645.json)) |
 | Does the scam check work, and what does Tavily add? | [scam-eval-2026-10-14-1200-nebius-jobs.json](scam-eval-2026-10-14-1200-nebius-jobs.json): 120 messages, each model alone and with Tavily's warnings (with the word rules below, five ways), three runs, four Nebius Serverless Jobs ([decision 0007](../../docs/decisions/0007-the-scam-check-two-narrow-questions.md)) |
 | What would no model at all do? | [scam-word-rules-2026-10-20-1552.json](scam-word-rules-2026-10-20-1552.json): Andy's own letter rules on the same 120 messages (28 of 60 caught, 3 of 60 flagged), and the cost of one check |
@@ -21,10 +21,13 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 ## October 26 hardening runs
 
-The current local run is [suite-2026-10-26-final-local.json](suite-2026-10-26-final-local.json):
-**95, 95, 95 of 97** on version 2026-10-26d, real confirmation gate around synthetic tools.
-The two failures each run are proactive memory offers (moment-1 and photo-2), including one false
-promise to make a note; no unapproved write is released by the gate. The scorecard carries hashes
+The current local run is [suite-2026-10-26-startup-local.json](suite-2026-10-26-startup-local.json):
+**94, 94, 95 of 97** on version 2026-10-26e, after renaming the fact tool to `remember_fact` so the app starts.
+The earlier [95, 95, 95 run](suite-2026-10-26-final-local.json) tested version d before discovering its SDK name collision.
+Both use the real confirmation gate around synthetic tools; neither exercises the microphone or motors.
+Proactive memory offers fail each run (moment-1 and photo-2). The new run also failed moment-5 once
+(a premature claim that something was forgotten) and chat-2 once (another offer after "not now").
+The earlier run included a false promise to make a note; no unapproved write is released by the gate. The scorecard carries hashes
 of its profile, suite, tools, runner and gate. It does not measure audio, images or robot motion.
 
 The other `suite-2026-10-26-*` files retain the focused and exploratory runs during the fixes,

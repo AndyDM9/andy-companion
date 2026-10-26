@@ -112,5 +112,5 @@ def test_the_profile_keeps_a_photo_story_only_with_a_yes():
     from pathlib import Path
 
     text = (Path(vision.__file__).parents[2] / "profiles" / "companion" / "profile.md").read_text()
-    assert "remember proposal" in text and "confirmation procedure above" in text
+    assert "remember_fact proposal" in text and "confirmation procedure above" in text
     assert "Share it with family only\n  if they ask." in text

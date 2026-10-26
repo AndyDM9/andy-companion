@@ -3,6 +3,7 @@ import asyncio
 import importlib.util
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -45,3 +46,42 @@ def test_real_dispatch_cannot_share_before_confirmation_or_repeat_it(tmp_path, m
     assert asyncio.run(routine(None))["shared"] is True
     assert len(board.shared()) == 1
     assert asyncio.run(routine(None))["shared"] is False and len(board.shared()) == 1
+
+
+def test_renamed_fact_tool_requires_readback_and_fresh_yes_before_dispatch(tmp_path, monkeypatch):
+    path = Path(__file__).resolve().parents[1] / "tools" / "remember_fact.py"
+    spec = importlib.util.spec_from_file_location("review_remember_fact", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    writes = []
+
+    def save(instance, fact):
+        writes.append(fact)
+        return SimpleNamespace(text=fact, id="invented-fact-id")
+
+    monkeypatch.setattr(module, "add_memory_fact", save)
+    monkeypatch.setattr(core, "get_tools", lambda *a, **k: {"remember_fact": module.RememberFact()})
+    deps = core.ToolDependencies(reachy_mini=None, movement_manager=None)
+
+    class Handler:
+        def __init__(self):
+            self.deps = deps
+
+        def _emit_transcript(self, role, text, final=True):
+            pass
+
+    class Routine(ToolCallRoutine):
+        pass
+
+    consent.install(Handler, Routine)
+    handler = Handler()
+    arguments = {"fact": "Likes gardening"}
+    routine = Routine(tool_name="remember_fact", args_json_str=json.dumps(arguments), deps=deps)
+    handler._emit_transcript("user", "I like gardening")
+    proposal = asyncio.run(routine(None))
+    assert proposal["confirmation_needed"] and not writes
+    handler._emit_transcript("assistant", proposal["say"])
+    handler._emit_transcript("user", "Yes, please")
+    assert asyncio.run(routine(None))["saved"] == arguments["fact"]
+    assert writes == [arguments["fact"]]
+    assert asyncio.run(routine(None))["saved"] is False and len(writes) == 1

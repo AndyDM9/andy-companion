@@ -62,7 +62,7 @@ Serverless Jobs, simulation, desk images and physical trials. Every retained run
 
 | Evidence | Result | Boundary |
 |---|---|---|
-| [Current text suite](../evals/results/suite-2026-10-26-final-local.json) | 95/97 in each of three runs | Text API calls, real confirmation gate, synthetic tool results; two automatic memory-offer cases fail |
+| [Current text suite](../evals/results/suite-2026-10-26-startup-local.json) | 94, 94, 95 of 97 | Text API calls, real confirmation gate, synthetic tool results; two memory-offer cases fail throughout; deletion wording and stopping fail once |
 | [Previous profile on Serverless Jobs](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) | 96, 95, 92 of 97 | Historical profile; does not validate the October 26 changes |
 | [Scam comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json) | Andy: 58/60 scams, 0/60 ordinary flagged | Written test cases, not household messages; model baselines and errors included |
 | [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; the revised body turn still needs physical validation |
@@ -97,7 +97,7 @@ also requires the local voice server; it is not a browser-only robot service.
 
 ## What is still pending
 
-The video, real robot photographs, revised hardware-flow checks, 30 planned physical finder attempts
+The video, real robot photographs, observed voice and revised hardware-flow checks, 30 planned physical finder attempts
 and short sessions with potential users remain pending. The submission tag and app dependency pin
 will be set after the final validation. Until then, `main` changes; use `git rev-parse HEAD` to record
 which revision you tested. The [submission checklist](submission-checklist.md) and

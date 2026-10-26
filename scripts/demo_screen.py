@@ -224,6 +224,11 @@ def main() -> int:
     if {"-h", "--help"} & set(sys.argv[1:]):     # the description, and nothing else run
         print(__doc__)
         return 0
+    if __name__ != "__main__" or board.TOKENS.parent.resolve() != DATA.resolve() or not DATA.name.startswith("andy-demo-"):
+        print("Run demo_screen.py as its own process; imported demos must never seed a household store.", file=sys.stderr)
+        if __name__ == "__main__":
+            shutil.rmtree(DATA, ignore_errors=True)  # only the new folder made by this script above
+        return 2
     import signal
 
     # A kill (SIGTERM) cleans up like Ctrl+C, so the throwaway folder never stays behind.

@@ -5,8 +5,8 @@ from reachy_mini_conversation_app.memory import add_memory_fact
 from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
 
-class Remember(Tool):
-    name = "remember"
+class RememberFact(Tool):
+    name = "remember_fact"
     description = (
         "Keep one short fact only when asked or confirmed. An explicit request to remember can be saved directly. "
         "Otherwise call once to prepare a proposal. If confirmation_needed is returned, nothing was saved: "

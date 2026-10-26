@@ -251,6 +251,11 @@ The follow-up judge-access audit added the short testing guide, fresh anonymous 
 checks, subprocess demo and installed-wheel CI checks, CPU rendering prerequisites and consistent
 desktop/dashboard settings (decision 0020). Physical checks and the final submission remain pending.
 
+After USB reconnection the real launch found a tool-name collision missed by the install checks:
+fixed with `remember_fact` and SDK startup CI (decision 0021). Andy reached its conversation loop;
+spoken task checks and physical finder trials remain pending. The current version e text run is
+94, 94 and 95 of 97. The live links were refreshed privately, and the demo now rejects household modules.
+
 | # | Item | Status |
 |---|---|---|
 | B66 | Bind each confirmation to one exact action and readback, with expiry and one-use permission | Built and regression-tested; decision 0018; robot check pending |

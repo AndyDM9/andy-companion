@@ -34,7 +34,7 @@ letter and by phone: adults 60 and over reported over $3 billion lost to fraud i
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
 messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) text cases passed with the previous profile; both evaluations ran as Nebius
-Serverless Jobs. The current hardened profile scored [95 of 97 in each of three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-final-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
+Serverless Jobs. The current hardened profile scored [94, 94 and 95 of 97 in three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-startup-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Eight models run
   on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
@@ -89,7 +89,7 @@ robot: turning to a second person speaking, a move taught by hand, and rememberi
 - **At home:** NVIDIA Parakeet TDT 0.6B v3 and Qwen3-TTS on the home computer's GPU, so your voice never leaves the
   house, only words do; Silero VAD and Smart Turn v3.2, Vosk, Tesseract and YuNet on its CPU; and NVIDIA Cosmos
   Reason 2 for local vision; the conversation still calls Token Factory.
-- **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 tools; NVIDIA Nemotron 3
+- **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 profile tools, plus two SDK task controls; NVIDIA Nemotron 3
   Ultra takes hard questions and judges the tests. Zero data retention is on.
 - **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed-in parts, all 24
   at once in about 1.8 s, then a strict yes or no about a close-up. On one room photo, zooming in took the search
@@ -150,7 +150,7 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- Current text-suite runs on October 26 scored 95 of 97 each, with the real confirmation gate and synthetic tools.
+- Current text-suite runs on October 26 scored 94, 94 and 95 of 97, with the real confirmation gate and synthetic tools.
   Two memory-offer cases remain unreliable; a gate prevents unapproved writes. The older Serverless Job scores
   in this draft predate these changes and must not be presented as current-profile results.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
