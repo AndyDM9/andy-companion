@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Reminder-integrity publication follow-through
+
+- Source `469f3ba` pushed; screen preview revision `357b1c818734d8964b700440eb1fd8234a5ca8ab`
+  RUNNING, actual deployment and changed module/page hashes match. New Settings HTML/kept schema
+  served. Eight public layouts and two public write refusals passed, no model/hardware calls.
+- Anonymous clone: 1,296 / 15 skipped. Full history: 229 commits clean. All 310 relative links and
+  23 export links pass. Existing services active; awake preflight 20/21, optional second check stopped.
+  Hosted CPU/wheel and SDK CI passed, including the six new dispatch cases. Video, physical trials, release packaging
+  and actual submission remain pending; no new hardware or data-restoration claim.
+
 ### Reminder scheduling and stored-data integrity
 
 - Conflicting `minutes`/`at` could turn an 08:00 daily request into a one-minute-from-now reminder.

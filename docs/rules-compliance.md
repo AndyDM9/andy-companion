@@ -19,6 +19,13 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Reminder-integrity publication (October 27)
+
+Published source and preview match, eight public layouts and public write refusals pass, and all
+23 submission links open. Anonymous-clone and hosted CPU/wheel/SDK checks passed. Original data is still private; recovery UI checks used invented
+state, and public writes remain refused. No actual repair, physical delivery or completed-submission
+claim is added. Missing video/tag/app pin remain final-export blockers.
+
 ## Reminder-integrity audit (October 27)
 
 Time validation and malformed-store handling improve existing reminder/deletion functions. Owner-page

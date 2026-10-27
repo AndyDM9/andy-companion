@@ -8,7 +8,8 @@ in the same commit that makes it true.
 
 - [x] Ambiguous reminder times refused; malformed stores preserved whole, unique recovery copies visible/deletable and delete-everything complete; 40 CPU/six real-dispatch regressions pass
 - [x] Eight English/Spanish desktop/phone recovery/healthy browser cases pass, with simulated UI writes and separate actual HTTP deletion test
-- [ ] Reminder-integrity update verified as installed package, running service and published read-only preview; no new physical trial inferred
+- [x] Reminder-integrity update verified as installed package, running service and published read-only preview; source hashes, fresh clone, eight public layouts and refusal of public copy/delete-all writes pass
+- [x] Hosted CPU/wheel and SDK jobs for reminder-integrity revision passed, including all six new reminder dispatch cases
 
 - [x] Quoted memory commands cannot grant explicit permission; legitimate delimited requests and full-utterance refusals covered by 48 pure/eight installed SDK regressions
 - [x] October 27 consent-source change passes full CPU/robot-environment tests, isolated wheel and Python lint; unproven model/tool prototypes left out

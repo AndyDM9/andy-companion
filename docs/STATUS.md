@@ -42,8 +42,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   physical demonstration or audience outcome inferred. Prior documentation CI `bb5a66f` passed.
   Isolated wheel **three passed**. Existing service restarted with zero competing controllers;
   awake preflight **20/21**, optional paid second check stopped, zero audio drops/suspect voice-log
-  lines. Public-preview/source publication follow-through pending.
+  lines. Public-preview/source publication follow-through below.
   [Audit metadata](../evals/results/reminder-integrity-audit-2026-10-27.json).
+
+- **Published:** source `469f3ba`; preview `357b1c818734d8964b700440eb1fd8234a5ca8ab` RUNNING.
+  Actual deployed revision and reminders/kept/Settings source match; new HTML and kept schema served.
+  Eight public layouts passed, recovery-copy/delete-all posts refused with 403. No model calls in these
+  checks. All three Spaces RUNNING. Anonymous clone **1,296 / 15 skipped**; history **229 commits
+  clean**, **310** relative links valid, **23/23** export links open. [Hosted CPU/wheel and SDK CI passed](https://github.com/AndyDM9/andy-companion/actions/runs/40521668768),
+  including the six new reminder dispatch cases. Final exporter still blocks missing video/tag/app pin. No new
+  hardware delivery, pointing, restored-data or completed-submission claim.
 
 ## October 27 consent-source follow-through
 

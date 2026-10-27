@@ -38,8 +38,7 @@
     "live_preflight_total": 21,
     "remaining": "Optional paid second-check endpoint deliberately stopped; 404",
     "audio_drops_last_minute": 0,
-    "suspect_voice_log_lines_last_day": 0,
-    "source_and_public_preview_publication": "pending"
+    "suspect_voice_log_lines_last_day": 0
   },
   "prior_documentation_ci": {
     "ref": "bb5a66f",
@@ -75,5 +74,119 @@
       "path": ".github/workflows/tests.yml",
       "sha256": "e58c51c6fee545f6961cfd34310d3686fd7fe90d56001657e7fb7a98d00f09be"
     }
-  ]
+  ],
+  "publication": {
+    "source": "469f3ba6e254fea8e50fdce0299d6114b8fdcc43",
+    "source_ci": "https://github.com/AndyDM9/andy-companion/actions/runs/40521668768",
+    "source_ci_result": "success: CPU/wheel and SDK jobs, including six new reminder dispatch cases",
+    "preview_revision": "357b1c818734d8964b700440eb1fd8234a5ca8ab",
+    "preview_stage": "RUNNING",
+    "served_new_settings_and_kept_schema": true,
+    "deployed_revision_and_reminders_kept_settings_source_match": true,
+    "all_three_spaces_running": true,
+    "public_browser_checks": {
+      "scope": "Public sample-page layout and refusal of owner-copy/delete-all writes. No inference or robot control; no household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [],
+      "refusals": {
+        "copy-delete": 403,
+        "delete-all": 403
+      }
+    },
+    "anonymous_clone": {
+      "passed": 1296,
+      "skipped": 15
+    },
+    "history_commits_scanned": 229,
+    "secret_findings": 0,
+    "submission_links_open": 23,
+    "submission_links_total": 23,
+    "final_export_exit": 2,
+    "final_export_blockers": [
+      "Video placeholder",
+      "Missing final release tag",
+      "App dependency still main"
+    ]
+  }
 }
