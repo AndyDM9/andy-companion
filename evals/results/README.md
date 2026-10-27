@@ -22,6 +22,15 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 screen reconnection audit
+
+[Screen reconnection audit](screen-reconnection-audit-2026-10-27.json): **1,521 CPU / 1,570 installed
+robot-environment passes**, 12 new JavaScript cases running real page functions, three isolated wheel
+checks and eight Chromium fixtures. Stalled calls remain capped, timeout releases the guard, the main
+refresh continues and replies crossing a connection transition are discarded. Invented responses only;
+not physical Wi-Fi recovery, robot health, voice latency or persisted-settings recovery. Browsers
+without AbortController cap pending requests but may need a reload for a never-settling fetch.
+
 ## October 27 setup input audit
 
 [Setup input audit](setup-input-audit-2026-10-27.json): **1,509 CPU / 1,558 installed robot-environment

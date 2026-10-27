@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Screen status survives stalled and late replies
+
+- Injected status polls started 12 requests while earlier replies stalled; a late response body could
+  replace the disconnected pill with an old speaking state. Give status polling its own single-request
+  guard and five-second abort, pause it while offline and reject older-connection replies after JSON
+  decoding (0035). The main refresh keeps working independently; existing clock/offline wording retained.
+- **12 new JavaScript regressions** execute the real page functions, with **27 targeted passed**.
+  Full CPU **1,521 / 16 skipped**, robot environment **1,570 / one skipped**, isolated wheel **three
+  passed**, complete inline-script syntax and changed-test Python lint pass. Eight Chromium fixtures
+  cover timeout/reconnect, English/Spanish and two screen sizes; no page errors or horizontal overflow.
+- No model, profile, tool schema, API contract, stored setting or motor change. Browser fault injection
+  is not a physical network, voice or hardware test. Runtime/publication follow-through is in STATUS.
+  Persisted-settings recovery and intermittent cloud latency remain separate open work.
+
 ### Setup-validation deployment follow-through
 
 - Source `83aa522` pushed; screen preview `a898e2d1db6caabe54373a83d20e451f6e523ae7` RUNNING.

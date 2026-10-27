@@ -19,6 +19,15 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Screen reconnection (October 27)
+
+Bounded status polling and stale-reply rejection improve an existing screen failure path. Actual
+page-function tests and eight Chromium cases use invented responses and simulated disconnects,
+not physical network or robot trials. No new hardware, model, voice-latency, stored-settings recovery
+or availability result. Public wording/capabilities and existing hardware/access/video/release
+requirements remain unchanged. Runtime/source/preview verification is recorded when completed;
+no physical/access/submission item is ticked by these software checks.
+
 ## Setup request validation (October 27)
 
 Setup type checks improve an existing owner-page request boundary. Invented tests verify refused

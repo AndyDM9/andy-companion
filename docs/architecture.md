@@ -130,6 +130,12 @@ any data, and requires its own new temporary store; it must never replace a live
 | `scripts/demo_screen.py`, `space/`, `scripts/space.sh` | The screens on sample data, on this computer or as a public read-only Hugging Face Space (decision 0010) | Hold a key or a real person's data; take anything a visitor sends; run on the robot |
 | Pollen's conversation app (dependency) | The robot connection, movement, tool calling | — (not forked, files unmodified; Andy hooks in at start through `app_mode.install`, wrapping a few of its methods) |
 
+The screen's main refresh and fast status poll each allow one pending request and use five-second
+AbortController timeouts. Status requests pause while offline. Browser-local connection generations
+are checked after status JSON decoding so late replies cannot overwrite a disconnected or newer
+connection's state (0035). The existing ten-second offline indicator and independently running clock
+remain. Without AbortController, the status guard caps requests but cannot cancel a hung fetch.
+
 ## Data
 
 - Keys live in `~/.config/companion-hackathon/.env` (mode 600), outside the repository.

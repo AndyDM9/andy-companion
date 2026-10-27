@@ -20,6 +20,28 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 screen-reconnection audit
+
+- **Fixed:** injected stalled status calls accumulated, and an old response body could overwrite the
+  disconnected pill. Status polling now has one pending request, a five-second AbortController timeout,
+  offline pause and a connection-generation check after decoding (0035). The main refresh stays
+  independent; existing offline wording and clock retained. No model/store/tool/API or motor change.
+- **Validation:** 12 new actual-JavaScript cases, **27 targeted passed**; CPU **1,521 / 16 skipped**,
+  installed robot environment **1,570 / one skipped**, isolated wheel **three passed**, full inline-
+  script syntax and changed-test Python lint pass. Eight Chromium cases cover two languages/two
+  screen sizes for timeout and old-reply/reconnection, zero page errors/overflow. Invented intercepted
+  responses only, no household data, actual network outage, model, voice, camera or robot test.
+- **Limits:** without AbortController a hung poll is capped at one but cannot be cancelled. Connection
+  freshness is not arbitrary payload validation or complete robot health. Persisted-settings recovery,
+  intermittent cloud latency, physical trials, memory offers, video and final release remain open.
+- **Runtime/package:** existing service restarted with zero competing controllers; all three services
+  active. Live static HTML and installed-wheel page bytes match the tested source. Awake preflight
+  **20/21**, optional second check still off, Nemotron tiny text probe **0.63 s**, zero microphone drops
+  and suspect voice-log lines. This does not erase earlier cloud timeouts or establish physical voice
+  latency. Source/preview/CI follow-through pending. Previous notes revision `ebe8214` passed hosted
+  CPU/wheel/SDK checks.
+  [Audit metadata](../evals/results/screen-reconnection-audit-2026-10-27.json).
+
 ## October 27 setup-request audit
 
 - **Fixed:** injected string false became true; fractional hours/volume truncated. Setup now requires

@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-27",
+  "scope": "Actual page JavaScript with controlled responses/clocks and full local Chromium page with invented intercepted data. No household data, microphone, camera, motors or actual network outage. Separate existing-service preflight uses tiny invented model probes.",
+  "reproduced_before_fix": [
+    {
+      "fixture": "12 status invocations with stalled fetches",
+      "requests_started": 12
+    },
+    {
+      "fixture": "body arrives after offline indication",
+      "offline_pill_overwritten": true
+    }
+  ],
+  "validation": {
+    "new_javascript_cases": 12,
+    "targeted_passed": 27,
+    "cpu_passed": 1521,
+    "cpu_skipped": 16,
+    "installed_robot_environment_passed": 1570,
+    "installed_robot_environment_skipped": 1,
+    "isolated_distribution_passed": 3,
+    "installed_page_bytes_match_source": true,
+    "full_inline_script_syntax": "passed",
+    "changed_test_python_E9_F_B": "passed"
+  },
+  "browser": {
+    "scope": "Updated local screen HTML in Chromium with public invented sample shape and intercepted responses. Synthetic stalled request, timeout and reconnect transitions only. No model, household data, physical network disconnect, robot, microphone, camera or motor access.",
+    "cases": [
+      {
+        "language": "en",
+        "viewport": [
+          1920,
+          950
+        ],
+        "scenario": "timeout",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "en",
+        "viewport": [
+          1920,
+          950
+        ],
+        "scenario": "late-reply",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "en",
+        "viewport": [
+          1280,
+          720
+        ],
+        "scenario": "timeout",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "en",
+        "viewport": [
+          1280,
+          720
+        ],
+        "scenario": "late-reply",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "es",
+        "viewport": [
+          1920,
+          950
+        ],
+        "scenario": "timeout",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "es",
+        "viewport": [
+          1920,
+          950
+        ],
+        "scenario": "late-reply",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "es",
+        "viewport": [
+          1280,
+          720
+        ],
+        "scenario": "timeout",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      },
+      {
+        "language": "es",
+        "viewport": [
+          1280,
+          720
+        ],
+        "scenario": "late-reply",
+        "passed": true,
+        "page_errors": 0,
+        "horizontal_overflow": false
+      }
+    ],
+    "screen_sha256": "c44faffe1ed1f4046dcac7ed92248b7f43e72bc48a1baf872db1fa0567a02900"
+  },
+  "runtime": {
+    "existing_service_restarted": true,
+    "competing_controllers": 0,
+    "services_active": [
+      "andy",
+      "andy-voice",
+      "andy-eyes"
+    ],
+    "live_static_screen_matches_source": true,
+    "awake_preflight_passed": 20,
+    "awake_preflight_total": 21,
+    "remaining": "Optional paid second-check endpoint intentionally stopped; 404",
+    "nemotron_tiny_text_probe_seconds": 0.63,
+    "microphone_drops": 0,
+    "suspect_voice_log_lines": 0,
+    "scope": "No physical network, spoken turn or motor test; latest passing probe does not resolve or erase earlier intermittent provider timeouts."
+  },
+  "limits": "Status freshness only, not arbitrary response-schema validation or complete robot health. Without AbortController only one request remains pending but cannot be cancelled; reload may be needed. No stored-settings recovery, model/profile/tool/API/budget/timeout-to-provider change, physical Wi-Fi/voice or hardware task result.",
+  "prior_documentation_ci": {
+    "source": "ebe8214",
+    "status": "success",
+    "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40539285566"
+  },
+  "publication": "Pending source/preview/hosted-CI/fresh-clone follow-through.",
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/pages/screen.html",
+      "sha256": "c44faffe1ed1f4046dcac7ed92248b7f43e72bc48a1baf872db1fa0567a02900"
+    },
+    {
+      "path": "tests/test_screen_reconnection.py",
+      "sha256": "795832f361ea87731dc6683f6f27ab6b3db7b6e28780f7b4c9aec78a29bf3d4e"
+    },
+    {
+      "path": "profiles/companion/profile.md",
+      "sha256": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b"
+    },
+    {
+      "path": "evals/tools.json",
+      "sha256": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59"
+    }
+  ]
+}
