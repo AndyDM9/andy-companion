@@ -32,3 +32,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0025](0025-discoverable-voice-examples-and-honest-search-progress.md) | Make voice examples discoverable and show actual search progress | 2026-10-26 | accepted |
 | [0026](0026-preflight-tests-model-availability-not-catalogue-membership.md) | Preflight tests model availability, not catalogue membership | 2026-10-26 | accepted |
 | [0027](0027-start-object-search-before-announcing-it.md) | Start an object search before announcing it | 2026-10-26 | accepted |
+| [0028](0028-spoken-message-text-does-not-open-letter-ocr.md) | Supplied spoken-message text does not open letter OCR | 2026-10-26 | accepted |

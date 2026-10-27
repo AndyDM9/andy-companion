@@ -97,7 +97,7 @@ any data, and requires its own new temporary store; it must never replace a live
 | `setup_page.py` (+ `/setup`) | What a helper may change from a phone (town, news sites, what's-on pages, language, pace, volume, captions), its checks, and telling the person who changed what | Change reminders, memories or what is shared; change anything without a name and a notice to the person |
 | `live.py` | What Andy is doing right now (ready, hearing, thinking, working with the tool's name, speaking), and what its head is turned to (one of four names from `body/looking_at.py`), sent to the screen server on change | Send words or tool arguments |
 | `kept.py` | Persistent items and pending messages/research, listed and deletable; delete everything also clears the card, captions and views | Delete without a name and a notice to the person |
-| `consent.py` | Per-conversation, one-use permission bound to exact tool arguments and a spoken readback, expiring after two minutes (decision 0018). Explicit requests can save one item directly; sharing always requires confirmation. The first offered save or share is only a proposal; its tool runs after the matching confirmation. The tool wrapper rejects changed content and reused permission. | Keep or log the words beyond the check |
+| `consent.py` | Per-conversation, one-use permission bound to exact tool arguments and a spoken readback, expiring after two minutes (decision 0018). Explicit requests can save one item directly; sharing always requires confirmation. The first offered save or share is only a proposal; its tool runs after the matching confirmation. The tool wrapper rejects changed content and reused permission. Before `read_letter`, it also checks the existing latest utterance for a narrow already-spoken/quoted-message pattern and returns a non-camera result before OCR can run (decision 0028); explicitly held/printed pages retain the camera path. | Keep or log the words beyond the check |
 | `health.py` | The hood page's health tiles: daemon, voice server, Andy's mode, weather, Tavily credits, Nebius endpoints | Read keys or words; hold up a page while checking |
 | `turns.py` | How long each turn and each tool took, for the `/hood` page | Keep or send a word, a tool argument or anything but numbers, tool names and which eyes answered (one of three names) |
 | `reading.py` | Reading a page held up to the camera, on this computer | Send or keep the picture |
@@ -212,6 +212,6 @@ with a fixed invented text-only request, at most eight output tokens and a 15-se
 reports status only; catalogue membership does not determine availability. It neither captures a
 camera frame nor establishes visual quality. A camera-only local-fallback probe remains separate.
 
-Object-search response order (decision 0027): the profile/tool instruct the model to dispatch the
-existing `find_object` before preliminary speech. There is no separate keyword-driven movement path;
+Requested camera-action response order (decisions 0027/0028): the profile/tools instruct the model to
+dispatch the existing `find_object` or `read_letter` before preliminary speech. There is no separate keyword-driven movement path;
 the same tool, camera checks, body ownership, transient progress and result flow remain in use.

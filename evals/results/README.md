@@ -6,9 +6,10 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 | Question | The scorecard to read |
 |---|---|
+| What did the final re-audit verify? | [reaudit-2026-10-26.json](reaudit-2026-10-26.json): installation, software checks, public access, scoped probes and remaining submission gaps; no new physical-accuracy rate |
 | Does a real camera frame reach local eyes when the primary is unavailable? | [camera-recovery-2026-10-26.json](camera-recovery-2026-10-26.json): IPC camera frame, forced unreachable loopback primary, local Cosmos 8B response; metadata only. No voice, pointing, caption-quality or user-study claim |
 | Does the public guided AI playground work? | [judge-playground-2026-10-26.json](judge-playground-2026-10-26.json): six browser steps using real Nemotron and simulated tools; eight browser/state checks, five HTTP refusal probes and source hashes. No hardware or target-user session; not a conversation-accuracy score |
-| How does the current profile do in conversation? | [suite-2026-10-26-startup-local.json](suite-2026-10-26-startup-local.json): 94, 94 and 95 of 97, local API calls with the real confirmation gate and synthetic tools; input/code hashes and failures included. No audio, camera or motors |
+| How does the current profile do in conversation? | [suite-2026-10-26-camera-source-local.json](suite-2026-10-26-camera-source-local.json): 94, 96 and 94 of 97, local API calls with real confirmation/source checks and synthetic tools; hashes/failures retained. No audio, camera or motors |
 | Which conversation run was on Nebius Serverless Jobs? | [2026-10-25-nebius-job-andy-suite-20261025-193648.json](2026-10-25-nebius-job-andy-suite-20261025-193648.json): 96, 95 and 92 of 97 on the previous profile; this is historical evidence, not a test of the October 26 revision (before: [93, 92, 92 of 94](2026-10-25-nebius-job-andy-suite-20261025-170439.json); [92, 91, 94](2026-10-20-nebius-job-andy-suite-20261020-195645.json)) |
 | Does the scam check work, and what does Tavily add? | [scam-eval-2026-10-14-1200-nebius-jobs.json](scam-eval-2026-10-14-1200-nebius-jobs.json): 120 messages, each model alone and with Tavily's warnings (with the word rules below, five ways), three runs, four Nebius Serverless Jobs ([decision 0007](../../docs/decisions/0007-the-scam-check-two-narrow-questions.md)) |
 | What would no model at all do? | [scam-word-rules-2026-10-20-1552.json](scam-word-rules-2026-10-20-1552.json): Andy's own letter rules on the same 120 messages (28 of 60 caught, 3 of 60 flagged), and the cost of one check |
@@ -23,14 +24,20 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 ## October 26 hardening runs
 
-The current local run is [suite-2026-10-26-startup-local.json](suite-2026-10-26-startup-local.json):
-**94, 94, 95 of 97** on version 2026-10-26e, after renaming the fact tool to `remember_fact` so the app starts.
-The earlier [95, 95, 95 run](suite-2026-10-26-final-local.json) tested version d before discovering its SDK name collision.
-Both use the real confirmation gate around synthetic tools; neither exercises the microphone or motors.
-Proactive memory offers fail each run (moment-1 and photo-2). The new run also failed moment-5 once
-(a premature claim that something was forgotten) and chat-2 once (another offer after "not now").
-The earlier run included a false promise to make a note; no unapproved write is released by the gate. The scorecard carries hashes
-of its profile, suite, tools, runner and gate. It does not measure audio, images or robot motion.
+The current local run is [suite-2026-10-26-camera-source-local.json](suite-2026-10-26-camera-source-local.json):
+**94, 96 and 94 of 97** after tool-first letter reading and the spoken-message source boundary.
+Photo memory offers fail throughout; upcoming-event offers twice, supportive-response completeness
+and story fidelity once each. Quoted-message and letter cases passed all three runs. Model-judged
+wording varies; this is not a physical test or a proof that all routing succeeds.
+
+The audit also retains [92, 94, 92](suite-2026-10-26-post-watch-local.json) before the reader change
+and [93, 94, 95](suite-2026-10-26-reader-routing-local.json) before the source boundary. The latter
+exposed an attempted OCR call for supplied quoted text. These use different source hashes and must
+not be pooled or used to claim a statistically measured improvement. No unapproved write effect was
+reported in these runs. The prior [94, 94, 95](suite-2026-10-26-startup-local.json) and
+[95, 95, 95](suite-2026-10-26-final-local.json) remain historical, pre-watch/pre-reader evidence.
+All runs use invented text and synthetic tool results with the real gates; none exercises the
+microphone, camera, physical OCR, movement or intended-audience usability.
 
 The other `suite-2026-10-26-*` files retain the focused and exploratory runs during the fixes,
 including failures. `hardening-local` is the earlier full run (90, 88, 92 of 97). The medicine

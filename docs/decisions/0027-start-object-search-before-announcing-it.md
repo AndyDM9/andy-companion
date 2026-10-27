@@ -37,3 +37,9 @@ prerequisite failures. Neither proves the person's next spoken request will succ
 
 A fresh spoken trial still announces without dispatch, or starts a search for a non-request. Capture
 only counts/tool names and obtain a live retry; never retain household speech to diagnose it.
+
+## Amended 2026-10-26: held-up page reading
+
+The final audit found the same announcement-only failure for `read_letter`. The tool-first response
+order now also applies to that existing camera/OCR tool. Decision 0028 records its separate spoken-text
+source boundary; the physical letter retry remains separate from the founder-confirmed watch retry.

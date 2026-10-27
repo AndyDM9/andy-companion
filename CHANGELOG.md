@@ -3,6 +3,39 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-27
+
+### Complete re-audit and camera-reading reliability fixes
+
+- Rechecked the live rules/FAQ, source, services, public judge paths, fresh-clone installation,
+  app installation/entrypoint/uninstall, distribution resources, JavaScript, lockfiles, links and
+  full-history secrets. Baseline: CPU 1,141 / 13 skipped, robot environment 1,158 / one skipped;
+  fresh anonymous clone matched CPU results; isolated wheel three checks passed; 222 commits clean.
+- First full model suite after the watch fix scored 92, 94, 92/97. Found a second announcement-only
+  path in read_letter: call the existing reader before speaking, as for finding objects. Three SDK
+  regressions cover camera prerequisites, unreadable pages and the filtered card path.
+- The reader revision scored 93, 94, 95/97 but once requested camera OCR for an already-quoted
+  message. Added a narrow source check to the existing per-conversation SDK dispatcher, before OCR,
+  using only its existing in-memory utterance. Shared the same check with the evaluator; 15 source
+  cases and one real-dispatch regression added (decision 0028). No extra controller or stored text.
+- Final suite **94, 96 and 94 of 97**, real API calls, synthetic tools and real gates; profile/tool/runner/gate
+  hashes retained. All three runs passed the quoted-message and letter cases. Photo memory offers
+  fail throughout; future-event memory offers twice, supportive-response completeness and story
+  fidelity once each. No unauthorised write effect reported. All exploratory scores/failures retained;
+  variation between these small runs is not a measured improvement in physical behaviour.
+- Final CPU **1,156 passed / 14 skipped**, installed robot environment **1,177 / one skipped**.
+  Live preflight **20/21**, optional second-check endpoint stopped; zero audio drops, competing
+  controllers or suspect voice-log lines. Camera-only local fallback: 1920×1080, 0.320 s acquisition,
+  0.943 s response, no retained image/description, no motor controller. No spoken recovery claim.
+- Public preview: five URLs 200, eight write probes 403, wrong token 404. Eight public layouts and
+  eight real guided-example scenarios passed, including Yes/No on desktop/phone; three protocol
+  refusals passed. Three Spaces RUNNING, pre-audit guided profile/tools matched source.
+- Corrected stale watch-retry/current-score references and the filming helper's caption wording:
+  English translation is required for non-English material, rather than captions being universally
+  mandatory. Video, final release tag/app pin, judge hardware arrangement and actual submission
+  remain open; planned 30 trials/user sessions remain evidence goals. Source restart/publication
+  follows this commit; physical reader retry and final Serverless Job are not inferred from this audit.
+
 ## 2026-10-26
 
 ### Watch-search retry confirmed on the local robot

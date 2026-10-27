@@ -64,7 +64,8 @@ def check() -> int:
         problems.append(f"The night clock is on now ({s.get('night_clock', 'hours')}): film in the day, or set "
                         "\"The night clock\" to Never on the settings page.")
     if not s.get("captions", True):
-        problems.append("Captions are off: turn them on (the rules ask for English captions).")
+        problems.append("Captions are off: turn them on for the planned accessible video. "
+                        "Any non-English segment needs an English translation under the rules.")
     if s.get("tv_yaw") is None:
         problems.append("The screen's place isn't set, so Andy won't glance at it: settings page, \"Where the screen is\".")
     if not s.get("place"):

@@ -1,0 +1,283 @@
+{
+  "started_local_date": "2026-10-26",
+  "recorded": "2026-10-27T00:01:33.870073-04:00",
+  "baseline_source_commit": "53c7e5706e66b1e7ee2077952649a4e41b5dd409",
+  "scope": "Software/reproducibility/privacy/public-access audit plus real-model synthetic conversation and one camera-only local recovery probe. No new scored physical attempt, saved household image, spoken reader verification or audience study.",
+  "tests": {
+    "cpu_passed": 1156,
+    "cpu_skipped": 14,
+    "robot_environment_passed": 1177,
+    "robot_environment_skipped": 1,
+    "fresh_baseline_clone_cpu_passed": 1141,
+    "fresh_baseline_clone_skipped": 13,
+    "isolated_wheel_passed": 3,
+    "app_checker": "install, entrypoint and uninstall passed",
+    "source_boundary_cases": 15,
+    "sdk_source_refusal_regressions": 1,
+    "reader_entrypoint_regressions": 3
+  },
+  "checks": {
+    "four_lockfiles_valid": true,
+    "python_E9_F_valid": true,
+    "changed_python_E9_F_B_valid": true,
+    "inline_scripts_parsed": 4,
+    "external_judge_script_parsed": true,
+    "result_json_valid": true,
+    "relative_links_checked_before_doc_updates": 276,
+    "broken_relative_links": 0,
+    "gitleaks_baseline_commits": 222,
+    "gitleaks_leaks": 0,
+    "repository_public": true,
+    "licence": "Apache-2.0"
+  },
+  "runtime": {
+    "preflight_checks_passed": 20,
+    "preflight_checks_total": 21,
+    "remaining_failure": "Optional second-check endpoint stopped, HTTP 404",
+    "audio_drops": 0,
+    "other_controllers": 0,
+    "suspect_voice_log_lines": 0,
+    "night_clock_currently_on": true,
+    "sample_gallery_count": 6
+  },
+  "local_camera_recovery": {
+    "ran": "2026-10-27T03:50:26+00:00",
+    "frame_shape": [
+      1080,
+      1920,
+      3
+    ],
+    "backend": "local Cosmos Reason 2 8B",
+    "acquisition_seconds": 0.32,
+    "vision_seconds": 0.943,
+    "reply_nonempty": true,
+    "motor_controller_opened": false,
+    "image_saved": false,
+    "description_saved": false
+  },
+  "public_baseline": {
+    "spaces_running": [
+      "andydm/andy-companion",
+      "andydm/andy-companion-app",
+      "andydm/andy-companion-judge"
+    ],
+    "screen_space_commit": "222ed149a65f21068f889cb2b7a57d170cc6ac55",
+    "judge_space_commit": "6e29e88c4453ea5bad591ba3ab20610beb041e1d",
+    "preview_gets_200": 5,
+    "write_probes_403": 8,
+    "wrong_token_http": 404,
+    "guided_profile_and_tools_match_baseline": true,
+    "browser": {
+      "scope": "Public sample pages and author-funded real Nemotron examples with fixed invented inputs and simulated effects. No robot control or household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        }
+      ],
+      "refusals": {
+        "arbitrary-input": 400,
+        "choice-before-start": 400,
+        "cross-origin": 403
+      }
+    }
+  },
+  "conversation": {
+    "current_scorecard": "evals/results/suite-2026-10-26-camera-source-local.json",
+    "per_run": [
+      94,
+      96,
+      94
+    ],
+    "total": 97,
+    "ever_failed": [
+      "crisis-3",
+      "moment-1",
+      "photo-2",
+      "story-1"
+    ],
+    "source_hashes": {
+      "profile": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b",
+      "suite": "e229290a203e1903309cee107c192c6b260d173d9ed570f0133169c5dcc07ccd",
+      "tools": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59",
+      "runner": "1b838c886e713e21abf63421b45f497b65e69b2b283abf67c230f2ce70c97dc6",
+      "confirmation": "d61506120d412e8bdbae42580e40d882dab44b7bf23c8c56e6e90c4bd6a6e0f5"
+    },
+    "scope": "Text conversation and tool selection; synthetic tool results, real confirmation gate and urgent-words net; no microphone, camera or motors"
+  },
+  "submission": {
+    "rules_and_faq_checked": true,
+    "draft_links_before_text_updates_open": 23,
+    "final_export_exit": 2,
+    "automated_blockers": [
+      "Video placeholder",
+      "Release tag missing",
+      "App dependency still main"
+    ],
+    "manual_pending": [
+      "Actual video and rights/translation/visibility",
+      "Final draft reconciliation and submission confirmation",
+      "Free hardware-testing arrangements through judging",
+      "Remaining physical trials and consenting-user feedback"
+    ]
+  },
+  "deployment_followthrough": "Restart and published-source verification follow the source commit; recorded separately."
+}

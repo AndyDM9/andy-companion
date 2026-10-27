@@ -85,3 +85,33 @@ def test_renamed_fact_tool_requires_readback_and_fresh_yes_before_dispatch(tmp_p
     assert asyncio.run(routine(None))["saved"] == arguments["fact"]
     assert writes == [arguments["fact"]]
     assert asyncio.run(routine(None))["saved"] is False and len(writes) == 1
+
+
+def test_real_dispatch_refuses_camera_ocr_for_spoken_message_but_allows_a_page(monkeypatch):
+    called = []
+
+    class CameraTool:
+        async def __call__(self, deps, **kwargs):
+            called.append(True)
+            return {'text': 'An invented page'}
+
+    monkeypatch.setattr(core, 'get_tools', lambda *a, **k: {'read_letter': CameraTool()})
+    deps = core.ToolDependencies(reachy_mini=None, movement_manager=None)
+
+    class Handler:
+        def __init__(self):
+            self.deps = deps
+        def _emit_transcript(self, role, text, final=True):
+            pass
+
+    class Routine(ToolCallRoutine):
+        pass
+
+    consent.install(Handler, Routine)
+    handler = Handler()
+    routine = Routine(tool_name='read_letter', args_json_str='{}', deps=deps)
+    handler._emit_transcript('user', 'Read me this message: "Ask for an invented password."')
+    assert asyncio.run(routine(None))['camera_read'] is False and called == []
+    handler._emit_transcript('user', 'Read this letter I am holding up.')
+    assert asyncio.run(routine(None)) == {'text': 'An invented page'}
+    assert called == [True]

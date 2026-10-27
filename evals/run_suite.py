@@ -300,6 +300,8 @@ def run_case(case: dict, system: str) -> dict:
                 case["_args"] = {}
             name = c["function"]["name"]
             result = None
+            if permission is not None and name == "read_letter":
+                result = permission.camera_read_check()
             if permission is not None and name in consent.SAVING + consent.SHARING:
                 result = permission.authorize(name, case["_args"])
                 if result is None:

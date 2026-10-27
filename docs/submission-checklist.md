@@ -4,13 +4,17 @@ From the official rules (nebiusglobalaihackathon.devpost.com/rules), read 2026-1
 status and the evidence: [rules-compliance.md](rules-compliance.md). Tick an item only when it is true,
 in the same commit that makes it true.
 
-## Final readiness, checked October 26
+## Final readiness, re-audited October 26–27
+
+- [x] Camera reader dispatches before preliminary speech; recognised spoken-message source is refused before OCR, with shared evaluation logic and SDK regressions
+- [x] Fresh-clone baseline, app entrypoint/install/uninstall, wheel resources, lockfiles, JavaScript, relative links and full-history secrets rechecked
+- [x] Public desktop/phone layouts, real guided Yes/No/examples and protocol refusals rechecked without household data
 
 - [x] Left-card shadows fade beyond layout containers; search-picture highlights stay complete inside picture bounds, verified at three sizes with/without captions and in two palettes
 
 - [x] Watch-request routing asks for actual finder dispatch before speech; 20 targeted streaming-inference checks and five SDK entrypoint regressions pass
 - [x] Founder confirms the local robot's watch search works after the restart; qualitative/untimed, with no separately scored pointing result
-- [ ] Full 97-case suite rerun after the watch-routing prompt revision; earlier scores remain dated evidence of the preceding profile
+- [x] Full 97-case suite rerun after watch/reader/source checks: 94, 96 and 94 of 97, local API calls with synthetic tools and real gates; earlier profiles retained
 
 - [x] Speaking pulse centred on the robot status pill at 1080p/720p; motion preferences still respected (browser verified)
 
@@ -77,7 +81,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
-- [x] Current text profile evaluated locally, three runs of 94, 94 and 95 of 97, input/code hashes recorded; final submission-time Serverless Job remains separate from physical trials
+- [x] Current text profile evaluated locally: 94, 96 and 94 of 97, input/code hashes recorded; final submission-time Serverless Job and physical trials remain separate
 - [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
 
 ## Stage one: pass/fail

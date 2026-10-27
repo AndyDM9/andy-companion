@@ -1,6 +1,6 @@
 # Status
 
-**Last updated 2026-10-26.** Update this file in the same commit as any change it describes.
+**Last updated 2026-10-27.** Update this file in the same commit as any change it describes.
 The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history is in [CHANGELOG.md](../CHANGELOG.md).
 
 ## At a glance
@@ -15,10 +15,42 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
 | M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20). Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
-| M8 | Proof | 🔨 Built; final run before submitting | Pre-watch-change text profile: **94, 94, 95 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
+| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **94, 96, 94 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
+
+## Final re-audit (started October 26)
+
+- **Current model proof:** **94, 96 and 94 of 97**, three full local runs after the camera-reader fixes;
+  [scorecard](../evals/results/suite-2026-10-26-camera-source-local.json). Real API calls, synthetic tools, real confirmation/source checks;
+  no microphone, camera or motors. All quoted-message/letter cases passed in these runs. Remaining
+  failures: photo memory offer every run, future-event offer twice, supportive-response completeness
+  once, story fidelity once. No unauthorised write effect reported. Initial audit scores 92/94/92
+  and intermediate 93/94/95 are retained separately, not pooled or discarded. Final submission-time
+  Serverless Job remains pending.
+- **Fixed:** read_letter no longer asks the model to speak a preliminary instruction before calling
+  OCR. A narrow quoted-message source check at real SDK dispatch prevents this recognised spoken
+  pattern invoking OCR (decision 0028); the evaluator uses the same check. It is not a general intent
+  classifier or comprehensive prompt-injection defence. Three reader entrypoint tests and 16 source/
+  dispatch regressions added. Updated stale watch confirmations and evidence links.
+- **Validation:** CPU **1,156 / 14 skipped**, robot environment **1,177 / one skipped**. Fresh anonymous
+  baseline clone **1,141 / 13 skipped**; app checker and isolated wheel passed. Lockfiles, JS, Python
+  and all 276 checked relative links valid. Pre-audit full-history scan: **222 commits clean**.
+- **Live:** preflight **20/21**; optional second-check endpoint stopped. No competing controller,
+  no microphone drops and no suspect voice-log lines. Local camera-only recovery **0.943 s**
+  (acquisition **0.320 s**), no saved frame/description or motor controller. No actual spoken letter
+  or recovery trial inferred. Six gallery placeholders remain; use consented own photos for filming.
+  Night clock is currently on, so film in daytime or choose a suitable setting before filming.
+- **Judge access:** all three Spaces RUNNING; five screen URLs 200, eight writes 403, wrong token
+  404. Eight desktop/phone layouts and eight guided-model scenarios passed; three protocol refusals
+  passed. Guided effects remain simulated and isolated from the household. Source restart and
+  redeployment follow this commit; the final release audit must verify new published hashes.
+- **Submission:** live official rules/FAQ rechecked; 23 export links opened before these text updates.
+  Final exporter correctly blocks the video placeholder, absent release tag and app dependency on main.
+  Actual video/rights/translation, Devpost reconciliation/submission, free hardware-access arrangement,
+  physical trial measurements and short consenting-user sessions remain open. The 30 trials are our
+  evidence plan, not an eligibility threshold. [Audit scope](../evals/results/reaudit-2026-10-26.json).
 
 ## October 26 review work
 
@@ -46,8 +78,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   The cause of the original missing dispatch is not established; no household speech retained.
   Existing service restarted; **spoken watch retry subsequently confirmed by the founder**, untimed
   (see the follow-through above).
-  [Scoped checks](../evals/results/watch-routing-2026-10-26.json). Full 97-case rerun of this prompt
-  revision is pending; earlier scorecards below describe the pre-watch profile.
+  [Scoped checks](../evals/results/watch-routing-2026-10-26.json). Full-suite follow-through is recorded in the final re-audit above; earlier scorecards retain their
+  original profile/code hashes.
 
 - **Speaking-ring alignment:** corrected the 20% downward offset reported in the screenshot.
   Browser-measured ring/pill centre difference is now **0 px** at 1920×1080 and 1280×720 (previously

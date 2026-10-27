@@ -19,6 +19,21 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Final re-audit (2026-10-27)
+
+Re-read the live [official rules](https://nebiusglobalaihackathon.devpost.com/rules) and
+[FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs). Deadline remains October 30, 10:00 PT;
+public open-source code, actual device footage, public YouTube video, rights/translation and free
+working-project testing through December 15 remain required as detailed below. Physical AI's hosted
+URL exemption does not remove hardware access when requested. No rule change found.
+
+Current local text proof is 94, 96 and 94 of 97, with real gates and synthetic tools; older Job scores stay
+labelled historical. The watch retry is founder-confirmed and untimed; it no longer appears as pending.
+Letter/source changes have software/model verification; their physical spoken retry is still separate.
+The final video, release tag/app pin, final export and actual submission remain incomplete. No added
+medical, outcome, comprehensive security or hardware-accuracy claim. English translation is required
+for non-English material; the filming helper no longer describes captions as universally mandatory.
+
 ## October 26 screen follow-through
 
 The subsequent founder-confirmed watch-search retry is recorded as qualitative and untimed.
@@ -31,7 +46,7 @@ published. This adds no capability, outcome or hardware-accuracy claim and chang
 
 The watch-routing prompt correction preserves the existing hardware tool path. Its twenty invented
 streaming-model checks and five mocked SDK tests are not hardware evidence. Older full-suite figures
-are explicitly labelled as preceding the correction; a spoken retry remains pending. The video must
+are explicitly labelled as preceding the correction; the watch retry was subsequently confirmed, untimed. The video must
 still show actual working searches, including uncertainty, rather than a spoken promise alone.
 
 The speaking-ring alignment correction changes only CSS geometry. No capabilities, model claims,
