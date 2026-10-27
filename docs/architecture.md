@@ -148,6 +148,12 @@ any data, and requires its own new temporary store; it must never replace a live
 
 ## Evaluation
 
+- `scripts/check_vision_recovery.py`: camera-only IPC reader with a process-local, unreachable loopback
+  primary and local Cosmos fallback. It never instantiates a robot controller or loads provider keys;
+  output contains status, source hash and timings, never the frame or description. The shared vision
+  path checks fallback transport as well as primary transport; local modes require loopback. A stopped
+  optional endpoint can bypass its failed network request, and its 404 can fail over; a Token Factory
+  model-not-found response or refused request does not. This is independent of voice and hood verification.
 - `scripts/devpost.py --ref hackathon-submission --final`: rejects a placeholder/non-video YouTube
   address, absent local release tag, app dependency still on main, or oversized form fields, then
   requires tracked files and the three export inputs to match the tag's snapshot before it

@@ -190,3 +190,9 @@ the host's theme query without expanding input or tool access.
 That fix is now deployed from `ab693be`: a logged-out browser loaded the embedded app and verified the
 sample proposal / No flow. CPU/wheel and SDK hosted jobs passed on that revision. Hardware/access and
 video items remain in progress; the hosting test does not change their status.
+
+Further October 26 robot-readiness work: the founder reported glasses found, without yet supplying
+pointing confirmation or timing. It is not counted as a timed trial or a new accuracy rate. An isolated
+real-camera/local-vision recovery probe records only metadata and demonstrates neither spoken recovery
+nor pointing. The fallback fixes and probe do not complete the pending video, user sessions or hardware
+acceptance checks, and do not introduce outcome claims.

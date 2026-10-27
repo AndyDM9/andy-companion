@@ -20,6 +20,9 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 
 ## October 26 review: before filming on October 27
 
+- [x] Real camera IPC to local Cosmos recovery verified with a forced unreachable loopback primary; metadata only, no motor controller or saved picture/description
+- [x] Fallback transport/readiness regressions and camera-probe cleanup/privacy tests pass (11 new cases)
+- [ ] Centre-table glasses result has explicit pointing confirmation and end-of-question-to-point timing; founder has reported the find, but these details remain pending
 - [x] Separate guided-inference playground implemented with fixed invented inputs, simulated tools, actual consent gate and request/session limits (38 regressions; follow-up wording remains variable and is disclosed)
 - [x] Desktop and phone browser checks of sample sharing Yes/No passed; no horizontal overflow or page errors
 - [x] Physical absent/TV-decoy/moved-object, full family-choice and local-vision recovery procedures prepared; anonymous first-use task measures specified

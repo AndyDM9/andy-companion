@@ -18,6 +18,16 @@ The private screen link was refreshed and verified on the LAN. Six labelled land
 restored to the empty gallery; seven-day cleanup applies. The idle API selects one and its JPEG
 returns 200. Samples are for setup, with the founder's own consented photos required for filming.
 
+The founder subsequently reported glasses found during the requested centre-table task. Explicit
+pointing confirmation and elapsed time are still pending, so this is a qualitative report rather
+than a completed timed benchmark row. No new physical success rate is published.
+
+Camera-only local recovery was checked with a real 1920×1080 IPC frame and an unreachable loopback
+primary: local Cosmos Reason 2 8B responded in 2.874 s after 0.316 s acquisition. No picture or
+description was retained and no second motor controller was created. To repeat that isolated check:
+`robot/.venv/bin/python scripts/check_vision_recovery.py --out /tmp/andy-camera-recovery.json`.
+It changes only its own process settings. The spoken recovery and hood checks below remain pending.
+
 ## Before
 
 **October 27 priority pass:** stop other robot apps and their wake listeners first. Use the existing

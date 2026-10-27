@@ -1,0 +1,15 @@
+{
+  "ran": "2026-10-27T00:26:09+00:00",
+  "scope": "One real camera IPC frame to local fallback with an unreachable loopback primary; no motor controller, voice/pointing test, saved image or saved description",
+  "frame_shape": [
+    1080,
+    1920,
+    3
+  ],
+  "backend": "local",
+  "model_size": "Cosmos Reason 2 8B",
+  "reply_nonempty": true,
+  "acquisition_seconds": 0.316,
+  "vision_seconds": 2.874,
+  "vision_source_sha256": "1c8b3d94920d7fe533eb68cb14e07ae84dc26f6befc724b15712711fdc74689c"
+}

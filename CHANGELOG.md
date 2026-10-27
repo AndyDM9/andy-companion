@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Local vision recovery and an observed glasses search
+
+- Fixed fallback readiness: an unreachable optional endpoint now goes straight to configured, ready
+  local eyes; its stopped-service 404 can fall back too. Refused requests and missing Token Factory
+  models still fail normally. Primary and fallback paths now apply the same transport rules, and
+  a backend labelled local must use this computer, including when HTTPS is configured.
+- Added six vision regressions and a repeatable camera-only recovery probe with five tests. The probe
+  opens only the daemon's IPC camera reader, uses an unreachable loopback primary in its own process,
+  and saves only status/timing metadata. It never creates a motor controller, stores a frame or returns
+  the generated description. Settings restore after failure as well as success.
+- Real camera probe: 1920×1080 frame, Cosmos Reason 2 8B responded locally in 2.874 s after 0.316 s
+  acquisition. [Metadata](evals/results/camera-recovery-2026-10-26.json) contains no image or description.
+  This is a direct camera/vision pipeline check, not spoken recovery or a pointing-accuracy result.
+- The founder reported a successful glasses find during the requested centre-table task. Pointing
+  confirmation and elapsed time remain unreported; no timed benchmark row or success rate was added.
+- CPU suite: 1,094 passed / 12 skipped; installed robot environment: 1,106 passed / one skipped.
+  Latest preflight before these fixes: 20/21, zero audio drops and suspect voice-log lines; optional
+  second-check endpoint stopped. No provider endpoint was started or household configuration changed.
+
 ### Judge playground published
 
 - Redeployed the theme-route fix from `ab693be` (Space `3eebb03`); a logged-out browser verified the

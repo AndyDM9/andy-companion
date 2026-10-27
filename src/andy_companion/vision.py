@@ -155,13 +155,26 @@ def answer(e: Dict[str, Any], content: List[Dict[str, Any]], max_tokens: int, te
     """The reply's text from the eyes in `e`; if they can't be reached, from the fallback (Cosmos here), when it
     is set and running. Raises what the call raised. Never logs or echoes the request: it holds the picture."""
     global _used
+    f = fallback(e)
+    # A stopped optional endpoint is already known to be unreachable. Use the
+    # configured fallback directly instead of waiting for another long request.
+    if opener is None and e.get("may_be_stopped") and not reachable(e["url"]):
+        if f is None or ready(f):
+            raise VisionError(SWITCHED_OFF)
+        text = _ask(f, content, max_tokens, temperature, extra, opener)
+        _used = f["name"]
+        return text
     try:
         text = _ask(e, content, max_tokens, temperature, extra, opener)
         _used = e["name"]
         return text
     except Exception as err:
-        f = fallback(e)
-        if f is None or not unavailable(err) or (opener is None and not reachable(f["url"])):
+        # Nebius can return 404 for a stopped optional endpoint. Do not treat a
+        # missing Token Factory model or a refused request as an outage.
+        stopped = e.get("name") == "endpoint" and isinstance(err, urllib.error.HTTPError) and err.code == 404
+        # Fallbacks must pass the same transport and readiness checks as primary
+        # eyes; never send a picture to an unencrypted address on another machine.
+        if f is None or not (unavailable(err) or stopped) or ready(f, opener):
             raise
         text = _ask(f, content, max_tokens, temperature, extra, opener)
         _used = f["name"]
@@ -218,7 +231,12 @@ def ready(e: Optional[Dict[str, Any]], opener: Optional[Callable] = None) -> str
         return "My eyes in the cloud are switched off right now."
     if not e["url"].startswith("https://") and not here(e["url"]):   # never unencrypted over a network
         return "My eyes in the cloud need a secure (https) address."
+    if e.get("name") == "local" and not here(e["url"]):
+        return "My local eyes need an address on this computer."
     if e["may_be_stopped"] and opener is None and not reachable(e["url"]):   # an opener is a test's stand-in
+        f = fallback(e)
+        if f is not None and not ready(f):
+            return ""
         return SWITCHED_OFF
     return ""
 

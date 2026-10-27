@@ -62,6 +62,56 @@ def test_plain_http_is_allowed_only_to_this_computer(eyes, monkeypatch):
     assert vision.here("http://localhost:8095/v1") and not vision.here("http://10.0.0.2:8095")
 
 
+def test_fallback_cannot_bypass_the_primary_transport_rule(eyes, monkeypatch):
+    monkeypatch.setenv("ANDY_VISION_FALLBACK", "local")
+    monkeypatch.setenv("ANDY_LOCAL_EYES_URL", "http://192.168.1.20:8095")
+    op = Opener("must not be sent", down=OFFLINE)
+    with pytest.raises(vision.VisionError):
+        vision.describe(FRAME, opener=op)
+    assert len(op.requests) == 1
+    assert "tokenfactory" in op.requests[0][0]
+
+
+@pytest.mark.parametrize("mode", ["local", "token-factory"])
+def test_local_label_cannot_send_pictures_to_a_remote_https_host(eyes, monkeypatch, mode):
+    monkeypatch.setenv("ANDY_VISION", mode)
+    monkeypatch.setenv("ANDY_VISION_FALLBACK", "local")
+    monkeypatch.setenv("ANDY_LOCAL_EYES_URL", "https://remote.example.invalid")
+    op = Opener("must not be sent", down=OFFLINE)
+    with pytest.raises(vision.VisionError):
+        vision.describe(FRAME, opener=op)
+    assert not any("remote.example.invalid" in url for url, _, _ in op.requests)
+
+
+def test_stopped_optional_endpoint_goes_directly_to_ready_local_eyes(eyes, monkeypatch):
+    monkeypatch.setenv("ANDY_VISION", "endpoint")
+    monkeypatch.setenv("ANDY_VISION_URL", "https://endpoint.example.invalid")
+    monkeypatch.setenv("ANDY_VISION_TOKEN", "invented-endpoint-token")
+    monkeypatch.setenv("ANDY_VISION_FALLBACK", "local")
+    monkeypatch.setattr(vision, "reachable", lambda url: "127.0.0.1:8095" in url)
+    op = Opener("A cup on the table.")
+    monkeypatch.setattr(vision.urllib.request, "urlopen", op)
+    assert vision.describe(FRAME) == "A cup on the table."
+    assert len(op.requests) == 1 and op.requests[0][0].startswith("http://127.0.0.1:8095/")
+    assert "Authorization" not in op.requests[0][2] and vision.used() == "local"
+
+
+@pytest.mark.parametrize("provider,falls_back", [("endpoint", True), ("token-factory", False)])
+def test_only_optional_endpoint_404_is_treated_as_stopped(eyes, monkeypatch, provider, falls_back):
+    monkeypatch.setenv("ANDY_VISION", provider)
+    monkeypatch.setenv("ANDY_VISION_URL", "https://endpoint.example.invalid")
+    monkeypatch.setenv("ANDY_VISION_TOKEN", "invented-endpoint-token")
+    monkeypatch.setenv("ANDY_VISION_FALLBACK", "local")
+    host = "endpoint.example.invalid" if provider == "endpoint" else "tokenfactory"
+    op = Opener("A cup.", down={host: urllib.error.HTTPError("u", 404, "not found", {}, None)})
+    if falls_back:
+        assert vision.describe(FRAME, opener=op) == "A cup." and vision.used() == "local"
+    else:
+        with pytest.raises(vision.VisionError):
+            vision.describe(FRAME, opener=op)
+        assert len(op.requests) == 1
+
+
 def test_offline_the_fallback_answers_and_the_hood_says_so(eyes, monkeypatch):
     monkeypatch.setenv("ANDY_VISION_FALLBACK", "local")
     op = Opener("A pair of glasses on a chair.", down=OFFLINE)

@@ -6,6 +6,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 | Question | The scorecard to read |
 |---|---|
+| Does a real camera frame reach local eyes when the primary is unavailable? | [camera-recovery-2026-10-26.json](camera-recovery-2026-10-26.json): IPC camera frame, forced unreachable loopback primary, local Cosmos 8B response; metadata only. No voice, pointing, caption-quality or user-study claim |
 | Does the public guided AI playground work? | [judge-playground-2026-10-26.json](judge-playground-2026-10-26.json): six browser steps using real Nemotron and simulated tools; eight browser/state checks, five HTTP refusal probes and source hashes. No hardware or target-user session; not a conversation-accuracy score |
 | How does the current profile do in conversation? | [suite-2026-10-26-startup-local.json](suite-2026-10-26-startup-local.json): 94, 94 and 95 of 97, local API calls with the real confirmation gate and synthetic tools; input/code hashes and failures included. No audio, camera or motors |
 | Which conversation run was on Nebius Serverless Jobs? | [2026-10-25-nebius-job-andy-suite-20261025-193648.json](2026-10-25-nebius-job-andy-suite-20261025-193648.json): 96, 95 and 92 of 97 on the previous profile; this is historical evidence, not a test of the October 26 revision (before: [93, 92, 92 of 94](2026-10-25-nebius-job-andy-suite-20261025-170439.json); [92, 91, 94](2026-10-20-nebius-job-andy-suite-20261020-195645.json)) |

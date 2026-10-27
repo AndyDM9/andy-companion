@@ -81,3 +81,15 @@ Token Factory. A total network outage prevents a new voice request from reaching
 next robot check therefore blocks the primary vision service while leaving conversation reachable,
 then verifies the local eyes and the name shown on the hood. A completely offline voice assistant
 is future work. The previous desktop test proved a vision call, not offline voice interaction.
+
+## Corrected 2026-10-26: every fallback follows the same boundary
+
+Stopped optional endpoints must not prevent a ready local fallback from running. Readiness now checks
+the fallback too, and `answer` skips a known-unreachable optional primary. A stopped endpoint's 404
+may fall back; a missing Token Factory model or an authentication refusal does not. The fallback
+receives the same transport checks as primary eyes, closing an unchecked plain-HTTP path. A backend
+labelled local must point to loopback even over HTTPS, consistent with this decision's on-computer claim.
+
+The repeatable camera-only probe uses an unreachable loopback primary in its own process. A real
+1920×1080 IPC frame produced a local 8B response in 2.874 s, with no image or generated description
+saved. It does not verify the spoken conversation, what the person heard, the hood UI or motor pointing.

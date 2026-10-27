@@ -22,6 +22,15 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Vision recovery follow-through:** fixed stopped-endpoint preflight/404 fallback and transport
+  validation on the fallback path. Local eyes must be loopback even over HTTPS; no camera image may
+  silently go to a remote backend labelled local. Six regressions plus five probe tests pass.
+  CPU 1,094 / 12 skipped; installed robot environment 1,106 / one skipped. Real camera-only probe:
+  1920×1080, local Cosmos Reason 2 8B response 2.874 s, acquisition 0.316 s
+  ([metadata](../evals/results/camera-recovery-2026-10-26.json)). No picture or description retained,
+  no motor controller opened, no voice/hood/pointing result claimed. M6 remains partial pending those checks.
+  The founder reported glasses found in the requested centre-table task; point/time confirmation is
+  pending, and the fixed 30-trial benchmark has no recorded row from that untimed report.
 - **Approved standout work:** built three isolated guided AI challenges (invented bill, family choice,
   absent glasses), reusing the actual confirmation gate with simulated tool effects. Thirty-eight new
   regressions pass. Local real-Nemotron checks exercised all three examples plus Yes/No; code preserved
