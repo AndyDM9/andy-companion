@@ -22,6 +22,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Speaking-ring alignment:** corrected the 20% downward offset reported in the screenshot.
+  Browser-measured ring/pill centre difference is now **0 px** at 1920×1080 and 1280×720 (previously
+  13.30/9.41 px). Icon position, speaking pulse and calm/reduced-motion behaviour preserved.
+  CPU **1,141 passed / 12 skipped**; M7's physical checks remain pending. Public preview rebuild
+  follows the source commit; an open local TV reloads the updated page automatically.
+
 - **Screen follow-through deployed:** source `86d2dab`, preview Space revision
   `95be732cd73c046007b9008b1d3e01fcfd3af33b`, hosted source CI passed. All three Spaces RUNNING;
   five preview pages 200, three new write probes 403, hosted guide/focus and invented progress verified.

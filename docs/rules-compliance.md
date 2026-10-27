@@ -21,6 +21,9 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## October 26 screen follow-through
 
+The speaking-ring alignment correction changes only CSS geometry. No capabilities, model claims,
+rights requirements or submission evidence change; the public preview remains sample data.
+
 Deployment verified: five preview URLs 200, the hosted guide works, invented progress is visible,
 and all three new write probes return 403. The real service was restarted with exclusive control.
 Preflight's model-availability check is now a bounded invented text request; no household content

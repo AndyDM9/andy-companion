@@ -6,6 +6,8 @@ in the same commit that makes it true.
 
 ## Final readiness, checked October 26
 
+- [x] Speaking pulse centred on the robot status pill at 1080p/720p; motion preferences still respected (browser verified)
+
 - [x] Cloud-vision preflight checks actual configured-model availability; catalogue false alarm fixed and eleven regressions pass
 - [x] English/Spanish spoken-example guide and event-driven finder progress implemented, with no new model, stored conversation data or public write route
 - [x] Nineteen new regressions and 16 browser language/theme/TV-size cases plus four additional checks pass; full CPU/robot-environment suites and isolated wheel pass

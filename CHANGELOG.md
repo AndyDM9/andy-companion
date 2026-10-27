@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Speaking ring aligned with the robot status pill
+
+- Fixed the speaking pulse's asymmetric vertical offsets, which placed its centre 13.30 px below
+  the status pill at 1080p (9.41 px at 720p). The ring and icon now share the pill's vertical centre
+  in both browser checks. The pulse remains enabled only when motion is welcome; calm and
+  reduced-motion checks pass. This is a visual alignment fix, with no data-flow or motion change.
+- Full CPU suite: 1,141 passed / 12 skipped. Public-preview publication follows this source commit.
+
+
 ### Screen deployment verified and preflight catalogue false alarm fixed
 
 - Published screen source `86d2dab` to the preview Space (`95be732cd73c046007b9008b1d3e01fcfd3af33b`).
