@@ -91,6 +91,8 @@ def _load() -> Dict[str, Any]:
     except (OSError, ValueError):
         aside = None
         try:
+            if not FILE.is_file():
+                raise OSError()  # a directory at this path must not have its permissions changed
             fd, name = tempfile.mkstemp(dir=FILE.parent, prefix=f"{FILE.stem}.unreadable-{int(time.time())}-", suffix=".json")
             aside = Path(name)
             os.close(fd)

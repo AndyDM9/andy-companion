@@ -27,7 +27,8 @@ fields/values before touching the original. The helper page retains its separate
 
 An unreadable original is moved to a uniquely reserved owner-only `settings.unreadable-*.json` file
 before defaults are returned. Failed preservation prevents replacement; failed atomic saves remove
-their temporary files. Logs contain only a generated filename, never settings values or file contents.
+their temporary files. A directory at the settings path is left intact, including its permissions;
+writes fail for owner intervention. Logs contain only a generated filename, never settings values or file contents.
 
 Settings lists metadata under “Settings needing review” in English and Spanish, explains that the
 unreadable original is inactive and defaults apply to choices not set again. The existing authenticated

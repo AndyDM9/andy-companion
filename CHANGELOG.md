@@ -10,11 +10,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 - Validate stored settings and cache shapes before consumers use them (0037). Wrong roots previously
   raised AttributeError; broken JSON was silently overwritten on the next update. Preserve complete
   originals under unique owner-only names before using defaults; stop writes if preservation fails.
+- Follow-up recovery edge: leave a directory at the settings path and its permissions intact;
+  fail the update with the fixed error. The additional regression brings the total to 91 new cases.
 - Share a read/write lock, clean failed-save temporary files and isolate mutable defaults. Keep older
   partial files/integer-text volume compatible; reject malformed direct updates before touching disk.
 - Settings lists metadata only, explains defaults and offers existing authenticated single/all deletion
   in English/Spanish, with helper notices. No automatic restoration, other-store or physical-test claim.
-- 90 new cases; CPU **1,624 / 16 skipped**, robot environment **1,673 / one skipped**, isolated wheel
+- 91 new cases; CPU **1,625 / 16 skipped**, robot environment **1,674 / one skipped**, isolated wheel
   **three passed**, eight browser fixtures and changed Python lint pass. Calendar test fixture now
   uses the real finder's output shape. Current household settings validate without changing values.
 - Existing service restarted alone; all three services active, installed/live HTML matches and settings

@@ -32,7 +32,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Owner control:** English/Spanish Settings explains default choices and inactive originals,
   lists only recovery metadata, and uses existing authenticated single/all deletion and named-helper
   notices. No damaged contents in the page/logs. Other stores and automatic restoration are outside scope.
-- **Validation:** **90 new cases**, CPU **1,624 / 16 skipped**, installed robot environment **1,673 /
+- **Validation:** **91 new cases**, CPU **1,625 / 16 skipped**, installed robot environment **1,674 /
   one skipped**, isolated wheel **three passed**, changed Python lint and diff checks pass. Actual local
   HTTP covers denied access, metadata-only listing, deletion and spoken-notice construction. Eight
   desktop/phone English/Spanish browser fixtures pass, no page errors/overflow, two-tap deletion

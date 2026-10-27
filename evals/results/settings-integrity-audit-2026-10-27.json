@@ -6,10 +6,10 @@
     "malformed_original_retained_after_next_save": false
   },
   "validation": {
-    "new_cpu_cases": 90,
-    "cpu_passed": 1624,
+    "new_cpu_cases": 91,
+    "cpu_passed": 1625,
     "cpu_skipped": 16,
-    "installed_robot_environment_passed": 1673,
+    "installed_robot_environment_passed": 1674,
     "installed_robot_environment_skipped": 1,
     "isolated_wheel_passed": 3,
     "python_lint_E9_F_B": "passed",
@@ -24,7 +24,9 @@
       "current_settings_bytes_unchanged": true,
       "recovery_inventory_unchanged": true,
       "live_setup_html_matches": true
-    }
+    },
+    "installed_wheel_wrong_root_recovery_deletion_and_zero_volume": true,
+    "directory_at_settings_path_preserved": true
   },
   "preflight": {
     "passed": 20,
@@ -42,12 +44,12 @@
   },
   "limits": "All choices from an unreadable settings file use defaults until set again; original stays inactive for manual review/deletion. No automatic restoration, all-store validation, factual cache correctness, physical trial or provider-availability resolution. Memory offers, intermittent provider latency, physical reader/finder trials, video, final tag/app pin/access and submission remain open.",
   "source_sha256": {
-    "src/andy_companion/settings.py": "8b420d51cfc8d71d64ab3bc51b8b1f8ad232bd23f7b206816b91589ac774f0b9",
+    "src/andy_companion/settings.py": "79ad5526772444b7307ac2b60c4e7ef29d9724c9d8257d1291f2a8ad76c65c3e",
     "src/andy_companion/kept.py": "bc32c35da59a9e2b39b053152aac1fcd9ee65f7e5d5f7b638d4b7543fbc2d817",
     "src/andy_companion/pages/setup.html": "0b6718af50d6e8026c00614082356111537770216b321cca9a4912c470547eda",
-    "tests/test_settings_integrity.py": "6f4bcf2340669f99f39e13514fb21a4c800a3e7e33e9ff667e35e441144224b0"
+    "tests/test_settings_integrity.py": "2a981da36f3ac281053422260c49fc451b48b60a98b050ac935a72b64da61ca6"
   },
   "publication": {
-    "status": "pending"
+    "status": "pending final source and preview"
   }
 }

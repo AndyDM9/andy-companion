@@ -126,6 +126,16 @@ def test_failed_atomic_save_leaves_original_and_no_temp_copy(store, monkeypatch)
     assert store.read_bytes() == original and list(store.parent.glob("*.tmp")) == []
 
 
+def test_a_directory_at_the_settings_path_is_left_intact(store):
+    store.mkdir(mode=0o700)
+    (store / "invented.txt").write_text("invented original")
+    with pytest.raises(ValueError, match="No settings changes"):
+        settings.update(pace="slow")
+    assert stat.S_IMODE(store.stat().st_mode) == 0o700
+    assert (store / "invented.txt").read_text() == "invented original"
+    assert list(store.parent.glob("settings.unreadable-*")) == []
+
+
 def test_parallel_first_reads_recover_once_and_updates_do_not_lose_other_fields(store):
     store.write_bytes(b'invented unreadable original')
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
