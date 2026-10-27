@@ -805,7 +805,7 @@ class Handler(BaseHTTPRequestHandler):
                 from andy_companion import setup_page
 
                 if url.path == "/api/setup":
-                    changed = setup_page.apply(data.get("name", ""), data.get("settings") or {})
+                    changed = setup_page.apply(data.get("name", ""), data.get("settings", {}))
                     return self._json({"ok": True, "changed": changed, **setup_state()})
                 if url.path in ("/api/setup/delete", "/api/setup/delete-all"):
                     from andy_companion import kept

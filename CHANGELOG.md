@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Setup choices retain their types
+
+- Invented requests exposed string false switching captions on and fractional hours/volume silently
+  truncating. Validate setup object/boolean/number/text/site shapes before saving any part (0034).
+  Omitted settings remain a no-op; explicit wrong shapes are refused. Keep integer-text compatibility,
+  supported empty controls and fractional-degree rounding, reject non-finite direction and truth values.
+- Bad batches return plain 400 reasons and leave stored bytes, announcements, speaker volume and
+  background lookups unchanged. The HTTP wrapper already caught several low-level errors; this fix
+  prevents coercion and gives field-specific reasons. No storage format, tool schema or model change.
+- **87 new regressions**, including actual local HTTP requests on invented stores; **129 targeted
+  checks passed**. Full CPU **1,509 / 16 skipped**, robot environment **1,558 / one skipped**, isolated
+  wheel **three passed**; installed validator and changed Python lint pass. Runtime/source follow-through
+  is recorded in STATUS, including the initial post-restart provider timeout.
+- Keep both 15-second cloud-probe timeouts visible. Later invented probe **0.540 s** and follow-up
+  preflight **20/21**, model **0.55 s**; this does not prove the intermittent issue resolved. No retry,
+  timeout or model change made to obtain a passing sample.
+  General persisted-settings recovery, physical task evidence, video and submission remain separate.
+
 ### Hardware-access instructions clarified
 
 - Clarify the working Reachy Mini/Linux desktop setup and the difference between an assisted video

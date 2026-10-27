@@ -22,6 +22,14 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 setup input audit
+
+[Setup input audit](setup-input-audit-2026-10-27.json): **1,509 CPU / 1,558 installed robot-environment
+passes**, 87 new cases including actual HTTP requests on invented stores, three isolated distribution
+checks and an installed-validator probe. Malformed batches cannot change stored bytes, announce
+changes, call volume or start a lookup. This is request validation, not stored-file recovery or a
+physical/voice/first-use study. Runtime metadata retains the initial provider timeout and follow-up.
+
 ## October 27 guided completion audit
 
 [Guided completion audit](judge-completion-audit-2026-10-27.json): **1,422 CPU / 1,471 installed

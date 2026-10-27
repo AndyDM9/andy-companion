@@ -19,6 +19,14 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Setup request validation (October 27)
+
+Setup type checks improve an existing owner-page request boundary. Invented tests verify refused
+malformed batches leave settings and side effects unchanged; normal browser representations remain
+supported. No new user-facing capability, model result, persisted-file recovery, physical movement,
+spoken delivery or completed-access/submission claim. Existing video, hardware/free-testing and
+release requirements remain open. Source/runtime/preview follow-through will be recorded when verified.
+
 ## Hardware-access clarification (October 27)
 
 Rules section 4 and the FAQ were re-read October 27. Physical AI's hosted-URL exemption, free testing

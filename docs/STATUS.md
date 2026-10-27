@@ -20,6 +20,31 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 setup-request audit
+
+- **Fixed:** injected string false became true; fractional hours/volume truncated. Setup now requires
+  an object and supported field types before any persistence, announcement, volume call or event lookup
+  (0034). Omitted settings remain a no-op; explicit wrong shapes are refused. Real booleans, whole
+  numbers/integer text, supported empty controls and fractional-degree rounding retain their meaning.
+- **Error handling:** non-finite direction and wrong list/name types get plain 400 reasons. The HTTP
+  wrapper already caught several low-level errors; no observed household/server incident is claimed.
+  Mixed invalid batches leave stored bytes and side effects unchanged. No store format, migration,
+  new dependency, profile, tool schema or model setting changes. Existing on-disk settings recovery is
+  outside this request boundary; no physical or spoken test inferred.
+- **Validation:** 87 new cases, **129 targeted passed**; full CPU **1,509 / 16 skipped**, installed robot
+  environment **1,558 / one skipped**, isolated distribution **three passed** and changed Python lint
+  passed. Installed wheel separately rejects string false and preserves real false. Existing service
+  restarted with zero competing controllers, all three services active. Prior documentation CI `68dee68` passed.
+- **Live preflight:** initial **19/21**, optional paid second check intentionally off and the tiny
+  Nemotron text request hit its existing 15-second timeout. Zero microphone drops/suspect voice-log
+  lines. The first bounded follow-up also timed out (**15.317 s**); the second answered in **0.540 s**.
+  A separate follow-up preflight returned **20/21**, Nemotron **0.55 s**; optional endpoint still off.
+  Both timeouts stay in the record. Cause unconfirmed; [provider status](https://status.nebius.com/)
+  reported operational. This short sequence does not establish resolution, an availability rate or
+  physical voice latency. No connection/timeout/retry change. Source/preview/CI follow-through pending.
+  Physical trials, reliable memory offers, final hardware arrangements, video and release remain open.
+  [Audit metadata](../evals/results/setup-input-audit-2026-10-27.json).
+
 ## October 27 hardware-access clarification
 
 - **Clarified:** working hardware is the Reachy Mini plus its supporting Linux desktop. Author-funded

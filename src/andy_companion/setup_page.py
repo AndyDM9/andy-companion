@@ -13,6 +13,7 @@ are the person's to set, by talking to Andy.
 
 from __future__ import annotations
 
+import math
 import re
 import unicodedata
 from typing import Any, Dict, List
@@ -62,7 +63,14 @@ def suggest_events_page(place: str, finder=None) -> None:
 
 
 def _sites(value: Any) -> List[str]:
-    items = value.splitlines() if isinstance(value, str) else list(value or [])
+    if value is None:
+        items = []
+    elif isinstance(value, str):
+        items = value.splitlines()
+    elif isinstance(value, list) and all(isinstance(item, str) for item in value):
+        items = value
+    else:
+        raise ValueError("Use web addresses, one per line.")
     out: List[str] = []
     for item in items:
         site = str(item).strip().rstrip("/")
@@ -77,16 +85,36 @@ def _sites(value: Any) -> List[str]:
     return out
 
 
+def _integer(value: Any, message: str) -> int:
+    """Accept whole numbers and the existing integer-text form, never truth values or fractions."""
+    if type(value) is int:
+        return value
+    if isinstance(value, float) and math.isfinite(value) and value.is_integer():
+        return int(value)
+    if isinstance(value, str) and re.fullmatch(r"[+-]?[0-9]+", value.strip()):
+        try:
+            return int(value)
+        except ValueError:
+            pass
+    raise ValueError(message)
+
+
 def clean(data: Dict[str, Any]) -> Dict[str, Any]:
     """The changes asked for, checked. Unknown fields are ignored; a bad value raises ValueError."""
+    if not isinstance(data, dict):
+        raise ValueError("Settings must be an object of named choices.")
     out: Dict[str, Any] = {}
     if "person_name" in data:
+        if data["person_name"] is not None and not isinstance(data["person_name"], str):
+            raise ValueError("Their first name must be text.")
         person = unicodedata.normalize("NFC", " ".join(str(data["person_name"] or "").split()))
         if person and (len(person) > PERSON_NAME_LEN or not PERSON_NAME.match(person)):
             raise ValueError(f"Their first name can have letters, spaces, hyphens and apostrophes, up to "
                              f"{PERSON_NAME_LEN} in all.")
         out["person_name"] = person or None
     if "place" in data:
+        if data["place"] is not None and not isinstance(data["place"], str):
+            raise ValueError("The town must be text.")
         place = " ".join(str(data["place"] or "").split())[:120]
         out["place"] = place or None
     for key in ("news_sources", "events_pages"):
@@ -101,28 +129,27 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
             raise ValueError("The pace is normal or slow.")
         out["pace"] = data["pace"]
     if "volume" in data and data["volume"] not in (None, ""):
-        try:
-            volume = int(data["volume"])
-        except (TypeError, ValueError):
-            raise ValueError("The volume is a number from 10 to 100.") from None
+        volume = _integer(data["volume"], "The volume is a number from 10 to 100.")
         if not 10 <= volume <= 100:
             raise ValueError("The volume is a number from 10 to 100.")
         out["volume"] = volume
-    if "captions" in data:
-        out["captions"] = bool(data["captions"])
-    if "screen_photos" in data:
-        out["screen_photos"] = bool(data["screen_photos"])
-    if "screen_hints" in data:
-        out["screen_hints"] = bool(data["screen_hints"])
-    if "screen_calm" in data:
-        out["screen_calm"] = bool(data["screen_calm"])
+    for key in ("captions", "screen_photos", "screen_hints", "screen_calm", "offers", "greet_arrival", "tv_glance"):
+        if key in data:
+            if type(data[key]) is not bool:
+                raise ValueError(f"Choose on or off for {NAMES[key]}.")
+            out[key] = data[key]
     if "tv_yaw" in data:
         if data["tv_yaw"] in (None, ""):
             out["tv_yaw"] = None
         else:
             try:
-                yaw = int(round(float(data["tv_yaw"])))
-            except (TypeError, ValueError):
+                if isinstance(data["tv_yaw"], bool) or not isinstance(data["tv_yaw"], (str, int, float)):
+                    raise ValueError()
+                degrees = float(data["tv_yaw"])
+                if not math.isfinite(degrees):
+                    raise ValueError()
+                yaw = int(round(degrees))
+            except (TypeError, ValueError, OverflowError):
                 raise ValueError("The screen's direction is a number of degrees from -120 to 120.") from None
             if not -120 <= yaw <= 120:
                 raise ValueError("The screen's direction is a number of degrees from -120 to 120.")
@@ -131,22 +158,13 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
         if data["tv_height"] not in ("above", "level", "below"):
             raise ValueError("The screen is above, level with or below Andy's eyes.")
         out["tv_height"] = data["tv_height"]
-    if "offers" in data:
-        out["offers"] = bool(data["offers"])
-    if "greet_arrival" in data:
-        out["greet_arrival"] = bool(data["greet_arrival"])
-    if "tv_glance" in data:
-        out["tv_glance"] = bool(data["tv_glance"])
     if "night_clock" in data:
         if data["night_clock"] not in NIGHT_CLOCK:
             raise ValueError("The night clock shows at the hours chosen, while Andy is asleep, or never.")
         out["night_clock"] = data["night_clock"]
     for key in ("night_from", "night_to"):
         if key in data:
-            try:
-                hour = int(data[key])
-            except (TypeError, ValueError):
-                raise ValueError("Night hours are from 0 to 23.") from None
+            hour = _integer(data[key], "Night hours are from 0 to 23.")
             if not 0 <= hour <= 23:
                 raise ValueError("Night hours are from 0 to 23.")
             out[key] = hour
@@ -155,6 +173,8 @@ def clean(data: Dict[str, Any]) -> Dict[str, Any]:
 
 def apply(name: str, data: Dict[str, Any]) -> List[str]:
     """Save the changes and tell the person who made them. Returns what changed, as the page says it."""
+    if not isinstance(name, str):
+        raise ValueError("Your first name is needed, so Andy can tell them who changed it.")
     name = " ".join(str(name or "").split())[:board.NAME_LEN]
     if not name:
         raise ValueError("Your first name is needed, so Andy can tell them who changed it.")

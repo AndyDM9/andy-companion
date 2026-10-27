@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-27",
+  "scope": "Invented setup inputs and local HTTP requests against throwaway stores. No household edits, model, microphone, camera, motor or web lookup. The normal existing service is restarted separately.",
+  "reproduced_before_fix": [
+    "String false became true",
+    "Fractional integer controls truncated",
+    "Wrong settings container could become empty no-op",
+    "Low-level non-finite direction and site-list errors; HTTP wrapper already caught several as generic 400"
+  ],
+  "validation": {
+    "new_cpu_cases": 87,
+    "targeted_passed": 129,
+    "cpu_passed": 1509,
+    "cpu_skipped": 16,
+    "installed_robot_environment_passed": 1558,
+    "installed_robot_environment_skipped": 1,
+    "isolated_distribution_passed": 3,
+    "installed_validator_refuses_string_false_and_preserves_boolean_false": true,
+    "changed_python_E9_F_B": "passed",
+    "bad_http_batches_preserve_stored_bytes": true,
+    "bad_http_batches_have_no_announcement_volume_lookup": true
+  },
+  "limits": "Owner setup request boundary only, not general persisted-settings validation/recovery, physical movement, spoken delivery or a first-use study. No profile/tool/model/schema/budget or storage-format change. Existing 93/94/94 text scorecard and physical results retain their scope.",
+  "prior_documentation_ci": {
+    "source": "68dee68",
+    "status": "success",
+    "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40535057750"
+  },
+  "publication": "Pending source/preview/hosted-CI/fresh-clone follow-through.",
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/setup_page.py",
+      "sha256": "f896d3bfc3ede2dd7c24da70ea988d9d6216d6256fe2308fcf640c5e447c6e62"
+    },
+    {
+      "path": "src/andy_companion/screen_server.py",
+      "sha256": "86fa75f5899982ad80bac98e8d1bc7b4b82aaf80d8589b3e8551d84986b8b428"
+    },
+    {
+      "path": "tests/test_setup_input_types.py",
+      "sha256": "79ec07acf23525d310b4d8492ffc1b898d1898e92bfd68d1dc3722619db1fd60"
+    },
+    {
+      "path": "profiles/companion/profile.md",
+      "sha256": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b"
+    },
+    {
+      "path": "evals/tools.json",
+      "sha256": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59"
+    }
+  ],
+  "runtime": {
+    "existing_service_restarted": true,
+    "competing_controllers": 0,
+    "services_active": [
+      "andy",
+      "andy-voice",
+      "andy-eyes"
+    ],
+    "initial_preflight": {
+      "passed": 19,
+      "total": 21,
+      "failures": [
+        "Optional paid second-check endpoint intentionally stopped; 404",
+        "Nemotron tiny text probe TimeoutError at existing 15-second timeout"
+      ],
+      "microphone_drops": 0,
+      "suspect_voice_log_lines": 0
+    },
+    "follow_up": {
+      "scope": "Two invented ready probes only, 15-second timeout unchanged, no reply text retained. Follow-up to initial doctor TimeoutError; not physical voice latency.",
+      "rows": [
+        {
+          "probe": 1,
+          "passed": false,
+          "seconds": 15.317,
+          "error_class": "TimeoutError"
+        },
+        {
+          "probe": 2,
+          "passed": true,
+          "seconds": 0.54,
+          "within_doctor_1_5_seconds": true
+        }
+      ]
+    },
+    "follow_up_preflight": {
+      "passed": 20,
+      "total": 21,
+      "nemotron_seconds": 0.55,
+      "remaining": "Optional paid second check intentionally stopped; 404",
+      "microphone_drops": 0,
+      "suspect_voice_log_lines": 0
+    },
+    "provider_status": {
+      "url": "https://status.nebius.com/",
+      "reported": "All Systems Operational",
+      "cause_of_timeouts": "Unconfirmed; no causal attribution to maintenance or settings fix",
+      "limits": "Two failures followed by two successes, retained individually. Not an availability/physical latency benchmark or proof of resolution. No connection/model/timeout/retry change."
+    }
+  }
+}
