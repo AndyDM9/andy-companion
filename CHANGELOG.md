@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Permission-source publication verified
+
+- Source `8be53cf` published and existing Andy service restarted with exclusive control. Guided
+  Space `f9086a947c3edec4c1b1b9bc6107aa523eae1a8f` RUNNING; deployment/profile/tool/confirmation
+  hashes match. Eight public layouts/eight guided examples/three refusals passed, with invented
+  inputs and simulated effects. Anonymous clone: 1,256 / 14 skipped; history: 227 commits clean;
+  305 relative links valid and all 23 export links open. Hosted CPU/wheel and SDK CI passed.
+- Awake preflight 20/21, optional paid second check stopped, zero audio drops and suspect voice-log
+  lines. Final exporter still blocks video/tag/app pin. No new physical or completed-submission claim.
+
 ### Quoted content cannot grant memory permission
 
 - Reproduced an English/Spanish message whose embedded “please remember” released a memory tool.

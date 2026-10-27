@@ -9,7 +9,9 @@ in the same commit that makes it true.
 - [x] Quoted memory commands cannot grant explicit permission; legitimate delimited requests and full-utterance refusals covered by 48 pure/eight installed SDK regressions
 - [x] October 27 consent-source change passes full CPU/robot-environment tests, isolated wheel and Python lint; unproven model/tool prototypes left out
 - [x] Final source model runs retained: 93, 94, 94/97 full suite; 8, 8, 7/9 focused source cases; real gates/synthetic tools, failures visible and no forbidden memory/family effect reported
-- [ ] Publish and verify the consent-source change; memory-offer consistency and physical checks remain open
+- [x] Consent-source change published locally and to guided Space; matching source/deployment hashes, public layouts/examples/refusals, anonymous-clone tests, history scan and 23 export links verified
+- [x] Hosted CPU/wheel and SDK CI for permission-source revision passed
+- [ ] Reliable memory offers and remaining physical reader/finder trials completed
 
 - [x] Audited reader/source boundary published; hosted CI, latest anonymous clone and guided profile/tool/confirmation hashes verified
 - [x] Wake through the existing supervisor as authorised; founder confirms Andy heard a clock question and answered the correct time (untimed); post-fix awake preflight 20/21, optional second-check endpoint stopped

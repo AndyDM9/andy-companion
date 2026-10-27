@@ -44,7 +44,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Awake preflight **20/21**; optional paid second-check endpoint remains stopped (404), zero audio
   drops and zero suspect voice-log lines. No new physical reader/finder result inferred.
 - **Prior pending CI:** documentation revision `4ac21fc` completed successfully. Source/Space
-  follow-through is pending. The initial full model run
+  follow-through is recorded below. The initial full model run
   scored **95, 95, 96 of 97**; initial nine-case source runs **7, 7, 8**. All are retained as intermediate,
   before the no-proposal result. Model judging also misread a quoted yes as actual consent in all
   three targeted verdicts; these verdicts stay visible. No permission was inferred from those verdicts.
@@ -59,6 +59,13 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   tool-selection failures remain, especially treating an English quoted command as a memory task.
   Model judging and deterministic effects are separate; this is not comprehensive injection resistance.
   [Reproduce cases](../evals/consent-source.json), [audit metadata](../evals/results/consent-source-audit-2026-10-27.json).
+
+- **Published follow-through:** source `8be53cf`, guided Space
+  `f9086a947c3edec4c1b1b9bc6107aa523eae1a8f` RUNNING, deployment/profile/tool/confirmation-source
+  hashes match. Eight public layouts/eight guided examples/three refusal probes passed; invented
+  inputs and simulated effects only. Anonymous clone **1,256 / 14 skipped**, history **227 commits
+  clean**, **305** relative links valid and all **23** export links open. [Hosted CPU/wheel and SDK CI passed](https://github.com/AndyDM9/andy-companion/actions/runs/40515227109). Final export correctly rejects missing video,
+  release tag and app pin. Physical trials, reliable memory offers, footage and submission remain open.
 
 ## October 27 awake check and bounded hardening
 

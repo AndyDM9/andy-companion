@@ -61,7 +61,200 @@
       "sha256": "35c6669d5835ab92ecde4b9626e98a5f1341df56d8fb8c47a40c11315e67995c"
     }
   ],
-  "publication": "Pending source commit and guided-Space follow-through.",
+  "publication": {
+    "source": "8be53cfa7e6daa9c07f56edd62c906fa0e3c595e",
+    "source_ci": "https://github.com/AndyDM9/andy-companion/actions/runs/40515227109",
+    "source_ci_result": "success: CPU/wheel and SDK jobs",
+    "guided_space_revision": "f9086a947c3edec4c1b1b9bc6107aa523eae1a8f",
+    "guided_space_stage": "RUNNING",
+    "deployed_revision_and_profile_tools_confirmation_source_match": true,
+    "public_browser_verification": {
+      "scope": "Public sample pages and author-funded real Nemotron examples with fixed invented inputs and simulated effects. No robot control or household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        }
+      ],
+      "refusals": {
+        "arbitrary-input": 400,
+        "choice-before-start": 400,
+        "cross-origin": 403
+      }
+    },
+    "anonymous_clone": {
+      "passed": 1256,
+      "skipped": 14
+    },
+    "full_history_commits_scanned": 227,
+    "secret_findings": 0,
+    "devpost_links_open": 23,
+    "devpost_links_total": 23,
+    "final_export_exit": 2,
+    "final_export_blockers": [
+      "Video placeholder",
+      "Missing final release tag",
+      "App dependency still main"
+    ]
+  },
   "targeted_model": {
     "per_run": [
       8,

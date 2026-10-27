@@ -19,6 +19,13 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Permission-source publication follow-through
+
+Published source and guided Space revisions match, public examples still use invented inputs and
+simulated effects, and anonymous-clone checks and all 23 export links pass. Hosted CPU/wheel and SDK CI passed. Final export still blocks video/tag/app pin. The
+published software checks do not complete physical footage, free hardware-access arrangements or
+the actual Devpost submission. Residual model failures remain disclosed.
+
 ## October 27 consent-source follow-through
 
 A bounded permission fix rejects commands found inside quoted/delimited content as explicit consent.
