@@ -19,6 +19,14 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## October 27 publication follow-through
+
+The audited source and guided Space are public; hosted checks, deployment/source hashes and fresh
+anonymous-clone tests passed. Eight public layouts/eight actual guided examples/three refusals
+passed with fixed invented inputs and simulated effects; no household access. All 23 export links open. Final export still blocks the missing video,
+release tag and app pin; publication is not a final-submission claim. Free working-project/hardware
+access arrangements, actual footage and the remaining physical checks below stay open.
+
 ## October 27 awake check and bounded hardening
 
 Authorised wake and the founder-confirmed correct-time reply are an untimed functional check, not

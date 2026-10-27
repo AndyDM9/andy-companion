@@ -50,7 +50,14 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   supportive-response completeness once each. Letter/quoted-message cases passed; no unauthorised
   write effect reported. This is not a demonstrated score improvement or hardware test. Final Job,
   physical checks and submission remain pending. [Audit metadata](../evals/results/gates-audit-2026-10-27.json).
-  Source/Space publication follow-through pending.
+- **Published:** source `433a7fc`; [hosted CPU/wheel and SDK checks passed](https://github.com/AndyDM9/andy-companion/actions/runs/40509014961).
+  Guided Space `0ed342e45b0383a8ca0daedd1989220b938c99dd` RUNNING; actual deployment revision,
+  profile/tools and downloaded confirmation source match. Eight public layouts, eight real guided
+  examples and three protocol refusals passed, all with invented data and simulated effects.
+  Anonymous clone **1,208 / 14 skipped**;
+  history scan **225 commits clean**. All **292** relative links and **23** export links pass.
+  Final exporter still correctly blocks the video placeholder, missing final tag and app dependency
+  on main. All three Andy services active. Final physical/video/access/submission work remains open.
 
 ## Final re-audit (started October 26)
 

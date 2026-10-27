@@ -12,7 +12,7 @@ in the same commit that makes it true.
 - [x] Negated page/camera cues covered at the OCR dispatch boundary; recognised labelled credential values refused before memory proposal/write, with pure and actual SDK dispatcher regressions
 - [x] Full CPU and installed robot-environment suites and isolated wheel pass after the October 27 gate changes; memory-offer prompt experiments reverted after no scoped improvement
 - [x] Full text suite rerun with the October 27 gate: 94, 92 and 95 of 97, real API/synthetic tools; failures and source hashes retained, no unauthorised write effect reported
-- [ ] Publish October 27 source and guided Space; verify hosted checks and source hashes
+- [x] October 27 source and guided Space published; hosted CPU/wheel and SDK jobs, deployed/source hashes, anonymous-clone tests, full-history scan and all 23 export links verified
 
 - [x] Camera reader dispatches before preliminary speech; recognised spoken-message source is refused before OCR, with shared evaluation logic and SDK regressions
 - [x] Fresh-clone baseline, app entrypoint/install/uninstall, wheel resources, lockfiles, JavaScript, relative links and full-history secrets rechecked

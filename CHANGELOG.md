@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Published October 27 follow-through
+
+- Source `433a7fc` pushed; hosted CPU/wheel and SDK jobs passed. Guided Space revision
+  `0ed342e45b0383a8ca0daedd1989220b938c99dd` RUNNING with matching deployment, profile/tool
+  hashes and confirmation source. Eight public layouts/eight guided examples/three refusal probes
+  passed with invented data and simulated effects. Anonymous clone: 1,208 / 14 skipped. Full-history scan:
+  225 commits clean; 292 relative links valid and all 23 Devpost export links open.
+- Existing supervisor, voice and local-eyes services active. Final exporter still correctly rejects
+  missing video, final release tag and app pin; no final submission or new physical measurement claimed.
+
 ### Awake functional check and bounded memory/camera hardening
 
 - Founder authorised waking Andy; used the existing supervisor, with no second controller. After
