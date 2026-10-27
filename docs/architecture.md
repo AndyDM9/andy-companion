@@ -256,6 +256,12 @@ Preflight (`scripts/doctor.py --live`, decision 0026) tests configured cloud-vis
 with a fixed invented text-only request, at most eight output tokens and a 15-second timeout. It
 reports status only; catalogue membership does not determine availability. It neither captures a
 camera frame nor establishes visual quality. A camera-only local-fallback probe remains separate.
+Both conversation/vision text probes now use the runtime final-text validator (0041); incomplete,
+refused or unusable replies cannot pass on HTTP success alone. Conversation timing is monotonic.
+Optional endpoint catalogues are labelled separately from inference. Required watchdog counts are
+validated without modifying the file: missing/unsupported, stale (30 seconds) or future (over one
+second, allowing timestamp rounding) records fail both audio and unanswered-speech verification.
+No provider text or unsupported health fields are printed; no service is started or restarted.
 
 Requested camera-action response order (decisions 0027/0028): the profile/tools instruct the model to
 dispatch the existing `find_object` or `read_letter` before preliminary speech. There is no separate keyword-driven movement path;

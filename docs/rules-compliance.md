@@ -8,6 +8,11 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 27 preflight verification (0041): README now accurately scopes model text probes, endpoint
+catalogues and current audio counts. Invented fault tests and a stopped-state diagnostic add no
+physical or completed-submission evidence. No model, hosting, access, licence, visibility or video
+change; physical trials, final packaging and the official material freeze remain as recorded here.
+
 October 27 saved-mode audit: code, feature descriptions and decision 0040 were checked against this
 record. Invented fault tests and a service health probe verify mode handling and startup status;
 they add no physical, eligibility or completed-submission claim. No video, licence, visibility,

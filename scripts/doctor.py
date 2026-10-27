@@ -4,8 +4,9 @@
     uv run python scripts/doctor.py --live    and, before filming or a demo, that everything answers now
 
 Reads the keys from the private env file without printing them. Makes one tiny request to Token
-Factory and to Tavily to prove the keys work (a fraction of a cent). --live also asks both Nebius
-endpoints' models to answer, times one short reply from Nemotron, and reads Andy's own health file
+Factory and to Tavily to prove the keys work (a fraction of a cent). --live also checks configured Nebius
+endpoint catalogues, validates/times short text replies from Nemotron and the configured Token Factory
+vision model, and reads Andy's own health file
 (andy_companion.watchdog: audio drops, unanswered speech; counts only), because on 2026-10-13 Andy
 stopped answering in ways a minute's check would have shown.
 """
@@ -13,6 +14,7 @@ stopped answering in ways a minute's check would have shown.
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import shutil
@@ -60,28 +62,55 @@ def port_open(port: int) -> bool:
         return s.connect_ex(("127.0.0.1", port)) == 0
 
 
-def vision_model_probe(e: dict) -> tuple[bool, str]:
-    """Check actual configured-model availability, not catalogue membership. No camera or household text.
+def model_probe(url: str, token: str, model: str) -> tuple[bool, str]:
+    """Require usable final text, not HTTP success or a catalogue entry. No household input.
 
     This is a tiny text-only inference: it proves the model answers, not vision quality or robot motion.
     Never return provider text, URLs or exception messages: they can contain credentials or payloads.
     """
-    model = e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL")
-    base = e.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
+    from andy_companion.model_reply import ModelReplyError, final_text
+
     body = {"model": model, "max_tokens": 8, "temperature": 0,
             "chat_template_kwargs": {"enable_thinking": False},
             "messages": [{"role": "user", "content": "Say: ready."}]}
     try:
-        code, raw = http(base + "/chat/completions", body,
-                         {"Authorization": f"Bearer {e.get('NEBIUS_API_KEY', '')}",
+        code, raw = http(url, body,
+                         {"Authorization": f"Bearer {token}",
                           "Content-Type": "application/json"}, timeout=15)
         if code != 200:
             return False, f"HTTP {code}"
-        answer = json.loads(raw)["choices"][0]["message"]["content"]
-        return (True, "configured model answered (text-only probe)") if isinstance(answer, str) and answer.strip() else (False, "empty reply")
+        final_text(json.loads(raw))
+        return True, "model returned final text (text-only probe)"
+    except ModelReplyError:
+        return False, "unusable final reply"
     except Exception as err:
         code = getattr(err, "code", None)
         return False, f"HTTP {code}" if isinstance(code, int) else type(err).__name__
+
+
+def vision_model_probe(e: dict) -> tuple[bool, str]:
+    base = e.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
+    return model_probe(base + "/chat/completions", e.get("NEBIUS_API_KEY", ""),
+                       e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL"))
+
+
+def audio_health(path: Path) -> dict | None:
+    """Read counts only. Unsupported/missing fields are unknown, never zero by default."""
+    try:
+        h = json.loads(path.read_text())
+        if not isinstance(h, dict):
+            return None
+        at, drops, unanswered = h['at'], h['drops_last_min'], h['unanswered_s']
+        if type(at) not in (int, float) or not math.isfinite(at) or at < 0:
+            return None
+        if type(drops) is not int or drops < 0:
+            return None
+        if unanswered is not None and (type(unanswered) not in (int, float)
+                                      or not math.isfinite(unanswered) or unanswered < 0):
+            return None
+        return {'at': at, 'drops_last_min': drops, 'unanswered_s': unanswered}
+    except (OSError, ValueError, KeyError, OverflowError, RecursionError):
+        return None
 
 
 def voice_reachable(e: dict) -> bool:
@@ -117,7 +146,9 @@ def main() -> int:
             base = e.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
             code, body = http(base + "/models", headers={"Authorization": f"Bearer {key}"})
             ids = [m["id"] for m in json.loads(body).get("data", [])]
-            check("Nebius Token Factory key", "nvidia/Nemotron-3_5-Lightning" in ids, "Nemotron 3.5 Lightning reachable")
+            listed = "nvidia/Nemotron-3_5-Lightning" in ids
+            check("Nebius Token Factory key", listed,
+                  "Nemotron 3.5 Lightning listed" if listed else "required model not listed")
         except Exception as err:
             check("Nebius Token Factory key", False, type(err).__name__, "check NEBIUS_API_KEY")
     else:
@@ -196,9 +227,9 @@ def live(e: dict) -> None:
 
     print("\nLive:")
     eyes = (e.get("ANDY_VISION") or "token-factory").strip().lower().replace("_", "-")
-    endpoints = [("Second look answers", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "cloud/guard-endpoint.sh start")]
+    endpoints = [("Second look endpoint catalogue", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "cloud/guard-endpoint.sh start")]
     if eyes == "endpoint":
-        endpoints.insert(0, ("Eyes answer", "ANDY_VISION_URL", "ANDY_VISION_TOKEN",
+        endpoints.insert(0, ("Eyes endpoint catalogue", "ANDY_VISION_URL", "ANDY_VISION_TOKEN",
                              "cloud/vision-endpoint.sh start; the model loads about 8 minutes after RUNNING"))
     for name, url_key, token_key, fix in endpoints:
         url, token = e.get(url_key, ""), e.get(token_key, "")
@@ -207,24 +238,19 @@ def live(e: dict) -> None:
             continue
         try:
             code, _ = http(url.rstrip("/") + "/v1/models", headers={"Authorization": f"Bearer {token}"}, timeout=8)
-            check(name, code == 200, "the model answers")
+            check(name, code == 200, "model catalogue reachable; inference not tested")
         except Exception as err:
             check(name, False, getattr(err, "code", type(err).__name__), fix)
 
     key = e.get("NEBIUS_API_KEY", "")
     if key:
         base = e.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
-        body = {"model": "nvidia/Nemotron-3_5-Lightning", "max_tokens": 8, "temperature": 0,
-                "chat_template_kwargs": {"enable_thinking": False},
-                "messages": [{"role": "user", "content": "Say: ready."}]}
-        t = time.time()
-        try:
-            http(base + "/chat/completions", body, {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}, timeout=15)
-            took = time.time() - t
-            check("Nemotron replies quickly", took < 1.5, f"{took:.2f} s for a short reply",
-                  "Token Factory is slow right now; try again in a few minutes")
-        except Exception as err:
-            check("Nemotron replies quickly", False, type(err).__name__, "check the key and the network")
+        t = time.monotonic()
+        ok, detail = model_probe(base + "/chat/completions", key, "nvidia/Nemotron-3_5-Lightning")
+        took = time.monotonic() - t
+        check("Nemotron replies quickly", ok and took < 1.5,
+              f"{took:.2f} s for usable final text (text-only probe)" if ok else detail,
+              "check the key, network and model reply; retry if Token Factory is slow")
         if eyes not in ("endpoint", "off", "local"):
             model = e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL")
             available, detail = vision_model_probe(e)
@@ -242,18 +268,24 @@ def live(e: dict) -> None:
           "check ss access and process visibility" if others is None else
           "stop the other app (systemctl --user stop <its service>), and anything that starts it, such as its own "
           "wake word; two apps moving the head at once make it and the antennas shake")
-    try:
-        h = json.loads(watchdog.HEALTH.read_text())
+    h = audio_health(watchdog.HEALTH)
+    if h is not None:
         age = time.time() - h.get("at", 0)
-        fresh = age < 30
+        fresh = -1 <= age < 30  # watchdog rounds its wall-clock timestamp to the nearest second
         check("Microphone audio", fresh and h.get("drops_last_min", 0) == 0,
               f"{h.get('drops_last_min', 0)} drops in the last minute" + ("" if fresh else f" (health {age:.0f} s old)"),
-              "close heavy programs on this computer, then restart Andy")
-        check("Nothing talking over Andy", not h.get("unanswered_s"),
-              "" if not h.get("unanswered_s") else f"speech without an answer for {h['unanswered_s']} s",
+              "check the existing service and system clock" if not fresh else
+              "close heavy programs on this computer, then systemctl --user restart andy")
+        check("Nothing talking over Andy", fresh and not h.get("unanswered_s"),
+              "health is not current; unanswered speech not verified" if not fresh else
+              ("" if not h.get("unanswered_s") else f"speech without an answer for {h['unanswered_s']} s"),
+              "check the existing service and system clock" if not fresh else
               "turn off a TV, radio or video near the robot")
-    except (OSError, ValueError):
-        check("Microphone audio", False, "no health file yet", "start Andy (./scripts/andy) and wait a few seconds")
+    else:
+        check("Microphone audio", False, "audio health counts unavailable or unreadable",
+              "check the existing andy service and wait for fresh watchdog counts")
+        check("Nothing talking over Andy", False, "unanswered speech not verified",
+              "check the existing andy service and wait for fresh watchdog counts")
 
     load = os.getloadavg()[0]
     cores = os.cpu_count() or 1

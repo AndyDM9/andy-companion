@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-27",
+  "scope": "Diagnostic verification only. Temporary invented health files and mocked transport/processes in tests; fixed tiny model requests and read-only local metadata in the separate live check. No physical tasks.",
+  "decision": "docs/decisions/0041-preflight-requires-current-counts-and-final-text.md",
+  "reproduced_before": {
+    "health_list_and_null_roots": "AttributeError",
+    "vision_explicit_length_finish": "accepted as a successful probe"
+  },
+  "changes": [
+    "Both fixed text-only model probes reuse runtime final-text validation.",
+    "Conversation latency uses a monotonic clock, with existing under-1.5-second threshold.",
+    "Required audio metadata types/finite nonnegative values validated; missing or malformed records fail both checks without replacing the original.",
+    "Both checks require current counts: under 30 seconds old, at most one second ahead for watchdog timestamp rounding.",
+    "Optional endpoint catalogue reachability explicitly distinguished from inference. Configured optional 404 remains visible."
+  ],
+  "verification": {
+    "new_cases": 58,
+    "doctor_and_setup_cases": 90,
+    "cpu": {
+      "passed": 1814,
+      "skipped": 16
+    },
+    "installed_robot_environment": {
+      "passed": 1863,
+      "skipped": 1,
+      "scope": "Software suite with SDK installed; no physical tasks."
+    },
+    "changed_python_lint": "pass",
+    "initial_health_fault_reproduction_failures": 2,
+    "live": {
+      "passed": 17,
+      "total": 22,
+      "failures": [
+        "\u2717 Voice server: configured address invalid or unreachable",
+        "\u2717 Second look endpoint catalogue: 404",
+        "\u2717 Andy's app running",
+        "\u2717 Microphone audio: 0 drops in the last minute (health 701 s old)",
+        "\u2717 Nothing talking over Andy: health is not current; unanswered speech not verified"
+      ],
+      "model_successes": [
+        "\u2713 Nemotron replies quickly: 0.54 s for usable final text (text-only probe)",
+        "\u2713 Eyes on Token Factory: nvidia/Nemotron-3.5-Super-VL; model returned final text (text-only probe)"
+      ],
+      "suspect_voice_log_check": "\u2713 No words in the voice log: 0 lines in the last day that may hold what was heard",
+      "services": {
+        "andy": "inactive, clean exit",
+        "andy-voice": "inactive, clean exit",
+        "andy-eyes": "inactive"
+      },
+      "saved_mode": "asleep",
+      "service_or_mode_mutation": false
+    }
+  },
+  "publication": {
+    "source": "pending",
+    "hosted_deployment_needed": false,
+    "reason": "Only standalone diagnostic script, tests and documentation changed; no app/preview runtime source changes."
+  },
+  "limitations": [
+    "No camera, motor, audio-quality, full spoken-turn, physical-accuracy or provider-availability measurement.",
+    "Missing finish metadata retains existing runtime compatibility; final-text validation does not verify semantics.",
+    "Stopped-state preflight is not readiness for physical tasks; fresh awake preflight still required.",
+    "Configured optional second-look endpoint remains unavailable.",
+    "Observed tasks/repeated trials, video/gallery, final Job/release/app pin, free access and actual Devpost reconciliation/submission remain open."
+  ]
+}

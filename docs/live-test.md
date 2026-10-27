@@ -30,6 +30,13 @@ It changes only its own process settings. The spoken recovery and hood checks be
 
 ## Before
 
+The live doctor (0041) now rejects missing/unsupported/stale audio counts and incomplete model replies.
+Its Token Factory probes use fixed invented text; endpoint catalogue checks are labelled separately.
+On October 27 the services were already stopped cleanly and saved mode was asleep: the check passed
+17/22, including both text models, and flagged unavailable voice/app, stale audio/unanswered counts
+and the optional endpoint's 404. No service was started or mode changed for that diagnostic. Run a fresh
+awake preflight before the observed tasks; this stopped-state check is not physical verification.
+
 **October 27 priority pass:** stop other robot apps and their wake listeners first. Use the existing
 Andy service throughout, never a second copy. Before filming, verify these revised paths:
 

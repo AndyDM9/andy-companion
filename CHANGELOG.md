@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Make preflight verification match what was actually checked
+
+- Reproduced list/null audio-health crashes and acceptance of incomplete model replies. The doctor
+  now validates typed finite counts/times and uses the runtime final-text validator for both fixed
+  Token Factory probes (0041). Missing/unreadable/stale/future health fails both audio checks;
+  HTTP success alone cannot pass the model checks. No file repair or service lifecycle changes.
+- Use monotonic conversation-probe timing; label endpoint catalogues as reachability, not inference.
+  Correct README/setup expectations. No camera, speech quality or physical-result claim.
+- **58 new cases**, **90** targeted doctor/setup cases; full CPU **1,814 / 16 skipped**, installed robot
+  environment **1,863 / 1 skipped**, changed-Python lint pass. Invented files/replies only in tests.
+- Live diagnostic **17/22**: both model probes pass, conversation text **0.54 s**. Existing services
+  had stopped cleanly and saved mode was asleep; voice/app and stale audio/unanswered checks fail,
+  alongside the optional second-look 404. Services/mode left unchanged. Fresh awake checks, observed
+  tasks, video/release/access and actual Devpost submission remain open.
 ### Repair saved mode handling and dashboard startup status
 
 - Existing wrong-shaped mode data could crash reads or quiet-deadline checks. Validate the supported

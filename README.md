@@ -504,8 +504,9 @@ Every command runs from the repository's root.
    - **By hand,** to try it: `voice/run.sh` in one terminal, `./scripts/andy` in another.
    - **As user services,** restarted on failure: `scripts/install-services.sh`, then
      `systemctl --user start andy-voice andy` (and `scripts/install-services.sh --enable` to start them at login).
-4. **Check everything.** `robot/.venv/bin/python scripts/doctor.py` says what's missing; with `--live`, that
-   everything answers now.
+4. **Check readiness.** `robot/.venv/bin/python scripts/doctor.py` says what's missing. With `--live`, it
+   checks services and current audio counts, validates short text-only model replies, and checks optional
+   endpoint catalogues. Verify a spoken task and motion before filming; these probes do not test them.
 5. **Your home.** `python3 scripts/settings.py links` prints four private addresses on your home
    network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
    language, pace, volume and captions. Open **the screen** on a TV, and send **the family page**

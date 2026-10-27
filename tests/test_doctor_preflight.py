@@ -1,6 +1,7 @@
 """Keep preflight failures visible without hardware, provider keys or transcript data."""
 
 import importlib.util
+import json
 from pathlib import Path
 import socket
 import subprocess
@@ -81,7 +82,7 @@ def test_unknown_ownership_is_a_failed_live_check(doctor, monkeypatch, tmp_path,
     from andy_companion import settings, watchdog
 
     health = tmp_path / "health.json"
-    health.write_text('{"at": ' + str(time.time()) + ', "drops_last_min": 0}')
+    health.write_text('{"at": ' + str(time.time()) + ', "drops_last_min": 0, "unanswered_s": null}')
     monkeypatch.setattr(watchdog, "HEALTH", health)
     monkeypatch.setattr(settings, "get", lambda: {"tv_yaw": 0})
     monkeypatch.setattr(doctor, "other_robot_apps", lambda: None)
@@ -117,7 +118,7 @@ def test_vision_preflight_rejects_empty_or_nontext_answers(doctor, monkeypatch, 
     import json
 
     monkeypatch.setattr(doctor, 'http', lambda *a, **k: (200, json.dumps({'choices': [{'message': {'content': answer}}]}).encode()))
-    assert doctor.vision_model_probe({}) == (False, 'empty reply')
+    assert doctor.vision_model_probe({}) == (False, 'unusable final reply')
 
 
 @pytest.mark.parametrize('status', [401, 404, 502])
@@ -141,9 +142,141 @@ def test_vision_preflight_does_not_expose_transport_error_text(doctor, monkeypat
 
 def test_vision_preflight_rejects_a_malformed_success_body(doctor, monkeypatch):
     monkeypatch.setattr(doctor, 'http', lambda *a, **k: (200, b'{}'))
-    assert doctor.vision_model_probe({}) == (False, 'KeyError')
+    assert doctor.vision_model_probe({}) == (False, 'unusable final reply')
 
 
 def test_vision_preflight_rejects_a_non_success_http_response(doctor, monkeypatch):
     monkeypatch.setattr(doctor, 'http', lambda *a, **k: (202, b'{}'))
     assert doctor.vision_model_probe({}) == (False, 'HTTP 202')
+
+
+@pytest.fixture
+def live_fixture(doctor, monkeypatch, tmp_path):
+    from andy_companion import settings, state, watchdog
+
+    health = tmp_path / 'health.json'
+    health.write_text(json.dumps({'at': time.time(), 'drops_last_min': 0, 'unanswered_s': None}))
+    monkeypatch.setattr(watchdog, 'HEALTH', health)
+    monkeypatch.setattr(state, 'FILE', tmp_path / 'state.json')
+    monkeypatch.setattr(settings, 'get', lambda: {'tv_yaw': 0})
+    monkeypatch.setattr(doctor, 'other_robot_apps', lambda: [])
+    monkeypatch.setattr(doctor, 'voice_log', lambda: '')
+    monkeypatch.setattr(doctor.subprocess, 'run', lambda *a, **k: subprocess.CompletedProcess([], 0))
+    monkeypatch.setattr(doctor.os, 'getloadavg', lambda: (0, 0, 0))
+    monkeypatch.delenv('ANDY_FINDER_RECORD', raising=False)
+    return health
+
+
+@pytest.mark.parametrize('payload', [
+    [], None, 'invented-private-value', {},
+    {'at': 'invented-private-value', 'drops_last_min': 0, 'unanswered_s': None},
+    {'at': True, 'drops_last_min': 0, 'unanswered_s': None},
+    {'at': float('nan'), 'drops_last_min': 0, 'unanswered_s': None},
+    {'at': float('inf'), 'drops_last_min': 0, 'unanswered_s': None},
+    {'at': 10**400, 'drops_last_min': 0, 'unanswered_s': None},
+    {'at': 1, 'drops_last_min': 'invented-private-value', 'unanswered_s': None},
+    {'at': 1, 'drops_last_min': -1, 'unanswered_s': None},
+    {'at': 1, 'drops_last_min': False, 'unanswered_s': None},
+    {'at': 1, 'drops_last_min': 0.5, 'unanswered_s': None},
+    {'at': 1, 'drops_last_min': 0, 'unanswered_s': -1},
+    {'at': 1, 'drops_last_min': 0, 'unanswered_s': False},
+    {'at': 1, 'drops_last_min': 0, 'unanswered_s': float('nan')},
+    {'at': 1, 'drops_last_min': 0, 'unanswered_s': 'invented-private-value'},
+])
+def test_bad_health_fails_both_checks_without_crash_or_echo(doctor, live_fixture, capsys, payload):
+    live_fixture.write_text(json.dumps(payload))
+    doctor.live({'ANDY_VISION': 'off'})
+    checks = {r[0]: r[1] for r in doctor.results}
+    assert checks['Microphone audio'] is False and checks['Nothing talking over Andy'] is False
+    assert 'invented-private-value' not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize('kind', ['vision', 'text'])
+@pytest.mark.parametrize('message,finish', [
+    ({'content': 'invented-private-value'}, 'length'),
+    ({'content': 'invented-private-value'}, 'content_filter'),
+    ({'content': 'invented-private-value'}, None),
+    ({'content': 'invented-private-value', 'refusal': 'invented-private-value'}, 'stop'),
+    ({'content': 'invented-private-value', 'tool_calls': [{'id': 'invented'}]}, 'stop'),
+    ({'content': '<think>invented-private-value'}, 'stop'),
+    ({'content': '<think>invented-private-value</think>'}, 'stop'),
+    ({'content': ''}, 'stop'),
+    ({'content': None}, 'stop'),
+])
+def test_incomplete_probe_reply_is_not_a_pass(doctor, live_fixture, monkeypatch, capsys, kind, message, finish):
+    payload = {'choices': [{'finish_reason': finish, 'message': message}]}
+    monkeypatch.setattr(doctor, 'http', lambda *a, **k: (200, json.dumps(payload).encode()))
+    if kind == 'vision':
+        ok, detail = doctor.vision_model_probe({})
+        assert ok is False and 'invented-private-value' not in detail
+    else:
+        doctor.live({'ANDY_VISION': 'off', 'NEBIUS_API_KEY': 'invented-private-key'})
+        check = next(r for r in doctor.results if r[0] == 'Nemotron replies quickly')
+        assert check[1] is False
+    assert 'invented-private-value' not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize('raw', [b'', b'{', b'\xff', b'[' * 1200, b'{"at": 1, "drops_last_min": 0}'])
+def test_unreadable_health_is_preserved_and_later_checks_continue(doctor, live_fixture, capsys, raw):
+    live_fixture.write_bytes(raw)
+    doctor.live({'ANDY_VISION': 'off'})
+    assert live_fixture.read_bytes() == raw
+    assert next(r for r in doctor.results if r[0] == 'Microphone audio')[1] is False
+    assert next(r for r in doctor.results if r[0] == 'Nothing talking over Andy')[1] is False
+    assert next(r for r in doctor.results if r[0] == 'Finder tries not kept')[1] is True
+
+
+def test_missing_health_is_unknown_without_creating_file(doctor, live_fixture):
+    live_fixture.unlink()
+    doctor.live({'ANDY_VISION': 'off'})
+    assert not live_fixture.exists()
+    assert next(r for r in doctor.results if r[0] == 'Microphone audio')[1] is False
+    assert next(r for r in doctor.results if r[0] == 'Nothing talking over Andy')[1] is False
+
+
+@pytest.mark.parametrize('age,drops,unanswered,audio_ok,unanswered_ok', [
+    (0, 0, None, True, True), (0, 0, 0, True, True),
+    (-0.6, 0, None, True, True), (29.9, 0, None, True, True),
+    (30, 0, None, False, False), (-2, 0, None, False, False),
+    (0, 1, None, False, True), (0, 0, 2, True, False),
+])
+def test_health_requires_current_counts_and_allows_watchdog_rounding(
+        doctor, live_fixture, monkeypatch, age, drops, unanswered, audio_ok, unanswered_ok):
+    monkeypatch.setattr(time, 'time', lambda: 1000)
+    live_fixture.write_text(json.dumps({'at': 1000 - age, 'drops_last_min': drops, 'unanswered_s': unanswered,
+                                       'extra': 'invented-private-value'}))
+    doctor.live({'ANDY_VISION': 'off'})
+    assert next(r for r in doctor.results if r[0] == 'Microphone audio')[1] is audio_ok
+    assert next(r for r in doctor.results if r[0] == 'Nothing talking over Andy')[1] is unanswered_ok
+
+
+@pytest.mark.parametrize('status,raw', [(202, b'{}'), (200, b'{}'), (200, b'[]'), (200, b'{'), (200, b'\xff')])
+def test_text_probe_rejects_non_success_and_malformed_bodies(doctor, live_fixture, monkeypatch, status, raw):
+    monkeypatch.setattr(doctor, 'http', lambda *a, **k: (status, raw))
+    doctor.live({'ANDY_VISION': 'off', 'NEBIUS_API_KEY': 'invented-private-key'})
+    assert next(r for r in doctor.results if r[0] == 'Nemotron replies quickly')[1] is False
+
+
+@pytest.mark.parametrize('duration,ok', [(0.2, True), (1.5, False), (2.0, False)])
+def test_text_probe_requires_usable_reply_and_monotonic_latency(doctor, live_fixture, monkeypatch, capsys, duration, ok):
+    ticks = iter([10, 10 + duration])
+    monkeypatch.setattr(time, 'monotonic', lambda: next(ticks))
+    def answer(url, body, headers, timeout):
+        assert body['model'] == 'nvidia/Nemotron-3_5-Lightning' and body['max_tokens'] == 8
+        assert body['messages'] == [{'role': 'user', 'content': 'Say: ready.'}] and timeout == 15
+        assert headers['Authorization'] == 'Bearer invented-private-key'
+        return 200, json.dumps({'choices': [{'finish_reason': 'stop', 'message': {'content': 'invented-private-value'}}]}).encode()
+    monkeypatch.setattr(doctor, 'http', answer)
+    doctor.live({'ANDY_VISION': 'off', 'NEBIUS_API_KEY': 'invented-private-key'})
+    assert next(r for r in doctor.results if r[0] == 'Nemotron replies quickly')[1] is ok
+    assert 'invented-private-value' not in capsys.readouterr().out
+
+
+def test_endpoint_catalogue_does_not_claim_inference(doctor, live_fixture, monkeypatch, capsys):
+    def catalogue(url, body=None, headers=None, timeout=None):
+        assert url == 'https://endpoint.invalid/v1/models' and body is None
+        return 200, b'{}'
+    monkeypatch.setattr(doctor, 'http', catalogue)
+    doctor.live({'ANDY_VISION': 'off', 'ANDY_GUARD_URL': 'https://endpoint.invalid'})
+    result = next(r for r in doctor.results if r[0] == 'Second look endpoint catalogue')
+    assert result[1] is True and result[2] == 'model catalogue reachable; inference not tested'

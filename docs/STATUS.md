@@ -20,6 +20,25 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 preflight verification audit
+
+- **Reproduced/fixed (0041):** list/null audio-health roots crashed the doctor; incomplete model replies
+  could pass. Required typed finite counts/times now distinguish unknown from zero, with current
+  timestamps required for both audio checks (under 30 seconds old, at most one second ahead for
+  watchdog rounding). Originals remain untouched. Both fixed text probes use the runtime final-text
+  validator; conversation timing is monotonic. Endpoint catalogue checks make no inference claim.
+- **Validation:** **58 new cases**, **90** targeted doctor/setup cases; CPU **1,814 / 16 skipped**,
+  installed robot environment **1,863 / 1 skipped**, changed-Python lint pass. Invented metadata/replies
+  and mocked local checks only; no household fault injection, audio, camera or motors in tests.
+- **Live:** **17/22**. Conversation text probe **0.54 s**, configured vision text probe passes. Services
+  had stopped cleanly, saved mode asleep; voice/app and stale audio/unanswered counts correctly fail,
+  plus the optional second-look endpoint 404. Service metadata was read, not journals or conversation
+  text. No service start/restart or mode change; these stopped-state failures are retained.
+- **Open:** fresh awake preflight before observed reader/finder/consent/cancellation/barge-in tasks;
+  repeated trials, video/gallery, final Serverless Job/release/app pin, free access arrangements and
+  actual Devpost draft reconciliation/submission. This diagnostic adds no physical result.
+  [Audit metadata](../evals/results/preflight-verification-audit-2026-10-27.json).
+
 ## October 27 saved-mode and startup audit
 
 - **Reproduced/fixed (0040):** an invented list root caused `AttributeError`; an invalid quiet
