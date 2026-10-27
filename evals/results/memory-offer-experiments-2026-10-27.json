@@ -1,0 +1,829 @@
+{
+  "date": "2026-10-27",
+  "decision": "Do not merge the description/example experiments: all three variants scored 12/18, with all six photo-story instances missing the expected proposal. Original profile and tool descriptions retained.",
+  "limits": "Synthetic first-response tool-name and real proposal-gate checks only. Argument factual grounding and conversational quality were not scored; not a complete behaviour, accuracy or user-study measure. No household data or actual writes.",
+  "experiments": [
+    {
+      "variant": "baseline",
+      "scope": "Invented holdout-like event/photo contexts and negatives; real model tool selection with real proposal gate. No household data, microphone, camera, robot or actual writes. First-photo/ordinary-past negatives test absence of a premature memory proposal, not complete conversational correctness.",
+      "cases": [
+        {
+          "id": "event-visit",
+          "history": [],
+          "say": "My cousin will visit on Friday.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "event-club",
+          "history": [],
+          "say": "My book club meets tomorrow.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "event-concert",
+          "history": [],
+          "say": "My nephew has a concert next Tuesday.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "photo-hike",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "What was happening when this photo was taken?"
+            }
+          ],
+          "say": "We were hiking near a lake with my friend. We stopped for sandwiches.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "photo-bakery",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "Where was this photo taken?"
+            }
+          ],
+          "say": "At the bakery where my aunt worked. She taught me to make bread.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "photo-trip",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "What was happening in that photograph?"
+            }
+          ],
+          "say": "That was a train trip with my brother. We stayed for a week.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "ordinary-past",
+          "history": [],
+          "say": "I used to make bread with my aunt.",
+          "expected": null
+        },
+        {
+          "id": "decline-memory",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "Shall I remember that story?"
+            }
+          ],
+          "say": "No, do not keep it.",
+          "expected": null
+        },
+        {
+          "id": "first-photo",
+          "history": [
+            {
+              "role": "user",
+              "content": "Here is a family photo."
+            }
+          ],
+          "say": "Can you describe the photograph I am holding?",
+          "expected": null
+        }
+      ],
+      "rows": [
+        {
+          "id": "event-visit",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-club",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-concert",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "photo-hike",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-bakery",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-trip",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "ordinary-past",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "decline-memory",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "first-photo",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [
+            "describe_photo"
+          ],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-visit",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-club",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-concert",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "photo-hike",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-bakery",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-trip",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "ordinary-past",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "decline-memory",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "first-photo",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [
+            "describe_photo"
+          ],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        }
+      ],
+      "passed": 12,
+      "total": 18,
+      "source_sha256": {
+        "profiles/companion/profile.md": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b",
+        "tools/remember_fact.py": "af0cca3874851dd0c77f9cbe9e4356f61ec5bb298138eabf341dd002266bb277",
+        "tools/remember_moment.py": "ce62a7cba26ec9e82b4ffc482200663e2412443ee2b89acaa42e93d4c7980b51",
+        "evals/tools.json": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59",
+        "src/andy_companion/consent.py": "6530e3caeb7798d4b8ac697a671a65e0ff5bb59f4b311301497312f50aa3000b"
+      }
+    },
+    {
+      "variant": "clearer proposal descriptions",
+      "scope": "Invented holdout-like event/photo contexts and negatives; real model tool selection with real proposal gate. No household data, microphone, camera, robot or actual writes. First-photo/ordinary-past negatives test absence of a premature memory proposal, not complete conversational correctness.",
+      "cases": [
+        {
+          "id": "event-visit",
+          "history": [],
+          "say": "My cousin will visit on Friday.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "event-club",
+          "history": [],
+          "say": "My book club meets tomorrow.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "event-concert",
+          "history": [],
+          "say": "My nephew has a concert next Tuesday.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "photo-hike",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "What was happening when this photo was taken?"
+            }
+          ],
+          "say": "We were hiking near a lake with my friend. We stopped for sandwiches.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "photo-bakery",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "Where was this photo taken?"
+            }
+          ],
+          "say": "At the bakery where my aunt worked. She taught me to make bread.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "photo-trip",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "What was happening in that photograph?"
+            }
+          ],
+          "say": "That was a train trip with my brother. We stayed for a week.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "ordinary-past",
+          "history": [],
+          "say": "I used to make bread with my aunt.",
+          "expected": null
+        },
+        {
+          "id": "decline-memory",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "Shall I remember that story?"
+            }
+          ],
+          "say": "No, do not keep it.",
+          "expected": null
+        },
+        {
+          "id": "first-photo",
+          "history": [
+            {
+              "role": "user",
+              "content": "Here is a family photo."
+            }
+          ],
+          "say": "Can you describe the photograph I am holding?",
+          "expected": null
+        }
+      ],
+      "rows": [
+        {
+          "id": "event-visit",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-club",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-concert",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "photo-hike",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-bakery",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-trip",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "ordinary-past",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "decline-memory",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "first-photo",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [
+            "describe_photo"
+          ],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-visit",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-club",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-concert",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "photo-hike",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-bakery",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-trip",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "ordinary-past",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "decline-memory",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "first-photo",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [
+            "describe_photo"
+          ],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        }
+      ],
+      "passed": 12,
+      "total": 18,
+      "source_sha256": {
+        "profiles/companion/profile.md": "e7861475d725cc6bb5b23882cf551e3fa9c4b3c22c0f1c13070d6b2e4e1245ff",
+        "tools/remember_fact.py": "3de2905a647b7080936ad02352824334dd1d4e8fb9aa0ff6438329ca74deeea4",
+        "tools/remember_moment.py": "082422cf93e99a05ccb3566cb305de9644e0945304e6f740902d6ba58dab1173",
+        "evals/tools.json": "52dfade2c4a9c1d5a6017a58143b7db6b6d70dc14c0cbd4a386e9d4969285528",
+        "src/andy_companion/consent.py": "6530e3caeb7798d4b8ac697a671a65e0ff5bb59f4b311301497312f50aa3000b"
+      }
+    },
+    {
+      "variant": "generic proposal examples",
+      "scope": "Invented holdout-like event/photo contexts and negatives; real model tool selection with real proposal gate. No household data, microphone, camera, robot or actual writes. First-photo/ordinary-past negatives test absence of a premature memory proposal, not complete conversational correctness.",
+      "cases": [
+        {
+          "id": "event-visit",
+          "history": [],
+          "say": "My cousin will visit on Friday.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "event-club",
+          "history": [],
+          "say": "My book club meets tomorrow.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "event-concert",
+          "history": [],
+          "say": "My nephew has a concert next Tuesday.",
+          "expected": "remember_moment"
+        },
+        {
+          "id": "photo-hike",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "What was happening when this photo was taken?"
+            }
+          ],
+          "say": "We were hiking near a lake with my friend. We stopped for sandwiches.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "photo-bakery",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "Where was this photo taken?"
+            }
+          ],
+          "say": "At the bakery where my aunt worked. She taught me to make bread.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "photo-trip",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "What was happening in that photograph?"
+            }
+          ],
+          "say": "That was a train trip with my brother. We stayed for a week.",
+          "expected": "remember_fact"
+        },
+        {
+          "id": "ordinary-past",
+          "history": [],
+          "say": "I used to make bread with my aunt.",
+          "expected": null
+        },
+        {
+          "id": "decline-memory",
+          "history": [
+            {
+              "role": "assistant",
+              "content": "Shall I remember that story?"
+            }
+          ],
+          "say": "No, do not keep it.",
+          "expected": null
+        },
+        {
+          "id": "first-photo",
+          "history": [
+            {
+              "role": "user",
+              "content": "Here is a family photo."
+            }
+          ],
+          "say": "Can you describe the photograph I am holding?",
+          "expected": null
+        }
+      ],
+      "rows": [
+        {
+          "id": "event-visit",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-club",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-concert",
+          "round": 1,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "photo-hike",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-bakery",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-trip",
+          "round": 1,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "ordinary-past",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "decline-memory",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "first-photo",
+          "round": 1,
+          "expected_proposal_tool": null,
+          "tools": [
+            "describe_photo"
+          ],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-visit",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-club",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "event-concert",
+          "round": 2,
+          "expected_proposal_tool": "remember_moment",
+          "tools": [
+            "remember_moment"
+          ],
+          "proposal": true,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "photo-hike",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-bakery",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "photo-trip",
+          "round": 2,
+          "expected_proposal_tool": "remember_fact",
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": false
+        },
+        {
+          "id": "ordinary-past",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "decline-memory",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        },
+        {
+          "id": "first-photo",
+          "round": 2,
+          "expected_proposal_tool": null,
+          "tools": [
+            "describe_photo"
+          ],
+          "proposal": false,
+          "write_effects": [],
+          "pass": true
+        }
+      ],
+      "passed": 12,
+      "total": 18,
+      "source_sha256": {
+        "profiles/companion/profile.md": "6872be5a9936bfcd424c050e770f53ac574d65bef83f9654e4fa6e22bcbbe730",
+        "tools/remember_fact.py": "3de2905a647b7080936ad02352824334dd1d4e8fb9aa0ff6438329ca74deeea4",
+        "tools/remember_moment.py": "082422cf93e99a05ccb3566cb305de9644e0945304e6f740902d6ba58dab1173",
+        "evals/tools.json": "52dfade2c4a9c1d5a6017a58143b7db6b6d70dc14c0cbd4a386e9d4969285528",
+        "src/andy_companion/consent.py": "6530e3caeb7798d4b8ac697a671a65e0ff5bb59f4b311301497312f50aa3000b"
+      }
+    }
+  ]
+}

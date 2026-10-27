@@ -5,6 +5,27 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Awake functional check and bounded memory/camera hardening
+
+- Founder authorised waking Andy; used the existing supervisor, with no second controller. After
+  an HDMI playback fixture initially lost words, a slower synthetic fixture with a three-second
+  lead-in was heard and Andy answered the correct time, confirmed by the founder. Untimed
+  functional confirmation only; no recording retained and no clock-tool dispatch or latency claim.
+- Camera-source check now respects negated page cues and explicit camera refusals in a quoted
+  message's introduction (decision 0028 amendment). Nine pure and two installed-dispatch cases.
+- Recognised labelled credential values are refused before a memory proposal/write, even for
+  explicit requests; all four memory-tool names share the check, with a fixed non-echoing refusal
+  (decision 0029). Limited pattern coverage, not general secret detection. Forty-three pure and
+  four installed-dispatch cases; ordinary account talk and existing consent behaviour retained.
+- Full CPU suite: **1,208 passed / 14 skipped**; installed robot environment: **1,235 / one skipped**;
+  isolated wheel: **three passed**. Current full local model suite **94, 92, 95 of 97**, unchanged
+  profile/tools with new gates and synthetic effects; no unauthorised write effect reported. All
+  failures retained, including photo-memory offers every run. No score-improvement claim.
+- Memory-offer prompt experiments did not improve the scoped synthetic checks: baseline, clearer
+  descriptions and generic examples each **12/18**, missing all six photo-story proposals. Both
+  experimental prompt revisions reverted. Evidence retained; no improvement claim.
+
+
 ### Published re-audit follow-through
 
 - Source `18922ce` pushed; hosted CPU/wheel and SDK jobs passed. Existing Andy service restarted

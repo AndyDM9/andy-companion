@@ -15,10 +15,42 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
 | M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20). Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
-| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **94, 96, 94 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
+| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **94, 92, 95 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
+
+## October 27 awake check and bounded hardening
+
+- **Live:** founder authorised waking Andy. Existing supervisor used; no second controller. Founder
+  confirmed the slower synthetic desktop clock question was heard and Andy answered the correct
+  time. Untimed functional check only, without retained audio/conversation or verified clock-tool
+  telemetry. Earlier HDMI playback lost words; this does not establish a robot speech fault.
+- **Current runtime:** existing Andy service restarted with the fixes and zero competing controllers.
+  Awake live preflight **20/21**: core app, microphone, voice, cloud vision and local eyes available;
+  **zero microphone drops**, **zero suspect voice-log lines**. The optional paid second-check endpoint
+  remains stopped (404). No new physical reader/search/pointing trial claimed.
+- **Fixed:** negated physical cues and explicit camera refusal in a supplied message's introduction
+  no longer authorise OCR (0028 amendment). Recognised labelled credential values are refused before
+  any memory proposal or tool dispatch, including explicit requests and the compatibility alias
+  (decision 0029). Limited patterns only; unlabelled/encoded secrets and other write paths are outside
+  this check. It does not remove existing data or add logging.
+- **Validation:** CPU **1,208 / 14 skipped**, installed robot environment **1,235 / one skipped**,
+  isolated wheel **three passed**, changed Python lint passed. Fifty-eight added regression cases
+  include actual SDK dispatcher checks with no camera or memory routine reached for denied inputs.
+- **Experiment left out:** baseline, clearer descriptions and generic proposal examples each scored
+  **12/18** in scoped synthetic memory-offer checks; all six photo-story instances missed a proposal.
+  Prompt experiments reverted; [evidence](../evals/results/memory-offer-experiments-2026-10-27.json).
+  These check tool names/proposal status, not fact grounding or complete conversational correctness.
+  Memory-offer consistency remains an open problem.
+- **Current model proof:** **94, 92 and 95 of 97**, three full local runs with the new gate, real API
+  calls and synthetic tools ([scorecard](../evals/results/suite-2026-10-27-gates-local.json)). Profile and
+  tool descriptions unchanged; confirmation-source hash verified. Photo-memory offers failed all
+  three; future-event offers twice; activity offer, extra searches, daily-event/greeting wording and
+  supportive-response completeness once each. Letter/quoted-message cases passed; no unauthorised
+  write effect reported. This is not a demonstrated score improvement or hardware test. Final Job,
+  physical checks and submission remain pending. [Audit metadata](../evals/results/gates-audit-2026-10-27.json).
+  Source/Space publication follow-through pending.
 
 ## Final re-audit (started October 26)
 
@@ -27,14 +59,14 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   match. Eight public layouts/eight real guided scenarios/three refusals rechecked successfully.
   Anonymous clone updated to the published source: **1,156 / 14 skipped**. History scan **223 commits
   clean**, all **23** updated export links open. No connected signed-in submission browser.
-- **Current robot state:** existing service restarted with zero competing controllers. Persisted
+- **Prior published robot state (superseded by the awake check above):** existing service restarted with zero competing controllers. Persisted
   mode is **asleep**, prior app exit **0**, no traceback, supervisor/voice/local eyes active. The mode
   was preserved. Post-restart preflight **17/21** reflects the intentionally absent sleeping app and
   stale audio data, plus the stopped optional second check. Earlier awake preflight was **20/21**.
   Wake and rerun the core checks before filming; no new awake spoken reader trial claimed.
   The video guide now distinguishes the optional paid endpoint from required awake checks.
 
-- **Current model proof:** **94, 96 and 94 of 97**, three full local runs after the camera-reader fixes;
+- **Previous October 26 model proof:** **94, 96 and 94 of 97**, three full local runs after the camera-reader fixes;
   [scorecard](../evals/results/suite-2026-10-26-camera-source-local.json). Real API calls, synthetic tools, real confirmation/source checks;
   no microphone, camera or motors. All quoted-message/letter cases passed in these runs. Remaining
   failures: photo memory offer every run, future-event offer twice, supportive-response completeness

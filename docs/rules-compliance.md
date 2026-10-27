@@ -19,6 +19,18 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## October 27 awake check and bounded hardening
+
+Authorised wake and the founder-confirmed correct-time reply are an untimed functional check, not
+an added timing/accuracy result or completed device-footage claim. The current awake preflight is
+20/21 with the optional paid second check still stopped. Physical reader/pointing and video checks
+remain open. Narrow camera-negation and credential-value checks add no comprehensive security,
+medical, outcome or hardware-accuracy claim. Failed memory-offer prompt experiments are retained
+and reverted, with no asserted improvement. The existing rules/access/video obligations below are
+unchanged; no final release tag or submitted-entry claim is made. Latest local text suite is
+94, 92 and 95 of 97 ([scorecard](../evals/results/suite-2026-10-27-gates-local.json)), with real gates and
+synthetic tools. Failures remain visible; no statistically measured improvement is asserted.
+
 ## Final re-audit (2026-10-27)
 
 Published-source follow-through passed: latest anonymous clone, hosted CI, guided source hashes and
@@ -33,7 +45,7 @@ public open-source code, actual device footage, public YouTube video, rights/tra
 working-project testing through December 15 remain required as detailed below. Physical AI's hosted
 URL exemption does not remove hardware access when requested. No rule change found.
 
-Current local text proof is 94, 96 and 94 of 97, with real gates and synthetic tools; older Job scores stay
+Previous October 26 local text proof is 94, 96 and 94 of 97, with real gates and synthetic tools; older Job scores stay
 labelled historical. The watch retry is founder-confirmed and untimed; it no longer appears as pending.
 Letter/source changes have software/model verification; their physical spoken retry is still separate.
 The final video, release tag/app pin, final export and actual submission remain incomplete. No added

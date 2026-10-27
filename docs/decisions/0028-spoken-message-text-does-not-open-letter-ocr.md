@@ -40,3 +40,11 @@ camera tools, and is not a general prompt-injection defence. No second controlle
 
 Physical page requests are wrongly refused, or another spoken-message form reaches OCR. Expand only
 with representative invented regressions; never retain household speech to diagnose the classifier.
+
+## Amended 2026-10-27
+
+Invented negative-page introductions exposed a gap: “without using the camera” and “not holding
+any paper” counted as positive physical cues. Negated cues now do not authorise this OCR path; an
+explicit camera refusal in the introduction wins over another positive page cue. Unrelated and
+quoted-payload negations keep the physical-page path. Nine pure cases and two additional installed
+dispatch cases cover the change. The existing narrow scope and limitations still apply.

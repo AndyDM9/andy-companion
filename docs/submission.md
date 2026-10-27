@@ -44,7 +44,7 @@ letter and by phone: adults 60 and over reported about $3 billion lost to fraud 
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
 messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) text cases passed with the previous profile; both evaluations ran as Nebius
-Serverless Jobs. The current profile scored [94, 96 and 94 of 97 in three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-camera-source-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
+Serverless Jobs. The current profile scored [94, 92 and 95 of 97 in three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-gates-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Eight models run
   on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
@@ -160,7 +160,7 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- Current text-suite runs scored [94, 96 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-camera-source-local.json), with real confirmation/source checks and synthetic tools.
+- Current text-suite runs scored [94, 92 and 95 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-gates-local.json), with real confirmation/source checks and synthetic tools.
   Photo-story memory offers fail each run; future-event offers twice, and supportive-response completeness
   and story fidelity once each. No unapproved write effect was reported. The older Serverless Job scores
   predate these changes. A working watch search is founder-confirmed and untimed; physical measurements

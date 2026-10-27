@@ -61,6 +61,20 @@ _last: Dict[str, str] = {"words": ""}
 CONFIRM_FOR_S = 120.0
 
 
+def credential_value(arguments: dict) -> bool:
+    """Recognise labelled credential values, not all possible secrets or ordinary account talk."""
+    text = " ".join(str(value) for value in arguments.values()).casefold()
+    label = (r"(?:password|passcode|contrase[ñn]a|clave de acceso|"
+             r"(?:bank |card |bancario |de la tarjeta )?pin|"
+             r"(?:credit |debit |bank )?card (?:number|details)|"
+             r"n[uú]mero de (?:la )?tarjeta|cvv|cvc|security code|"
+             r"api key|secret key|access token)")
+    # A value marker or a following number is required: 'reset my password on Friday'
+    # and 'the bank card is in the drawer' are not credential values.
+    return bool(re.search(r"\b" + label + r"\b\s*(?:(?:is|es|son)\s+|[:=]\s*)\S+", text)
+                or re.search(r"\b" + label + r"\b\s+[\d][\d -]{2,}", text))
+
+
 def spoken_message(words: str) -> bool:
     """A narrow source check: message words after a colon/opening quote are already supplied.
 
@@ -73,9 +87,18 @@ def spoken_message(words: str) -> bool:
         return False
     intro = value[:delimiter.start()]
     message = re.search(r"\b(message|text|email|e-mail|mensaje|texto|correo)\b", intro)
-    physical = re.search(r"\b(holding|hold|held|showing|show|camera|printed|paper|letter|bill|notice|label|card|"
-                         r"carta|factura|papel|hoja|c[aá]mara|mostrando|sostengo|sujetando|impreso|etiqueta)\b", intro)
-    return bool(message and not physical)
+    physical_cues = re.finditer(r"\b(holding|hold|held|showing|show|camera|printed|paper|letter|bill|notice|label|card|"
+                               r"carta|factura|papel|hoja|c[aá]mara|mostrando|sostengo|sujetando|impreso|etiqueta)\b", intro)
+    negation = r"\b(?:not|no|without|never|don't|don’t|cannot|can't|can’t|sin|nunca)\b(?:\W+\w+){0,4}\W*"
+    # A negated page is not a physical cue. A refusal to use the camera wins even if another
+    # page cue is positive. Only the introduction is inspected, never instructions in the payload.
+    refused_camera = re.search(negation + r"(?:camera|c[aá]mara|ocr)\b", intro)
+    physical = False
+    for cue in physical_cues:
+        clause = re.split(r"[.;!?]|\b(?:but|pero)\b", intro[:cue.start()])[-1]
+        if not re.search(negation + r"$", clause):
+            physical = True
+    return bool(message and (refused_camera or not physical))
 
 
 def _normal(text: str) -> str:
@@ -124,6 +147,12 @@ class Confirmation:
             self.pending["spoken"] = True
 
     def authorize(self, name: str, arguments: dict) -> dict | None:
+        if name in SAVING and credential_value(arguments):
+            self.pending = None
+            self.confirmed = False
+            return {"saved": False, "reason": "credential_value",
+                    "say": "Not saved. I cannot keep passwords, access codes or payment credentials. "
+                           "Please do not tell me those details."}
         if self.used:
             return {"saved": False, "shared": False, "say": "That request was already handled. Do not repeat it."}
         canonical = json.dumps(arguments, sort_keys=True, ensure_ascii=False, separators=(",", ":"))

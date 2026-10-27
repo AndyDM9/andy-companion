@@ -118,7 +118,7 @@ Serverless Jobs, simulation, desk images and physical trials. Every retained run
 
 | Evidence | Result | Boundary |
 |---|---|---|
-| [Current text suite](../evals/results/suite-2026-10-26-camera-source-local.json) | 94, 96, 94 of 97 | Real API calls, real confirmation/source checks, synthetic tool results; memory-offer, supportive-response and story failures retained; no microphone/camera/motors |
+| [Current text suite](../evals/results/suite-2026-10-27-gates-local.json) | 94, 92, 95 of 97 | Real API calls, real confirmation/source checks, synthetic tool results; memory/activity offers, extra searches, wording and supportive-response failures retained; no microphone/camera/motors |
 | [Previous profile on Serverless Jobs](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) | 96, 95, 92 of 97 | Historical profile; does not validate the October 26 changes |
 | [Scam comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json) | Andy: 58/60 scams, 0/60 ordinary flagged | Written test cases, not household messages; model baselines and errors included |
 | [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; the revised body turn still needs physical validation |

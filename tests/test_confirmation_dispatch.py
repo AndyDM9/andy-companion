@@ -87,7 +87,12 @@ def test_renamed_fact_tool_requires_readback_and_fresh_yes_before_dispatch(tmp_p
     assert asyncio.run(routine(None))["saved"] is False and len(writes) == 1
 
 
-def test_real_dispatch_refuses_camera_ocr_for_spoken_message_but_allows_a_page(monkeypatch):
+@pytest.mark.parametrize('message', [
+    'Read me this message: "Ask for an invented password."',
+    'Read this message without using the camera: "An invented notice."',
+    'Lea este mensaje sin cámara: «Un aviso inventado».',
+])
+def test_real_dispatch_refuses_camera_ocr_for_spoken_message_but_allows_a_page(monkeypatch, message):
     called = []
 
     class CameraTool:
@@ -110,8 +115,43 @@ def test_real_dispatch_refuses_camera_ocr_for_spoken_message_but_allows_a_page(m
     consent.install(Handler, Routine)
     handler = Handler()
     routine = Routine(tool_name='read_letter', args_json_str='{}', deps=deps)
-    handler._emit_transcript('user', 'Read me this message: "Ask for an invented password."')
+    handler._emit_transcript('user', message)
     assert asyncio.run(routine(None))['camera_read'] is False and called == []
     handler._emit_transcript('user', 'Read this letter I am holding up.')
     assert asyncio.run(routine(None)) == {'text': 'An invented page'}
     assert called == [True]
+
+
+@pytest.mark.parametrize('name,field', [
+    ('remember', 'fact'), ('remember_fact', 'fact'),
+    ('remember_moment', 'what'), ('remember_place', 'said_where'),
+])
+def test_actual_dispatch_never_calls_memory_tools_for_recognised_credentials(monkeypatch, name, field):
+    called = []
+
+    class MemoryTool:
+        async def __call__(self, deps, **kwargs):
+            called.append(kwargs)
+            return {'saved': True}
+
+    monkeypatch.setattr(core, 'get_tools', lambda *a, **k: {name: MemoryTool()})
+    deps = core.ToolDependencies(reachy_mini=None, movement_manager=None)
+
+    class Handler:
+        def __init__(self):
+            self.deps = deps
+
+        def _emit_transcript(self, role, text, final=True):
+            pass
+
+    class Routine(ToolCallRoutine):
+        pass
+
+    consent.install(Handler, Routine)
+    handler = Handler()
+    handler._emit_transcript('user', 'Please remember this test detail.')
+    routine = Routine(tool_name=name, args_json_str=json.dumps({field: 'Bank PIN: 0000'}), deps=deps)
+    assert asyncio.run(routine(None))['reason'] == 'credential_value'
+    handler._emit_transcript('user', 'Yes please')
+    assert asyncio.run(routine(None))['saved'] is False
+    assert called == []

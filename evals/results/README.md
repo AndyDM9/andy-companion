@@ -9,7 +9,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | What did the final re-audit verify? | [reaudit-2026-10-26.json](reaudit-2026-10-26.json): installation, software checks, public access, scoped probes and remaining submission gaps; no new physical-accuracy rate |
 | Does a real camera frame reach local eyes when the primary is unavailable? | [camera-recovery-2026-10-26.json](camera-recovery-2026-10-26.json): IPC camera frame, forced unreachable loopback primary, local Cosmos 8B response; metadata only. No voice, pointing, caption-quality or user-study claim |
 | Does the public guided AI playground work? | [judge-playground-2026-10-26.json](judge-playground-2026-10-26.json): six browser steps using real Nemotron and simulated tools; eight browser/state checks, five HTTP refusal probes and source hashes. No hardware or target-user session; not a conversation-accuracy score |
-| How does the current profile do in conversation? | [suite-2026-10-26-camera-source-local.json](suite-2026-10-26-camera-source-local.json): 94, 96 and 94 of 97, local API calls with real confirmation/source checks and synthetic tools; hashes/failures retained. No audio, camera or motors |
+| How does the current profile do in conversation? | [suite-2026-10-27-gates-local.json](suite-2026-10-27-gates-local.json): 94, 92 and 95 of 97, local API calls with real confirmation/source checks and synthetic tools; hashes/failures retained. No audio, camera or motors |
 | Which conversation run was on Nebius Serverless Jobs? | [2026-10-25-nebius-job-andy-suite-20261025-193648.json](2026-10-25-nebius-job-andy-suite-20261025-193648.json): 96, 95 and 92 of 97 on the previous profile; this is historical evidence, not a test of the October 26 revision (before: [93, 92, 92 of 94](2026-10-25-nebius-job-andy-suite-20261025-170439.json); [92, 91, 94](2026-10-20-nebius-job-andy-suite-20261020-195645.json)) |
 | Does the scam check work, and what does Tavily add? | [scam-eval-2026-10-14-1200-nebius-jobs.json](scam-eval-2026-10-14-1200-nebius-jobs.json): 120 messages, each model alone and with Tavily's warnings (with the word rules below, five ways), three runs, four Nebius Serverless Jobs ([decision 0007](../../docs/decisions/0007-the-scam-check-two-narrow-questions.md)) |
 | What would no model at all do? | [scam-word-rules-2026-10-20-1552.json](scam-word-rules-2026-10-20-1552.json): Andy's own letter rules on the same 120 messages (28 of 60 caught, 3 of 60 flagged), and the cost of one check |
@@ -22,9 +22,23 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 gate follow-through
+
+Current: [suite-2026-10-27-gates-local.json](suite-2026-10-27-gates-local.json), **94, 92 and 95 of 97**.
+Real API calls with synthetic tools and the actual confirmation/source checks, including the narrow
+credential-value refusal. Unchanged profile/tool descriptions. Photo-story offers failed all three,
+future-event offers twice; activity offer, extra searches, daily-event/greeting wording and supportive
+response completeness once each. Letter/quoted-message cases passed; no unauthorised write effect
+reported. Scores vary; no improvement or hardware result inferred. Final Serverless Job remains pending.
+
+[Audit metadata](gates-audit-2026-10-27.json) includes 1,208 CPU / 1,235 installed-environment passes,
+three isolated-wheel checks and the founder-confirmed untimed live clock response. The
+[memory-offer experiments](memory-offer-experiments-2026-10-27.json) each scored 12/18 on narrow
+first-response checks. Prompt revisions reverted. These checks did not score argument grounding.
+
 ## October 26 hardening runs
 
-The current local run is [suite-2026-10-26-camera-source-local.json](suite-2026-10-26-camera-source-local.json):
+The preceding local run is [suite-2026-10-26-camera-source-local.json](suite-2026-10-26-camera-source-local.json):
 **94, 96 and 94 of 97** after tool-first letter reading and the spoken-message source boundary.
 Photo memory offers fail throughout; upcoming-event offers twice, supportive-response completeness
 and story fidelity once each. Quoted-message and letter cases passed all three runs. Model-judged

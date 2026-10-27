@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-27",
+  "scope": "Synthetic gate regressions and text-model checks, plus founder-confirmed untimed live clock reply. No retained household audio, conversation, screenshot or camera picture. No physical timing/pointing or intended-audience study claim.",
+  "software": {
+    "cpu": {
+      "passed": 1208,
+      "skipped": 14
+    },
+    "installed_robot_environment": {
+      "passed": 1235,
+      "skipped": 1
+    },
+    "isolated_wheel_passed": 3,
+    "changed_python_E9_F_B": "passed",
+    "new_regression_cases": 58
+  },
+  "live": {
+    "authorised_wake_via_existing_supervisor": true,
+    "existing_service_restarted_after_change": true,
+    "competing_robot_controllers": 0,
+    "awake_preflight": {
+      "passed": 20,
+      "total": 21,
+      "remaining": "Optional paid second-check endpoint deliberately stopped; HTTP 404"
+    },
+    "microphone_drops_last_minute": 0,
+    "suspect_voice_log_lines_last_day": 0,
+    "clock_question": {
+      "stimulus": "Invented desktop speech fixture with three-second HDMI lead-in",
+      "founder_confirmed_heard_and_correct_time_reply": true,
+      "timed": false,
+      "clock_tool_dispatch_verified": false,
+      "limits": "Initial desktop fixture lost words. Cause not established; no robot audio setting changed. Functional confirmation only."
+    }
+  },
+  "changes": {
+    "camera_source": "Respect negated physical cues and introduction-level camera refusal in the existing narrow quoted-message source check.",
+    "memory": "Refuse recognised labelled credential values before memory proposal or dispatch; all four existing names, explicit request cannot override. Fixed response does not echo value.",
+    "limitations": "Not comprehensive secret detection; unlabelled/encoded values, other write paths and direct store calls are outside this check; no existing data scrubbed."
+  },
+  "model_scorecard": "suite-2026-10-27-gates-local.json",
+  "memory_offer_experiments": "memory-offer-experiments-2026-10-27.json",
+  "publication": "Pending source commit and guided-Space follow-through; see STATUS.md.",
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/consent.py",
+      "sha256": "ab1da018249cbb938f893c940df0d1df1633e45e3d651796eea1045c7baf4e3d"
+    },
+    {
+      "path": "tests/test_camera_source_boundary.py",
+      "sha256": "ec069ff000f70e882eee1efde0e2e108bfae48511f8cb22bbc3523bb5b75135a"
+    },
+    {
+      "path": "tests/test_memory_credentials.py",
+      "sha256": "cd8bb239e474b1c1900cb9792cf4a31c59578361e9beb5759f9a3d99e734738e"
+    },
+    {
+      "path": "tests/test_confirmation_dispatch.py",
+      "sha256": "8fd8f9411bee7d7849a876fd114959ca543c3456504c455e644a83a9ce72a01e"
+    },
+    {
+      "path": "profiles/companion/profile.md",
+      "sha256": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b"
+    },
+    {
+      "path": "evals/tools.json",
+      "sha256": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59"
+    }
+  ]
+}

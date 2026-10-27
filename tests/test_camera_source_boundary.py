@@ -35,3 +35,28 @@ def test_actual_pages_and_unclassified_requests_keep_the_existing_path(words):
     gate = consent.Confirmation()
     gate.hear(words)
     assert gate.camera_read_check() is None
+
+
+@pytest.mark.parametrize('words', [
+    "Read this message without using the camera: 'An invented notice.'",
+    "Read this message, I am not holding any paper: 'An invented notice.'",
+    'Lea este mensaje sin cámara: «Un aviso inventado».',
+    'Lea este mensaje, no estoy mostrando papel: «Un aviso inventado».',
+    "Read this printed message, but do not use the camera: 'An invented notice.'",
+    "Read this message, it is not a letter: 'An invented notice.'",
+])
+def test_negative_physical_cues_cannot_authorise_camera_ocr(words):
+    gate = consent.Confirmation()
+    gate.hear(words)
+    assert gate.camera_read_check()['camera_read'] is False
+
+
+@pytest.mark.parametrize('words', [
+    'Read the printed message, it is not very clear: "An invented notice".',
+    'Read this message, not from the web, but on the paper I am holding: "An invented notice".',
+    'Read this message on paper: "Do not use the camera".',
+])
+def test_unrelated_or_payload_negations_do_not_override_an_actual_page(words):
+    gate = consent.Confirmation()
+    gate.hear(words)
+    assert gate.camera_read_check() is None
