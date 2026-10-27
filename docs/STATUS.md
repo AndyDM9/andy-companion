@@ -42,6 +42,13 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Still open:** observed letter/reader, finder present/absent/moved/TV-decoy, voice/phone choice,
   cancellation/barge-in and repeated physical trials; video/gallery, final Serverless Job/release/app
   pin, free testing/access arrangements and actual Devpost draft reconciliation/submission.
+- **Published/verified:** `3f8dd6f`, six anonymous source files match; fresh locked clone **1,756 /
+  16 skipped**. [Hosted CPU/wheel/SDK checks pass](https://github.com/AndyDM9/andy-companion/actions/runs/40579385792):
+  **1,756 / 16 skipped**, **three** wheel checks, **71** SDK configuration/dispatch cases. Preview
+  `9eff646` is RUNNING, four bundled files match and served screen bytes equal the packaged page;
+  eight public layouts/two write refusals pass, without inference. **72** Markdown files: **390**
+  relative targets/**35** fragments resolve. **251** source-history commits scan clean for secrets.
+  All **23** draft links open; final export still stops at the video/tag/app-pin blockers.
 
 ## October 27 function/rules strategy review
 

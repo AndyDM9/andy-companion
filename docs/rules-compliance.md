@@ -13,6 +13,9 @@ record. Invented fault tests and a service health probe verify mode handling and
 they add no physical, eligibility or completed-submission claim. No video, licence, visibility,
 provider/model requirement or testing-access arrangement changed. Video, physical evidence and final
 submission remain open; the full submitted materials still freeze at the official deadline.
+Published source/preview and anonymous-clone/hosted checks now match this repair. Browser checks use
+sample pages only, without inference or hardware. All 23 draft links open; final export still blocks
+at the missing video, local release tag and app pin. The actual Devpost draft remains unverified.
 
 ## The judges' advice (update of about 2026-10-21, "Will It Ship?")
 

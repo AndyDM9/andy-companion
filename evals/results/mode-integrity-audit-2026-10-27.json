@@ -56,8 +56,152 @@
     }
   },
   "publication": {
-    "source": "pending",
-    "screen_preview": "pending"
+    "source_commit": "3f8dd6fdb45cd892ed376312b620122fbdf2e379",
+    "anonymous_matching_source_files": {
+      "src/andy_companion/state.py": true,
+      "src/andy_companion/supervisor.py": true,
+      "src/andy_companion/app_mode.py": true,
+      "src/andy_companion/health.py": true,
+      "scripts/doctor.py": true,
+      "docs/decisions/0040-unreadable-mode-does-not-wake-andy.md": true
+    },
+    "anonymous_fresh_locked_clone": {
+      "passed": 1756,
+      "skipped": 16
+    },
+    "hosted_ci": {
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40579385792",
+      "status": "success",
+      "cpu_passed": 1756,
+      "cpu_skipped": 16,
+      "installed_wheel_checks": 3,
+      "sdk_configuration_dispatch_passed": 71
+    },
+    "screen_preview": {
+      "sha": "9eff6463203161084e585fd805271c29ebfe8bb0",
+      "stage": "RUNNING",
+      "matching_source_files": {
+        "src/andy_companion/state.py": true,
+        "src/andy_companion/supervisor.py": true,
+        "src/andy_companion/app_mode.py": true,
+        "src/andy_companion/health.py": true
+      },
+      "served_screen_http": 200,
+      "served_screen_matches_packaged_page": true
+    },
+    "browser": {
+      "scope": "Public sample-page layout and refusal of owner-copy/delete-all writes. No inference or robot control; no household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [],
+      "refusals": {
+        "copy-delete": 403,
+        "delete-all": 403
+      }
+    },
+    "markdown": {
+      "markdown_files": 72,
+      "relative_targets": 390,
+      "fragments_checked": 35,
+      "problems": []
+    },
+    "history_secrets_scan": {
+      "commits": 251,
+      "leaks": 0,
+      "scope": "Reachable implementation-source history through 3f8dd6f; finite tool coverage, no assertion about external caches."
+    },
+    "draft_links": {
+      "open": 23,
+      "total": 23
+    },
+    "final_export": {
+      "status": "blocked_before_fields",
+      "local_blockers": [
+        "video URL",
+        "hackathon-submission tag",
+        "app pin"
+      ]
+    }
   },
   "not_established": [
     "Real damaged household state recovery",

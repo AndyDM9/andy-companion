@@ -7,6 +7,7 @@ in the same commit that makes it true.
 ## Final readiness, re-audited October 26–27
 
 - [x] Saved mode rejects unsupported data without echoing it; unreadable desktop state pauses automatic wakes/restarts until explicit correction, health/preflight warn, dashboard startup status matches its start intent; 63 new cases, both full suites and installed-wheel checks pass
+- [x] Mode/startup repair published with anonymous source/fresh-clone verification, matching running preview/served page, eight public layouts/two write refusals, hosted CPU/wheel/SDK checks and documentation/history checks
 - [ ] Recheck the core physical workflows and complete video/release/access/submission; software mode tests and a healthy preflight do not complete these tasks
 
 - [x] Current rules/FAQ/checklist/judging advice compared with overall functions; feature-evidence table and PLAN prioritise physical proof/user-task feedback/packaging and qualify variable model offers

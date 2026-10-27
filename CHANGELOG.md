@@ -21,6 +21,11 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   household mode bytes unchanged. Live preflight **21/22**, optional second look 404, tiny Nemotron
   probe **0.48 s**, zero microphone drops/suspect voice-log lines. Automatic reminders can be delayed
   while damaged mode data awaits explicit correction; no voice-latency or cloud-availability claim.
+- Published `3f8dd6f`; six anonymous source files match and a fresh locked clone passes **1,756 /
+  16 skipped**. Hosted CPU/wheel/SDK checks pass (**1,756**, three, **71**). Preview revision
+  `9eff646` runs with four matching bundled files and an identical served screen page; eight public
+  layouts/two write refusals pass. All 390 relative targets/35 fragments across 72 Markdown files
+  resolve; 251-commit source-history secrets scan clean. No new model calls in the browser checks.
 
 ### Align the entry with rules, function evidence and current priorities
 
