@@ -34,3 +34,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0027](0027-start-object-search-before-announcing-it.md) | Start an object search before announcing it | 2026-10-26 | accepted |
 | [0028](0028-spoken-message-text-does-not-open-letter-ocr.md) | Supplied spoken-message text does not open letter OCR | 2026-10-26 | accepted; amended 2026-10-27 |
 | [0029](0029-recognised-credential-values-do-not-enter-memory.md) | Recognised credential values do not enter memory through tool dispatch | 2026-10-27 | accepted |
+| [0030](0030-quoted-content-does-not-grant-permission.md) | Quoted content does not grant permission | 2026-10-27 | accepted |

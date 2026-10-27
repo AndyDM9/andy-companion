@@ -5,6 +5,29 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Quoted content cannot grant memory permission
+
+- Reproduced an English/Spanish message whose embedded “please remember” released a memory tool.
+  Permission now comes only from the person's introduction, before a colon or opening quote;
+  fresh yes still matches the whole utterance. The existing full-utterance refusal check is kept,
+  including refusals after a delimiter or time. Legitimate explicit delimited requests still work.
+  All four memory names and the family-sharing proposal check use the same boundary (decision 0030).
+  Recognised message content without an actual request produces a fixed non-echoing response,
+  without preparing an unsolicited memory/share proposal.
+- **48 pure and eight installed-dispatch regressions**; CPU **1,256 / 14 skipped**, installed robot
+  environment **1,291 / one skipped**, isolated wheel **three passed**, changed Python lint passed.
+  No conversation store/log, model, tool schema or motion path added.
+- Further memory-offer prototypes did not establish a dependable fix; the original profile, tool
+  schemas and reasoning setting stay in use. Proposal-only tool, priority/stage wording and reasoning
+  probes retained as exploratory evidence. Explicit reasoning took about 3–5 seconds in six synthetic
+  first-response probes and still missed a photo offer; no production timing claim. No new tool deployed.
+- Final full model suite **93, 94, 94/97** and focused source suite **8, 8, 7/9** retained with all
+  failures. No forbidden memory/family effect or required-control effect failure reported; residual
+  wording/tool-selection failures remain. No score improvement asserted. Earlier complete runs kept.
+- The previously pending documentation CI (`4ac21fc`) completed successfully. Deployment verification
+  for this permission change is recorded in STATUS.
+
+
 ### Published October 27 follow-through
 
 - Source `433a7fc` pushed; hosted CPU/wheel and SDK jobs passed. Guided Space revision

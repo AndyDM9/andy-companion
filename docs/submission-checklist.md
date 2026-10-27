@@ -6,6 +6,11 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Quoted memory commands cannot grant explicit permission; legitimate delimited requests and full-utterance refusals covered by 48 pure/eight installed SDK regressions
+- [x] October 27 consent-source change passes full CPU/robot-environment tests, isolated wheel and Python lint; unproven model/tool prototypes left out
+- [x] Final source model runs retained: 93, 94, 94/97 full suite; 8, 8, 7/9 focused source cases; real gates/synthetic tools, failures visible and no forbidden memory/family effect reported
+- [ ] Publish and verify the consent-source change; memory-offer consistency and physical checks remain open
+
 - [x] Audited reader/source boundary published; hosted CI, latest anonymous clone and guided profile/tool/confirmation hashes verified
 - [x] Wake through the existing supervisor as authorised; founder confirms Andy heard a clock question and answered the correct time (untimed); post-fix awake preflight 20/21, optional second-check endpoint stopped
 - [ ] Complete the post-audit spoken reader and remaining core physical filming checks; the clock check alone does not complete them
@@ -89,7 +94,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
-- [x] Current text profile evaluated locally: 94, 92 and 95 of 97, input/code hashes recorded; final submission-time Serverless Job and physical trials remain separate
+- [x] Current text profile evaluated locally: 93, 94 and 94 of 97, input/code hashes recorded; final submission-time Serverless Job and physical trials remain separate
 - [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
 
 ## Stage one: pass/fail

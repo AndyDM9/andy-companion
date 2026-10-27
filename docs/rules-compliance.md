@@ -19,6 +19,19 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## October 27 consent-source follow-through
+
+A bounded permission fix rejects commands found inside quoted/delimited content as explicit consent.
+Recognised message content without an actual request creates no unsolicited memory/sharing
+proposal. It adds no tool, stored conversation data, model or capability claim. Full refusal checks remain
+conservative. Model/tool experiments are clearly exploratory, were not deployed and do not support
+an improvement, hardware or audience-outcome claim. Physical reader/finder tests, actual video,
+working-project access, final release packaging and submission remain separate. The previously
+pending documentation CI passed; this change's final model/publication follow-through is recorded
+in STATUS. Current full local suite is 93, 94 and 94 of 97; focused source suite 8, 8 and 7 of 9,
+with remaining wording/tool-selection failures and scoped effect checks disclosed. No improvement
+or complete injection-defence claim follows from the gate fix.
+
 ## October 27 publication follow-through
 
 The audited source and guided Space are public; hosted checks, deployment/source hashes and fresh
@@ -35,7 +48,7 @@ an added timing/accuracy result or completed device-footage claim. The current a
 remain open. Narrow camera-negation and credential-value checks add no comprehensive security,
 medical, outcome or hardware-accuracy claim. Failed memory-offer prompt experiments are retained
 and reverted, with no asserted improvement. The existing rules/access/video obligations below are
-unchanged; no final release tag or submitted-entry claim is made. Latest local text suite is
+unchanged; no final release tag or submitted-entry claim is made. Earlier gate-only local text suite was
 94, 92 and 95 of 97 ([scorecard](../evals/results/suite-2026-10-27-gates-local.json)), with real gates and
 synthetic tools. Failures remain visible; no statistically measured improvement is asserted.
 

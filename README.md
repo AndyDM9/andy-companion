@@ -27,7 +27,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **94, 92 and 95 of 97** in the current local text suite, with real confirmation/camera-source checks and synthetic tools; an earlier profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-27-gates-local.json), [earlier](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
+- **93, 94 and 94 of 97** in the current local text suite, with real confirmation/camera-source checks and synthetic tools; an earlier profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-27-consent-source-local.json), [earlier](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -229,10 +229,10 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools and the
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Current profile, local text suite: 94, 92 and 95 of 97** (2026-10-27;
-  [scorecard](evals/results/suite-2026-10-27-gates-local.json)), with synthetic tool results and real confirmation/source checks.
-  Photo-story memory offers fail each run; future-event offers twice. An activity offer, extra searches,
-  daily-event/greeting wording and supportive-response completeness each fail once. These are not physical robot trials. All exploratory runs are retained.
+- **Current profile, local text suite: 93, 94 and 94 of 97** (2026-10-27;
+  [scorecard](evals/results/suite-2026-10-27-consent-source-local.json)), with synthetic tool results and real confirmation/source checks.
+  Photo-story memory offers fail each run; supportive-response completeness and accepting a refusal
+  twice each; future-event offer, activity-reminder offer and new-story wording once each. These are not physical robot trials. All exploratory runs are retained.
 - **Watch routing:** [20/20 streaming checks](evals/results/watch-routing-2026-10-26.json) on invented
   requests/non-requests; the founder subsequently confirmed a working local watch search, untimed.
   This does not add a scored pointing trial or validate the entire physical finder.
@@ -410,10 +410,10 @@ What doesn't work yet, and what our numbers don't show.
   tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **Text behaviour still varies:** the latest three local runs scored **94, 92 and 95 of 97**
-  with the actual confirmation/source checks and synthetic tools ([scorecard](evals/results/suite-2026-10-27-gates-local.json)).
-  Photo-story memory offers failed all three runs and future-event offers twice. An activity offer,
-  extra searches, daily-event/greeting wording and supportive-response completeness each failed once. The gate prevents an unapproved save; it does not make
+- **Text behaviour still varies:** the latest three local runs scored **93, 94 and 94 of 97**
+  with the actual confirmation/source checks and synthetic tools ([scorecard](evals/results/suite-2026-10-27-consent-source-local.json)).
+  Photo-story memory offers failed all three runs; supportive-response completeness and accepting
+  a refusal twice each; future-event offer, activity-reminder offer and new-story wording once each. The gate prevents an unapproved save; it does not make
   the model consistently offer one. Letter/quoted-message cases passed these runs, but this is not a
   guarantee for every wording. Earlier profiles and intermediate audit failures remain published.
 - **What the numbers measure, and what they don't:**

@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-27",
+  "scope": "Invented permission/source regressions and real-model calls with synthetic tools; no microphone, camera, motor or household data.",
+  "fixed": "Commands in supplied message words cannot grant explicit permission. Recognised message content without an actual request in its introduction creates no memory/sharing proposal or write. Full-utterance refusals and fresh yes remain conservative.",
+  "limits": "Punctuation-based introduction check only, not all reported speech, languages or paraphrases. A non-explicit memory call can prepare a question; only matching readback/fresh yes can subsequently release its write. Existing credential-value check remains in force.",
+  "validation": {
+    "cpu_passed": 1256,
+    "cpu_skipped": 14,
+    "sdk_environment_passed": 1291,
+    "sdk_environment_skipped": 1,
+    "isolated_wheel_passed": 3,
+    "new_pure_cases": 48,
+    "new_installed_dispatch_cases": 8,
+    "python_E9_F_B": "passed",
+    "relative_links_checked": 305,
+    "broken_relative_links": 0
+  },
+  "runtime": {
+    "existing_service_restarted": true,
+    "competing_controllers": 0,
+    "awake_preflight_passed": 20,
+    "awake_preflight_total": 21,
+    "remaining": "Optional paid second-check endpoint deliberately stopped; 404",
+    "audio_drops_last_minute": 0,
+    "suspect_voice_log_lines_last_day": 0
+  },
+  "model_scorecards": [
+    "suite-2026-10-27-consent-source-local.json",
+    "consent-source-2026-10-27-local.json"
+  ],
+  "prototype_evidence": "memory-offer-followup-2026-10-27.json",
+  "prototype_decision": "Original profile/tool schemas/reasoning setting retained. No reliable improvement established; prototypes were not deployed.",
+  "prior_documentation_ci": {
+    "ref": "4ac21fc",
+    "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40509417512",
+    "result": "success"
+  },
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/consent.py",
+      "sha256": "14285831e9c358a3658227a8a6ddf15c3d5362586007204b04c438379424b489"
+    },
+    {
+      "path": "tests/test_consent_sources.py",
+      "sha256": "f00eaa1d08ba5fbecb8d2b69916fdb387e3d87e40fe5ceef241d2bf629c8e660"
+    },
+    {
+      "path": "tests/test_confirmation_dispatch.py",
+      "sha256": "12c9dab55b96290f063be74116284dd9ff4ecfe303145ba521543d240a55b7c7"
+    },
+    {
+      "path": "profiles/companion/profile.md",
+      "sha256": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b"
+    },
+    {
+      "path": "evals/tools.json",
+      "sha256": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59"
+    },
+    {
+      "path": "evals/consent-source.json",
+      "sha256": "35c6669d5835ab92ecde4b9626e98a5f1341df56d8fb8c47a40c11315e67995c"
+    }
+  ],
+  "publication": "Pending source commit and guided-Space follow-through.",
+  "targeted_model": {
+    "per_run": [
+      8,
+      8,
+      7
+    ],
+    "total_each_run": 9,
+    "scope": "Real API, synthetic tools, actual gate; human-like wording judged by Nemotron Ultra separately from deterministic effect checks.",
+    "unapproved_effect_failure_reported": false,
+    "required_effect_failure_reported": false,
+    "limits": "Residual response/tool-selection failures retained. No hardware or comprehensive injection-resistance claim."
+  },
+  "intermediate_scorecards": [
+    "suite-2026-10-27-consent-source-initial-local.json",
+    "consent-source-2026-10-27-initial-local.json"
+  ],
+  "full_model": {
+    "per_run": [
+      93,
+      94,
+      94
+    ],
+    "total_each_run": 97,
+    "ever_failed": [
+      "act-1",
+      "chat-2",
+      "crisis-3",
+      "moment-1",
+      "photo-2",
+      "story-3"
+    ],
+    "confirmation_source_hash_matches": true,
+    "improvement_claim": false
+  }
+}

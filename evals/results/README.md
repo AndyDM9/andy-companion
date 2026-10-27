@@ -9,7 +9,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | What did the final re-audit verify? | [reaudit-2026-10-26.json](reaudit-2026-10-26.json): installation, software checks, public access, scoped probes and remaining submission gaps; no new physical-accuracy rate |
 | Does a real camera frame reach local eyes when the primary is unavailable? | [camera-recovery-2026-10-26.json](camera-recovery-2026-10-26.json): IPC camera frame, forced unreachable loopback primary, local Cosmos 8B response; metadata only. No voice, pointing, caption-quality or user-study claim |
 | Does the public guided AI playground work? | [judge-playground-2026-10-26.json](judge-playground-2026-10-26.json): six browser steps using real Nemotron and simulated tools; eight browser/state checks, five HTTP refusal probes and source hashes. No hardware or target-user session; not a conversation-accuracy score |
-| How does the current profile do in conversation? | [suite-2026-10-27-gates-local.json](suite-2026-10-27-gates-local.json): 94, 92 and 95 of 97, local API calls with real confirmation/source checks and synthetic tools; hashes/failures retained. No audio, camera or motors |
+| How does the current profile do in conversation? | [suite-2026-10-27-consent-source-local.json](suite-2026-10-27-consent-source-local.json): 93, 94 and 94 of 97, local API calls with real confirmation/source checks and synthetic tools; hashes/failures retained. No audio, camera or motors |
 | Which conversation run was on Nebius Serverless Jobs? | [2026-10-25-nebius-job-andy-suite-20261025-193648.json](2026-10-25-nebius-job-andy-suite-20261025-193648.json): 96, 95 and 92 of 97 on the previous profile; this is historical evidence, not a test of the October 26 revision (before: [93, 92, 92 of 94](2026-10-25-nebius-job-andy-suite-20261025-170439.json); [92, 91, 94](2026-10-20-nebius-job-andy-suite-20261020-195645.json)) |
 | Does the scam check work, and what does Tavily add? | [scam-eval-2026-10-14-1200-nebius-jobs.json](scam-eval-2026-10-14-1200-nebius-jobs.json): 120 messages, each model alone and with Tavily's warnings (with the word rules below, five ways), three runs, four Nebius Serverless Jobs ([decision 0007](../../docs/decisions/0007-the-scam-check-two-narrow-questions.md)) |
 | What would no model at all do? | [scam-word-rules-2026-10-20-1552.json](scam-word-rules-2026-10-20-1552.json): Andy's own letter rules on the same 120 messages (28 of 60 caught, 3 of 60 flagged), and the cost of one check |
@@ -22,9 +22,33 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 permission-source follow-through
+
+Current [full suite](suite-2026-10-27-consent-source-local.json): **93, 94 and 94 of 97**. Profile/tools
+unchanged, new actual permission boundary, synthetic tools. Photo-memory offers failed all three;
+supportive-response completeness and accepting a refusal twice each; future-event offer,
+activity-reminder offer and story wording once each. No forbidden memory/family write reported.
+No measured score improvement or hardware result claimed.
+
+The [nine focused source cases](../consent-source.json) scored [8, 8, 7](consent-source-2026-10-27-local.json).
+No forbidden memory/family effects or required-control effect failures reported. Response wording
+and tool selection still fail, especially the English embedded memory command. Automated judging
+is distinct from effect checks. Pure/installed SDK regressions test the boundary directly.
+
+[Audit metadata](consent-source-audit-2026-10-27.json): 1,256 CPU / 1,291 installed-environment passes,
+three wheel checks, 48 pure/eight installed-dispatch regressions. [Follow-up prototypes](memory-offer-followup-2026-10-27.json)
+were not deployed; no reliable memory-offer fix established. Includes proposal-only tool, shorter/
+priority/staged prompts and explicit reasoning; varying probes must not be pooled as one accuracy.
+The diagnostic minimal prompt omitted companion requirements. Reasoning content was not retained.
+
+Intermediate [95, 95, 96/97](suite-2026-10-27-consent-source-initial-local.json) and
+[7, 7, 8/9](consent-source-2026-10-27-initial-local.json) precede the no-proposal result. Their quoted-yes
+verdicts incorrectly called for saving, despite the supplied yes being quoted; original verdicts
+remain. One incomplete full run was stopped for refusal-rule review before a scorecard was produced.
+
 ## October 27 gate follow-through
 
-Current: [suite-2026-10-27-gates-local.json](suite-2026-10-27-gates-local.json), **94, 92 and 95 of 97**.
+Earlier gate-only run: [suite-2026-10-27-gates-local.json](suite-2026-10-27-gates-local.json), **94, 92 and 95 of 97**.
 Real API calls with synthetic tools and the actual confirmation/source checks, including the narrow
 credential-value refusal. Unchanged profile/tool descriptions. Photo-story offers failed all three,
 future-event offers twice; activity offer, extra searches, daily-event/greeting wording and supportive

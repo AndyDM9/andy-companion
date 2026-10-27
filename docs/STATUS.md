@@ -15,10 +15,50 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
 | M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20). Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
-| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **94, 92, 95 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
+| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **93, 94, 94 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
+
+## October 27 consent-source follow-through
+
+- **Fixed:** embedded memory commands in a message could release a save in English and Spanish.
+  The gate now recognises explicit permission only in the introduction before a colon/opening quote;
+  fresh yes and refusal checks still inspect the whole utterance (decision 0030). Legitimate explicit
+  delimited requests remain supported. A non-explicit memory call can only propose, never save until
+  exact readback and fresh yes. Recognised message content without an actual request now produces
+  no memory/sharing proposal at all; the tool returns fixed guidance without echoing it.
+  This is a narrow punctuation boundary, not all reported speech or a
+  general prompt-injection defence. No new tool, store or log.
+- **Validation:** CPU **1,256 / 14 skipped**, installed robot environment **1,291 / one skipped**,
+  isolated wheel **three passed**, changed Python lint passed. Forty-eight pure and eight installed
+  SDK dispatch cases added. The original profile/tool descriptions and model setting remain unchanged.
+- **Memory offers remain open:** the additional proposal-only tool, priority/stage wording and
+  reasoning prototypes did not establish a reliable fix. Six explicit-reasoning probes took about
+  **3–5 seconds**, still missed a photo offer and still proposed a quoted event; runtime setting kept.
+  The minimal diagnostic omitted most companion requirements and is not a deployable substitute.
+  [Exploratory evidence](../evals/results/memory-offer-followup-2026-10-27.json) retains cases/replies
+  and limitations; no pooled improvement/accuracy claim. A first full regression run was stopped
+  before a complete scorecard to preserve the conservative refusal handling; final results are below.
+- **Live follow-through:** existing Andy service restarted after verifying zero competing controllers.
+  Awake preflight **20/21**; optional paid second-check endpoint remains stopped (404), zero audio
+  drops and zero suspect voice-log lines. No new physical reader/finder result inferred.
+- **Prior pending CI:** documentation revision `4ac21fc` completed successfully. Source/Space
+  follow-through is pending. The initial full model run
+  scored **95, 95, 96 of 97**; initial nine-case source runs **7, 7, 8**. All are retained as intermediate,
+  before the no-proposal result. Model judging also misread a quoted yes as actual consent in all
+  three targeted verdicts; these verdicts stay visible. No permission was inferred from those verdicts.
+
+- **Current full model suite:** **93, 94 and 94 of 97**, real API/synthetic tools with actual gates
+  ([scorecard](../evals/results/suite-2026-10-27-consent-source-local.json)); profile/tools unchanged,
+  source hash matches. Photo-memory offers fail all three; supportive-response completeness and
+  accepting a refusal twice each; future-event offer, activity-reminder offer and story wording once
+  each. No forbidden memory/family write reported. Variation retained; no score improvement claimed.
+- **Focused source suite:** **8, 8 and 7 of 9** ([scorecard](../evals/results/consent-source-2026-10-27-local.json)).
+  No forbidden memory/family effects or required-control effect failures reported. Residual wording/
+  tool-selection failures remain, especially treating an English quoted command as a memory task.
+  Model judging and deterministic effects are separate; this is not comprehensive injection resistance.
+  [Reproduce cases](../evals/consent-source.json), [audit metadata](../evals/results/consent-source-audit-2026-10-27.json).
 
 ## October 27 awake check and bounded hardening
 
@@ -43,7 +83,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Prompt experiments reverted; [evidence](../evals/results/memory-offer-experiments-2026-10-27.json).
   These check tool names/proposal status, not fact grounding or complete conversational correctness.
   Memory-offer consistency remains an open problem.
-- **Current model proof:** **94, 92 and 95 of 97**, three full local runs with the new gate, real API
+- **Previous gate-only model proof:** **94, 92 and 95 of 97**, three full local runs with the new gate, real API
   calls and synthetic tools ([scorecard](../evals/results/suite-2026-10-27-gates-local.json)). Profile and
   tool descriptions unchanged; confirmation-source hash verified. Photo-memory offers failed all
   three; future-event offers twice; activity offer, extra searches, daily-event/greeting wording and
