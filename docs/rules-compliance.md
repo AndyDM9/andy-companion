@@ -12,6 +12,8 @@ October 27 preflight verification (0041): README now accurately scopes model tex
 catalogues and current audio counts. Invented fault tests and a stopped-state diagnostic add no
 physical or completed-submission evidence. No model, hosting, access, licence, visibility or video
 change; physical trials, final packaging and the official material freeze remain as recorded here.
+The diagnostic source and scoped instructions are published and anonymously verified, with matching
+fresh-clone/hosted checks. No new app/preview deployment or physical testing claim accompanies them.
 
 October 27 saved-mode audit: code, feature descriptions and decision 0040 were checked against this
 record. Invented fault tests and a service health probe verify mode handling and startup status;

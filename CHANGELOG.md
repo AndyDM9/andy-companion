@@ -19,6 +19,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   had stopped cleanly and saved mode was asleep; voice/app and stale audio/unanswered checks fail,
   alongside the optional second-look 404. Services/mode left unchanged. Fresh awake checks, observed
   tasks, video/release/access and actual Devpost submission remain open.
+- Published `8eb653a`; four anonymous files match and a fresh locked clone passes **1,814 / 16 skipped**.
+  Hosted CPU/wheel/SDK checks pass (**1,814**, **three**, **71**). All **393** relative targets/**35**
+  fragments across **73** Markdown files resolve; **253** source-history commits scan clean for secrets.
+  Diagnostic-only changes require no app/preview deployment or service restart.
 ### Repair saved mode handling and dashboard startup status
 
 - Existing wrong-shaped mode data could crash reads or quiet-deadline checks. Validate the supported

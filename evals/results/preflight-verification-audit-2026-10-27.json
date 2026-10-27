@@ -52,9 +52,39 @@
     }
   },
   "publication": {
-    "source": "pending",
     "hosted_deployment_needed": false,
-    "reason": "Only standalone diagnostic script, tests and documentation changed; no app/preview runtime source changes."
+    "reason": "Only standalone diagnostic script, tests and documentation changed; no app/preview runtime source changes.",
+    "source_commit": "8eb653a331f2b9dcddb2eca2f0270b513df4a9b9",
+    "matching_anonymous_files": {
+      "scripts/doctor.py": true,
+      "tests/test_doctor_preflight.py": true,
+      "README.md": true,
+      "docs/decisions/0041-preflight-requires-current-counts-and-final-text.md": true
+    },
+    "anonymous_fresh_locked_clone": {
+      "passed": 1814,
+      "skipped": 16,
+      "help_command": "pass; returns before configuration/network access"
+    },
+    "hosted_ci": {
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40581911793",
+      "status": "success",
+      "cpu_passed": 1814,
+      "cpu_skipped": 16,
+      "installed_wheel_checks": 3,
+      "sdk_configuration_dispatch_passed": 71
+    },
+    "markdown": {
+      "markdown_files": 73,
+      "relative_targets": 393,
+      "fragments_checked": 35,
+      "problems": []
+    },
+    "history_secrets_scan": {
+      "commits": 253,
+      "leaks": 0,
+      "scope": "Reachable implementation-source history through 8eb653a; finite tool coverage, no assertion about external caches."
+    }
   },
   "limitations": [
     "No camera, motor, audio-quality, full spoken-turn, physical-accuracy or provider-availability measurement.",

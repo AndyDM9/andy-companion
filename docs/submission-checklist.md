@@ -7,6 +7,7 @@ in the same commit that makes it true.
 ## Final readiness, re-audited October 26–27
 
 - [x] Preflight validates usable final text and current typed audio counts; unknown/stale metadata cannot pass, malformed metadata cannot crash it, endpoint catalogues are accurately labelled; 58 new cases and both full suites pass
+- [x] Diagnostic fix published with four matching anonymous files, fresh locked-clone tests, hosted CPU/wheel/SDK checks and documentation/history checks; no app/preview deployment required
 - [ ] Fresh awake physical preflight and observed tasks after the cleanly stopped/asleep state seen in the latest diagnostic; 17/22 stopped-state checks do not complete them
 
 - [x] Saved mode rejects unsupported data without echoing it; unreadable desktop state pauses automatic wakes/restarts until explicit correction, health/preflight warn, dashboard startup status matches its start intent; 63 new cases, both full suites and installed-wheel checks pass

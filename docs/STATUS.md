@@ -38,6 +38,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   repeated trials, video/gallery, final Serverless Job/release/app pin, free access arrangements and
   actual Devpost draft reconciliation/submission. This diagnostic adds no physical result.
   [Audit metadata](../evals/results/preflight-verification-audit-2026-10-27.json).
+- **Published:** `8eb653a`, four anonymous files match; fresh locked clone **1,814 / 16 skipped** and
+  help command pass. [Hosted CPU/wheel/SDK checks pass](https://github.com/AndyDM9/andy-companion/actions/runs/40581911793):
+  **1,814 / 16 skipped**, **three** installed-wheel checks and **71** SDK configuration/dispatch cases.
+  All **393** relative targets/**35** fragments across **73** Markdown files resolve; **253** reachable
+  source-history commits scan clean for secrets. No app/preview runtime source changed, so no hosted
+  redeployment, additional provider probes or service restart required.
 
 ## October 27 saved-mode and startup audit
 
