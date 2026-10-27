@@ -179,6 +179,11 @@ any data, and requires its own new temporary store; it must never replace a live
   separate service, and public metadata exposes the model/profile/tools/prompt hashes, never credentials.
   Static GET routes ignore cosmetic query strings such as the host iframe's `__theme`; those values
   are never sent to the model. POST still accepts only the exact challenge endpoint and fixed ID/choice fields.
+  Before any answer or simulated action, its hosted transport requires explicit completed `stop`/
+  `tool_calls` status and a supported message shape (0033). Text reuses `model_reply`; tool-turn prose
+  and reasoning/metadata are dropped before the next request. Failed closing text preserves the
+  already-applied sample state with fixed wording. The build manifest includes the helper and has a
+  cold-import check. No corresponding change to the streaming robot voice handler.
 - `docs/judging.md`: the short testing path from the README, public demo and submission text.
   CI starts the real public demo in a separate process with throwaway sample data, probes pages,
   assets, tokens and write refusal, then checks cleanup. CI also builds a wheel and checks its

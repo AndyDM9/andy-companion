@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Guided judge completion boundary
+
+- Injected replies exposed token-limit finishes treated as completed text or usable sample tool
+  calls. The separate public playground now requires explicit `stop`/`tool_calls` completion before
+  an answer, confirmation or simulated action; invalid/refused envelopes return fixed errors (0033).
+- Reuse final-text validation; discard unused tool-turn prose/reasoning before the next request.
+  A failed closing reply preserves an already-applied sample state and the existing fixed warning.
+  The judge Space bundle includes the helper and passes an isolated cold import.
+- **46 new CPU regressions**; full CPU **1,422 passed / 16 skipped**, installed robot environment
+  **1,471 / one skipped**, isolated wheel **three passed**, changed Python lint and shell syntax pass.
+  Eight real-provider calls passed four built-in invented challenge paths, including fresh Yes/No;
+  only metadata retained. No hardware, memory-offer, physical accuracy or new model score claimed.
+- Public deployment/hosted CI follow-through is recorded in STATUS when verified. No robot profile,
+  tool schema, model setting, request allowance, retry or output-budget change.
+
 ### Model-response publication follow-through
 
 - Source `429252e` passed hosted CPU/wheel and SDK jobs. Anonymous published clone: **1,376 passed,

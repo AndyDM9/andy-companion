@@ -15,6 +15,7 @@ import time
 import urllib.request
 
 from andy_companion.consent import Confirmation
+from andy_companion.model_reply import final_text
 
 MODEL = "nvidia/Nemotron-3_5-Lightning"
 ENDPOINT = "https://api.tokenfactory.nebius.com/v1/chat/completions"
@@ -101,18 +102,51 @@ class Playground:
         if tool:
             body["tools"] = [self.tools[tool]]
             body["parallel_tool_calls"] = False
-        if self.chat:
-            return self.chat(body)
-        request = urllib.request.Request(ENDPOINT, data=json.dumps(body).encode(), method="POST",
-                                        headers={"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"})
         try:
-            with urllib.request.urlopen(request, timeout=20) as response:
-                raw = response.read(262145)
-            if len(raw) > 262144:
-                raise ValueError("response too large")
-            return json.loads(raw)["choices"][0]["message"]
+            if self.chat:
+                payload = self.chat(body)
+            else:
+                request = urllib.request.Request(ENDPOINT, data=json.dumps(body).encode(), method="POST",
+                                                headers={"Authorization": f"Bearer {self.key}",
+                                                         "Content-Type": "application/json"})
+                with urllib.request.urlopen(request, timeout=20) as response:
+                    raw = response.read(262145)
+                if len(raw) > 262144:
+                    raise ValueError("response too large")
+                payload = json.loads(raw)
+        except Unavailable:
+            raise
         except Exception:
             raise Unavailable("model_unavailable", 502) from None
+        return self._completed_message(payload, tool)
+
+    @staticmethod
+    def _completed_message(payload, tool):
+        """This hosted endpoint must explicitly finish before an answer or sample action is used."""
+        try:
+            choices = payload["choices"]
+            if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict):
+                raise ValueError()
+            choice = choices[0]
+            message = choice["message"]
+            if (not isinstance(message, dict) or message.get("refusal") or message.get("function_call")
+                    or message.get("role", "assistant") != "assistant"):
+                raise ValueError()
+            calls = message.get("tool_calls")
+            if calls is None or calls == []:
+                if choice.get("finish_reason") != "stop":
+                    raise ValueError()
+                return {"content": final_text(payload)[:1800]}
+            if (not tool or choice.get("finish_reason") != "tool_calls" or not isinstance(calls, list)
+                    or len(calls) != 1 or not isinstance(calls[0], dict)
+                    or calls[0].get("type") != "function"
+                    or (message.get("content") is not None and not isinstance(message["content"], str))):
+                raise ValueError()
+            # Tool-turn prose is not displayed and need not re-enter the next model request.
+            # Keep only the call; discard any inline/separate reasoning and provider metadata.
+            return {"content": "", "tool_calls": calls}
+        except (KeyError, TypeError, ValueError):
+            raise Unavailable("model_response_invalid", 502) from None
 
     def run(self, body: dict):
         if not isinstance(body, dict) or set(body) - {"challenge", "session", "choice"}:
@@ -178,7 +212,7 @@ class Playground:
         if not isinstance(calls, list) or len(calls) > 1:
             raise Unavailable("model_response_invalid", 502)
         if not calls:
-            return self._text(message), "model", []
+            return message["content"], "model", []
         try:
             call = calls[0]
             fn = call["function"]
@@ -201,22 +235,12 @@ class Playground:
             session["messages"].append({"role": "assistant", "content": result["say"]})
             return result["say"], "confirmation code", trace
         try:
-            reply = self._text(self._message(session["messages"]))
+            reply = self._message(session["messages"])["content"]
         except Unavailable:
             # Preserve the result of an already-applied synthetic action even if the closing reply fails.
             return ("The model could not finish its reply. Check the sample-state result below.", "code", trace)
         session["messages"].append({"role": "assistant", "content": reply})
         return reply, "model", trace
-
-    @staticmethod
-    def _text(message):
-        text = message.get("content") if isinstance(message, dict) else None
-        if not isinstance(text, str) or not text.strip() or message.get("tool_calls"):
-            raise Unavailable("model_response_invalid", 502)
-        text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
-        if not text or "<think>" in text:
-            raise Unavailable("model_response_invalid", 502)
-        return text[:1800]
 
     @staticmethod
     def _tool(session, name, arguments):

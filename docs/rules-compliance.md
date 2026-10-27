@@ -19,6 +19,15 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Guided completion audit (October 27)
+
+The guided software challenge validates completed hosted replies before answers or simulated actions.
+Injected faults, full regression suites and eight real-provider calls across four invented challenge
+paths are software checks only. No household, hardware, new factual-accuracy result or completed
+footage/access/submission claim. Profile, tool schemas, model and public allowance unchanged.
+Deployment/browser/CI follow-through remains to verify; existing video/hardware/free-testing and
+release obligations below remain open.
+
 ## Model-response audit (October 27)
 
 Non-streaming response/field validation changes existing error handling, not model selection or

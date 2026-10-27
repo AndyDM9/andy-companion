@@ -21,8 +21,12 @@ def call(name, args):
 
 
 def make(chat=None, **kwargs):
+    def provider(body):
+        message = chat(body)
+        return {"choices": [{"finish_reason": "tool_calls" if message.get("tool_calls") else "stop",
+                             "message": message}]}
     return Playground(profile_path=ROOT / "profiles/companion/profile.md", tools_path=ROOT / "evals/tools.json",
-                      chat=chat, **kwargs)
+                      chat=provider if chat else None, **kwargs)
 
 
 def sharing():

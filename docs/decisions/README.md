@@ -37,3 +37,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0030](0030-quoted-content-does-not-grant-permission.md) | Quoted content does not grant permission | 2026-10-27 | accepted |
 | [0031](0031-validate-and-preserve-reminder-data.md) | Validate reminder times and preserve unreadable data with visible deletion | 2026-10-27 | accepted |
 | [0032](0032-use-only-completed-model-answers.md) | Use only completed, typed non-streaming model answers | 2026-10-27 | accepted |
+| [0033](0033-complete-guided-replies-before-sample-actions.md) | Require completed guided replies before sample actions | 2026-10-27 | accepted |

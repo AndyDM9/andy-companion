@@ -20,6 +20,25 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 guided judge completion audit
+
+- **Fixed:** injected token-limit responses were displayed as completed answers or prepared a
+  confirmation. The separate judge handler now validates the full envelope before any answer or
+  simulated action (0033). Hosted replies need explicit `stop` for text or `tool_calls` for the single
+  allowed call; missing/unfinished/contradictory finishes and refused/malformed messages fail closed.
+- **Data flow:** plain text uses the existing final-answer validator. Unused tool-turn prose and
+  separate reasoning/metadata do not enter the next request. A failed closing reply keeps an already-
+  applied sample state visible with fixed error wording. Bundle includes the helper; cold import passes.
+- **Validation:** CPU **1,422 / 16 skipped**, installed robot environment **1,471 / one skipped**;
+  **46** new CPU cases, **86** targeted checks total; isolated wheel **three passed**, changed Python
+  lint/shell syntax passed. Four real-provider invented challenge paths passed using **eight calls**,
+  including separate family Yes and No. No provider text or reasoning retained. Not an accuracy trial.
+- **Scope:** profile/tools/model/budgets unchanged; no SDK, camera, motor or household access in the
+  guided handler. Existing 93/94/94 text scorecard, physical results and limitations retain their scope.
+  Memory-offer consistency, physical reader/finder trials, free working-project/hardware access,
+  video and release/submission remain open. Source/deployment/CI follow-through pending.
+  [Audit metadata](../evals/results/judge-completion-audit-2026-10-27.json).
+
 ## October 27 model-response audit
 
 - **Fixed with injected replies:** a truncated reasoning draft could become a deeper answer; null

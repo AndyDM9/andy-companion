@@ -22,6 +22,15 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 guided completion audit
+
+[Guided completion audit](judge-completion-audit-2026-10-27.json): **1,422 CPU / 1,471 installed
+robot-environment passes**, 46 new injected completion regressions, one isolated bundle import and
+three isolated distribution checks. Explicit completion required before answers/sample actions;
+failed closing text preserves the already-applied sample state. Eight real-provider calls passed
+four built-in invented paths, including separate Yes/No. Only metadata retained, no physical/model
+accuracy score or memory-offer improvement. Publication follow-through is in STATUS.
+
 ## October 27 model-response audit
 
 [Reply audit](model-reply-audit-2026-10-27.json): **1,376 CPU / 1,425 installed robot-environment passes**,

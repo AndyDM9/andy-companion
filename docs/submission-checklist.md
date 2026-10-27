@@ -6,6 +6,10 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Guided judge handler rejects incomplete/missing/contradictory finish metadata before text or sample actions; 46 new regressions, both full suites and cold bundle import pass
+- [x] Four real-provider invented guided paths pass, including separate fresh Yes/No; no physical or accuracy result inferred
+- [ ] Guided completion update published with matching deployed source and hosted CI/browser checks
+
 - [x] Incomplete/non-string/refused model replies and wrong structured fields rejected in four non-streaming clients; 80 CPU/eight actual SDK dispatch regressions and cold job-bundle imports pass
 - [x] Four invented live-provider checks and camera-only local fallback pass with no saved provider text, reasoning, camera picture or description; no physical/accuracy score inferred
 - [x] Model-response update verified as installed package, running service and published source/preview; deployed hashes, fresh clone, hosted CPU/wheel/SDK jobs and eight public layouts/two write refusals pass

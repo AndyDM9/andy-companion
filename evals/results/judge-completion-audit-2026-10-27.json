@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-27",
+  "scope": "Invented provider envelope faults and built-in guided challenge inputs only. No SDK, camera, motor, audio or household access. No provider text or reasoning retained.",
+  "reproduced_before_fix": [
+    "Token-limit text presented as complete",
+    "Parseable token-limit tool call prepared a confirmation"
+  ],
+  "validation": {
+    "cpu_passed": 1422,
+    "cpu_skipped": 16,
+    "installed_robot_environment_passed": 1471,
+    "installed_robot_environment_skipped": 1,
+    "new_cpu_cases": 46,
+    "targeted_passed": 86,
+    "cold_bundle_imports": 1,
+    "isolated_distribution_passed": 3,
+    "changed_python_E9_F_B": "passed",
+    "judge_build_shell_syntax": "passed"
+  },
+  "live_provider_sanity": {
+    "scope": "Real provider with built-in invented challenges and simulated effects only. No SDK, household, camera, audio or motor access; provider text and reasoning not retained. Sanity check, not model/physical accuracy.",
+    "provider_calls": 8,
+    "rows": [
+      {
+        "challenge": "letter",
+        "reply_present": true,
+        "reply_source": "model",
+        "tools": [
+          "read_letter"
+        ],
+        "seconds": 1.91
+      },
+      {
+        "challenge": "absent",
+        "reply_present": true,
+        "reply_source": "model",
+        "tools": [
+          "find_object"
+        ],
+        "seconds": 1.92
+      },
+      {
+        "challenge": "choice",
+        "choice": "no",
+        "readback_present": true,
+        "shared": false,
+        "reply_present": true,
+        "reply_source": "code",
+        "seconds": 0.0
+      },
+      {
+        "challenge": "choice",
+        "choice": "yes",
+        "readback_present": true,
+        "shared": true,
+        "reply_present": true,
+        "reply_source": "model",
+        "seconds": 1.64
+      }
+    ]
+  },
+  "limits": "Completion/shape validation only, not factual accuracy or comprehensive reasoning filtering. Dedicated hosted handler requires explicit finish metadata. Streaming robot voice, memory-offer consistency, physical testing and whole-project access remain outside this change. No model/profile/tool/budget/retry change.",
+  "publication": "Pending source/Space/hosted-CI/browser follow-through.",
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/judge_playground.py",
+      "sha256": "cbc9d6641bdda61df4902d493eaa5f8581255d88b9a3f4a949e9bd74b96aa7b6"
+    },
+    {
+      "path": "src/andy_companion/model_reply.py",
+      "sha256": "d5e5403c5f20a4191d559a8f75b649d2c693d0b785cae73b8cd8a84c05922b88"
+    },
+    {
+      "path": "scripts/judge-space.sh",
+      "sha256": "41be30aca6ee91600a05467dc5ec961fbe1fdd73cecab9401683b0fb2c079beb"
+    },
+    {
+      "path": "tests/test_judge_completions.py",
+      "sha256": "aa209244c9216f6e65db4f27720aa4a2283b1ff009b985de48bf779b3ada4c7d"
+    },
+    {
+      "path": "tests/test_judge_playground.py",
+      "sha256": "b93e194114a499c224c9d7ab755164e967f4008ef09102fd34959c3f46525c1e"
+    },
+    {
+      "path": "profiles/companion/profile.md",
+      "sha256": "d9e8c95ded8d227a1a9b3f6a560b2b81a0fd5d08fd4b3c6d0f22c8be4fde272b"
+    },
+    {
+      "path": "evals/tools.json",
+      "sha256": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59"
+    }
+  ]
+}

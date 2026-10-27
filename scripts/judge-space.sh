@@ -10,7 +10,8 @@ if [ -e "$OUT" ] && [ -n "$(ls -A "$OUT" 2>/dev/null)" ]; then
 fi
 mkdir -p "$OUT"
 git -C "$ROOT" archive HEAD \
-  src/andy_companion/__init__.py src/andy_companion/consent.py src/andy_companion/judge_playground.py \
+  src/andy_companion/__init__.py src/andy_companion/consent.py src/andy_companion/model_reply.py \
+  src/andy_companion/judge_playground.py \
   src/andy_companion/pages/judge.html src/andy_companion/pages/judge.js src/andy_companion/pages/fonts \
   profiles/companion/profile.md evals/tools.json scripts/judge_playground.py \
   space-judge/Dockerfile space-judge/README.md LICENSE | tar -x -C "$OUT"
