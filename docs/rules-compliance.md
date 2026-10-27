@@ -21,6 +21,11 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## October 26 screen follow-through
 
+Deployment verified: five preview URLs 200, the hosted guide works, invented progress is visible,
+and all three new write probes return 403. The real service was restarted with exclusive control.
+Preflight's model-availability check is now a bounded invented text request; no household content
+is used or retained. No new claim of physical accuracy, user outcomes or completed footage follows.
+
 The official rules were checked again for the screen changes: the October 30 10:00 PT deadline,
 video guidance (under three minutes and at least a minute of actual hardware for this entry), public
 YouTube link, rights requirements and working-project access remain as recorded here. The new guide

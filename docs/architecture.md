@@ -206,3 +206,8 @@ any data, and requires its own new temporary store; it must never replace a live
   (decision 0017).
 - A reminder's words are kept as said, less a time at their end ("take a pill at eight" is kept as "take a
   pill", its time kept as the time); lists on the screens show them in sentence case.
+
+Preflight (`scripts/doctor.py --live`, decision 0026) tests configured cloud-vision availability
+with a fixed invented text-only request, at most eight output tokens and a 15-second timeout. It
+reports status only; catalogue membership does not determine availability. It neither captures a
+camera frame nor establishes visual quality. A camera-only local-fallback probe remains separate.

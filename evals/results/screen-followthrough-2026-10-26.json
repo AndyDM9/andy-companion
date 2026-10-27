@@ -1,0 +1,78 @@
+{
+  "recorded_utc": "2026-10-27T03:02:52.237696+00:00",
+  "scope": "Deployment, availability and narrowly scoped probes. No spoken finder task, pointing correctness, hardware accuracy trial or intended-audience study.",
+  "screen_source_commit": "86d2dabe9338d03f41ee3ca8080db5948726d318",
+  "screen_space_commit": "95be732cd73c046007b9008b1d3e01fcfd3af33b",
+  "source_ci": "https://github.com/AndyDM9/andy-companion/actions/runs/40441412746",
+  "public_spaces": {
+    "andydm/andy-companion": "RUNNING",
+    "andydm/andy-companion-app": "RUNNING",
+    "andydm/andy-companion-judge": "RUNNING"
+  },
+  "preview_http": {
+    "/": 200,
+    "/screen": 200,
+    "/family": 200,
+    "/setup": 200,
+    "/hood": 200
+  },
+  "preview_checks": {
+    "guide_visible": true,
+    "groups": 3,
+    "focus_returns": true,
+    "invented_search_stage_seen": "scanning",
+    "captured_at_observation": 0,
+    "progress_writes": {
+      "search-start": 403,
+      "search-step": 403,
+      "search-end": 403
+    }
+  },
+  "runtime": {
+    "existing_service_restarted": true,
+    "other_robot_controllers": 0,
+    "local_screen_http": 200,
+    "guide_present": true,
+    "search_display_present": true,
+    "microphone_drops_last_minute": 0,
+    "suspect_voice_log_lines": 0,
+    "preflight_passed_checks": 20,
+    "preflight_total": 21,
+    "open_check": "Optional second-check endpoint HTTP 404; left stopped"
+  },
+  "cloud_vision_probe": {
+    "catalogue_contains_configured_model": false,
+    "text_reply_nonempty": true,
+    "synthetic_input": "128x128 solid blue JPEG, generated in memory",
+    "image_http": 200,
+    "returned_model": "nvidia/Nemotron-3.5-Super-VL",
+    "matched_synthetic_colour": true,
+    "image_seconds": 6.862,
+    "not_an_accuracy_evaluation": true
+  },
+  "local_camera_recovery": {
+    "camera_ipc_only": true,
+    "motor_controller_opened": false,
+    "unreachable_loopback_primary_for_this_process_only": true,
+    "frame_shape": [
+      1080,
+      1920,
+      3
+    ],
+    "backend": "Cosmos Reason 2 8B, local",
+    "reply_nonempty": true,
+    "acquisition_seconds": 0.282,
+    "vision_seconds": 3.201,
+    "image_saved": false,
+    "description_saved": false
+  },
+  "final_tests": {
+    "cpu_passed": 1141,
+    "cpu_skipped": 12,
+    "robot_environment_passed": 1153,
+    "robot_environment_skipped": 1,
+    "new_preflight_regressions": 11
+  },
+  "preflight_source_sha256": "299dc35da0ac0f039ebdfa5ff4d696488208bd0a6c23e81be38a4beb4d15fc31",
+  "vision_source_sha256": "1c8b3d94920d7fe533eb68cb14e07ae84dc26f6befc724b15712711fdc74689c"
+}

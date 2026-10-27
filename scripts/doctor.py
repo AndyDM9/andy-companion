@@ -60,6 +60,30 @@ def port_open(port: int) -> bool:
         return s.connect_ex(("127.0.0.1", port)) == 0
 
 
+def vision_model_probe(e: dict) -> tuple[bool, str]:
+    """Check actual configured-model availability, not catalogue membership. No camera or household text.
+
+    This is a tiny text-only inference: it proves the model answers, not vision quality or robot motion.
+    Never return provider text, URLs or exception messages: they can contain credentials or payloads.
+    """
+    model = e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL")
+    base = e.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
+    body = {"model": model, "max_tokens": 8, "temperature": 0,
+            "chat_template_kwargs": {"enable_thinking": False},
+            "messages": [{"role": "user", "content": "Say: ready."}]}
+    try:
+        code, raw = http(base + "/chat/completions", body,
+                         {"Authorization": f"Bearer {e.get('NEBIUS_API_KEY', '')}",
+                          "Content-Type": "application/json"}, timeout=15)
+        if code != 200:
+            return False, f"HTTP {code}"
+        answer = json.loads(raw)["choices"][0]["message"]["content"]
+        return (True, "configured model answered (text-only probe)") if isinstance(answer, str) and answer.strip() else (False, "empty reply")
+    except Exception as err:
+        code = getattr(err, "code", None)
+        return False, f"HTTP {code}" if isinstance(code, int) else type(err).__name__
+
+
 def voice_reachable(e: dict) -> bool:
     """Probe the app's configured voice address without printing its URL or credentials.
 
@@ -201,14 +225,11 @@ def live(e: dict) -> None:
                   "Token Factory is slow right now; try again in a few minutes")
         except Exception as err:
             check("Nemotron replies quickly", False, type(err).__name__, "check the key and the network")
-        if eyes not in ("endpoint", "off", "local"):   # the eyes on Token Factory: the model is listed for this key
+        if eyes not in ("endpoint", "off", "local"):
             model = e.get("ANDY_VISION_MODEL", "nvidia/Nemotron-3.5-Super-VL")
-            try:
-                code, listing = http(base + "/models", headers={"Authorization": f"Bearer {key}"}, timeout=10)
-                ids = {m.get("id") for m in json.loads(listing).get("data", [])}
-                check("Eyes on Token Factory", model in ids, model, "set ANDY_VISION=endpoint and start the endpoint")
-            except Exception as err:
-                check("Eyes on Token Factory", False, type(err).__name__, "check the key and the network")
+            available, detail = vision_model_probe(e)
+            check("Eyes on Token Factory", available, f"{model}; {detail}",
+                  "check the configured model, key and network; catalogue membership is not an inference test")
 
     from andy_companion import settings, watchdog
     running = subprocess.run(["pgrep", "-f", "scripts/run_andy.py"], capture_output=True).returncode == 0

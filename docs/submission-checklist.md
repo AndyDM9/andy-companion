@@ -6,9 +6,10 @@ in the same commit that makes it true.
 
 ## Final readiness, checked October 26
 
+- [x] Cloud-vision preflight checks actual configured-model availability; catalogue false alarm fixed and eleven regressions pass
 - [x] English/Spanish spoken-example guide and event-driven finder progress implemented, with no new model, stored conversation data or public write route
 - [x] Nineteen new regressions and 16 browser language/theme/TV-size cases plus four additional checks pass; full CPU/robot-environment suites and isolated wheel pass
-- [ ] Updated screen preview deployed and verified; Andy service restarted with exclusive control
+- [x] Updated screen preview deployed and verified; Andy service restarted with exclusive control
 - [ ] Founder confirms the new progress and guide on the physical TV during a real search; browser fixtures do not complete this check
 
 - [x] All 23 submission links open after moving the FTC citation to a verified official HTML release; the figure's wording matches its approximate precision

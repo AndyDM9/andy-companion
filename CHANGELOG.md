@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Screen deployment verified and preflight catalogue false alarm fixed
+
+- Published screen source `86d2dab` to the preview Space (`95be732cd73c046007b9008b1d3e01fcfd3af33b`).
+  All three Spaces RUNNING; five preview URLs return 200. A fresh browser opens/closes the guide,
+  returns focus and displays all three groups. Invented search progress is present; all three new
+  progress-write attempts return 403. The source's hosted CI passed.
+- Confirmed no other robot controller, restarted the existing Andy service and verified its local
+  screen serves both additions. No second Andy was started. Physical spoken/motion tasks remain pending.
+- Investigated a new preflight warning: the provider catalogue omitted Super VL, while that exact
+  model answered text and an invented blue image correctly (HTTP 200; returned model ID matched).
+  Preflight now tests a bounded text-only inference rather than catalogue membership (decision 0026).
+  Eleven regressions cover configured models, empty/malformed replies and private failure handling.
+- Live preflight is **20/21**: only the optional second-check endpoint is stopped (404). No other
+  controller, zero microphone drops and zero suspect voice-log lines. Camera-only IPC to local Cosmos
+  fallback answered in **3.201 s**, acquisition **0.282 s**, 1920×1080; no image or description retained.
+  These checks do not establish spoken recovery, finder accuracy or physical pointing.
+- Full final suites: CPU **1,141 passed / 12 skipped**; installed robot environment **1,153 / one skipped**.
+  Runtime, public-access and numeric probe evidence is saved separately from hardware trial results.
+
+
 ### Spoken-example guide and actual search progress
 
 - The founder reopened bounded feature/design work. Compared first-party ElliQ family features,

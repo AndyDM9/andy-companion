@@ -22,6 +22,18 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Screen follow-through deployed:** source `86d2dab`, preview Space revision
+  `95be732cd73c046007b9008b1d3e01fcfd3af33b`, hosted source CI passed. All three Spaces RUNNING;
+  five preview pages 200, three new write probes 403, hosted guide/focus and invented progress verified.
+  Existing Andy service restarted after verifying zero other controllers; local screen 200 with both
+  additions. Preflight **20/21**, optional second-check endpoint stopped. Fixed a catalogue false alarm
+  by testing configured-model inference (decision 0026), with eleven new regressions. Final CPU
+  **1,141 / 12 skipped**, robot environment **1,153 / one skipped**. Cloud model answered an invented
+  blue image; local camera-only fallback answered in **3.201 s** (acquisition **0.282 s**), without
+  retaining picture/description. No physical spoken search, pointing score or usability result inferred
+  ([deployment evidence](../evals/results/screen-followthrough-2026-10-26.json)).
+
+
 - **Voice discoverability and physical search feedback:** founder-approved feature work reopened
   after the earlier freeze (decision 0025). English/Spanish guide with nine spoken examples and
   manual controls; opening it makes no model/tool call. Finder stages and actual room-view counts
@@ -31,8 +43,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   **1,142 / one skipped**, isolated wheel **3 passed**. Browser: **16** language/palette/720p/1080p
   combinations plus **4** additional checks, including photo-layout return and offline recovery
   ([scoped evidence](../evals/results/screen-guide-progress-2026-10-26.json)). Nineteen new regressions.
-  Source is ready for service restart and preview publication; live interaction and physical timings
-  have not been remeasured. Research comparison is in [research.md](research.md).
+  Service restart and preview publication are verified in the follow-through above; live spoken
+  interaction and finder timings have not been remeasured. Research comparison is in [research.md](research.md).
 
 
 - **Further submission pass:** all 23 export links now open after replacing the unreachable FTC file

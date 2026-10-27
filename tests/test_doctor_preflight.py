@@ -91,3 +91,59 @@ def test_unknown_ownership_is_a_failed_live_check(doctor, monkeypatch, tmp_path,
     ownership = next(result for result in doctor.results if result[0] == "Only Andy drives the robot")
     assert ownership[1] is False
     assert "could not identify every robot connection" in capsys.readouterr().out
+
+
+def test_vision_preflight_calls_the_configured_model_without_requiring_catalogue_membership(doctor, monkeypatch):
+    import json
+
+    def inference(url, body, headers, timeout):
+        assert url == 'https://example.invalid/v1/chat/completions'
+        assert body['model'] == 'invented-model-not-in-catalogue'
+        assert body['max_tokens'] == 8 and timeout == 15
+        assert body['messages'] == [{'role': 'user', 'content': 'Say: ready.'}]
+        assert 'image' not in json.dumps(body)
+        assert headers['Authorization'] == 'Bearer invented-private-value'
+        return 200, json.dumps({'choices': [{'message': {'content': 'invented provider answer'}}]}).encode()
+
+    monkeypatch.setattr(doctor, 'http', inference)
+    ok, detail = doctor.vision_model_probe({'NEBIUS_BASE_URL': 'https://example.invalid/v1/',
+                                          'ANDY_VISION_MODEL': 'invented-model-not-in-catalogue',
+                                          'NEBIUS_API_KEY': 'invented-private-value'})
+    assert ok and 'text-only' in detail and 'invented provider answer' not in detail
+
+
+@pytest.mark.parametrize('answer', ['', '   ', None, False])
+def test_vision_preflight_rejects_empty_or_nontext_answers(doctor, monkeypatch, answer):
+    import json
+
+    monkeypatch.setattr(doctor, 'http', lambda *a, **k: (200, json.dumps({'choices': [{'message': {'content': answer}}]}).encode()))
+    assert doctor.vision_model_probe({}) == (False, 'empty reply')
+
+
+@pytest.mark.parametrize('status', [401, 404, 502])
+def test_vision_preflight_keeps_http_failures_visible_without_returning_payloads(doctor, monkeypatch, status):
+    import urllib.error
+
+    def fail(*args, **kwargs):
+        raise urllib.error.HTTPError('https://example.invalid/?key=invented-private-value', status,
+                                     'invented private provider body', {}, None)
+
+    monkeypatch.setattr(doctor, 'http', fail)
+    assert doctor.vision_model_probe({}) == (False, f'HTTP {status}')
+
+
+def test_vision_preflight_does_not_expose_transport_error_text(doctor, monkeypatch):
+    def fail(*args, **kwargs):
+        raise TimeoutError('invented private request text')
+    monkeypatch.setattr(doctor, 'http', fail)
+    assert doctor.vision_model_probe({}) == (False, 'TimeoutError')
+
+
+def test_vision_preflight_rejects_a_malformed_success_body(doctor, monkeypatch):
+    monkeypatch.setattr(doctor, 'http', lambda *a, **k: (200, b'{}'))
+    assert doctor.vision_model_probe({}) == (False, 'KeyError')
+
+
+def test_vision_preflight_rejects_a_non_success_http_response(doctor, monkeypatch):
+    monkeypatch.setattr(doctor, 'http', lambda *a, **k: (202, b'{}'))
+    assert doctor.vision_model_probe({}) == (False, 'HTTP 202')
