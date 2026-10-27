@@ -15,13 +15,22 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
 | M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20). Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
-| M8 | Proof | 🔨 Built; final run before submitting | 97 spoken situations in 22 areas, Andy's real profile and its 38 tools, judged by Nemotron 3 Ultra: latest **96, 95, 92 of 97 as a Nebius Serverless Job** (2026-10-25; the final run at submission). The scam check five ways, 54 real turns timed on the robot, the finder in simulation. Every run below and in [evals/results/](../evals/results/) |
+| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **94, 94, 95 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
 ## October 26 review work
 
+- **Further submission pass:** all 23 export links now open after replacing the unreachable FTC file
+  citation with a verified official HTML release; wording now matches its approximate figure. Tagline
+  remains 198 characters and tags 25. All three Spaces are RUNNING, and a fresh public AI proposal / No
+  check preserved private sample state. Video metadata preflight is built with 17 regressions; the
+  19.87-second silent simulation is rejected. No actual final movie is available yet, so footage/content,
+  rights, translation, publication and submission remain pending. No connected signed-in browser is
+  available to reconcile the saved Devpost draft: the updated repository text must be pasted before submission.
+  CPU 1,111 passed / 12 skipped; installed robot environment 1,123 passed / one skipped. Relative links
+  and Python checks pass. Real `--final` still rejects video placeholder, missing release tag and app pin.
 - **Vision recovery follow-through:** fixed stopped-endpoint preflight/404 fallback and transport
   validation on the fallback path. Local eyes must be loopback even over HTTPS; no camera image may
   silently go to a remote backend labelled local. Six regressions plus five probe tests pass.

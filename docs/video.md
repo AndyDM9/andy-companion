@@ -113,6 +113,13 @@ a social clip, with English subtitles.
 
 ## After filming
 
+- [ ] Check local file metadata before upload: install FFmpeg (which includes ffprobe), then run
+      `uv run python scripts/check_video.py final-cut.mp4 --hardware-clip uncut-robot-take.mp4`.
+      It checks the final container/video track under 180 seconds, an audio track, and at least 60 seconds
+      in the raw hardware video track that can fit in the final video. Audio padding does not count as
+      hardware footage. Files with unknown video-track duration need a measurable export or manual review.
+      A pass is metadata only: watch the final cut to verify the actual robot, the uncut take's inclusion,
+      translation, rights and privacy. Public YouTube visibility and actual submission remain separate.
 - [ ] Captions for the whole video as an SRT file (English throughout, the Spanish translated) uploaded
       to YouTube; burned-in subtitles on any Spanish clip as well. A draft to start from:
       `CUDA_VISIBLE_DEVICES=1 voice/.venv/bin/python scripts/draft_captions.py final-cut.mp4 --translate`

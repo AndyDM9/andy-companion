@@ -6,6 +6,10 @@ in the same commit that makes it true.
 
 ## Final readiness, checked October 26
 
+- [x] All 23 submission links open after moving the FTC citation to a verified official HTML release; the figure's wording matches its approximate precision
+- [x] Video metadata checker and 17 regressions available; short/silent simulation correctly rejected without claiming to inspect hardware content
+- [ ] Actual final cut/raw hardware clip pass metadata checks and manual content/rights/translation review
+- [ ] Saved Devpost draft reconciled with the current repository export after filming; no signed-in connected browser was available for this audit
 - [x] Rules, FAQ, deadline, judging criteria and prize-combination rule rechecked at the official sources
 - [x] Devpost export includes testing instructions distinguishing sample preview from author-funded robot access
 - [x] `--final` rejects a placeholder video, absent local release tag and app dependency on main before export
@@ -45,7 +49,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] Anonymous fresh clone installs and passes; Docker demo serves pages/assets and refuses writes
 - [x] The full demo entry point and an isolated installed-wheel check have passed locally and are included in CI
 - [x] Documented settings pass regression checks without hardware; CPU simulation dependencies and keyless renderer check verified
-- [ ] Confirm the FTC report opens from another network before final submission (direct 404 here; content verified through Tavily)
+- [x] Resolve FTC citation access: replaced the failing direct file with the agency's readable official release; direct HTTP 200, matching finding verified, all export links pass
 - [x] Reproduced sharing, transient-storage, medicine-card and journal-check gaps have regression tests
 - [x] Confirmation binds a spoken readback and fresh yes to one exact action, once (decision 0018)
 - [x] Screen cards and research answers use authenticated local memory, with a cross-process test (decision 0019)

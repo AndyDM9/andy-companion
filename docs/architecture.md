@@ -148,6 +148,11 @@ any data, and requires its own new temporary store; it must never replace a live
 
 ## Evaluation
 
+- `scripts/check_video.py`: optional local production check using ffprobe metadata only. It checks
+  container/video-track duration and track presence, without extracting frames, transcribing audio,
+  changing media or uploading it. Audio padding and unknown video-track duration cannot pass as
+  a minute of hardware video. A passing report always retains manual content/rights/visibility checks
+  (decision 0024); this is not a robot or hosted-service dependency.
 - `scripts/check_vision_recovery.py`: camera-only IPC reader with a process-local, unreachable loopback
   primary and local Cosmos fallback. It never instantiates a robot controller or loads provider keys;
   output contains status, source hash and timings, never the frame or description. The shared vision

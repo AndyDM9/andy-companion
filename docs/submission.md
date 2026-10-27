@@ -40,7 +40,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 ### For the judges
 
 Andy is a small home robot for older adults who live at home, and the family who help. Scams reach people there, by
-letter and by phone: adults 60 and over reported over $3 billion lost to fraud in 2025 ([FTC](https://www.ftc.gov/system/files/ftc_gov/pdf/2026-older-adults-report-10192026.pdf)). Andy reads the
+letter and by phone: adults 60 and over reported about $3 billion lost to fraud in 2025 ([FTC](https://search.ftc.gov/news-events/news/press-releases/2026/10/ftc-issues-annual-report-congress-agencys-actions-protect-older-adults)). Andy reads the
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
 messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) text cases passed with the previous profile; both evaluations ran as Nebius

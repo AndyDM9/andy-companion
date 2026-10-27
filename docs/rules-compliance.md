@@ -198,3 +198,12 @@ nor pointing. The fallback fixes and probe do not complete the pending video, us
 acceptance checks, and do not introduce outcome claims.
 The fixes passed hosted checks on `a4e3930` and the running Andy service was restarted; its 20/21
 preflight still leaves observed pointing, timing, voice recovery, user sessions and footage separate.
+
+Further October 26 submission review: official rules still require a video under three minutes with
+at least one minute of physical operation. The new ffprobe checker verifies local file metadata only;
+its audio/uncut-clip checks follow our production plan, and it never certifies the actual content,
+rights, translation or public visibility (decision 0024). No final movie has been provided for verification.
+The updated FTC citation is an official readable HTML source, verified directly; all 23 export links
+now open. The current repository draft still needs to replace the older saved Devpost text before
+submission; no connected signed-in browser was available in this review. No final item is ticked from
+metadata validation, a saved draft, or a sample browser challenge alone.

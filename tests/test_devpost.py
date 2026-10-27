@@ -40,7 +40,8 @@ def test_failed_citations_stay_failed_and_a_404_is_not_excused_as_blocking(monke
     monkeypatch.setattr(devpost, "opens", lambda url: status if "ftc.gov" in url else 200)
     assert devpost.main(["--check"]) == 1
     report = capsys.readouterr().err
-    assert f"{status}  https://www.ftc.gov/" in report
+    ftc_url = next(u for u in devpost.links((ROOT / "docs/submission.md").read_text()) if "ftc.gov" in u)
+    assert f"{status}  {ftc_url}" in report
     assert ("an FTC request was blocked" in report) == blocked
 
 

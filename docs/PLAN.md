@@ -24,7 +24,7 @@ model. Stage two scores four criteria, equally weighted, 1 to 5.
 
 | Criterion | What answers it |
 |---|---|
-| Technological implementation | Six NVIDIA models (Parakeet, Nemotron 3.5 Lightning, Nemotron 3 Ultra, Nemotron 3.5 Super VL, Nemotron 3.5 Content Safety, and Nemotron Nano 12B v2 VL as an option) across Token Factory, Serverless Endpoints and Serverless Jobs; Nemotron answering in 0.6 to 0.8 s, each turn timed on screen; the conversation suite and the scam check measured as Nebius Serverless Jobs; tested tools; rules in code between the model and the body |
+| Technological implementation | NVIDIA Parakeet for hearing, Nemotron Lightning for conversation, Ultra for harder reasoning, Super VL for vision, and local Cosmos as vision fallback; Content Safety and Nano VL endpoints as options. Token Factory, Serverless Endpoints and Serverless Jobs have distinct roles; real turn timings and scoped evaluations; tested tools and rules in code between the model and the body |
 | Design ("a complete product, not a proof of concept") | The person's side (voice and robot) **and** the family's side (a phone page); setup in a few commands; a published Reachy Mini app |
 | Potential impact | A real person and a real problem: older adults living at home, and the family who help. Honest wording, nothing claimed that is not measured |
 | Quality of the idea | A companion that says it is a robot, never imitates a person, never stores what it hears, and lets the person decide what family sees; a language model that moves the robot to find things; a scam check where the web finds the trick and a strong model tells it from the topic, measured both ways |
@@ -267,6 +267,7 @@ spoken task checks and physical finder trials remain pending. The current versio
 | B72 | Final-export guard and judge access without shared provider credentials | Guard built; decision 0022; video, frozen release and final testing arrangements still pending |
 | B73 | Approved standout review: separate guided judge inference; physical counterexamples, family consent, local-vision recovery and brief user sessions | Guided Space published and verified; decision 0023; physical observations and sessions remain pending |
 | B74 | Complete vision failover readiness and transport rules; repeatable camera-only recovery probe | Built and regression-tested; real IPC frame/local response verified; spoken recovery/hood check pending |
+| B75 | Resolve final citation access and prepare mechanical video-file checks | All 23 submission links open; metadata checker built; final footage and Devpost reconciliation remain pending |
 
 ## The video
 

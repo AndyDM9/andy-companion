@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Submission evidence and video-file preflight
+
+- Rechecked official rules and current public access. All three Spaces are RUNNING; a fresh real-model
+  sample proposal remained private and its No path kept it private. The latest prior hosted checks pass.
+- Replaced the FTC citation that returned 404 here with the same agency's readable official HTML release
+  on `search.ftc.gov`, and corrected "over" to "about" $3 billion to match its stated precision. Direct
+  content and source checks pass; **all 23 submission links now open**, with the 198-character tagline
+  and 25 tags retained. No 404 was reclassified as a pass or hidden.
+- Added a local metadata-only video preflight (decision 0024), with 17 regressions covering duration
+  boundaries, missing tracks, audio padding, unknown durations and private metadata/error suppression.
+  The existing 19.87-second silent simulation is correctly rejected as a hardware-clip candidate.
+  This does not inspect actual footage or certify rights, translation, visibility or submission.
+- Updated the plan's stale model-count wording to roles including Cosmos, and made the current local
+  score visible before the earlier Serverless Job score in the status table. No robot runtime changed.
+- Full software checks passed: CPU 1,111 / 12 skipped, installed robot environment 1,123 / one skipped;
+  relative documentation targets and Python checks pass. Final export still correctly blocks the missing
+  video, release tag and app pin. The saved Devpost draft remains to be reconciled by its signed-in owner.
+
 ### Local vision recovery and an observed glasses search
 
 - Pushed `a4e3930`; hosted CPU/wheel and SDK checks passed. Restarted the existing Andy service after
