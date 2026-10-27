@@ -21,6 +21,11 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## October 26 screen follow-through
 
+The watch-routing prompt correction preserves the existing hardware tool path. Its twenty invented
+streaming-model checks and five mocked SDK tests are not hardware evidence. Older full-suite figures
+are explicitly labelled as preceding the correction; a spoken retry remains pending. The video must
+still show actual working searches, including uncertainty, rather than a spoken promise alone.
+
 The speaking-ring alignment correction changes only CSS geometry. No capabilities, model claims,
 rights requirements or submission evidence change; the public preview remains sample data.
 

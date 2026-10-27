@@ -5,6 +5,24 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Start requested object searches before speaking
+
+- Investigated an announcement with no finder dispatch after a watch request. Services and exclusive
+  control were healthy; no finder exception appeared. The exact heard utterance and reason for the
+  missing call are not retained or established.
+- Removed the profile/tool requirement to speak an announcement first. Explicit find/look-for/search
+  requests, watches/wristwatches and follow-ups now instruct an immediate finder call before speech;
+  no promise or advice may substitute. Regenerated the evaluation's tool snapshot. No second motion
+  trigger was added (decision 0027).
+- Twenty targeted real streaming-model checks passed: watch requests/follow-ups in English and
+  Spanish dispatch the finder before speech with valid watch arguments; negations, already-found
+  objects and watching a film do not. Five real SDK entrypoint tests use mocked hardware and verify
+  watch dispatch, missing prerequisites and result handling. These are not a physical spoken trial.
+- Earlier 97-case scorecards are labelled as preceding this prompt change. A full-suite rerun and
+  the person's real spoken retry remain pending. CPU 1,141 passed / 13 skipped; robot environment
+  1,158 passed / one skipped. Restart the existing service from this commit for the retry.
+
+
 ### Speaking ring aligned with the robot status pill
 
 - Fixed the speaking pulse's asymmetric vertical offsets, which placed its centre 13.30 px below

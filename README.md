@@ -27,7 +27,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **94, 94 and 95 of 97** of the current text suite, locally with the real confirmation gate; the previous profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-26-startup-local.json), [previous](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
+- **94, 94 and 95 of 97** of the text suite before the watch-routing prompt fix, locally with the real confirmation gate; the previous profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([October 26 profile](evals/results/suite-2026-10-26-startup-local.json), [previous](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -229,7 +229,7 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools and the
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Current profile, local text suite: 94, 94 and 95 of 97** (2026-10-26;
+- **Before the watch-routing prompt fix, local text suite: 94, 94 and 95 of 97** (2026-10-26;
   [scorecard](evals/results/suite-2026-10-26-startup-local.json)), with synthetic tool results and the
   real confirmation gate. Upcoming-event and photo-story memory offers fail each run; deletion
   ambiguity and respecting "not now" each fail once. These are not physical robot trials.
@@ -407,7 +407,7 @@ What doesn't work yet, and what our numbers don't show.
   tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **The current text suite:** 94, 94 and 95 of 97 in three local runs on October 26, with the actual
+- **The text suite before the watch-routing prompt fix:** 94, 94 and 95 of 97 in three local runs on October 26, with the actual
   confirmation gate and synthetic tools ([scorecard](evals/results/suite-2026-10-26-startup-local.json)).
   Two memory-offer cases fail: Andy can ask another question or claim it will make a note without
   preparing a proposal. The gate prevents an unapproved save, but the wording is still a limitation.
@@ -568,3 +568,7 @@ uses, with its terms and the credit it asks for, is listed in [docs/credits.md](
 under their licences and through Nebius Token Factory's terms, Pollen Robotics' Reachy Mini SDK, conversation app
 and MuJoCo scene (Apache-2.0), Tavily's terms, the National Weather Service (public domain), Wikipedia (CC BY-SA 4.0)
 and public-domain stories.
+
+The October 26 object-search prompt revision has a separate [20-case streaming routing check](evals/results/watch-routing-2026-10-26.json),
+using invented watch requests and non-requests. It is not a full-suite or physical accuracy result;
+its full 97-case rerun and spoken watch retry remain pending.

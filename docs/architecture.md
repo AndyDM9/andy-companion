@@ -211,3 +211,7 @@ Preflight (`scripts/doctor.py --live`, decision 0026) tests configured cloud-vis
 with a fixed invented text-only request, at most eight output tokens and a 15-second timeout. It
 reports status only; catalogue membership does not determine availability. It neither captures a
 camera frame nor establishes visual quality. A camera-only local-fallback probe remains separate.
+
+Object-search response order (decision 0027): the profile/tool instruct the model to dispatch the
+existing `find_object` before preliminary speech. There is no separate keyword-driven movement path;
+the same tool, camera checks, body ownership, transient progress and result flow remain in use.

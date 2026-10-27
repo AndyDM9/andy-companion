@@ -11,9 +11,11 @@ from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 class FindObject(Tool):
     name = "find_object"
     description = (
-        "When the person asks where something is or can't find something in the room (their glasses, keys, "
-        "phone, the remote, a cup). First say 'Let me have a look around', then call this with what: the thing, "
-        "in a few words. You will turn your head around the room and point at it if you see it. Then follow "
+        "When the person asks to find, look for or search for an object, asks where it is or can't find it "
+        "in the room (their watch, wristwatch, glasses, keys, phone, remote or cup), call this immediately "
+        "in the same response with what: the thing in a few words. Call the tool before speaking; "
+        "never only announce that you will look or give places to check instead of using the camera. "
+        "You will turn your head around the room and point at it if you see it. Then follow "
         "'how'. Never for finding a person."
     )
     parameters_schema = {

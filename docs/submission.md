@@ -44,7 +44,7 @@ letter and by phone: adults 60 and over reported about $3 billion lost to fraud 
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
 messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) text cases passed with the previous profile; both evaluations ran as Nebius
-Serverless Jobs. The current hardened profile scored [94, 94 and 95 of 97 in three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-startup-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
+Serverless Jobs. The hardened profile before the watch-routing prompt revision scored [94, 94 and 95 of 97 in three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-26-startup-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Eight models run
   on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
@@ -160,9 +160,10 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- Current text-suite runs on October 26 scored 94, 94 and 95 of 97, with the real confirmation gate and synthetic tools.
+- Before the watch-routing prompt revision, text-suite runs on October 26 scored 94, 94 and 95 of 97, with the real confirmation gate and synthetic tools.
   Two memory-offer cases remain unreliable; a gate prevents unapproved writes. The older Serverless Job scores
-  in this draft predate these changes and must not be presented as current-profile results.
+  in this draft predate these changes and must not be presented as current-profile results. The later
+  watch-routing prompt revision has a separate 20-case streaming check; its full-suite and spoken retry are pending.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.

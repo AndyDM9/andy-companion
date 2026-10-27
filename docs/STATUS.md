@@ -15,12 +15,23 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
 | M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20). Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
-| M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **94, 94, 95 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
+| M8 | Proof | 🔨 Built; final run before submitting | Pre-watch-change text profile: **94, 94, 95 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
 ## October 26 review work
+
+- **Watch request announced without dispatch:** no finder call in recent tool-name telemetry,
+  services running and no other controller. Replaced the instruction to announce first with an
+  immediate same-response `find_object` call before speech, including watches and repeated requests
+  (decision 0027). **20/20** targeted real streaming-inference checks passed with invented requests,
+  valid object arguments and no pre-call speech; three non-request categories excluded. Five SDK
+  entrypoint regressions use mocked hardware. CPU **1,141 / 13 skipped**, robot **1,158 / one skipped**.
+  The cause of the original missing dispatch is not established; no household speech retained.
+  Existing-service restart follows this source commit; **real spoken watch retry pending**.
+  [Scoped checks](../evals/results/watch-routing-2026-10-26.json). Full 97-case rerun of this prompt
+  revision is pending; earlier scorecards below describe the pre-watch profile.
 
 - **Speaking-ring alignment:** corrected the 20% downward offset reported in the screenshot.
   Browser-measured ring/pill centre difference is now **0 px** at 1920×1080 and 1280×720 (previously
@@ -127,7 +138,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Latest while awake: doctor **20/21**, with the optional second-check endpoint stopped; app/microphone,
   screen and privacy checks pass. Six landscape samples restored to an empty gallery; sample JPEG served 200. Seven-day cleanup applies,
   but the cause of the earlier empty gallery was not verified.
-- **Current text profile:** version e scored **94, 94, 95 of 97** with the renamed tool. Two memory offers fail
+- **Pre-watch-change text profile:** version e scored **94, 94, 95 of 97** with the renamed tool. Two memory offers fail
   each run; ambiguity before deletion and respecting "not now" each fail once. The new scorecard carries hashes.
   Local checks after the startup/demo fixes: CPU 1,011 passed / 12 skipped; robot environment 1,023 passed /
   one skipped; three isolated wheel checks pass. Dedicated SDK startup CI is now passing.
@@ -173,7 +184,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | Date | What | Result |
 |---|---|---|
 | 2026-10-26 | **USB recovery and real startup** | USB motor/camera/audio visible; daemon recovered after restart. No competing robot app. Before starting Andy: requested head +5°, read +1.76°; antennas +3.16° / −3.52°; restored head residual +0.36°. App startup name collision fixed; fresh health with 0 drops and screen 200, then a clean sleep. Doctor while asleep 18/21; optional second look stopped; 0 suspect voice-log lines. This is not a voice-task or finder pass |
-| 2026-10-26 | **Current profile version e**, local text suite | **94, 94, 95 of 97**; moment-1 and photo-2 fail each run, moment-5 and chat-2 once. [Scorecard](../evals/results/suite-2026-10-26-startup-local.json), after the memory-tool rename; real gate and synthetic results, no physical task scoring |
+| 2026-10-26 | **Pre-watch-change profile version e**, local text suite | **94, 94, 95 of 97**; moment-1 and photo-2 fail each run, moment-5 and chat-2 once. [Scorecard](../evals/results/suite-2026-10-26-startup-local.json), after the memory-tool rename; real gate and synthetic results, no physical task scoring |
 | 2026-10-26 | **Judge access audit** | `faf46f1`: hosted CPU suite 1,009 passed / 10 skipped; three isolated wheel checks pass. Anonymous clone of `1d0a4e8`: install and 991 tests pass; Docker demo builds. Updated Space `8d93b15`: pages/APIs/assets 200, eleven writes 403, wrong tokens 404, guide linked; both Spaces RUNNING. Fresh app installation/entrypoint/uninstallation passes. CPU simulation scene downloaded and rendered at 1920×1080 in a fresh container, without a key or robot. Four environment locks validate; page scripts/JSON parse; gitleaks: no leaks in 200 commits. Direct submission links 20/21; FTC report content verified separately |
 | 2026-10-26 | **Physical trial plan coverage** | Each object present and absent in both lighting conditions; all five positions with each object present. Fixed the original schedule's remote/absent correlation. CPU tests 991 passed / 10 skipped; robot environment 1,000 passed / 1 skipped. Physical attempts still pending |
 | 2026-10-26 | **Published verification** | `c3a3f12` pushed; hosted CPU CI passed. Public screen Space updated from that commit: front page and four pages 200, pending-item UI present, transient writes 403; both Spaces RUNNING. App checker: fresh install, entrypoint registration and uninstall passed. Hardware interactions remain unverified while USB is disconnected |

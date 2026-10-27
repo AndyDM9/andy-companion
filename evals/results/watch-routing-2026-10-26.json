@@ -1,0 +1,261 @@
+{
+  "date": "2026-10-26",
+  "scope": "Invented messages, real streamed Nemotron Lightning requests and current profile/tools. No audio recognition, SDK dispatch, camera, robot movement or hardware accuracy test; no household conversation retained.",
+  "rows": [
+    {
+      "id": "watch-direct",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 1.012
+    },
+    {
+      "id": "watch-question",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 1.028
+    },
+    {
+      "id": "watch-missing",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.909
+    },
+    {
+      "id": "watch-after-joke",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.892
+    },
+    {
+      "id": "watch-after-promise",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.892
+    },
+    {
+      "id": "watch-followup",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.874
+    },
+    {
+      "id": "watch-spanish",
+      "round": 1,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.949
+    },
+    {
+      "id": "watch-negative",
+      "round": 1,
+      "expected_finder": false,
+      "tools": [],
+      "first_output": "speech",
+      "speech_chars_before_call": 40,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.885
+    },
+    {
+      "id": "watch-film",
+      "round": 1,
+      "expected_finder": false,
+      "tools": [],
+      "first_output": "speech",
+      "speech_chars_before_call": 33,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.845
+    },
+    {
+      "id": "watch-already-found",
+      "round": 1,
+      "expected_finder": false,
+      "tools": [],
+      "first_output": "speech",
+      "speech_chars_before_call": 88,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.88
+    },
+    {
+      "id": "watch-direct",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.801
+    },
+    {
+      "id": "watch-question",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.885
+    },
+    {
+      "id": "watch-missing",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.805
+    },
+    {
+      "id": "watch-after-joke",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.833
+    },
+    {
+      "id": "watch-after-promise",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.805
+    },
+    {
+      "id": "watch-followup",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.923
+    },
+    {
+      "id": "watch-spanish",
+      "round": 2,
+      "expected_finder": true,
+      "tools": [
+        "find_object"
+      ],
+      "first_output": "tool",
+      "speech_chars_before_call": 0,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.913
+    },
+    {
+      "id": "watch-negative",
+      "round": 2,
+      "expected_finder": false,
+      "tools": [],
+      "first_output": "speech",
+      "speech_chars_before_call": 40,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.792
+    },
+    {
+      "id": "watch-film",
+      "round": 2,
+      "expected_finder": false,
+      "tools": [],
+      "first_output": "speech",
+      "speech_chars_before_call": 33,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.831
+    },
+    {
+      "id": "watch-already-found",
+      "round": 2,
+      "expected_finder": false,
+      "tools": [],
+      "first_output": "speech",
+      "speech_chars_before_call": 88,
+      "watch_argument_valid": true,
+      "pass": true,
+      "seconds": 0.871
+    }
+  ],
+  "passed": 20,
+  "total": 20,
+  "source_sha256": {
+    "profiles/companion/profile.md": "083ffaf4a0a6337d55e59affc42efd7251a9d76397649cb0adf44cf14f1f8d37",
+    "tools/find_object.py": "8de15a82612160b6793815e776d156269539458bdb4968f0d66575c86d453173",
+    "evals/tools.json": "bf5f48d6ccd4d2c4ea3c63c000e19e449410d09e9fdc5184c7a7a2b35e250019"
+  }
+}
