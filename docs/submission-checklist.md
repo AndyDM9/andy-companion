@@ -6,6 +6,10 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Judge guide leads with actions/expected results and maps all four criteria to scoped evidence; README fixes quoted-key instructions and distinguishes pending footage/physical checks
+- [x] Anonymous repository public/Apache-2.0, ten sample-page layouts/eight guided model paths and three protocol refusals verified; all 224 tracked Python files parse and isolated wheel passes
+- [x] All three anonymous Hugging Face landing-page embeds load; all 69 Markdown files checked, 376 relative targets and 34 fragments resolve
+
 - [x] Saved settings validated before use; unreadable originals preserved whole with unique owner-only names, metadata-only English/Spanish review and authenticated single/all deletion; 91 new cases, both full suites, wheel and eight browser fixtures pass
 - [x] Saved-settings change verified in running service and published source/preview; deployed/served hashes, hosted CPU/wheel/SDK CI, anonymous-clone tests, eight public layouts/two write refusals and history/link checks pass
 

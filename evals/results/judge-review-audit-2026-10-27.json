@@ -1,0 +1,317 @@
+{
+  "date": "2026-10-27",
+  "baseline_commit": "e8904a9416c78373f0c13009c50a4ced3a3c0f23",
+  "scope": "Judge entry points, repository inventory, public documentation/source, anonymous browser flows, reproducibility guidance and published evidence boundaries. This is not a manual execution of every hardware function or a new physical/accuracy evaluation.",
+  "inventory": {
+    "tracked_files": 458,
+    "python_files": 224,
+    "markdown_files": 69,
+    "voice_tool_modules": 34,
+    "test_modules": 90
+  },
+  "repository": {
+    "anonymous_http": 200,
+    "visibility": "public",
+    "license": "Apache-2.0",
+    "default_branch": "main",
+    "archived": false
+  },
+  "changes": [
+    "Judge guide starts with public actions, expected results, access limits and evidence for each of the four criteria",
+    "README states video/photos/physical checks remain pending",
+    "Local evaluation instructions use the existing hidden key prompt instead of a shortcut that mishandles supported quoted values",
+    "README documents saved-settings copies and actual commit hooks/CI behavior",
+    "Scorecard/document indices route to the current review and later reliability audits",
+    "Judge guide repeats the submitted-material freeze; tag/app pin remains an internal reproducibility gate"
+  ],
+  "quote_handling_probe": {
+    "invented_credentials_only": true,
+    "old_shortcut_handles_supported_quotes": false,
+    "recommended_hidden_prompt_takes_raw_value": true
+  },
+  "browser": {
+    "scope": "Public sample pages and author-funded real Nemotron examples with fixed invented inputs and simulated effects. No robot control or household data.",
+    "page_layouts": [
+      {
+        "page": "/",
+        "viewport": [
+          1440,
+          900
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/",
+        "viewport": [
+          390,
+          844
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/screen",
+        "viewport": [
+          1920,
+          950
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/screen",
+        "viewport": [
+          1280,
+          720
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/family",
+        "viewport": [
+          1440,
+          900
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/family",
+        "viewport": [
+          390,
+          844
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/setup",
+        "viewport": [
+          1440,
+          900
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/setup",
+        "viewport": [
+          390,
+          844
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/hood",
+        "viewport": [
+          1440,
+          900
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      },
+      {
+        "page": "/hood",
+        "viewport": [
+          390,
+          844
+        ],
+        "http": 200,
+        "horizontal_overflow": false,
+        "page_errors": 0
+      }
+    ],
+    "guided_examples": [
+      {
+        "viewport": [
+          1440,
+          900
+        ],
+        "challenge": "letter",
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          1440,
+          900
+        ],
+        "challenge": "absent",
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          1440,
+          900
+        ],
+        "challenge": "choice",
+        "choice": "no",
+        "shared": false,
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          1440,
+          900
+        ],
+        "challenge": "choice",
+        "choice": "yes",
+        "shared": true,
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "challenge": "letter",
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "challenge": "absent",
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "challenge": "choice",
+        "choice": "no",
+        "shared": false,
+        "completed": true,
+        "simulated_effects_only": true
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "challenge": "choice",
+        "choice": "yes",
+        "shared": true,
+        "completed": true,
+        "simulated_effects_only": true
+      }
+    ],
+    "refusals": {
+      "arbitrary-input": 400,
+      "choice-before-start": 400,
+      "cross-origin": 403
+    }
+  },
+  "spaces": [
+    {
+      "space": "andydm/andy-companion",
+      "stage": "RUNNING",
+      "source_revision": "c49cc6b621218e6fbb1ab519ad4fbee94cc6bc1c",
+      "deployed_revision": "c49cc6b621218e6fbb1ab519ad4fbee94cc6bc1c"
+    },
+    {
+      "space": "andydm/andy-companion-judge",
+      "stage": "RUNNING",
+      "source_revision": "4ecf7c251995a3ea2e0351c32a915a8e57258188",
+      "deployed_revision": "4ecf7c251995a3ea2e0351c32a915a8e57258188"
+    },
+    {
+      "space": "andydm/andy-companion-app",
+      "stage": "RUNNING",
+      "source_revision": "dfad821a4a49e7b72c99b9bfa9746b12e6ae8217",
+      "deployed_revision": null
+    }
+  ],
+  "validation": {
+    "tracked_python_syntax_checked": 224,
+    "syntax_errors": 0,
+    "isolated_wheel_tests_passed": 3,
+    "latest_unchanged_runtime_cpu_passed": 1625,
+    "latest_unchanged_runtime_cpu_skipped": 16,
+    "latest_unchanged_robot_environment_passed": 1674,
+    "latest_unchanged_robot_environment_skipped": 1,
+    "full_cpu_precommit_required": true,
+    "prior_notes_ci": "https://github.com/AndyDM9/andy-companion/actions/runs/40555274917",
+    "export_links_open": 23,
+    "export_links_checked": 23,
+    "documentation_links": {
+      "markdown_files": 69,
+      "relative_targets": 376,
+      "fragments_checked": 34,
+      "problems": []
+    }
+  },
+  "official_sources_checked": [
+    "https://nebiusglobalaihackathon.devpost.com/rules",
+    "https://nebiusglobalaihackathon.devpost.com/details/faqs",
+    "https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist",
+    "https://nebiusglobalaihackathon.devpost.com/updates/46066-final-call-for-submissions"
+  ],
+  "devpost_verification": {
+    "public_project_http": 403,
+    "response": "Anti-bot challenge",
+    "connected_signed_in_browser_available": false,
+    "draft_synced_or_submission_confirmed": false,
+    "source_export_available": true
+  },
+  "final_export": {
+    "exit": 2,
+    "blockers": [
+      "Missing public video URL",
+      "Release tag absent",
+      "App dependency still main"
+    ]
+  },
+  "limits": "Public model checks use only fixed invented inputs and simulated effects; no reply/reasoning retained. Real hardware, audio, camera, household stores and API keys unchanged. No model/profile/tool/budget change or redeployment needed. Physical reader/revised finder trials, user sessions, final video/gallery, final release/app pin, actual draft reconciliation/submission and organiser-requested physical-access arrangements remain open. Hosted-demo allowance is not unrestricted access to the complete physical project.",
+  "publication": {
+    "status": "pending"
+  },
+  "huggingface_landing_pages": [
+    {
+      "space": "andy-companion",
+      "anonymous_landing_http": 200,
+      "embedded_app_visible": true,
+      "iframe_theme_query_handled": true,
+      "model_calls": 0
+    },
+    {
+      "space": "andy-companion-judge",
+      "anonymous_landing_http": 200,
+      "embedded_app_visible": true,
+      "iframe_theme_query_handled": true,
+      "model_calls": 0
+    },
+    {
+      "space": "andy-companion-app",
+      "anonymous_landing_http": 200,
+      "embedded_app_visible": true,
+      "iframe_theme_query_handled": false,
+      "model_calls": 0
+    }
+  ],
+  "source_sha256": {
+    "README.md": "5cd3cf78976cc0e0fabd7ad0c8d307514e0c3a93ba28187e21953b656bf45c35",
+    "docs/judging.md": "02d29954830eed267b9979b8afcc91f0473dd729d32ab1d494687251808c1cd0",
+    "docs/README.md": "054c0e3228f95046ebf3a1461bd66e05f65ddfc4896ca610f5cc31ace259ae84",
+    "evals/results/README.md": "22da9d60d4eb54f5f2b5678ed6ec71f65b84d420a55577d65df7d8be75eaf699"
+  }
+}

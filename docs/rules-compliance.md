@@ -40,6 +40,21 @@ also says to leave the code repository, video and project materials unchanged af
 copy for later work unless an exception is explicitly allowed. This clarifies our earlier tag-only
 wording. Video, physical/access evidence and actual submission remain open; no footage is inferred.
 
+## Judge-entry review (October 27)
+
+Rules, FAQ, final-call and submission-checklist updates re-read at the official pages. No change to
+our recorded deadline, platform/model, physical-footage, access or freeze obligations. The testing
+guide now starts with actions/expected results and maps all four criteria to scoped evidence. README
+shows pending footage/physical checks and uses the existing hidden key prompt for optional paid
+reproduction; invented quoted values reproduced the removed shortcut's failure. No keys changed.
+
+Ten public layouts/eight guided model paths and three protocol refusals pass, with invented inputs
+and simulated effects. Repository anonymous/public/Apache-2.0, all three Spaces RUNNING, 23 export
+links open. No new hardware/accuracy/access-completion claim. The public Devpost page hit an anti-bot
+challenge and no signed-in connected browser was available; actual draft/submission not verified.
+Final export still blocks video/tag/app pin; the latter are our reproducibility controls. Existing
+physical trials, user sessions, footage/rights, free testing/access and final submission remain open.
+
 ## Saved-settings recovery (October 27)
 
 An existing reliability/data-handling fault is fixed (0037): malformed saved settings are validated,

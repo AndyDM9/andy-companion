@@ -20,6 +20,32 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 judge-entry review
+
+- **Reviewed:** public README/testing guide, document/evidence indices, setup/evaluation commands,
+  rules/FAQ/latest reminders, source inventory and anonymous browser entry points. Inventory: **458**
+  tracked files, **224** Python files (all parse), **69** Markdown files, **34** voice-tool modules and
+  **90** test modules. This is scoped review/software verification, not execution of every hardware path.
+- **Improved:** guide starts with actions/expected results and maps the four criteria to evidence.
+  README labels pending video/photos/physical checks, documents settings recovery and corrects stale
+  test/hook wording. Replaced the optional raw env-file shortcut: an invented quoted key reproduced
+  its failure; the existing hidden prompt received the intended value. No actual keys used/retained.
+  Evidence index no longer calls the October 26 audit final; later audits are directly discoverable.
+- **Public checks:** repository anonymous/public/Apache-2.0; ten sample-page layouts and eight real
+  Nemotron guided paths pass on desktop/phone, separate Yes/No outcomes checked, three malformed/
+  pre-start/cross-origin requests refused. Only invented inputs/simulated effects; no retained replies
+  or new accuracy/physical result. Isolated wheel **three passed**; prior unchanged runtime's full
+  CPU **1,625 / 16 skipped**, robot environment **1,674 / one skipped**, notes CI `e8904a9` passed.
+  All three Spaces RUNNING; all three anonymous Hugging Face landing pages load their embedded app
+  (the static app uses its own static host). All **69** Markdown files checked: **376** relative targets
+  and **34** fragments resolve. No runtime deployment needed; publication follow-through below.
+- **Open:** public Devpost project returned an anti-bot challenge (403); no connected signed-in browser.
+  Actual draft was not reconciled or submission confirmed. Source export links **23/23** open;
+  final exporter still blocks video/tag/app pin. The new review guide repeats the deadline freeze.
+  Physical trials, reliable memory offers, provider latency, user sessions, video/gallery, release,
+  free working-project access and any requested physical-access arrangement retain their open scope.
+  [Review metadata](../evals/results/judge-review-audit-2026-10-27.json).
+
 ## October 27 saved-settings audit
 
 - **Reproduced:** a settings file containing `[]` raised AttributeError; malformed JSON silently

@@ -16,8 +16,9 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 **[Testing instructions for judges](docs/judging.md):** a short route through the public demo,
 an anonymous fresh install, the tests and optional model evaluations, with expected results and limits.
 
-**Filming October 27:** the real-robot video and photographs will be added after filming.
-The images of screens below use sample data; the search animation is simulation.
+**Review status, October 27:** public software demos and reproducible tests are available. The
+real-robot video, photographs and remaining [physical checks](docs/judging.md#what-is-still-pending)
+are pending. The images below use sample data; the search animation is simulation.
 
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
 shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
@@ -38,7 +39,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 - **Rules in code under the model:** **Be careful** on a risky letter whatever the model says, consent before
   anything is remembered, and no recordings or transcripts.
 
-**Judging it without a robot:** the real-robot video is being prepared for October 27. Watch the
+**Judging it without a robot:** the real-robot video is still pending. Watch the
 search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
 try [three guided AI examples](https://andydm-andy-companion-judge.hf.space/) with real Nemotron replies
 and simulated camera/search/family effects, funded by the author with no visitor key;
@@ -327,6 +328,9 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
 - **Unreadable reminder data:** Settings lists the saved original under **Reminders needing review**,
   without displaying its damaged contents. These reminders are inactive until reviewed. A helper
   can delete one saved copy or use Delete everything; there is no automatic repair or restoration.
+- **Unreadable settings:** Settings lists the inactive original under **Settings needing review**,
+  without displaying its contents. Defaults apply to choices not set again. A helper can delete one
+  saved copy or use Delete everything; the original is never restored automatically.
 - **Permission belongs to one action:** sharing reads back the exact proposed note, waits for a fresh yes,
   and permits that same note once, within two minutes. Saving offers use the same check; an explicit
   request to remember one item can save it directly. An unrelated yes never authorizes sharing.
@@ -518,9 +522,10 @@ Every command runs from the repository's root.
    better: accept [its licence](https://huggingface.co/nvidia/Cosmos-Reason2-8B) too and set the three
    `ANDY_LOCAL_EYES_*` lines in `.env.example`. `ANDY_VISION=local` uses it always
    ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
-7. **Optional: the suite on Nebius.** `cloud/suite-job.sh run` (it asks before starting the billed job), or locally
-   `NEBIUS_API_KEY="$(sed -n 's/^NEBIUS_API_KEY=//p' ~/.config/companion-hackathon/.env)" uv run python evals/run_suite.py --runs 3`
-   (the key read from the env file, never typed where the shell's history keeps it).
+7. **Optional: the suite on Nebius.** `cloud/suite-job.sh run` (it asks before starting the billed job).
+   For local reproduction, use the [hidden key prompt and scoped sample](docs/judging.md#inspect-evidence-and-optionally-call-the-models);
+   remove `--only` and choose `--runs 3` for the full repeated suite. These optional runs consume your
+   provider credits; the public examples and author-funded robot demonstration need no visitor key.
 
 Tests: `uv run --locked pytest`; GitHub Actions runs the CPU suite on pushes and pull requests.
 Every test, the robot-side ones included, in the robot's environment:
@@ -546,11 +551,11 @@ choice was made ([decisions](docs/decisions/README.md)).
 | `robot/` | The robot-side environment (Pollen's conversation app 1.0.1) |
 | [`cloud/`](cloud/README.md) | The Nebius Serverless Endpoint and Job scripts (and `secret.sh`: secrets never on a command line) |
 | [`evals/`](evals/README.md) | The conversation suite, the scam evaluation, the finder's scoring, and their scorecards |
-| `tests/` | About 1,000 tests (`uv run pytest`), run before every commit and push |
+| `tests/` | CPU and optional SDK/simulation checks (`uv run pytest`); required before commits, with CI on pushes and pull requests. Latest counts in [STATUS](docs/STATUS.md) |
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), the Devpost form's fields with every link checked (`devpost.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The three user services: the voice server, Andy, and the offline eyes |
 | `local-eyes/` | The offline eyes: NVIDIA Cosmos Reason 2 served by vLLM on 127.0.0.1, in their own environment |
-| `.githooks/` | The pre-commit hook: the tests, and a check for key-like strings and env files |
+| `.githooks/` | Commit hooks: tests, key/env-file checks and rejection of recognised private AI-session links/trailers |
 | [`sim/`](sim/README.md) | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
 | `space/` | The public demo of the screens as a Hugging Face Space (Docker, sample data, no keys) |
 | `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page, published on Hugging Face ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)) |

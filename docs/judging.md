@@ -2,7 +2,30 @@
 
 Andy is a Reachy Mini companion robot built with NVIDIA Nemotron on Nebius and Tavily.
 Start with the guided AI examples or public screens; the commands below test the software without hardware.
-Last verified October 27, 2026. The real-robot video and photographs are being prepared for October 27.
+Last verified October 27, 2026. The real-robot video and photographs are still pending.
+
+## Start a review
+
+| Open | Try | Expected result and boundary |
+|---|---|---|
+| [Guided AI examples](https://andydm-andy-companion-judge.hf.space/) | Choose **When the glasses are absent**, then **Try this example**. For sharing, start **You decide what family sees**, then choose Yes or No separately. | Real Nemotron replies and tool trace. The absent-room result is simulated. The sample family state changes only after the separate Yes; No leaves nothing shared. No login, visitor key, microphone, upload or connected robot. |
+| [Andy's screen](https://andydm-andy-companion.hf.space/screen?t=demo-screen) | Open **What can I ask?**; close it with Escape/Back. Wait for the next sample card. | Voice examples and rotating invented cards. These pages are read-only; disabled/refused writes are intentional. No model or robot runs here. |
+| [Evidence](../evals/results/README.md) and [limitations](../README.md#limitations) | Compare current text results, historical Jobs, simulation and physical finder trials. | Sources, failures and dates are available. A software pass or simulation result is not a new physical success rate. |
+| [Fresh install](#reproduce-the-keyless-checks) | Clone, sync and run the CPU suite. | No key or robot required. Optional SDK/simulation tests may skip; this is software verification. |
+| [Real robot access](#test-the-real-robot) | Request the tasks you want to try and give your time zone. | Free author-funded assisted testing. The public GitHub request needs sign-in; organisers can contact the entrant through the submission. A requested physical-access method is agreed separately. |
+
+If a hosted Space is starting, wait for its loading status to finish and reload. If the guided
+allowance is busy/exhausted or a provider call fails, use the free robot-access route; you do not
+need to enter a personal API key. The public examples supplement the working-project access plan.
+
+## Follow the judging evidence
+
+| Criterion | Where to inspect it |
+|---|---|
+| Technological implementation | [Architecture](architecture.md), [NVIDIA/Nebius use](../README.md#how-it-uses-nvidia-and-nebius), source and [measured results](../README.md#measured-reachy-mini-lite) |
+| Design | Guided examples, the screen/family/settings pages and [accessibility](../README.md#accessibility); hardware-flow checks still pending are listed below |
+| Potential impact | [Audience research](../README.md#built-on-what-older-adults-have-said-they-want), [cost/path to shipping](../README.md#path-to-shipping) and limitations; no target-user study is claimed |
+| Quality of the idea | [Three moments](../README.md#three-moments), the finder and [Tavily comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json), with the code boundaries in [decisions](decisions/README.md) |
 
 ## Testing costs and access
 
@@ -178,6 +201,12 @@ and short sessions with potential users remain pending. The submission tag and a
 will be set after the final validation. Until then, `main` changes; use `git rev-parse HEAD` to record
 which revision you tested. The [submission checklist](submission-checklist.md) and
 [limitations](../README.md#limitations) state the current gaps.
+
+At the October 30, 10:00 PT deadline, freeze this repository, the submitted hosted demos, video and
+project materials and keep testing access available through December 15. Later work uses a separate
+development copy unless organisers explicitly permit a change, as their
+[final reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
+requires. The tag/app pin is our reproducibility check; it does not replace that freeze.
 
 Before final export, run `uv run python scripts/devpost.py --ref hackathon-submission --final`.
 It rejects a placeholder video, missing local tag or unpinned app, then checks public links. It does

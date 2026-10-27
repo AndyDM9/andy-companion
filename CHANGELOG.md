@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Make the judge review route concrete
+
+- Put public actions, expected results, costs/access boundaries and evidence for all four criteria
+  at the start of the testing guide. Label pending footage/physical checks prominently; repeat the
+  submitted-material freeze without treating the release pin as an official entry rule.
+- Replace the README's raw key shortcut, which mishandles supported quoted values, with the existing
+  hidden-prompt instructions. Reproduced with invented values only. Document saved-settings recovery,
+  correct stale test/hook descriptions and connect the evidence/document indices to the current review.
+- Anonymous public browser: ten sample layouts/eight guided real-model paths and three protocol refusals
+  pass; invented inputs and simulated effects only. All 224 tracked Python files parse, isolated wheel
+  three checks pass; runtime code/profile/tools/keys/hardware unchanged, no new deployment needed.
+- All three anonymous Hugging Face embeds load; 376 relative targets/34 fragments resolve across
+  all 69 Markdown files. No additional model or hardware call in these wrapper/link checks.
+- Devpost returned an anti-bot challenge and no signed-in connected browser was available; the actual
+  draft/submission remains unverified. All 23 export links open; final export still refuses video/tag/app pin.
+
 ### Preserve unreadable saved settings
 
 - Validate stored settings and cache shapes before consumers use them (0037). Wrong roots previously

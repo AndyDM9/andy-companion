@@ -2,13 +2,13 @@
 
 Everything written down about Andy, in two groups: what explains the product, and the records of how it was built
 and entered in the Nebius x NVIDIA Global AI Hackathon. Start with the [README](../README.md); this page says where
-everything else is. Last checked 2026-10-26.
+everything else is. Review-entry links checked 2026-10-27.
 
 ## Read first: the product
 
 | Document | What it says |
 |---|---|
-| [judging.md](judging.md) | Testing access: the public sample demo, a fresh clone, reproducible checks and how to request the real robot |
+| [judging.md](judging.md) | Start a review: actions/expected results, evidence for the four criteria, public demos, a fresh clone, reproducible checks and real-robot access |
 | [features.md](features.md) | What Andy does, in full, feature by feature |
 | [architecture.md](architecture.md) | How the parts fit: the robot, the home computer, Nebius and the web; what each module owns and must not reach into |
 | [decisions/](decisions/README.md) | Why each choice was made, one record per decision, with the options weighed and when to revisit |
