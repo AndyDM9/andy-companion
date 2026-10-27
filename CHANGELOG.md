@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Align the entry with rules, function evidence and current priorities
+
+- Re-read official rules, FAQ, final checklist and judging advice. PLAN now prioritises observed
+  physical tasks, repeatable finder measurements, consented anonymous task counts/ratings and final
+  packaging, using current hardware/hosting. Four criteria remain equally weighted; no tool-count target.
+- Features now maps each core function to available evidence and the remaining physical check.
+  Qualify variable memory/photo-story offers using the current retained failures; no new capability
+  or improved physical rate claimed. Video, final release/access and actual submission stay open.
+- Fixed the existing metadata-only physical scorer (0039): extra input cells could enter the report.
+  Exact schema validation applies on read and score, canonical rows are copied, file updates are
+  atomic/owner-only and new plans/reports preserve existing files/symlinks. Correct absent responses
+  and errors per group are explicit; scoring-checkout provenance is labelled accurately.
+- **24 new cases**, **34 scorer cases**, CPU **1,693 / 16 skipped**, Python lint pass. Invented files/
+  faults only, no real trial results. Current awake preflight **20/21**, optional second look stopped,
+  tiny Nemotron probe **0.53 s**, zero microphone drops/suspect voice-log lines. No runtime restart,
+  provider/model/household change or resolved-outage/physical-voice-latency claim.
+
 ### Verify the published release before final export
 
 - Reproduced a local tag moving while the published fixture tag stayed behind: old final export

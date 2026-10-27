@@ -1,10 +1,29 @@
 # What Andy does, in full
 
-Last checked 2026-10-26. Hardware steps without a result remain unverified on the robot.
+Reviewed 2026-10-27. Hardware steps without a result remain unverified on the robot.
 
 The README has the short version. Each item here says what Andy does and, where it matters, what is
 decided in code rather than by the model. How each was tested is in the [changelog](../CHANGELOG.md)
 and the [live test](live-test.md).
+
+## Evidence and submission priorities
+
+The interaction descriptions include intended model behavior. Offers and wording can vary; use
+the evidence below and [current status](STATUS.md) when describing what has been demonstrated.
+
+| Function | Evidence available | Highest-priority remaining check |
+|---|---|---|
+| Find an object, inspect it and point | Software/simulation checks; earlier physical scorecard: [3 correct points in 9 attempts, 6 misses](../evals/results/finder-eval-2026-10-20-2037.json). Later founder reports of glasses/watch finds are untimed | Run the current fixed physical plan, including present/absent objects, errors and timings; separately test a moved object and a TV-photo decoy |
+| Read an invented letter and explain/check it | Local OCR, classifier/source/consent checks and model tests; public guided examples use simulated OCR | Observe the held-page voice-to-screen flow on the actual robot, including an ordinary bill and an invented suspicious letter |
+| Keep/share with the person's choice | Actual confirmation-gate tests and public guided separate Yes/No paths | Complete spoken requests with the real phone page; verify No leaves nothing shared and Yes shares only the read-back item |
+| Talk, know the day and set reminders | Prior physical verification; founder confirms a correct-time answer; software/audio health checks | Fresh observed interruption, due-reminder and core filming pass; health checks alone do not verify the spoken task |
+| Tavily lookups and background research | Runtime integrations, written-case comparisons and source displays | Observe research, stop it, and verify no later answer reappears after cancellation |
+| Local Cosmos vision fallback | Simulation and camera-IPC fallback checks, with no retained frame/description | Optional real voice/finder fallback demonstration after the core tasks pass; full offline conversation is not provided |
+| Memory/photo-story offers | Permission enforced in code; [current text runs](../evals/results/suite-2026-10-27-consent-source-local.json) retain inconsistent offers | Treat the offer as variable; use verified explicit requests in demonstrations and do not promise an automatic offer every time |
+
+The fixed 30-attempt plan is our measurement protocol, not a hackathon eligibility threshold. It
+stores fixed labels, outcomes and times only; all attempts count, including errors. Code tests,
+simulation, founder observations and formal physical trials retain their separate scopes.
 
 ## Talking with you
 
@@ -39,8 +58,9 @@ and the [live test](live-test.md).
   is asleep.
 - **The weather from the National Weather Service:** the forecast for your town, the day named, and any
   official alert first.
-- **"Shall I remember that?"** When you mention something coming up (a recital, a visit), Andy asks
-  first, and the morning after it asks how it went. Andy can remember a fact or a moment only after
+- **"Shall I remember that?"** The model can offer to remember something coming up (a recital, a visit);
+  these offers still vary in the text evaluation. A stored moment can prompt a follow-up the next morning.
+  Andy can remember a fact or a moment only after
   you ask or say yes; that is checked in code, not left to the model ("No, don't remember that" is a no).
   "Forget the recital" forgets that one moment, and if several match, Andy asks which. A memory offer
   prepares the exact content first, reads it back, and accepts one fresh yes for that same content
@@ -60,8 +80,10 @@ and the [live test](live-test.md).
   memory for two minutes, never saved). Never for finding a person. If the eyes are switched off, Andy
   says so within a few seconds.
 - **A photo's story** (2026-10-20): when family send a photo, or you hold one up, Andy says what is in it and
-  asks one open question ("Where was it taken?"). Tell it the story and Andy asks "Shall I keep that story?";
-  it keeps one short line only after a yes, and shares it with family only if you ask.
+  is prompted to ask one open question ("Where was it taken?"). After your story, the intended next step
+  is an offer to keep it; photo-story offers failed all three current text runs. A memory offer requires
+  the exact readback and fresh yes; an explicit request to remember can save that item directly. Family
+  sharing requires its own exact readback and fresh yes.
 - **What Andy looked at:** after a search, the TV shows the four views in the order Andy turned, the one it
   chose marked with where the thing is; when it couldn't see it, the four views show where it looked.
 - **"What do you see?"** One picture, described in two or three plain sentences. It never says who a

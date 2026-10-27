@@ -35,6 +35,30 @@ model. Stage two scores four criteria, equally weighted, 1 to 5.
 | Potential impact | A real person and a real problem: older adults living at home, and the family who help. Honest wording, nothing claimed that is not measured |
 | Quality of the idea | A companion that says it is a robot, never imitates a person, never stores what it hears, and lets the person decide what family sees; a language model that moves the robot to find things; a scam check where the web finds the trick and a strong model tells it from the topic, measured both ways |
 
+## October 27 entry priorities
+
+Rules, FAQ and organiser advice rechecked October 27. The four criteria remain equally weighted;
+the organiser advice says there is no minimum tool count. The current priority is a coherent,
+demonstrated physical workflow and credible audience evidence, using the existing hardware/hosting.
+No additional robot, hosting migration or model integration is required by this plan.
+
+1. Complete observed letter, object-finding and person-controlled family-sharing tasks; retain failures
+   and time the current finder with the existing fixed 30-attempt protocol. Include absent cases and
+   the separate moved-object/TV-decoy challenges. The protocol's count is our plan, not an entry rule.
+2. Improve a specific failed core step when reproduced, then re-test it. Prioritise perception/close-up/
+   pointing, interruption/cancellation and consent. Leave optional taught moves, extra proactive offers
+   and infrastructure changes outside the main filming dependency.
+3. Have a few consenting potential users try the key tasks if feasible; retain only agreed anonymous
+   task counts/ratings, with no audio, transcript or identifiable quotes. This is informal feedback,
+   not a study or an outcome claim.
+4. Film the working physical scenes, complete the final release/app publication checks, reconcile the
+   Devpost form with the source and confirm actual submission before the deadline. Keep the project
+   available through judging and freeze all submitted materials at the cutoff as recorded above.
+
+The [feature evidence table](features.md#evidence-and-submission-priorities) distinguishes built code,
+simulations, founder observations and formal physical results. Remaining model-offer failures and
+physical gaps stay visible; no milestone is completed by this prioritisation.
+
 ## Milestones
 
 Each milestone is done only when its "done when" is true and STATUS.md and CHANGELOG.md say so.

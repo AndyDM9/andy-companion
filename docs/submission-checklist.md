@@ -6,6 +6,9 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Current rules/FAQ/checklist/judging advice compared with overall functions; feature-evidence table and PLAN prioritise physical proof/user-task feedback/packaging and qualify variable model offers
+- [x] Metadata-only physical scorer refuses extra cells/unplanned data, preserves previous files and distinguishes correct absent responses from errors; 24 new cases, 34 scorer cases/full CPU suite pass, no actual physical result inferred
+
 - [x] Final exporter requires exact public-tag commit and matching published app package metadata; missing/malformed/unavailable/mismatched metadata or failed links produce no final fields. 44 new cases, 65 exporter cases and full CPU suite pass; drafts unchanged
 - [x] Release-check source published and anonymously verified; fresh locked clone 1,669 / 16 skipped, hosted CPU/wheel/SDK checks pass, 247-commit source secrets scan clean and 380 file targets/34 fragments resolve
 - [ ] Actual final tag/app publication verified by the gate once video, local tag and app pin are ready; this software test does not complete release or submission

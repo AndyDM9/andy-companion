@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-27",
+  "scope": "Overall function/evidence review and current rules/submission priorities; repair of metadata-only physical trial preparation. No new physical trial, end-user feature, model, hardware purchase or runtime change.",
+  "official_sources": [
+    "https://nebiusglobalaihackathon.devpost.com/rules",
+    "https://nebiusglobalaihackathon.devpost.com/details/faqs",
+    "https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist",
+    "https://nebiusglobalaihackathon.devpost.com/updates/47163-recording-will-your-project-ship"
+  ],
+  "assessment": {
+    "priority": "Observed core physical workflows, current repeated finder evidence, consented anonymous task counts/ratings and completed packaging",
+    "core_functions": [
+      "Object sweep/close-up/point with actual screen views",
+      "Local letter OCR and explanation/scam check",
+      "Person-controlled family sharing with fresh readback/Yes/No",
+      "Voice/day/reminders, interruption and cancellable Tavily research"
+    ],
+    "existing_hosting_hardware_sufficient_for_platform_plan": true,
+    "new_broad_model_or_infrastructure_integration_selected": false,
+    "remaining_physical_proof": true,
+    "memory_offer_variation_retained": true
+  },
+  "reproduced_before_fix": {
+    "extra_csv_cell_accepted": true,
+    "unplanned_note_enters_scorecard": true,
+    "invented_input_only": true
+  },
+  "repair": {
+    "exact_schema_on_read_and_score": true,
+    "canonical_scorecard_rows_detached_from_input": true,
+    "atomic_owner_only_file_updates": true,
+    "new_plans_reports_do_not_replace_existing_files_or_symlinks": true,
+    "correct_absent_and_errors_per_presence_group_explicit": true,
+    "scoring_checkout_not_misrepresented_as_automatic_per_trial_robot_provenance": true
+  },
+  "validation": {
+    "new_cpu_cases": 24,
+    "physical_scorer_cases_passed": 34,
+    "cpu_passed": 1693,
+    "cpu_skipped": 16,
+    "python_lint_E9_F_B": "passed",
+    "scope": "Invented temporary input/output files and injected I/O failures; no actual physical scorecard published",
+    "documentation_links": {
+      "markdown_files": 71,
+      "relative_targets": 387,
+      "fragments_checked": 35,
+      "problems": []
+    }
+  },
+  "health_check": {
+    "mode": "awake",
+    "summary": "20 of 21 checks passed. Fix the \u2717 lines above.",
+    "failures": [
+      "\u2717 Second look answers: 404"
+    ],
+    "nemotron_probe": "\u2713 Nemotron replies quickly: 0.53 s for a short reply",
+    "audio_health": "\u2713 Microphone audio: 0 drops in the last minute",
+    "privacy_log_check": "\u2713 No words in the voice log: 0 lines in the last day that may hold what was heard"
+  },
+  "limits": "The scorer validates metadata, not the truth of human-entered results, concurrent writers or power-loss durability. The current 30-attempt plan and informal user-task count are project choices, not eligibility thresholds. Existing physical scorecard 3/9 remains historical; later glasses/watch reports are untimed. Remaining observed core tasks, video/gallery, final release/app pin, free working-project/hardware access, actual Devpost reconciliation/submission and final Serverless Job remain pending. The short API probe is not physical voice latency or proof that earlier provider timeouts are resolved.",
+  "source_sha256": {
+    "evals/physical_trials.py": "91153adb1afabb7eaad0237af4a7f6fc6fdd1613ffe6447642c518df4e0b519f",
+    "tests/test_physical_trials.py": "b2a5046ffaca30aef302620e6365bf73cf90ae04099de727e133e069fc89f051",
+    "docs/features.md": "9b018172645fe825c0cc9f6365bf8cfba545c4403aa5d092728ae94a00a580f1",
+    "docs/PLAN.md": "d8c3ea56f15e5c3fb25c6a8919ae14dd5582f2015d58db4062503bbb1f05e186"
+  },
+  "publication": {
+    "status": "pending"
+  }
+}

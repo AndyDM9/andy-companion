@@ -43,3 +43,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0036](0036-keep-private-publishing-metadata-out-of-history.md) | Keep private publishing metadata out of history | 2026-10-27 | accepted |
 | [0037](0037-validate-and-preserve-saved-settings.md) | Validate saved settings and preserve unreadable originals with visible deletion | 2026-10-27 | accepted |
 | [0038](0038-final-export-checks-the-published-release.md) | Final export checks the exact published tag and app package metadata before emitting fields | 2026-10-27 | accepted |
+| [0039](0039-physical-scorecards-use-only-validated-metadata.md) | Physical scorecards validate metadata, distinguish errors and preserve previous files | 2026-10-27 | accepted |

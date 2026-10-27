@@ -214,7 +214,12 @@ remain. Without AbortController, the status guard caps requests but cannot cance
   3 Ultra. It does not run a microphone, camera or motors. Run locally or as a Nebius Serverless Job
   (`cloud/suite-job.sh run`); input and code hashes accompany new scorecards.
 - `evals/physical_trials.py`: a fixed 30-attempt plan for the real finder; manual outcomes and timings,
-  all attempts retained, confidence intervals, no speech or pictures. A score requires all 30.
+  all attempts retained, confidence intervals, no speech or pictures. A score requires all 30. Exact
+  row/key/type/label/time validation applies to reads and direct scoring (0039); unsupported notes/
+  extra cells are refused and canonical rows copied. Correct-absent responses and errors per group
+  are explicit. Complete owner-only temporary files precede atomic CSV replacement; new plans/
+  reports never replace existing files/symlinks. Single operator, no concurrent-writer guarantee.
+  Scoring-checkout provenance is labelled separately from unverified per-trial robot provenance.
 - `evals/scam_eval.py`: the scam check five ways: word rules alone (`--word-rules`), and Lightning and Ultra each alone and with Tavily's warnings; Tavily fetched once
   per message and the models run three times as Nebius Serverless Jobs, two at a time
   (`cloud/scam-job.sh`; a job's request may hold 64 KB, so four parts).

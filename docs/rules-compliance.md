@@ -40,6 +40,22 @@ also says to leave the code repository, video and project materials unchanged af
 copy for later work unless an exception is explicitly allowed. This clarifies our earlier tag-only
 wording. Video, physical/access evidence and actual submission remain open; no footage is inferred.
 
+## Function/evidence priorities (October 27)
+
+Re-read the official rules, FAQ, final checklist and organiser judging advice. Deadline, platform/
+model, track, award-combination, footage/access, feedback and freeze requirements unchanged. Existing
+Reachy Mini/desktop and Nebius runtime calls meet the chosen platform design; no additional hardware
+list or minimum tool count is imposed by the sources. PLAN prioritises current physical workflows,
+repeated measurements and consented anonymous task counts/ratings. Feature descriptions now qualify
+variable memory offers and separate software/simulation from observed physical evidence.
+
+The fixed 30-trial scorer accepts only validated planned metadata and protects previous files (0039).
+It exposes correct absent responses/errors and labels scoring-checkout provenance. Twenty-four new
+cases use invented files/results; no actual physical result or submission item is completed. The
+30-trial count is our protocol, not an eligibility threshold. Video/gallery, actual free project/
+hardware access, final release/app pin and Devpost reconciliation/submission remain open. No new
+model, provider credentials, end-user feature, hardware purchase or deployment; no prize guarantee.
+
 ## Release-publication gate (October 27)
 
 The internal final-export guard now checks the exact public GitHub tag's commit and the published

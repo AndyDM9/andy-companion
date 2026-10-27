@@ -20,6 +20,32 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 function/rules strategy review
+
+- **Sources:** official rules/FAQ, final checklist and judging-advice update re-read. Current deadline,
+  platform/model, equally weighted criteria, award-combination, footage/access and freeze obligations
+  remain unchanged. PLAN prioritises the current physical workflows, repeated evidence, consented
+  anonymous task counts/ratings and packaging, using existing hardware/hosting. No prize is promised.
+- **Functions:** new feature-evidence table separates implementation, simulation, founder observations
+  and formal physical results. Memory/photo-story offers are now qualified against current failures.
+  Older physical finder result **3/9** remains; later glasses/watch reports are untimed. No physical
+  reader or new formal finder result is inferred.
+- **Repair (0039):** invented extra CSV cell passed into a report. The fixed 30-trial tool now validates
+  exact rows/keys/string cells/labels/outcomes/times on read and scoring, copies canonical rows,
+  preserves files with complete owner-only updates/no-clobber creation, and separates correct absent
+  responses from errors. Scoring-checkout metadata explicitly does not identify each robot attempt's
+  revision automatically; one operator and unchanged verified robot revision required.
+- **Validation:** **24 new cases**, **34 scorer cases**, full CPU **1,693 / 16 skipped**; lint pass.
+  Temporary invented files, failure injection and synthetic outcomes only; no real scorecard published.
+  Live awake preflight **20/21**, optional second look stopped (404), tiny Nemotron probe **0.53 s**,
+  zero microphone drops/suspect voice-log lines. These checks do not establish physical task outcomes,
+  voice latency or resolution of previous cloud timeouts. Existing three services active; no restart,
+  new controller, model/profile, key or household-store change needed. Publication pending.
+- **Open:** observed letter/reader, finder present/absent/moved/TV-decoy, voice/phone choice and
+  research cancellation trials; actual 30-trial plan/user feedback; video/gallery, final Serverless
+  Job/release/app pin, free project testing/access and actual Devpost reconciliation/submission.
+  [Audit metadata](../evals/results/function-strategy-audit-2026-10-27.json).
+
 ## October 27 release-publication audit
 
 - **Reproduced:** a real bare fixture held the older published tag while the local tested tag moved.

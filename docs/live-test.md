@@ -61,6 +61,13 @@ Keep every attempt, including mistakes. The scorer refuses incomplete plans. The
 fixed task labels, outcomes and times. `ANDY_FINDER_RECORD` stays off. Copy the completed scorecard
 into `evals/results/` only after checking it, then update the public rate and its interval together.
 
+Use one operator and one unchanged, verified robot revision for the series. The scorecard's `commit`
+is the checkout when scored; it does not automatically identify the robot revision during each attempt.
+Check that relationship before publishing. Extra/missing columns, extra cells and unsupported data
+are refused. Existing input/scorecard paths are never replaced by `init` or `score`; choose a fresh
+output name. Updates are saved as complete owner-only files. These file checks do not verify that a
+human-entered outcome is true or make the scorer a concurrent-writer system.
+
 **Brief usability sessions:** ask two or three consenting potential users to try a letter, a search,
 a reminder and a family note with minimal coaching. Retain only agreed anonymous feedback and task
 counts. Record what confused them and what changed; do not save conversations or claim outcomes.
