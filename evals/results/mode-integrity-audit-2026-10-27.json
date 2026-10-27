@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-27",
+  "scope": "Saved sleep/quiet mode integrity and dashboard startup status; invented temporary files, mocked recognizer/process lifecycle and separate live health checks. No physical task evaluation.",
+  "decision": "docs/decisions/0040-unreadable-mode-does-not-wake-andy.md",
+  "reproduced_before": {
+    "wrong_root": "AttributeError",
+    "invalid_quiet_deadline": "TypeError"
+  },
+  "changes": [
+    "Validate supported top-level and one-level reminder return state; missing file retains first-run awake default.",
+    "Existing unreadable file is left in place; desktop automatic wakes/restarts pause until explicit wake or normal mode change.",
+    "Fixed deduplicated warning, health tile and preflight check; no raw file or exception values exposed.",
+    "Mode writes validate before a locked atomic owner-only replacement; failed writes clean temporary files.",
+    "Dashboard app startup writes awake mode; supervised installation preserves saved mode. No dashboard wake listener or supervisor scheduling added."
+  ],
+  "tradeoffs": [
+    "Automatic reminders and expired-quiet wakes can be delayed until explicit correction.",
+    "No recovery copy for this ephemeral control file; explicit mode change replaces it.",
+    "Schema changes require an explicit supported-format update; unavailable wake recognition or unwritable storage requires owner intervention."
+  ],
+  "verification": {
+    "new_cases": 63,
+    "targeted_mode_and_app_cases": 67,
+    "cpu": {
+      "passed": 1756,
+      "skipped": 16
+    },
+    "installed_robot_environment": {
+      "passed": 1805,
+      "skipped": 1,
+      "scope": "Software suite with robot SDK installed; no motors, audio or provider used by these tests."
+    },
+    "installed_wheel_resource_checks": 3,
+    "isolated_wheel_with_numpy_fault_wake_health_permissions": "pass",
+    "changed_python_lint": "pass",
+    "diff_check": "pass",
+    "other_robot_controllers_before_restart": 0,
+    "existing_service_restart": true,
+    "services_active": [
+      "andy",
+      "andy-voice",
+      "andy-eyes"
+    ],
+    "live": {
+      "household_mode_bytes_unchanged": true,
+      "mode": "awake",
+      "schema_compatible": true,
+      "summary": "21 of 22 checks passed. Fix the \u2717 lines above.",
+      "failures": [
+        "\u2717 Second look answers: 404"
+      ],
+      "saved_mode_check_passed": true,
+      "nemotron_probe": "\u2713 Nemotron replies quickly: 0.48 s for a short reply",
+      "audio_health": "\u2713 Microphone audio: 0 drops in the last minute",
+      "privacy_log_check": "\u2713 No words in the voice log: 0 lines in the last day that may hold what was heard"
+    }
+  },
+  "publication": {
+    "source": "pending",
+    "screen_preview": "pending"
+  },
+  "not_established": [
+    "Real damaged household state recovery",
+    "New physical reader/finder/consent/cancellation/barge-in result",
+    "Physical speech quality or latency",
+    "Resolution of earlier intermittent provider timeouts",
+    "Completed video, final tag/app pin, testing-access arrangement or Devpost submission"
+  ]
+}

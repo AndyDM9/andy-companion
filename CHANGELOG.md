@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Repair saved mode handling and dashboard startup status
+
+- Existing wrong-shaped mode data could crash reads or quiet-deadline checks. Validate the supported
+  schema, pause automatic wakes/restarts on unreadable desktop state and keep the original untouched
+  until an explicit wake or mode change (0040). A missing file still has the first-run awake default.
+  A fixed warning, health tile and live preflight identify the issue without exposing contents.
+- Mode writes validate first and use a locked atomic owner-only replacement with failed-write cleanup.
+  Invalid quiet durations/deadlines cannot replace the previous mode. Dashboard app startup writes
+  awake status; supervised installation preserves its saved mode. Dashboard wake scheduling is unchanged.
+- **63 new cases**, **1,756 CPU / 16 skipped**, **1,805 robot-environment / 1 skipped**, three installed
+  wheel checks, isolated wheel/NumPy fault-and-wake smoke and changed-Python lint pass. Invented files,
+  stubbed audio/processes and injected failures only; no physical task result inferred.
+- Restarted the existing Andy service with zero competing controllers; all three services active and
+  household mode bytes unchanged. Live preflight **21/22**, optional second look 404, tiny Nemotron
+  probe **0.48 s**, zero microphone drops/suspect voice-log lines. Automatic reminders can be delayed
+  while damaged mode data awaits explicit correction; no voice-latency or cloud-availability claim.
+
 ### Align the entry with rules, function evidence and current priorities
 
 - Re-read official rules, FAQ, final checklist and judging advice. PLAN now prioritises observed

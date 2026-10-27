@@ -56,6 +56,8 @@ def mode_and_app(live_at: float, now: float) -> List[Dict[str, str]]:
     from andy_companion import state
 
     mode = state.current()
+    if mode.get("unreadable"):
+        return [tile("Andy", "warn", "Saved sleep/quiet mode unreadable; explicit wake or mode change needed")]
     if mode["mode"] == "quiet":
         return [tile("Andy", "off", "Quiet; the wake listener waits for “Andy, wake up”")]
     if mode["mode"] == "asleep":

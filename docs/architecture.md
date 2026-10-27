@@ -63,10 +63,21 @@ reads the Tavily key from the env file for the setup page's events finder (never
 in the app (`watchdog.py`) asks the supervisor for a restart when the microphone keeps dropping audio, notes
 speech left unanswered, and writes counts only to `health.json`.
 
+Under the desktop supervisor, an existing unreadable mode file pauses automatic wakes/restarts and
+the current app stops through its normal control path (0040). Reads validate mode/deadline/return
+metadata and leave the file intact; the offline listener requires an explicit wake, not a greeting.
+A normal explicit mode change writes valid owner-only state atomically and restores operation.
+Health/preflight show the problem, the status strip remains renderable, and no recovery copy or
+payload log is created. A missing file retains the first-run awake default. This fault path can delay
+reminders until corrected. Dashboard start/stop behavior remains manually controlled as below.
+
 Two ways to run the same Andy, both through `andy_companion.app_mode.install()`: on a computer
 under the supervisor (`scripts/andy`), or as a Reachy Mini dashboard app (`reachy_app/`, no
 supervisor: no wake phrase; the dashboard starts and stops it; it reads the env file itself, and its
 watchdog only logs).
+
+Dashboard app startup writes a valid awake mode (0040), so a previous asleep/quiet state does not
+mislabel the app the dashboard has just started. Supervised installation preserves the existing mode.
 
 Both app entry points load allowlisted settings with `app_mode.read_env` / `load_env` before
 configuring the voice connection; the desktop shell does not parse keys. The doctor shares that

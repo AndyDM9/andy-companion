@@ -231,9 +231,11 @@ def live(e: dict) -> None:
             check("Eyes on Token Factory", available, f"{model}; {detail}",
                   "check the configured model, key and network; catalogue membership is not an inference test")
 
-    from andy_companion import settings, watchdog
+    from andy_companion import settings, state, watchdog
+    check("Saved sleep/quiet mode", not state.current().get("unreadable"), "",
+          "the mode file needs review; an explicit wake or mode change replaces it with a valid state")
     running = subprocess.run(["pgrep", "-f", "scripts/run_andy.py"], capture_output=True).returncode == 0
-    check("Andy's app running", running, "", "./scripts/andy, and say \"Andy, wake up\" if it is asleep")
+    check("Andy's app running", running, "", "say \"Andy, wake up\" through the existing supervisor; check systemctl --user status andy")
     others = other_robot_apps()
     check("Only Andy drives the robot", others == [],
           "could not identify every robot connection" if others is None else ", ".join(others),

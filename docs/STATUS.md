@@ -20,6 +20,29 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 saved-mode and startup audit
+
+- **Reproduced/fixed (0040):** an invented list root caused `AttributeError`; an invalid quiet
+  deadline caused `TypeError`. Existing unreadable mode now stays untouched, reads as asleep with a
+  fault flag and pauses desktop automatic wakes/restarts until an explicit wake or normal mode change.
+  The running app follows its normal stop path; health/preflight report the problem without contents.
+  This can delay reminders until corrected. Missing-file first-run behavior remains awake.
+- **Dashboard:** starting the app now writes awake status, including over stale asleep/quiet data.
+  Supervised installation leaves mode untouched. Dashboard start/stop remains manual, without the
+  supervisor's wake listener or quiet scheduling. No new control service or hardware feature added.
+- **Validation:** **63 new cases**, **1,756 CPU / 16 skipped**, **1,805 robot-environment / 1 skipped**;
+  three isolated wheel checks, wheel/NumPy fault-and-wake smoke, Python lint and diff checks pass.
+  Temporary invented files, simulated recognizer/processes and injected failures; no physical task,
+  actual damaged household state, model-profile evaluation or user study.
+- **Running service:** zero competing controllers before restarting the existing service; Andy,
+  voice and eyes services active. Household mode bytes unchanged, current mode awake. Live preflight
+  **21/22**: optional second look stopped (404), tiny Nemotron probe **0.48 s**, zero microphone drops
+  and suspect voice-log lines. This does not resolve previous intermittent provider timeouts or
+  establish physical speech quality/latency. [Audit metadata](../evals/results/mode-integrity-audit-2026-10-27.json).
+- **Still open:** observed letter/reader, finder present/absent/moved/TV-decoy, voice/phone choice,
+  cancellation/barge-in and repeated physical trials; video/gallery, final Serverless Job/release/app
+  pin, free testing/access arrangements and actual Devpost draft reconciliation/submission.
+
 ## October 27 function/rules strategy review
 
 - **Sources:** official rules/FAQ, final checklist and judging-advice update re-read. Current deadline,

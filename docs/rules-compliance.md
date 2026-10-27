@@ -8,6 +8,12 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 27 saved-mode audit: code, feature descriptions and decision 0040 were checked against this
+record. Invented fault tests and a service health probe verify mode handling and startup status;
+they add no physical, eligibility or completed-submission claim. No video, licence, visibility,
+provider/model requirement or testing-access arrangement changed. Video, physical evidence and final
+submission remain open; the full submitted materials still freeze at the official deadline.
+
 ## The judges' advice (update of about 2026-10-21, "Will It Ship?")
 
 | Advice | How the entry meets it |

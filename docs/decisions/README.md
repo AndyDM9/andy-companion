@@ -44,3 +44,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0037](0037-validate-and-preserve-saved-settings.md) | Validate saved settings and preserve unreadable originals with visible deletion | 2026-10-27 | accepted |
 | [0038](0038-final-export-checks-the-published-release.md) | Final export checks the exact published tag and app package metadata before emitting fields | 2026-10-27 | accepted |
 | [0039](0039-physical-scorecards-use-only-validated-metadata.md) | Physical scorecards validate metadata, distinguish errors and preserve previous files | 2026-10-27 | accepted |
+| [0040](0040-unreadable-mode-does-not-wake-andy.md) | Unreadable saved mode pauses automatic wakes until explicit intent restores valid control state | 2026-10-27 | accepted |

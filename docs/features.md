@@ -49,6 +49,9 @@ simulation, founder observations and formal physical trials retain their separat
 - **Your pace and your volume** stick: "please speak more slowly", "speak up".
 - **Quiet when you want it:** "be quiet for an hour", "goodnight", and "Andy, wake up". You can talk
   over Andy, and it stops at once.
+- **Unreadable saved mode:** on the desktop supervisor, a damaged sleep/quiet file pauses automatic
+  wakes and shows a health/preflight warning. An explicit wake or normal mode change restores valid
+  control state. Reminders can be delayed until this is corrected; reminder entries are not deleted.
 
 ## Your day
 

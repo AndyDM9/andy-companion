@@ -96,6 +96,8 @@ def install(screen: bool = False) -> None:
     from andy_companion import state
 
     state.install_sleep_tool()
+    if screen:
+        state.awake()  # the dashboard has started this app; stale supervisor mode must not describe it as asleep
     from andy_companion import watchdog
 
     watchdog.install(supervised=not screen)

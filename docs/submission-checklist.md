@@ -6,6 +6,9 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Saved mode rejects unsupported data without echoing it; unreadable desktop state pauses automatic wakes/restarts until explicit correction, health/preflight warn, dashboard startup status matches its start intent; 63 new cases, both full suites and installed-wheel checks pass
+- [ ] Recheck the core physical workflows and complete video/release/access/submission; software mode tests and a healthy preflight do not complete these tasks
+
 - [x] Current rules/FAQ/checklist/judging advice compared with overall functions; feature-evidence table and PLAN prioritise physical proof/user-task feedback/packaging and qualify variable model offers
 - [x] Function/evidence/scorer review published with matching anonymous source and hosted CPU/wheel/SDK checks; 387 file targets/35 fragments resolve, Devpost source failure summary matches the linked current run (actual draft still pending)
 - [x] Metadata-only physical scorer refuses extra cells/unplanned data, preserves previous files and distinguishes correct absent responses from errors; 24 new cases, 34 scorer cases/full CPU suite pass, no actual physical result inferred

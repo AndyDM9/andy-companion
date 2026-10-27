@@ -57,7 +57,10 @@ def reminders_to_wake(now: Optional[datetime] = None) -> List[Dict[str, Any]]:
     """The due reminders that may wake Andy now: all of them, except, for SETTLE_S after Andy went to sleep
     or quiet, those that were already due by then."""
     now = now or datetime.now()
-    since = state.current(now).get("since") or 0
+    mode = state.current(now)
+    if mode.get("unreadable"):
+        return []
+    since = mode.get("since") or 0
     settling = 0 <= now.timestamp() - since < SETTLE_S
     return [r for r in reminders.due(now) if not (settling and r["due"] <= since)]
 
@@ -79,6 +82,8 @@ def wake_up(reason: str, now: Optional[datetime] = None) -> None:
     """Wake Andy. Woken for a reminder, Andy remembers the sleep or quiet it came from, to go back to."""
     now = now or datetime.now()
     s = state.current(now)
+    if s.get("unreadable") and reason != "wake phrase":
+        return  # a stale automatic reason cannot override newly unreadable mode data
     if reason == "reminder due" and s["mode"] in ("asleep", "quiet"):
         ids = [r["id"] for r in reminders_to_wake(now)]
         state.awake(return_to={"mode": s["mode"], "until": s.get("until"), "reminders": ids})
@@ -115,6 +120,8 @@ class BackAfterReminder:
     def __call__(self) -> bool:
         now = self.clock()
         s = state.current()
+        if s.get("unreadable"):
+            return True  # the existing app stops through its normal process-control path
         back = s.get("return_to")
         if s["mode"] != "awake" or not isinstance(back, dict):
             self.said_at = None
@@ -200,7 +207,8 @@ def wait_asleep() -> str:
         from vosk import KaldiRecognizer
 
         recognizer = KaldiRecognizer(model, wake.RATE, json.dumps(wake.GRAMMAR))
-        mode = state.current()["mode"]
+        saved = state.current()
+        mode = "quiet" if saved.get("unreadable") else saved["mode"]  # require an explicit wake, not a greeting
         also = [(KaldiRecognizer(model_es, wake.RATE, json.dumps(wake.GRAMMAR_ES, ensure_ascii=False)), wake.triggers_for(mode, "es"))] \
             if model_es is not None else []
         if wake.heard(wake.mic_chunks(source), recognizer, should_stop=lambda: wake_reason() is not None,
@@ -229,14 +237,16 @@ def main() -> int:
             from andy_companion import watchdog
 
             why = watchdog.take_request()
-            action = after_exit(state.current()["mode"], code, restart_asked=why is not None)
+            after = state.current()
+            action = "wait" if after.get("unreadable") else after_exit(after["mode"], code, restart_asked=why is not None)
             logger.info("App stopped (code %s): %s%s", code, action, f" ({why})" if why else "")
             if action == "restart":
                 time.sleep(RESTART_DELAY_S)
                 continue
             if action == "sleep":
                 state.asleep()
-            chimes.play("sleep", force=True)
+            if not after.get("unreadable"):
+                chimes.play("sleep", force=True)
             continue
         reason = wait_asleep()
         logger.info("Waking: %s", reason)

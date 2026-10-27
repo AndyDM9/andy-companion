@@ -6,6 +6,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 | Question | The scorecard to read |
 |---|---|
+| Can damaged sleep/quiet state break startup? | [mode-integrity-audit-2026-10-27.json](mode-integrity-audit-2026-10-27.json): schema checks, explicit recovery, desktop pause and dashboard-start status; invented faults, both full suites, installed wheel and separate live preflight. Reminders can be delayed until correction; no new physical result |
 | What should improve before submission? | [function-strategy-audit-2026-10-27.json](function-strategy-audit-2026-10-27.json): current rules/function evidence/priorities and strict metadata-only trial scoring, with invented-file tests and a separate health probe; no new physical rate or completed submission |
 | Can final export detect mismatched publication? | [release-publication-audit-2026-10-27.json](release-publication-audit-2026-10-27.json): exact public tag commit and app package metadata, fixed metadata failures and no final fields on failed links; invented releases plus public absent-tag/development-metadata reads, no completed release |
 | Where should a reviewer start? | [Testing guide](../../docs/judging.md#start-a-review): public actions, expected results, access/cost boundaries and the evidence for each judging criterion. [Current status](../../docs/STATUS.md) records later audits and open work |
