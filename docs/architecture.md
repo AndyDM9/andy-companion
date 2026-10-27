@@ -176,8 +176,13 @@ remain. Without AbortController, the status guard caps requests but cannot cance
   model-not-found response or refused request does not. This is independent of voice and hood verification.
 - `scripts/devpost.py --ref hackathon-submission --final`: rejects a placeholder/non-video YouTube
   address, absent local release tag, app dependency still on main, or oversized form fields, then
-  requires tracked files and the three export inputs to match the tag's snapshot before it
-  checks public links. It reads repository metadata only; it does not submit anything or certify video
+  requires tracked files and the three export inputs to match the tag's snapshot. Anonymous bounded
+  GETs then resolve the exact public GitHub tag to the same commit (lightweight or up to five annotated
+  objects) and compare the public Hugging Face app's package metadata byte for byte (0038). Only then
+  do public citation checks run; no final fields are printed on a failed check. Metadata bodies are
+  capped at 64 KiB, socket timeout five seconds, supplied object URLs ignored, fixed non-echoing errors.
+  Draft output is unchanged. It reads public/repository metadata only, never provider settings, and
+  does not publish/move tags, update the app, submit anything or certify video
   rights, visibility, duration or hardware behavior. Judge access separates sample preview, optional
   own-key reproduction and author-funded robot testing (decision 0022).
 - Guided judge inference (decision 0023) is a separate standard-library HTTP process and Docker Space.

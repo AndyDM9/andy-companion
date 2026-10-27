@@ -6,6 +6,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 | Question | The scorecard to read |
 |---|---|
+| Can final export detect mismatched publication? | [release-publication-audit-2026-10-27.json](release-publication-audit-2026-10-27.json): exact public tag commit and app package metadata, fixed metadata failures and no final fields on failed links; invented releases plus public absent-tag/development-metadata reads, no completed release |
 | Where should a reviewer start? | [Testing guide](../../docs/judging.md#start-a-review): public actions, expected results, access/cost boundaries and the evidence for each judging criterion. [Current status](../../docs/STATUS.md) records later audits and open work |
 | What did the latest judge-entry review check? | [judge-review-audit-2026-10-27.json](judge-review-audit-2026-10-27.json): anonymous repository/Space access, browser examples, documentation routes, scoped evidence and remaining submission gaps. No new physical trial or accuracy benchmark |
 | What did the October 26 re-audit verify? | [reaudit-2026-10-26.json](reaudit-2026-10-26.json): installation, software checks, public access, scoped probes and remaining submission gaps; no new physical-accuracy rate |

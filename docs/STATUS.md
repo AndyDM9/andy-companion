@@ -20,6 +20,28 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 release-publication audit
+
+- **Reproduced:** a real bare fixture held the older published tag while the local tested tag moved.
+  With public pages mocked 200, the old final exporter returned success. Local pinning also does not
+  publish that installer metadata to Hugging Face.
+- **Fixed (0038):** after local release checks, anonymous bounded metadata GETs require the exact
+  public tag's resolved commit and identical published app package metadata. Lightweight/annotated
+  tags supported, cycle/identity/depth/type/size checks, supplied URLs ignored. Unavailable or wrong
+  metadata produces a fixed reason without contents. All final link checks precede copy-ready text.
+  App-pin checks require a list of strings, not a substring in an invalid string/container.
+  Ordinary draft output/exit behavior unchanged. No mutation or provider configuration loaded.
+- **Validation:** **44 new cases**, **65 exporter cases**, full CPU **1,669 / 16 skipped**; lint pass.
+  Two real loopback HTTP cases cover actual local annotated tags, public tag-object parsing and a
+  complete invented final export. Independent public GETs confirm absent release tag and matching
+  development app metadata; no actual final release exists to validate. Draft links **23/23** open.
+- **Scope:** helper/source only; no robot service, app install, model, keys, household data or hosted
+  runtime change/redeployment. Current `--final` still exits 2 for video/tag/app pin, before public
+  metadata checks. Physical trials, reliable memory offers, provider latency, video/gallery, final
+  release/access and actual Devpost reconciliation/submission stay open. A future passing gate does
+  not verify video rights/visibility/footage, all app assets or future immutability. Publication pending.
+  [Audit metadata](../evals/results/release-publication-audit-2026-10-27.json).
+
 ## October 27 judge-entry review
 
 - **Reviewed:** public README/testing guide, document/evidence indices, setup/evaluation commands,

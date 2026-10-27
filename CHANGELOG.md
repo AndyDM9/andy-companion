@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Verify the published release before final export
+
+- Reproduced a local tag moving while the published fixture tag stayed behind: old final export
+  succeeded with mocked HTTP 200 links. Now require the exact public GitHub tag to resolve to the
+  local tested commit and the published Reachy Mini app package metadata to match (0038).
+- App-pin validation requires a project table and a dependency list of strings; a substring in a
+  single string or a wrong-shaped container cannot pass. Five new schema cases cover this boundary.
+- Anonymous bounded GETs support lightweight/annotated tags, check identity/cycles/depth and ignore
+  supplied object URLs. Failed/missing/mismatched metadata gives fixed errors without response text.
+  Final citation failures also stop before printing any copy-ready fields. Draft output is unchanged.
+- 44 new cases, **65 exporter cases**, full CPU **1,669 / 16 skipped**, changed Python lint pass.
+  Two loopback HTTP integrations cover local/public annotated tags and matched metadata; independent
+  public reads confirm the release tag is absent and development app metadata matches its source.
+- All 23 draft links open. Current final export still stops at video/tag/app pin; no real tag,
+  app, robot, provider configuration or submission changed. This internal gate adds no eligibility,
+  physical, future-immutability or all-app-asset claim; public rate limits/outages can block it.
+
 ### Make the judge review route concrete
 
 - Put public actions, expected results, costs/access boundaries and evidence for all four criteria

@@ -6,6 +6,9 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Final exporter requires exact public-tag commit and matching published app package metadata; missing/malformed/unavailable/mismatched metadata or failed links produce no final fields. 44 new cases, 65 exporter cases and full CPU suite pass; drafts unchanged
+- [ ] Actual final tag/app publication verified by the gate once video, local tag and app pin are ready; this software test does not complete release or submission
+
 - [x] Judge guide leads with actions/expected results and maps all four criteria to scoped evidence; README fixes quoted-key instructions and distinguishes pending footage/physical checks
 - [x] Anonymous repository public/Apache-2.0, ten sample-page layouts/eight guided model paths and three protocol refusals verified; all 224 tracked Python files parse and isolated wheel passes
 - [x] All three anonymous Hugging Face landing-page embeds load; all 69 Markdown files checked, 377 relative targets and 34 fragments resolve

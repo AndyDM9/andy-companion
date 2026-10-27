@@ -40,6 +40,21 @@ also says to leave the code repository, video and project materials unchanged af
 copy for later work unless an exception is explicitly allowed. This clarifies our earlier tag-only
 wording. Video, physical/access evidence and actual submission remain open; no footage is inferred.
 
+## Release-publication gate (October 27)
+
+The internal final-export guard now checks the exact public GitHub tag's commit and the published
+Hugging Face app package metadata after local checks (0038). All final checks precede copy-ready text.
+These are reproducibility controls, not additional hackathon rules. Bounded anonymous read-only GETs
+need no provider key and publish/change nothing. Forty-four new cases and two actual loopback HTTP
+fixtures use invented releases, not working hardware or a real final submission. Full CPU suite passes;
+23 draft links open. Actual public reads confirm the release tag is absent and the development app
+metadata matches; current local video/tag/app-pin failures still stop the final path first.
+
+No actual final release/access, footage/rights, model score, robot function or submission requirement
+is completed by these tests. GitHub/Hugging Face availability/rate limits can stop verification;
+passing it does not prove future immutability or all app assets. Existing physical/video/access and
+deadline-freeze obligations remain unchanged.
+
 ## Judge-entry review (October 27)
 
 Rules, FAQ, final-call and submission-checklist updates re-read at the official pages. No change to

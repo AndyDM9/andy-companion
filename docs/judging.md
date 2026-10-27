@@ -209,6 +209,12 @@ development copy unless organisers explicitly permit a change, as their
 requires. The tag/app pin is our reproducibility check; it does not replace that freeze.
 
 Before final export, run `uv run python scripts/devpost.py --ref hackathon-submission --final`.
-It rejects a placeholder video, missing local tag or unpinned app, then checks public links. It does
-not verify YouTube visibility, duration, footage, photo rights, hardware results or actual submission;
-those remain manual checks in the checklist.
+It first rejects a placeholder video, missing local tag, changed snapshot or unpinned app. It then
+checks that the exact public GitHub tag resolves to the same commit and that the published Reachy
+Mini app's package metadata matches the tested file, followed by public links. Missing/mismatched
+metadata, a failed lookup or a broken link stops final export before any copy-ready fields are printed.
+These checks need public GitHub/Hugging Face access, no account or key; they never publish or move a
+tag or update the app. If a lookup fails, resolve access/publication and retry; draft export is still
+available. This is our reproducibility gate, not proof of future immutability or every app asset.
+YouTube visibility, duration, footage, photo rights, hardware results and actual submission remain
+manual checks in the checklist.

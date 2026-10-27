@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-27",
+  "scope": "Final-export release identity and public installer metadata. Invented temporary Git/bare repositories, mocked public responses and two actual loopback HTTP cases; separate anonymous public metadata GETs. No real release/tag/app/Devpost update, provider call, robot or household-store change.",
+  "reproduced_before_fix": {
+    "published_fixture_tag_differs_from_local_tested_tag": true,
+    "page_checks_mocked_200": true,
+    "old_final_export_exit": 0
+  },
+  "validation": {
+    "new_cpu_cases": 44,
+    "exporter_cases_passed": 65,
+    "cpu_passed": 1669,
+    "cpu_skipped": 16,
+    "python_lint_E9_F_B": "passed",
+    "actual_http_fixture_cases": 2,
+    "local_and_public_annotated_tags_exercised": true,
+    "same_commit_and_app_metadata_required": true,
+    "failed_final_check_emits_no_form_fields": true,
+    "fixed_errors_do_not_echo_invented_private_errors": true,
+    "metadata_GETs_have_no_authorization_or_cookies": true,
+    "draft_compatibility": [
+      {
+        "arguments": [],
+        "draft_stdout_unchanged": true,
+        "exit_unchanged": true
+      },
+      {
+        "arguments": [
+          "--check"
+        ],
+        "draft_stdout_unchanged": true,
+        "exit_unchanged": true
+      }
+    ],
+    "draft_export_links_open": 23,
+    "draft_export_links_checked": 23,
+    "app_pin_requires_dependency_list_of_strings": true
+  },
+  "live_metadata_probe": {
+    "anonymous_published_tag_absent": true,
+    "published_development_app_metadata_matches": true,
+    "tag_created_or_app_changed": false,
+    "public_gets_only": true
+  },
+  "limits": {
+    "max_response_bytes": 65536,
+    "socket_timeout_seconds": 5,
+    "max_annotated_tag_objects": 5,
+    "supported_project_git_object_id": "40-hex SHA-1",
+    "no_actual_final_release_to_test": true,
+    "future_immutability_or_all_app_assets_verified": false,
+    "video_visibility_duration_footage_rights_or_actual_submission_verified": false
+  },
+  "current_final_export": {
+    "exit": 2,
+    "blockers": [
+      "Missing video URL",
+      "Local release tag absent",
+      "App dependency still main"
+    ],
+    "public_lookup_skipped_until_local_checks_pass": true
+  },
+  "source_sha256": {
+    "scripts/devpost.py": "da7a470aca50c76a42d0366485307d1dfadd4b85d530037d96bcdc1b83923db7",
+    "tests/test_devpost.py": "b64e7f6592072b9598ff975224c9cddaccb3c5ec9f8c6beabd89c95a6604993f",
+    "reachy_app/pyproject.toml": "3cde7b3bc69752dc4fd96a1fa0ddc40c1593f0e2595aa1458a67a2a40902e41e"
+  },
+  "publication": {
+    "status": "pending"
+  }
+}
