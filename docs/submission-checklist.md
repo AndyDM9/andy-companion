@@ -6,6 +6,10 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Ambiguous reminder times refused; malformed stores preserved whole, unique recovery copies visible/deletable and delete-everything complete; 40 CPU/six real-dispatch regressions pass
+- [x] Eight English/Spanish desktop/phone recovery/healthy browser cases pass, with simulated UI writes and separate actual HTTP deletion test
+- [ ] Reminder-integrity update verified as installed package, running service and published read-only preview; no new physical trial inferred
+
 - [x] Quoted memory commands cannot grant explicit permission; legitimate delimited requests and full-utterance refusals covered by 48 pure/eight installed SDK regressions
 - [x] October 27 consent-source change passes full CPU/robot-environment tests, isolated wheel and Python lint; unproven model/tool prototypes left out
 - [x] Final source model runs retained: 93, 94, 94/97 full suite; 8, 8, 7/9 focused source cases; real gates/synthetic tools, failures visible and no forbidden memory/family effect reported

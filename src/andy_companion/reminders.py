@@ -10,6 +10,7 @@ import contextlib
 import fcntl
 import json
 import logging
+import math
 import os
 import re
 import secrets
@@ -26,6 +27,35 @@ MAX_TEXT = 200
 REPEATS = (None, "daily")
 
 
+def _timestamp(value: Any) -> bool:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    try:
+        if not math.isfinite(value):
+            return False
+        datetime.fromtimestamp(value)
+        return True
+    except (OverflowError, OSError, ValueError):
+        return False
+
+
+def _valid(items: Any) -> bool:
+    if not isinstance(items, list):
+        return False
+    seen = set()
+    for item in items:
+        if not isinstance(item, dict):
+            return False
+        identifier, text = item.get("id"), item.get("text")
+        if (not isinstance(identifier, str) or not identifier.strip() or len(identifier) > 64
+                or identifier in seen or not isinstance(text, str) or not text.strip() or len(text) > MAX_TEXT
+                or not _timestamp(item.get("due")) or item.get("repeat") not in REPEATS
+                or ("created" in item and not _timestamp(item["created"]))):
+            return False
+        seen.add(identifier)
+    return True
+
+
 def _load() -> List[Dict[str, Any]]:
     """The reminders; a file that can't be read as them is set aside (never overwritten) and Andy starts afresh."""
     try:
@@ -34,22 +64,35 @@ def _load() -> List[Dict[str, Any]]:
         return []
     except (OSError, ValueError):            # ValueError covers a broken file and bad UTF-8 (2026-10-25 review)
         items = None
-    if isinstance(items, list):
+    if _valid(items):
         return items
-    with contextlib.suppress(OSError):
-        aside = STORE.with_name(f"reminders.unreadable-{int(time.time())}.json")
+    aside = None
+    try:
+        # Reserve a unique destination: two damaged files in one second must not overwrite each other.
+        fd, name = tempfile.mkstemp(dir=STORE.parent, prefix=f"{STORE.stem}.unreadable-{int(time.time())}-", suffix=".json")
+        aside = Path(name)
+        os.close(fd)
         os.replace(STORE, aside)
-        logging.getLogger("andy.reminders").warning("The reminders file couldn't be read; set aside as %s", aside.name)
+    except OSError:
+        if aside is not None and STORE.exists():
+            with contextlib.suppress(OSError):
+                aside.unlink(missing_ok=True)
+        raise ValueError("The reminders could not be read or preserved. No reminder changes were made.") from None
+    logging.getLogger("andy.reminders").warning("The reminders file couldn't be read; set aside as %s", aside.name)
     return []
 
 
 def _save(items: List[Dict[str, Any]]) -> None:
     STORE.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     fd, tmp = tempfile.mkstemp(dir=STORE.parent, suffix=".tmp")
-    with os.fdopen(fd, "w") as f:
-        json.dump(items, f)
-    os.chmod(tmp, 0o600)
-    os.replace(tmp, STORE)
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(items, f, allow_nan=False)
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, STORE)
+    finally:
+        with contextlib.suppress(OSError):
+            os.unlink(tmp)
 
 
 @contextmanager
@@ -66,13 +109,21 @@ def _locked() -> Iterator[None]:
 def due_time(minutes: Optional[float] = None, at: Optional[str] = None, now: Optional[datetime] = None) -> datetime:
     """In N minutes, or at HH:MM (today, or tomorrow if that time has passed)."""
     now = now or datetime.now()
+    if minutes is not None and at is not None:
+        raise ValueError("Choose one reminder time: minutes from now or a clock time, not both.")
     if minutes is not None:
-        if not 0 < float(minutes) <= 7 * 24 * 60:
-            raise ValueError("Minutes must be between 1 and a week.")
-        return now + timedelta(minutes=float(minutes))
+        try:
+            amount = float(minutes)
+        except (TypeError, ValueError, OverflowError):
+            raise ValueError("Minutes must be a number greater than zero and at most one week.") from None
+        if isinstance(minutes, bool) or not math.isfinite(amount) or not 0 < amount <= 7 * 24 * 60:
+            raise ValueError("Minutes must be a number greater than zero and at most one week.")
+        return now + timedelta(minutes=amount)
     if at:
         try:
-            hour, minute = (int(x) for x in str(at).strip().split(":"))
+            if not isinstance(at, str) or not re.fullmatch(r"\d{1,2}:\d{2}", at.strip()):
+                raise ValueError
+            hour, minute = (int(x) for x in at.strip().split(":"))
             when = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
         except ValueError:
             raise ValueError("Say the time as HH:MM, for example 17:30.") from None
@@ -122,17 +173,41 @@ def add(text: str, minutes: Optional[float] = None, at: Optional[str] = None,
     if repeat == "daily" and not at:
         raise ValueError("A daily reminder needs a time of day.")
     when = due_time(minutes, at, now)
-    item = {"id": secrets.token_hex(3), "text": text, "due": when.timestamp(), "repeat": repeat,
+    item = {"text": text, "due": when.timestamp(), "repeat": repeat,
             "created": time.time()}
     with _locked():
         items = _load()
+        identifiers = {r["id"] for r in items}
+        for _ in range(8):
+            item["id"] = secrets.token_hex(3)
+            if item["id"] not in identifiers:
+                break
+        else:
+            raise ValueError("A reminder identifier could not be created. No new reminder was saved.")
         items.append(item)
         _save(items)
     return item
 
 
 def pending() -> List[Dict[str, Any]]:
-    return sorted(_load(), key=lambda r: r["due"])
+    with _locked():
+        return sorted(_load(), key=lambda r: r["due"])
+
+
+def recovery_files() -> List[Dict[str, Any]]:
+    """Metadata only, so preserved data can be reviewed/deleted without displaying its contents."""
+    with _locked():
+        return [{"id": p.name, "at": p.stat().st_mtime}
+                for p in sorted(STORE.parent.glob(f"{STORE.stem}.unreadable-*.json")) if p.is_file()]
+
+
+def delete_recovery(identifier: str) -> bool:
+    with _locked():
+        for path in STORE.parent.glob(f"{STORE.stem}.unreadable-*.json"):
+            if path.name == identifier and path.is_file():
+                path.unlink()
+                return True
+    return False
 
 
 def due(now: Optional[datetime] = None) -> List[Dict[str, Any]]:

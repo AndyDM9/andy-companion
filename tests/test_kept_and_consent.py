@@ -45,7 +45,7 @@ def test_each_item_can_be_deleted_and_everything_at_once(tmp_path):
     assert kept.delete("fact", fact) and kept.summary()["fact"] == []
     assert json.loads((tmp_path / "memory.json").read_text())["version"] == 1      # Pollen's format kept
     counts = kept.delete_everything()
-    assert counts == {"reminder": 1, "moment": 1, "fact": 0, "shared": 1, "photo": 1, "place": 0, "pending": 0}
+    assert counts == {"reminder": 1, "moment": 1, "fact": 0, "shared": 1, "photo": 1, "place": 0, "recovery": 0, "pending": 0}
     assert all(not v for v in kept.summary().values())
     assert kept.words_for(counts) == ["a reminder", "a remembered moment", "a shared note", "a photo from family"]
 
@@ -71,6 +71,31 @@ def test_the_settings_page_deletes_and_andy_tells_the_person(tmp_path):
         assert post("/api/setup/delete-all", {"name": "Anna"})["deleted"]
         with pytest.raises(urllib.error.HTTPError):
             urllib.request.urlopen(urllib.request.Request(f"{url}/api/setup/delete-all?s=wrong", method="POST", data=b"{}"))
+    finally:
+        httpd.shutdown()
+
+
+def test_owner_page_lists_and_deletes_a_preserved_copy_without_showing_its_contents():
+    reminders.STORE.write_text('[{"text":"invented private damaged reminder"}]')
+    httpd = screen_server.serve(host='127.0.0.1', port=0)
+    try:
+        base = f'http://127.0.0.1:{httpd.server_address[1]}'
+        token = board.tokens()['setup']
+        with urllib.request.urlopen(f'{base}/api/setup?s={token}', timeout=5) as response:
+            raw = response.read()
+        result = json.loads(raw)
+        assert b'invented private damaged reminder' not in raw
+        copy, = result['kept']['recovery']
+        body = {'name': 'Invented Helper', 'kind': 'recovery', 'id': copy['id']}
+        request = urllib.request.Request(f'{base}/api/setup/delete?s={token}', method='POST',
+                                         data=json.dumps(body).encode())
+        with urllib.request.urlopen(request, timeout=5) as response:
+            deleted = json.load(response)
+        assert deleted['kept']['recovery'] == []
+        assert deleted['deleted'] == ['a saved reminder copy needing review']
+        assert not reminders.recovery_files()
+        notice = board.next_for_person()
+        assert notice['type'] == 'deleted'
     finally:
         httpd.shutdown()
 

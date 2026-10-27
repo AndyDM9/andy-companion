@@ -322,6 +322,9 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
   questions and answers live only in the local screen server's memory; a restart forgets them. Pending
   messages and answers are listed on the settings page. Delete everything also clears the current card,
   captions and views. Andy tells you who deleted what.
+- **Unreadable reminder data:** Settings lists the saved original under **Reminders needing review**,
+  without displaying its damaged contents. These reminders are inactive until reviewed. A helper
+  can delete one saved copy or use Delete everything; there is no automatic repair or restoration.
 - **Permission belongs to one action:** sharing reads back the exact proposed note, waits for a fresh yes,
   and permits that same note once, within two minutes. Saving offers use the same check; an explicit
   request to remember one item can save it directly. An unrelated yes never authorizes sharing.

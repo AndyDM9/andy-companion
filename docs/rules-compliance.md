@@ -19,6 +19,15 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Reminder-integrity audit (October 27)
+
+Time validation and malformed-store handling improve existing reminder/deletion functions. Owner-page
+saved-copy metadata and inactive-data wording make preservation and deletion visible; the page does
+not display damaged contents. Tests use invented stores and simulated browser writes, plus an actual
+local HTTP deletion regression. No new model score, physical demonstration, medical guidance or
+outcome claim. Existing household store checked read-only for compatibility. Video, physical trials,
+free working-project access, release tag/app pin and actual submission remain separate.
+
 ## Permission-source publication follow-through
 
 Published source and guided Space revisions match, public examples still use invented inputs and

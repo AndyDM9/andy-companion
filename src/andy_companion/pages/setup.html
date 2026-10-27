@@ -348,6 +348,8 @@
     "j_screen": "The screen", "j_tv": "The TV's position",
     "kept_h": "What Andy remembers{for}",
     "kept_hint": "Everything Andy keeps, besides these settings. Andy tells {them} about anything you delete.",
+    "k_recovery": "Reminders needing review", "recovery_item": "Saved reminder copy — could not be loaded",
+    "recovery_hint": "These reminders are not active. Their original data is kept for review. Deleting a copy removes it.",
     "k_reminder": "Reminders", "k_moment": "Remembered moments", "k_fact": "Remembered facts", "k_shared": "Shared with family", "k_place": "Where things are", "k_pending": "Waiting to be said",
     "k_photo": "Photos from family", "photo_item": "Photo",
     "none_yet": "None yet: {list}.", "nothing_kept": "Andy keeps nothing yet besides these settings.",
@@ -419,6 +421,8 @@
     "j_screen": "La pantalla", "j_tv": "Dónde está el televisor",
     "kept_h": "Lo que Andy recuerda{para}",
     "kept_hint": "Todo lo que Andy guarda, aparte de estos ajustes. Andy le cuenta{a} todo lo que usted borre.",
+    "k_recovery": "Recordatorios por revisar", "recovery_item": "Copia guardada de recordatorios que no se pudo leer",
+    "recovery_hint": "Estos recordatorios no están activos. Los datos originales se conservan para revisarlos. Al borrar una copia se elimina.",
     "k_reminder": "Recordatorios", "k_moment": "Momentos recordados", "k_fact": "Cosas recordadas", "k_shared": "Compartido con la familia", "k_place": "Dónde están las cosas", "k_pending": "Pendiente de decir",
     "k_photo": "Fotos de la familia", "photo_item": "Foto",
     "none_yet": "Nada todavía: {list}.", "nothing_kept": "Andy todavía no guarda nada aparte de estos ajustes.",
@@ -603,19 +607,22 @@
   }
 
   // --- What Andy remembers ----------------------------------------------------------------------------
-  const KEPT = ["reminder", "moment", "fact", "shared", "photo", "place", "pending"];
+  const KEPT = ["reminder", "moment", "fact", "shared", "photo", "place", "pending", "recovery"];
   function renderKept(kept) {
     const box = $("kept"); box.replaceChildren();
     const empty = [];
+    let hasItems = false;
     for (const kind of KEPT) {
       const items = kept[kind] || [];
-      if (!items.length) { empty.push(t("k_" + kind).toLowerCase()); continue; }
+      if (!items.length) { if (kind !== "recovery") empty.push(t("k_" + kind).toLowerCase()); continue; }
+      hasItems = true;
       const group = make("section");
       group.append(text(make("h3"), `${t("k_" + kind)} (${items.length})`));
+      if (kind === "recovery") group.append(text(make("p", { className: "hint" }), t("recovery_hint")));
       const ul = make("ul", { className: "kept-list" });
       for (const it of items) {
         // Each line starts with a capital, as a list is written; Andy keeps their own words as said.
-        const label = kind === "photo" ? t("photo_item") : it.text.charAt(0).toUpperCase() + it.text.slice(1);
+        const label = kind === "photo" ? t("photo_item") : kind === "recovery" ? t("recovery_item") : it.text.charAt(0).toUpperCase() + it.text.slice(1);
         const li = make("li"), tx = make("span", { className: "t" });
         tx.append(label, text(make("span", { className: "when" }), it.when || ""));
         const b = make("button", { type: "button", className: "quiet" });
@@ -625,9 +632,9 @@
       }
       group.append(ul); box.append(group);
     }
-    if (empty.length === KEPT.length) box.append(text(make("p", { className: "none" }), t("nothing_kept")));
+    if (!hasItems) box.append(text(make("p", { className: "none" }), t("nothing_kept")));
     else if (empty.length) box.append(text(make("p", { className: "none" }), t("none_yet", { list: list(empty) })));
-    $("delete-all").hidden = empty.length === KEPT.length;
+    $("delete-all").hidden = !hasItems;
   }
 
   // A deletion or a new link needs a second tap within four seconds; the first only asks.

@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-27",
+  "scope": "Invented temporary reminder stores, real installed SDK dispatch with no robot, local HTTP deletion, intercepted browser state and simulated UI writes. Existing household schema checked read-only; no household words, audio or pictures retained.",
+  "reproduced_before_fix": {
+    "conflicting_daily_request": {
+      "at": "08:00",
+      "minutes": 1,
+      "request_clock": "12:00",
+      "incorrect_result_clock": "12:01"
+    },
+    "malformed_valid_json": "TypeError/OverflowError during reminder read/render",
+    "recovery_name_collision": "Timestamp-only destination could overwrite an earlier copy in the same second",
+    "deletion": "Preserved copies were not listed or deleted by delete-everything"
+  },
+  "validation": {
+    "cpu_passed": 1296,
+    "cpu_skipped": 15,
+    "sdk_environment_passed": 1337,
+    "sdk_environment_skipped": 1,
+    "new_cpu_regressions": 40,
+    "new_real_dispatch_cases": 6,
+    "isolated_wheel_passed": 3,
+    "changed_python_E9_F_B": "passed",
+    "browser_cases": 8,
+    "actual_http_copy_deletion": "passed",
+    "existing_household_store_schema_compatible": true,
+    "existing_recovery_count_before_restart": 0,
+    "compatibility_check_read_only": true,
+    "relative_links_checked": 310,
+    "broken_relative_links": 0
+  },
+  "limits": "All rows in an unreadable store become inactive until manually reviewed; preserved whole, never silently drop rows. No automatic repair/restore. Failed preservation prevents a replacement. This is not a physical reminder/delivery or user study result.",
+  "text_model": "Profile/tool schemas/confirmation gate unchanged; current 93/94/94 text scorecard remains a synthetic-tool measure and does not validate this data-store implementation. No new LLM score.",
+  "runtime_publication": {
+    "existing_service_restarted": true,
+    "competing_controllers": 0,
+    "live_preflight_passed": 20,
+    "live_preflight_total": 21,
+    "remaining": "Optional paid second-check endpoint deliberately stopped; 404",
+    "audio_drops_last_minute": 0,
+    "suspect_voice_log_lines_last_day": 0,
+    "source_and_public_preview_publication": "pending"
+  },
+  "prior_documentation_ci": {
+    "ref": "bb5a66f",
+    "status": "success",
+    "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40516576629"
+  },
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/reminders.py",
+      "sha256": "dfab0c4f6ba10f0c808e4b2a0cbf55df8bfc597d436d06c17f6b536fc1b284ae"
+    },
+    {
+      "path": "src/andy_companion/kept.py",
+      "sha256": "7e7a0fe13c5aeff87cd25ead9bda086bf2d55e2834f8947146f5d1b8c4e8f768"
+    },
+    {
+      "path": "src/andy_companion/pages/setup.html",
+      "sha256": "a71e6cfbf8b5cc3b14d16f4586cf78a4c47a0763ca142c9df3e58949fbc81438"
+    },
+    {
+      "path": "tests/test_reminder_integrity.py",
+      "sha256": "40f526899b92c7dcd8072cce92de8410d564545bf897fee1d55db6aafdb6bdf1"
+    },
+    {
+      "path": "tests/test_reminder_dispatch.py",
+      "sha256": "3dae5cf943286471c4970274189b5a2f016ca4c70b6d64f70aad8f4a52a14e9c"
+    },
+    {
+      "path": "tests/test_kept_and_consent.py",
+      "sha256": "7caf1fd67561ad2ba5afae966a29491937f6415ae3189085b0517dc56fef54e6"
+    },
+    {
+      "path": ".github/workflows/tests.yml",
+      "sha256": "e58c51c6fee545f6961cfd34310d3686fd7fe90d56001657e7fb7a98d00f09be"
+    }
+  ]
+}

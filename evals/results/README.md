@@ -22,6 +22,17 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 reminder-integrity audit
+
+[Implementation audit](reminder-integrity-audit-2026-10-27.json): 1,296 CPU / 1,337 installed robot-
+environment passes, three isolated wheel checks, 40 new CPU cases and six real SDK dispatch cases.
+Covers ambiguous times, malformed rows, unique preservation, failed writes, bounded ID collision
+retries and deletion. [Eight browser cases](reminder-recovery-ui-2026-10-27.json) cover English/Spanish,
+desktop/phone and healthy/recovery states with intercepted invented API data and simulated UI writes.
+An actual local HTTP deletion regression is separate. Existing real reminder file checked read-only
+for schema compatibility; no contents retained or changed. No new physical delivery, LLM score or
+user-study result; unreadable data remains inactive until manual review.
+
 ## October 27 permission-source follow-through
 
 Current [full suite](suite-2026-10-27-consent-source-local.json): **93, 94 and 94 of 97**. Profile/tools

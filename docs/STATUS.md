@@ -20,6 +20,31 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 reminder-integrity audit
+
+- **Fixed:** a daily call containing `minutes=1` plus `at=08:00` selected the wrong time. Conflicting
+  time sources and invalid numeric/clock values now fail before persistence. Generated IDs are checked
+  under lock with bounded collision retries. No model prompt, tool schema or model setting change.
+- **Fixed:** valid JSON with malformed reminder rows could break reads/rendering. Complete original
+  data is preserved under a unique recovery filename; no silent row dropping. Failed preservation
+  prevents replacement, readers use the writer lock and failed saves clean temporary copies (0031).
+- **Deletion completed:** saved copies are listed as inactive metadata on the existing owner Settings
+  page, English/Spanish, and included in single/delete-everything actions and the named-helper notice.
+  No damaged content displayed. No automatic repair/restore; all reminders in an unreadable file are
+  inactive until reviewed. An unwritable directory still needs owner intervention.
+- **Validation:** full CPU **1,296 / 15 skipped**, installed robot environment **1,337 / one skipped**;
+  40 new CPU regressions and six installed-dispatch cases. Changed Python lint passed. Eight browser
+  cases cover English/Spanish, desktop/phone, healthy empty state and two-tap individual/all deletion
+  ([evidence](../evals/results/reminder-recovery-ui-2026-10-27.json)). Existing reminder file checked
+  read-only: compatible, no household words retained or modified.
+- **Evidence scope:** current 97-case text scorecard remains 93/94/94, unchanged profile/tool/gate
+  inputs, synthetic tools; it does not test this store/time implementation. No new model improvement,
+  physical demonstration or audience outcome inferred. Prior documentation CI `bb5a66f` passed.
+  Isolated wheel **three passed**. Existing service restarted with zero competing controllers;
+  awake preflight **20/21**, optional paid second check stopped, zero audio drops/suspect voice-log
+  lines. Public-preview/source publication follow-through pending.
+  [Audit metadata](../evals/results/reminder-integrity-audit-2026-10-27.json).
+
 ## October 27 consent-source follow-through
 
 - **Fixed:** embedded memory commands in a message could release a save in English and Spanish.

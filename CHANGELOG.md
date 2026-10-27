@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Reminder scheduling and stored-data integrity
+
+- Conflicting `minutes`/`at` could turn an 08:00 daily request into a one-minute-from-now reminder.
+  Reject conflicting time sources, boolean/non-finite/non-numeric minutes and malformed clocks before
+  writing; valid clock/daily requests retain their behaviour. Bounded ID collision retries under lock.
+- Validate stored rows before reads/rendering. Preserve an unreadable store whole under a uniquely
+  reserved name, never overwrite an earlier recovery copy, and refuse a replacement if preservation
+  fails. Readers share the writer lock; failed atomic saves leave no temporary data copy (decision 0031).
+- Settings lists saved-copy metadata under “Reminders needing review”, with English/Spanish inactive-data
+  wording. Single deletion and delete-everything include these copies, with the existing authenticated
+  helper notice; the damaged contents are not displayed. Healthy pages hide the empty category.
+- **40 CPU regressions and six installed SDK dispatch cases**; full CPU **1,296 / 15 skipped**,
+  installed robot environment **1,337 / one skipped**. Eight desktop/phone English/Spanish browser
+  cases passed, including two-tap single/all deletion. Existing real reminder store checked read-only:
+  compatible, without modification or retained words. Published/runtime follow-through is in STATUS.
+- Prior documentation CI `bb5a66f` passed. No profile/tool-schema/model-setting change, new LLM score,
+  physical trial, medical guidance or outcome claim.
+
+
 ### Permission-source publication verified
 
 - Source `8be53cf` published and existing Andy service restarted with exclusive control. Guided
