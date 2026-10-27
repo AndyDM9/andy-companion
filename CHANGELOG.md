@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Model-response publication follow-through
+
+- Source `429252e` passed hosted CPU/wheel and SDK jobs. Anonymous published clone: **1,376 passed,
+  16 skipped**. Screen preview `2b902c7f0f8602fd9c9481fae9e267b8cfe693e1` RUNNING; actual deployed
+  revision and all five changed client/helper files match. All three Spaces remain RUNNING.
+- Eight public layouts passed without page errors or horizontal overflow; both tested public writes
+  refused with 403. No inference or hardware action in these checks. History scan: 231 commits clean;
+  313 relative links valid and 23/23 export links open. Installed package and existing service verified.
+- Final exporter still refuses the missing video, release tag and app pin. Physical trials, reliable
+  memory offers, judge hardware access and actual submission remain open; no new performance claim.
+
 ### Completed model replies and structured answer fields
 
 - Injected responses exposed unfinished reasoning returned as a deeper answer and null vision text

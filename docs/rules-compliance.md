@@ -29,6 +29,12 @@ outcome, comprehensive reasoning-filter or fraud-accuracy claim. Historical mode
 retain their scopes. Physical trials, video, free working-project access and final release/submission
 requirements remain open.
 
+Publication verified: installed package/existing service, matching source/preview hashes, hosted
+CPU/wheel/SDK jobs and anonymous-clone tests pass. Eight public layouts and two public write refusals
+pass without inference or hardware actions; all three Spaces RUNNING and 23/23 export links open.
+Final exporter still refuses missing video/tag/app pin; no footage, hardware-access arrangement or
+completed-submission claim added.
+
 ## Reminder-integrity publication (October 27)
 
 Published source and preview match, eight public layouts and public write refusals pass, and all

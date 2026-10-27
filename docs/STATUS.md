@@ -43,13 +43,22 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   description, second motor controller or voice/pointing test inferred.
 - **Scope kept:** current 97-case text scorecard 93/94/94 uses synthetic tools and does not measure
   this provider response boundary. Historical scam comparisons keep their source/date scope; no new
-  accuracy or physical result claimed. Prior documentation CI `2160d8b` passed. Package/runtime/
-  source publication follow-through pending. Isolated wheel **three passed**; installed helper
+  accuracy or physical result claimed. Prior documentation CI `2160d8b` passed.
+  Isolated wheel **three passed**; installed helper
   imported and rejected an incomplete fixture, wheel helper/check-tool bytes match source.
   Existing service restarted with zero other controllers; tool/profile directories match the tested
   checkout. Awake preflight **20/21**, optional paid second check stopped, zero audio drops and
   suspect voice-log lines. No new physical spoken tool trial inferred.
   [Audit metadata](../evals/results/model-reply-audit-2026-10-27.json).
+
+- **Published:** source `429252e`; preview `2b902c7f0f8602fd9c9481fae9e267b8cfe693e1` RUNNING.
+  Actual deployed revision and five changed client/helper files match. All three Spaces RUNNING;
+  guided handler unchanged. Eight public layouts passed, both public writes refused with 403, no
+  model/hardware calls in these browser checks. Anonymous clone **1,376 / 16 skipped**; history
+  **231 commits clean**, **313** relative links valid, **23/23** export links open.
+  [Hosted CPU/wheel and SDK CI passed](https://github.com/AndyDM9/andy-companion/actions/runs/40530082410),
+  including the eight new SDK dispatch cases. Final export still blocks missing video/tag/app pin.
+  Physical trials, reliable memory offers, free working-project access and actual submission remain open.
 
 ## October 27 reminder-integrity audit
 

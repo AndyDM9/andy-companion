@@ -79,7 +79,57 @@
     "status": "success",
     "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40523068271"
   },
-  "publication": "Pending runtime/source/preview follow-through.",
+  "publication": {
+    "source_commit": "429252ec2346b0ab8d7a34cb37c7ec2764a3ab6e",
+    "source_ci": {
+      "status": "success",
+      "jobs": [
+        "cpu-tests",
+        "sdk-startup"
+      ],
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40530082410"
+    },
+    "preview_revision": "2b902c7f0f8602fd9c9481fae9e267b8cfe693e1",
+    "deployed_preview_revision_matches": true,
+    "deployed_client_and_helper_files_match": true,
+    "all_three_spaces_running": true,
+    "guided_handler_changed": false,
+    "anonymous_clone": {
+      "passed": 1376,
+      "skipped": 16
+    },
+    "public_layouts": {
+      "passed": 8,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "scope": "Sample data only, no model or hardware actions"
+    },
+    "public_write_refusals": {
+      "copy-delete": 403,
+      "delete-all": 403
+    },
+    "history_scan": {
+      "commits": 231,
+      "clean": true
+    },
+    "relative_links": {
+      "checked": 313,
+      "broken": 0
+    },
+    "export_links": {
+      "checked": 23,
+      "open": 23
+    },
+    "final_export": {
+      "exit_code": 2,
+      "blockers": [
+        "Missing actual video URL",
+        "Missing release tag",
+        "App dependency still on main"
+      ]
+    },
+    "remaining": "Physical trials, reliable memory offers, video, free working-project access including hardware arrangement, final release pin/tag and actual Devpost submission remain open."
+  },
   "source_sha256": [
     {
       "path": "src/andy_companion/model_reply.py",
