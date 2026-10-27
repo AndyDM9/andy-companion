@@ -22,6 +22,14 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Card shadows and search-picture frames:** fixed shadow clipping at the left column/layout;
+  card content remains clipped within its own rounded box. Chosen/secondary sighting borders are
+  now drawn inside the pictures (4/2 px), so the card's clipped content cannot cut their edges off.
+  **12 browser combinations plus long-content containment passed**, using invented data only
+  ([evidence](../evals/results/screen-frames-shadows-2026-10-26.json)); CPU **1,141 / 13 skipped**.
+  No picture geometry or data flow changed. Local page versioning picks up the asset change;
+  public preview publication follows the source commit. M7's physical checks remain pending.
+
 - **Watch request announced without dispatch:** no finder call in recent tool-name telemetry,
   services running and no other controller. Replaced the instruction to announce first with an
   immediate same-response `find_object` call before speech, including watches and repeated requests

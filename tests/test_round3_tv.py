@@ -175,7 +175,8 @@ def test_the_tv_draws_the_views_as_a_numbered_strip():
     assert 'chosen ? " chosen"' in strip and 'beside.append(make("p", "where", where || ui.seenHere));' in strip
     assert "img.onerror" in strip                                        # forgotten views: no broken image
     assert 'const VIEW_KINDS = ["seen", "looked"];' in PAGE
-    assert ".view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }" in PAGE
+    # The selected frame is painted inside the picture; an outside shadow is clipped by #items.
+    assert ".view.chosen .pic::after { border: 4px solid var(--mark); }" in PAGE
     # 2026-10-25: four views with "seen here too" under each narrow one ran into their numbers. The chosen view is
     # large with the words beside it; the number sits on each picture; every label under a view is one line.
     assert "pic.append(make(\"span\", \"n\", String(i + 1)));" in strip

@@ -167,11 +167,11 @@
   @keyframes ring { from { transform: scale(.85); opacity: .7; } to { transform: scale(1.3); opacity: 0; } }
 
   /* Below the clock: two glass cards side by side; when Andy shows something they stack on the left. */
-  /* Room round the cards for their shadows (a clipped shadow shows as a hard line): the area reaches
-     the screen's sides and a little below, with the same space as padding. */
+  /* The cards clip their own text; let their decorative shadows extend past the layout containers,
+     so the shadows fade naturally instead of ending in hard lines. Keep the TV's content margins. */
   .below { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.4vw;
            margin: 0 -5vw -4vh; padding: 2vh 5vw 4vh;
-           align-content: start; overflow: hidden; }
+           align-content: start; min-height: 0; overflow: visible; }
   body.has-showing .below, body.has-photo .below { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-content: stretch; }
   /* A card is the thing to read: it takes most of the width, and the day's two cards keep to a narrow column. */
   body.has-showing .below { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); }
@@ -222,7 +222,8 @@
   /* The row fits the screen and what's in it gives way, so nothing runs off the bottom (2026-10-25: a reminder over
      five lines and a long flood warning, beside a card, pushed both columns past the screen's edge). */
   body.has-showing .below, body.has-photo .below { grid-template-rows: minmax(0, 1fr); }
-  body.has-showing .side, body.has-photo .side { min-height: 0; overflow: hidden; }
+  /* Each card clips its own content; the column must let its rounded shadows reach the surrounding space. */
+  body.has-showing .side, body.has-photo .side { min-height: 0; overflow: visible; }
   body.has-showing .side .card, body.has-photo .side .card { flex: 0 1 auto; min-height: 0; overflow: hidden; }
   body.has-showing .next .what:not([hidden]), body.has-photo .next .what:not([hidden]) {
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -316,12 +317,14 @@
   .view .pic { position: relative; padding-top: 56.25%; border-radius: max(8px, calc(var(--r) - 2.6vw)); overflow: hidden;
                background: var(--rule); }
   .view .pic.none { background: transparent; }
-  .view .pic.none::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: inherit;
-                           border: 2px dashed var(--rule); }
+  /* Draw the frame over the image, inside its box: outside shadows get cut by the card's item clipping. */
+  .view .pic::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: inherit;
+                      pointer-events: none; z-index: 1; }
+  .view .pic.none::after { border: 2px dashed var(--rule); }
   .view img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .views.has-chosen .view:not(.chosen):not(.seen) img { opacity: .7; }
-  .view.chosen .pic { box-shadow: 0 0 0 4px var(--mark); }
-  .views .others .view.seen .pic { box-shadow: 0 0 0 2px var(--mark); }
+  .view.chosen .pic::after { border: 4px solid var(--mark); }
+  .views .others .view.seen .pic::after { border: 2px solid var(--mark); }
   /* Each view's number on its own picture, so it never meets a neighbour's words. */
   .view .n { position: absolute; top: .35em; left: .35em; z-index: 1; display: flex; align-items: center; justify-content: center;
              width: 1.7em; height: 1.7em; border-radius: 50%; font-size: clamp(15px, 1.35vw, 24px); font-weight: 700;

@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-26",
+  "scope": "Browser on invented screen state and program-drawn demo pictures only; no household screenshot/camera picture retained. CSS rendering checks, not a physical task test.",
+  "cases": [
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "caption": false,
+      "theme": "morning",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "caption": false,
+      "theme": "night",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "caption": true,
+      "theme": "morning",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "caption": true,
+      "theme": "night",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        950
+      ],
+      "caption": false,
+      "theme": "morning",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        950
+      ],
+      "caption": false,
+      "theme": "night",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        950
+      ],
+      "caption": true,
+      "theme": "morning",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1920,
+        950
+      ],
+      "caption": true,
+      "theme": "night",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "caption": false,
+      "theme": "morning",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "caption": false,
+      "theme": "night",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "caption": true,
+      "theme": "morning",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "caption": true,
+      "theme": "night",
+      "frames_inside_clip": true,
+      "frame_widths": [
+        4,
+        2,
+        2
+      ],
+      "shadows_unclipped_by_layout": true,
+      "card_content_clipped": true,
+      "page_errors": 0
+    }
+  ],
+  "additional_checks": [
+    "1280x720 idle cards with eight long reminders and a long synthetic warning stay inside layout and clip their own content"
+  ],
+  "source_sha256": "4db074735dd739ba605b021572ac3cc4a136f651b15eff3853993f8dfba2f473"
+}

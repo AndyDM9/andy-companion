@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Complete picture frames and unclipped card shadows
+
+- Fixed the layout containers clipping the left cards' shadows into hard vertical/horizontal edges.
+  Their shadows can now fade beyond the column/layout; each card still clips its own content and
+  keeps the same size and TV margins.
+- Replaced outside highlight shadows with rounded borders over the inside of each search picture:
+  4 px for the chosen view, 2 px for other sightings. The image/content clipping can no longer cut
+  off the top or left of a highlight. No picture size, crop or camera-data boundary changed.
+- Browser checks on invented data passed all 12 size/theme/caption combinations (1920×1080,
+  1920×950, 1280×720; morning/night; captions on/off), plus long idle reminder/warning containment.
+  Frames are wholly inside the clipped area, captions stay clear, and text remains clipped within
+  cards. Scoped evidence contains no household pictures. CPU 1,141 passed / 13 skipped.
+  Local pages reload through the existing version check; the public preview rebuild follows this commit.
+
+
 ### Start requested object searches before speaking
 
 - Investigated an announcement with no finder dispatch after a watch request. Services and exclusive

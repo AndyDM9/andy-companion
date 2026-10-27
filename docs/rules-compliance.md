@@ -21,6 +21,10 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## October 26 screen follow-through
 
+Card-shadow and picture-highlight corrections change CSS painting only. Browser evidence uses
+invented state and program-drawn demo images; no supplied household screenshot or camera image is
+published. This adds no capability, outcome or hardware-accuracy claim and changes no access rule.
+
 The watch-routing prompt correction preserves the existing hardware tool path. Its twenty invented
 streaming-model checks and five mocked SDK tests are not hardware evidence. Older full-suite figures
 are explicitly labelled as preceding the correction; a spoken retry remains pending. The video must
