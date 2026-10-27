@@ -42,9 +42,20 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   audit metadata. Existing service restarted with zero competing controllers; all three services active,
   live setup HTML matches, current settings bytes/recovery inventory unchanged. Preflight **20/21**,
   optional second look stopped (404), short Nemotron probe **0.62 s**, zero microphone drops/suspect
-  voice-log lines. Publication follow-through pending. Physical trials, memory offers,
+  voice-log lines. Latest directory guard restarted through the same service; live authenticated setup
+  state includes its recovery category and settings bytes remain unchanged. Physical trials, memory offers,
   intermittent provider latency, video, release/app pin and actual submission remain open.
   [Audit metadata](../evals/results/settings-integrity-audit-2026-10-27.json).
+
+- **Published:** source `e9f87ae`, preview `c49cc6b621218e6fbb1ab519ad4fbee94cc6bc1c` RUNNING;
+  actual deployed revision and three changed source files match, served setup HTML matches. All three
+  Spaces RUNNING. Eight public layouts pass, both public deletion probes refused with 403; no inference
+  or robot action. Anonymous source installation **1,625 / 16 skipped**, imported from the fresh clone.
+  [Hosted CPU/wheel and SDK checks passed](https://github.com/AndyDM9/andy-companion/actions/runs/40554766307).
+  Anonymous **243-commit/2,569-blob** history recheck: zero roster full-name matches/unexpected private
+  session payloads; history secrets scan clean. **338** relative file targets and **23/23** export links
+  pass. Final exporter still rejects missing video/tag/app pin. These checks complete no new physical,
+  provider-availability, memory-offer, access or submission requirement.
 
 ## October 27 publication/history audit
 

@@ -21,6 +21,9 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   uses the real finder's output shape. Current household settings validate without changing values.
 - Existing service restarted alone; all three services active, installed/live HTML matches and settings
   bytes/recovery inventory unchanged. Preflight 20/21, optional second look stopped, text probe 0.62 s.
+- Source `e9f87ae` and preview `c49cc6b` verified deployed/served; all three Spaces RUNNING. Hosted
+  CPU/wheel/SDK CI and anonymous install pass; eight public layouts/two write refusals, history/name/
+  secrets scan and 23 export links pass. Final export still blocks missing video/tag/app pin.
 
 ### Verified publication-history cleanup
 

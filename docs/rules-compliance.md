@@ -48,6 +48,9 @@ owner controls in English/Spanish. Ninety-one invented-data cases, both full sof
 eight local browser fixtures pass. No new feature shown as physical evidence, model/dependency,
 recording, public credential, outcome/access or completed-submission claim. Actual video, physical
 trials and final release/access remain pending; the deadline freeze above applies unchanged.
+Published source/preview hashes, hosted CPU/wheel/SDK CI, anonymous install, eight public layouts and
+two write refusals pass. All three Spaces RUNNING; 243-commit/2,569-blob name/private-link recheck and
+secrets scan clean, 338 relative targets and 23 export links pass. Final export still refuses video/tag/app pin.
 
 ## Screen reconnection (October 27)
 
