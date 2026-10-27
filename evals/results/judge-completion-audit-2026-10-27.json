@@ -60,7 +60,257 @@
     ]
   },
   "limits": "Completion/shape validation only, not factual accuracy or comprehensive reasoning filtering. Dedicated hosted handler requires explicit finish metadata. Streaming robot voice, memory-offer consistency, physical testing and whole-project access remain outside this change. No model/profile/tool/budget/retry change.",
-  "publication": "Pending source/Space/hosted-CI/browser follow-through.",
+  "publication": {
+    "source_commit": "932720b0da4cbf0c3f31a14f00827599039e4bd4",
+    "guided_space": {
+      "revision": "4ecf7c251995a3ea2e0351c32a915a8e57258188",
+      "deployed_revision_matches": true,
+      "files": [
+        {
+          "path": "src/andy_companion/judge_playground.py",
+          "match": true
+        },
+        {
+          "path": "src/andy_companion/model_reply.py",
+          "match": true
+        },
+        {
+          "path": "src/andy_companion/consent.py",
+          "match": true
+        },
+        {
+          "path": "profiles/companion/profile.md",
+          "match": true
+        },
+        {
+          "path": "evals/tools.json",
+          "match": true
+        }
+      ],
+      "spaces": [
+        {
+          "space": "andydm/andy-companion-judge",
+          "stage": "RUNNING",
+          "sha": "4ecf7c251995a3ea2e0351c32a915a8e57258188"
+        },
+        {
+          "space": "andydm/andy-companion",
+          "stage": "RUNNING",
+          "sha": "2b902c7f0f8602fd9c9481fae9e267b8cfe693e1"
+        },
+        {
+          "space": "andydm/andy-companion-app",
+          "stage": "RUNNING",
+          "sha": null
+        }
+      ]
+    },
+    "browser": {
+      "scope": "Public sample pages and author-funded real Nemotron examples with fixed invented inputs and simulated effects. No robot control or household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        }
+      ],
+      "refusals": {
+        "arbitrary-input": 400,
+        "choice-before-start": 400,
+        "cross-origin": 403
+      }
+    },
+    "anonymous_clone": {
+      "passed": 1422,
+      "skipped": 16
+    },
+    "history_scan": {
+      "commits": 233,
+      "clean": true
+    },
+    "relative_file_targets": {
+      "relative_links_checked": 326,
+      "missing": []
+    },
+    "export_links": {
+      "checked": 23,
+      "open": 23
+    },
+    "final_export": {
+      "exit_code": 2,
+      "blockers": [
+        "Missing actual video URL",
+        "Missing release tag",
+        "App dependency still on main"
+      ]
+    },
+    "source_ci": {
+      "status": "success",
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40532131778",
+      "jobs": [
+        "cpu-tests",
+        "sdk-startup"
+      ]
+    },
+    "remaining": "Memory-offer consistency, physical reader/finder trials, free working-project access/hardware arrangement, video, final release pin/tag and actual submission."
+  },
   "source_sha256": [
     {
       "path": "src/andy_companion/judge_playground.py",
@@ -90,5 +340,25 @@
       "path": "evals/tools.json",
       "sha256": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59"
     }
-  ]
+  ],
+  "prior_documentation_ci": {
+    "source": "984a931",
+    "status": "success",
+    "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40531090188"
+  },
+  "runtime": {
+    "existing_service_restarted": true,
+    "competing_controllers": 0,
+    "services_active": [
+      "andy",
+      "andy-voice",
+      "andy-eyes"
+    ],
+    "awake_preflight_passed": 20,
+    "awake_preflight_total": 21,
+    "remaining": "Optional paid second-check endpoint intentionally stopped; 404",
+    "microphone_drops_last_minute": 0,
+    "suspect_voice_log_lines_last_day": 0,
+    "scope": "Judge handler is separate from the robot streaming voice. Restart/preflight do not establish new physical task results."
+  }
 }

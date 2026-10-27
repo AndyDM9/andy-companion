@@ -5,6 +5,18 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Guided completion deployment follow-through
+
+- Source `932720b` pushed; guided Space `4ecf7c251995a3ea2e0351c32a915a8e57258188` RUNNING,
+  actual deployed revision and handler/helper/gate/profile/tool hashes match. All three Spaces RUNNING.
+  Eight public layouts, eight guided paths and three protocol refusals passed; sample effects only.
+- Anonymous clone **1,422 passed / 16 skipped**, history **233 commits clean**, **326** relative file
+  targets resolved and **23/23** export links open. Committed judge bundle imports without SDK or
+  household modules. Prior documentation CI `984a931` and source hosted CPU/wheel/SDK jobs passed.
+- Existing Andy service restarted with zero competing controllers; awake preflight **20/21**, optional
+  second check still off, zero microphone drops/suspect voice-log lines. No new physical result.
+  Final exporter still blocks video/tag/app pin; physical trials, memory offers, access and submission open.
+
 ### Guided judge completion boundary
 
 - Injected replies exposed token-limit finishes treated as completed text or usable sample tool

@@ -36,8 +36,20 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Scope:** profile/tools/model/budgets unchanged; no SDK, camera, motor or household access in the
   guided handler. Existing 93/94/94 text scorecard, physical results and limitations retain their scope.
   Memory-offer consistency, physical reader/finder trials, free working-project/hardware access,
-  video and release/submission remain open. Source/deployment/CI follow-through pending.
+  video and release/submission remain open. Publication follow-through below.
   [Audit metadata](../evals/results/judge-completion-audit-2026-10-27.json).
+
+- **Published:** source `932720b`, guided Space `4ecf7c251995a3ea2e0351c32a915a8e57258188`
+  RUNNING. Actual deployment and handler/helper/gate/profile/tool hashes match; all three Spaces
+  RUNNING. Eight public layouts/eight guided paths/three protocol refusals passed, invented inputs
+  and simulated effects only. Anonymous clone **1,422 / 16 skipped**, history **233 commits clean**,
+  **326** relative file targets resolved, **23/23** export links open. Committed bundle cold import
+  passes without SDK/household modules. Prior documentation CI `984a931` passed;
+  [source hosted CPU/wheel and SDK CI passed](https://github.com/AndyDM9/andy-companion/actions/runs/40532131778).
+- **Runtime:** existing Andy service restarted with zero competing controllers, all three services
+  active. Awake preflight **20/21**, optional second check deliberately off, zero microphone drops
+  and suspect voice-log lines. Final export still blocks missing video/tag/app pin. No new physical
+  reader/finder/pointing or whole-project access completion inferred.
 
 ## October 27 model-response audit
 

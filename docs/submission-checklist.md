@@ -8,7 +8,7 @@ in the same commit that makes it true.
 
 - [x] Guided judge handler rejects incomplete/missing/contradictory finish metadata before text or sample actions; 46 new regressions, both full suites and cold bundle import pass
 - [x] Four real-provider invented guided paths pass, including separate fresh Yes/No; no physical or accuracy result inferred
-- [ ] Guided completion update published with matching deployed source and hosted CI/browser checks
+- [x] Guided completion update published with matching deployed source and hosted CPU/wheel/SDK CI; eight public layouts, eight guided paths, three protocol refusals and fresh-clone checks pass
 
 - [x] Incomplete/non-string/refused model replies and wrong structured fields rejected in four non-streaming clients; 80 CPU/eight actual SDK dispatch regressions and cold job-bundle imports pass
 - [x] Four invented live-provider checks and camera-only local fallback pass with no saved provider text, reasoning, camera picture or description; no physical/accuracy score inferred

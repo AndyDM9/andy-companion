@@ -25,8 +25,11 @@ The guided software challenge validates completed hosted replies before answers 
 Injected faults, full regression suites and eight real-provider calls across four invented challenge
 paths are software checks only. No household, hardware, new factual-accuracy result or completed
 footage/access/submission claim. Profile, tool schemas, model and public allowance unchanged.
-Deployment/browser/CI follow-through remains to verify; existing video/hardware/free-testing and
-release obligations below remain open.
+Deployed revision and handler/helper/gate/profile/tool hashes match. Eight public layouts and eight
+guided paths with invented inputs/simulated effects pass, plus three protocol refusals; all three Spaces
+RUNNING. Fresh-clone tests, 326 relative file targets, all 23 export links and source hosted CPU/wheel/SDK
+jobs pass. Existing video/hardware/free-testing and release obligations below remain open. Final exporter
+still refuses missing video/tag/app pin. No additional physical/access/submission completion claimed.
 
 ## Model-response audit (October 27)
 
