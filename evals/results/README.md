@@ -22,6 +22,15 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 publication/history audit
+
+[Publication hygiene audit](publication-hygiene-audit-2026-10-27.json): anonymous 239-commit history,
+2,528 blobs/metadata, external roster comparisons and OCR/QR review of 56 historical media objects.
+No full-name matches; 195 private session trailers/one retired private-QR image found for scoped
+cleanup. Isolated rewrite preserves every date/credit and today's file tree. New non-echoing commit-msg
+guard: 13 regressions, **1,534 CPU / 1,583 robot-environment passes**. Publication verification is in
+STATUS. No external name list, OCR text, private URL or discarded image is retained in this record.
+
 ## October 27 screen reconnection audit
 
 [Screen reconnection audit](screen-reconnection-audit-2026-10-27.json): **1,521 CPU / 1,570 installed

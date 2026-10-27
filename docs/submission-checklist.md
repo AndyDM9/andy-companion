@@ -6,6 +6,11 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Full anonymous public-history name/metadata scan and historical image OCR/QR review completed without committing the external roster or OCR text; private session trailers/one retired image identified for scoped cleanup
+- [x] Private AI-session references blocked in commit messages with fixed non-echoing errors; 13 regressions and full CPU/robot-environment suites pass, author credits preserved
+- [ ] Scoped history cleanup published with an expected-head lease and verified from a fresh anonymous clone
+- [ ] At the deadline freeze the submitted repository, hosted demos, video and project materials; subsequent work uses a separate development copy unless organisers explicitly allow changes
+
 - [x] Screen status polls stay capped, time out and reject replies across reconnect transitions; 12 JavaScript regressions, both full suites and eight English/Spanish browser fixtures pass
 - [x] Screen-reconnection fix verified as installed page, running service and published source/preview; deployed/served hashes, fresh clone, hosted CPU/wheel/SDK CI and eight public layouts/two write refusals pass
 

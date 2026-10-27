@@ -19,6 +19,22 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Publication/history audit and final reminder (October 27)
+
+An anonymous 239-commit mirror and 2,528 distinct blobs were checked against the published 23-person
+roster without retaining names here. No full-name match; surname candidates were unrelated research
+attribution/binary false positives. OCR of 52 static image versions and sampled frames from four
+animated assets found no roster-name matches. This is a scoped search, not proof against all spellings.
+Private AI-session commit trailers and a retired private-QR screenshot were found; an isolated scoped
+rewrite preserves dates, author credits and today's application files (0036). Publication verification
+remains pending. A new commit-msg guard has 13 regressions using invented references only.
+
+The [new organiser reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
+also says to leave the code repository, video and project materials unchanged after the October 30,
+10:00 PT cutoff. Keep judged materials frozen and available through judging; use a separate development
+copy for later work unless an exception is explicitly allowed. This clarifies our earlier tag-only
+wording. Video, physical/access evidence and actual submission remain open; no footage is inferred.
+
 ## Screen reconnection (October 27)
 
 Bounded status polling and stale-reply rejection improve an existing screen failure path. Actual
@@ -247,7 +263,7 @@ comparisons, not logos or copied assets. The final video and real physical trial
 |---|---|---|
 | Free access for testing until judging ends (2026-12-15) | 🔶 | The sample Space is free but has no live AI. Judges are offered an author-funded test of the working robot without buying credits or receiving provider keys. Confirm the final access instructions and hardware arrangement; do not treat a bring-your-own-key clone as the required free-access path |
 | Physical access to the hardware may be requested (the Reachy Mini is not a phone, tablet or computer) | 🔶 | Keep the robot and the desktop ready through 2026-12-15 |
-| After the deadline the submission cannot change | ⬜ | Tag the submitted commit (`hackathon-submission`) and link that tag on the form; later work goes after it |
+| After the deadline the submission cannot change | ⬜ | Tag/link the submitted commit and freeze this repository, hosted demos, video and judged materials at the cutoff; later development uses a separate copy, without changing judged materials, unless explicitly allowed. October 27 organiser reminder linked above |
 
 ## Publicity, privacy and conduct
 

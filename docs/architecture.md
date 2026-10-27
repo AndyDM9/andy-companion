@@ -157,6 +157,10 @@ remain. Without AbortController, the status guard caps requests but cannot cance
 
 ## Evaluation
 
+- `.githooks/commit-msg` runs `scripts/check_commit_message.py` with the message file. Recognised
+  private AI-session URLs/trailers are rejected with fixed wording and no echoed contents; author
+  credits remain allowed. This complements the pre-commit tests/key check (0036). Neither hook runs
+  the robot or loads household data. Audit name terms and private rollback history stay outside the repo.
 - `scripts/check_video.py`: optional local production check using ffprobe metadata only. It checks
   container/video-track duration and track presence, without extracting frames, transcribing audio,
   changing media or uploading it. Audio padding and unknown video-track duration cannot pass as

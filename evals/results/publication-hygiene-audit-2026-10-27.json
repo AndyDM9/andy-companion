@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-27",
+  "scope": "Anonymous full reachable GitHub history and metadata; finite external published-roster comparisons; OCR/QR of all static historical media and sampled animated frames. No names, private URLs, QR payloads or OCR text retained in this record.",
+  "initial_public_history": {
+    "commits": 239,
+    "distinct_blobs": 2528,
+    "reachable_objects": 4232,
+    "published_roster_terms": 23,
+    "full_name_matches": 0,
+    "surname_candidate_objects": 168,
+    "text_candidate_classification": "Unrelated academic bibliography; retained attribution",
+    "binary_candidate_classification": "Random decoded byte sequences; no OCR name matches",
+    "first_name_matches_in_judging_context_lines": 0,
+    "distinct_context_lines_checked": 438,
+    "private_session_commit_messages": 195,
+    "private_session_references_in_tracked_nonfixture_text": 0
+  },
+  "initial_media": {
+    "objects": 56,
+    "frames_checked": 64,
+    "static_image_versions": 52,
+    "animated_assets": 4,
+    "animated_sampling": "first/middle/last frames",
+    "full_name_match_frames": 0,
+    "surname_match_frames": 0,
+    "private_qr_assets": 1,
+    "retired_asset_path": "docs/images/tv-code.png",
+    "retired_token_matches_current_setup": false,
+    "raw_ocr_or_qr_retained": false,
+    "limitations": "Finite OCR accuracy and animation sampling cannot prove absence of every visually encoded name."
+  },
+  "local_unreachable_audit": {
+    "unreferenced_blobs": 9,
+    "unreferenced_commits": 3,
+    "roster_full_name_matches": 0,
+    "private_session_reference_objects": 0,
+    "scope": "Local objects absent from the anonymous public mirror"
+  },
+  "draft_verification": {
+    "commits_preserved": 239,
+    "changed_messages": 195,
+    "dates_and_author_committer_headers_preserved": true,
+    "all_trees_differ_only_by_retired_asset": true,
+    "removed_asset_tree_occurrences": 88,
+    "removed_paths": [
+      "docs/images/tv-code.png"
+    ],
+    "current_tree_identical": true,
+    "private_session_links_in_commit_messages": 0,
+    "retired_image_object_unreachable": true
+  },
+  "space_commit_metadata": [
+    {
+      "space": "andydm/andy-companion",
+      "commit_messages_checked": 19,
+      "roster_name_hits": 0,
+      "private_session_reference_hits": 0
+    },
+    {
+      "space": "andydm/andy-companion-judge",
+      "commit_messages_checked": 8,
+      "roster_name_hits": 0,
+      "private_session_reference_hits": 0
+    },
+    {
+      "space": "andydm/andy-companion-app",
+      "commit_messages_checked": 6,
+      "roster_name_hits": 0,
+      "private_session_reference_hits": 0
+    }
+  ],
+  "guard_validation": {
+    "new_cases": 13,
+    "cpu_passed": 1534,
+    "cpu_skipped": 16,
+    "installed_robot_environment_passed": 1583,
+    "installed_robot_environment_skipped": 1,
+    "changed_python_lint": "passed",
+    "hook_shell_syntax": "passed",
+    "actual_isolated_git_commit_hook_checked": true,
+    "rejected_message_not_echoed_or_changed": true,
+    "author_credits_supported": true,
+    "test_private_urls_are_explicitly_invented": true
+  },
+  "publication": {
+    "status": "Prepared isolated rewrite; final expected-head publication and anonymous verification pending"
+  },
+  "sources": [
+    "https://nebiusglobalaihackathon.devpost.com/",
+    "https://nebiusglobalaihackathon.devpost.com/updates/47163-recording-will-your-project-ship",
+    "https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist"
+  ],
+  "limits": "No claim about every spelling, visual encoding, cached provider view, external clone or fork. Private rollback/map stays outside project. Earlier evaluation file hashes retain scope; original commit labels refer to pre-rewrite IDs. Negative checker fixtures are invented, not personal sessions. No application/model/profile/tool/hardware/store change.",
+  "source_sha256": [
+    {
+      "path": ".githooks/commit-msg",
+      "sha256": "5a01d97f872bf3840e3ce15c7961576f97d0aa0508ceea253bfc1232197a38ba"
+    },
+    {
+      "path": "scripts/check_commit_message.py",
+      "sha256": "9ad674ce2e666d9418dfc28ad4bd08809aed29560cec4af2a56e5f5abad91183"
+    },
+    {
+      "path": "tests/test_commit_message.py",
+      "sha256": "b7c701b96264ba4097d9de406e2cf7bbc914b4cfa2952f98a800d9293fc1c911"
+    }
+  ]
+}

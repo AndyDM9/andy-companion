@@ -9,6 +9,12 @@ track award and one bonus award, never both (rules, section 8).
 
 **Deadline:** submissions close **2026-10-30, 10:00 PT**. We submit by **2026-10-27**.
 
+**Submission freeze:** the [October 27 organiser reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
+says not to edit the code repository, video or project materials after the deadline. Freeze this
+repository and the submitted hosted demos/materials at that cutoff; keep them available through
+judging. Later development belongs in a separate development copy, without changing the judged
+materials, unless the organisers explicitly allow an exception. A release tag alone is not the freeze.
+
 **One sentence:** Andy is a small home robot for older adults who live at home, and the family
 who help. It runs on a Reachy Mini, its brain is NVIDIA Nemotron on Nebius, and it keeps no recordings or transcripts of what
 it hears.

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Commit messages are public too; keep private AI-session references out without echoing them.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+python3 scripts/check_commit_message.py "$1"

@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Publication history audit and private-metadata guard
+
+- An anonymous public mirror's 239 commits/2,528 blobs had no full-name match against the 23-person
+  published judging roster. Surname candidates were unrelated academic attribution/binary matches;
+  historical-media OCR found no matching names. Names and OCR text stay outside the repository.
+- Found 195 private AI-session message trailers and one retired screenshot with an old private setup
+  QR token, different from the current token. A verified isolated rewrite removes those trailers and
+  the image from 88 historical trees, retaining all commits, dates/credits and the identical current
+  tree (0036). Publication/fresh-clone follow-through remains pending; prior broad cleanup claims
+  did not adequately cover commit trailers and visual QR contents.
+- Add the commit-msg checker/hook: fixed errors, no echoed message, author credits supported. **13
+  regressions passed**; full CPU **1,534 / 16 skipped**, installed robot environment **1,583 / one skipped**,
+  changed Python lint and shell syntax pass. No runtime model/robot or household-store change.
+- Incorporate the October 27 organiser reminder: freeze the submitted repository, hosted demos,
+  video and project materials after the deadline, rather than treating the release tag alone as enough.
+
 ### Screen-reconnection publication follow-through
 
 - Source `d2587ce` pushed; preview `9331893cb720a97ec03c5ac42710f04ad21df7e3` RUNNING. Actual

@@ -20,6 +20,29 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 publication/history audit
+
+- **Name scope:** anonymous mirror, 239 commits/2,528 unique blobs plus metadata, compared with the
+  published 23-person roster. No full-name matches. Surname candidates were unrelated bibliography
+  or binary false positives. OCR/QR review: 52 static image versions and first/middle/last frames of
+  four animated assets, no roster-name match. Names, OCR text and private URLs are not retained here.
+  This is a finite search/sampled visual check, not proof against all identities/encoding variants.
+- **Found:** 195 private AI-session trailers in commit messages; one retired image with an old private
+  setup QR link that does not use the current token. These surfaces were missed by earlier broad
+  cleanup statements. Isolated rewrite verified: all 239 commits/dates/author credits retained,
+  historical trees differ only by that image's removal (88 versions), current tree identical (0036).
+- **Prevention:** commit-msg hook/checker rejects recognised private session URLs/trailers with fixed
+  errors and keeps author credits. **13 new cases**, CPU **1,534 / 16 skipped**, robot environment
+  **1,583 / one skipped**, Python lint/shell syntax pass. Tests use invented references; no app/runtime,
+  profile/model, motor or household-store change. Previous notes CI `a937c0e` passed.
+- **Publication:** cleanup and post-push anonymous verification pending. A private rollback/map stays
+  outside the project; external clones/caches cannot be erased by Git rewriting. Current app/evaluation
+  file hashes retain their scope; prior short commit labels/CI runs refer to their pre-rewrite IDs.
+- **Reminder:** October 27 organiser update requires the submitted repository/video/materials to stay
+  frozen after the deadline; PLAN/checklist now clarify that a tag alone is insufficient. Physical
+  trials, reliable memory offers, cloud latency, video, final release/access and submission remain open.
+  [Audit metadata](../evals/results/publication-hygiene-audit-2026-10-27.json).
+
 ## October 27 screen-reconnection audit
 
 - **Fixed:** injected stalled status calls accumulated, and an old response body could overwrite the

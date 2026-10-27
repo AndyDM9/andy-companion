@@ -29,6 +29,19 @@ concurrency, request/response sizes, output tokens and daily provider calls are 
 allowance resets on a process restart and is not a provider-account spending limit. Host/platform
 access metadata is separate from this application's policy of logging no request or model text.
 
+## Publication hygiene
+
+Commit messages and historical screenshots are public material too. With `git config core.hooksPath .githooks`,
+the pre-commit hook runs tests/key checks and the commit-msg hook rejects recognised private
+AI-session links/trailers without echoing the message. The standard-library checker can also be run as
+`python3 scripts/check_commit_message.py <message-file>`. Author credits remain supported.
+
+The October 27 audit includes an anonymous full-history scan, roster-name comparisons without keeping
+the names here, and OCR/QR checks of historical media. A scoped history cleanup is documented in
+[decision 0036](docs/decisions/0036-keep-private-publishing-metadata-out-of-history.md). Scans have finite
+patterns/OCR coverage; Git rewrites cannot erase external clones or provider caches. Keep private
+review notes, session references, credentials and household screenshots outside this public repository.
+
 ## Known advisories in dependencies
 
 Every environment's lock file is audited with `pip-audit`, and updated where a fix exists and nothing pins it. Not
