@@ -340,15 +340,19 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
 ## Accessibility
 
 Andy is used by voice, from across a room, by people of any eyesight or hearing, so access is the product:
-- **Nothing to read, tap or install for the person.** Everything is said; the TV only shows what Andy
-  says, and the family and settings pages are for helpers.
+- **Nothing to read, tap or install for the person.** The core interaction is spoken; the TV supplements speech, and the family and settings pages are for helpers.
 - **All of Andy's words as captions** on the TV, at reading pace, three lines at a time, on by default.
 - **Readable from across the room:** large type in Atkinson Hyperlegible (made by the Braille Institute for
   low-vision readers), and every text colour at 7:1 contrast (WCAG AAA) against the worst glow or photo
   behind it, tested (`tests/test_screen_design.py`).
 - **A calm screen** in the settings: no movement and no see-through panels; the TV also follows the
   system's reduced-motion setting.
-- **The TV's remote:** arrows and OK reach Settings and Under the hood; Back closes the menu.
+- **A voice guide on the TV:** “What can I ask?” groups nine spoken examples in English or Spanish,
+  with pace, quiet and language controls. Opening the guide performs no action.
+- **Visible search progress:** actual room views captured and closer-check stages, followed by the
+  result and its pictures. Counts describe captured views, not confidence.
+- **The TV's remote:** arrows and OK reach the guide, Settings and Under the hood; Back closes the
+  panel and returns focus. Small screens scroll the guide with Up/Down.
 - **A letter in large print** on the TV, with what to do and by when.
 - **Pace and volume by voice**, "slower", "louder", and they stick; talk over Andy and it stops at once.
 - **English and Spanish**, with *usted*; the screen and pages switch too.

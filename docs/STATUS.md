@@ -22,6 +22,19 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Voice discoverability and physical search feedback:** founder-approved feature work reopened
+  after the earlier freeze (decision 0025). English/Spanish guide with nine spoken examples and
+  manual controls; opening it makes no model/tool call. Finder stages and actual room-view counts
+  replace the unexplained wait, with memory-only scoped updates, 45-second expiry and cancellation
+  cleanup. No recognition confidence or physical accuracy inferred from a count. M6/M7 remain
+  awaiting their physical checks. CPU **1,130 passed / 12 skipped**, installed robot environment
+  **1,142 / one skipped**, isolated wheel **3 passed**. Browser: **16** language/palette/720p/1080p
+  combinations plus **4** additional checks, including photo-layout return and offline recovery
+  ([scoped evidence](../evals/results/screen-guide-progress-2026-10-26.json)). Nineteen new regressions.
+  Source is ready for service restart and preview publication; live interaction and physical timings
+  have not been remeasured. Research comparison is in [research.md](research.md).
+
+
 - **Further submission pass:** all 23 export links now open after replacing the unreachable FTC file
   citation with a verified official HTML release; wording now matches its approximate figure. Tagline
   remains 198 characters and tags 25. All three Spaces are RUNNING, and a fresh public AI proposal / No

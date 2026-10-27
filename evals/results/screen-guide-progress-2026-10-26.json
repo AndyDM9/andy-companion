@@ -1,0 +1,319 @@
+{
+  "date": "2026-10-26",
+  "scope": "Headless Chrome with invented screen/state responses; no robot, model, microphone, household data or physical usability study. Existing contrast tests cover the shared palette.",
+  "browser": "155.0.8059.39",
+  "cases": [
+    {
+      "language": "en",
+      "theme": "morning",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "morning",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "afternoon",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "afternoon",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "evening",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "evening",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "night",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "night",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "morning",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "morning",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "afternoon",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "afternoon",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "evening",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "evening",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "night",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    },
+    {
+      "language": "es",
+      "theme": "night",
+      "viewport": [
+        1280,
+        720
+      ],
+      "checks": [
+        "captured_counts",
+        "remote_open_close_focus",
+        "guide_fits",
+        "caption_clearance",
+        "steady_clock",
+        "remembered_no_sweep_count",
+        "no_page_errors",
+        "no_POST"
+      ]
+    }
+  ],
+  "additional_checks": [
+    "800x600 guide remote scrolling and Back",
+    "invented idle-image load and return after search",
+    "hint preference and manual guide independence",
+    "offline notice and recovery"
+  ],
+  "source_sha256": {
+    "src/andy_companion/pages/screen.html": "53c1946b3e3ca2e84a3395b8a7d4aceb94751d07241fc62a09b792c13b966171",
+    "src/andy_companion/board.py": "b8cd7b222acb894898c7af4c3d9df3f4d5890aa3c3f862bca20a01da1034f8ec"
+  },
+  "source_note": "Browser fixtures do not execute the finder. Final finder integration is verified by the synthetic pytest suites below.",
+  "synthetic_pytest": {
+    "cpu_passed": 1130,
+    "cpu_skipped": 12,
+    "robot_environment_passed": 1142,
+    "robot_environment_skipped": 1,
+    "isolated_wheel_passed": 3,
+    "added_regressions": 19,
+    "finder_sha256": "1241eb5d475c68d8a939a43006b0709e5a320eafaff9bfea3a35f0b0a03fc107"
+  },
+  "screenshots": {
+    "docs/images/tv-voice-guide.png": "Invented fixture; English guide, afternoon palette, 1920x1080",
+    "docs/images/tv-search-progress.png": "Invented fixture; scanning stage with two captured room views, 1920x1080"
+  }
+}

@@ -10,7 +10,7 @@ you can see the screen as it is beside the robot. Under the hood
 shows sample turns with times of the kind measured on the robot (2026-10-13 and 14), so the page isn't
 empty without one. Nothing leaves this computer. Ctrl+C stops it, and the throwaway folder is deleted.
 
-`ANDY_DEMO_SCENE=found` (research, found, letter, scam, today, note, keys, story or quiet) holds one scene, for
+`ANDY_DEMO_SCENE=found` (research, searching, found, letter, scam, today, note, keys, story or quiet) holds one scene, for
 screenshots and for filming the screen.
 
 `--public` (or ANDY_DEMO_PUBLIC=1) is for a hosted copy that anyone can open (PLAN B26): it listens on every
@@ -269,7 +269,7 @@ def main() -> int:
     print(f"The settings page:                   {base}/setup?s=demo-setup")
     print(f"Under the hood:                      {base}/hood?t=demo-hood")
     print("Sample data only; Ctrl+C to stop.", flush=True)
-    scenes = [("research", research), ("found", found), ("letter", letter), ("scam", scam), ("today", dayplan.show),
+    scenes = [("research", research), ("searching", board.start_search), ("found", found), ("letter", letter), ("scam", scam), ("today", dayplan.show),
               ("note", note), ("keys", keys), ("story", lambda: stories.start("lion")),
               ("quiet", board.clear_screen)]
     import signal
@@ -287,10 +287,16 @@ def main() -> int:
         i = 0
         while True:
             name, show = scenes[i % len(scenes)]
-            show()
+            scene_value = show()
             started = time.time()
             while time.time() - started < 20:
-                if name == "quiet":                # nothing showing, Andy waiting: the screen suggests what to ask
+                if name == "searching":           # invented progress only; this demo never opens a camera
+                    elapsed = time.time() - started
+                    stage = "scanning" if elapsed < 10 else "reading" if elapsed < 15 else "closer"
+                    board.search_step(scene_value, stage, min(4, int(elapsed / 2)))
+                    screen_server.set_live({"state": "working", "tool": "find_object", "looking": "room" if stage == "scanning" else "closer" if stage == "closer" else ""})
+                    screen_server.set_caption("", now=0)
+                elif name == "quiet":                # nothing showing, Andy waiting: the screen suggests what to ask
                     # ... after waving back at someone who waved as they came in (PLAN B49), for a few seconds.
                     waved = time.time() - started < 4
                     screen_server.set_live({"state": "ready", "tool": "", **({"looking": "wave"} if waved else {})})

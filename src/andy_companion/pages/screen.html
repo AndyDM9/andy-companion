@@ -436,6 +436,19 @@
   .menu { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: min(640px, 90vw);
           padding: 4vh 3vw; display: none; flex-direction: column; gap: 2vh; }
   .menu.open { display: flex; }
+  .help { width: min(1440px, 90vw); max-height: 90vh; overflow-y: auto; }
+  .help > p { margin: 0; font-size: clamp(19px, 1.8vw, 29px); color: var(--soft); }
+  .help-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5vw; }
+  .help-group { padding: 1.3vw; border: 2px solid var(--rule); border-radius: var(--r); background: var(--ground); }
+  .help-group h3 { margin: 0 0 .8em; color: var(--mark); font-size: clamp(20px, 2vw, 32px); }
+  .help-group p { margin: .8em 0 0; color: var(--ink); font-size: clamp(20px, 1.9vw, 31px); line-height: 1.3; }
+  .search-views { display: flex; list-style: none; padding: 0; margin: 2vh 0; gap: 1vw; }
+  .search-views li { flex: 1; border: 2px solid var(--soft); border-radius: .6em; padding: .55em; text-align: center;
+                     font-size: clamp(23px, 2.8vw, 46px); color: var(--soft); }
+  .search-views li.captured { color: var(--mark); border-color: var(--mark); border-width: 4px; font-weight: 700; }
+  .search-count, .search-note { margin: 1vh 0; color: var(--soft); font-size: clamp(21px, 2vw, 34px); }
+  @media (max-width: 900px) { .help-grid { grid-template-columns: 1fr; } .help-group { padding: 1em; } }
+
   .menu.glass { background: var(--panel); -webkit-backdrop-filter: none; backdrop-filter: none; }   /* solid: text behind text never */
   .menu h2 { margin: 0 0 1vh; font-size: clamp(26px, 2.6vw, 44px); color: var(--ink); }
   .menu button { font: inherit; font-size: clamp(20px, 2vw, 34px); padding: .7em 1em; border-radius: var(--r); text-align: left;
@@ -459,6 +472,7 @@
     <p class="when" id="when">&nbsp;</p>
     <p class="state glass" id="state" data-state="away" role="status" aria-live="polite"><span class="andy" aria-hidden="true"><svg viewBox="0 0 40 40"><g class="ant ant-l"><line x1="15" y1="16" x2="11" y2="5"/><circle cx="11" cy="5" r="2.8"/></g><g class="ant ant-r"><line x1="25" y1="16" x2="29" y2="5"/><circle cx="29" cy="5" r="2.8"/></g><rect class="head" x="6" y="14" width="28" height="22" rx="11"/><g class="eyes"><circle class="eye" cx="14.5" cy="25" r="3.6"/><circle class="eye" cx="25.5" cy="25" r="3.6"/></g></svg></span><span class="words"><span id="state-label"></span><span class="looking" id="looking" aria-hidden="true"></span></span></p>
     <div class="row2">
+    <button class="gear glass" id="help-open" type="button" aria-haspopup="dialog" aria-controls="help">What can I ask?</button>
     <button class="gear glass" id="gear" type="button" aria-haspopup="dialog" aria-controls="menu">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5A3.5 3.5 0 1 1 13 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
       <span id="gear-label">Settings</span>
@@ -502,6 +516,13 @@
     <button type="button" id="menu-hood">Under the hood<span id="menu-hood-hint">How fast Andy answers, and what it uses, live</span></button>
     <button type="button" id="menu-close">Close</button>
   </div>
+  <div class="menu help glass thick" id="help" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="help-h" aria-describedby="help-intro">
+    <h2 id="help-h">What can I ask Andy?</h2>
+    <p id="help-intro"></p>
+    <div class="help-grid" id="help-grid"></div>
+    <p id="help-controls"></p>
+    <button type="button" id="help-close">Close</button>
+  </div>
   <p class="offline" id="offline">Andy's screen is reconnecting…</p>
 <script>
   const token = new URLSearchParams(location.search).get("t");
@@ -521,7 +542,15 @@
 
   // The page's own words, in the language chosen on the setup page.
   const UI = {
-    en: { how: "Found with Tavily", howSoFar: "so far", site: "site read", sites: "sites read", credit: "credit", credits: "credits", and: "and",
+    en: { help: { button: "What can I ask?", title: "What can I ask Andy?",
+          intro: "Start with “Andy”. These are ideas to say aloud; nothing happens when you open this guide.",
+          groups: [ ["Your day", "Andy, what's on today?", "Andy, remind me to call Rosa at four.", "Andy, what's the weather?"],
+                    ["Look and understand", "Andy, find my glasses.", "Andy, read this letter for me.", "Andy, does this message look like a scam?"],
+                    ["Connect and enjoy", "Andy, tell my family I enjoyed the garden today.", "Andy, what do you remember about me?", "Andy, tell me a story."] ],
+          controls: "You can also say: “Andy, speak more slowly.” · “Andy, be quiet for ten minutes.” · “Andy, speak Spanish.”" },
+          search: { scanning: "Looking around the room", reading: "Checking the views", closer: "Looking closer to check", remembered: "Checking the earlier place",
+                    count: "Room views captured", note: "If I can't confirm it, I'll say so." },
+          how: "Found with Tavily", howSoFar: "so far", site: "site read", sites: "sites read", credit: "credit", credits: "credits", and: "and",
           calls: { search: "search", extract: "extract", crawl: "crawl", map: "map", research: "research" },
           family: "family", nws: "From the National Weather Service", next: "Next", later: "Later today", weather: "Weather", from: "From", now: "now", in: "in", min: "minute", mins: "minutes",
           hour: "hour", hours: "hours", and: "and", rain: "rain", offline: "Andy's screen is reconnecting…", lost: "Not connected",
@@ -533,14 +562,22 @@
           menuHood: "Under the hood", menuHoodHint: "How fast Andy answers, and what it uses, live", close: "Close",
           kinds: { code: "Andy's settings", news: "Local news", weather: "Weather", research: "What I found", look_up: "What I found", whats_on: "On this week",
                    check: "About that message", photo: "A photo", link: "From the link", where: "Andy's screen", letter: "What the page says", today: "Today", story: "Story time", on_this_day: "On this day", seen: "What I see",
-                   looked: "Where I looked", note: "Family note", suggestion: "Suggested reminder" },
+                   search: "Finding an object", looked: "Where I looked", note: "Family note", suggestion: "Suggested reminder" },
           where: "Andy looks here when it shows you something new.",
           order: "In the order I looked", view: "View", seenHere: "Seen here", seenToo: "Seen here too", notSeen: "Not seen",
           noPicture: "No picture",
           ask: { label: "Try asking:", list: ["“What's on today?”", "“Where did I leave my glasses?”", "“Can you read this letter for me?”",
                  "“Tell me a joke.”", "“Remind me to call my sister at four.”", "“Does this message look like a scam?”",
                  "“Look into whether the library is open on Sunday.”", "“Tell me a story.”", "“What happened on this day?”"] } },
-    es: { how: "Encontrado con Tavily", howSoFar: "hasta ahora", site: "sitio leído", sites: "sitios leídos", credit: "crédito", credits: "créditos", and: "y",
+    es: { help: { button: "¿Qué puedo pedir?", title: "¿Qué puedo pedirle a Andy?",
+          intro: "Empiece con «Andy». Son ideas para decir en voz alta; abrir esta guía no inicia ninguna acción.",
+          groups: [ ["Su día", "Andy, ¿qué hay para hoy?", "Andy, recuérdeme llamar a Rosa a las cuatro.", "Andy, ¿qué tiempo hace?"],
+                    ["Mirar y entender", "Andy, busque mis gafas.", "Andy, léame esta carta.", "Andy, ¿este mensaje parece una estafa?"],
+                    ["Compartir y disfrutar", "Andy, diga a mi familia que disfruté del jardín hoy.", "Andy, ¿qué recuerda de mí?", "Andy, cuénteme un cuento."] ],
+          controls: "También puede decir: «Andy, hable más despacio». · «Andy, silencio por diez minutos». · «Andy, hable inglés»." },
+          search: { scanning: "Buscando por la habitación", reading: "Revisando las vistas", closer: "Mirando más de cerca", remembered: "Revisando el lugar anterior",
+                    count: "Vistas de la habitación", note: "Si no puedo confirmarlo, se lo diré." },
+          how: "Encontrado con Tavily", howSoFar: "hasta ahora", site: "sitio leído", sites: "sitios leídos", credit: "crédito", credits: "créditos", and: "y",
           calls: { search: "búsqueda", extract: "extracción", crawl: "rastreo", map: "mapa", research: "investigación" },
           family: "la familia", nws: "Del Servicio Meteorológico Nacional", next: "Lo próximo", later: "Más tarde hoy", weather: "El tiempo", from: "De", now: "ahora", in: "en", min: "minuto", mins: "minutos",
           hour: "hora", hours: "horas", and: "y", rain: "lluvia", offline: "La pantalla de Andy se está reconectando…", lost: "Sin conexión",
@@ -552,7 +589,7 @@
           menuHood: "Por dentro", menuHoodHint: "Lo rápido que responde Andy y lo que usa, en directo", close: "Cerrar",
           kinds: { code: "Ajustes de Andy", news: "Noticias locales", weather: "El tiempo", research: "Lo que encontré", look_up: "Lo que encontré",
                    whats_on: "Esta semana", check: "Sobre ese mensaje", photo: "Una foto", link: "Del enlace", where: "La pantalla de Andy", letter: "Lo que dice la página", today: "Hoy", story: "Hora del cuento", on_this_day: "Un día como hoy", seen: "Lo que veo",
-                   looked: "Dónde miré", note: "Nota de la familia", suggestion: "Recordatorio sugerido" },
+                   search: "Buscando un objeto", looked: "Dónde miré", note: "Nota de la familia", suggestion: "Recordatorio sugerido" },
           where: "Andy mira aquí cuando le muestra algo nuevo.",
           order: "En el orden en que miré", view: "Vista", seenHere: "Visto aquí", seenToo: "También aquí", notSeen: "No visto",
           noPicture: "Sin imagen",
@@ -643,6 +680,7 @@
     document.body.classList.toggle("calm", !!s.calm);
     learnClock(s); lastS = s; renderClock();
     text($("next-h"), ui.next); text($("weather-h"), ui.weather); text($("offline"), ui.offline);
+    renderHelp();
     text($("gear-label"), ui.gear); text($("menu-h"), ui.menu); text($("menu-close"), ui.close);
     $("menu-code").firstChild.textContent = ui.menuCode; text($("menu-code-hint"), ui.menuCodeHint);
     $("menu-hood").firstChild.textContent = ui.menuHood; text($("menu-hood-hint"), ui.menuHoodHint);
@@ -701,7 +739,7 @@
       const cardKey = showing.kind + "|" + showing.title;
       const views = VIEW_KINDS.includes(showing.kind) ? s.views : null;      // what Andy looked at, while it's kept
       const contentKey = cardKey + "|" + JSON.stringify(showing.items) + "|" + (showing.lead || "") + "|" + (showing.qr ? "qr" : "") + "|" + document.documentElement.lang
-                         + "|" + JSON.stringify(views);
+                         + "|" + JSON.stringify(views) + "|" + (showing.stage || "") + "|" + (showing.captured || 0);
       if (cardKey !== foundKey) {
         foundKey = cardKey;
         const card = $("found"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
@@ -713,7 +751,7 @@
         $("found").classList.toggle("warn", !!showing.lead || caution);
         $("found").classList.toggle("warn-title", showing.kind === "check" && !!showing.lead);
         text($("found-kind"), ui.kinds[showing.kind] || "");
-        text($("found-h"), showing.kind === "where" ? ui.where : showing.title);
+        text($("found-h"), showing.kind === "where" ? ui.where : showing.kind === "search" ? ui.search[showing.stage] || ui.search.scanning : showing.title);
         $("found-lead").hidden = !showing.lead;
         text($("found-lead"), showing.lead || "");
         const items = $("items"); items.textContent = "";
@@ -722,6 +760,14 @@
           const img = document.createElement("img");
           img.className = "qr"; img.alt = ui.kinds.code; img.src = showing.qr;
           items.append(img, make("p", "qr-note", ui.code));
+        }
+        if (showing.kind === "search") {
+          const count = Math.max(0, Math.min(4, showing.captured || 0));
+          const status = make("p", "search-count", `${ui.search.count}: ${count} / 4`);
+          const strip = make("ol", "search-views"); strip.setAttribute("aria-hidden", "true");
+          for (let i = 1; i <= 4; i++) strip.append(make("li", i <= count ? "captured" : "", String(i)));
+          if (showing.stage !== "remembered") items.append(status, strip);
+          items.append(make("p", "search-note", ui.search.note));
         }
         if (views) items.append(viewStrip(views, showing));
         if (showing.kind === "photo" && showing.photo) {
@@ -1055,14 +1101,37 @@
   }
   // The gear: a menu for the TV's remote or a mouse. Nothing has focus when the page opens, so the first arrow
   // or OK puts it on the gear; in the menu, arrows and Tab go round its buttons, and Back closes it.
+  let helpLanguage = "";
+  function renderHelp() {
+    const lg = document.documentElement.lang;
+    if (helpLanguage === lg) return;
+    helpLanguage = lg;
+    text($("help-open"), ui.help.button); text($("help-h"), ui.help.title);
+    text($("help-intro"), ui.help.intro); text($("help-controls"), ui.help.controls); text($("help-close"), ui.close);
+    const grid = $("help-grid"); grid.textContent = "";
+    for (const [title, ...examples] of ui.help.groups) {
+      const section = make("section", "help-group"); section.append(make("h3", "", title));
+      for (const example of examples) section.append(make("p", "", "“" + example + "”"));
+      grid.append(section);
+    }
+  }
+  function openHelp(open) {
+    $("help").classList.toggle("open", open);
+    document.body.classList.toggle("menu-open", open);
+    if (open) { $("menu").classList.remove("open"); $("help").focus(); $("help").scrollTop = 0; } else $("help-open").focus();
+    showAsk();
+  }
+  $("help-open").addEventListener("click", () => openHelp(true));
+  $("help-close").addEventListener("click", () => openHelp(false));
   function openMenu(open) {
     $("menu").classList.toggle("open", open);
     document.body.classList.toggle("menu-open", open);
-    if (open) $("menu-code").focus(); else $("gear").focus();
+    if (open) { $("help").classList.remove("open"); $("menu-code").focus(); } else $("gear").focus();
+    showAsk();
   }
   $("gear").addEventListener("click", () => openMenu(true));
   $("menu-close").addEventListener("click", () => openMenu(false));
-  $("scrim").addEventListener("click", () => openMenu(false));
+  $("scrim").addEventListener("click", () => { if ($("help").classList.contains("open")) openHelp(false); else openMenu(false); });
   // The hood page has its own token, learned from /api/screen; "from=screen" lets its Back key come back here.
   let hoodLink = "";
   $("menu-hood").addEventListener("click", () => { if (hoodLink) location.href = hoodLink + "&from=screen"; });
@@ -1075,18 +1144,25 @@
   // Back on a TV remote: Escape or Backspace in most browsers; LG's and Samsung's TVs send their own codes.
   const isBack = (e) => ["Escape", "Backspace", "GoBack", "BrowserBack"].includes(e.key) || e.keyCode === 461 || e.keyCode === 10009;
   document.addEventListener("keydown", (e) => {
-    const menu = $("menu");
+    const helpOpen = $("help").classList.contains("open");
+    const menu = helpOpen ? $("help") : $("menu");
     if (!menu.classList.contains("open")) {
       const a = document.activeElement;
       if ((!a || a === document.body || a === document.documentElement) && (ARROWS.includes(e.key) || e.key === "Enter")) {
         $("gear").focus(); e.preventDefault();
+      } else if (ARROWS.includes(e.key)) {
+        const controls = [$("help-open"), $("gear")], i = controls.indexOf(a);
+        if (i >= 0) { controls[1 - i].focus(); e.preventDefault(); }
       }
       return;
     }
     const buttons = [...menu.querySelectorAll("button")], n = buttons.length;
     const i = buttons.indexOf(document.activeElement);
     const next = i < 0 ? 0 : (i + 1) % n, prev = i < 0 ? n - 1 : (i - 1 + n) % n;
-    if (isBack(e)) { openMenu(false); e.preventDefault(); }
+    if (isBack(e)) { if (helpOpen) openHelp(false); else openMenu(false); e.preventDefault(); }
+    else if (helpOpen && ["ArrowUp", "ArrowDown"].includes(e.key)) {
+      menu.scrollTop += (e.key === "ArrowDown" ? 1 : -1) * menu.clientHeight * .6; e.preventDefault();
+    }
     else if (e.key === "Tab") { buttons[e.shiftKey ? prev : next].focus(); e.preventDefault(); }   // focus stays in the menu
     else if (e.key === "ArrowDown" || e.key === "ArrowRight") { buttons[next].focus(); e.preventDefault(); }
     else if (e.key === "ArrowUp" || e.key === "ArrowLeft") { buttons[prev].focus(); e.preventDefault(); }

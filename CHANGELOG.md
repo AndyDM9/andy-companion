@@ -5,6 +5,27 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Spoken-example guide and actual search progress
+
+- The founder reopened bounded feature/design work. Compared first-party ElliQ family features,
+  Amazon multimodal guidance and W3C accessibility guidance; recorded what Andy already has and
+  why discoverability and physical-process feedback are useful (research and decision 0025).
+- Added an on-demand English/Spanish TV guide: nine examples in three groups, with pace, quiet
+  and language commands. It initiates no action. Remote arrows/OK/Back, focus return and scrolling
+  work at small sizes. The familiar clock, shared contrast palette and captions remain.
+- The finder now shows real stages and room-view acquisition counts. Only fixed names/counts cross
+  the authenticated memory-only boundary; no target words or new stored data. A per-search ID,
+  45-second expiry and cancellation cleanup keep late progress from replacing newer cards. Fixed
+  cancellation during the HTTP start itself. Existing result cards still carry the answer/pictures.
+- The keyless public demo includes explicitly invented progress, never a camera/model/robot call.
+  Added sample screenshots and scoped browser evidence. Nineteen new regressions; CPU **1,130
+  passed / 12 skipped**, installed robot environment **1,142 / one skipped**, isolated wheel **3 passed**.
+  Browser: 16 language/theme/TV-size combinations plus narrow remote scrolling, invented image
+  return, hint preferences and offline recovery; zero page errors. Python/JavaScript checks pass.
+- Runtime restart and hosted-preview verification follow this source commit. M6/M7 physical trials,
+  intended-audience feedback, final video, release pin and submission remain incomplete.
+
+
 ### Submission evidence and video-file preflight
 
 - Rechecked official rules and current public access. All three Spaces are RUNNING; a fresh real-model

@@ -4,6 +4,26 @@ What we read before building, what we took from it, and what we left out. Every 
 date shown. Conversation and humour research is about older adults; we apply it to everyone Andy talks
 with, by our own choice. Andy makes no therapeutic or health claim from any of it.
 
+## Product and screen comparison (checked 2026-10-26)
+
+The founder reopened useful feature and screen work on October 26. This comparison uses published
+first-party features and design guidance, not a hands-on evaluation or an exhaustive market ranking.
+The conclusions about what to build are our own.
+
+| Published pattern | Andy already has | Change chosen |
+|---|---|---|
+| [ElliQ's FAQ](https://elliq.com/pages/faqs) describes family messages, photos and suggested reminders that the person accepts on the device | Family messages/photos, voice acceptance of reminder suggestions and a code-enforced sharing proposal | Keep these working; do not claim family consent is unique to Andy. Video calls are outside this bounded change |
+| [Amazon's multimodal guidance](https://developer.amazon.com/en-US/alexa/alexa-haus/multimodal-introduction) recommends discoverable spoken commands, a clear information hierarchy and readable layouts across viewing distances | Large day/clock, captions, rotating spoken examples and remote settings | Add an on-demand English/Spanish guide with nine examples in three groups and pace, quiet and language controls. Opening it performs no action |
+| [W3C status-message guidance](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) describes exposing process updates without moving focus | A live robot-state pill and result cards in a polite live region | Show actual finder stages and the number of room views captured, then the existing result. No guessed percentage or confidence |
+| [W3C's accessibility guidance](https://www.w3.org/WAI/older-users/developing/) covers readability, navigation and related needs | Palette tested at 7:1, large type, reduced motion, solid-panel mode and remote controls | Preserve those properties; check both languages, four palettes, 720p/1080p, captions and focus return. This is browser verification, not a usability study |
+
+**What can distinguish this entry:** the complete, visible sequence from moving the robot, through
+reading multiple views and checking closer, to an honest answer with the pictures it used. The screen
+now helps explain that sequence while it happens. Code tests and browser samples do not establish
+physical accuracy. The fixed physical trial plan, a real uninterrupted hardware take, and consenting
+potential-user feedback remain stronger missing evidence than another broad feature catalogue.
+No product comparison can establish or guarantee an award.
+
 ## Conversation (researched 2026-10-13)
 
 **What we found:**

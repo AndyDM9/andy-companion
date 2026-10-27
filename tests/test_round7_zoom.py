@@ -403,3 +403,18 @@ def test_the_sweep_sends_one_move_per_picture():
 def test_only_a_thing_shown_on_a_screen_is_a_picture(where, shown):
     """The founder's glasses lay near a phone, in front of monitors: thrown away until 2026-10-25."""
     assert finder.on_screen(where) is shown
+
+
+def test_progress_reaches_closer_only_when_a_closer_look_is_attempted(monkeypatch):
+    stages = []
+    original = board.search_step
+
+    def notice(key, stage, captured=0):
+        stages.append((stage, captured))
+        original(key, stage, captured)
+
+    monkeypatch.setattr(board, 'search_step', notice)
+    out, _, _, _ = run([EMPTY, EMPTY, frame_with_spot(.7, .5), EMPTY, frame_with_spot(.5, .5)],
+                       lambda f, w: {'yes': True, 'x': .5, 'y': .5, 'where': 'on the table'})
+    assert out['found'] and stages[-1] == ('closer', 4)
+    assert board.showing()['kind'] == 'seen'

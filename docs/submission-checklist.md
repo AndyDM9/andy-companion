@@ -6,6 +6,11 @@ in the same commit that makes it true.
 
 ## Final readiness, checked October 26
 
+- [x] English/Spanish spoken-example guide and event-driven finder progress implemented, with no new model, stored conversation data or public write route
+- [x] Nineteen new regressions and 16 browser language/theme/TV-size cases plus four additional checks pass; full CPU/robot-environment suites and isolated wheel pass
+- [ ] Updated screen preview deployed and verified; Andy service restarted with exclusive control
+- [ ] Founder confirms the new progress and guide on the physical TV during a real search; browser fixtures do not complete this check
+
 - [x] All 23 submission links open after moving the FTC citation to a verified official HTML release; the figure's wording matches its approximate precision
 - [x] Video metadata checker and 17 regressions available; short/silent simulation correctly rejected without claiming to inspect hardware content
 - [ ] Actual final cut/raw hardware clip pass metadata checks and manual content/rights/translation review

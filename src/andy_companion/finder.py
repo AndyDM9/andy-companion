@@ -439,6 +439,7 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
     around", mid-sweep, and one view came out pointed at the founder, the close-ups at the wrong places). It comes
     back only if it was on, once the last look has played out."""
     from andy_companion.body import hold
+    from andy_companion import board
 
     tracking = bool(getattr(manager, "_head_tracking", False)) and hasattr(manager, "set_head_tracking")
     hold.begin(manager)                  # seek, face following, the glance and idle hand-back stand down
@@ -446,21 +447,37 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
         manager.set_head_tracking(False)
     quiet_tracking(robot)
     out: Dict[str, Any] = {}
+    search = None
     try:
+        await asyncio.to_thread(board.clear_screen)
+        starting = asyncio.create_task(asyncio.to_thread(board.start_search))
+        try:
+            search = await asyncio.shield(starting)
+        except asyncio.CancelledError:
+            # The HTTP thread can finish after cancellation. Learn its ID before cleanup, so it cannot
+            # create a working card after the cancelled search has already tried to remove it.
+            search = await starting
+            raise
+
+        async def progress(stage: str, captured: int = 0) -> None:
+            await asyncio.to_thread(board.search_step, search, stage, captured)
+
         hint = None
         if zoom():
             from andy_companion import places
 
             hint = places.recall(tidy_what(what))
         if hint and hint.get("yaw") is not None:          # where it was: look there first, then around
+            await progress("remembered")
             out = await where_it_was(tidy_what(what), robot, manager, hint, **kw)
             if out.get("found") or out.get("error"):
                 return out
-        out = await _find(what, robot, manager, **kw)
+        out = await _find(what, robot, manager, progress=progress, **kw)
         if hint and "how" in out:
             out["how"] = out["how"] + " " + moved_note(hint, bool(out.get("found")))
         return out
     finally:
+        await asyncio.to_thread(board.end_search, search)
         back = BACK_TO_FACE_S + (POINT_HOLD_S if out.get("found") else 0.0)
 
         def face_back() -> None:
@@ -553,7 +570,7 @@ async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any]
 
 async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, checker: Callable = look_closer,
                 poster: Callable = post_views, queueable: Optional[Callable] = None, sleep: Callable = asyncio.sleep,
-                clock: Optional[Callable[[], float]] = None) -> Dict[str, Any]:
+                clock: Optional[Callable[[], float]] = None, progress: Optional[Callable] = None) -> Dict[str, Any]:
     import time
 
     from andy_companion import board
@@ -568,7 +585,6 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         antennas = (0.0, 0.0)
     pitch = math.radians(PITCH_DEG)
     try:   # the TV shows the last search's close-up for two minutes: clear it, or Andy finds the picture
-        await asyncio.to_thread(board.clear_screen)
         poster([None] * len(SWEEP_DEG), [False] * len(SWEEP_DEG), None)
     except Exception:
         pass
@@ -589,6 +605,8 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     reading: List[Any] = []
     poses: List[tuple] = []          # where the head really was for each view (yaw, pitch, radians)
     for deg in SWEEP_DEG:
+        if progress:
+            await progress("scanning", sum(f is not None for f in frames))
         sent = (math.radians(deg), pitch)
         quiet_tracking(robot)
         step = look.HoldLook(pose, antennas, sent[0], sent[1], HOLD_S)
@@ -611,6 +629,8 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         for task in reading:
             task.cancel()
         return {"error": "My camera did not give a picture just now."}
+    if progress:
+        await progress("reading", sum(f is not None for f in frames))
     answers = await asyncio.gather(*reading, return_exceptions=True)
     for a in answers:
         if isinstance(a, FinderError):
@@ -627,6 +647,8 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     if places and not zoom():                       # one shrunk frame per view, as before: the first sighting
         chosen = dict(places[0])
     for place in places[:MAX_CLOSER] if zoom() else []:
+        if progress:
+            await progress("closer", sum(f is not None for f in frames))
         try:
             got = await closer_look(robot, manager, antennas, place, what, checker, queueable, sleep)
         except FinderError as e:

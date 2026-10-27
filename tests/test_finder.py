@@ -133,7 +133,7 @@ def test_the_look_turns_gently_and_holds():
     step = look.HoldLook(pose(), (-0.17, 0.17), math.radians(55), math.radians(15), 1.1)
     ts = np.arange(0.0, step.duration, 0.01)
     yaws = [glance._rpy(step.evaluate(t)[0])[2] for t in ts]
-    assert max(abs(a - b) for a, b in zip(yaws, yaws[1:])) / 0.01 <= glance.PEAK_RAD_S * 1.01
+    assert max(abs(a - b) for a, b in zip(yaws, yaws[1:], strict=False)) / 0.01 <= glance.PEAK_RAD_S * 1.01
     assert yaws[-1] == pytest.approx(math.radians(55)) and step.evaluate(step.duration - 0.01)[2] == 0.0
 
 
@@ -214,3 +214,71 @@ def test_a_try_is_kept_only_when_asked_and_scored_against_the_persons_labels(tmp
     (tmp_path / "labels.csv").write_text(f"{kept.name},none\n")
     assert ev.score(ev.tries(tmp_path), ev.labels(tmp_path))["out_of_sight"]["pointed_at_nothing"] == 1
     assert "view-1.jpg" in ev.sheet(tmp_path).read_text()
+
+
+def test_progress_counts_captured_frames_and_preserves_the_result(monkeypatch):
+    monkeypatch.setenv('ANDY_FINDER_ZOOM', 'off')
+    steps = []
+    step = board.search_step
+
+    def notice(key, stage, captured=0):
+        step(key, stage, captured)
+        steps.append((stage, captured))
+        assert board.showing()['kind'] == 'search'
+
+    monkeypatch.setattr(board, 'search_step', notice)
+    out, _, _ = run_find(lambda f, w: {'seen': False, 'x': .5, 'where': ''})
+    assert steps == [('scanning', 0), ('scanning', 1), ('scanning', 2), ('scanning', 3), ('reading', 4)]
+    assert not out['found'] and board.showing()['kind'] == 'looked'
+
+
+@pytest.mark.parametrize('cancel', [False, True])
+def test_failed_or_cancelled_search_removes_progress(monkeypatch, cancel):
+    async def run():
+        started = asyncio.Event()
+
+        async def blocked(*args, **kwargs):
+            assert board.showing()['kind'] == 'search'
+            started.set()
+            if cancel:
+                await asyncio.Event().wait()
+            raise RuntimeError('Synthetic failure')
+
+        monkeypatch.setattr(finder, '_find', blocked)
+        robot, manager = Robot(), Manager()
+        task = asyncio.create_task(finder.find('glasses', robot, manager))
+        await started.wait()
+        if cancel:
+            task.cancel()
+        with pytest.raises(asyncio.CancelledError if cancel else RuntimeError):
+            await task
+        assert board.showing() is None
+
+    asyncio.run(run())
+
+
+def test_cancellation_during_screen_start_cannot_leave_late_progress(monkeypatch):
+    import threading
+
+    entered, release = threading.Event(), threading.Event()
+    original = board.start_search
+
+    def delayed():
+        entered.set()
+        assert release.wait(5)
+        return original()
+
+    monkeypatch.setattr(board, 'start_search', delayed)
+
+    async def run():
+        robot, manager = Robot(), Manager()
+        task = asyncio.create_task(finder.find('glasses', robot, manager))
+        assert await asyncio.to_thread(entered.wait, 5)
+        task.cancel()
+        release.set()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        assert board.showing() is None
+        assert manager.moves == []
+
+    asyncio.run(run())

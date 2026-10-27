@@ -51,6 +51,8 @@ _screen = None
 _research = []
 _generation = 0
 _transient_lock = threading.RLock()
+SEARCH_FOR_S = 45             # a stalled or cancelled finder cannot leave a permanent working card
+SEARCH_STAGES = ("scanning", "reading", "closer", "remembered")
 
 
 def transient_action(action: str, data: Any = None) -> Any:
@@ -66,7 +68,25 @@ def transient_action(action: str, data: Any = None) -> Any:
             if _screen and (now - _screen.get("at", 0) > SHOW_FOR_S or
                             (_screen.get("until") and now > _screen["until"])):
                 _screen = None
-            return _screen
+            return {k: v for k, v in _screen.items() if k != "search_id"} if _screen else None
+        elif action == "search-start":
+            now = time.time()
+            key = secrets.token_hex(16)
+            _screen = {"kind": "search", "title": "", "items": [], "at": now, "until": now + SEARCH_FOR_S,
+                       "search_id": key, "stage": "scanning", "captured": 0}
+            return key
+        elif action in ("search-step", "search-end"):
+            if not isinstance(data, dict):
+                raise ValueError("Bad search progress")
+            if not _screen or _screen.get("search_id") != data.get("id") or not data.get("id"):
+                return None             # another card, a clear, or a newer search owns the screen now
+            if action == "search-end" or time.time() > _screen["until"]:
+                _screen = None
+            else:
+                stage, captured = data.get("stage"), data.get("captured")
+                if stage not in SEARCH_STAGES or type(captured) is not int or not 0 <= captured <= 4:
+                    raise ValueError("Bad search progress")
+                _screen.update(stage=stage, captured=captured, until=time.time() + SEARCH_FOR_S)
         elif action == "clear":
             _screen = None
         elif action == "clear-private":
@@ -189,6 +209,19 @@ def show(kind: str, title: str, items: List[Dict[str, Any]], now: Optional[float
 
 def showing(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
     return _transient("showing", now)
+
+
+def start_search() -> Optional[str]:
+    """A transient, text-free progress card; its private ID prevents late updates replacing a newer card."""
+    return _transient("search-start")
+
+
+def search_step(key: Optional[str], stage: str, captured: int = 0) -> None:
+    _transient("search-step", {"id": key, "stage": stage, "captured": captured})
+
+
+def end_search(key: Optional[str]) -> None:
+    _transient("search-end", {"id": key})
 
 
 CODE_FOR_S = 120

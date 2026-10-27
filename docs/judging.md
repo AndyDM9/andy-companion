@@ -27,6 +27,16 @@ funded by the author (decision 0023). It uses real Nemotron inference with fixed
 simulated effects. It supplements the real-robot testing arrangement; its public operational allowance
 is not represented as unrestricted access to the complete working project.
 
+## Explore the screen
+
+On the [sample screen](https://andydm-andy-companion.hf.space/screen?t=demo-screen), choose
+**What can I ask?** for spoken examples. A keyboard or TV remote can use an arrow to focus Settings,
+Left/Right to reach the guide, OK to open it and Back to close it. The preview cycles through invented
+search stages and existing results; these stages are a layout demonstration, not a live hardware test.
+On the real robot the stage/count updates come from the finder itself. The guide sends no command.
+[Guide sample](images/tv-voice-guide.png) · [Search progress sample](images/tv-search-progress.png).
+Both screenshots use invented data.
+
 ## Try the guided AI examples
 
 No login, API key or payment is needed. Choose an invented bill, a sample family note or an absent-object

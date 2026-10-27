@@ -29,3 +29,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0022](0022-judge-testing-without-sharing-provider-keys.md) | Judge testing does not require sharing provider keys | 2026-10-26 | accepted; clarifies 0003 |
 | [0023](0023-guided-inference-is-separate-from-the-household.md) | Guided judge inference is separate from the household | 2026-10-26 | accepted; extends 0022 |
 | [0024](0024-video-preflight-checks-metadata-not-content.md) | Video preflight checks metadata and keeps content review manual | 2026-10-26 | accepted |
+| [0025](0025-discoverable-voice-examples-and-honest-search-progress.md) | Make voice examples discoverable and show actual search progress | 2026-10-26 | accepted |

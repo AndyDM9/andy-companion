@@ -52,7 +52,10 @@ Each milestone is done only when its "done when" is true and STATUS.md and CHANG
 Planned 2026-10-14 from four reviews (a judge's-eye review, a claims audit, a code and privacy review,
 innovation research) and the founder's test on the robot. The research is in [research.md](research.md).
 **The rule for the last two weeks: reliability on camera comes before more features.** Feature freeze
-2026-10-23; fixes only after.
+2026-10-23; fixes only after. **Amended 2026-10-26:** the founder explicitly reopened bounded new
+features and screen improvements. The approved follow-through adds a passive voice guide and actual
+finder progress (decision 0025), with regression/browser checks before filming. This does not mark
+M6/M7's physical checks or M10 complete.
 
 ### Build (Claude), in order
 

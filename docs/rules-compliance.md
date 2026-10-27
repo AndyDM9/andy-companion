@@ -19,6 +19,16 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## October 26 screen follow-through
+
+The official rules were checked again for the screen changes: the October 30 10:00 PT deadline,
+video guidance (under three minutes and at least a minute of actual hardware for this entry), public
+YouTube link, rights requirements and working-project access remain as recorded here. The new guide
+shows existing spoken capabilities. Finder stage counts are acquisition feedback, not an accuracy
+claim. The public preview's search animation is invented sample state and has no camera, model or
+robot connection; it is not hardware evidence. Competitor references in research are linked factual
+comparisons, not logos or copied assets. The final video and real physical trials are still pending.
+
 ## Dates
 
 | What | When | Our plan |
