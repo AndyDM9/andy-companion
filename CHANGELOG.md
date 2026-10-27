@@ -21,6 +21,11 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 - All 23 draft links open. Current final export still stops at video/tag/app pin; no real tag,
   app, robot, provider configuration or submission changed. This internal gate adds no eligibility,
   physical, future-immutability or all-app-asset claim; public rate limits/outages can block it.
+- Source `5a8de4d` published and four anonymous source files verified; fresh locked clone **1,669 /
+  16 skipped**, current final command still stops before output. All 380 relative targets/34 fragments
+  resolve across 70 Markdown files. Hosted CPU/wheel/SDK checks pass (1,669 / 16 skipped, three wheel,
+  71 SDK); 247-commit source history secrets scan clean. Clarify that exporter tests use loopback
+  HTTP fixtures; no external network, provider or robot in the test suite.
 
 ### Make the judge review route concrete
 

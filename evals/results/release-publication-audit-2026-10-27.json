@@ -4,7 +4,9 @@
   "reproduced_before_fix": {
     "published_fixture_tag_differs_from_local_tested_tag": true,
     "page_checks_mocked_200": true,
-    "old_final_export_exit": 0
+    "old_final_export_exit": 0,
+    "old_local_pin_accepts_string_field": true,
+    "new_local_pin_rejects_string_field": true
   },
   "validation": {
     "new_cpu_cases": 44,
@@ -34,7 +36,13 @@
     ],
     "draft_export_links_open": 23,
     "draft_export_links_checked": 23,
-    "app_pin_requires_dependency_list_of_strings": true
+    "app_pin_requires_dependency_list_of_strings": true,
+    "documentation_links": {
+      "markdown_files": 70,
+      "relative_targets": 380,
+      "fragments_checked": 34,
+      "problems": []
+    }
   },
   "live_metadata_probe": {
     "anonymous_published_tag_absent": true,
@@ -62,10 +70,54 @@
   },
   "source_sha256": {
     "scripts/devpost.py": "da7a470aca50c76a42d0366485307d1dfadd4b85d530037d96bcdc1b83923db7",
-    "tests/test_devpost.py": "b64e7f6592072b9598ff975224c9cddaccb3c5ec9f8c6beabd89c95a6604993f",
+    "tests/test_devpost.py": "7aca22d3c00f6de5d9e938e2ff4352ffc7610ad46dac4aebab9b1592becfb604",
     "reachy_app/pyproject.toml": "3cde7b3bc69752dc4fd96a1fa0ddc40c1593f0e2595aa1458a67a2a40902e41e"
   },
   "publication": {
-    "status": "pending"
+    "status": "verified",
+    "source_commit": "5a8de4d2d8cd773b851c7c3310cc90ddd8401caf",
+    "published_source": [
+      {
+        "path": "scripts/devpost.py",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/judging.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/architecture.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/decisions/0038-final-export-checks-the-published-release.md",
+        "anonymous_source_matches": true
+      }
+    ],
+    "anonymous_clone": {
+      "credential_helper_disabled": true,
+      "locked_run": true,
+      "cpu_passed": 1669,
+      "cpu_skipped": 16
+    },
+    "fresh_clone_final": {
+      "fresh_clone_current_final_exit": 2,
+      "no_export_fields": true,
+      "expected_local_blockers": true
+    },
+    "ci": {
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40562059659",
+      "cpu": "success",
+      "sdk": "success",
+      "cpu_passed": 1669,
+      "cpu_skipped": 16,
+      "sdk_configuration_dispatch_passed": 71,
+      "isolated_wheel_passed": 3
+    },
+    "follow_up": "Test module description corrected to disclose loopback HTTP; no assertion or runtime change.",
+    "source_history_secrets_scan": {
+      "commits": 247,
+      "leaks": 0
+    }
   }
 }

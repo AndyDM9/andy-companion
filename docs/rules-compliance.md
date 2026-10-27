@@ -47,7 +47,10 @@ Hugging Face app package metadata after local checks (0038). All final checks pr
 These are reproducibility controls, not additional hackathon rules. Bounded anonymous read-only GETs
 need no provider key and publish/change nothing. Forty-four new cases and two actual loopback HTTP
 fixtures use invented releases, not working hardware or a real final submission. Full CPU suite passes;
-23 draft links open. Actual public reads confirm the release tag is absent and the development app
+23 draft links open. Published source bytes, a fresh anonymous locked checkout (1,669 passed,
+16 skipped), 380 relative targets/34 fragments and expected final refusal verify independently.
+Hosted CPU/wheel/SDK checks and the 247-commit source secrets-pattern scan pass.
+Actual public reads confirm the release tag is absent and the development app
 metadata matches; current local video/tag/app-pin failures still stop the final path first.
 
 No actual final release/access, footage/rights, model score, robot function or submission requirement

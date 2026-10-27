@@ -1,4 +1,4 @@
-"""scripts/devpost.py: the Devpost form's fields from docs/submission.md, ready to paste (no network here)."""
+"""Exporter checks with invented releases and loopback HTTP fixtures; no external network or hardware."""
 
 import importlib.util
 import http.client

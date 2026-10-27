@@ -39,8 +39,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   runtime change/redeployment. Current `--final` still exits 2 for video/tag/app pin, before public
   metadata checks. Physical trials, reliable memory offers, provider latency, video/gallery, final
   release/access and actual Devpost reconciliation/submission stay open. A future passing gate does
-  not verify video rights/visibility/footage, all app assets or future immutability. Publication pending.
+  not verify video rights/visibility/footage, all app assets or future immutability.
   [Audit metadata](../evals/results/release-publication-audit-2026-10-27.json).
+
+- **Publication:** source `5a8de4d` pushed; helper, judge guide, architecture and decision files match
+  anonymous downloads. Fresh anonymous locked checkout **1,669 / 16 skipped**; its actual final CLI
+  exits 2 with no fields and the same three local blockers. **70** Markdown files: **380** relative
+  targets and **34** fragments resolve. [Hosted CPU/wheel/SDK checks passed](https://github.com/AndyDM9/andy-companion/actions/runs/40562059659),
+  including **1,669 / 16 skipped**, **three** isolated wheel checks and **71** SDK configuration/dispatch
+  cases. Published source history secrets scan: **247 commits clean**. No hosted runtime update
+  or robot restart needed. Test-module description now explicitly discloses its loopback HTTP fixtures.
 
 ## October 27 judge-entry review
 
