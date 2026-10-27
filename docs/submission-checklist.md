@@ -9,7 +9,7 @@ in the same commit that makes it true.
 - [x] Left-card shadows fade beyond layout containers; search-picture highlights stay complete inside picture bounds, verified at three sizes with/without captions and in two palettes
 
 - [x] Watch-request routing asks for actual finder dispatch before speech; 20 targeted streaming-inference checks and five SDK entrypoint regressions pass
-- [ ] Spoken watch retry confirms the real robot starts searching after the request; no hardware success inferred from model-only checks
+- [x] Founder confirms the local robot's watch search works after the restart; qualitative/untimed, with no separately scored pointing result
 - [ ] Full 97-case suite rerun after the watch-routing prompt revision; earlier scores remain dated evidence of the preceding profile
 
 - [x] Speaking pulse centred on the robot status pill at 1080p/720p; motion preferences still respected (browser verified)

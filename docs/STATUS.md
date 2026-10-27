@@ -22,6 +22,13 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 26 review work
 
+- **Watch retry confirmed:** founder reports the local robot's watch search now works after the
+  tool-first prompt revision/restart; a local-screen view shows the watch result and complete
+  picture highlights. Qualitative, untimed functional confirmation only: no separately verified
+  pointing score or added fixed-benchmark trial. Household screenshot/camera pictures not retained
+  in the repository. The specific reported dispatch issue is resolved; full-suite rerun, planned
+  physical measurements and broader M6/M7 checks remain open.
+
 - **Card shadows and search-picture frames:** fixed shadow clipping at the left column/layout;
   card content remains clipped within its own rounded box. Chosen/secondary sighting borders are
   now drawn inside the pictures (4/2 px), so the card's clipped content cannot cut their edges off.
@@ -37,7 +44,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   valid object arguments and no pre-call speech; three non-request categories excluded. Five SDK
   entrypoint regressions use mocked hardware. CPU **1,141 / 13 skipped**, robot **1,158 / one skipped**.
   The cause of the original missing dispatch is not established; no household speech retained.
-  Existing-service restart follows this source commit; **real spoken watch retry pending**.
+  Existing service restarted; **spoken watch retry subsequently confirmed by the founder**, untimed
+  (see the follow-through above).
   [Scoped checks](../evals/results/watch-routing-2026-10-26.json). Full 97-case rerun of this prompt
   revision is pending; earlier scorecards below describe the pre-watch profile.
 

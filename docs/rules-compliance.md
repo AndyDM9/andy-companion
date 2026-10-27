@@ -21,6 +21,10 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## October 26 screen follow-through
 
+The subsequent founder-confirmed watch-search retry is recorded as qualitative and untimed.
+No household screenshot or camera picture is published, and no benchmark rate or completed-video
+claim is added. Final physical measurements and compliant demonstration footage remain separate.
+
 Card-shadow and picture-highlight corrections change CSS painting only. Browser evidence uses
 invented state and program-drawn demo images; no supplied household screenshot or camera image is
 published. This adds no capability, outcome or hardware-accuracy claim and changes no access rule.

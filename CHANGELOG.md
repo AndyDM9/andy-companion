@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-26
 
+### Watch-search retry confirmed on the local robot
+
+- Founder confirmed the watch search works after the tool-first prompt revision and service restart;
+  the supplied local-screen view shows a watch result with the corrected picture frames. Recorded
+  as a qualitative, untimed functional check. No pointing score, accuracy rate or full milestone
+  completion follows, and this is not an entry in the fixed physical-trial benchmark.
+- Updated status and the specific spoken-retry checklist item. The supplied household screenshot,
+  camera pictures and conversation text are not added to the repository. No runtime change.
+
+
 ### Complete picture frames and unclipped card shadows
 
 - Fixed the layout containers clipping the left cards' shadows into hard vertical/horizontal edges.
