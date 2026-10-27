@@ -25,7 +25,11 @@ Setup type checks improve an existing owner-page request boundary. Invented test
 malformed batches leave settings and side effects unchanged; normal browser representations remain
 supported. No new user-facing capability, model result, persisted-file recovery, physical movement,
 spoken delivery or completed-access/submission claim. Existing video, hardware/free-testing and
-release requirements remain open. Source/runtime/preview follow-through will be recorded when verified.
+release requirements remain open. Deployed source/preview hashes and eight public layouts/two write
+refusals pass; all three Spaces RUNNING. Fresh-clone tests, 329 relative file targets and 23/23 export
+links and hosted CPU/wheel/SDK jobs pass. Both cloud probe timeouts are retained beside subsequent short
+successes, without an availability/voice-latency or resolved-outage claim. Final exporter still refuses
+missing video/tag/app pin. No hardware/access/submission item is completed by these software checks.
 
 ## Hardware-access clarification (October 27)
 

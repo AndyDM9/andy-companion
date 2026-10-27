@@ -7,7 +7,7 @@ in the same commit that makes it true.
 ## Final readiness, re-audited October 26–27
 
 - [x] Setup requests require supported shapes/types before any save or side effect; 87 new cases include actual HTTP unchanged-file/no-announcement/no-volume/no-lookup checks
-- [ ] Setup type-validation change verified in full suites, installed package, running service and published source/preview
+- [x] Setup type-validation change verified in full suites, installed package, running service and published source/preview; hosted CPU/wheel/SDK jobs, fresh clone, deployed hashes, eight layouts/two public write refusals pass
 
 - [x] Hardware-access instructions distinguish an assisted video demonstration from organiser-agreed physical access, identify the supporting desktop, keep personal credentials private and disclose GitHub request sign-in
 - [ ] Final physical-access method confirmed with organisers if requested; the video-call offer alone does not confirm it

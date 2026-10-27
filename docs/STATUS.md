@@ -41,9 +41,19 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   A separate follow-up preflight returned **20/21**, Nemotron **0.55 s**; optional endpoint still off.
   Both timeouts stay in the record. Cause unconfirmed; [provider status](https://status.nebius.com/)
   reported operational. This short sequence does not establish resolution, an availability rate or
-  physical voice latency. No connection/timeout/retry change. Source/preview/CI follow-through pending.
+  physical voice latency. No connection/timeout/retry change. Publication follow-through below.
   Physical trials, reliable memory offers, final hardware arrangements, video and release remain open.
   [Audit metadata](../evals/results/setup-input-audit-2026-10-27.json).
+
+- **Published:** source `83aa522`; preview `a898e2d1db6caabe54373a83d20e451f6e523ae7` RUNNING.
+  Actual deployed revision and setup/server files match; all three Spaces RUNNING. Eight public
+  layouts passed with zero errors/overflow; both public writes refused with 403. No model/hardware
+  calls in browser checks; guided handler unchanged. Anonymous clone **1,509 / 16 skipped**,
+  credential helpers disabled; history **236 commits clean**, **329** relative file targets resolved,
+  **23/23** export links open.
+  [Hosted CPU/wheel and SDK CI passed](https://github.com/AndyDM9/andy-companion/actions/runs/40537844682).
+  Final export still blocks video/tag/app pin.
+  Intermittent cloud latency, physical trials, memory offers, hardware arrangements and submission remain open.
 
 ## October 27 hardware-access clarification
 

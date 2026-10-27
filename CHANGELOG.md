@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Setup-validation deployment follow-through
+
+- Source `83aa522` pushed; screen preview `a898e2d1db6caabe54373a83d20e451f6e523ae7` RUNNING.
+  Actual deployed revision and changed setup/server files match; all three Spaces RUNNING. Eight
+  public layouts passed and both public write probes returned 403; no model/hardware calls.
+- Anonymous clone **1,509 / 16 skipped**, 236-commit history clean, 329 relative file targets resolved
+  and 23/23 export links open. Hosted CPU/wheel/SDK jobs passed. Final exporter still blocks video/tag/app pin.
+  Provider timeouts remain visible; no physical test or complete submission claimed.
+
 ### Setup choices retain their types
 
 - Invented requests exposed string false switching captions on and fractional hours/volume silently
