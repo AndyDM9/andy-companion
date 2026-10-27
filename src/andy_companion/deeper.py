@@ -14,9 +14,10 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import urllib.request
 from typing import Callable, Optional
+
+from andy_companion.model_reply import final_text
 
 MODEL = os.environ.get("ANDY_DEEP_MODEL", "nvidia/Nemotron-3-Ultra-550b-a55b")
 TIMEOUT_S = 60
@@ -49,11 +50,10 @@ def think(question: str, language: str = "en", opener: Optional[Callable] = None
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
-            text = json.loads(r.read())["choices"][0]["message"].get("content") or ""
+            text = final_text(json.loads(r.read()))
     except Exception as e:   # never echo the request: it holds the person's question
         raise DeeperError(f"The bigger model did not answer ({type(e).__name__}).") from None
     # Ultra reasons first; only the answer is spoken.
-    text = re.sub(r"(?s)<think>.*?</think>", "", text).split("</think>")[-1]
     answer = " ".join(text.split())
     if not answer:
         raise DeeperError("The bigger model gave no answer.")

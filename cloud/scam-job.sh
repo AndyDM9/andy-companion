@@ -51,7 +51,7 @@ keep = [{"id": m["id"], "warnings": [{x: w.get(x, "") for x in ("source", "title
 json.dump({"fetched": data.get("fetched", ""), "messages": keep}, open(out, "w"), separators=(",", ":"), ensure_ascii=False)
 PY
   cp "$ROOT/evals/scam_eval.py" "$ROOT/evals/scam_messages.json" "$WORK/$k/evals/"
-  cp "$ROOT/src/andy_companion/__init__.py" "$ROOT/src/andy_companion/scamcheck.py" "$WORK/$k/src/andy_companion/"
+  cp "$ROOT/src/andy_companion/__init__.py" "$ROOT/src/andy_companion/scamcheck.py" "$ROOT/src/andy_companion/model_reply.py" "$WORK/$k/src/andy_companion/"
   tar -C "$WORK/$k" -cf - evals src warnings.json | xz -9e | base64 -w0 > "$WORK/bundle-$k.b64"
   # The container has Python but may lack xz: Python unpacks the bundle itself.
   cat > "$WORK/entry-$k.sh" <<SH

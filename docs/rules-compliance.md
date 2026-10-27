@@ -19,6 +19,16 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Model-response audit (October 27)
+
+Non-streaming response/field validation changes existing error handling, not model selection or
+published capability scope. Synthetic fault fixtures, real SDK dispatch with mocked providers and
+four invented live-provider sanity checks are distinct from physical tests and accuracy evidence.
+The camera-only local fallback saves no picture or description and drives no motors. No new medical,
+outcome, comprehensive reasoning-filter or fraud-accuracy claim. Historical model/scam scorecards
+retain their scopes. Physical trials, video, free working-project access and final release/submission
+requirements remain open.
+
 ## Reminder-integrity publication (October 27)
 
 Published source and preview match, eight public layouts and public write refusals pass, and all

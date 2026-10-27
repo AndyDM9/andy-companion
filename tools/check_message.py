@@ -136,6 +136,12 @@ class CheckMessage(Tool):
                     "say": ("Tell them in your own words that you couldn't check the scam warnings online just now, so "
                             "you can't tell whether it's a known kind of scam, and that until they've checked with "
                             "family or someone they trust, it's best not to reply, pay or give any details.")}
+        if v is None:
+            await asyncio.to_thread(board.show, "check", "I couldn't finish checking this message",
+                       [{"title": "Check with family before replying, paying or giving details"}], how=how)
+            return {"analysis_unavailable": True, "warnings": found,
+                    "say": ("Say you couldn't finish checking this message, so you can't tell whether it is a "
+                            "known kind of scam. Suggest checking with family before replying, paying or giving details.")}
         if v is not None and not v["scam_signs"]:
             await asyncio.to_thread(board.show, "check", "No sign of a known kind of scam",
                        [{"title": "If you're unsure, check with family before you reply or pay"}], how=how)

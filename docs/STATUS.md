@@ -20,6 +20,37 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 model-response audit
+
+- **Fixed with injected replies:** a truncated reasoning draft could become a deeper answer; null
+  vision content became “None”. Four non-streaming clients now share envelope/finish/type validation
+  (0032). Explicit incomplete finishes, refusals/tool calls, empty/non-string content and incomplete
+  known reasoning markup are refused. Missing finish metadata remains compatible with older/local
+  endpoints, so unreported cutoffs are not guaranteed detectable.
+- **Structured fields:** letter/sign/warning-match replies require the exact requested keys/types/
+  enums; malformed objects cannot become ordinary/no-sign results. This is a small flat-field helper,
+  not general JSON Schema, factual validation or a general reasoning/prompt-injection defence.
+  Structured literal tag strings are preserved; separate reasoning fields are ignored. The actual
+  check tool also explicitly marks an unavailable classifier as incomplete even after a successful
+  web lookup, with no scam/no-sign classification returned.
+- **Boundary:** malformed replies are not outages and do not trigger another vision model. Scam and
+  simulation job bundles include the new helper and pass isolated imports. No new third-party dependency, model
+  setting, tool schema, store or log. Main streaming voice and guided judge handlers are unchanged.
+- **Validation:** CPU **1,376 / 16 skipped**, installed robot environment **1,425 / one skipped**;
+  80 new CPU regressions and eight installed-dispatch cases. Four real-provider sanity checks passed
+  using invented text/plain-colour input, without retained reply/reasoning. Not an accuracy test.
+  Camera-only IPC recovery to local Cosmos **1.268 s**, acquisition **0.339 s**, no retained picture/
+  description, second motor controller or voice/pointing test inferred.
+- **Scope kept:** current 97-case text scorecard 93/94/94 uses synthetic tools and does not measure
+  this provider response boundary. Historical scam comparisons keep their source/date scope; no new
+  accuracy or physical result claimed. Prior documentation CI `2160d8b` passed. Package/runtime/
+  source publication follow-through pending. Isolated wheel **three passed**; installed helper
+  imported and rejected an incomplete fixture, wheel helper/check-tool bytes match source.
+  Existing service restarted with zero other controllers; tool/profile directories match the tested
+  checkout. Awake preflight **20/21**, optional paid second check stopped, zero audio drops and
+  suspect voice-log lines. No new physical spoken tool trial inferred.
+  [Audit metadata](../evals/results/model-reply-audit-2026-10-27.json).
+
 ## October 27 reminder-integrity audit
 
 - **Fixed:** a daily call containing `minutes=1` plus `at=08:00` selected the wrong time. Conflicting

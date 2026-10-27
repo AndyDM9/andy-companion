@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-27",
+  "scope": "Synthetic completion envelopes and structured fields; real SDK dispatch with mocked providers; real-provider sanity checks with invented input; separate camera-only local recovery. No household conversation, provider replies/reasoning, camera image or description retained.",
+  "reproduced_before_fix": [
+    "Unfinished inline reasoning returned as a deeper answer",
+    "Null vision content coerced to literal None",
+    "Wrong structured objects could become ordinary/no-sign results",
+    "Classifier failure after web success lacked an explicit incomplete-check status"
+  ],
+  "validation": {
+    "cpu_passed": 1376,
+    "cpu_skipped": 16,
+    "sdk_environment_passed": 1425,
+    "sdk_environment_skipped": 1,
+    "new_cpu_regressions": 80,
+    "new_installed_sdk_cases": 8,
+    "cold_job_bundle_imports": 2,
+    "isolated_distribution_checks": 3,
+    "installed_helper_import_checked": true,
+    "wheel_helper_and_check_tool_match_source": true,
+    "changed_python_E9_F_B": "passed",
+    "job_shell_syntax": "passed",
+    "relative_links_checked": 313,
+    "broken_relative_links": 0
+  },
+  "live_provider_sanity": {
+    "scope": "Bounded real-provider sanity checks with invented art-class text and a program-generated plain-colour image. No microphone, camera, robot, household data, provider reply text or reasoning retained. Not a behavioural, scam-accuracy or physical benchmark.",
+    "rows": [
+      {
+        "client": "deeper",
+        "passed": true,
+        "seconds": 2.079,
+        "final_text_present": true,
+        "reserved_reasoning_markup_present": false
+      },
+      {
+        "client": "letters",
+        "passed": true,
+        "seconds": 0.952,
+        "card_created": true,
+        "kind": "notice"
+      },
+      {
+        "client": "scamcheck",
+        "passed": true,
+        "seconds": 1.198,
+        "verdict_returned": true,
+        "sign_flagged": false
+      },
+      {
+        "client": "vision",
+        "passed": true,
+        "seconds": 0.922,
+        "final_text_present": true,
+        "red_label_observed": true,
+        "reserved_reasoning_markup_present": false
+      }
+    ]
+  },
+  "local_recovery": {
+    "ran": "2026-10-27T15:05:06+00:00",
+    "scope": "One real camera IPC frame to local fallback with an unreachable loopback primary; no motor controller, voice/pointing test, saved image or saved description",
+    "frame_shape": [
+      1080,
+      1920,
+      3
+    ],
+    "backend": "local",
+    "model_size": "Cosmos Reason 2 8B",
+    "reply_nonempty": true,
+    "acquisition_seconds": 0.339,
+    "vision_seconds": 1.268,
+    "vision_source_sha256": "aaf48ba20a634649eb0d493cbb5fbecacb1c24836262799b28c11d4138cb3d58"
+  },
+  "limits": "Only the four non-streaming clients use this helper; main streaming speech and guided judge handlers are outside scope. Missing finish metadata is accepted for legacy/local compatibility, so unreported cutoffs are not guaranteed detectable. Typed flat fields are not general JSON Schema or factual validation. No new model, scam-accuracy, physical pointing/voice-delivery or audience-study score. No automatic retry or model/budget switch.",
+  "model_evidence": "Existing 93/94/94 text suite uses synthetic tools and does not validate these transports; historical scam scorecards retain their original source/date scope.",
+  "prior_documentation_ci": {
+    "source": "2160d8b",
+    "status": "success",
+    "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40523068271"
+  },
+  "publication": "Pending runtime/source/preview follow-through.",
+  "source_sha256": [
+    {
+      "path": "src/andy_companion/model_reply.py",
+      "sha256": "d5e5403c5f20a4191d559a8f75b649d2c693d0b785cae73b8cd8a84c05922b88"
+    },
+    {
+      "path": "src/andy_companion/deeper.py",
+      "sha256": "ae0109bacc0cd9a1cf405b3451fd4dfcdf600fb67d6fe6c1a011ab95e971a0db"
+    },
+    {
+      "path": "src/andy_companion/vision.py",
+      "sha256": "aaf48ba20a634649eb0d493cbb5fbecacb1c24836262799b28c11d4138cb3d58"
+    },
+    {
+      "path": "src/andy_companion/letters.py",
+      "sha256": "bb9a06601c907f48a8db1f6faea1f95818266108e55242225a17fc83154007c1"
+    },
+    {
+      "path": "src/andy_companion/scamcheck.py",
+      "sha256": "e0735fdd838ce09d5f05978d4681fb17f240640019babb4939abfea5f4e1ed27"
+    },
+    {
+      "path": "tools/check_message.py",
+      "sha256": "f6a763e9a170c661cc1390eaa0bd2bd1480367b168c142e867424ac3069c8eef"
+    },
+    {
+      "path": "cloud/scam-job.sh",
+      "sha256": "de90b33f8b3266f3d001de36de3f990e8cc73112cc74a6f14eda5baf13d234d9"
+    },
+    {
+      "path": "cloud/sim-job.sh",
+      "sha256": "2c4642401a350e77960f7dec9bc2514e0b80ad2b987d8441ec4444aabc8b1cc3"
+    },
+    {
+      "path": "tests/test_model_reply.py",
+      "sha256": "776475cffd3852252dc21878a034b5a6a6b88ac203dbc0d73ed60e01b03a8a70"
+    },
+    {
+      "path": "tests/test_model_reply_dispatch.py",
+      "sha256": "9e372925a05be27d94a45543ac8d5a9f44ad5da8fef94dad2fb27c95396ffa83"
+    },
+    {
+      "path": ".github/workflows/tests.yml",
+      "sha256": "313d4d8b87f3b4c8db086c91a20fcd9fffe02c7d8e1d2d17d321fee1aec564c6"
+    }
+  ],
+  "runtime": {
+    "existing_service_restarted": true,
+    "competing_controllers": 0,
+    "tested_checkout_tools_and_profile_paths_verified": true,
+    "awake_preflight_passed": 20,
+    "awake_preflight_total": 21,
+    "remaining": "Optional paid second-check endpoint deliberately stopped; 404",
+    "microphone_drops_last_minute": 0,
+    "suspect_voice_log_lines_last_day": 0
+  }
+}

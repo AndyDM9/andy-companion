@@ -22,6 +22,20 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | Does the second look catch what the word list misses? | [2026-10-13-guard-content-safety.json](2026-10-13-guard-content-safety.json); the same again on the remade endpoint, [guard-content-safety-2026-10-25.json](guard-content-safety-2026-10-25.json) |
 | Is NVIDIA Magpie TTS fast enough to be Andy's voice? | [magpie-eval-2026-10-14-0932.json](magpie-eval-2026-10-14-0932.json): not yet (whole sentences, no streaming) |
 
+## October 27 model-response audit
+
+[Reply audit](model-reply-audit-2026-10-27.json): **1,376 CPU / 1,425 installed robot-environment passes**,
+80 new CPU/eight real-dispatch cases, two cold job-bundle imports and three isolated distribution checks.
+Injected truncation/empty/wrong-type replies and wrong structured fields are refused; a failed
+classifier after successful lookup is explicitly incomplete. No factual/accuracy claim.
+
+Four live-provider sanity checks use invented class text and a program-generated colour image;
+no reply/reasoning is retained. Separate camera IPC to local fallback: **1.268 s**, acquisition
+**0.339 s**, no retained image/description or motor controller. Neither is a physical voice/pointing
+trial. Current text scores and historical scam comparisons keep their existing source/date/scope;
+they do not measure this provider-error boundary. Main streaming speech and guided judge handlers
+are outside this change. Missing finish metadata remains a documented compatibility limitation.
+
 ## October 27 reminder-integrity audit
 
 [Implementation audit](reminder-integrity-audit-2026-10-27.json): 1,296 CPU / 1,337 installed robot-

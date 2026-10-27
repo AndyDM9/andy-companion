@@ -27,6 +27,8 @@ import socket
 import urllib.error
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
+
+from andy_companion.model_reply import final_text
 from urllib.parse import urlparse
 
 from andy_companion import reading
@@ -185,7 +187,7 @@ def _ask(e: Dict[str, Any], content: List[Dict[str, Any]], max_tokens: int, temp
          extra: Optional[Dict[str, Any]], opener: Optional[Callable]) -> str:
     req = request(e, content, max_tokens, temperature, extra)
     with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
-        return str(json.loads(r.read())["choices"][0]["message"]["content"])
+        return final_text(json.loads(r.read()), structured=bool((extra or {}).get("response_format")))
 
 
 def here(url: str) -> bool:

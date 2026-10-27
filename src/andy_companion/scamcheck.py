@@ -28,6 +28,8 @@ import re
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 
+from andy_companion.model_reply import final_object
+
 MODEL = os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning")
 MATCH_MODEL = os.environ.get("ANDY_SCAM_MATCH_MODEL", "nvidia/Nemotron-3-Ultra-550b-a55b")
 SIGNS = ("pressure to act now", "payment by gift card, wire or crypto", "a request for codes, passwords or account details",
@@ -86,10 +88,12 @@ def _ask(system: str, content: str, schema: Dict[str, Any], opener: Optional[Cal
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=20) as r:
-            raw = json.loads(json.loads(r.read())["choices"][0]["message"]["content"])
+            payload = json.loads(r.read())
+            raw = (final_object(payload, integer_arrays=("matches",)) if schema is MATCH_SCHEMA else
+                   final_object(payload, strings=("sign", "evidence", "source"), enums={"sign": SIGNS}))
     except Exception as e:   # never echo the request: it holds the message
         raise ScamCheckError(f"The scam check could not be made ({type(e).__name__}).") from None
-    return raw if isinstance(raw, dict) else {}
+    return raw
 
 
 def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opener: Optional[Callable] = None,

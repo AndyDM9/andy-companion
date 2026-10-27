@@ -33,7 +33,7 @@ unset KEY
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"; jobs_left' EXIT; trap 'exit 130' INT TERM
 mkdir -p "$WORK/b/sim" "$WORK/b/src/andy_companion"
 cp "$ROOT/sim/finder_sim.py" "$WORK/b/sim/"
-for f in __init__ finder vision reading measure; do cp "$ROOT/src/andy_companion/$f.py" "$WORK/b/src/andy_companion/"; done
+for f in __init__ finder vision reading measure model_reply; do cp "$ROOT/src/andy_companion/$f.py" "$WORK/b/src/andy_companion/"; done
 tar -C "$WORK/b" -cf - sim src | xz -9e | base64 -w0 > "$WORK/bundle.b64"
 
 launch() {   # zoom on|off → a job

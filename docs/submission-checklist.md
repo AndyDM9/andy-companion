@@ -6,6 +6,10 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Incomplete/non-string/refused model replies and wrong structured fields rejected in four non-streaming clients; 80 CPU/eight actual SDK dispatch regressions and cold job-bundle imports pass
+- [x] Four invented live-provider checks and camera-only local fallback pass with no saved provider text, reasoning, camera picture or description; no physical/accuracy score inferred
+- [ ] Model-response update verified as installed package, running service and published source/preview
+
 - [x] Ambiguous reminder times refused; malformed stores preserved whole, unique recovery copies visible/deletable and delete-everything complete; 40 CPU/six real-dispatch regressions pass
 - [x] Eight English/Spanish desktop/phone recovery/healthy browser cases pass, with simulated UI writes and separate actual HTTP deletion test
 - [x] Reminder-integrity update verified as installed package, running service and published read-only preview; source hashes, fresh clone, eight public layouts and refusal of public copy/delete-all writes pass

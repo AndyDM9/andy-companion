@@ -29,6 +29,8 @@ import re
 import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 
+from andy_companion.model_reply import final_object
+
 MODEL = os.environ.get("ANDY_LETTER_MODEL", os.environ.get("ANDY_MODEL", "nvidia/Nemotron-3_5-Lightning"))
 TIMEOUT_S = 8                              # Andy's answer waits on it
 KINDS = ("letter", "bill", "card", "notice", "medicine", "label", "other")
@@ -176,7 +178,7 @@ def summarise(text: str, language: str = "en", opener: Optional[Callable] = None
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
     try:
         with (opener or urllib.request.urlopen)(req, timeout=TIMEOUT_S) as r:
-            raw = json.loads(json.loads(r.read())["choices"][0]["message"]["content"])
+            raw = final_object(json.loads(r.read()), strings=("kind", *FIELDS), booleans=("suspicious",), enums={"kind": KINDS})
     except Exception as e:   # never echo the request: it holds the page's text
         raise LetterError(f"The letter card could not be made ({type(e).__name__}).") from None
     if not isinstance(raw, dict):

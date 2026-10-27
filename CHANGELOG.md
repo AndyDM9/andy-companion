@@ -5,6 +5,28 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Completed model replies and structured answer fields
+
+- Injected responses exposed unfinished reasoning returned as a deeper answer and null vision text
+  coerced to “None”. Shared `model_reply` validation now rejects unusable envelopes, explicit
+  incomplete/refused/tool-call finishes and non-string/empty content before those clients return it.
+  Complete known inline reasoning wrappers yield only their final answer; incomplete drafts fail.
+- Letter/sign/warning-match replies now require the exact requested fields/types/enums. Missing,
+  extra or wrongly typed fields cannot become an ordinary card or no-sign/no-match result. Literal
+  tag strings inside structured data are preserved. No factual/accuracy guarantee added (0032).
+- A failed classifier after a successful lookup now returns `analysis_unavailable` and an explicit
+  incomplete-check card, rather than an ambiguous general-warning result.
+- Malformed replies do not trigger vision fallback. Scam/simulation bundles copy the new standard-
+  library dependency; cold bundle imports checked without launching jobs. Main streaming voice and
+  guided-judge conversation handlers are outside this change; no model/schema/settings switch.
+- **80 CPU regressions and eight real SDK dispatch cases**; CPU **1,376 / 16 skipped**, robot environment
+  results are recorded in STATUS. Four bounded live-provider checks with invented art-class text/plain-colour
+  input passed; no replies/reasoning retained. Camera IPC to local fallback returned a usable reply
+  in **1.268 s** (acquisition **0.339 s**), no motor controller, saved picture/description or spoken test.
+- Prior notes CI `2160d8b` passed. Package, runtime and publication follow-through is in STATUS. Current
+  text scorecard and historical scam results retain their existing scope; no new accuracy score claimed.
+
+
 ### Reminder-integrity publication follow-through
 
 - Source `469f3ba` pushed; screen preview revision `357b1c818734d8964b700440eb1fd8234a5ca8ab`
