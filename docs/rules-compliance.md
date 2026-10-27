@@ -196,3 +196,5 @@ pointing confirmation or timing. It is not counted as a timed trial or a new acc
 real-camera/local-vision recovery probe records only metadata and demonstrates neither spoken recovery
 nor pointing. The fallback fixes and probe do not complete the pending video, user sessions or hardware
 acceptance checks, and do not introduce outcome claims.
+The fixes passed hosted checks on `a4e3930` and the running Andy service was restarted; its 20/21
+preflight still leaves observed pointing, timing, voice recovery, user sessions and footage separate.

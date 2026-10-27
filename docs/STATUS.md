@@ -31,6 +31,10 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   no motor controller opened, no voice/hood/pointing result claimed. M6 remains partial pending those checks.
   The founder reported glasses found in the requested centre-table task; point/time confirmation is
   pending, and the fixed 30-trial benchmark has no recorded row from that untimed report.
+  Hosted CPU/wheel and SDK checks passed on `a4e3930`
+  ([run](https://github.com/AndyDM9/andy-companion/actions/runs/40427038841)). Existing Andy service restarted
+  after confirming no competing app. Post-update preflight 20/21: microphone drops 0, suspect voice-log
+  lines 0, short Nemotron reply 0.50 s; optional second check stopped. A left-side glasses check is pending.
 - **Approved standout work:** built three isolated guided AI challenges (invented bill, family choice,
   absent glasses), reusing the actual confirmation gate with simulated tool effects. Thirty-eight new
   regressions pass. Local real-Nemotron checks exercised all three examples plus Yes/No; code preserved

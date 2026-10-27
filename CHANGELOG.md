@@ -7,6 +7,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ### Local vision recovery and an observed glasses search
 
+- Pushed `a4e3930`; hosted CPU/wheel and SDK checks passed. Restarted the existing Andy service after
+  confirming no competing robot connection. Post-update preflight: 20/21, zero microphone drops,
+  zero suspect voice-log lines, Nemotron reply 0.50 s; optional second-check endpoint still stopped.
+  No second robot controller was started. A side-position glasses check has been requested; result pending.
 - Fixed fallback readiness: an unreachable optional endpoint now goes straight to configured, ready
   local eyes; its stopped-service 404 can fall back too. Refused requests and missing Token Factory
   models still fail normally. Primary and fallback paths now apply the same transport rules, and
