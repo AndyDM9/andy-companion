@@ -52,6 +52,9 @@ Ten public layouts/eight guided model paths and three protocol refusals pass, wi
 and simulated effects. Repository anonymous/public/Apache-2.0, all three Spaces RUNNING, 23 export
 links open. No new hardware/accuracy/access-completion claim. The public Devpost page hit an anti-bot
 challenge and no signed-in connected browser was available; actual draft/submission not verified.
+Anonymous published source and GitHub-rendered tables match; fresh locked install and provider-free
+keyless demo and hosted CPU/wheel/SDK checks pass without a robot controller. Prior absolute history/advisory wording is narrowed to
+its documented coverage; known dependency findings remain open, no fresh scan or production claim.
 Final export still blocks video/tag/app pin; the latter are our reproducibility controls. Existing
 physical trials, user sessions, footage/rights, free testing/access and final submission remain open.
 

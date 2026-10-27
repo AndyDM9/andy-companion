@@ -22,7 +22,8 @@
     "Local evaluation instructions use the existing hidden key prompt instead of a shortcut that mishandles supported quoted values",
     "README documents saved-settings copies and actual commit hooks/CI behavior",
     "Scorecard/document indices route to the current review and later reliability audits",
-    "Judge guide repeats the submitted-material freeze; tag/app pin remains an internal reproducibility gate"
+    "Judge guide repeats the submitted-material freeze; tag/app pin remains an internal reproducibility gate",
+    "Narrow older absolute history/advisory claims to their recorded checks; known dependency findings remain open and were not re-audited in this pass"
   ],
   "quote_handling_probe": {
     "invented_credentials_only": true,
@@ -255,10 +256,14 @@
     "export_links_checked": 23,
     "documentation_links": {
       "markdown_files": 69,
-      "relative_targets": 376,
+      "relative_targets": 377,
       "fragments_checked": 34,
       "problems": []
-    }
+    },
+    "precommit_cpu_passed": 1625,
+    "precommit_cpu_skipped": 16,
+    "dependency_scan_rerun": false,
+    "known_dependency_findings_remain_open": true
   },
   "official_sources_checked": [
     "https://nebiusglobalaihackathon.devpost.com/rules",
@@ -283,35 +288,90 @@
   },
   "limits": "Public model checks use only fixed invented inputs and simulated effects; no reply/reasoning retained. Real hardware, audio, camera, household stores and API keys unchanged. No model/profile/tool/budget change or redeployment needed. Physical reader/revised finder trials, user sessions, final video/gallery, final release/app pin, actual draft reconciliation/submission and organiser-requested physical-access arrangements remain open. Hosted-demo allowance is not unrestricted access to the complete physical project.",
   "publication": {
-    "status": "pending"
+    "status": "verified",
+    "source_commit": "d5f6a1e126b48825606c27a45557ee1f9119a7b8",
+    "published_doc_files": [
+      {
+        "path": "README.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/judging.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/README.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "evals/results/README.md",
+        "anonymous_source_matches": true
+      }
+    ],
+    "github_render": {
+      "anonymous_github_render_http": 200,
+      "new_review_headings_visible": true,
+      "actions_and_evidence_tables_rendered": true
+    },
+    "anonymous_install": {
+      "cpu_passed": 1625,
+      "cpu_skipped": 16,
+      "credential_helper_disabled": true,
+      "locked_sync_passed": true
+    },
+    "keyless_demo": {
+      "fresh_anonymous_clone": true,
+      "provider_variables_removed": true,
+      "keyless_demo_http": 200,
+      "public_setup_write_status": 403,
+      "robot_controller_started": false,
+      "demo_stopped": true
+    },
+    "ci": {
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40557849290",
+      "cpu": "success",
+      "sdk": "success",
+      "hosted_cpu_passed": 1625,
+      "hosted_cpu_skipped": 16,
+      "hosted_sdk_configuration_dispatch_passed": 71,
+      "isolated_wheel_passed": 3
+    },
+    "follow_up_wording": [
+      "History checklist states finite scan coverage",
+      "Security notes retain known dependency findings without an unreachability guarantee"
+    ]
   },
   "huggingface_landing_pages": [
     {
       "space": "andy-companion",
       "anonymous_landing_http": 200,
       "embedded_app_visible": true,
-      "iframe_theme_query_handled": true,
-      "model_calls": 0
+      "model_calls": 0,
+      "iframe_theme_query_present": true,
+      "theme_query_result": "loaded with host theme query"
     },
     {
       "space": "andy-companion-judge",
       "anonymous_landing_http": 200,
       "embedded_app_visible": true,
-      "iframe_theme_query_handled": true,
-      "model_calls": 0
+      "model_calls": 0,
+      "iframe_theme_query_present": true,
+      "theme_query_result": "loaded with host theme query"
     },
     {
       "space": "andy-companion-app",
       "anonymous_landing_http": 200,
       "embedded_app_visible": true,
-      "iframe_theme_query_handled": false,
-      "model_calls": 0
+      "model_calls": 0,
+      "iframe_theme_query_present": false,
+      "theme_query_result": "not supplied by static host"
     }
   ],
   "source_sha256": {
     "README.md": "5cd3cf78976cc0e0fabd7ad0c8d307514e0c3a93ba28187e21953b656bf45c35",
     "docs/judging.md": "02d29954830eed267b9979b8afcc91f0473dd729d32ab1d494687251808c1cd0",
     "docs/README.md": "054c0e3228f95046ebf3a1461bd66e05f65ddfc4896ca610f5cc31ace259ae84",
-    "evals/results/README.md": "22da9d60d4eb54f5f2b5678ed6ec71f65b84d420a55577d65df7d8be75eaf699"
+    "evals/results/README.md": "22da9d60d4eb54f5f2b5678ed6ec71f65b84d420a55577d65df7d8be75eaf699",
+    "SECURITY.md": "bb7d31eb96ba04dbc8b18c0031f99074a1982cd4c73eacb7007b918e1d926436"
   }
 }

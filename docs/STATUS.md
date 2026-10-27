@@ -37,7 +37,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   or new accuracy/physical result. Isolated wheel **three passed**; prior unchanged runtime's full
   CPU **1,625 / 16 skipped**, robot environment **1,674 / one skipped**, notes CI `e8904a9` passed.
   All three Spaces RUNNING; all three anonymous Hugging Face landing pages load their embedded app
-  (the static app uses its own static host). All **69** Markdown files checked: **376** relative targets
+  (the static app uses its own static host). All **69** Markdown files checked: **377** relative targets
   and **34** fragments resolve. No runtime deployment needed; publication follow-through below.
 - **Open:** public Devpost project returned an anti-bot challenge (403); no connected signed-in browser.
   Actual draft was not reconciled or submission confirmed. Source export links **23/23** open;
@@ -45,6 +45,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Physical trials, reliable memory offers, provider latency, user sessions, video/gallery, release,
   free working-project access and any requested physical-access arrangement retain their open scope.
   [Review metadata](../evals/results/judge-review-audit-2026-10-27.json).
+
+- **Publication:** source `d5f6a1e` pushed. Four anonymous published documentation files match; actual
+  GitHub review headings/actions/evidence tables render. A fresh anonymous locked install passes
+  **1,625 / 16 skipped**. Its keyless public demo starts with provider variables removed, returns 200,
+  refuses a settings write with 403 and stops cleanly; no robot controller started. [Hosted CPU/wheel and SDK checks passed](https://github.com/AndyDM9/andy-companion/actions/runs/40557849290),
+  including **71** actual SDK configuration/dispatch checks without hardware. Existing runtime/model/public Spaces unchanged.
+- **Wording follow-through:** the older absolute history checkbox now states finite pattern/name/media
+  coverage and external-copy limits. Dependency notes retain open findings from the October 25 review;
+  this pass does not rerun that scan or prove every advisory unreachable. No new security finding,
+  dependency upgrade or production-readiness claim inferred.
 
 ## October 27 saved-settings audit
 

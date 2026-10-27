@@ -8,7 +8,7 @@ in the same commit that makes it true.
 
 - [x] Judge guide leads with actions/expected results and maps all four criteria to scoped evidence; README fixes quoted-key instructions and distinguishes pending footage/physical checks
 - [x] Anonymous repository public/Apache-2.0, ten sample-page layouts/eight guided model paths and three protocol refusals verified; all 224 tracked Python files parse and isolated wheel passes
-- [x] All three anonymous Hugging Face landing-page embeds load; all 69 Markdown files checked, 376 relative targets and 34 fragments resolve
+- [x] All three anonymous Hugging Face landing-page embeds load; all 69 Markdown files checked, 377 relative targets and 34 fragments resolve
 
 - [x] Saved settings validated before use; unreadable originals preserved whole with unique owner-only names, metadata-only English/Spanish review and authenticated single/all deletion; 91 new cases, both full suites, wheel and eight browser fixtures pass
 - [x] Saved-settings change verified in running service and published source/preview; deployed/served hashes, hosted CPU/wheel/SDK CI, anonymous-clone tests, eight public layouts/two write refusals and history/link checks pass
@@ -146,7 +146,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] Licence visible in the repository's About section (Apache-2.0, checked logged out, 2026-10-25)
 - [x] README: setup instructions that work from a fresh clone (cloned from GitHub and checked 2026-10-14; again once public)
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
-- [x] No keys, secrets or personal data anywhere in the history: private matter rewritten out on 2026-10-25, then gitleaks over every commit: no leaks, and no key value anywhere
+- [x] Publication-history cleanup and recorded pattern/name/media checks completed (October 25 and 27); no unexpected matches within their documented scope. Scan coverage and external-copy limits are in [SECURITY.md](../SECURITY.md); this is not a guarantee about every possible secret or identity
 
 ## Before making the repository public
 

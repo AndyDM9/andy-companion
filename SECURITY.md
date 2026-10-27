@@ -44,11 +44,12 @@ review notes, session references, credentials and household screenshots outside 
 
 ## Known advisories in dependencies
 
-Every environment's lock file is audited with `pip-audit`, and updated where a fix exists and nothing pins it. Not
-yet fixed, and why:
+The October 25 dependency review audited the environment lock files with `pip-audit` and updated
+packages where a fix existed and nothing pinned them. The October 27 judge-entry review does not
+rerun that dependency audit. Recorded findings still open, and why:
 - **The voice server:** Hugging Face's speech-to-speech 1.0.0 pins `nltk==3.10.0` and `torch==2.11.0` (which pins
   setuptools below 82), and pillow 13 is a major change to its speech pipeline, deferred. The voice server handles
-  only audio and Andy's own reply text, loads only the published NVIDIA models, and listens on 127.0.0.1, so these
-  advisories (untrusted images, untrusted model files, text parsing) don't reach it.
+  only audio and Andy's own reply text, loads the configured published NVIDIA models, and listens on
+  127.0.0.1. These are the operating boundaries in use; reachability of every advisory has not been proved.
 - **The offline eyes:** vLLM 0.32.0 pins its setuptools.
 - **accelerate:** an advisory with no fixed release yet.

@@ -16,10 +16,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 - Anonymous public browser: ten sample layouts/eight guided real-model paths and three protocol refusals
   pass; invented inputs and simulated effects only. All 224 tracked Python files parse, isolated wheel
   three checks pass; runtime code/profile/tools/keys/hardware unchanged, no new deployment needed.
-- All three anonymous Hugging Face embeds load; 376 relative targets/34 fragments resolve across
+- All three anonymous Hugging Face embeds load; 377 relative targets/34 fragments resolve across
   all 69 Markdown files. No additional model or hardware call in these wrapper/link checks.
 - Devpost returned an anti-bot challenge and no signed-in connected browser was available; the actual
   draft/submission remains unverified. All 23 export links open; final export still refuses video/tag/app pin.
+- Source `d5f6a1e` published; anonymous source bytes and GitHub-rendered review tables verified.
+  Fresh locked install **1,625 / 16 skipped**; provider-free public demo starts, refuses a write and
+  stops without a robot controller. Hosted CPU/wheel and SDK checks pass.
+- Narrow the older absolute history/privacy checkbox and dependency-advisory wording to their
+  recorded scope. Known dependency findings stay open; no new dependency scan, unreachability or
+  production-readiness claim. This records the remaining limits for independent reviewers.
 
 ### Preserve unreadable saved settings
 
