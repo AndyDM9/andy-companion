@@ -8,7 +8,7 @@ in the same commit that makes it true.
 
 - [x] Full anonymous public-history name/metadata scan and historical image OCR/QR review completed without committing the external roster or OCR text; private session trailers/one retired image identified for scoped cleanup
 - [x] Private AI-session references blocked in commit messages with fixed non-echoing errors; 13 regressions and full CPU/robot-environment suites pass, author credits preserved
-- [ ] Scoped history cleanup published with an expected-head lease and verified from a fresh anonymous clone
+- [x] Scoped history cleanup published with an expected-head lease; 240 commits/dates/credits/current files preserved, 195 private trailers/one retired QR image removed, anonymous history/installation and hosted CPU/wheel/SDK checks pass
 - [ ] At the deadline freeze the submitted repository, hosted demos, video and project materials; subsequent work uses a separate development copy unless organisers explicitly allow changes
 
 - [x] Screen status polls stay capped, time out and reject replies across reconnect transitions; 12 JavaScript regressions, both full suites and eight English/Spanish browser fixtures pass

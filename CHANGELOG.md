@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Verified publication-history cleanup
+
+- Published `f0771f9` with the recorded expected-head lease. All 240 commits and author/date/credit
+  records retained; 195 session trailers and the retired QR image in 88 historical versions removed.
+  Every tree differs only by the image removal; today's tree is byte-for-byte identical across the rewrite.
+- Fresh anonymous mirror: zero roster-name/path matches, zero private session references in commit
+  messages, no retired image object. Explicitly invented negative checker fixtures remain. History
+  gitleaks clean; fresh installation **1,534 / 16 skipped** and hosted CPU/wheel/SDK jobs passed.
+- Local checkout resynchronised, stale Git objects pruned after a private external rollback copy,
+  local instruction file preserved. Other clones must not merge the old history back. Git cannot
+  erase provider caches, external clones or the private rollback.
+- Repository remains public with Apache-2.0 detected; 336 relative file targets and 23 export links
+  pass. Final exporter still blocks video/tag/app pin. Runtime/hosted app files were not changed.
+
 ### Publication history audit and private-metadata guard
 
 - An anonymous public mirror's 239 commits/2,528 blobs had no full-name match against the 23-person

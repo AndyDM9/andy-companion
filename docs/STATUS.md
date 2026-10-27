@@ -35,9 +35,20 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   errors and keeps author credits. **13 new cases**, CPU **1,534 / 16 skipped**, robot environment
   **1,583 / one skipped**, Python lint/shell syntax pass. Tests use invented references; no app/runtime,
   profile/model, motor or household-store change. Previous notes CI `a937c0e` passed.
-- **Publication:** cleanup and post-push anonymous verification pending. A private rollback/map stays
-  outside the project; external clones/caches cannot be erased by Git rewriting. Current app/evaluation
-  file hashes retain their scope; prior short commit labels/CI runs refer to their pre-rewrite IDs.
+- **Published:** rewritten source `f0771f9` pushed using the recorded expected-head lease. All **240**
+  commits/dates/credits retained, **195** session trailers removed and the retired image removed from
+  **88** trees; no other historical tree changes, identical current tree. Anonymous post-push mirror
+  rechecked all **2,541 blobs plus commit metadata**: zero roster-name/path matches, zero private session
+  references in commit messages, no reachable retired image. One invented negative-test fixture file
+  contains synthetic references intentionally. Secrets scan clean; anonymous installation **1,534 /
+  16 skipped**. [Hosted CPU/wheel/SDK checks passed](https://github.com/AndyDM9/andy-companion/actions/runs/40547490711),
+  hosted CPU **1,534 / 16 skipped**. Public/Apache-2.0 confirmed, **336** relative file targets and **23/23**
+  export links pass; final exporter still blocks video/tag/app pin.
+- **Local sync:** tracked files and the local instruction file preserved, old unreachable objects
+  pruned after a private external rollback copy. Other clones must be refreshed without merging old
+  history back. Private rollback/map remains outside the project; external clones/caches cannot be
+  erased by Git rewriting. Current app/evaluation file hashes retain their scope; prior short commit
+  labels/CI runs refer to their pre-rewrite IDs. No runtime deployment or model change needed.
 - **Reminder:** October 27 organiser update requires the submitted repository/video/materials to stay
   frozen after the deadline; PLAN/checklist now clarify that a tag alone is insufficient. Physical
   trials, reliable memory offers, cloud latency, video, final release/access and submission remain open.

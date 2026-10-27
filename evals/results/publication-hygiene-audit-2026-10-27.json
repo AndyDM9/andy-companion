@@ -83,7 +83,68 @@
     "test_private_urls_are_explicitly_invented": true
   },
   "publication": {
-    "status": "Prepared isolated rewrite; final expected-head publication and anonymous verification pending"
+    "status": "Published with expected-old-head lease and verified from a fresh anonymous GitHub mirror",
+    "source_commit": "f0771f9bc93746af08a2745424566ad62457db41",
+    "commits_preserved": 240,
+    "session_trailers_removed": 195,
+    "retired_asset_versions_removed": 88,
+    "all_dates_and_credits_preserved": true,
+    "each_tree_differs_only_by_retired_asset": true,
+    "current_tree_identical_before_after_rewrite": true,
+    "post_push_anonymous_scan": {
+      "commits": 240,
+      "blobs": 2541,
+      "roster_full_name_matches": 0,
+      "path_name_matches": 0,
+      "private_commit_session_references": 0,
+      "synthetic_url_fixture_blobs": 1,
+      "unexpected_private_url_blobs": 0,
+      "retired_image_object_reachable": false,
+      "head": "f0771f9bc93746af08a2745424566ad62457db41"
+    },
+    "anonymous_install": {
+      "passed": 1534,
+      "skipped": 16,
+      "git_credential_helpers_disabled": true
+    },
+    "source_ci": {
+      "status": "success",
+      "jobs": [
+        "cpu-tests",
+        "sdk-startup"
+      ],
+      "cpu_passed": 1534,
+      "cpu_skipped": 16,
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40547490711"
+    },
+    "history_secrets_scan": {
+      "commits": 240,
+      "clean": true
+    },
+    "local_unreachable_objects_after_sync_and_gc": 0,
+    "workspace_instruction_file_preserved": true,
+    "rollback_and_map_private_outside_project": true,
+    "other_clones_must_not_merge_old_history": true,
+    "licence_detected": "Apache-2.0",
+    "repository_public": true,
+    "relative_file_targets": {
+      "relative_file_targets": 336,
+      "missing": []
+    },
+    "export_links": {
+      "checked": 23,
+      "open": 23
+    },
+    "final_export": {
+      "exit_code": 2,
+      "blockers": [
+        "Missing actual video URL",
+        "Missing release tag",
+        "App dependency still on main"
+      ]
+    },
+    "runtime_deployment_changed": false,
+    "remaining": "Physical trials, memory-offer consistency, intermittent cloud latency, video, final release/access and actual submission remain open. External caches/clones cannot be purged by Git rewriting."
   },
   "sources": [
     "https://nebiusglobalaihackathon.devpost.com/",

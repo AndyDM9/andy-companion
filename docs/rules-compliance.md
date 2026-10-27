@@ -26,8 +26,13 @@ roster without retaining names here. No full-name match; surname candidates were
 attribution/binary false positives. OCR of 52 static image versions and sampled frames from four
 animated assets found no roster-name matches. This is a scoped search, not proof against all spellings.
 Private AI-session commit trailers and a retired private-QR screenshot were found; an isolated scoped
-rewrite preserves dates, author credits and today's application files (0036). Publication verification
-remains pending. A new commit-msg guard has 13 regressions using invented references only.
+rewrite preserves dates, author credits and today's application files (0036). Published with the
+recorded head lease: all 240 commits retained, 195 private trailers/one retired image removed. Fresh
+anonymous history/installation, secrets scan and hosted CPU/wheel/SDK checks pass; no name matches or
+reachable retired image, no private session links in commit messages. Invented negative checker fixtures
+are intentional. Repository public/Apache-2.0, 336 relative file targets and 23 export links pass.
+External copies/provider caches are outside Git cleanup. A new commit-msg guard has 13 regressions
+using invented references only. No robot evidence or completed-submission claim added.
 
 The [new organiser reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
 also says to leave the code repository, video and project materials unchanged after the October 30,
