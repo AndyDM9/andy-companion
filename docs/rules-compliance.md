@@ -55,6 +55,9 @@ cases use invented files/results; no actual physical result or submission item i
 30-trial count is our protocol, not an eligibility threshold. Video/gallery, actual free project/
 hardware access, final release/app pin and Devpost reconciliation/submission remain open. No new
 model, provider credentials, end-user feature, hardware purchase or deployment; no prize guarantee.
+Published source hashes and hosted CPU/wheel/SDK checks pass; 387 file targets/35 fragments resolve.
+The Devpost source failure summary is aligned with its linked current scorecard; the actual signed-in
+draft is still unreconciled, no new result or completed-submission claim.
 
 ## Release-publication gate (October 27)
 

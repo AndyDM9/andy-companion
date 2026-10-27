@@ -21,6 +21,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   faults only, no real trial results. Current awake preflight **20/21**, optional second look stopped,
   tiny Nemotron probe **0.53 s**, zero microphone drops/suspect voice-log lines. No runtime restart,
   provider/model/household change or resolved-outage/physical-voice-latency claim.
+- Published `6d986a6`, anonymous source hashes match; hosted CPU/wheel/SDK checks pass (1,693 /
+  16 skipped, three wheel, 71 SDK). All 387 relative targets/35 fragments across 71 Markdown files resolve.
+- Correct the Devpost source's stale failure summary to match its current linked 93/94/94 scorecard;
+  all ten failures remain represented. Actual signed-in draft/submission unchanged and unverified.
 
 ### Verify the published release before final export
 

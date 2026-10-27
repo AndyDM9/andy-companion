@@ -62,9 +62,46 @@
     "evals/physical_trials.py": "91153adb1afabb7eaad0237af4a7f6fc6fdd1613ffe6447642c518df4e0b519f",
     "tests/test_physical_trials.py": "b2a5046ffaca30aef302620e6365bf73cf90ae04099de727e133e069fc89f051",
     "docs/features.md": "9b018172645fe825c0cc9f6365bf8cfba545c4403aa5d092728ae94a00a580f1",
-    "docs/PLAN.md": "d8c3ea56f15e5c3fb25c6a8919ae14dd5582f2015d58db4062503bbb1f05e186"
+    "docs/PLAN.md": "d8c3ea56f15e5c3fb25c6a8919ae14dd5582f2015d58db4062503bbb1f05e186",
+    "docs/submission.md": "6c48b560be3ef752de2fbe7295f3b865d3082f0f8589dd807ecd1de89ecf823e"
   },
   "publication": {
-    "status": "pending"
+    "status": "verified",
+    "source_commit": "6d986a6f26abf98ce90b80a76dd5a47a6a126d33",
+    "anonymous_source_matches": [
+      {
+        "path": "evals/physical_trials.py",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/features.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/PLAN.md",
+        "anonymous_source_matches": true
+      },
+      {
+        "path": "docs/live-test.md",
+        "anonymous_source_matches": true
+      }
+    ],
+    "ci": {
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40572937881",
+      "status": "success",
+      "cpu_passed": 1693,
+      "cpu_skipped": 16,
+      "sdk_configuration_dispatch_passed": 71,
+      "isolated_wheel_passed": 3
+    },
+    "copy_follow_up": "Devpost source failure categories/counts aligned with current retained run IDs; actual saved draft not changed or confirmed."
+  },
+  "current_text_failure_counts": {
+    "act-1": 1,
+    "story-3": 1,
+    "chat-2": 2,
+    "photo-2": 3,
+    "moment-1": 1,
+    "crisis-3": 2
   }
 }

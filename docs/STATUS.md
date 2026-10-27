@@ -40,11 +40,20 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Live awake preflight **20/21**, optional second look stopped (404), tiny Nemotron probe **0.53 s**,
   zero microphone drops/suspect voice-log lines. These checks do not establish physical task outcomes,
   voice latency or resolution of previous cloud timeouts. Existing three services active; no restart,
-  new controller, model/profile, key or household-store change needed. Publication pending.
+  new controller, model/profile, key or household-store change needed.
 - **Open:** observed letter/reader, finder present/absent/moved/TV-decoy, voice/phone choice and
   research cancellation trials; actual 30-trial plan/user feedback; video/gallery, final Serverless
   Job/release/app pin, free project testing/access and actual Devpost reconciliation/submission.
   [Audit metadata](../evals/results/function-strategy-audit-2026-10-27.json).
+
+- **Published:** source `6d986a6`; scorer, feature evidence table, PLAN and live-test instructions match
+  anonymous downloads. [Hosted CPU/wheel/SDK checks passed](https://github.com/AndyDM9/andy-companion/actions/runs/40572937881):
+  **1,693 / 16 skipped**, **three** wheel checks, **71** SDK configuration/dispatch cases. **71** Markdown
+  files: **387** relative targets and **35** fragments resolve. No hosted/runtime deployment needed.
+- **Copy correction:** Devpost source linked the current 93/94/94 scorecard but retained an earlier
+  failure summary. It now matches the current ten failures: photo-story offers three, refusal and
+  supportive completeness two each, activity/future-event/new-story wording one each. Actual saved
+  Devpost draft still needs reconciliation; no new model evaluation or physical result inferred.
 
 ## October 27 release-publication audit
 

@@ -163,8 +163,9 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
 - Current text-suite runs scored [93, 94 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-consent-source-local.json), with real confirmation/source checks and synthetic tools.
-  Photo-story memory offers fail each run; future-event offers twice, and supportive-response completeness
-  and story fidelity once each. No unapproved write effect was reported. The older Serverless Job scores
+  Photo-story memory offers fail all three runs; accepting a refusal and supportive-response completeness
+  twice each; future-event offers, activity-reminder offers and new-story wording once each.
+  No unapproved write effect was reported. The older Serverless Job scores
   predate these changes. A working watch search is founder-confirmed and untimed; physical measurements
   and the final submission-time Serverless Job remain pending.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.

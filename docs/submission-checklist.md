@@ -7,6 +7,7 @@ in the same commit that makes it true.
 ## Final readiness, re-audited October 26–27
 
 - [x] Current rules/FAQ/checklist/judging advice compared with overall functions; feature-evidence table and PLAN prioritise physical proof/user-task feedback/packaging and qualify variable model offers
+- [x] Function/evidence/scorer review published with matching anonymous source and hosted CPU/wheel/SDK checks; 387 file targets/35 fragments resolve, Devpost source failure summary matches the linked current run (actual draft still pending)
 - [x] Metadata-only physical scorer refuses extra cells/unplanned data, preserves previous files and distinguishes correct absent responses from errors; 24 new cases, 34 scorer cases/full CPU suite pass, no actual physical result inferred
 
 - [x] Final exporter requires exact public-tag commit and matching published app package metadata; missing/malformed/unavailable/mismatched metadata or failed links produce no final fields. 44 new cases, 65 exporter cases and full CPU suite pass; drafts unchanged
