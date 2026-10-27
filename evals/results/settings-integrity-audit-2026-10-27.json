@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-27",
+  "scope": "Invented stored-settings files, concurrency and authenticated local HTTP against throwaway stores; browser fixtures intercept invented data and simulate writes. No household edits, actual speech, camera, motor or model calls in these tests. Separate live preflight uses the existing service.",
+  "reproduced_before_fix": {
+    "wrong_root": "AttributeError",
+    "malformed_original_retained_after_next_save": false
+  },
+  "validation": {
+    "new_cpu_cases": 90,
+    "cpu_passed": 1624,
+    "cpu_skipped": 16,
+    "installed_robot_environment_passed": 1673,
+    "installed_robot_environment_skipped": 1,
+    "isolated_wheel_passed": 3,
+    "python_lint_E9_F_B": "passed",
+    "browser_cases": 8,
+    "browser_errors": 0,
+    "horizontal_overflow": false,
+    "english_desktop_phone_screenshots_inspected": true,
+    "current_settings_schema_compatible": true,
+    "current_settings_field_count": 24,
+    "current_settings_mode": "600",
+    "runtime": {
+      "current_settings_bytes_unchanged": true,
+      "recovery_inventory_unchanged": true,
+      "live_setup_html_matches": true
+    }
+  },
+  "preflight": {
+    "passed": 20,
+    "checks": 21,
+    "open_failure": "Optional second-look endpoint stopped (404)",
+    "nemotron_short_text_seconds": 0.62,
+    "microphone_drops_last_minute": 0,
+    "suspect_voice_log_lines": 0,
+    "competing_controllers_before_restart": 0,
+    "services_active": [
+      "andy",
+      "andy-voice",
+      "andy-eyes"
+    ]
+  },
+  "limits": "All choices from an unreadable settings file use defaults until set again; original stays inactive for manual review/deletion. No automatic restoration, all-store validation, factual cache correctness, physical trial or provider-availability resolution. Memory offers, intermittent provider latency, physical reader/finder trials, video, final tag/app pin/access and submission remain open.",
+  "source_sha256": {
+    "src/andy_companion/settings.py": "8b420d51cfc8d71d64ab3bc51b8b1f8ad232bd23f7b206816b91589ac774f0b9",
+    "src/andy_companion/kept.py": "bc32c35da59a9e2b39b053152aac1fcd9ee65f7e5d5f7b638d4b7543fbc2d817",
+    "src/andy_companion/pages/setup.html": "0b6718af50d6e8026c00614082356111537770216b321cca9a4912c470547eda",
+    "tests/test_settings_integrity.py": "6f4bcf2340669f99f39e13514fb21a4c800a3e7e33e9ff667e35e441144224b0"
+  },
+  "publication": {
+    "status": "pending"
+  }
+}

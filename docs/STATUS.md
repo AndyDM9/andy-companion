@@ -20,6 +20,32 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 saved-settings audit
+
+- **Reproduced:** a settings file containing `[]` raised AttributeError; malformed JSON silently
+  became defaults and the next save discarded the original. Wrong saved types could also reach
+  screen/weather/greeting/startup consumers despite request validation (0034).
+- **Fixed (0037):** known stored choices/cache shapes validated under a shared reader/writer lock.
+  Unreadable originals preserved whole under unique owner-only names before defaults; failed
+  preservation blocks replacement, failed saves clean temporary copies. Partial older files and
+  integer-text volume remain usable, valid reads do not rewrite data. Defaults have independent lists.
+- **Owner control:** English/Spanish Settings explains default choices and inactive originals,
+  lists only recovery metadata, and uses existing authenticated single/all deletion and named-helper
+  notices. No damaged contents in the page/logs. Other stores and automatic restoration are outside scope.
+- **Validation:** **90 new cases**, CPU **1,624 / 16 skipped**, installed robot environment **1,673 /
+  one skipped**, isolated wheel **three passed**, changed Python lint and diff checks pass. Actual local
+  HTTP covers denied access, metadata-only listing, deletion and spoken-notice construction. Eight
+  desktop/phone English/Spanish browser fixtures pass, no page errors/overflow, two-tap deletion
+  simulated; English screenshots inspected. An outdated calendar fixture now matches the real finder's
+  `site`/`page` output. No household edits, model, audio, camera or motor action in these tests.
+- **Compatibility:** current household file's 24 fields validate, mode 600; values not retained in
+  audit metadata. Existing service restarted with zero competing controllers; all three services active,
+  live setup HTML matches, current settings bytes/recovery inventory unchanged. Preflight **20/21**,
+  optional second look stopped (404), short Nemotron probe **0.62 s**, zero microphone drops/suspect
+  voice-log lines. Publication follow-through pending. Physical trials, memory offers,
+  intermittent provider latency, video, release/app pin and actual submission remain open.
+  [Audit metadata](../evals/results/settings-integrity-audit-2026-10-27.json).
+
 ## October 27 publication/history audit
 
 - **Name scope:** anonymous mirror, 239 commits/2,528 unique blobs plus metadata, compared with the

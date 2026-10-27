@@ -49,7 +49,7 @@ def test_the_setup_page_s_calendar_search_sees_the_key_in_the_supervisor(env_fil
 
     def find(place):
         seen.append(web._key())                 # raises WebError without the key
-        return {"url": "https://town.example/events", "title": "Events"}
+        return {"site": "https://town.example", "page": "https://town.example/events"}
 
     monkeypatch.setattr(web, "find_events_page", find)
     setup_page.suggest_events_page("Springfield, Illinois")
@@ -66,7 +66,7 @@ def test_the_setup_page_s_calendar_search_sees_the_key_in_the_supervisor(env_fil
     with caplog.at_level(logging.INFO), pytest.raises(Started):
         supervisor.main()
     assert seen == [SECRET]
-    assert settings.get()["events_suggestion"]["url"] == "https://town.example/events"
+    assert settings.get()["events_suggestion"]["page"] == "https://town.example/events"
     assert SECRET not in caplog.text and "TAVILY_API_KEY" in caplog.text          # names in the log, never values
     assert "NEBIUS_API_KEY" not in os.environ          # the supervisor takes only what its own features need
 

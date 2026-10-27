@@ -6,6 +6,9 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Saved settings validated before use; unreadable originals preserved whole with unique owner-only names, metadata-only English/Spanish review and authenticated single/all deletion; 90 new cases, both full suites, wheel and eight browser fixtures pass
+- [ ] Saved-settings change verified in running service and published source/preview; deployed hashes, hosted CI and anonymous-clone checks
+
 - [x] Full anonymous public-history name/metadata scan and historical image OCR/QR review completed without committing the external roster or OCR text; private session trailers/one retired image identified for scoped cleanup
 - [x] Private AI-session references blocked in commit messages with fixed non-echoing errors; 13 regressions and full CPU/robot-environment suites pass, author credits preserved
 - [x] Scoped history cleanup published with an expected-head lease; 240 commits/dates/credits/current files preserved, 195 private trailers/one retired QR image removed, anonymous history/installation and hosted CPU/wheel/SDK checks pass

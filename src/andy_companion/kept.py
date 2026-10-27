@@ -13,13 +13,14 @@ import tempfile
 from datetime import datetime
 from typing import Any, Dict, List
 
-from andy_companion import board, moments, places, reminders
+from andy_companion import board, moments, places, reminders, settings
 from andy_companion.privacy import MEMORY_FILE
 
 KINDS = {"reminder": ("a reminder", "reminders"), "moment": ("a remembered moment", "remembered moments"),
          "fact": ("a remembered fact", "remembered facts"), "shared": ("a shared note", "shared notes"),
          "pending": ("a message waiting to be said", "messages waiting to be said"),
          "recovery": ("a saved reminder copy needing review", "saved reminder copies needing review"),
+         "settings_recovery": ("a saved settings copy needing review", "saved settings copies needing review"),
          "photo": ("a photo from family", "photos from family"), "place": ("a remembered place", "remembered places")}
 
 
@@ -58,6 +59,8 @@ def summary() -> Dict[str, List[Dict[str, str]]]:
         "place": [{"id": p["id"], "text": f"{p['what']}: {p['where']}", "when": _when(p["at"])} for p in places.kept()],
         "recovery": [{"id": r["id"], "text": "Saved reminder copy — could not be loaded", "when": _when(r["at"])}
                      for r in reminders.recovery_files()],
+        "settings_recovery": [{"id": r["id"], "text": "Saved settings copy — could not be loaded", "when": _when(r["at"])}
+                              for r in settings.recovery_files()],
         "pending": [{"id": e["id"], "text": str(e.get("topic") or e.get("text") or e.get("what") or e.get("caption") or e.get("type", "")),
                      "when": _when(e["at"])} for e in board.pending_entries()
                     if e.get("id") and e.get("type") not in board.KEPT_UNTIL_SAID],
@@ -70,6 +73,8 @@ def delete(kind: str, item_id: str) -> bool:
         return reminders.cancel(item_id)
     if kind == "recovery":
         return reminders.delete_recovery(item_id)
+    if kind == "settings_recovery":
+        return settings.delete_recovery(item_id)
     if kind == "moment":
         return moments.remove(item_id)          # by its exact id: never by words, which could match many
     if kind == "fact":

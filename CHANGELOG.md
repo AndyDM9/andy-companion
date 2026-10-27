@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Preserve unreadable saved settings
+
+- Validate stored settings and cache shapes before consumers use them (0037). Wrong roots previously
+  raised AttributeError; broken JSON was silently overwritten on the next update. Preserve complete
+  originals under unique owner-only names before using defaults; stop writes if preservation fails.
+- Share a read/write lock, clean failed-save temporary files and isolate mutable defaults. Keep older
+  partial files/integer-text volume compatible; reject malformed direct updates before touching disk.
+- Settings lists metadata only, explains defaults and offers existing authenticated single/all deletion
+  in English/Spanish, with helper notices. No automatic restoration, other-store or physical-test claim.
+- 90 new cases; CPU **1,624 / 16 skipped**, robot environment **1,673 / one skipped**, isolated wheel
+  **three passed**, eight browser fixtures and changed Python lint pass. Calendar test fixture now
+  uses the real finder's output shape. Current household settings validate without changing values.
+- Existing service restarted alone; all three services active, installed/live HTML matches and settings
+  bytes/recovery inventory unchanged. Preflight 20/21, optional second look stopped, text probe 0.62 s.
+
 ### Verified publication-history cleanup
 
 - Published `f0771f9` with the recorded expected-head lease. All 240 commits and author/date/credit

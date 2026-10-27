@@ -1,0 +1,98 @@
+{
+  "scope": "Local updated Settings HTML with invented/intercepted API state and simulated UI writes only. Public sample defaults provide form shape. No household data, camera, microphone, robot or actual writes. Actual HTTP deletion has a separate regression.",
+  "cases": [
+    {
+      "language": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "recovery_present": false,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": false
+    },
+    {
+      "language": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "recovery_present": true,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": true
+    },
+    {
+      "language": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "recovery_present": false,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": false
+    },
+    {
+      "language": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "recovery_present": true,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": true
+    },
+    {
+      "language": "es",
+      "viewport": [
+        1440,
+        900
+      ],
+      "recovery_present": false,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": false
+    },
+    {
+      "language": "es",
+      "viewport": [
+        1440,
+        900
+      ],
+      "recovery_present": true,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": true
+    },
+    {
+      "language": "es",
+      "viewport": [
+        390,
+        844
+      ],
+      "recovery_present": false,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": false
+    },
+    {
+      "language": "es",
+      "viewport": [
+        390,
+        844
+      ],
+      "recovery_present": true,
+      "page_errors": 0,
+      "horizontal_overflow": false,
+      "single_then_all_two_tap_deletions": true
+    }
+  ],
+  "source_sha256": {
+    "src/andy_companion/pages/setup.html": "0b6718af50d6e8026c00614082356111537770216b321cca9a4912c470547eda",
+    "src/andy_companion/settings.py": "8b420d51cfc8d71d64ab3bc51b8b1f8ad232bd23f7b206816b91589ac774f0b9",
+    "src/andy_companion/kept.py": "bc32c35da59a9e2b39b053152aac1fcd9ee65f7e5d5f7b638d4b7543fbc2d817"
+  }
+}

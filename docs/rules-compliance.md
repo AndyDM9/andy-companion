@@ -40,6 +40,15 @@ also says to leave the code repository, video and project materials unchanged af
 copy for later work unless an exception is explicitly allowed. This clarifies our earlier tag-only
 wording. Video, physical/access evidence and actual submission remain open; no footage is inferred.
 
+## Saved-settings recovery (October 27)
+
+An existing reliability/data-handling fault is fixed (0037): malformed saved settings are validated,
+originals preserved owner-only, defaults disclosed, and copies visible/deletable through existing
+owner controls in English/Spanish. Ninety invented-data cases, both full software suites, wheel and
+eight local browser fixtures pass. No new feature shown as physical evidence, model/dependency,
+recording, public credential, outcome/access or completed-submission claim. Actual video, physical
+trials and final release/access remain pending; the deadline freeze above applies unchanged.
+
 ## Screen reconnection (October 27)
 
 Bounded status polling and stale-reply rejection improve an existing screen failure path. Actual

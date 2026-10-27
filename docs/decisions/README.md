@@ -41,3 +41,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0034](0034-check-setup-types-before-changing-settings.md) | Check setup value types before changing settings | 2026-10-27 | accepted |
 | [0035](0035-bound-screen-status-polls-to-the-current-connection.md) | Bound screen status polls to the current connection | 2026-10-27 | accepted |
 | [0036](0036-keep-private-publishing-metadata-out-of-history.md) | Keep private publishing metadata out of history | 2026-10-27 | accepted |
+| [0037](0037-validate-and-preserve-saved-settings.md) | Validate saved settings and preserve unreadable originals with visible deletion | 2026-10-27 | accepted |
