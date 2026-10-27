@@ -20,6 +20,23 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
 
 
+## October 27 hardware-access clarification
+
+- **Clarified:** working hardware is the Reachy Mini plus its supporting Linux desktop. Author-funded
+  testing offers access to Andy's functions; personal desktop/server credentials and provider keys
+  stay private. Existing hosting and the public demos' separation from the household are retained.
+- **Request path:** the public GitHub form now distinguishes a free assisted demo from an organiser
+  physical-access request. GitHub sign-in is required to submit; organisers can also contact the
+  entrant through the submission. Contact/connection/delivery details go privately through organisers.
+- **Still pending:** an offered video call is not a confirmed substitute for physical access. Agree
+  the method separately if organisers request it. No communication to organisers, infrastructure
+  deployment, new physical trial, video or completed-access/submission claim.
+- Prior documentation revision `f854e37` passed hosted CPU/wheel/SDK checks. This clarification changes
+  prose/request-form fields only. Request YAML valid, three unique fields and optional request type;
+  **326** relative file targets resolve, **23/23** submission links open. Anonymous public entry checks
+  pass; the request URL redirects to GitHub login as disclosed. CPU pre-commit **1,422 / 16 skipped**.
+  Final exporter still rejects missing video/tag/app pin. No deployment or provider-inference retest needed.
+
 ## October 27 guided judge completion audit
 
 - **Fixed:** injected token-limit responses were displayed as completed answers or prepared a

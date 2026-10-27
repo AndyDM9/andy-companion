@@ -19,6 +19,17 @@ video, the Devpost form, the repository) is checked against this file first.
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
+## Hardware-access clarification (October 27)
+
+Rules section 4 and the FAQ were re-read October 27. Physical AI's hosted-URL exemption, free testing
+through December 15 and possible organiser hardware-access requests remain as recorded below.
+The testing guide, README, Devpost source and request form now distinguish an assisted video
+demonstration from physical access agreed with organisers. A call is not claimed to satisfy a physical-
+access request. Supporting desktop/server administration and provider credentials remain private;
+the public software examples stay isolated from the robot. The GitHub issue route requires sign-in;
+organiser contact through the submission remains an alternative. No hosting or live access change,
+organiser acceptance, new footage or completed-submission claim. Final hardware arrangements remain open.
+
 ## Guided completion audit (October 27)
 
 The guided software challenge validates completed hosted replies before answers or simulated actions.

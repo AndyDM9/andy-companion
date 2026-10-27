@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Hardware-access instructions clarified
+
+- Clarify the working Reachy Mini/Linux desktop setup and the difference between an assisted video
+  demonstration and organiser-requested physical access. A video call is not a confirmed substitute;
+  the final physical method remains pending. Existing hosting and public-demo isolation are retained.
+- README, testing guide, Devpost source and decision 0022 now explain that personal desktop/server
+  credentials and provider keys remain private. The public GitHub request route requires sign-in;
+  organisers can also use the submission contact path.
+- The request form distinguishes live demos from physical-access requests and directs private
+  connection/delivery details through organisers instead of promising a private link in a public reply.
+  No organiser message, deployment, robot behavior or new performance result.
+- Request YAML valid; 326 relative file targets and 23 submission links pass. Public request link
+  redirects to GitHub sign-in, now disclosed. CPU pre-commit **1,422 / 16 skipped**; final exporter
+  still refuses the missing video, tag and app pin.
+
 ### Guided completion deployment follow-through
 
 - Source `932720b` pushed; guided Space `4ecf7c251995a3ea2e0351c32a915a8e57258188` RUNNING,

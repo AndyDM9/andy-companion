@@ -51,3 +51,16 @@ instructions and arrangements are confirmed. Public secrets or new billed servic
 The founder approved the guided browser playground in decision 0023. It is a separate, author-funded
 Space with fixed invented inputs and simulated tool effects; the provider key stays in a server secret.
 It supplements the preview and robot-testing path, and does not complete hardware-access arrangements.
+
+## Clarified 2026-10-27
+
+The founder approved retaining the existing hosting and hardware arrangement after asking what
+hardware access means. The physical setup is the Reachy Mini and supporting Linux desktop; judge
+testing does not require giving out personal desktop/server logins or provider credentials. The
+public Hugging Face services remain isolated from the household and robot.
+
+A video call is an offered assisted demonstration, not a confirmed substitute for organiser-requested
+physical access. Agree that method separately; do not mark it confirmed from the existence of a
+video-call request form. GitHub issues are public and require sign-in to submit; organisers can also
+contact the entrant through the submission. Keep contact, connection and delivery details private.
+No public remote-control service, hosting migration or organiser communication is created by this clarification.

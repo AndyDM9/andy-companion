@@ -11,16 +11,32 @@ robot, computer and inference/web access during the session. Provider keys stay 
 The optional reproduction commands below use the tester's own accounts; they are not the required
 judge-access path. The original screen Space previews the interfaces and is not an interactive AI or hardware test.
 
-The [official rules](https://nebiusglobalaihackathon.devpost.com/rules), checked October 26, exempt
+The [official rules](https://nebiusglobalaihackathon.devpost.com/rules), checked October 27, exempt
 Physical AI from the hosted-demo-URL requirement, require free working-project testing access through
-December 15 and allow organisers to request hardware access. The final testing instructions and any
-hardware arrangement must be confirmed before submission; we do not treat the sample screens alone
-as proof of unrestricted access to the working robot.
+December 15 and allow organisers to request hardware access. Testing instructions accompany the
+submission; coordinate physical-access arrangements if the organisers request them. We do not treat
+the sample screens alone as proof of unrestricted access to the working robot.
 
 Our current approach is the public preview, the real-robot video, reproducible source, and author-funded
 hands-on robot testing on request (decision 0022). The author prepares a test household with invented
 notes, reminders and documents, and consented photos; personal household data is not part of judge access.
-Only one program drives the robot, and the author remains present for hardware tests.
+During assisted demonstrations, one program drives the robot and the author operates the setup.
+
+### What hardware access means
+
+The working physical setup is a Reachy Mini connected to a Linux desktop that runs Andy's voice,
+camera and robot software, with cloud inference through Nebius. The author supplies that setup and
+API usage for judge testing. Judges can try Andy's functions without receiving personal desktop
+login details, server administration access or provider keys.
+
+A live video demonstration can be requested using the link below. If the organisers request physical
+access to the robot, we will coordinate that method separately with them. A video call is our offered
+demonstration route; it is not a confirmed substitute for a physical-access request. The final hardware
+arrangement remains pending until agreed. The rules allow judges to evaluate the submitted materials
+without testing and do not automatically require shipping the robot or opening remote desktop access.
+
+The public screens and guided AI examples remain on Hugging Face. They have no connection to the
+author's physical robot or household. No hosting migration is needed for this testing plan.
 
 The separate [guided AI playground](https://andydm-andy-companion-judge.hf.space/) is now available,
 funded by the author (decision 0023). It uses real Nemotron inference with fixed invented inputs and
@@ -142,9 +158,12 @@ to run all 97 cases. No microphone, camera or motors are exercised. This sample 
 
 [Request a free live demonstration](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)
 with your time zone and the tasks you want to see. Do not put private contact details in the public issue.
+Submitting a GitHub issue requires GitHub sign-in. It is a public coordination route; connection,
+contact and any delivery details should be handled privately through the organisers.
 The organisers may also contact the entrant through the submission without using a public GitHub issue.
 The author provides the robot, its computer and the API access for that demonstration through judging
-(December 15, 2026). Physical hardware access can be arranged if requested by the organisers.
+(December 15, 2026). Select an organiser hardware-access request in the form when that is the purpose;
+the physical testing method will be agreed separately.
 
 If you have your own Reachy Mini, follow [Setup](../README.md#setup), then
 [the live test](live-test.md). The voice server needs an NVIDIA GPU and downloads speech models on

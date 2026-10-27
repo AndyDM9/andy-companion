@@ -23,8 +23,10 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
   effects and no visitor key. It supplements hardware access; public usage limits apply. For a free test of the real robot, request a session through
   https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml or contact the entrant through
   the organisers. The author supplies the robot, computer and API access during that session; judges do not
-  need to purchase credits or receive provider keys. Hardware access can be arranged if requested by the
-  organisers. Reproduction with your own equipment and keys is optional. Instructions and limits:
+  need to purchase credits or receive personal desktop/provider credentials. The public GitHub request form
+  requires sign-in; the organiser contact route is also available. Requested physical hardware access will
+  be agreed separately with the organisers; a video call is not a confirmed substitute and the final
+  physical-access method is pending. Reproduction with your own equipment and keys is optional. Instructions and limits:
   https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md
 - **Built with:** nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs,
   nvidia-nemotron, nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety,

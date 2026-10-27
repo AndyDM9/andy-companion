@@ -45,6 +45,8 @@ and simulated camera/search/family effects, funded by the author with no visitor
 open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
 failures included ([evals/results/](evals/results/README.md)); or [ask for the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml),
 any time until 2026-12-15.
+Organiser-requested physical access is arranged separately; a video call is not a confirmed substitute.
+The author operates the supporting computer; judges do not need personal desktop or API credentials.
 
 **Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [every model and where it runs](#every-model-and-where-it-runs), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 

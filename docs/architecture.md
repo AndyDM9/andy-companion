@@ -185,6 +185,10 @@ any data, and requires its own new temporary store; it must never replace a live
   already-applied sample state with fixed wording. The build manifest includes the helper and has a
   cold-import check. No corresponding change to the streaming robot voice handler.
 - `docs/judging.md`: the short testing path from the README, public demo and submission text.
+  The public request form distinguishes assisted demonstrations from organiser hardware-access
+  requests. Physical access is agreed separately; a video call is not a confirmed substitute. Public
+  software demos stay isolated from the Reachy Mini/supporting desktop; personal administrative
+  logins and provider keys remain private. This clarification adds no remote-control connection.
   CI starts the real public demo in a separate process with throwaway sample data, probes pages,
   assets, tokens and write refusal, then checks cleanup. CI also builds a wheel and checks its
   pages, fonts, audio, profile and tools from an isolated installation with checkout imports disabled.

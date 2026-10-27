@@ -1,14 +1,25 @@
 name: Ask to see Andy live
-description: A video call with the real robot, any time until judging ends (2026-12-15).
+description: Free live robot demonstration or organiser hardware-access request through 2026-12-15.
 title: "Live demo request"
 labels: ["live demo"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for looking at Andy. Say when suits you and what you'd like to see (the letter, the glasses, a look-up,
-        the family page), and we'll reply here with a time and a private call link. Please don't put a phone number
-        or email address in this public issue.
+        Ask for a free live robot demonstration or coordinate an organiser's physical hardware-access request.
+        Say your time zone and what you'd like to test (the letter, the glasses, a look-up, the family page).
+        We can coordinate a time here; contact, call and any delivery details should go privately through the organisers.
+        This issue is public: please do not post email addresses, phone numbers, private links or credentials.
+        A video call is offered for demonstrations; any requested physical-access method must be agreed separately.
+  - type: dropdown
+    id: request_kind
+    attributes:
+      label: Request type
+      options:
+        - Free live robot demonstration
+        - Physical hardware access requested by organisers
+    validations:
+      required: false
   - type: textarea
     id: when
     attributes:
