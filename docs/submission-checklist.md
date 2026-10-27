@@ -6,6 +6,9 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Audited reader/source boundary published; hosted CI, latest anonymous clone and guided profile/tool/confirmation hashes verified
+- [ ] Wake Andy and complete the post-audit spoken reader/core physical filming checks; current persisted sleep mode was preserved
+
 - [x] Camera reader dispatches before preliminary speech; recognised spoken-message source is refused before OCR, with shared evaluation logic and SDK regressions
 - [x] Fresh-clone baseline, app entrypoint/install/uninstall, wheel resources, lockfiles, JavaScript, relative links and full-history secrets rechecked
 - [x] Public desktop/phone layouts, real guided Yes/No/examples and protocol refusals rechecked without household data

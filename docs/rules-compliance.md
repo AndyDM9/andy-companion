@@ -21,6 +21,12 @@ video, the Devpost form, the repository) is checked against this file first.
 
 ## Final re-audit (2026-10-27)
 
+Published-source follow-through passed: latest anonymous clone, hosted CI, guided source hashes and
+public Yes/No examples. All 23 updated export links open. Andy's persisted sleep mode was preserved;
+awake physical checks are not marked complete. The video guide permits the optional paid second-look
+endpoint to remain off only when not depicted as active; mandatory awake functionality and the actual
+hardware/video/access requirements remain unchanged. Final exporter still reports three release blockers.
+
 Re-read the live [official rules](https://nebiusglobalaihackathon.devpost.com/rules) and
 [FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs). Deadline remains October 30, 10:00 PT;
 public open-source code, actual device footage, public YouTube video, rights/translation and free

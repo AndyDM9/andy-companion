@@ -5,6 +5,28 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Published re-audit follow-through
+
+- Source `18922ce` pushed; hosted CPU/wheel and SDK jobs passed. Existing Andy service restarted
+  after verifying zero other controllers. The persisted mode is now asleep, with a clean prior app
+  exit and no traceback: left unchanged. Supervisor/voice/local-eyes services remain active. While
+  asleep, preflight is 17/21: app absent and stale audio checks are expected, plus the stopped optional
+  endpoint. This does not verify a new awake spoken reader/physical task. Baseline awake preflight
+  earlier in this audit was 20/21, with only the optional endpoint stopped.
+- Guided Space refreshed (`da0b391d2c78f0330cac97cf0b65016fb73e8768`); RUNNING, profile/tools
+  and downloaded confirmation source match the audit. Repeated eight public layouts and eight
+  real guided scenarios, Yes/No on desktop/phone, plus three protocol refusals: passed. Effects
+  remain simulated. Public preview/UI is unchanged by this reader fix.
+- Published source pulled into the anonymous clone: 1,156 passed / 14 skipped. Full history now
+  223 commits clean. All 23 updated export links open; final export still correctly rejects the
+  video placeholder, missing release tag and app dependency on main. No signed-in browser is
+  connected to reconcile the saved Devpost draft.
+- Filming instructions now use actual configured-model inference and require awake core checks;
+  starting the paid optional second-look endpoint is needed only if demonstrating it as active.
+  The deliberately stopped optional check stays visible. Video, release pin/tag and submission
+  confirmation remain pending. No extra hardware accuracy or audience-study result inferred.
+
+
 ### Complete re-audit and camera-reading reliability fixes
 
 - Rechecked the live rules/FAQ, source, services, public judge paths, fresh-clone installation,

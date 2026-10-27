@@ -22,6 +22,18 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## Final re-audit (started October 26)
 
+- **Published follow-through:** source `18922ce`, hosted CPU/wheel and SDK CI passed; guided Space
+  `da0b391d2c78f0330cac97cf0b65016fb73e8768` RUNNING and profile/tool/confirmation-source hashes
+  match. Eight public layouts/eight real guided scenarios/three refusals rechecked successfully.
+  Anonymous clone updated to the published source: **1,156 / 14 skipped**. History scan **223 commits
+  clean**, all **23** updated export links open. No connected signed-in submission browser.
+- **Current robot state:** existing service restarted with zero competing controllers. Persisted
+  mode is **asleep**, prior app exit **0**, no traceback, supervisor/voice/local eyes active. The mode
+  was preserved. Post-restart preflight **17/21** reflects the intentionally absent sleeping app and
+  stale audio data, plus the stopped optional second check. Earlier awake preflight was **20/21**.
+  Wake and rerun the core checks before filming; no new awake spoken reader trial claimed.
+  The video guide now distinguishes the optional paid endpoint from required awake checks.
+
 - **Current model proof:** **94, 96 and 94 of 97**, three full local runs after the camera-reader fixes;
   [scorecard](../evals/results/suite-2026-10-26-camera-source-local.json). Real API calls, synthetic tools, real confirmation/source checks;
   no microphone, camera or motors. All quoted-message/letter cases passed in these runs. Remaining
@@ -45,7 +57,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Judge access:** all three Spaces RUNNING; five screen URLs 200, eight writes 403, wrong token
   404. Eight desktop/phone layouts and eight guided-model scenarios passed; three protocol refusals
   passed. Guided effects remain simulated and isolated from the household. Source restart and
-  redeployment follow this commit; the final release audit must verify new published hashes.
+  published hashes are verified in the follow-through above; awake physical checks remain pending.
 - **Submission:** live official rules/FAQ rechecked; 23 export links opened before these text updates.
   Final exporter correctly blocks the video placeholder, absent release tag and app dependency on main.
   Actual video/rights/translation, Devpost reconciliation/submission, free hardware-access arrangement,

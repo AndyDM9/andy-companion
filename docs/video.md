@@ -66,10 +66,18 @@ long, unedited takes.
       (every name, number and amount invented; no real company on camera).
 - [ ] Just before the long take: `uv run python scripts/prepare_demo.py set --reminder-in 4` (the "call Rosa"
       reminder, and yesterday's "Sofia's piano recital"); after filming: `… clean`.
-- [ ] **`robot/.venv/bin/python scripts/doctor.py --live` reports "Preflight passed"**, then complete the observed core filming pass above. Preflight checks the second look's endpoint, eyes listed on Token Factory, Nemotron response time, finder recording off, audio drops, unanswered speech, computer load and the screen's place. It does not verify spoken task outcomes or motion.
-- [ ] `cloud/guard-endpoint.sh start` about 25 minutes before; `status` shows RUNNING and the model answers
-      (the first start loads weights for about 8 minutes more); then `systemctl --user restart andy`. The eyes
-      need nothing started: Nemotron 3.5 Super VL is on Token Factory (decision 0011).
+- [ ] **Wake Andy, then run `robot/.venv/bin/python scripts/doctor.py --live` and review every result.**
+      The app, fresh audio health, cloud-model inference, privacy and exclusive-control checks must pass
+      while awake. A deliberately stopped optional second-look endpoint may remain off if it is not
+      depicted or described as active; retain that failed optional check in the record. Do not waive an
+      app/audio failure as optional. Then complete the observed core filming pass above. Preflight does
+      not verify spoken task outcomes or motion. Sleeping mode stops the app and leaves stale audio
+      health; wake it and recheck before filming.
+- [ ] **Only if demonstrating the optional Content Safety second look:** `cloud/guard-endpoint.sh start`
+      about 25 minutes before; `status` shows RUNNING and the model answers (the first start can take
+      about 8 minutes more); then `systemctl --user restart andy`. Otherwise leave that paid endpoint
+      stopped and do not claim it was active. The eyes need nothing started: Nemotron 3.5 Super VL is
+      on Token Factory (decision 0011).
 - [ ] **Finder recording off** (the doctor's "Finder tries not kept"): the recorded tries would keep the room and
       everyone filmed. Remove the `ANDY_FINDER_RECORD` line from the env file, then restart Andy.
 - [ ] The voice server and `scripts/andy` are running. Andy's screen is on the TV beside the robot, and

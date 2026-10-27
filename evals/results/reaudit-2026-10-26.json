@@ -279,5 +279,208 @@
       "Remaining physical trials and consenting-user feedback"
     ]
   },
-  "deployment_followthrough": "Restart and published-source verification follow the source commit; recorded separately."
+  "deployment_followthrough": {
+    "recorded": "2026-10-27T00:09:43.166544-04:00",
+    "source_commit": "18922ce9b8ba1eca2e3f721b6082aff8ea4e0158",
+    "source_ci": "https://github.com/AndyDM9/andy-companion/actions/runs/40447759457",
+    "source_ci_passed": true,
+    "existing_service_restarted": true,
+    "other_controllers": 0,
+    "mode_after_restart": "asleep",
+    "last_app_exit_code": 0,
+    "recent_traceback_count": 0,
+    "services_active": [
+      "andy",
+      "andy-voice",
+      "andy-eyes"
+    ],
+    "post_restart_preflight_passed": 17,
+    "post_restart_preflight_total": 21,
+    "post_restart_limits": "Persisted sleep mode stops the app and leaves stale health; awake audio/app readiness not certified. Optional second check remains stopped. Sleep mode not changed.",
+    "judge_space_commit": "da0b391d2c78f0330cac97cf0b65016fb73e8768",
+    "judge_running": true,
+    "published_profile_tools_and_confirmation_match": true,
+    "public_browser_recheck": {
+      "scope": "Public sample pages and author-funded real Nemotron examples with fixed invented inputs and simulated effects. No robot control or household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "letter",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "absent",
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "no",
+          "shared": false,
+          "completed": true,
+          "simulated_effects_only": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "challenge": "choice",
+          "choice": "yes",
+          "shared": true,
+          "completed": true,
+          "simulated_effects_only": true
+        }
+      ],
+      "refusals": {
+        "arbitrary-input": 400,
+        "choice-before-start": 400,
+        "cross-origin": 403
+      }
+    },
+    "fresh_published_clone_cpu_passed": 1156,
+    "fresh_published_clone_skipped": 14,
+    "gitleaks_commits": 223,
+    "gitleaks_leaks": 0,
+    "updated_export_links_open": 23,
+    "updated_export_links_total": 23,
+    "final_export_blockers": 3,
+    "connected_signed_in_browser": false,
+    "relative_links_after_document_updates_checked": 283,
+    "relative_links_broken": 0
+  }
 }
