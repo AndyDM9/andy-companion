@@ -7,7 +7,7 @@ in the same commit that makes it true.
 ## Final readiness, re-audited October 26–27
 
 - [x] Screen status polls stay capped, time out and reject replies across reconnect transitions; 12 JavaScript regressions, both full suites and eight English/Spanish browser fixtures pass
-- [ ] Screen-reconnection fix verified as installed page, running service and published source/preview with hosted CI
+- [x] Screen-reconnection fix verified as installed page, running service and published source/preview; deployed/served hashes, fresh clone, hosted CPU/wheel/SDK CI and eight public layouts/two write refusals pass
 
 - [x] Setup requests require supported shapes/types before any save or side effect; 87 new cases include actual HTTP unchanged-file/no-announcement/no-volume/no-lookup checks
 - [x] Setup type-validation change verified in full suites, installed package, running service and published source/preview; hosted CPU/wheel/SDK jobs, fresh clone, deployed hashes, eight layouts/two public write refusals pass

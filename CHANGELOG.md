@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-27
 
+### Screen-reconnection publication follow-through
+
+- Source `d2587ce` pushed; preview `9331893cb720a97ec03c5ac42710f04ad21df7e3` RUNNING. Actual
+  deployed revision, downloaded page and served public HTML match. All three Spaces RUNNING.
+- Eight public layouts and two public write refusals pass with no model/hardware action. Anonymous
+  clone **1,521 / 16 skipped**, 238-commit history clean, 332 relative file targets and 23 export links
+  pass. Hosted CPU/wheel/SDK jobs passed, including the 12 JavaScript cases in the full CPU count.
+- Final exporter still blocks video/tag/app pin. The physical reader trial remains pending;
+  no physical network, voice, audience or completed-submission result inferred.
+
 ### Screen status survives stalled and late replies
 
 - Injected status polls started 12 requests while earlier replies stalled; a late response body could

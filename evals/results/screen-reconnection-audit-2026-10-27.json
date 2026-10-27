@@ -140,7 +140,159 @@
     "status": "success",
     "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40539285566"
   },
-  "publication": "Pending source/preview/hosted-CI/fresh-clone follow-through.",
+  "publication": {
+    "source_commit": "d2587cedf1ac9b46eca315f8a62f96cd28c1d9d3",
+    "preview": {
+      "preview_revision": "9331893cb720a97ec03c5ac42710f04ad21df7e3",
+      "deployed_revision_matches": true,
+      "deployed_file_matches": true,
+      "served_public_page_matches": true,
+      "spaces": [
+        {
+          "space": "andydm/andy-companion",
+          "stage": "RUNNING",
+          "sha": "9331893cb720a97ec03c5ac42710f04ad21df7e3"
+        },
+        {
+          "space": "andydm/andy-companion-judge",
+          "stage": "RUNNING",
+          "sha": "4ecf7c251995a3ea2e0351c32a915a8e57258188"
+        },
+        {
+          "space": "andydm/andy-companion-app",
+          "stage": "RUNNING",
+          "sha": null
+        }
+      ]
+    },
+    "public_browser": {
+      "scope": "Public sample-page layout and refusal of owner-copy/delete-all writes. No inference or robot control; no household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [],
+      "refusals": {
+        "copy-delete": 403,
+        "delete-all": 403
+      }
+    },
+    "anonymous_clone": {
+      "passed": 1521,
+      "skipped": 16,
+      "git_credential_helpers_disabled": true
+    },
+    "history_scan": {
+      "commits": 238,
+      "clean": true
+    },
+    "relative_file_targets": {
+      "relative_file_targets": 332,
+      "missing": []
+    },
+    "export_links": {
+      "checked": 23,
+      "open": 23
+    },
+    "final_export": {
+      "exit_code": 2,
+      "blockers": [
+        "Missing actual video URL",
+        "Missing release tag",
+        "App dependency still on main"
+      ]
+    },
+    "source_ci": {
+      "status": "success",
+      "jobs": [
+        "cpu-tests",
+        "sdk-startup"
+      ],
+      "cpu_passed": 1521,
+      "cpu_skipped": 16,
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40541459317"
+    },
+    "guided_handler_changed": false,
+    "remaining": "Persisted-settings recovery, intermittent cloud latency, physical reader/finder trials and user sessions, reliable memory offers, hardware arrangements, video and final release/submission. No new physical reader trial recorded."
+  },
   "source_sha256": [
     {
       "path": "src/andy_companion/pages/screen.html",

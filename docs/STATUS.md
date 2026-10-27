@@ -38,9 +38,19 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   active. Live static HTML and installed-wheel page bytes match the tested source. Awake preflight
   **20/21**, optional second check still off, Nemotron tiny text probe **0.63 s**, zero microphone drops
   and suspect voice-log lines. This does not erase earlier cloud timeouts or establish physical voice
-  latency. Source/preview/CI follow-through pending. Previous notes revision `ebe8214` passed hosted
+  latency. Publication follow-through below. Previous notes revision `ebe8214` passed hosted
   CPU/wheel/SDK checks.
   [Audit metadata](../evals/results/screen-reconnection-audit-2026-10-27.json).
+
+- **Published:** source `d2587ce`, preview `9331893cb720a97ec03c5ac42710f04ad21df7e3` RUNNING.
+  Actual deployed revision, downloaded page and served public HTML match; all three Spaces RUNNING.
+  Eight public layouts pass, both public write probes refused with 403; no model/hardware action.
+  Anonymous clone **1,521 / 16 skipped**, credential helpers disabled; history **238 commits clean**,
+  **332** relative file targets resolved, **23/23** export links open.
+  [Hosted CPU/wheel and SDK CI passed](https://github.com/AndyDM9/andy-companion/actions/runs/40541459317);
+  hosted CPU **1,521 / 16 skipped**, so the 12 Node cases executed. Final exporter still blocks
+  video/tag/app pin. The live reader test remains pending; no new
+  physical reader or network/voice trial inferred. Other open work above remains.
 
 ## October 27 setup-request audit
 

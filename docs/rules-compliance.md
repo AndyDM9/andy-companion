@@ -25,8 +25,10 @@ Bounded status polling and stale-reply rejection improve an existing screen fail
 page-function tests and eight Chromium cases use invented responses and simulated disconnects,
 not physical network or robot trials. No new hardware, model, voice-latency, stored-settings recovery
 or availability result. Public wording/capabilities and existing hardware/access/video/release
-requirements remain unchanged. Runtime/source/preview verification is recorded when completed;
-no physical/access/submission item is ticked by these software checks.
+requirements remain unchanged. Installed/live/deployed/served page hashes match; eight public layouts,
+two write refusals, fresh-clone tests and hosted CPU/wheel/SDK jobs pass. All three Spaces RUNNING,
+332 relative file targets and 23 export links pass. Final exporter still refuses video/tag/app pin.
+Physical reader trials remain pending. No physical/access/submission item is ticked by these checks.
 
 ## Setup request validation (October 27)
 
