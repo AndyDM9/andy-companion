@@ -5,6 +5,29 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The rest of the review, merged
+
+Six remaining findings from the morning's reviews, fixed in a separate worktree with a failing-first test each, then
+checked and merged here:
+
+- **A search starting mid-turn** holds the head where it is (the sweep's first look replaces the hold at once), and
+  seek drops a turn toward a voice under the hold, so nothing stale resumes after the search.
+- **The wake listener never hangs** on a stalled sound server: it reads with a one-second timeout and still checks
+  for a due reminder or the end of a quiet spell.
+- **After a reminder wake**, Andy stays awake when the app has reported no live state (the screen server could not
+  start), instead of stopping mid-conversation a minute later.
+- **A replaced settings or family link** says so, in the household's language, instead of "Andy's computer did not
+  answer" (JSON 410; the token is never echoed).
+- **A full family inbox** (50 waiting) refuses the new send instead of dropping what other relatives sent; a visit is
+  told once per name per hour and at most 20 wait.
+- **A Spanish household's settings and family pages** are Spanish throughout: dates, "waiting to be said" labels
+  (who sent what), every error message, and the first visit.
+- **Tests never act on the real repository:** run from a linked worktree, the pre-commit hook's absolute `GIT_DIR`
+  let two git fixtures commit, tag and set `core.bare` in the shared repository (repaired at once). The test setup
+  now removes git's repository variables. Three commits pushed while the local identity was missing carried a
+  personal address; they were re-authored with the noreply address.
+- **CPU 1,994 / 18 skipped** after the merge.
+
 ### A functional sweep on the robot
 
 - With the robot to itself, Claude played 21 short requests through the robot's own speaker in a second voice (each

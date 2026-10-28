@@ -20,6 +20,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
 
+## October 28 review complete
+
+- **Merged:** search-start hold, wake listener timeout, reminder wake without live state, replaced-link message,
+  full inbox refusal, Spanish settings/family pages, and a test guard against git variables. Every finding of the
+  three reviews is fixed except the per-phone family rate limit (still shared) and Pollen's `PP_MGSCALE` read-back.
+
 ## October 28 functional sweep
 
 - **On the robot, by clips and the founder's voice:** 15 live-test rows checked today (1, 2, 3c, 3d, 3e, 3ee, 3gg,

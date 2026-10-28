@@ -43,3 +43,6 @@ andy-finder-tries/
 *.pem
 *.key
 credentials*.json
+
+# Claude Code session folders (worktrees of agents), never part of the project
+.claude/
