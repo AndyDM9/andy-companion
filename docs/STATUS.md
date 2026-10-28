@@ -34,6 +34,11 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Every setting documented** in `docs/settings.md` (70 `ANDY_*` variables, defaults from the code); `.env.example`'s
   offline-eyes address corrected (no `/v1`). Not fixed, seen: started outside the desktop service with a non-default
   screen port only in the env file, the app would send captions to 8090 (it reads the port before loading the file).
+- **A provenance gap, seen, not fixed before filming:** a suite scorecard's `artifacts_sha256` covers the profile,
+  suite, tools, runner and `consent.py`, not the other modules the suite carries (`urgent`, `offers`, `recall`,
+  `tool_text`, `turn_notes`). So the night's last two batches of Jobs (after the review's fixes, and with the clock
+  note) have the same hashes and are told apart only by their times (18:23 to 18:29, and 18:36 to 18:42). The hood
+  page keeps showing the newest Job alone: pooling Jobs by those hashes would have mixed the two.
 - **Tests:** CPU **2,103 / 20 skipped**.
 
 ## October 28 night: everything checked that needs no one at home
