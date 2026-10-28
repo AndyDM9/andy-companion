@@ -429,7 +429,9 @@ What doesn't work yet, and what our numbers don't show.
   closer look didn't confirm it, so Andy said it couldn't see them rather than guess. Read again with today's code,
   the sweep alone picks a view holding glasses in 7 of 9 and a wrong one in 2, which is what the closer look is
   there to stop ([compare](evals/results/finder-compare-2026-10-20-2037.json)): the closer look is where the chair is
-  lost, and it is the next thing to fix. It finds things, not people. In simulation it is measured
+  lost, and it is the next thing to fix. On 2026-10-28, informally and in one room, Andy found real glasses on the
+  desk each of the three times it was asked (17 to 23 s, the close-up on the TV) and keys once (16 s); that is not
+  the planned 30-attempt measure, which is still to do. It finds things, not people. In simulation it is measured
   (decision 0013), but rendered pictures are cleaner than a room. Since 2026-10-25 (decision 0016) Andy turns its
   body as well as its head to look closer at something past the head's 60 degrees, as Pollen's kinematics allow;
   checked against those kinematics, not yet on the robot.
