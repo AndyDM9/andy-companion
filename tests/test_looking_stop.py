@@ -23,17 +23,17 @@ def data(tmp_path, monkeypatch):
 def test_the_loop_seen_on_the_robot_cannot_happen():
     t = {"now": 1000.0}
     clock = lambda: t["now"]
-    looking.answered("meta hackathon approval emails", clock=clock)
+    looking.answered("library card renewal emails", clock=clock)
     t["now"] += 1                                         # the model, a second after the answer was passed on
-    assert looking.start("meta hackathon approval emails", runner=lambda *a: None, clock=clock) == looking.JUST_ANSWERED
+    assert looking.start("library card renewal emails", runner=lambda *a: None, clock=clock) == looking.JUST_ANSWERED
     assert looking.start("something else entirely", runner=lambda *a: None, clock=clock) == looking.JUST_ANSWERED
     t["now"] += 60                                        # a minute later: the same question, reworded, still no
-    assert looking.start("approval emails for the Meta hackathon", runner=lambda *a: None, clock=clock) == looking.JUST_ANSWERED
+    assert looking.start("renewal emails for the library card", runner=lambda *a: None, clock=clock) == looking.JUST_ANSWERED
     started = looking.start("the new bus routes", runner=lambda *a: None, clock=clock)   # something new: yes
     assert started["started"] is True
     looking._state.update(busy=False)
     t["now"] += looking.SAME_FOR_S                        # ten minutes on, asked again: yes
-    assert looking.start("meta hackathon approval emails", runner=lambda *a: None, clock=clock)["started"] is True
+    assert looking.start("library card renewal emails", runner=lambda *a: None, clock=clock)["started"] is True
 
 
 def test_the_answer_is_handed_over_as_finished():
@@ -57,7 +57,7 @@ def test_stop_closes_the_stream_and_nothing_is_said(monkeypatch):
     monkeypatch.setattr(web, "stream_research", stream)
     monkeypatch.setattr(looking, "_collect", lambda *a: calls.__setitem__("collected", 1))
     looking._state.update(busy=True)
-    assert looking.run("meta hackathon approval") is None
+    assert looking.run("library card renewal") is None
     assert calls == {"steps": 1, "collected": 0}          # stopped at once, and never started again another way
     assert board.next_for_person() is None and looking._state["busy"] is False
     assert issubclass(web.ResearchStopped, web.WebError)  # so the real stream passes it straight through
