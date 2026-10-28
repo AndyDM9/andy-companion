@@ -29,6 +29,11 @@ def serve():
     ("</tool_call>", ""),                                                         # the end of one, in a later sentence
     ("It's on the table, by the lamp.", "It's on the table, by the lamp."),       # ordinary words untouched
     ("Three is less than five: 3 < 5, and 7 > 2.", "Three is less than five: 3 < 5, and 7 > 2."),
+    ("set_volume louder", ""),                                                   # seen in the suite, 2026-10-28
+    ("look_into the farmers market", ""),
+    ("I've turned it up. set_volume louder", "I've turned it up."),
+    ("I'll set a reminder for the tea dance on Thursday.", "I'll set a reminder for the tea dance on Thursday."),
+    ("Write to me at andy dot example, not a snake.", "Write to me at andy dot example, not a snake."),
 ])
 def test_tool_markup_is_never_spoken(serve, said, spoken):
     assert serve.unspoken_tool_markup(said) == spoken

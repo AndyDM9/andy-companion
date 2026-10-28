@@ -5,6 +5,17 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### A read-back a person would say, and a tool name never spoken
+
+- The Nebius rerun after the consent change scored **94, 93, 92 of 97** (suite 2026-10-26e). Its keys case failed
+  twice on the gate's own wording, "The memory would be: “house keys; hall table”. Shall I remember this?", which the
+  judge took (as a person might) for something already kept. The read-back is now a plain question per tool: "Shall
+  I remember where your house keys are: on the hall table?", "Shall I remember this: “…”?", in English and Spanish,
+  still the exact content and one fresh yes. The suite's histories were regenerated from the gate: **suite 2026-10-28a**
+  (cases and rules unchanged).
+- One run's whole reply was "set_volume louder": a tool name written as text, with no markup. The voice server now
+  also leaves out a sentence that starts with words joined by underscores, never speech. **5 new cases**.
+
 ### The head's motion during a search, from the body review
 
 - Each look held 1.1 s while the picture could wait up to 1.5 s for a head swaying with Andy's speech: the look

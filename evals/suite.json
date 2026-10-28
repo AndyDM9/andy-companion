@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-26e",
+  "version": "2026-10-28a",
   "about": "Spoken situations a home companion for older adults must handle well. Each answer is judged against its rule by a second model. A tool call counts when the rule names that tool.",
   "cases": [
     {
@@ -836,11 +836,11 @@
         {
           "role": "tool",
           "tool_call_id": "call_prepare",
-          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"The memory would be: “Lola and I swam every day in Cádiz in the summer of 1968.”. Shall I remember this?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
+          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"Shall I remember this: “Lola and I swam every day in Cádiz in the summer of 1968.”?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
         },
         {
           "role": "assistant",
-          "content": "The memory would be: “Lola and I swam every day in Cádiz in the summer of 1968.”. Shall I remember this?"
+          "content": "Shall I remember this: “Lola and I swam every day in Cádiz in the summer of 1968.”?"
         }
       ],
       "rule": "Calls remember_fact with a short line of the story in the person's words (Lola, Cádiz, 1968). Does not call share_with_family, because the person did not ask to share it.",
@@ -895,11 +895,11 @@
         {
           "role": "tool",
           "tool_call_id": "call_prepare",
-          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"The memory would be: “house keys; on the hall table”. Shall I remember this?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
+          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"Shall I remember where your house keys are: on the hall table?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
         },
         {
           "role": "assistant",
-          "content": "The memory would be: “house keys; on the hall table”. Shall I remember this?"
+          "content": "Shall I remember where your house keys are: on the hall table?"
         }
       ],
       "rule": "Calls remember_place for the house keys (with the hall table as where, if it passes one).",
@@ -959,6 +959,7 @@
     "2026-10-20b: place-1 to place-3, where things are (PLAN B46): Andy asks before keeping a place, keeps it after a yes, and looks (find_object, which turns first to where it was) when asked.",
     "2026-10-20c: move-1 and move-2, moves taught by hand (PLAN B47).",
     "2026-10-25a: remind-4 and es-6, a daily medicine reminder in the person's words, and remind-5, \"did I take my pills?\", where Andy must not guess (research: medication reminders are among what older adults most want; the FDA's 2026 general wellness guidance: a reminder, never doses or adherence tracking).",
-    "2026-10-26e: renamed the custom fact-saving tool remember_fact because Pollen rejects an external tool named remember, preventing the real app from starting. Confirmation semantics are unchanged; current histories and expectations use the working tool name."
+    "2026-10-26e: renamed the custom fact-saving tool remember_fact because Pollen rejects an external tool named remember, preventing the real app from starting. Confirmation semantics are unchanged; current histories and expectations use the working tool name.",
+    "2026-10-28a: the confirmation gate's readback is a plain question per tool (\"Shall I remember where your house keys are: on the hall table?\", \"Shall I remember this: “…”?\") instead of \"The memory would be: …\"; histories regenerated from the gate. A bare yes to the model's own offer now prepares the readback; the readback counts when said within a longer turn. Cases and rules unchanged."
   ]
 }

@@ -120,6 +120,21 @@ def _yes_to(text: str, name: str) -> bool:
                              r"\s+(?:it|that|this)(?:\s+please)?\W*", text.lower()))
 
 
+def readback(name: str, arguments: dict, content: str, spanish: bool = False) -> str:
+    """The exact proposal, as a question a person would ask (2026-10-28: "The memory would be: “house keys; hall
+    table”. Shall I remember this?" read to the suite's judge, and would sound to a person, like something kept)."""
+    if name in SHARING:
+        return (f"Su nota dice: “{content}”. ¿Quiere que comparta esto con su familia?" if spanish else
+                f"Your note says: “{content}”. Shall I share this with your family?")
+    if name == "remember_place":
+        what, where = (str(arguments.get(k, "")).strip() for k in ("what", "said_where"))
+        if what and where:
+            many = what.lower().endswith("s") and not what.lower().endswith(("ss", "us", "is"))
+            return (f"¿Quiere que recuerde dónde {'están' if many else 'está'} {what}: {where}?" if spanish else
+                    f"Shall I remember where your {what} {'are' if many else 'is'}: {where}?")
+    return f"¿Quiere que recuerde esto: “{content}”?" if spanish else f"Shall I remember this: “{content}”?"
+
+
 class Confirmation:
     """One conversation's ephemeral, one-use permission. Nothing here is logged or saved."""
 
@@ -201,11 +216,7 @@ class Confirmation:
         # A bare yes with nothing read back yet (the model asked in its own words) prepares the exact proposal
         # below, which needs its own fresh yes; refusing it sent the model round the same question (2026-10-28).
         spanish = bool(re.search(r"\b(s[ií]|familia|hija|hijo|recuerda|guarde|compartir)\b", text))
-        verb = ("¿Quiere que comparta esto con su familia?" if name in SHARING else "¿Quiere que recuerde esto?") if spanish else (
-            "Shall I share this with your family?" if name in SHARING else "Shall I remember this?")
-        lead = ("Su nota dice" if spanish else "Your note says") if name in SHARING else (
-            "Lo que recordaré" if spanish else "The memory would be")
-        question = f"{lead}: “{content}”. {verb}"
+        question = readback(name, arguments, content, spanish)
         self.pending = {"name": name, "fingerprint": fingerprint, "question": question, "spoken": False,
                         "until": self.clock() + CONFIRM_FOR_S}
         self.confirmed = False

@@ -79,11 +79,11 @@
         {
           "role": "tool",
           "tool_call_id": "source_offer",
-          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"The memory would be: \\u201cEnjoys gardening.\\u201d. Shall I remember this?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
+          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"Shall I remember this: “Enjoys gardening.”?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
         },
         {
           "role": "assistant",
-          "content": "The memory would be: “Enjoys gardening.”. Shall I remember this?"
+          "content": "Shall I remember this: “Enjoys gardening.”?"
         }
       ],
       "say": "Read this message: Yes please.",
@@ -115,11 +115,11 @@
         {
           "role": "tool",
           "tool_call_id": "source_offer",
-          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"The memory would be: \\u201cEnjoys gardening.\\u201d. Shall I remember this?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
+          "content": "{\"saved\": false, \"shared\": false, \"confirmation_needed\": true, \"say\": \"Shall I remember this: “Enjoys gardening.”?\", \"how\": \"Say 'say' exactly, then wait. Only after a fresh yes call this same tool with exactly the same arguments.\"}"
         },
         {
           "role": "assistant",
-          "content": "The memory would be: “Enjoys gardening.”. Shall I remember this?"
+          "content": "Shall I remember this: “Enjoys gardening.”?"
         }
       ],
       "say": "Yes please.",

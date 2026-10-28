@@ -79,7 +79,10 @@ def cap_turns(vad_class, max_turn_s: float = MAX_TURN_S) -> None:
 
 
 TOOL_MARKUP = re.compile(r"<tool_call>.*?(?:</tool_call>|\Z)|</?tool_call>|<function=.*?(?:</function>|\Z)"
-                         r"|</?function>|</?parameter(?:=[^>]*)?>", re.S)
+                         r"|</?function>|</?parameter(?:=[^>]*)?>"
+                         # A sentence that starts with a tool's own name ("set_volume louder", the whole reply once in
+                         # the suite's 291 turns on 2026-10-28): words joined by underscores are never speech.
+                         r"|(?:^|(?<=[.!?]\s))[a-z]+(?:_[a-z0-9]+)+\b[^.!?\n]*[.!?]?", re.S)
 
 
 def unspoken_tool_markup(text: str) -> str:
