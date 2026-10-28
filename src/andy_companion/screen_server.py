@@ -557,6 +557,14 @@ def expired_page(path: str, language: Optional[str] = None) -> bytes:
     return page.encode()
 
 
+def _replaced(path: str, q: Dict[str, str]) -> str:
+    """The page ("/setup" or "/family") whose API this address is, when its token does not open it; else ""."""
+    for page, key, kind in (("/setup", "s", "setup"), ("/family", "k", "family")):
+        if (path == "/api" + page or path.startswith("/api" + page + "/")) and not _ok(q.get(key), kind):
+            return page
+    return ""
+
+
 def _ok(token: Optional[str], kind: str) -> bool:
     if not token:
         return False
@@ -664,6 +672,13 @@ class Handler(BaseHTTPRequestHandler):
         """A page link that no longer opens (replaced, or mistyped): a kind page saying what to do, still a 404."""
         self._send(404, expired_page(path), "text/html; charset=utf-8")
 
+    def _gone(self, page: str) -> None:
+        """A page already open when its link was replaced asks with the old token: 410 and the kind page's words, in
+        the household's language, for the page to show. A plain 404 read "Andy's computer did not answer. Is it on?"
+        on the settings page (2026-10-28 review). The token is never echoed."""
+        _, head, line = EXPIRED[page][_language()]
+        self._json({"error": f"{head} {line}", "gone": True}, 410)
+
     def do_GET(self) -> None:  # noqa: N802
         self._guarded(self._get)
 
@@ -717,6 +732,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, (PAGES / FONTS[url.path]).read_bytes(), "font/woff2")
         if url.path in EXPIRED:
             return self._expired(url.path)
+        if _replaced(url.path, q):              # the settings or family page's questions, with a token that failed
+            return self._gone(_replaced(url.path, q))
         if url.path == "/view" and _ok(q.get("t"), "screen"):
             try:
                 data = view(int(q.get("i", "")))
@@ -838,6 +855,8 @@ class Handler(BaseHTTPRequestHandler):
             except (TypeError, AttributeError, OverflowError):
                 return self._json({"error": "Something went wrong; please try again."}, 400)
             return self._send(404, b"Not found", "text/plain")
+        if _replaced(url.path, q):
+            return self._gone(_replaced(url.path, q))
         if url.path.startswith("/api/family/") and _ok(q.get("k"), "family") and not family_allowed():
             return self._json({"error": "That's a lot at once; please wait a minute and try again."}, 429)
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):

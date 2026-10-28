@@ -166,6 +166,8 @@
 
     <p class="honest" data-t="honest">Andy tells them when you open this page and when you send something. Nothing here is a recording; Andy shares only what it is asked to share.</p>
   </section>
+
+  <section id="moved" class="panel" hidden><p id="moved-text" style="margin:0"></p></section>
 </main>
 
 <!-- Every word on the page, in English and Spanish (usted). {them}, {they}, {a} and {sub} become the
@@ -198,7 +200,8 @@
     "need_photo": "Choose a photo first.", "too_big": "That photo is over 8 MB. Choose a smaller one.",
     "not_photo": "That file is not a photo. Choose a photo.", "unreadable": "That photo could not be read. Choose another.",
     "honest": "Andy tells {them} when you open this page and when you send something. Nothing here is a recording; Andy shares only what it is asked to share.",
-    "no_answer": "That didn't go through. Check your connection and try again."
+    "no_answer": "That didn't go through. Check your connection and try again.",
+    "wrong": "Something went wrong; please try again."
   },
   "es": {
     "title": "Notas de casa",
@@ -226,7 +229,8 @@
     "need_photo": "Primero elija una foto.", "too_big": "Esa foto pasa de 8 MB. Elija una más pequeña.",
     "not_photo": "Ese archivo no es una foto. Elija una foto.", "unreadable": "No se pudo leer esa foto. Elija otra.",
     "honest": "Andy le dice{a} cuándo abre usted esta página y cuándo envía algo. Nada de esto es una grabación; Andy comparte solo lo que se le pide.",
-    "no_answer": "No se pudo enviar. Revise la conexión y pruebe otra vez."
+    "no_answer": "No se pudo enviar. Revise la conexión y pruebe otra vez.",
+    "wrong": "Algo salió mal; pruebe otra vez."
   }
 }
 </script>
@@ -262,12 +266,20 @@
     try {
       const r = await fetch(api(path), method === "GET" ? { cache: "no-store" } :
         { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      // Andy answered, even when not with JSON: the connection message is only for no answer at all.
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || t("no_answer"));
+      if (r.status === 410) gone(data.error || t("wrong"));
+      if (!r.ok) throw new Error(data.error || t("wrong"));
       return data;
     } catch (err) {
       throw err instanceof TypeError ? new Error(t("no_answer")) : err;
     } finally { document.body.classList.remove("busy"); }
+  }
+
+  // This family link was replaced while the page was open: Andy's words for it, in place of the page.
+  function gone(message) {
+    $("who").hidden = true; $("page").hidden = true;
+    $("moved").hidden = false; $("moved-text").textContent = message;
   }
 
   async function open() {

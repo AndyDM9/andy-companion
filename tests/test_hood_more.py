@@ -180,6 +180,34 @@ def test_the_kind_page_escapes_what_it_fills_in():
 
 
 def test_other_addresses_and_apis_keep_a_plain_not_found(server):
-    for path in ("/api/setup?s=wrong", "/api/family?k=wrong", "/api/hood?t=wrong", "/nothing-here"):
+    for path in ("/api/hood?t=wrong", "/nothing-here", f"/api/setup/nothing?s={board.tokens()['setup']}",
+                 "/api/setupx?s=wrong"):
         code, kind, body = fetch_error(f"{server}{path}")
         assert code == 404 and kind.startswith("text/plain") and body == "Not found"
+
+
+def post_error(url, body=b"{}"):
+    req = urllib.request.Request(url, data=body, method="POST", headers={"Content-Type": "application/json"})
+    return fetch_error(req)
+
+
+@pytest.mark.parametrize("language", ["en", "es"])
+def test_a_page_open_when_its_link_was_replaced_is_told_so_not_that_andy_is_off(server, language):
+    """A new settings code retires the settings link: the page a helper still has open used to get plain-text 404s
+    and say "Andy's computer did not answer. Is it on?" (2026-10-28 review). Its questions now get 410 and the kind
+    page's words, in the household's language, and never the token."""
+    settings.update(language=language)
+    old_setup, old_family = board.tokens()["setup"], board.tokens()["family"]
+    board.new_setup_link()
+    board.new_family_link()
+    asks = [("GET", f"/api/setup?s={old_setup}", "/setup"), ("POST", f"/api/setup?s={old_setup}", "/setup"),
+            ("POST", f"/api/setup/delete?s={old_setup}", "/setup"), ("POST", "/api/setup/new-family-link", "/setup"),
+            ("GET", f"/api/family?k={old_family}", "/family"), ("POST", f"/api/family/look?k={old_family}", "/family"),
+            ("POST", f"/api/family/message?k={old_family}", "/family")]
+    for method, path, page in asks:
+        code, kind, body = (fetch_error if method == "GET" else post_error)(f"{server}{path}")
+        _, head, line = screen_server.EXPIRED[page][language]
+        assert code == 410 and kind.startswith("application/json"), path
+        assert json.loads(body) == {"error": f"{head} {line}", "gone": True}
+        assert old_setup not in body and old_family not in body
+    assert board.next_for_person() is None                                # nothing reached Andy

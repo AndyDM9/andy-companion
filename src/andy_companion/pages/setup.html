@@ -675,12 +675,20 @@
     try {
       const r = await fetch(api(path), body === undefined ? { cache: "no-store" } :
         { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      const data = await r.json().catch(() => ({ error: t("no_answer") }));
+      // Andy answered, even when not with JSON: "did not answer" is only for no answer at all.
+      const data = await r.json().catch(() => ({}));
+      if (r.status === 410) gone(data.error || t("wrong"));
       if (!r.ok) throw new Error(data.error || t("wrong"));
       return data;
     } catch (err) {
       throw err instanceof TypeError ? new Error(t("no_answer")) : err;
     } finally { document.body.classList.remove("busy"); }
+  }
+
+  // This page's link was replaced while it was open (a new settings code): Andy's words for it, in place of the form.
+  function gone(message) {
+    $("who").hidden = true; $("setup").hidden = true;
+    $("moved").hidden = false; text($("moved-text"), message);
   }
 
   // --- The save bar: "Unsaved changes" while anything differs from what Andy holds -------------------

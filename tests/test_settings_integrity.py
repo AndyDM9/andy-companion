@@ -172,7 +172,7 @@ def test_authenticated_http_lists_deletes_and_announces_copies_without_contents(
         body = {"name": "Invented Helper", "kind": "settings_recovery", "id": saved["id"]}
         with pytest.raises(urllib.error.HTTPError) as error:
             call("/api/setup/delete", body, auth="wrong")
-        assert error.value.code == 404 and len(settings.recovery_files()) == 1
+        assert error.value.code == 410 and len(settings.recovery_files()) == 1
         outside = tmp_path / "outside.json"
         outside.write_text("invented")
         assert not kept.delete("settings_recovery", "../outside.json") and outside.exists()

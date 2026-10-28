@@ -8,6 +8,8 @@ pop-ups, and the words we never use.
 
 import json
 import re
+import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -140,3 +142,45 @@ def test_the_family_page_learns_the_households_language_and_the_persons_name(tmp
     out = screen_server.family_state()
     assert out["language"] == "es" and out["person_name"] == "Rosa"
     assert " de " in out["shared"][0]["when"] and "am" not in out["shared"][0]["when"]   # "miércoles, 14 de octubre, 21:05"
+
+
+# --- the pages' own request code, run with invented answers (no network) ---------------------------------------------
+
+NODE = shutil.which("node")
+ASKS = {"setup.html": "call", "family.html": "send"}
+HARNESS = r"""
+const assert = require('node:assert/strict');
+const UI = {no_answer: 'NO ANSWER', wrong: 'WRONG'}, t = (key) => UI[key];
+const api = (path) => path, elements = new Map();
+const $ = (id) => { if (!elements.has(id)) elements.set(id, {hidden: id === 'moved', textContent: ''}); return elements.get(id); };
+const text = (el, value) => { el.textContent = value; return el; };
+const document = {body: {classList: {add: () => {}, remove: () => {}}}};
+let fetch;
+const json = (status, data) => ({status, ok: status < 300, json: async () => data});
+const plain = (status) => ({status, ok: status < 300, json: async () => { throw new SyntaxError('not JSON'); }});
+const failure = async (answer) => { fetch = async () => answer(); try { await ASK('/api/x', {}); } catch (e) { return e.message; }
+                                    assert.fail('no error'); };
+"""
+
+
+@pytest.mark.skipif(not NODE, reason="node is not installed")
+@pytest.mark.parametrize("page", SOURCES)
+def test_a_replaced_link_says_so_and_did_not_answer_means_no_answer(page):
+    """A 410 from Andy (the link was replaced) shows Andy's words in place of the page; an answer that isn't JSON is
+    "something went wrong"; only no answer at all says so (2026-10-28 review: a replaced settings link read "Andy's
+    computer did not answer. Is it on?")."""
+    ask = ASKS[page]
+    code = "\n".join(re.search(pattern, SOURCES[page], re.S).group(0) for pattern in (
+        rf"  async function {ask}\(path, body(, method)?\) \{{.*?\n  \}}", r"  function gone\(message\) \{.*?\n  \}"))
+    body = """
+      const said = await failure(() => json(410, {error: 'This settings link has been replaced. Ask Andy.', gone: true}));
+      assert.equal(said, 'This settings link has been replaced. Ask Andy.');
+      assert.equal($('moved').hidden, false); assert.equal($('moved-text').textContent, said);
+      assert.equal($('who').hidden, true);
+      assert.equal(await failure(() => plain(500)), 'WRONG');
+      assert.equal(await failure(() => json(400, {error: 'Choose a time.'})), 'Choose a time.');
+      assert.equal(await failure(() => { throw new TypeError('Failed to fetch'); }), 'NO ANSWER');
+    """
+    script = HARNESS.replace("ASK", ask) + code + "\n(async () => {" + body + "})().catch((e) => { console.error(e); process.exitCode = 1; });"
+    result = subprocess.run([NODE, "-e", script], capture_output=True, text=True, timeout=10)
+    assert result.returncode == 0, result.stderr

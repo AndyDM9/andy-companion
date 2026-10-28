@@ -210,7 +210,7 @@ def test_the_family_page_suggests_a_reminder_through_its_own_route(tmp_path, mon
         assert board.next_for_person()["type"] == "suggestion"
         with pytest.raises(urllib.error.HTTPError) as wrong:
             post(good, token="wrong")
-        assert wrong.value.code == 404
+        assert wrong.value.code == 410                                     # the link was replaced
         with pytest.raises(urllib.error.HTTPError) as link:
             post({**good, "what": "see https://example.com"})
         assert link.value.code == 400
