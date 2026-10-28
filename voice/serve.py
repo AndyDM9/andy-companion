@@ -16,7 +16,10 @@ Nemotron sometimes writes a tool call out as text instead of making it: on 2026-
 Nebius Serverless Job, a letter case's whole reply was "<tool_call> <function=read_letter </function>". The
 speech package speaks any text it is given, so `unspoken_tool_markup` takes such markup out of each sentence
 before it is spoken (wrapping the package's own remove_markdown, which every spoken sentence goes through).
-Only how many characters were left out is logged, never the text.
+Only how many characters were left out is logged, never the text. Since 2026-10-28 (evening) the call is made
+too: `written_calls_made` holds a written call back from the reply's words as they arrive and, when the reply
+ends without a real call, makes the calls it names (andy_companion.tool_text: only tools Andy has, with their own
+parameters). The tool's answer then reaches the model as for any call. Only the tools' names are logged.
 
 Andy speaks English and Spanish. Parakeet hears 25 languages and writes what it thinks it heard: on 2026-10-28 two
 turns on the robot, an accented one and a muffled one, came out in Cyrillic (detected as Ukrainian and Russian),
@@ -39,6 +42,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from andy_companion import tool_text  # noqa: E402
 from andy_companion.privacy import is_transcript_print  # noqa: E402
 
 
@@ -78,11 +82,7 @@ def cap_turns(vad_class, max_turn_s: float = MAX_TURN_S) -> None:
     vad_class._should_reopen_current_turn = should_reopen
 
 
-TOOL_MARKUP = re.compile(r"<tool_call>.*?(?:</tool_call>|\Z)|</?tool_call>|<function=.*?(?:</function>|\Z)"
-                         r"|</?function>|</?parameter(?:=[^>]*)?>"
-                         # A sentence that starts with a tool's own name ("set_volume louder", the whole reply once in
-                         # the suite's 291 turns on 2026-10-28): words joined by underscores are never speech.
-                         r"|(?:^|(?<=[.!?]\s))[a-z]+(?:_[a-z0-9]+)+\b[^.!?\n]*[.!?]?", re.S)
+TOOL_MARKUP = tool_text.MARKUP
 
 
 def unspoken_tool_markup(text: str) -> str:
@@ -106,6 +106,90 @@ def no_tool_markup_spoken(modules) -> None:
 
         remove_markdown._andy_no_tool_markup = True
         module.remove_markdown = remove_markdown
+
+
+def _without_written_calls(message, kinds):
+    """The reply as kept in the conversation, without a call written in it; None when nothing else was said."""
+    parts = []
+    for part in message.content:
+        text = getattr(part, "text", None)
+        if isinstance(text, str) and tool_text.START.search(text):
+            text = tool_text.unspoken(text)
+            if not text:
+                continue
+            part = part.model_copy(update={"text": text})
+        parts.append(part)
+    return kinds.AssistantMessage(content=parts) if parts else None
+
+
+def with_written_calls(events, tools: dict, kinds, make_calls):
+    """One reply's events, with a call written as text held back from its words and, when the reply made no real
+    call, made as one. kinds holds the package's event classes; make_calls turns {index: {name, args, id}} into
+    tool-call events, as the package does for a real call."""
+    passing = ""                # words not passed on yet: they may be the start of a written call
+    held = ""                   # everything from the start of a written call on
+    made = False
+    for event in events:
+        if isinstance(event, kinds.TextDelta):
+            if held:
+                held += event.text
+                continue
+            passing += event.text
+            cut = tool_text.held_from(passing)
+            if passing[:cut]:
+                yield kinds.TextDelta(text=passing[:cut])
+            if tool_text.START.search(passing):
+                held, passing = passing[cut:], ""
+            else:
+                passing = passing[cut:]
+            continue
+        if passing:
+            yield kinds.TextDelta(text=passing)
+            passing = ""
+        if isinstance(event, kinds.ToolCall):
+            made = True
+        elif isinstance(event, kinds.AssistantMessage):
+            event = _without_written_calls(event, kinds)
+            if event is None:
+                continue
+        yield event
+    if passing:
+        yield kinds.TextDelta(text=passing)
+    if not held:
+        return
+    rest = tool_text.unspoken(held)
+    if rest:
+        yield kinds.TextDelta(text=" " + rest)
+    calls = [] if made else tool_text.calls_in(held, tools)
+    if calls:
+        logger.info("voice: a tool call written as text was made: %s", ", ".join(name for name, _ in calls))
+        yield from make_calls({i: {"name": name, "args": args, "id": ""} for i, (name, args) in enumerate(calls)})
+    else:
+        logger.info("voice: a tool call written as text was not made (%s)",
+                    "the reply made a real call" if made else "no tool Andy has, or its arguments don't fit")
+
+
+def written_calls_made(handler_class, kinds) -> None:
+    """The handler notes the tools each request gives the model, and reads each reply through with_written_calls."""
+    build = handler_class._build_optional_kwargs
+    if getattr(build, "_andy_written_calls", False):
+        return
+
+    def build_optional_kwargs(self, req_tools, req_tool_choice):
+        kwargs = build(self, req_tools, req_tool_choice)
+        self._andy_tools = tool_text.schemas(kwargs.get("tools") or [])
+        return kwargs
+
+    build_optional_kwargs._andy_written_calls = True
+    handler_class._build_optional_kwargs = build_optional_kwargs
+    for name in ("_iter_stream_events", "_iter_response_events"):
+        original = getattr(handler_class, name)
+
+        def events(self, api_response, _original=original):
+            yield from with_written_calls(_original(self, api_response), getattr(self, "_andy_tools", {}), kinds,
+                                          self._tool_calls_from_accum)
+
+        setattr(handler_class, name, events)
 
 
 OUR_LANGUAGES = ("en", "es")
@@ -158,6 +242,9 @@ if __name__ == "__main__":
     from speech_to_speech.LLM import base_openai_compatible_language_model, language_model
 
     no_tool_markup_spoken([base_openai_compatible_language_model, language_model])
+    from speech_to_speech.LLM.chat_completions_language_model import ChatCompletionsApiModelHandler
+
+    written_calls_made(ChatCompletionsApiModelHandler, base_openai_compatible_language_model)
     from speech_to_speech.STT.parakeet_tdt_handler import ParakeetTDTSTTHandler
 
     only_our_languages(ParakeetTDTSTTHandler)

@@ -5,6 +5,31 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Three of Nemotron's reply problems fixed, with the robot back on USB
+
+The robot was plugged back in: the daemon still held the unplugged motor connection ("Motor communication error"), so
+Andy was stopped, the daemon restarted, and Andy started and woken; the live check passes 21 of 22 (the optional
+Content Safety endpoint is off). Then the three problems the audit had left alone:
+
+- **A tool call written as text is now made.** About one reply in 70, Nemotron writes the call it means (`<tool_call>
+  <function=get_today>…`) instead of making it; the voice server stopped speaking it, and the turn did nothing. The new
+  `tool_text.py` reads the markup back into the call it names, only for a tool Andy has, with that tool's own
+  parameters, each of its declared type. The voice server holds the markup back from speech as the reply arrives and
+  makes the call when the reply made none, logging only the tool's name; the suite does the same, so it measures what
+  the robot does. A save or share made this way still needs the person's yes.
+- **No reasoning said aloud, no false "I've noted it".** When a message was read out to Andy, the letter reader's
+  result explained itself ("already supplied aloud, not a held-up page"), and Nemotron said it back ("Since this is
+  spoken content, not a held-up letter…") and claimed to have noted the message. The results now say what to do, never
+  why; a message that itself asks to be kept or shared, and quoted words offered as a yes, get fixed words to say, in
+  English or Spanish, with a short instruction (a longer one was read out with them once in 27 replies). The nine
+  permission cases: **9, 9 and 9 of 9** (were 6, 5 and 7); 50 further replies with none of the instruction said.
+- **The Spanish crisis reply keeps *usted* and names someone you trust.** The crisis section now gives its own Spanish
+  example; the five crisis cases passed **25 of 25** (crisis-3 had used *tú* and left out "someone you trust" in 2 of 3).
+- **The full suite as a Nebius Serverless Job:** **94, 95 and 96 of 97** (was 92, 93 and 94 that afternoon). Photo-2
+  (a photo story's memory offer) failed every run; moment-1, look-1 (an empty reply) and chat-5 once each. The README,
+  Devpost source, judges' guide, scorecard index, cloud guide, plan, checklist and rules record cite the new run, the
+  afternoon's kept beside it; `docs/feedback.md` notes that a tool result's reason gets said aloud.
+
 ### The documents, audited without the robot
 
 A judge's-eye read and two fact-checks of every judge-facing document against the scorecards and code (about 450

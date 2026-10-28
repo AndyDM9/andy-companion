@@ -64,3 +64,84 @@ def test_the_installed_speech_package_still_has_what_we_wrap():
     from speech_to_speech.LLM import base_openai_compatible_language_model, language_model
     assert callable(base_openai_compatible_language_model.remove_markdown)
     assert callable(language_model.remove_markdown)
+
+
+class Kinds:
+    """Stand-ins for the speech package's event classes (the last test checks the real ones)."""
+
+    class TextDelta(types.SimpleNamespace):
+        pass
+
+    class ToolCall(types.SimpleNamespace):
+        pass
+
+    class Usage(types.SimpleNamespace):
+        pass
+
+    class Part(types.SimpleNamespace):
+        def model_copy(self, update):
+            return Kinds.Part(**{**vars(self), **update})
+
+    class AssistantMessage(types.SimpleNamespace):
+        pass
+
+
+def make_calls(accum):
+    return [Kinds.ToolCall(name=entry["name"], arguments=entry["args"]) for entry in accum.values()]
+
+
+GET_TODAY = {"get_today": {"type": "object", "properties": {}}}
+
+
+def reply(serve, text, step=5, extra=(), tools=GET_TODAY):
+    events = [Kinds.TextDelta(text=text[i:i + step]) for i in range(0, len(text), step)]
+    events += [*extra, Kinds.AssistantMessage(content=[Kinds.Part(type="output_text", text=text)]), Kinds.Usage(n=1)]
+    return list(serve.with_written_calls(iter(events), tools, Kinds, make_calls))
+
+
+def spoken(events):
+    return "".join(e.text for e in events if isinstance(e, Kinds.TextDelta))
+
+
+def test_a_call_written_as_text_is_made_and_never_spoken(serve, caplog):
+    with caplog.at_level(logging.INFO, logger="andy.voice"):
+        events = reply(serve, "Let me look. <tool_call> <function=get_today> </function> </tool_call>")
+    assert spoken(events).strip() == "Let me look."
+    assert [(e.name, e.arguments) for e in events if isinstance(e, Kinds.ToolCall)] == [("get_today", "{}")]
+    kept = [e for e in events if isinstance(e, Kinds.AssistantMessage)]
+    assert [p.text for p in kept[0].content] == ["Let me look."]                  # the conversation keeps no markup
+    assert [r.getMessage() for r in caplog.records] == ["voice: a tool call written as text was made: get_today"]
+
+
+def test_a_reply_that_is_only_a_written_call_keeps_nothing_but_the_call(serve):
+    events = reply(serve, "<tool_call> <function=get_today> <parameter=> {} </parameter> </function> </tool_call>")
+    assert spoken(events) == ""
+    assert not [e for e in events if isinstance(e, Kinds.AssistantMessage)]
+    assert [e.name for e in events if isinstance(e, Kinds.ToolCall)] == ["get_today"]
+
+
+def test_no_second_call_when_the_reply_made_a_real_one(serve):
+    events = reply(serve, "Sure. <function=get_today></function>", extra=[Kinds.ToolCall(name="get_today", arguments="{}")])
+    assert [e.name for e in events if isinstance(e, Kinds.ToolCall)] == ["get_today"]
+
+
+def test_a_call_to_a_tool_andy_does_not_have_is_neither_made_nor_spoken(serve):
+    events = reply(serve, "<tool_call> <function=open_the_door> </function> </tool_call>")
+    assert spoken(events) == "" and not [e for e in events if isinstance(e, Kinds.ToolCall)]
+
+
+def test_ordinary_words_pass_on_whole_and_in_order(serve):
+    text = "It's 3 < 5, and the lamp is <on> the table. See you soon."
+    events = reply(serve, text, step=3)
+    assert spoken(events) == text
+    assert [type(e).__name__ for e in events][-2:] == ["AssistantMessage", "Usage"]
+
+
+def test_the_installed_speech_package_has_what_written_calls_need():
+    pytest.importorskip("speech_to_speech", reason="the voice environment is not installed here")
+    from speech_to_speech.LLM import base_openai_compatible_language_model as base
+    from speech_to_speech.LLM.chat_completions_language_model import ChatCompletionsApiModelHandler as handler
+    for name in ("TextDelta", "ToolCall", "AssistantMessage"):
+        assert hasattr(base, name)
+    for name in ("_build_optional_kwargs", "_iter_stream_events", "_iter_response_events", "_tool_calls_from_accum"):
+        assert callable(getattr(handler, name))

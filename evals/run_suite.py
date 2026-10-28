@@ -26,9 +26,9 @@ from typing import Optional
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "src"))   # Andy's own urgent-words net, the same code the robot runs
 try:
-    from andy_companion import consent, offers, recall, urgent
+    from andy_companion import consent, offers, recall, tool_text, urgent
 except ImportError:  # pragma: no cover
-    consent = offers = recall = urgent = None
+    consent = offers = recall = tool_text = urgent = None
 # The photo tool's own guidance, copied (this file stays standard library only; a test keeps the two the same).
 PHOTO_HOW = ("Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or "
              "what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then "
@@ -257,6 +257,21 @@ def judge(case: dict, reply: str, calls: list) -> dict:
         return {"pass": False, "why": "judge reply unreadable"}
 
 
+def as_on_the_robot(msg: dict) -> dict:
+    """As the voice server does (voice/serve.py): written tool-call markup is never heard, and a call the model wrote
+    out as text instead of making it is made (andy_companion.tool_text). Until 2026-10-28 the suite judged the markup
+    itself, as a reply that called no tool."""
+    text = str(msg.get("content") or "")
+    if tool_text is None or not tool_text.MARKUP.search(text):
+        return msg
+    msg = dict(msg, content=tool_text.unspoken(text))
+    if not msg.get("tool_calls"):
+        made = tool_text.calls_in(text, tool_text.schemas(tool_specs()))
+        msg["tool_calls"] = [{"id": f"written_{i}", "type": "function", "function": {"name": name, "arguments": args}}
+                             for i, (name, args) in enumerate(made)]
+    return msg
+
+
 def run_case(case: dict, system: str) -> dict:
     case = dict(case)          # a fresh copy per run: stand-in tools may note what they did
     started = time.time()
@@ -275,8 +290,8 @@ def run_case(case: dict, system: str) -> dict:
                         permission.authorize(fn["name"], json.loads(fn.get("arguments") or "{}"))
                 permission.said(entry.get("content") or "")
         permission.hear(case["say"])
-    msg = chat(CANDIDATE, [{"role": "system", "content": system}, *history, {"role": "user", "content": case["say"]}],
-               tools=tool_specs())
+    msg = as_on_the_robot(chat(CANDIDATE, [{"role": "system", "content": system}, *history,
+                                           {"role": "user", "content": case["say"]}], tools=tool_specs()))
     seconds = round(time.time() - started, 2)
     first = " ".join(str(msg.get("content") or "").split())
     spoken = [first] if first else []
@@ -310,7 +325,7 @@ def run_case(case: dict, system: str) -> dict:
             if result is None:
                 result = fake_result(name, case)
             convo.append({"role": "tool", "tool_call_id": c.get("id", ""), "content": json.dumps(result)})
-        step = chat(CANDIDATE, convo, tools=tool_specs())
+        step = as_on_the_robot(chat(CANDIDATE, convo, tools=tool_specs()))
         text = " ".join(str(step.get("content") or "").split())
         if text:
             spoken.append(text)

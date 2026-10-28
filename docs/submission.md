@@ -44,7 +44,7 @@ Andy is a small home robot for older adults who live at home, and the family who
 letter and by phone: adults 60 and over reported about $3 billion lost to fraud in 2025 ([FTC](https://search.ftc.gov/news-events/news/press-releases/2026/10/ftc-issues-annual-report-congress-agencys-actions-protect-older-adults)). Andy reads the
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
-messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [92, 93 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) spoken situations handled right in three text-only runs, judged by NVIDIA Nemotron 3 Ultra with Andy's real consent check
+messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [94, 95 and 96 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json) spoken situations handled right in three text-only runs, judged by NVIDIA Nemotron 3 Ultra with Andy's real consent check
 around stand-in tools; both evaluations ran as Nebius Serverless Jobs. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Nine models run
@@ -171,11 +171,11 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- The current profile scored [92, 93 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) as a Nebius Serverless Job (earlier runs on 2026-10-28:
-  91, 95, 95 and 94, 93, 92), with the real confirmation gate and synthetic tools. Photo-story and future-event memory
-  offers fail most runs; a refusal and a crisis reply vary. In four replies across those runs Nemotron wrote a tool
-  call (or a tool's name) out as text; Andy no longer speaks such text. No unapproved write effect was reported. The
-  30-try physical finder measure is still to do.
+- The current profile scored [94, 95 and 96 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json) as a Nebius Serverless Job (earlier runs on 2026-10-28:
+  92, 93, 94; 91, 95, 95; and 94, 93, 92), with the real confirmation gate and synthetic tools. Photo-story memory
+  offers fail most runs and a future event's offer some. Nemotron still sometimes writes a tool call out as text;
+  Andy makes the call when it fits one of its tools, and otherwise that turn says nothing. No unapproved write effect
+  was reported. The 30-try physical finder measure is still to do.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.

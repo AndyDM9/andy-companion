@@ -58,15 +58,21 @@ immediate.
 - **Recall over tools for famous texts:** it recited a public-domain story from memory, with misquotes,
   instead of calling the story tool.
 - **Register in Spanish:** it used *tú*, and guessed the listener's gender, with an older adult until
-  told to use *usted*.
+  told to use *usted*. Told once, it still slipped back to *tú* in the Spanish crisis reply (2026-10-28) until that
+  section gave its own example sentence in *usted*.
 - **A tool's own result can restart it:** when a background research answer was handed back as "Tell the person
   you looked into: <the question>", it started the same research again, seven times in five minutes (2026-10-25,
   on the robot), and "stop searching" had nothing to stop. Wording the hand-over as finished ("do not call it
   again") and a guard in code fixed it; a note on tool re-invocation from tool results would help agent builders.
 - **Tool calls written as text:** in one of three suite runs (2026-10-28) a letter case's whole reply was
   `<tool_call> <function=read_letter </function>`, a malformed call in the content instead of `tool_calls`. A voice
-  pipeline speaks whatever content it gets; we now strip such markup before speech. A server-side check that never
+  pipeline speaks whatever content it gets; we now strip such markup before speech, and make the call it names when
+  it fits a tool Andy has (four such replies in the three final Job runs of 2026-10-28). A server-side check that never
   returns tool-call markup as content would protect every voice builder.
+- **A tool result's reason gets said aloud:** a result worded as the reason ("the person has already supplied message
+  words aloud, not a held-up page") came back in the spoken reply ("Since this is spoken content, not a held-up
+  letter…") in 4 of 6 replies on 2026-10-27 and 10-28, and a longer instruction placed after fixed words was read out
+  with them once in 27. Results that give the words to say, with a few words of instruction, fixed both in 50 tries.
 - **Adversarial pages:** filling a structured card from a scam letter, it put the scam's own demand in
   "to do". The decision had to move into code.
 

@@ -34,7 +34,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **92, 93 and 94 of 97** spoken situations handled right in three text-only runs as a Nebius Serverless Job, judged by Nemotron 3 Ultra, with Andy's real consent check around stand-in tools ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json), [every run](evals/results/README.md))
+- **94, 95 and 96 of 97** spoken situations handled right in three text-only runs as a Nebius Serverless Job, judged by Nemotron 3 Ultra, with Andy's real consent check around stand-in tools ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json), [every run](evals/results/README.md))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -261,12 +261,13 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets Andy's 38 tools and their real
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Now: 92, 93 and 94 of 97** (2026-10-28, suite 2026-10-28a, as a Nebius Serverless Job;
-  [scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)). Photo-story memory offers and a
-  future event's memory offer failed all three runs; the Spanish crisis reply's "someone you trust" and accepting a
-  refusal without offering more twice each; an accepted reminder and a time question once each, where Nemotron wrote
-  the tool call out as text (Andy's voice server no longer speaks such text).
-- **Before:** earlier on 2026-10-28, before the read-back and consent fixes, 91, 95, 95 and 94, 93, 92; the previous
+- **Now: 94, 95 and 96 of 97** (2026-10-28 evening, suite 2026-10-28a, as a Nebius Serverless Job;
+  [scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json)), after a tool call written as text became a real call, the crisis
+  section gained a Spanish example, and the permission results gained fixed words. A photo story's memory offer failed
+  all three runs; a future event's memory offer, a research request and a supportive reply once each.
+- **Before:** that afternoon, 92, 93 and 94 ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)): the
+  Spanish crisis reply used *tú* and left out "someone you trust", and twice Nemotron wrote the tool call out as text;
+  earlier on 2026-10-28, before the read-back and consent fixes, 91, 95, 95 and 94, 93, 92; the previous
   profile 93, 94, 94 (local, 2026-10-27) and 96, 95, 92 (as a Job, 2026-10-25); 79, 79, 79 of 81 (2026-10-13); and a
   baseline of 27 of 36 before any fixes. Every run, each failure with the judge's reason:
   [evals/results/](evals/results/README.md).
@@ -277,7 +278,9 @@ are checked in code, not by the judge.
     rules of tool cases;
   - a story recited from the model's memory;
   - a scam warning delayed by a follow-up question;
-  - an ordinary bill's account number read aloud (Andy's code now hides such numbers in every letter it is given).
+  - an ordinary bill's account number read aloud (Andy's code now hides such numbers in every letter it is given);
+  - a tool's own explanation said aloud ("Since this is spoken content, not a held-up letter…"), and a tool call
+    written out as text instead of made (Andy's voice server now makes it).
 - **Urgent words:** if someone says "my chest hurts" or "I don't want to be here anymore", a check in
   code sees the words. If Andy's reply misses 911 (or the 988 Suicide and Crisis Lifeline), Andy is told
   to say an exact sentence naming it, in English or Spanish. Grief and everyday phrases ("I'm dying to
@@ -443,17 +446,16 @@ What doesn't work yet, and what our numbers don't show.
   was tried on the robot once, on 2026-10-28: the offer and the save; turning back to the remembered spot not yet.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **Text behaviour still varies:** the current profile scored **92, 93 and 94 of 97** as a Nebius Serverless
-  Job, with the actual confirmation gate and synthetic tools ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)); two earlier runs
-  on 2026-10-28 scored 91, 95, 95 and 94, 93, 92. Photo-story and future-event memory offers fail most runs; the rest
-  varies: a refusal accepted with something more offered, a reminder offer missed, a supportive or crisis reply
-  missing a line. The gate prevents an unapproved save; it does not make the model consistently offer one. The nine
-  focused permission cases scored 6, 5 and 7 of 9 on 2026-10-28 ([scorecard](evals/results/consent-source-2026-10-28-local.json)):
-  after words read from a message ("Yes please"), the model said in every run that it had kept something ("I've
-  noted…", "I'll keep that in mind") although nothing was kept (it fails the same way on the 2026-10-27 code). In
-  four replies across the three Job runs on 2026-10-28, Nemotron wrote a tool call (or a tool's name) out as text.
-  Andy no longer speaks such text, but that turn does nothing; for a letter, the **Be careful** card comes once the
-  letter is read. Earlier profiles and audit failures remain published.
+- **Text behaviour still varies:** the current profile scored **94, 95 and 96 of 97** as a Nebius Serverless
+  Job, with the actual confirmation gate and synthetic tools ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json)); three earlier
+  runs on 2026-10-28 scored 92, 93, 94; 91, 95, 95; and 94, 93, 92. Photo-story memory offers fail most runs and a
+  future event's offer some; the rest varies: a supportive reply missing a line, once an empty reply to a research
+  request. The gate prevents an unapproved save; it does not make the model consistently offer one. The nine focused
+  permission cases scored 9, 9 and 9 of 9 that evening ([scorecard](evals/results/consent-source-2026-10-28-evening-local.json)),
+  after 6, 5 and 7 that afternoon, when the model claimed to have kept words read from a message. Nemotron still
+  sometimes writes a tool call out as text (2 of 12 tries of one request): Andy makes the call when it names a tool
+  Andy has, with that tool's parameters; otherwise the turn says nothing. Earlier profiles and audit failures remain
+  published.
 - **What the numbers measure, and what they don't:**
   - the 1.06 s starts when your words are understood (Parakeet's transcript), not when you stop speaking: the wait
     for the end of your words comes before it and is not in the figure;

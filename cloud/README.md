@@ -5,7 +5,7 @@ Endpoints**. The conversation itself and the eyes need none of this: they call N
 
 | Script | What it runs | Measured |
 |---|---|---|
-| `suite-job.sh run` | The conversation suite (`evals/run_suite.py`, 97 spoken situations, judged by NVIDIA Nemotron 3 Ultra) in a small CPU container | 92, 93 and 94 of 97 (2026-10-28, current profile, suite 2026-10-28a); 96, 95 and 92 (2026-10-25, previous) |
+| `suite-job.sh run` | The conversation suite (`evals/run_suite.py`, 97 spoken situations, judged by NVIDIA Nemotron 3 Ultra) in a small CPU container | 94, 95 and 96 of 97 (2026-10-28 evening, current profile, suite 2026-10-28a); 92, 93 and 94 that afternoon; 96, 95 and 92 (2026-10-25, previous) |
 | `scam-job.sh <warnings.json>` | The scam check's model runs against Tavily warnings fetched once, in four parts, two at a time | 58 of 60 scams caught, none of 60 ordinary messages flagged (2026-10-14) |
 | `sim-job.sh run [trials] [scale]` | Andy's search in Pollen's MuJoCo scene (`sim/finder_sim.py`), software rendering, zoomed in and the old way | no false find in 7, 0.76° (2026-10-20) |
 | `guard-endpoint.sh create\|start\|stop\|status\|delete` | NVIDIA Nemotron 3.5 Content Safety on one L40S (vLLM), the second look beside each reply | 7 of 8 held-out crisis phrasings, no false alarm |
