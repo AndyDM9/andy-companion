@@ -103,7 +103,9 @@ Optional display outline (0042): after the existing close-up confirmation and po
 Validated numeric contours are painted on a separate screen copy; no SVG is rendered. Nemotron
 confirmation/angles and the original recording frames are untouched. The annotated JPEG follows
 the existing two-minute authenticated RAM-only view route; no new store/family path. The backend
-is disabled by default, separately operated/licensed, and never started by Andy. Invalid, ambiguous
+is disabled by default, separately operated/licensed, and never started by Andy. The operator verifies
+the backend's own local-processing/retention behavior; the client enforces its outbound loopback route.
+Invalid, ambiguous
 or unavailable masks leave the ordinary picture; cancellation while awaiting the worker prevents
 late publication. It makes no physical-improvement claim. [Interface and limits](object-outline.md).
 

@@ -20,6 +20,11 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 - Household services/configuration unchanged while another app uses the hardware. Camera alignment,
   look-alikes/absence, in-flight deletion and end-to-end timing remain pending. Record the missed
   internal October 27 target and deferred filming; official deadline/release/submission stay open.
+- Published `b28bf9b`; five anonymous files match and a fresh locked clone passes **1,881 / 16 skipped**.
+  Hosted CPU/wheel/SDK checks pass (**1,881**, **three**, **71**). Matching preview `82caa53` runs;
+  eight sample-page layouts/two write refusals pass without a mask service or robot. All **407**
+  relative targets/**35** fragments across **75** Markdown files resolve; **256** source-history
+  commits scan clean for secrets and all **23** draft links open. Household activation remains pending.
 
 ## 2026-10-27
 

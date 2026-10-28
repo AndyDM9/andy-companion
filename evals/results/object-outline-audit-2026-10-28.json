@@ -51,8 +51,142 @@
     "test_inputs": "Invented pixels, masks, local HTTP fixtures and controlled cancellation; no household pictures, words or provider response text retained."
   },
   "publication": {
-    "source": "pending",
-    "screen_preview": "pending"
+    "source_commit": "b28bf9b44c604d3838c8bbf12bbca162285e40f1",
+    "anonymous_matching_files": {
+      "src/andy_companion/outline.py": true,
+      "src/andy_companion/finder.py": true,
+      "src/andy_companion/app_mode.py": true,
+      "docs/object-outline.md": true,
+      "docs/images/object-outline-example.png": true
+    },
+    "anonymous_fresh_locked_clone": {
+      "passed": 1881,
+      "skipped": 16
+    },
+    "hosted_ci": {
+      "url": "https://github.com/AndyDM9/andy-companion/actions/runs/40689688622",
+      "status": "success",
+      "cpu_passed": 1881,
+      "cpu_skipped": 16,
+      "installed_wheel_checks": 3,
+      "sdk_configuration_dispatch_passed": 71
+    },
+    "screen_preview": {
+      "sha": "82caa53e737158eb20fb822e82de9464b6893741",
+      "stage": "RUNNING",
+      "matching_files": {
+        "src/andy_companion/outline.py": true,
+        "src/andy_companion/finder.py": true,
+        "src/andy_companion/app_mode.py": true,
+        "served_screen": true
+      },
+      "scope": "Source-matched sample screen preview, no mask service or robot connection."
+    },
+    "browser": {
+      "scope": "Public sample-page layout and refusal of owner-copy/delete-all writes. No inference or robot control; no household data.",
+      "page_layouts": [
+        {
+          "page": "/screen",
+          "viewport": [
+            1920,
+            950
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/screen",
+          "viewport": [
+            1280,
+            720
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/family",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/setup",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            1440,
+            900
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        },
+        {
+          "page": "/hood",
+          "viewport": [
+            390,
+            844
+          ],
+          "http": 200,
+          "horizontal_overflow": false,
+          "page_errors": 0
+        }
+      ],
+      "guided_examples": [],
+      "refusals": {
+        "copy-delete": 403,
+        "delete-all": 403
+      }
+    },
+    "markdown": {
+      "markdown_files": 75,
+      "relative_targets": 407,
+      "fragments_checked": 35,
+      "problems": []
+    },
+    "history_secrets_scan": {
+      "commits": 256,
+      "leaks": 0,
+      "scope": "Reachable implementation-source history through b28bf9b; finite tool coverage, no assertion about external caches."
+    },
+    "draft_links": {
+      "open": 23,
+      "total": 23
+    }
   },
   "open": [
     "Optional setting not enabled in household; coordinate non-conflicting service/robot/GPU ports before activation.",

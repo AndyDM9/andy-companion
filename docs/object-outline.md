@@ -16,7 +16,9 @@ service result. The 0.321-second request is one diagnostic, not a latency or acc
 Off by default. This repository includes the client, **not a SAM model server or weights**. The
 normal installation works without them. A separately operated, licensed mask service must implement
 the interface below and discard requests without logging/keeping images or object labels. The
-operator supplies that service; this is not a self-contained SAM installation guide.
+operator supplies that service and verifies it processes locally without forwarding requests;
+a loopback address alone does not establish the server's internal behavior. This is not a
+self-contained SAM installation guide.
 
 1. Verify the service is on this computer and uses a free port, distinct from Andy's screen (8090)
    and voice (8765). Check GPU capacity separately; do not start competing robot apps or model servers.

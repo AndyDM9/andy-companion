@@ -42,6 +42,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   October 27 internal target was missed. Final Job/release/app pin, free testing/access and actual
   Devpost reconciliation/submission remain open. [Instructions](object-outline.md),
   [audit metadata](../evals/results/object-outline-audit-2026-10-28.json).
+- **Published/verified:** `b28bf9b`, five anonymous files match; fresh locked clone **1,881 / 16 skipped**.
+  [Hosted CPU/wheel/SDK checks pass](https://github.com/AndyDM9/andy-companion/actions/runs/40689688622):
+  **1,881 / 16 skipped**, **three** installed-wheel checks, **71** SDK configuration/dispatch cases.
+  Preview `82caa53` RUNNING, three bundled files/served screen match; eight public layouts and both
+  write refusals pass, without a mask backend/robot. **75** Markdown files: **407** relative targets,
+  **35** fragments resolve. **256** source-history commits scan clean for secrets; **23** draft links open.
 
 ## October 27 preflight verification audit
 

@@ -17,6 +17,9 @@ its own [licence](https://huggingface.co/facebook/sam3.1/blob/main/LICENSE), ack
 example is our own synthetic illustration with an existing local service's mask, not a physical
 trial or independently verified weight provenance. This feature stays off in the household until
 staged camera/alignment/timing checks; it does not complete the video, access or submission items.
+Published source/example and matching sample preview are anonymously verified; fresh-clone and
+hosted software checks pass. The sample preview runs no mask service or robot. Household activation
+and observed physical validation remain open; no new submission form claim was published.
 
 October 27 preflight verification (0041): README now accurately scopes model text probes, endpoint
 catalogues and current audio counts. Invented fault tests and a stopped-state diagnostic add no
