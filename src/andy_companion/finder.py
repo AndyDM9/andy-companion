@@ -669,7 +669,8 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     i = chosen["view"] if chosen else None
     # Numbers only, never pictures or words: how many places were seen, how many closer looks, how long.
     logger.info("finder: %s (%d place%s seen, %d closer look%s, %.1f s)",
-                "found" if chosen else ("not confirmed up close" if places else "not found"),
+                "found" if chosen else ("no closer picture" if places and not closer
+                                        else "not confirmed up close" if places else "not found"),
                 len(places), "" if len(places) == 1 else "s", len(closer), "" if len(closer) == 1 else "s",
                 clock() - start)
 
@@ -688,7 +689,11 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
                                 [[round(math.degrees(a), 1) for a in ps] for ps in poses], close_ups)
         await asyncio.to_thread(show_views)
         await asyncio.to_thread(board.show, "looked", f"I couldn't see your {what}", [])
-        if places:
+        if places and not closer:   # the camera gave no picture at any closer look: nothing was ruled out
+            how = (f"Say kindly that you thought you saw something like their {what}, but your camera didn't give a "
+                   "picture when you turned to look closer, so you can't be sure, and that the screen shows where you "
+                   "looked. Offer to look again. Never say it wasn't them. No guessing.")
+        elif places:
             how = (f"Say kindly that you thought you saw something like their {what}, but when you looked closer it "
                    "wasn't them, and that the screen shows where you looked. Offer to look again if they move "
                    "something or hold it nearer. No guessing.")

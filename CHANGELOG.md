@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### A closer look without a picture is not "it wasn't them"
+
+- Checked Andy for the three faults Codex reproduced in another project this morning: an old found
+  picture beside an unrelated reply (Andy already pairs views with their own search's card), an
+  unavailable checking model treated as a yes (Andy stops with "my eyes did not answer"), and an
+  unlocked spending count (the judge demo's daily count is taken under a lock). None applies.
+- Found a near relative: when the camera gave no picture at every closer look, Andy was told to say
+  it looked closer and it wasn't them, although nothing was checked. It now says the camera didn't
+  give a picture, so it can't be sure, and offers to look again; the log line says "no closer picture".
+  A closer look that answers no keeps the old words.
+- **2 new cases** (the first fails on the old code); CPU **1,883 / 16 skipped**; error/bug lint passes.
+  No robot used: it is driving another project.
+- After the desktop restarted this morning, `andy` and `andy-voice` started at login and the app
+  retried every 15 seconds against a robot the other project was using, until stopped. With the
+  founder's yes they no longer start at login (the units stay installed; start them by hand).
+- `AGENTS.md`: Codex's copy of these notes, committed so both assistants read the same rules.
+
 ### Outline a confirmed object on the screen copy
 
 - Added an independent optional loopback mask client (0042), off by default, with strict numeric

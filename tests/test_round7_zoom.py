@@ -469,3 +469,21 @@ def test_progress_reaches_closer_only_when_a_closer_look_is_attempted(monkeypatc
                        lambda f, w: {'yes': True, 'x': .5, 'y': .5, 'where': 'on the table'})
     assert out['found'] and stages[-1] == ('closer', 4)
     assert board.showing()['kind'] == 'seen'
+
+
+def test_no_picture_at_the_closer_look_is_not_said_as_not_them():
+    """2026-10-28: the camera gave no picture when Andy turned to look closer. Nothing was checked, so Andy must not
+    say it looked closer and it wasn't them; it says it couldn't get a picture and offers to look again."""
+    checks = []
+    out, robot, manager, posted = run([EMPTY, EMPTY, frame_with_spot(0.7, 0.6), EMPTY, None],
+                                      lambda frame, what: checks.append(1) or {"yes": True})
+    assert out["found"] is False and checks == []                  # never asked: there was no close-up to ask about
+    assert "didn't give a picture" in out["how"] and "Never say it wasn't them" in out["how"]
+    assert "when you looked closer it wasn't" not in out["how"]
+    assert len(manager.moves) == 5                                 # four views and the closer look; no pointing
+
+
+def test_a_closer_look_that_says_no_still_says_it_was_not_them():
+    out, robot, manager, posted = run([EMPTY, EMPTY, frame_with_spot(0.7, 0.6), EMPTY, EMPTY],
+                                      lambda frame, what: {"yes": False})
+    assert out["found"] is False and "when you looked closer it wasn't them" in out["how"]
