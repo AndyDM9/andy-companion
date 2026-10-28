@@ -300,20 +300,36 @@ def locked(path: Path) -> Iterator[None]:
 
 
 MAX_INBOX = 50
+MAX_LOOKS = 20                 # "looked" notes waiting at once: visits alone never fill the inbox
 # The person always hears who changed or deleted what (decision 0009): those notes are never pushed out by others.
 KEPT_UNTIL_SAID = ("settings", "deleted", "code")
+INBOX_FULL = "Andy has a lot waiting to be passed on. Please try again later."
+LOOK_EVERY_S = 3600
+_looks: Dict[str, float] = {}  # who looked, and when (the screen server's memory): once per name per hour, said or not
+
+
+class InboxFull(ValueError):
+    """What family send waits to be said; once MAX_INBOX things wait, a new one is refused. The oldest used to be
+    dropped instead, so one link holder sending a lot pushed out what other relatives had sent (2026-10-28 review)."""
+
+
+def _ordinary(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    return [e for e in items if e.get("type") not in KEPT_UNTIL_SAID]
+
+
+def _inbox_room() -> None:
+    if len(_ordinary(_read(INBOX, []))) >= MAX_INBOX:
+        raise InboxFull(INBOX_FULL)
 
 
 def _inbox_add(entry: Dict[str, Any]) -> None:
-    """Add an entry, keeping at most MAX_INBOX: the oldest ordinary entries go first, never a change notice."""
+    """Add an entry. A change notice always goes in; anything else is refused once MAX_INBOX ordinary entries wait
+    (InboxFull), and nothing already waiting is ever dropped."""
     with locked(INBOX):
-        items = _read(INBOX, []) + [{**entry, "id": secrets.token_hex(8)}]
-        while len(items) > MAX_INBOX:
-            old = next((i for i, e in enumerate(items) if e.get("type") not in KEPT_UNTIL_SAID), None)
-            if old is None:
-                break
-            items.pop(old)
-        _write(INBOX, items)
+        items = _read(INBOX, [])
+        if entry.get("type") not in KEPT_UNTIL_SAID and len(_ordinary(items)) >= MAX_INBOX:
+            raise InboxFull(INBOX_FULL)
+        _write(INBOX, items + [{**entry, "id": secrets.token_hex(8)}])
 
 
 MAX_LINK = 300
@@ -390,14 +406,27 @@ def suggestion_from_page(name: str, what: str, when: Any, now: Optional[float] =
 
 
 def looked(name: str, now: Optional[float] = None) -> None:
-    """Family opened the page. The person hears about it (once per name per hour)."""
+    """Family opened the page. The person hears about it once per name per hour, said or not: only unsaid looks were
+    checked, so each visit after Andy had said the last one added another (2026-10-28 review). With MAX_LOOKS
+    waiting, a new name is refused like a full inbox, so visits under many names can't fill it."""
     name = _tidy(name, NAME_LEN)
     if not name:
         raise ValueError("A name is needed.")
     now = now or time.time()
-    recent = [e for e in _read(INBOX, []) if e["type"] == "look" and e["name"] == name and now - e["at"] < 3600]
-    if not recent:
-        _inbox_add({"type": "look", "name": name, "at": now})
+    key = name.casefold()
+    with locked(INBOX):
+        for who, at in list(_looks.items()):
+            if not 0 <= now - at < LOOK_EVERY_S:
+                del _looks[who]
+        items = _read(INBOX, [])
+        looks = [e for e in items if e.get("type") == "look"]
+        if key in _looks or any(str(e.get("name", "")).casefold() == key and isinstance(e.get("at"), (int, float))
+                                and 0 <= now - e["at"] < LOOK_EVERY_S for e in looks):
+            return
+        if len(looks) >= MAX_LOOKS or len(_ordinary(items)) >= MAX_INBOX:
+            raise InboxFull(INBOX_FULL)
+        _write(INBOX, items + [{"type": "look", "name": name, "at": now, "id": secrets.token_hex(8)}])
+        _looks[key] = now
 
 
 def settings_changed(name: str, what: List[str], now: Optional[float] = None) -> None:
@@ -513,6 +542,7 @@ def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] =
         raise ValueError("A name is needed.")
     if not data or len(data) > MAX_PHOTO_BYTES:
         raise ValueError("The photo must be smaller than 8 MB.")
+    _inbox_room()                         # a photo that can't be announced is never kept
     size = image_size(data)
     if size is None:
         raise ValueError("Send the photo as a JPEG, PNG or WebP.")
@@ -533,7 +563,12 @@ def save_photo(name: str, data: bytes, caption: str = "", now: Optional[float] =
         raise ValueError("The photo could not be prepared.")
     now = now or time.time()
     photo_id = _store_photo(jpeg.tobytes(), {"name": name, "caption": caption, "at": now})
-    _inbox_add({"type": "photo", "name": name, "caption": caption, "photo": photo_id, "at": now})
+    try:
+        _inbox_add({"type": "photo", "name": name, "caption": caption, "photo": photo_id, "at": now})
+    except InboxFull:                     # filled while it was being prepared
+        (PHOTOS / f"{photo_id}.jpg").unlink(missing_ok=True)
+        (PHOTOS / f"{photo_id}.json").unlink(missing_ok=True)
+        raise
     tidy_photos(now)
     return {"photo": photo_id}
 

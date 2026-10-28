@@ -34,6 +34,7 @@ def _private_transient_state(monkeypatch):
     monkeypatch.setattr(board, "_screen", None)
     monkeypatch.setattr(board, "_research", [])
     monkeypatch.setattr(board, "_generation", 0)
+    monkeypatch.setattr(board, "_looks", {})
     monkeypatch.setattr(consent, "_default", consent.Confirmation())
 
 

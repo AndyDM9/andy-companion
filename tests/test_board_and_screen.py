@@ -352,12 +352,58 @@ def test_an_unexpected_error_answers_500_and_logs_only_its_kind(server, monkeypa
     assert "RuntimeError" in caplog.text and "words the person said" not in caplog.text
 
 
-def test_a_flood_of_messages_never_pushes_out_a_change_notice():
+def test_a_flood_of_messages_never_pushes_out_a_change_notice_or_what_others_sent():
+    """One family-link holder sending a lot used to push out the oldest entries: other relatives' messages went
+    unsaid (2026-10-28 review). A full inbox now refuses the new send, plainly, and keeps everything waiting."""
     board.settings_changed("Anna", ["volume"])
-    for i in range(board.MAX_INBOX + 10):
+    board.family_message("Rosa", "See you on Sunday")
+    for i in range(board.MAX_INBOX - 1):
         board.family_message("Leo", f"hello {i}")
+    for send in (lambda: board.family_message("Leo", "one more"), lambda: board.save_photo("Leo", _png()),
+                 lambda: board.suggestion_from_page("Leo", "Water the plants", {"day": "tomorrow", "time": "10:00"}),
+                 lambda: board.looked("Sam")):
+        with pytest.raises(board.InboxFull, match="try again later"):
+            send()
     items = board._read(board.INBOX, [])
-    assert len(items) == board.MAX_INBOX and items[0]["type"] == "settings"
+    assert len(items) == board.MAX_INBOX + 1 and items[0]["type"] == "settings"
+    assert items[1]["name"] == "Rosa" and items[1]["text"] == "See you on Sunday"        # still waiting to be said
+    assert not (board.PHOTOS.is_dir() and any(board.PHOTOS.iterdir()))                    # the refused photo isn't kept
+    board.kept_deleted("Anna", ["a reminder"])                                              # a change notice still goes in
+    assert board._read(board.INBOX, [])[-1]["type"] == "deleted"
+
+
+def test_a_full_inbox_answers_the_family_page_plainly(server):
+    for i in range(board.MAX_INBOX):
+        board.family_message("Leo", f"hello {i}")
+    k = board.tokens()["family"]
+    req = urllib.request.Request(f"{server}/api/family/message?k={k}", method="POST",
+                                 data=json.dumps({"name": "Rosa", "text": "See you on Sunday"}).encode(),
+                                 headers={"Content-Type": "application/json"})
+    with pytest.raises(urllib.error.HTTPError) as e:
+        urllib.request.urlopen(req, timeout=5)
+    assert e.value.code == 400 and json.loads(e.value.read()) == {"error": board.INBOX_FULL}
+    assert len(board._read(board.INBOX, [])) == board.MAX_INBOX
+
+
+def test_a_visit_is_told_once_an_hour_even_after_andy_has_said_it():
+    """Only unsaid looks were checked, so each visit after Andy had passed the last one on added another."""
+    board.looked("Anna", now=1000)
+    board.delivered(board.next_for_person())                                  # Andy said "Anna looked"
+    board.looked("Anna", now=1600)
+    board.looked("ANNA ", now=2000)
+    assert board.next_for_person() is None
+    board.looked("Anna", now=1000 + 3601)
+    assert [e["type"] for e in board._read(board.INBOX, [])] == ["look"]
+
+
+def test_visits_under_many_names_never_fill_the_inbox():
+    for i in range(board.MAX_LOOKS):
+        board.looked(f"Visitor {i}", now=1000 + i)
+    with pytest.raises(board.InboxFull):
+        board.looked("One more name", now=1100)
+    board.looked("Visitor 3", now=1200)                                       # a name already told: fine
+    board.family_message("Rosa", "See you on Sunday")                          # room for what relatives send
+    assert len(board._read(board.INBOX, [])) == board.MAX_LOOKS + 1 < board.MAX_INBOX
 
 
 def test_family_sends_are_limited_to_a_few_a_minute(monkeypatch):
