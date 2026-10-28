@@ -32,6 +32,7 @@ def check_message(tmp_path, monkeypatch):
 
     def run(message="You've won! Pay the fee to claim it."):
         return asyncio.run(module.CheckMessage()(None, message=message))
+    run.module = module
     return run
 
 
@@ -103,3 +104,36 @@ def test_a_screen_that_fails_never_stops_the_check(check_message, monkeypatch):
     monkeypatch.setattr(scamcheck, "verdict", lambda *a, **k: dict(NO_SIGN))
     out = check_message("The pharmacy says your prescription is ready.")
     assert out["scam_signs"] is False and calls[-1] == "No sign of a known kind of scam"
+
+
+def test_the_same_message_checked_again_soon_is_answered_from_the_first_check(check_message, monkeypatch):
+    """2026-10-28, on the robot: the model called check_message twice in one turn, 12.8 s before Andy spoke."""
+    from andy_companion import scamcheck
+    looked = []
+    monkeypatch.setattr(web, "check_message", lambda text: looked.append(text) or [])
+    monkeypatch.setattr(scamcheck, "verdict", lambda *a, **k: dict(NO_SIGN))
+    first = check_message("Pay the fee with gift cards today.")
+    again = check_message("pay the fee with gift cards today")              # case and punctuation aside, the same
+    assert len(looked) == 1 and again["already_checked"] and again["scam_signs"] is first["scam_signs"]
+    assert "Do not check it again" in again["note"] and "already_checked" not in first
+    check_message("A different message about a parcel.")
+    assert len(looked) == 2
+
+
+def test_a_failed_check_is_never_reused_and_old_ones_expire(check_message, monkeypatch):
+    from andy_companion import scamcheck
+    module = check_message.module
+    looked = []
+    def flaky(text):
+        looked.append(text)
+        if len(looked) == 1:
+            raise web.WebError("The web did not answer (URLError).")
+        return []
+    monkeypatch.setattr(web, "check_message", flaky)
+    monkeypatch.setattr(scamcheck, "verdict", lambda *a, **k: dict(NO_SIGN))
+    assert check_message("Pay the fee with gift cards today.")["web_unavailable"]
+    assert "web_unavailable" not in check_message("Pay the fee with gift cards today.")   # tried again, and it worked
+    clock = [module.time.monotonic() + module.AGAIN_S + 1]
+    monkeypatch.setattr(module.time, "monotonic", lambda: clock[0])
+    check_message("Pay the fee with gift cards today.")                              # two minutes on: checked afresh
+    assert len(looked) == 3 and not module._recent.get("pay the fee with gift cards today", (0, {}))[1].get("already_checked")

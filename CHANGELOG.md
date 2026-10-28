@@ -13,7 +13,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 - The scam check was the session's longest silence: 7.3 s to first audio (1.3 s to decide, 4.7 s for Tavily and
   Ultra, 1.3 s to answer). The TV now says "Checking this message" at once, in English or Spanish, which also turns
   Andy's head to it; the verdict replaces it. A failing screen never stops the check. **2 new cases**.
-- Open: after the Spanish question Andy also called `go_to_sleep` in the same turn; asked what was said.
+- On a garbled clip the model called `check_message` twice in one turn (12.8 s to first audio). The same message
+  checked again within two minutes is now answered from the first check, in memory only; a failed check is
+  never reused. **2 new cases**. The verdict itself was re-run directly: "pay the fee with gift cards today" and the
+  package message are both flagged (AARP warnings matched), and in 18 offline turns with six phrasings Lightning kept
+  the gift-card words in every message it passed (16 calls; 2 answered without the tool). The robot's "no sign"
+  came from the garbled clip.
+- Open: after the Spanish question Andy also called `go_to_sleep` in the same turn; asked what was said. Andy also
+  answered one English clip in Russian, following earlier turns; a fresh start before filming clears it.
 
 ### On the robot: a first awake session, and the weather card's words
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+import time
 from typing import Any, Dict, List, Optional
 
 from andy_companion import board, offers, scamcheck, settings, web
@@ -15,6 +16,16 @@ CHECKING = {
     "en": ("Checking this message", "Looking for warnings about messages like this on consumer-protection sites"),
     "es": ("Revisando este mensaje", "Buscando avisos sobre mensajes como este en sitios de protección al consumidor"),
 }
+
+# The same message checked again soon is answered from the first check (2026-10-28, on the robot: the model called
+# the tool a second time with its own result in hand, 12.8 s before Andy spoke; research has the same guard, B62).
+# In memory only, for the minutes a conversation about one message lasts.
+AGAIN_S = 120
+_recent: Dict[str, Any] = {}
+
+
+def _key(message: str) -> str:
+    return " ".join(re.sub(r"[^\w\s]", " ", message.lower()).split())
 
 # The receipt on the TV when a message shows scam signs: three steps, why Andy said what it said (PLAN B20).
 RECEIPT = {
@@ -124,6 +135,18 @@ class CheckMessage(Tool):
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
         message = str(kwargs.get("message", ""))
+        key, now = _key(message), time.monotonic()
+        for k in [k for k, (at, _) in _recent.items() if now - at > AGAIN_S]:
+            del _recent[k]
+        if key and key in _recent:
+            return {**_recent[key][1], "already_checked": True,
+                    "note": "You checked this message a moment ago; this is that result. Do not check it again."}
+        out = await self._check(message)
+        if key and not out.get("web_unavailable") and not out.get("analysis_unavailable"):
+            _recent[key] = (now, out)          # a failed check is never reused: the next one may work
+        return out
+
+    async def _check(self, message: str) -> Dict[str, Any]:
         try:
             title, line = CHECKING["es" if settings.get().get("language") == "es" else "en"]
             await asyncio.to_thread(board.show, "check", title, [{"title": line}])
