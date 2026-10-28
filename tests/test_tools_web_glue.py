@@ -76,3 +76,30 @@ def test_no_sign_with_the_warnings_in_hand_is_said_as_before(check_message, monk
     monkeypatch.setattr(scamcheck, "verdict", lambda message, found: dict(NO_SIGN))
     out = check_message("The pharmacy says your prescription is ready.")
     assert out["scam_signs"] is False and "web_unavailable" not in out and "no sign" in out["say"]
+
+
+def test_the_tv_says_checking_at_once_and_the_verdict_replaces_it(check_message, monkeypatch):
+    """2026-10-28, on the robot: about five silent seconds while the warnings were looked up. The TV now says so at
+    once; the verdict's card comes after it."""
+    from andy_companion import scamcheck
+    titles = []
+    real_show = board.show
+    monkeypatch.setattr(board, "show", lambda kind, title, *a, **k: titles.append((kind, title)) or real_show(kind, title, *a, **k))
+    monkeypatch.setattr(web, "check_message", lambda text: [])
+    monkeypatch.setattr(scamcheck, "verdict", lambda *a, **k: dict(NO_SIGN))
+    check_message("The pharmacy says your prescription is ready.")
+    assert titles[0] == ("check", "Checking this message") and titles[-1] == ("check", "No sign of a known kind of scam")
+
+
+def test_a_screen_that_fails_never_stops_the_check(check_message, monkeypatch):
+    from andy_companion import scamcheck
+    calls = []
+    def flaky(kind, title, *a, **k):
+        calls.append(title)
+        if len(calls) == 1:
+            raise OSError("screen down")
+    monkeypatch.setattr(board, "show", flaky)
+    monkeypatch.setattr(web, "check_message", lambda text: [])
+    monkeypatch.setattr(scamcheck, "verdict", lambda *a, **k: dict(NO_SIGN))
+    out = check_message("The pharmacy says your prescription is ready.")
+    assert out["scam_signs"] is False and calls[-1] == "No sign of a known kind of scam"

@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The founder's spoken tests on the robot, and the scam check's silence
+
+- The founder's own voice, logged as tool names and timings only: a scam message (`check_message`), three letters
+  (`read_letter`, first audio 2.7 to 3.7 s), "what do you see?", research started (`look_into`) and stopped by "stop
+  looking", talking over Andy (its speech flushed at once), and Spanish (`set_language`).
+- The scam check was the session's longest silence: 7.3 s to first audio (1.3 s to decide, 4.7 s for Tavily and
+  Ultra, 1.3 s to answer). The TV now says "Checking this message" at once, in English or Spanish, which also turns
+  Andy's head to it; the verdict replaces it. A failing screen never stops the check. **2 new cases**.
+- Open: after the Spanish question Andy also called `go_to_sleep` in the same turn; asked what was said.
+
 ### On the robot: a first awake session, and the weather card's words
 
 - With the robot to ourselves (other projects stopped), Andy woke and ran a live session. Questions were played

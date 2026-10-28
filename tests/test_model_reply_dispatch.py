@@ -69,4 +69,4 @@ def test_failed_classification_is_explicit_even_when_web_lookup_succeeded(monkey
     result = asyncio.run(routine(None))
     assert result['analysis_unavailable'] and 'scam_signs' not in result
     assert result['warnings'] == warnings and 'no sign' not in result['say'].lower()
-    assert "couldn't finish" in result['say'] and "couldn't finish" in shown[0][0][1]
+    assert "couldn't finish" in result['say'] and "couldn't finish" in shown[-1][0][1]

@@ -9,6 +9,13 @@ from typing import Any, Dict, List, Optional
 from andy_companion import board, offers, scamcheck, settings, web
 from reachy_mini_conversation_app.tools.core_tools import Tool, ToolDependencies
 
+# While the warnings are looked up and compared (about five seconds on the robot, 2026-10-28, the longest silence
+# of the session), the TV says so at once; the new card also turns Andy's head to it. The verdict replaces it.
+CHECKING = {
+    "en": ("Checking this message", "Looking for warnings about messages like this on consumer-protection sites"),
+    "es": ("Revisando este mensaje", "Buscando avisos sobre mensajes como este en sitios de protección al consumidor"),
+}
+
 # The receipt on the TV when a message shows scam signs: three steps, why Andy said what it said (PLAN B20).
 RECEIPT = {
     "en": {"title": "Be careful: a known scam", "do": "Don't reply, pay or give any details. Check with family first.",
@@ -117,6 +124,11 @@ class CheckMessage(Tool):
 
     async def __call__(self, deps: ToolDependencies, **kwargs: Any) -> Dict[str, Any]:
         message = str(kwargs.get("message", ""))
+        try:
+            title, line = CHECKING["es" if settings.get().get("language") == "es" else "en"]
+            await asyncio.to_thread(board.show, "check", title, [{"title": line}])
+        except Exception:
+            pass   # the TV is a help, never a reason to stop
         try:
             found, how = await asyncio.to_thread(web.traced, lambda: web.check_message(message))
         except web.WebError as e:
