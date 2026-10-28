@@ -429,3 +429,22 @@ def test_a_person_whose_face_shows_is_never_taken_for_a_still_thing():
             s.step(t, **_common())
         t += seek.PERSON_COOLDOWN_S + 1
     assert "STILL" not in s.log and s._still == []
+
+
+def test_a_follow_that_finds_no_face_in_a_minute_ends_and_sets_the_place_aside():
+    """2026-10-28: facing the still thing, the sighting held steady and the follow never ended (nine minutes)."""
+    import math
+    s = seek.Seek()
+    s.step(0.0, **_common(face=True))
+    t, yaw = 0.0, 0.0
+    while t < seek.PERSON_NO_FACE_S + 10:
+        t += 0.1
+        d = s.step(t, **_common(head_world_yaw=yaw, person_yaw=math.radians(30) - yaw))
+        if d.head_yaw is not None:
+            yaw = d.head_yaw
+    assert "STILL" in s.log and s.state != "PERSON", "the follow ended"
+    end = t + 30
+    while t < end:
+        t += 0.1
+        s.step(t, **_common(head_world_yaw=yaw, person_yaw=math.radians(30) - yaw))
+    assert s.state != "PERSON", "and that place is left alone"

@@ -64,6 +64,9 @@ FACELESS_FOLLOWS = 3
 FACELESS_WINDOW_S = 600.0
 STILL_IGNORE_S = 600.0
 SAME_PLACE = math.radians(8)
+# A follow that finds no face in a minute ends, and its direction is set aside at once: facing the still thing, the
+# sighting held steady and the follow never ended (2026-10-28, nine minutes on it after the ten-minute pause).
+PERSON_NO_FACE_S = 60.0
 RESCAN_AFTER_S = (60.0, 120.0, 240.0)   # while they're away, look again after these waits, then stop
 
 
@@ -170,11 +173,14 @@ class Seek:
         yaw, self._follow_since = self._follow_yaw, None
         self._faceless = [(t, y) for t, y in self._faceless if now - t < FACELESS_WINDOW_S] + [(now, yaw)]
         if sum(abs(y - yaw) < SAME_PLACE for _, y in self._faceless) >= FACELESS_FOLLOWS:
-            self._still = [(y, until) for y, until in self._still if until > now] + [(yaw, now + STILL_IGNORE_S)]
-            self._faceless = [(t, y) for t, y in self._faceless if abs(y - yaw) >= SAME_PLACE]
-            self.log.append("STILL")
-            logging.getLogger("andy.body").info("seek: no face after %d follows toward %.0f degrees; left alone for %.0f minutes",
-                                                FACELESS_FOLLOWS, math.degrees(yaw), STILL_IGNORE_S / 60)
+            self._set_still(yaw, now, f"no face after {FACELESS_FOLLOWS} follows")
+
+    def _set_still(self, yaw: float, now: float, why: str) -> None:
+        self._still = [(y, until) for y, until in self._still if until > now] + [(yaw, now + STILL_IGNORE_S)]
+        self._faceless = [(t, y) for t, y in self._faceless if abs(y - yaw) >= SAME_PLACE]
+        self.log.append("STILL")
+        logging.getLogger("andy.body").info("seek: %s toward %.0f degrees; left alone for %.0f minutes",
+                                            why, math.degrees(yaw), STILL_IGNORE_S / 60)
 
     def _is_still(self, world_yaw: float, now: float) -> bool:
         return any(until > now and abs(world_yaw - y) < SAME_PLACE for y, until in self._still)
@@ -277,6 +283,12 @@ class Seek:
             self._heard_from = voice
             return self._start("TURN", head_world_yaw + voice, head_world_yaw)
 
+        # A minute following with no face: a still thing, not a person (PERSON_NO_FACE_S).
+        if (self.state == "PERSON" and self._follow_since is not None and now - self._follow_since >= PERSON_NO_FACE_S
+                and (self._face_seen_at is None or self._face_seen_at < self._follow_since)):
+            yaw, self._follow_since = self._follow_yaw, None
+            self._set_still(yaw, now, "no face in a minute of following")
+            return self._rest()
         # A person in view but no face: follow them (2026-10-06, "track me when I step away"),
         # once the sightings are steady and not right after a follow ended (2026-10-07).
         steady = (self._person_streak_since is not None and now - self._person_streak_since >= PERSON_CONFIRM_S

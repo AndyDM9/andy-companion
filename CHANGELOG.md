@@ -11,7 +11,10 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   (53 times in one hour): the person detector saw a box at the edge of the view that never moved, at 0.48 to 0.52
   confidence against 0.45 needed, and following has no face to find there. Now a direction followed three times in
   ten minutes without a face is left alone for ten minutes, or until a face is seen (`body/seek.py`). On the robot,
-  after the third follow: none in the next four minutes, where there had been about ten.
+  after the third follow: none in the next four minutes, where there had been about ten. When the pause ended, Andy
+  faced the shape, the sighting held steady and the follow did not end (nine minutes); a follow that finds no face in
+  a minute now ends and sets its direction aside at once. With nobody seen, Andy now does the "away" look-arounds
+  (after 1, 2 and 4 minutes, then stops), which the shape had been suppressing as "someone here".
 - **The screen link can be replaced:** `scripts/settings.py new-screen-link`, as the family and settings links could
   be. The TV page still open with the old link reloads into a page saying so (English or Spanish), instead of looking
   as if Andy were off; the screen's questions answer 410, like the family and settings pages'. The filming plan

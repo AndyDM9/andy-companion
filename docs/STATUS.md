@@ -25,8 +25,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Following a still thing, fixed:** with nobody home, Andy turned toward "a person" about every 25 s all evening
   (53 in the 18:00 hour). The detector saw a box at the right edge of the view that never moved, at 0.48 to 0.52
   (0.45 needed): a coat or a lamp, by the numbers (no picture looked at). `body/seek.py` now leaves a direction alone
-  for ten minutes after three follows there without a face; on the robot, after the third, no follow in the next four
-  minutes. Worth a look before filming: whatever stands about 33° to Andy's right.
+  for ten minutes after three follows there without a face, or after a minute of one; on the robot, after the third,
+  no follow in the next four minutes (and a steady follow of it, nine minutes long, before the minute limit). Worth a look before filming: whatever stands about 33° to Andy's right.
 - **The screen link is replaceable** (`scripts/settings.py new-screen-link`), with a "replaced" page; after filming.
 - **Prepared as video.md asks:** sample landscapes and the two 2026-10-13 facts deleted. Kept: a daily 8:00 am
   reminder, a moment of October 25, a note shared on October 25 (the founder's to keep or delete).
