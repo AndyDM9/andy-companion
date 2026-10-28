@@ -18,6 +18,12 @@ speech package speaks any text it is given, so `unspoken_tool_markup` takes such
 before it is spoken (wrapping the package's own remove_markdown, which every spoken sentence goes through).
 Only how many characters were left out is logged, never the text.
 
+Andy speaks English and Spanish. Parakeet hears 25 languages and writes what it thinks it heard: on 2026-10-28 two
+turns on the robot, an accented one and a muffled one, came out in Cyrillic (detected as Ukrainian and Russian),
+and Andy answered one in Russian. `only_our_languages` takes a transcript in another alphabet as unclear (Andy asks
+again, in its language) and keeps the turn's language English or Spanish. Latin-script words pass untouched.
+Only the detected language code is logged, never the words.
+
 The Token Factory key comes from the environment (NEBIUS_API_KEY, from run.sh's private .env file), never
 the command line: any process on this shared computer can read a command line (`ps`), but only this user
 can read a process's environment. `key_from_environment` adds it to the arguments inside this process.
@@ -99,6 +105,38 @@ def no_tool_markup_spoken(modules) -> None:
         module.remove_markdown = remove_markdown
 
 
+OUR_LANGUAGES = ("en", "es")
+# Worded so the model asks again: tried on Nemotron 3.5 Lightning with Andy's profile, 6 of 6 in each language,
+# at the start of a conversation and after it; a plainer "[The words could not be made out.]" set off random tools.
+UNCLEAR = {"en": "[Andy couldn't make out these words: ask the person to say it again.]",
+           "es": "[Andy no entendió estas palabras: pídale a la persona que lo repita.]"}
+OTHER_ALPHABET = re.compile(r"[\u0370-\u03ff\u0400-\u052f]")     # Greek and Cyrillic: Parakeet's non-Latin ones
+
+
+def our_language(text: str, language, last) -> tuple:
+    """(text, language) kept to Andy's languages: another alphabet is a mishearing, said as unclear."""
+    keep = language if language in OUR_LANGUAGES else last if last in OUR_LANGUAGES else "en"
+    if text and OTHER_ALPHABET.search(text):
+        logger.info("voice: a turn heard as %s was taken as unclear", language if isinstance(language, str) else "?")
+        return UNCLEAR[keep], keep
+    return text, keep
+
+
+def only_our_languages(handler_class) -> None:
+    """The speech-to-text handler's final transcripts, kept to English and Spanish (our_language)."""
+    for name in ("_process_nano_parakeet", "_process_mlx_final"):
+        original = getattr(handler_class, name, None)
+        if original is None or getattr(original, "_andy_languages", False):
+            continue
+
+        def final(self, audio_input, _original=original):
+            text, language = _original(self, audio_input)
+            return our_language(text, language, getattr(self, "last_language", "en"))
+
+        final._andy_languages = True
+        setattr(handler_class, name, final)
+
+
 def key_from_environment(argv: list, environ=os.environ) -> list:
     """The arguments with the model key added from NEBIUS_API_KEY, unless one was given already."""
     if any(a == "--responses_api_api_key" or a.startswith("--responses_api_api_key=") for a in argv):
@@ -117,6 +155,9 @@ if __name__ == "__main__":
     from speech_to_speech.LLM import base_openai_compatible_language_model, language_model
 
     no_tool_markup_spoken([base_openai_compatible_language_model, language_model])
+    from speech_to_speech.STT.parakeet_tdt_handler import ParakeetTDTSTTHandler
+
+    only_our_languages(ParakeetTDTSTTHandler)
     from speech_to_speech.cli import main
 
     sys.argv[0] = "speech-to-speech"

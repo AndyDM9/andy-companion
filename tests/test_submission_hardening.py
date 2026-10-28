@@ -158,3 +158,25 @@ def test_a_running_research_cannot_repopulate_deleted_private_state(monkeypatch)
     monkeypatch.setattr(web, "stream_research", stream)
     assert looking.run("Invented question") is None
     assert board.showing() is None and not board.pending_entries()
+
+
+@pytest.mark.parametrize("language, starts", [("en", "It asks for gift cards"), ("es", "Pide tarjetas de regalo")])
+def test_a_scam_about_medicine_still_gets_its_warning_and_no_page_text(language, starts):
+    """2026-10-28 review: a Medicare 'prescription coverage' scam got only the medicine refusal, its signs dropped."""
+    page = ("Your Medicare prescription coverage will be suspended within 24 hours. To keep your pharmacy benefits, "
+            "pay the renewal fee with Google Play gift cards. Call 1-888-555-0199. Tablets 20mg daily.")
+    called = []
+    result = letters.for_andy({"text": page, "words": 30}, language, summariser=lambda *a: called.append(a))
+    assert not called and "text" not in result and result["medicine"] and result["warning_signs"]
+    assert result["say"].startswith(starts)
+    assert "pharmac" in result["say"] or "farmac" in result["say"]
+    shown = json.dumps(board.showing(), ensure_ascii=False)
+    for words in ("Medicare", "Google Play", "20mg", "1-888", "renewal"):
+        assert words not in json.dumps(result, ensure_ascii=False) and words not in shown
+    assert ("Be careful" in shown or "Cuidado" in shown) and starts in shown
+
+
+def test_a_medicine_page_without_signs_is_unchanged():
+    result = letters.for_andy({"text": "Pharmacy tablets: synthetic instructions", "words": 6}, summariser=lambda *a: None)
+    assert result["medicine"] and "warning_signs" not in result
+    assert result["say"] == "I can't read medicine instructions. Please ask your pharmacist or doctor."

@@ -135,3 +135,20 @@ def test_not_where_they_were_left_means_a_sweep_and_saying_so():
     out, robot, manager, _ = run([EMPTY] * 5, lambda f, w: {"yes": False}, asker)
     assert not out["found"] and calls and "isn't where they left it" in out["how"] and "hall table" in out["how"]
     assert "_yaw" not in out
+
+
+def test_a_place_kept_in_words_only_is_never_said_to_have_moved():
+    """2026-10-28 review: kept as 'on the hall table' with no head direction, a sweep that missed it made Andy say it
+    wasn't there any more, a place it never looked at."""
+    told = {"what": "glasses", "where": "on the hall table", "yaw": None, "pitch": None, "told": True, "at": 0}
+    note = finder.moved_note(told, found=False)
+    assert "can't see from here" in note and "any more" not in note
+    assert "had told you it was on the hall table" in finder.moved_note(told, found=True)
+    seen = dict(told, yaw=0.3, pitch=0.1)
+    assert "any more" in finder.moved_note(seen, found=False)
+
+
+@pytest.mark.parametrize("what, many", [("glasses", True), ("my keys", True), ("the scissors", True),
+                                        ("watch", False), ("remote", False), ("purse", False), ("hearing aid", False)])
+def test_it_or_they_fits_the_thing(what, many):
+    assert finder.plural(what) is many

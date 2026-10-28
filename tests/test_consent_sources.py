@@ -94,3 +94,32 @@ def test_a_refusal_after_a_delimiter_or_time_still_wins(words):
     gate.hear(words)
     assert not consent.asked(words)
     assert gate.authorize('remember_fact', {'fact': 'An invented appointment.'}) == consent.NOT_SAVED
+
+
+def test_a_bare_yes_to_the_models_own_offer_prepares_the_exact_proposal_then_saves_on_a_fresh_yes():
+    """2026-10-28 review: the model asked 'Would you like me to remember that?' in its own words; the person's yes
+    was refused, the model asked again, and the offer went round. Now the yes prepares the exact readback."""
+    from andy_companion import consent
+    gate = consent.Confirmation(clock=lambda: 0.0)
+    gate.said("Sofia's recital is on Thursday? How lovely. Would you like me to remember that?")
+    gate.hear("Yes please.")
+    proposal = gate.authorize("remember_fact", {"fact": "Sofia's recital is on Thursday"})
+    assert proposal["confirmation_needed"] and "Sofia's recital is on Thursday" in proposal["say"]
+    gate.said("Of course. " + proposal["say"])          # a kind word before the exact readback still counts
+    gate.hear("Yes.")
+    assert gate.authorize("remember_fact", {"fact": "Sofia's recital is on Thursday"}) is None          # saved once
+    assert gate.authorize("remember_fact", {"fact": "Sofia's recital is on Thursday"})["saved"] is False   # not twice
+
+
+def test_a_yes_never_releases_a_proposal_that_was_not_read_back():
+    from andy_companion import consent
+    gate = consent.Confirmation(clock=lambda: 0.0)
+    gate.hear("Yes.")
+    proposal = gate.authorize("remember_fact", {"fact": "An invented fact"})
+    gate.said("Shall I remember something?")            # not the exact question
+    gate.hear("Yes.")
+    again = gate.authorize("remember_fact", {"fact": "An invented fact"})
+    assert again["confirmation_needed"] and again["saved"] is False and proposal["say"] == again["say"]
+    gate.said(again["say"])
+    gate.hear("Yes.")
+    assert gate.authorize("remember_fact", {"fact": "A different fact"})["saved"] is False   # the payload is bound

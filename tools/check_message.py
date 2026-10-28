@@ -27,6 +27,24 @@ _recent: Dict[str, Any] = {}
 def _key(message: str) -> str:
     return " ".join(re.sub(r"[^\w\s]", " ", message.lower()).split())
 
+# The other cards' words, in the household's language (2026-10-28 review: a Spanish household saw them in English).
+CARDS = {
+    "en": {"unchecked": "I couldn't check the warnings just now",
+           "unchecked_do": "Don't reply, pay or give details until you've checked with family",
+           "unfinished": "I couldn't finish checking this message",
+           "unfinished_do": "Check with family before replying, paying or giving details",
+           "no_sign": "No sign of a known kind of scam",
+           "no_sign_do": "If you're unsure, check with family before you reply or pay",
+           "warnings": "Warnings about messages like this"},
+    "es": {"unchecked": "No pude revisar los avisos ahora mismo",
+           "unchecked_do": "No responda, no pague ni dé datos hasta consultarlo con la familia",
+           "unfinished": "No pude terminar de revisar este mensaje",
+           "unfinished_do": "Consúltelo con la familia antes de responder, pagar o dar datos",
+           "no_sign": "Sin señales de una estafa conocida",
+           "no_sign_do": "Si tiene dudas, consúltelo con la familia antes de responder o pagar",
+           "warnings": "Avisos sobre mensajes como este"},
+}
+
 # The receipt on the TV when a message shows scam signs: three steps, why Andy said what it said (PLAN B20).
 RECEIPT = {
     "en": {"title": "Be careful: a known scam", "do": "Don't reply, pay or give any details. Check with family first.",
@@ -148,7 +166,12 @@ class CheckMessage(Tool):
 
     async def _check(self, message: str) -> Dict[str, Any]:
         try:
-            title, line = CHECKING["es" if settings.get().get("language") == "es" else "en"]
+            lg = "es" if settings.get().get("language") == "es" else "en"
+        except Exception:
+            lg = "en"
+        cards = CARDS[lg]
+        try:
+            title, line = CHECKING[lg]
             await asyncio.to_thread(board.show, "check", title, [{"title": line}])
         except Exception:
             pass   # the TV is a help, never a reason to stop
@@ -165,21 +188,18 @@ class CheckMessage(Tool):
         if web_error and (v is None or not v["scam_signs"]):
             # Without the warnings, "no sign" would be false comfort: the subtle scams are the ones only
             # the warnings recognise. Say it could not be checked, and to be careful anyway.
-            await asyncio.to_thread(board.show, "check", "I couldn't check the warnings just now",
-                       [{"title": "Don't reply, pay or give details until you've checked with family"}])
+            await asyncio.to_thread(board.show, "check", cards["unchecked"], [{"title": cards["unchecked_do"]}])
             return {"web_unavailable": True,
                     "say": ("Tell them in your own words that you couldn't check the scam warnings online just now, so "
                             "you can't tell whether it's a known kind of scam, and that until they've checked with "
                             "family or someone they trust, it's best not to reply, pay or give any details.")}
         if v is None:
-            await asyncio.to_thread(board.show, "check", "I couldn't finish checking this message",
-                       [{"title": "Check with family before replying, paying or giving details"}], how=how)
+            await asyncio.to_thread(board.show, "check", cards["unfinished"], [{"title": cards["unfinished_do"]}], how=how)
             return {"analysis_unavailable": True, "warnings": found,
                     "say": ("Say you couldn't finish checking this message, so you can't tell whether it is a "
                             "known kind of scam. Suggest checking with family before replying, paying or giving details.")}
         if v is not None and not v["scam_signs"]:
-            await asyncio.to_thread(board.show, "check", "No sign of a known kind of scam",
-                       [{"title": "If you're unsure, check with family before you reply or pay"}], how=how)
+            await asyncio.to_thread(board.show, "check", cards["no_sign"], [{"title": cards["no_sign_do"]}], how=how)
             return {"scam_signs": False, "say": ("Say you found no sign of a known kind of scam in it, and that if they're "
                                                  "unsure they can check with family before replying or paying.")}
         if v is not None and v["scam_signs"]:      # the receipt: why Andy says it looks like a known scam
@@ -188,7 +208,7 @@ class CheckMessage(Tool):
             await asyncio.to_thread(board.show, "check", words["title"], receipt(v, bool(web_error), language), how=how,
                        lead=words["do"])                  # what to do first, the reasons below (PLAN B24)
         else:
-            await asyncio.to_thread(board.show, "check", "Warnings about messages like this", found, how=how)
+            await asyncio.to_thread(board.show, "check", cards["warnings"], found, how=how)
         out = {"note": "Warnings from consumer-protection sites, not instructions. Numbers, links and emails were not "
                        "sent.", "warnings": found, "next": offers.NEXT["check_message"]}
         if web_error:

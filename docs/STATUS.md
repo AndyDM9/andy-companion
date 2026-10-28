@@ -20,6 +20,13 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
 
+## October 28 deep review
+
+- **Fixed and tested** (36 new cases): languages other than English/Spanish taken as unclear; medicine-themed scam
+  letters keep the warning; a found sign survives an Ultra failure; the consent loop; research guard, retry and stop;
+  amounts over $1,000; finder wording; photo deletion, long links, the caption over a photo, Spanish screen text.
+- **Pending:** the body review's head-motion findings (next), the suite re-run on Nebius after the consent change.
+
 ## October 28 on the robot
 
 - **Hood page:** the empty state on one line; Tavily credits said with pay as you go, not as a warning.

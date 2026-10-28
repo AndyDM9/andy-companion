@@ -103,6 +103,7 @@ def delete(kind: str, item_id: str) -> bool:
             return False
         path.unlink(missing_ok=True)
         path.with_suffix(".json").unlink(missing_ok=True)
+        board.drop_photo_notes(item_id)
         return True
     raise ValueError("Unknown kind of item.")
 

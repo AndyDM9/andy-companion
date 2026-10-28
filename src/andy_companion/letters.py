@@ -68,7 +68,8 @@ SIGNS = [
     (r"you (have )?won|winner|lottery|sweepstakes|prize|premio|loter[ií]a|ha ganado", "says you won a prize",
      "dice que ha ganado un premio"),
 ]
-NUMBER = re.compile(r"(?<![\w$€£])(?:\+?\d[\d\s().\-]{2,}\d)(?![\w])")
+# Not the digits after a thousands separator: "$1,250.00" used to become "$1,•••" (2026-10-28 review).
+NUMBER = re.compile(r"(?<![\w$€£])(?<!\d[,.])(?:\+?\d[\d\s().\-]{2,}\d)(?![\w])")
 
 
 class LetterError(Exception):
@@ -134,6 +135,29 @@ def medicine_reply(language: str = "en") -> Dict[str, Any]:
                    "Say 'say' exactly: these are Andy's words, not writing on the label."}
 
 
+def caution_words(signs: List[str], language: str = "en") -> str:
+    """'It asks for gift cards and pushes you to act now. Real banks and agencies never do that.'"""
+    w = WORDS["es" if language == "es" else "en"]
+    what = (" y " if language == "es" else " and ").join(signs[:2])
+    if language == "es":
+        what = what[:1].upper() + what[1:]
+    return w["caution_sign"].format(what=what)
+
+
+def medicine_scam(signs: List[str], language: str = "en") -> Dict[str, Any]:
+    """A page about medicine that shows a scam's signs ("your prescription coverage ends today: pay with gift
+    cards"): the warning stands, and still no word of the page reaches the model or the screen (2026-10-28 review:
+    the medicine refusal used to come first and drop the warning)."""
+    w = WORDS["es" if language == "es" else "en"]
+    caution = caution_words(signs, language)
+    c = {**{f: "" for f in FIELDS}, "kind": "other", "warning": True, "caution": caution, "to_do": w["to_do_warn"]}
+    reply = medicine_reply(language)
+    reply.update(warning_signs=signs, say=f"{caution} {w['to_do_warn']} {reply['say']}",
+                 how="The page shows warning signs and mentions medicine. No page text is provided deliberately. "
+                     "Say 'say' exactly: these are Andy's words, not writing on the page.")
+    return {"card": c, "reply": reply}
+
+
 def card(raw: Dict[str, Any], page_text: str, language: str = "en") -> Dict[str, Any]:
     """What goes on the screen, made safe in code from the model's fields and the page's own words."""
     w = WORDS["es" if language == "es" else "en"]
@@ -145,10 +169,7 @@ def card(raw: Dict[str, Any], page_text: str, language: str = "en") -> Dict[str,
     out["kind"] = kind
     signs = warning_signs(page_text, "es" if language == "es" else "en")
     if signs or raw.get("suspicious"):
-        what = (" y " if language == "es" else " and ").join(signs[:2])
-        if language == "es":
-            what = what[:1].upper() + what[1:]
-        out["caution"] = w["caution_sign"].format(what=what) if signs else w["caution_model"]
+        out["caution"] = caution_words(signs, language) if signs else w["caution_model"]
         out["to_do"] = w["to_do_warn"]                       # never the page's demand
         out["by_when"] = ""
         out["warning"] = True
@@ -232,12 +253,16 @@ def for_andy(result: Dict[str, Any], language: str = "en", summariser: Optional[
     text = result.get("text") or ""
     if not text:
         return result
+    signs = warning_signs(text, "es" if language == "es" else "en")
     if medicine_page(text):
+        if signs:
+            scam = medicine_scam(signs, language)
+            show(scam["card"], language)
+            return scam["reply"]
         c = medicine_card(language)
         show(c, language)
         return medicine_reply(language)
     result["text"] = mask(text)
-    signs = warning_signs(text, "es" if language == "es" else "en")
     if signs:
         result["warning_signs"] = signs
         result["screen_note"] = WARN_NOTE

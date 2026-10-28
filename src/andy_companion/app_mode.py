@@ -77,7 +77,7 @@ def install(screen: bool = False) -> None:
     """Attach Andy's additions. With screen=True also serve the screen and family page here
     (the dashboard app has no supervisor to do it). screen=True is how the dashboard app is told apart:
     there is no supervisor there, so the watchdog only logs instead of asking for a restart."""
-    from andy_companion import captions, consent, guard, privacy, settings, speaker, turns, urgent, voice_controls, volume
+    from andy_companion import captions, consent, guard, looking, privacy, settings, speaker, turns, urgent, voice_controls, volume
     from andy_companion.body import attach as body
 
     load_env(APP_KEYS)        # before configure_env, which reads ANDY_VOICE_URL
@@ -91,6 +91,7 @@ def install(screen: bool = False) -> None:
     guard.install()
     consent.install()
     captions.install()
+    looking.install()
     turns.install()
     volume.apply_saved()
     from andy_companion import state

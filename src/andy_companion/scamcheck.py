@@ -107,7 +107,14 @@ def verdict(message: str, warnings: Optional[List[Dict[str, Any]]] = None, opene
     if warnings:
         listing = "\n".join(f"{i}. ({w.get('source', '')}) {w.get('title', '')}: {w.get('summary', '')}"
                             for i, w in enumerate(warnings, 1))
-        got = _ask(MATCH, f"Message: {message}\n\nWarnings:\n{listing}", MATCH_SCHEMA, opener, match_model)
+        try:
+            got = _ask(MATCH, f"Message: {message}\n\nWarnings:\n{listing}", MATCH_SCHEMA, opener, match_model)
+        except ScamCheckError:
+            # A sign already found in the message's own words stands without the comparison (2026-10-28 review:
+            # an Ultra time-out used to turn "a known kind of scam" into "couldn't finish checking").
+            if out["scam_signs"]:
+                return out
+            raise
         hits = sorted({int(i) for i in got.get("matches", []) if isinstance(i, int) and 1 <= i <= len(warnings)})
         out["matched"] = [warnings[i - 1].get("source", "") for i in hits]
         # The matched warnings' own titles and addresses too, for the TV's receipt (tools/check_message.py): a

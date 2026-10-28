@@ -54,3 +54,36 @@ def test_a_failure_never_repeats_the_message(monkeypatch):
     with pytest.raises(scamcheck.ScamCheckError) as e:
         scamcheck.verdict("Grandma I need bail money", opener=broken)
     assert "bail" not in str(e.value)
+
+
+def test_a_sign_already_found_stands_when_the_comparison_fails(monkeypatch):
+    """2026-10-28 review: an Ultra time-out on the warning comparison used to drop Lightning's sign."""
+    monkeypatch.setenv("NEBIUS_API_KEY", "k")
+    calls = []
+
+    def opener(req, timeout):
+        calls.append(json.loads(req.data)["model"])
+        if len(calls) == 2:
+            raise TimeoutError("invented time-out")
+        sign = {"sign": "payment by gift card, wire or crypto", "evidence": "with gift cards", "source": ""}
+        return io.BytesIO(json.dumps({"choices": [{"message": {"content": json.dumps(sign)}}]}).encode())
+
+    v = scamcheck.verdict("Pay the fee with gift cards today.", [{"source": "aarp.org", "title": "Gift card scams",
+                                                                   "summary": "…"}], opener=opener)
+    assert v["scam_signs"] and v["sign"] == "payment by gift card, wire or crypto" and v["matched"] == []
+    assert calls == [scamcheck.MODEL, scamcheck.MATCH_MODEL]
+
+
+def test_without_a_sign_a_failed_comparison_is_still_a_failure(monkeypatch):
+    monkeypatch.setenv("NEBIUS_API_KEY", "k")
+    calls = []
+
+    def opener(req, timeout):
+        calls.append(1)
+        if len(calls) == 2:
+            raise TimeoutError("invented time-out")
+        return io.BytesIO(json.dumps({"choices": [{"message": {"content": json.dumps(
+            {"sign": "none", "evidence": "", "source": ""})}}]}).encode())
+
+    with pytest.raises(scamcheck.ScamCheckError):
+        scamcheck.verdict("Hi, is this Margaret?", [{"source": "x.org", "title": "t", "summary": "…"}], opener=opener)

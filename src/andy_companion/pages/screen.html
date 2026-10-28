@@ -344,7 +344,8 @@
      code, where the caption keeps to the left column. */
   body.has-caption:not(.showing-code) .found { padding-bottom: calc(var(--cap-block) + 2.4vh); }
   /* ... and so do the day's cards beside it: a card that no longer fits steps aside whole (fitCards). */
-  body.has-caption.has-showing:not(.showing-code) .side, body.has-caption.has-photo .side {
+  body.has-caption.has-showing:not(.showing-code) .side, body.has-caption.has-photo .side,
+  body.has-caption.has-photo .family {    /* the photo shrinks, its "From …" line stays readable (2026-10-28 review) */
     padding-bottom: calc(var(--cap-block) + 2.4vh); }
   /* The weather is on the big card: the small one beside it would only say it again. */
   body.showing-weather #weather { display: none; }

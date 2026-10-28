@@ -109,3 +109,14 @@ def test_a_date_with_nothing_to_do_still_shows():
     letters.show(letters.card(model(kind="notice", sender="Ayuntamiento", about="Recogida de basura cambia al martes",
                                     by_when="1 de noviembre"), "Aviso", "es"), "es")
     assert board.showing()["items"][-1] == {"title": "Cuándo", "summary": "1 de noviembre"}
+
+
+@pytest.mark.parametrize("page, kept, hidden", [
+    ("Amount due: $1,250.00 by November 3, 2026.", ["$1,250.00", "2026"], []),
+    ("Pay $12,000 today. Account 4417 1234 5678 9113.", ["$12,000"], ["4417", "9113"]),
+    ("Member ID 99887766, balance $1,250. Call 1-888-555-0199.", ["$1,250"], ["99887766", "555-0199"]),
+])
+def test_amounts_over_a_thousand_stay_and_identifying_numbers_go(page, kept, hidden):
+    """2026-10-28 review: '$1,250.00' was masked to '$1,•••', so Andy and the card gave a wrong amount."""
+    masked = letters.mask(page)
+    assert all(k in masked for k in kept) and not any(h in masked for h in hidden)

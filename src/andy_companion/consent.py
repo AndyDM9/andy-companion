@@ -150,7 +150,9 @@ class Confirmation:
             self.pending = None
 
     def said(self, words: str) -> None:
-        if self.pending and _normal(self.pending["question"]) == _normal(str(words)):
+        # The exact question, read back within Andy's turn: a kind word before it ("What a lovely memory.") still
+        # counts (2026-10-28 review: an exact-turn match dropped the person's yes, and the offer came round again).
+        if self.pending and _normal(self.pending["question"]) in _normal(str(words)):
             self.pending["spoken"] = True
 
     def authorize(self, name: str, arguments: dict) -> dict | None:
@@ -196,8 +198,8 @@ class Confirmation:
             return dict(NOT_SHARED if name in SHARING else NOT_SAVED)
         if name in SHARING and not (SHARE_ASKED.search(introduction) or self.confirmed):
             return dict(NOT_SHARED)
-        if not self.pending and (YES.fullmatch(text) or BARE_SI.fullmatch(text)):
-            return dict(NOT_SHARED if name in SHARING else NOT_SAVED)
+        # A bare yes with nothing read back yet (the model asked in its own words) prepares the exact proposal
+        # below, which needs its own fresh yes; refusing it sent the model round the same question (2026-10-28).
         spanish = bool(re.search(r"\b(s[ií]|familia|hija|hijo|recuerda|guarde|compartir)\b", text))
         verb = ("¿Quiere que comparta esto con su familia?" if name in SHARING else "¿Quiere que recuerde esto?") if spanish else (
             "Shall I share this with your family?" if name in SHARING else "Shall I remember this?")

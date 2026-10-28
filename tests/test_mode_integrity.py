@@ -180,7 +180,7 @@ def test_existing_app_stops_and_stays_stopped_after_invalid_mode_even_on_crash(m
 @pytest.mark.parametrize("screen", [False, True])
 @pytest.mark.parametrize("initial", ["asleep", "quiet", "unreadable"])
 def test_dashboard_start_resets_stale_mode_but_supervised_install_preserves_it(monkeypatch, screen, initial):
-    from andy_companion import captions, consent, guard, live, privacy, settings, speaker, turns, urgent, voice_controls, volume
+    from andy_companion import captions, consent, guard, live, looking, privacy, settings, speaker, turns, urgent, voice_controls, volume
     from andy_companion.body import attach as body
 
     if initial == "unreadable":
@@ -192,7 +192,7 @@ def test_dashboard_start_resets_stale_mode_but_supervised_install_preserves_it(m
     before = state.FILE.read_bytes()
     monkeypatch.setattr(app_mode, "load_env", lambda names: [])
     monkeypatch.setattr(app_mode, "configure_env", lambda: None)
-    for module in (privacy, body, settings, voice_controls, urgent, guard, consent, captions, turns):
+    for module in (privacy, body, settings, voice_controls, urgent, guard, consent, captions, looking, turns):
         monkeypatch.setattr(module, "install", lambda: None)
     monkeypatch.setattr(speaker, "attach", lambda: None)
     monkeypatch.setattr(volume, "apply_saved", lambda: None)

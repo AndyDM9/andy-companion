@@ -5,6 +5,30 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Deep review: what Andy hears, says and shows, fixed and tested
+
+Three independent code reviews (conversation tools; body, finder and supervisor; screen and pages) and the founder's
+own session on the robot. Each finding was checked against the code before it was fixed.
+
+- **Only English and Spanish reach the model.** Parakeet hears 25 languages; on the robot an accented turn came out
+  in Cyrillic (detected as Ukrainian) and a muffled one as Russian, and Andy answered in Russian. A transcript in
+  another alphabet is now taken as unclear, worded so Lightning asks again (6 of 6 in each language, offline), and
+  the turn's language stays English or Spanish; Latin-script words pass untouched (`voice/serve.py`).
+- **A scam about medicine keeps its warning.** A "prescription coverage… pay with gift cards" letter got only the
+  medicine refusal; now the caution and "check with family" come first, still without reading the page.
+- **A sign already found stands** when the Ultra warning comparison fails (it used to become "couldn't finish").
+- **Consent no longer loops:** a yes to the model's own offer prepares the exact readback (still one fresh yes,
+  one use), and the readback counts when Andy says a kind word before it.
+- **Research:** the person's own next question right after an answer is theirs (the 30 s guard now applies only
+  when nothing was said since); a failed look leaves no topic behind, so the offered retry works; "stop" frees Andy
+  at once, and a stopped look can neither speak nor free the next (each look has its own number).
+- **Letters:** amounts of $1,000 or more stay ("$1,250.00" was "$1,•••").
+- **Finder words:** a place kept in words only is never said to have moved; "It's"/"They're" fits the thing.
+- **Family and screen:** deleting a photo drops its announcement; an over-long link is refused, never cut; the
+  caption leaves the photo's "From …" line readable; the scam cards, research progress and photo cards are in
+  Spanish for a Spanish household.
+- **36 new cases**; CPU **1,945 / 18 skipped**.
+
 ### Under the hood, as filmed
 
 - After every restart the hood's empty state broke "waiting for a turn" over three lines beside its hint; it now

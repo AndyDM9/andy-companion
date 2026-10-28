@@ -137,3 +137,17 @@ def test_a_failed_check_is_never_reused_and_old_ones_expire(check_message, monke
     monkeypatch.setattr(module.time, "monotonic", lambda: clock[0])
     check_message("Pay the fee with gift cards today.")                              # two minutes on: checked afresh
     assert len(looked) == 3 and not module._recent.get("pay the fee with gift cards today", (0, {}))[1].get("already_checked")
+
+
+def test_a_spanish_household_sees_the_scam_cards_in_spanish(check_message, monkeypatch):
+    """2026-10-28 review: the checking, no-sign and failure cards were English on a Spanish household's TV."""
+    from andy_companion import scamcheck, settings
+    titles = []
+    real_show = board.show
+    monkeypatch.setattr(board, "show", lambda kind, title, items, *a, **k: titles.append((title, items)) or real_show(kind, title, items, *a, **k))
+    monkeypatch.setattr(settings, "get", lambda: {"language": "es"})
+    monkeypatch.setattr(web, "check_message", lambda text: [])
+    monkeypatch.setattr(scamcheck, "verdict", lambda *a, **k: dict(NO_SIGN))
+    check_message("La farmacia dice que su receta está lista.")
+    assert titles[0][0] == "Revisando este mensaje" and titles[-1][0] == "Sin señales de una estafa conocida"
+    assert titles[-1][1][0]["title"].startswith("Si tiene dudas")

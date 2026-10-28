@@ -398,3 +398,33 @@ def test_with_nothing_left_today_the_screen_shows_tomorrows_first_reminder():
     assert plan["today"]["shown"]["tomorrow"] == "Tomorrow" and plan["today"]["shown"]["daily"] == "daily"
     reminders.add("call Rosa", at="20:30", now=evening)                    # something still to come today: that one
     assert screen_server.today_plan(evening)["tomorrow"] is None
+
+
+def test_deleting_a_photo_also_drops_its_announcement(tmp_path, monkeypatch):
+    """2026-10-28 review: a helper deleted a family photo, yet Andy later said it had arrived and was on the screen."""
+    from andy_companion import kept
+    monkeypatch.setattr(kept, "MEMORY_FILE", tmp_path / "memory.json")
+    kept_photo = board.save_photo("Anna", _png(800, 600), "Sofia at her recital")
+    other = board.save_photo("Ben", _png(800, 600), "The garden")
+    assert kept.delete("photo", kept_photo["photo"])
+    notes = [e for e in board.pending_entries() if e.get("type") == "photo"]
+    assert [e["photo"] for e in notes] == [other["photo"]]
+
+
+def test_a_link_too_long_is_refused_never_cut_short():
+    long_link = "https://example.org/" + "a" * 400
+    with pytest.raises(ValueError, match="too long"):
+        board.family_message("Anna", "Look at this", long_link)
+    board.family_message("Anna", "Look at this", "https://example.org/" + "a" * 200)
+    assert board.pending_entries()[-1]["link"].endswith("a" * 200)
+
+
+def test_a_family_photo_card_is_in_the_households_language(monkeypatch):
+    sent = []
+    monkeypatch.setattr(board, "_transient", lambda action, data=None, default=None: sent.append(data) or default)
+    monkeypatch.setattr(settings, "get", lambda: {"language": "es"})
+    board.show_photo("abc", "Ana", "En el recital")
+    assert sent[-1]["title"] == "Una foto de Ana"
+    monkeypatch.setattr(settings, "get", lambda: {"language": "en"})
+    board.show_photo("abc", "Ana", "At the recital")
+    assert sent[-1]["title"] == "A photo from Ana"

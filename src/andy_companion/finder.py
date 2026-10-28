@@ -494,6 +494,13 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
             face_back()
 
 
+def plural(what: str) -> bool:
+    """'glasses', 'keys', 'the scissors': they; 'watch', 'remote', 'purse': it (2026-10-28 review: "They're still"
+    was said of a watch). A plain word rule, enough for things people misplace."""
+    word = tidy_what(what).lower().split()[-1:] or [""]
+    return word[0].endswith("s") and not word[0].endswith(("ss", "us", "is"))
+
+
 def merge_places(results: List[Dict[str, Any]], poses: List[tuple]) -> List[Dict[str, Any]]:
     """Every sighting as a head angle (from where the head really was for its view); the same thing seen from two
     neighbouring views is one place. The most tiles first, then the most central. Used by the robot and by the
@@ -519,6 +526,13 @@ def moved_note(hint: Dict[str, Any], found: bool) -> str:
     """What Andy says about where the thing was before (B46): moved, or not where it was left."""
     from andy_companion import places
 
+    if hint.get("yaw") is None:
+        # Kept in words only ("on the hall table", out of the camera's sight): Andy never looked there, so it cannot
+        # say the thing has moved (2026-10-28 review).
+        if found:
+            return f"Mention that they had told you it was {hint.get('where', '')}."
+        return (f"Say that they told you it was {hint.get('where', '')}, a place you can't see from here, so it may "
+                "well still be there.")
     who = "where they left it" if hint.get("told") else "where you saw it"
     when = places.ago(float(hint.get("at", 0)))
     if found:
@@ -563,8 +577,9 @@ async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any]
     where = chosen["where"] or hint.get("where", "")
     await asyncio.to_thread(board.show, "seen", f"Your {what}", [{"summary": where}] if where else [])
     places.saw(what, where, chosen["yaw"], chosen["pitch"])
-    kept = "where you left them" if hint.get("told") else "where I last saw them"
-    say = f"They're still {kept}" + (f", {where}" if where else "") + "."
+    many = plural(what)
+    kept = ("where you left " if hint.get("told") else "where I last saw ") + ("them" if many else "it")
+    say = ("They're" if many else "It's") + f" still {kept}" + (f", {where}" if where else "") + "."
     return {"found": True, "what": what, "where": where, "say": say, "looked_closer": True, "where_it_was": True,
             "_yaw": chosen["yaw"], "_pitch": chosen["pitch"],
             "how": ("You are pointing at it with your head now, and the picture is on the screen. Say exactly the words "

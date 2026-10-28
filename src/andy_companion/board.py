@@ -316,8 +316,13 @@ def _inbox_add(entry: Dict[str, Any]) -> None:
         _write(INBOX, items)
 
 
+MAX_LINK = 300
+
+
 def family_message(name: str, text: str = "", link: str = "", now: Optional[float] = None) -> None:
-    name, text, link = _tidy(name, NAME_LEN), _tidy(text), _tidy(link, 300)
+    if len(" ".join(str(link or "").split())) > MAX_LINK:   # never cut short into a broken address (2026-10-28 review)
+        raise ValueError(f"That link is too long. Send a shorter web address, up to {MAX_LINK} characters.")
+    name, text, link = _tidy(name, NAME_LEN), _tidy(text), _tidy(link, MAX_LINK)
     if not name or not (text or link):
         raise ValueError("A name and a message or link are needed.")
     if link and (any(ch in link for ch in " []<>\"'") or not re.match(r"^https?://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(?::\d+)?(/|$)", link)):
@@ -464,6 +469,16 @@ def delete_pending(item_id: str) -> bool:
     return True
 
 
+def drop_photo_notes(photo_id: str) -> int:
+    """A deleted photo's announcement goes with it: Andy never speaks of a picture that is gone (2026-10-28 review)."""
+    with locked(INBOX):
+        items = _read(INBOX, [])
+        keep = [e for e in items if not (e.get("type") == "photo" and e.get("photo") == photo_id)]
+        if len(keep) != len(items):
+            _write(INBOX, keep)
+    return len(items) - len(keep)
+
+
 def purge_legacy_transients() -> None:
     """Remove the previous disk-backed card and research results, without reading or logging their words."""
     SCREEN.unlink(missing_ok=True)
@@ -607,6 +622,15 @@ def tidy_photos(now: Optional[float] = None) -> int:
 IDLE_PHOTO_S = 180
 
 
+def _language() -> str:
+    """The household's language for words the screen shows (2026-10-28 review: a Spanish household saw English)."""
+    try:
+        from andy_companion import settings
+        return "es" if settings.get().get("language") == "es" else "en"
+    except Exception:
+        return "en"
+
+
 def idle_photo(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
     """The family photo for the screen while Andy is idle: each kept photo in turn, three minutes each."""
     now = time.time() if now is None else now
@@ -615,11 +639,13 @@ def idle_photo(now: Optional[float] = None) -> Optional[Dict[str, Any]]:
         return None
     pick = photos[int(now // IDLE_PHOTO_S) % len(photos)]
     meta = _read(pick.with_suffix(".json"), {}) or {}
-    when = datetime.fromtimestamp(meta.get("at") or pick.stat().st_mtime).strftime("%A")
+    from andy_companion import words
+    when = words.weekday(datetime.fromtimestamp(meta.get("at") or pick.stat().st_mtime), _language())
     return {"photo": pick.stem, "name": _tidy(meta.get("name", ""), NAME_LEN), "caption": _tidy(meta.get("caption", ""), 140),
             "when": when, "sample": bool(meta.get("sample"))}
 
 
 def show_photo(photo_id: str, name: str, caption: str = "", now: Optional[float] = None) -> None:
-    _transient("show", {"kind": "photo", "title": f"A photo from {_tidy(name, NAME_LEN)}", "photo": photo_id,
+    title = ("Una foto de {name}" if _language() == "es" else "A photo from {name}").format(name=_tidy(name, NAME_LEN))
+    _transient("show", {"kind": "photo", "title": title, "photo": photo_id,
                     "items": [{"summary": _tidy(caption, 140)}] if caption else [], "at": now or time.time()})
