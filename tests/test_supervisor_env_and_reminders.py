@@ -93,6 +93,11 @@ class Clock:
         return self.t
 
 
+def app_is_up(clock, state="ready"):
+    """The app reports what it is doing to the screen server several times a second once it has started."""
+    screen_server._live.update(state=state, at=clock.t)
+
+
 def borrow(mode_setter, due_at):
     mode_setter()
     reminders.add("take the evening tablets", at=due_at.strftime("%H:%M"), now=NOW)
@@ -111,6 +116,7 @@ def test_after_a_reminder_wakes_andy_from_quiet_it_goes_back_to_the_rest_of_the_
     assert back["mode"] == "quiet" and back["until"] == until.timestamp()
     clock = Clock(due_at)
     watch = supervisor.BackAfterReminder(clock)
+    app_is_up(clock)
     assert watch() is False                                     # not said yet
     for r in reminders.due(due_at):
         reminders.said(r["id"], now=due_at)
@@ -128,6 +134,7 @@ def test_after_a_reminder_wakes_andy_from_sleep_it_goes_back_to_sleep():
     borrow(lambda: state.asleep(NOW), due_at)
     clock = Clock(due_at)
     watch = supervisor.BackAfterReminder(clock)
+    app_is_up(clock)
     for r in reminders.due(due_at):
         reminders.said(r["id"], now=due_at)
     watch()
@@ -153,12 +160,34 @@ def test_talking_with_andy_after_the_reminder_keeps_it_awake_until_the_talk_ends
     assert watch() is True and state.current()["mode"] == "asleep"
 
 
+def test_with_no_word_from_the_app_andy_is_never_stopped_mid_conversation():
+    """The screen server could not start, so the app's live state never arrives: whether someone is talking is
+    unknown, and Andy stays awake after the reminder rather than stop a minute later mid-sentence (2026-10-28 review).
+    A report from before this run (an earlier awake spell) is no word from this one."""
+    screen_server._live.update(state="ready", at=(NOW - timedelta(hours=1)).timestamp())
+    due_at = NOW + timedelta(minutes=30)
+    borrow(lambda: state.asleep(NOW), due_at)
+    clock = Clock(due_at)
+    watch = supervisor.BackAfterReminder(clock)
+    for r in reminders.due(due_at):
+        reminders.said(r["id"], now=due_at)
+    watch()
+    for _ in range(3):
+        clock.t += supervisor.RESUME_IDLE_S
+        assert watch() is False and state.current()["mode"] == "awake"
+    app_is_up(clock)                                            # the app is heard from: the usual minute applies
+    assert watch() is False
+    clock.t += supervisor.RESUME_IDLE_S
+    assert watch() is True and state.current()["mode"] == "asleep"
+
+
 def test_a_quiet_spell_that_ended_meanwhile_leaves_andy_awake():
     state.quiet_for(40, now=NOW)
     due_at = NOW + timedelta(minutes=30)
     borrow(lambda: None, due_at)
     clock = Clock(due_at + timedelta(minutes=15))               # the quiet ended at 22:40
     watch = supervisor.BackAfterReminder(clock)
+    app_is_up(clock)
     for r in reminders.due(due_at):
         reminders.said(r["id"], now=due_at)
     watch()

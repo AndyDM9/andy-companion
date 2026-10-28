@@ -116,6 +116,8 @@ class BackAfterReminder:
         self.clock = clock
         self.said_at: Optional[float] = None
         self.busy_at = 0.0
+        self.started = clock()
+        self.unknown_noted = False
 
     def __call__(self) -> bool:
         now = self.clock()
@@ -133,6 +135,15 @@ class BackAfterReminder:
         if self.said_at is None:
             self.said_at = now
         live = screen_server._live            # the app's live state, reported to the screen in this process
+        if float(live["at"]) < self.started:
+            # Nothing reported since the app started (the screen server could not start, so nothing reaches it):
+            # whether someone is talking is unknown, so Andy stays, and the quiet minute counts from the first word.
+            # It was stopped mid-conversation a minute after the reminder (2026-10-28 review). Goodnight still works.
+            self.busy_at = now
+            if not self.unknown_noted:
+                self.unknown_noted = True
+                logger.info("No live state from the app; staying awake after the reminder")
+            return False
         if live["state"] not in ("", "ready") and now - float(live["at"]) <= screen_server.LIVE_STALE_S:
             self.busy_at = now
         if now - max(self.said_at, self.busy_at) < RESUME_IDLE_S:
