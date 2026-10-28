@@ -280,3 +280,35 @@ def test_endpoint_catalogue_does_not_claim_inference(doctor, live_fixture, monke
     doctor.live({'ANDY_VISION': 'off', 'ANDY_GUARD_URL': 'https://endpoint.invalid'})
     result = next(r for r in doctor.results if r[0] == 'Second look endpoint catalogue')
     assert result[1] is True and result[2] == 'model catalogue reachable; inference not tested'
+
+
+def test_a_port_held_by_another_project_is_named_not_passed(doctor):
+    """2026-10-28: another project's servers listened on Andy's voice and screen ports while Andy was stopped, and
+    the open-port checks passed as if they were Andy's."""
+    listing = 'LISTEN 0 2048 127.0.0.1:8765 0.0.0.0:* users:(("python",pid=62849,fd=21))'
+    other = lambda pid: ("", "/home/x/other/.venv/bin/python -u -m other_robot_app --robot --voice")   # noqa: E731
+    ours = lambda pid: ("andy-voice.service", ".venv/bin/python serve.py serve --llm_backend chat-completions")  # noqa: E731
+    assert doctor.others_on_port(8765, doctor.ANDYS_VOICE, listing, other) == ["other_robot_app"]
+    assert doctor.others_on_port(8765, doctor.ANDYS_VOICE, listing, ours) == []
+    by_hand = lambda pid: ("", "/repo/voice/.venv/bin/python serve.py serve --llm_backend chat-completions")  # noqa: E731
+    assert doctor.others_on_port(8765, doctor.ANDYS_VOICE, listing, by_hand) == []
+    script = lambda pid: ("", "/opt/voice/.venv/bin/python /home/x/other/local/sam_server.py --checkpoint m")  # noqa: E731
+    assert doctor.others_on_port(8090, doctor.ANDYS_SCREEN, listing, script) == ["sam_server.py"]
+    assert doctor.others_on_port(8090, doctor.ANDYS_SCREEN, listing,
+                                 lambda pid: ("andy.service", "python scripts/run_andy.py")) == []
+    assert doctor.others_on_port(8090, doctor.ANDYS_SCREEN, "", other) == []      # nothing listed: the port check stands
+    assert doctor.others_on_port(None, doctor.ANDYS_VOICE, listing, other) == []  # a remote voice address: not ours to read
+
+
+def test_only_a_local_voice_address_has_a_port_to_inspect(doctor, monkeypatch):
+    monkeypatch.delenv("HF_REALTIME_WS_URL", raising=False)
+    assert doctor.voice_port({}) == 8765
+    assert doctor.voice_port({"ANDY_VOICE_URL": "ws://127.0.0.1:9100/v1/realtime"}) == 9100
+    assert doctor.voice_port({"ANDY_VOICE_URL": "wss://voice.example/v1/realtime"}) is None
+
+
+def test_inspecting_a_port_never_fails_the_check_by_itself(doctor, monkeypatch):
+    def broken(*args, **kwargs):
+        raise OSError("ss unavailable")
+    monkeypatch.setattr(doctor.subprocess, "run", broken)
+    assert doctor.others_on_port(8765, doctor.ANDYS_VOICE) == []

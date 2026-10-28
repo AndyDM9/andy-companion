@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Audit of everything published, and the health check names who holds Andy's ports
+
+- The health check passed "Voice server" and "Screen and family page" while Andy was stopped: another project's
+  services (`heyandy-app`, `heyandy-sam`) listened on Andy's ports 8765 and 8090, and an open port read as Andy's.
+  It now names any other program listening there and fails with what to stop. **3 new cases**.
+- Verified: every test in both environments (CPU **1,899 / 17 skipped**, robot **1,945 / 2 skipped** before this
+  change); an anonymous clone with no keys installs and passes; the suite's tool list matches what the robot gives
+  the model; all **419** relative links in **76** Markdown files resolve; no key patterns or personal details in
+  tracked files; public wording rules hold.
+- Public demos: the screens Space was one file behind (finder.py) and now matches `c9d5f34`; the guided Space
+  matched but carried four compiled caches uploaded by mistake, now removed. Both rebuilt and every page opens;
+  the published Reachy Mini app matches `reachy_app/`.
+
 ### The final Serverless Job, and tool calls written as text are never spoken
 
 - Ran the current profile's suite as a Nebius Serverless Job: **91, 95 and 95 of 97**, the same input hashes as

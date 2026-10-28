@@ -167,8 +167,14 @@ def main() -> int:
         check("Tavily key", False, "missing", "add TAVILY_API_KEY to the env file")
 
     voice_up = voice_reachable(e)
-    check("Voice server", voice_up, "configured TCP address reachable; spoken turn not tested" if voice_up else
-          "configured address invalid or unreachable", "check ANDY_VOICE_URL / HF_REALTIME_WS_URL and start the voice server")
+    others = others_on_port(voice_port(e), ANDYS_VOICE) if voice_up else []
+    if others:
+        check("Voice server", False, f"Andy's voice port is held by {', '.join(others)}",
+              "stop that program first (only one program can listen there), then start andy-voice")
+    else:
+        check("Voice server", voice_up, "configured TCP address reachable; spoken turn not tested" if voice_up else
+              "configured address invalid or unreachable",
+              "check ANDY_VOICE_URL / HF_REALTIME_WS_URL and start the voice server")
     try:
         code, body = http("http://127.0.0.1:8000/api/daemon/status", timeout=3)
         state = json.loads(body).get("state")
@@ -177,8 +183,13 @@ def main() -> int:
         check("Reachy Mini daemon", False, "not reachable on 127.0.0.1:8000", "start Pollen's Reachy Mini daemon")
     check("Robot environment", (ROOT / "robot/.venv/bin/python").exists(), "", "cd robot && uv sync")
     check("Tesseract (reading letters)", bool(shutil.which("tesseract")), "", "sudo apt install tesseract-ocr")
-    check("Screen and family page", port_open(int(e.get("ANDY_SCREEN_PORT") or "8090")), "",
-          "they start with ./scripts/andy")
+    screen_port = int(e.get("ANDY_SCREEN_PORT") or "8090")
+    others = others_on_port(screen_port, ANDYS_SCREEN) if port_open(screen_port) else []
+    if others:
+        check("Screen and family page", False, f"Andy's screen port is held by {', '.join(others)}",
+              "stop that program first (only one program can listen there), then start andy")
+    else:
+        check("Screen and family page", port_open(screen_port), "", "they start with ./scripts/andy")
 
     from andy_companion import state
     s = state.current()
@@ -328,6 +339,74 @@ def lines_with_words(log: str) -> int:
     """How many lines of the voice server's log are not one of the kinds it may write (never what they say)."""
     return sum(1 for line in log.splitlines() if not VOICE_LOG_OK.match(line) or
                re.search(r"(?:^|\s)(?:USER|ASSISTANT|Live):", line))
+
+
+def voice_port(e: dict) -> int | None:
+    """The local port of the configured voice address, or None when it is not on this computer."""
+    url = os.environ.get("HF_REALTIME_WS_URL", e.get("ANDY_VOICE_URL", "ws://127.0.0.1:8765/v1/realtime"))
+    try:
+        address = urlsplit(url)
+        if address.hostname not in ("127.0.0.1", "localhost", "::1"):
+            return None
+        return address.port or (443 if address.scheme == "wss" else 80)
+    except ValueError:
+        return None
+
+
+# Whether a listening program is Andy's own, from its service and command line.
+ANDYS_VOICE = lambda unit, cmd: unit == "andy-voice.service" or "serve.py serve" in cmd   # noqa: E731
+ANDYS_SCREEN = lambda unit, cmd: (unit == "andy.service" or "scripts/run_andy.py" in cmd    # noqa: E731
+                                  or "andy_companion.supervisor" in cmd or "scripts/demo_screen.py" in cmd)
+
+
+def others_on_port(port: int | None, mine, listing: str | None = None, read=None) -> list:
+    """The programs other than Andy's listening on 127.0.0.1:port (2026-10-28: another project's voice and mask
+    servers held Andy's voice and screen ports, and an open port alone read as Andy's own). Empty when only Andy's,
+    or when it cannot be told: the open-port check stands then, as before."""
+    if port is None:
+        return []
+    if listing is None:
+        try:
+            result = subprocess.run(["ss", "-tlnpH", f"( sport = :{port} )"], capture_output=True, text=True, timeout=5)
+            if result.returncode or (result.stderr or "").strip():
+                return []
+            listing = result.stdout or ""
+        except (OSError, subprocess.SubprocessError):
+            return []
+    read = read or _process
+    found = []
+    for pid in sorted({int(x) for x in re.findall(r"pid=(\d+)", listing)}):
+        unit, cmd = read(pid)
+        if not mine(unit, cmd):
+            name = unit or _command_name(cmd) or f"process {pid}"
+            if name not in found:
+                found.append(name)
+    return found
+
+
+def _process(pid: int) -> tuple:
+    """(its service or "", its command line or "")."""
+    proc = Path("/proc") / str(pid)
+    try:
+        cmd = proc.joinpath("cmdline").read_bytes().replace(b"\0", b" ").decode(errors="replace")
+        groups = proc.joinpath("cgroup").read_text()
+    except OSError:
+        return "", ""
+    return next((part for part in reversed(groups.strip().split("/")) if part.endswith(".service")), ""), cmd
+
+
+def _command_name(cmd: str) -> str:
+    """A program's short name: a Python module or script rather than "python"."""
+    words = cmd.split()
+    if not words:
+        return ""
+    if "python" in words[0].rsplit("/", 1)[-1]:
+        rest = [w for w in words[1:] if not w.startswith("-") or w == "-m"]
+        if rest[:1] == ["-m"] and len(rest) > 1:
+            return rest[1]
+        if rest:
+            return rest[0].rsplit("/", 1)[-1]
+    return words[0].rsplit("/", 1)[-1]
 
 
 def other_robot_apps(listing: str | None = None, who=None) -> list | None:

@@ -20,6 +20,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
 
+## October 28 audit of the published parts
+
+- **Verified:** both test environments, an anonymous keyless clone, the tool list, 419 relative links, key and
+  wording scans, both Spaces and the app against the source (screens re-uploaded; four stray `.pyc` removed from
+  the guided Space).
+- **Fixed:** the health check now names a program other than Andy's on the voice or screen port (another
+  project's `heyandy-app` and `heyandy-sam` held 8765 and 8090, enabled at login). **3 new cases**; CPU **1,899 / 17**.
+- **Before filming:** those services must be stopped for Andy to start (founder's call; they belong to the other
+  project).
+
 ## October 28 final Serverless Job and tool markup
 
 - **Measured:** the current profile as a Nebius Serverless Job, **91, 95 and 95 of 97** ([scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json)),
