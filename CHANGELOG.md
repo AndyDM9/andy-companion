@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### On the robot: a first awake session, and the weather card's words
+
+- With the robot to ourselves (other projects stopped), Andy woke and ran a live session. Questions were played
+  through the robot's own speaker in a second voice (Qwen3-TTS "Serena", each checked with Parakeet first):
+  the time (clock tool; the founder heard it right), the weather (card and the glance at the screen), "where are
+  my glasses?" (**found real glasses on the keyboard, 4 places seen, 2 closer looks, 22.7 s**) and "what do you
+  see?" (camera answer, first audio 4.3 s). Long questions came through garbled (the robot's echo cancelling
+  hears its own speaker), so the scam question and Spanish are left for a real voice; no conclusion drawn from
+  them. The consent gate held: a misheard turn led to a proposal, not a save.
+- The weather card showed the Weather Service's Title Case ("Chance Showers And Thunderstorms") and "8:00PM EDT"
+  beside the clock's "11:16 am". The screen now writes forecasts as a sentence and alert times as the clock does;
+  Andy still gets the full original wording. **2 new cases**, 2 updated.
+- Seen and left as is: Pollen's audio set-up reads one microphone parameter back wrong on about half of starts
+  (`PP_MGSCALE`, 13 of 26 this week), upstream; recorded, not patched.
+
 ### Docs and code aligned after an independent claims review
 
 - **Moves taught by hand** (named, e.g. "Sofia's wave") were kept but not listed on the settings page, and

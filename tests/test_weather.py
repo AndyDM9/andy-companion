@@ -91,7 +91,7 @@ def test_the_screen_gets_temperature_and_a_short_forecast():
         {"name": "Tonight", "detailedForecast": "Mostly clear.", "shortForecast": "Mostly Clear", "temperature": 81,
          "probabilityOfPrecipitation": {"value": 10}}]}}
     p = weather.forecast(1, 2, opener=op)["periods"][0]
-    assert p["temperature"] == "81°" and p["short"] == "Mostly Clear" and p["rain"] == 10
+    assert p["temperature"] == "81°" and p["short"] == "Mostly clear" and p["rain"] == 10
 
 
 def test_the_weather_tile_refreshes_in_the_background_and_only_with_a_town(monkeypatch):
@@ -148,6 +148,19 @@ def test_the_tv_card_is_titled_with_the_town_and_carries_the_temperatures(tmp_pa
 def test_an_alert_on_the_screen_keeps_what_and_until_when():
     from andy_companion.weather import short_alert
     assert short_alert("Rip Current Statement issued October 25 at 7:43AM EDT until October 28 at 2:00AM EDT by NWS Miami FL") \
-        == "Rip Current Statement until October 28 at 2:00AM EDT"
+        == "Rip Current Statement until October 28 at 2:00 am"
     assert short_alert("Flood Watch issued October 25 at 3:10PM EDT by NWS Miami FL") == "Flood Watch"
     assert short_alert("Heat Advisory") == "Heat Advisory"
+    assert short_alert("Coastal Flood Warning issued October 28 at 4:12AM EDT until October 28 at 8:00PM EDT by NWS "
+                       "Miami FL") == "Coastal Flood Warning until October 28 at 8:00 pm"      # seen on the robot
+    assert short_alert("Heat Advisory until 7 PM EDT") == "Heat Advisory until 7 pm"
+    assert short_alert("Wind Advisory until 6:00PM CST") == "Wind Advisory until 6:00 pm"
+
+
+def test_a_short_forecast_reads_as_a_sentence():
+    from andy_companion.weather import sentence_case
+    assert sentence_case("Chance Showers And Thunderstorms then Slight Chance Showers And Thunderstorms") \
+        == "Chance showers and thunderstorms then slight chance showers and thunderstorms"     # seen on the robot
+    assert sentence_case("Mostly Sunny") == "Mostly sunny"
+    assert sentence_case("Areas Of Fog") == "Areas of fog"
+    assert sentence_case("") == ""

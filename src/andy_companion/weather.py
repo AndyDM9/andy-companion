@@ -63,9 +63,19 @@ def where(opener: Optional[Callable] = None) -> Dict[str, Any]:
 
 def short_alert(headline: str) -> str:
     """For a screen: 'Rip Current Statement issued October 25 at 7:43AM EDT until October 28 at 2:00AM EDT by NWS
-    Miami FL' -> 'Rip Current Statement until October 28 at 2:00AM EDT'. Andy is given the whole headline."""
+    Miami FL' -> 'Rip Current Statement until October 28 at 2:00 am', the time as the screen's clock writes it
+    (2026-10-28, on the robot's TV: "8:00PM EDT" beside "11:16 am"). Andy is given the whole headline."""
     out = re.sub(r"\s+issued\s+.*?(?=\s+until\s+|\s+by\s+|$)", "", headline, count=1)
-    return re.sub(r"\s+by\s+NWS\b.*$", "", out).strip() or headline
+    out = re.sub(r"\s+by\s+NWS\b.*$", "", out).strip() or headline
+    return re.sub(r"\b(\d{1,2}(?::\d\d)?)\s*([AP])M(?:\s+[A-Z]{1,2}[DS]T)?\b",
+                  lambda m: f"{m.group(1)} {m.group(2).lower()}m", out)
+
+
+def sentence_case(forecast: str) -> str:
+    """The Weather Service's short forecasts come in Title Case ("Chance Showers And Thunderstorms"); the screen
+    writes them as a sentence ("Chance showers and thunderstorms"), like every other line on it."""
+    words = forecast.split()
+    return " ".join([words[0]] + [w if w.isupper() and len(w) > 1 else w.lower() for w in words[1:]]) if words else ""
 
 
 def forecast(lat: float, lon: float, periods: int = 3, opener: Optional[Callable] = None) -> Dict[str, Any]:
@@ -75,7 +85,7 @@ def forecast(lat: float, lon: float, periods: int = 3, opener: Optional[Callable
         raise WeatherError("The National Weather Service has no forecast for this place.")
     raw = (_get(url, opener).get("properties") or {}).get("periods") or []
     items = [{"name": str(p.get("name", ""))[:40], "forecast": " ".join(str(p.get("detailedForecast", "")).split())[:300],
-              "short": " ".join(str(p.get("shortForecast", "")).split())[:80],
+              "short": sentence_case(str(p.get("shortForecast", "")))[:80],
               "temperature": (f"{p['temperature']}°" if isinstance(p.get("temperature"), (int, float)) else ""),
               "rain": (p.get("probabilityOfPrecipitation") or {}).get("value")}
              for p in raw[:periods]]
