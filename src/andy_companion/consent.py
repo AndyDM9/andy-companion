@@ -226,6 +226,20 @@ class Confirmation:
 
 _default = Confirmation()
 
+# Sleep only when the person asked for it. Twice on 2026-10-28 a misheard scrap of a turn (10 characters, cut short)
+# put Andy to sleep in the middle of a conversation; the person had said nothing of the kind.
+SLEEP_ASKED = re.compile(
+    r"\b(?:sleep|asleep|good ?night|night night|bed|bye|goodbye|see you|rest|that'?s all|turn (?:yourself )?off|"
+    r"switch off|shut (?:down|off)|stop listening|power off|dormir|duerme|du[eé]rmete|buenas noches|adi[oó]s|"
+    r"hasta (?:luego|mañana|pronto)|descansa|ap[aá]gate|cama|deja de escuchar)\b", re.I)
+NOT_ASKED_TO_SLEEP = {"asleep": False,
+                      "how": "Not going to sleep: the person did not ask for it (no goodnight, bye or sleep in what they "
+                             "said). Carry on; if what they said was unclear, ask them kindly to say it again."}
+
+
+def sleep_asked(words: str) -> bool:
+    return bool(SLEEP_ASKED.search(str(words or "").replace("’", "'")))
+
 
 def _session(obj):
     deps = getattr(obj, "deps", None)
@@ -287,6 +301,8 @@ def install(handler_class=None, routine_class=None) -> bool:
     @wraps(run)
     async def gated(self, *args, **kwargs) -> Any:
         name = getattr(self, "tool_name", "")
+        if name == "go_to_sleep" and not sleep_asked(_session(self).words):
+            return dict(NOT_ASKED_TO_SLEEP)
         if name == "read_letter":
             denied = _session(self).camera_read_check()
             if denied is not None:

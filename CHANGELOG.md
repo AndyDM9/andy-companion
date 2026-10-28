@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Sleep only when asked
+
+- Twice on the robot today a misheard scrap of a turn (10 characters, cut short) made the model call `go_to_sleep`
+  mid-conversation; the person had said nothing of the kind. The tool gate now lets Andy sleep only when the
+  person's last words ask for it (goodnight, bye, sleep, bed, rest, that's all, turn off; buenas noches, adiós,
+  hasta mañana, dormir, apágate…); otherwise the model is told to carry on or ask again. **18 new cases**.
+
 ### The final runs on the final code
 
 - **Nebius Serverless Job, suite 2026-10-28a: 92, 93 and 94 of 97.** The keys case no longer fails. Photo-story and

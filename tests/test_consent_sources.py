@@ -123,3 +123,44 @@ def test_a_yes_never_releases_a_proposal_that_was_not_read_back():
     gate.said(again["say"])
     gate.hear("Yes.")
     assert gate.authorize("remember_fact", {"fact": "A different fact"})["saved"] is False   # the payload is bound
+
+
+@pytest.mark.parametrize("words, asked", [
+    ("Goodnight, Andy.", True), ("Good night", True), ("Andy, go to sleep.", True), ("Bye for now.", True),
+    ("That's all for today, thank you.", True), ("I'm off to bed.", True), ("You can rest now.", True),
+    ("Turn off, please.", True), ("Buenas noches, Andy.", True), ("Adiós.", True), ("Hasta mañana.", True),
+    ("Andy, stop.", False), ("What do you remember about me?", False), ("Andy, ¿qué hora es?", False),
+    ("Remember me", False), ("", False), ("Tell me a story about a bedouin", False),
+])
+def test_sleep_only_when_the_person_asked(words, asked):
+    """2026-10-28: twice a misheard scrap of a turn put Andy to sleep mid-conversation."""
+    assert consent.sleep_asked(words) is asked
+
+
+def test_the_gate_refuses_go_to_sleep_without_a_request():
+    import asyncio
+    from types import SimpleNamespace
+
+    class Handler:
+        def __init__(self):
+            self.deps = SimpleNamespace()
+
+        def _emit_transcript(self, role, text, final=True):
+            pass
+
+    ran = []
+
+    class Routine:
+        def __init__(self, deps):
+            self.deps, self.tool_name, self.args_json_str = deps, "go_to_sleep", "{}"
+
+        async def __call__(self, *a, **k):
+            ran.append(True)
+            return {"ok": True}
+
+    assert consent.install(Handler, Routine)
+    handler = Handler()
+    handler._emit_transcript("user", "What do you remember about me?")
+    assert asyncio.run(Routine(handler.deps)()) == consent.NOT_ASKED_TO_SLEEP and ran == []
+    handler._emit_transcript("user", "Goodnight, Andy.")
+    assert asyncio.run(Routine(handler.deps)()) == {"ok": True} and ran == [True]
