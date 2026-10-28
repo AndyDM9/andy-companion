@@ -20,6 +20,13 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
 
+## October 28 functional sweep
+
+- **On the robot, by clips and the founder's voice:** 15 live-test rows checked today (1, 2, 3c, 3d, 3e, 3ee, 3gg,
+  3k, 3m, 3n, 3q, 3t, 3x, 3bb, 13, 20), each noting how it was seen. A due reminder was said unprompted on time.
+- **Open:** the Spanish switch by voice (not reached by clip), the antenna wiggle and chimes (not observed), letters'
+  cards seen by Claude (the founder confirmed them), the 30-attempt finder measure.
+
 ## October 28 deep review
 
 - **Motion:** looks hold past their longest wait and replace each other in the same tick; one search at a time;

@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### A functional sweep on the robot
+
+- With the robot to itself, Claude played 21 short requests through the robot's own speaker in a second voice (each
+  checked with Parakeet first) and read the logs (tool names and timings only) and the TV. Worked on the robot: the
+  time, two jokes, On this day (Wikipedia credited), "What's on today?", the umbrella forecast, local news, louder and
+  softer, a story and "Andy, stop", "What do you remember about me?", a reminder set for two minutes and **said
+  unprompted on time**, the keys' readback and, after a yes, kept where Andy saw them, forgetting a place, "Goodnight"
+  (sleep) and the offline wake phrase (awake in 5 s). Recorded in `docs/live-test.md` with what was and wasn't seen.
+- Found: a misheard scrap put Andy to sleep (fixed: the sleep guard); with "my keys are on the hall table" the model
+  also started a search in the same turn and Pollen logged a pending-call error before recovering (left as is);
+  clips played while Andy speaks are lost to echo cancelling, and speech in the room mixes in, so the Spanish switch
+  was not reached by clip. Test entries were deleted afterwards; the volume is 85 after louder-then-softer.
+
 ### Sleep only when asked
 
 - Twice on the robot today a misheard scrap of a turn (10 characters, cut short) made the model call `go_to_sleep`
