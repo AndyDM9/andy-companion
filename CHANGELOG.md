@@ -24,6 +24,12 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
   model, held by code" and the decisions index's "Start here".
 - **Also checked:** the settings page in headless Chrome at phone and desktop widths (no error, no sideways scroll,
   no text under 17 px).
+- **Every setting documented:** `docs/settings.md` lists all 70 `ANDY_*` variables the code reads, each default taken
+  from the code, and which ones the env file passes on (the others only work from the shell: `ANDY_GIGGLE=off` in the
+  env file does nothing). Writing it found `.env.example`'s offline-eyes address wrong: it ended in `/v1`, and Andy
+  adds `/v1/chat/completions` itself.
+- **The robot test record** marks tonight's no-voice checks as partial for 3y (the photo announced and described) and
+  3l (the letter's card on the TV), with what still needs someone in the room, and 3y's expected words updated.
 
 ### Everything that needs no one at home, checked on the robot
 

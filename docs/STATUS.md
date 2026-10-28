@@ -31,6 +31,9 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Prepared as video.md asks:** sample landscapes and the two 2026-10-13 facts deleted. Kept: a daily 8:00 am
   reminder, a moment of October 25, a note shared on October 25 (the founder's to keep or delete).
 - **Decisions 0043 to 0045** written for the evening's choices; the settings page renders cleanly (phone, desktop).
+- **Every setting documented** in `docs/settings.md` (70 `ANDY_*` variables, defaults from the code); `.env.example`'s
+  offline-eyes address corrected (no `/v1`). Not fixed, seen: started outside the desktop service with a non-default
+  screen port only in the env file, the app would send captions to 8090 (it reads the port before loading the file).
 - **Tests:** CPU **2,103 / 20 skipped**.
 
 ## October 28 night: everything checked that needs no one at home

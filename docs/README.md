@@ -10,6 +10,7 @@ everything else is. Review-entry links checked 2026-10-28.
 |---|---|
 | [judging.md](judging.md) | Start a review: actions/expected results, evidence for the four criteria, public demos, a fresh clone, reproducible checks and real-robot access |
 | [features.md](features.md) | What Andy does, in full, feature by feature |
+| [settings.md](settings.md) | Every `ANDY_*` setting the code reads: its default, what it changes, where it goes (the env file or the shell) |
 | [architecture.md](architecture.md) | How the parts fit: the robot, the home computer, Nebius and the web; what each module owns and must not reach into |
 | [decisions/](decisions/README.md) | Why each choice was made, one record per decision, with the options weighed and when to revisit |
 | [research.md](research.md) | The research behind Andy's behaviour: what older adults have said they want, and how other robots find things |
