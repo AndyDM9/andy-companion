@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The final Serverless Job, and tool calls written as text are never spoken
+
+- Ran the current profile's suite as a Nebius Serverless Job: **91, 95 and 95 of 97**, the same input hashes as
+  the October 27 local runs (93, 94, 94). README, Devpost source, judges' guide and scorecard index cite both.
+- Its letter-2 failure was a reply made only of `<tool_call> <function=read_letter </function>`: Nemotron wrote
+  the call out as text. The speech package speaks any text, so `voice/serve.py` now takes tool-call markup out of
+  every sentence before it is spoken (wrapping the package's own `remove_markdown`), logging only a character count.
+  The health check's voice-log rule accepts that line. Reported in the Nemotron feedback.
+- The job's bundle had outgrown Nebius's 64 KB once encoded again on the way; it is now sent as xz bytes (39.9 KB),
+  and `job-entry.sh` still reads base64 bundles.
+- Rules and updates re-read live: unchanged. Added `docs/images/social-preview.png` for the repository's social
+  preview (the founder uploads it in GitHub's settings).
+- **14 new cases**; the filter checked against the installed speech package. Not yet heard on the robot.
+
 ### The repository as a judge sees it
 
 - Reviewed the GitHub page, README and demos from a judge's side. Both public demos run and open in

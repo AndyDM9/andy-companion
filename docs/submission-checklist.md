@@ -150,7 +150,8 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] On the robot: the new sharing readback, a refusal, a changed topic, and a remembered photo story
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
-- [x] Current text profile evaluated locally: 93, 94 and 94 of 97, input/code hashes recorded; final submission-time Serverless Job and physical trials remain separate
+- [x] Current text profile evaluated locally: 93, 94 and 94 of 97, input/code hashes recorded; physical trials remain separate
+- [x] The final Serverless Job of the current profile: 91, 95 and 95 of 97 (2026-10-28, same input hashes; [scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json))
 - [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
 
 ## Stage one: pass/fail
@@ -262,7 +263,9 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       with short notes: the video link, the Devpost link, the two public demos, the judges' guide
       (`docs/judging.md`), and that the repository stays unchanged at this tag through judging (2026-12-15)
 - [ ] *(founder, in the browser)* **The repository's social preview image**: Settings → General → Social preview,
-      the Devpost thumbnail (1280×640 works best), so a shared link shows Andy instead of GitHub's text card
+      upload `docs/images/social-preview.png` (1280×640, made 2026-10-28: the name, the one line, the **Be careful**
+      card from the sample screen, labelled as such), so a shared link shows Andy instead of GitHub's text card.
+      Swap in a robot photo later if one makes a better card
 - [ ] The live rules page re-read the day before submitting (amendments take effect when posted)
 
 ## Through judging (to 2026-12-15)

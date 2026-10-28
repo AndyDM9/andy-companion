@@ -29,7 +29,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **93, 94 and 94 of 97** in the current local text suite, with real confirmation/camera-source checks and synthetic tools; an earlier profile scored **96, 95 and 92 of 97** as Nebius Serverless Jobs ([current](evals/results/suite-2026-10-27-consent-source-local.json), [earlier](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json))
+- **91, 95 and 95 of 97** text cases for the current profile as a Nebius Serverless Job, and **93, 94 and 94** in local runs, with real confirmation/camera-source checks and synthetic tools ([Job](evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json), [local](evals/results/suite-2026-10-27-consent-source-local.json))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -238,6 +238,12 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools and the
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
+- **Current profile as a Nebius Serverless Job: 91, 95 and 95 of 97** (2026-10-28;
+  [scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json)), the same inputs as the local runs below (matching hashes).
+  Photo-story memory offers failed all three runs; once each, a future-event offer, an activity-reminder offer,
+  accepting a refusal without offering more, a story read word for word, the Spanish crisis reply's "someone you
+  trust", a keys memory offer worded as if already kept, and a letter case where Nemotron wrote the reading tool's
+  call out as text instead of making it. Andy's voice server no longer speaks such text (since 2026-10-28).
 - **Current profile, local text suite: 93, 94 and 94 of 97** (2026-10-27;
   [scorecard](evals/results/suite-2026-10-27-consent-source-local.json)), with synthetic tool results and real confirmation/source checks.
   Photo-story memory offers fail each run; supportive-response completeness and accepting a refusal
@@ -245,13 +251,12 @@ are checked in code, not by the judge.
 - **Watch routing:** [20/20 streaming checks](evals/results/watch-routing-2026-10-26.json) on invented
   requests/non-requests; the founder subsequently confirmed a working local watch search, untimed.
   This does not add a scored pointing trial or validate the entire physical finder.
-- **Earlier profile, latest Nebius Serverless Job: 96, 95 and 92 of 97** (2026-10-25, with the daily medicine reminders;
+- **Earlier profile, Nebius Serverless Job: 96, 95 and 92 of 97** (2026-10-25, with the daily medicine reminders;
   [scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)). Seven cases failed at least once, each but one seen varying before: a photo
   read as a letter (photo-4, twice), and once each a search made as well as research (look-1), a hard question
   answered without the bigger model (think-1), a riddle and a photo story without their tools (riddle-1, photo-1),
   the Spanish crisis reply without "someone you trust" (crisis-3), and the new one, an ordinary bill's account
-  number read aloud (letter-3): Andy's code now hides such numbers in every letter it is given. The final run comes
-  at submission. Before that, 93, 92 and 92 of 94 ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)),
+  number read aloud (letter-3): Andy's code now hides such numbers in every letter it is given. Before that, 93, 92 and 92 of 94 ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)),
   and 92, 91 and 94 ([2026-10-20](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)).
 - **Before, as a Job:** 79, 79 and 79 of 81 (2026-10-13;
   [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)).
@@ -425,12 +430,15 @@ What doesn't work yet, and what our numbers don't show.
   tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **Text behaviour still varies:** the latest three local runs scored **93, 94 and 94 of 97**
-  with the actual confirmation/source checks and synthetic tools ([scorecard](evals/results/suite-2026-10-27-consent-source-local.json)).
-  Photo-story memory offers failed all three runs; supportive-response completeness and accepting
-  a refusal twice each; future-event offer, activity-reminder offer and new-story wording once each. The gate prevents an unapproved save; it does not make
-  the model consistently offer one. Letter/quoted-message cases passed these runs, but this is not a
-  guarantee for every wording. Earlier profiles and intermediate audit failures remain published.
+- **Text behaviour still varies:** the current profile scored **91, 95 and 95 of 97** as a Nebius Serverless
+  Job and **93, 94 and 94** locally, with the actual confirmation/source checks and synthetic tools
+  ([Job](evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json), [local](evals/results/suite-2026-10-27-consent-source-local.json)). Photo-story memory offers failed every run in both;
+  the rest varied: a refusal accepted with something more offered, a reminder or memory offer missed or worded as
+  if already kept, a story not read word for word, a supportive or crisis reply missing a line. The gate prevents
+  an unapproved save; it does not make the model consistently offer one. In one Job run a letter case got no
+  spoken warning: Nemotron wrote the reading tool's call out as text instead of making it. Andy no longer speaks
+  such text, but that turn reads nothing; the **Be careful** card comes once the letter is read. Earlier profiles
+  and intermediate audit failures remain published.
 - **What the numbers measure, and what they don't:**
   - the 1.06 s starts when your words are understood (Parakeet's transcript), not when you stop speaking: the wait
     for the end of your words comes before it and is not in the figure;

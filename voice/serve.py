@@ -12,6 +12,12 @@ no limit on how long that goes on. On 2026-10-13, continuous speech near the rob
 and each pause re-transcribed the whole turn. `cap_turns` stops reopening a turn once it holds
 MAX_TURN_S of audio: new speech starts a new turn instead (ANDY_MAX_TURN_S; 0 turns the cap off).
 
+Nemotron sometimes writes a tool call out as text instead of making it: on 2026-10-28, in the suite run as a
+Nebius Serverless Job, a letter case's whole reply was "<tool_call> <function=read_letter </function>". The
+speech package speaks any text it is given, so `unspoken_tool_markup` takes such markup out of each sentence
+before it is spoken (wrapping the package's own remove_markdown, which every spoken sentence goes through).
+Only how many characters were left out is logged, never the text.
+
 The Token Factory key comes from the environment (NEBIUS_API_KEY, from run.sh's private .env file), never
 the command line: any process on this shared computer can read a command line (`ps`), but only this user
 can read a process's environment. `key_from_environment` adds it to the arguments inside this process.
@@ -21,6 +27,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -65,6 +72,33 @@ def cap_turns(vad_class, max_turn_s: float = MAX_TURN_S) -> None:
     vad_class._should_reopen_current_turn = should_reopen
 
 
+TOOL_MARKUP = re.compile(r"<tool_call>.*?(?:</tool_call>|\Z)|</?tool_call>|<function=.*?(?:</function>|\Z)"
+                         r"|</?function>|</?parameter(?:=[^>]*)?>", re.S)
+
+
+def unspoken_tool_markup(text: str) -> str:
+    """The text without any tool call the model wrote out instead of making it."""
+    kept = TOOL_MARKUP.sub(" ", text)
+    if kept == text:
+        return text
+    logger.info("voice: a tool call written as text was not spoken (%d characters)", len(text) - len(kept.strip()))
+    return " ".join(kept.split())
+
+
+def no_tool_markup_spoken(modules) -> None:
+    """Every module's remove_markdown (each spoken sentence goes through it) first takes out tool-call markup."""
+    for module in modules:
+        original = module.remove_markdown
+        if getattr(original, "_andy_no_tool_markup", False):
+            continue
+
+        def remove_markdown(text, *args, _original=original, **kwargs):
+            return _original(unspoken_tool_markup(text), *args, **kwargs)
+
+        remove_markdown._andy_no_tool_markup = True
+        module.remove_markdown = remove_markdown
+
+
 def key_from_environment(argv: list, environ=os.environ) -> list:
     """The arguments with the model key added from NEBIUS_API_KEY, unless one was given already."""
     if any(a == "--responses_api_api_key" or a.startswith("--responses_api_api_key=") for a in argv):
@@ -80,6 +114,9 @@ if __name__ == "__main__":
     from speech_to_speech.VAD.vad_handler import VADHandler
 
     cap_turns(VADHandler)
+    from speech_to_speech.LLM import base_openai_compatible_language_model, language_model
+
+    no_tool_markup_spoken([base_openai_compatible_language_model, language_model])
     from speech_to_speech.cli import main
 
     sys.argv[0] = "speech-to-speech"

@@ -35,14 +35,16 @@ run() {
   # compressed bundle, unpacked in the container before the suite runs.
   BUNDLE="$(mktemp)"; trap 'rm -f "$BUNDLE"; jobs_left' EXIT; trap 'exit 130' INT TERM
   # xz, not gzip: by 2026-10-20 the gzip bundle had grown to 49.6 KB, over the limit once base64 is added.
-  tar -C "$ROOT" -cf - "${FILES[@]}" | xz -9e | base64 -w0 > "$BUNDLE"
+  # 2026-10-28: the files are encoded once more on the way, and 53 KB of base64 came to over 64 KB ("plaintext must
+  # not exceed 65536 bytes", for all injected files together), so the bundle now travels as the xz bytes themselves.
+  tar -C "$ROOT" -cf - "${FILES[@]}" | xz -9e > "$BUNDLE"
   echo "Bundle: $(wc -c < "$BUNDLE") bytes for ${#FILES[@]} files"
   nebius ai job create --async --name "$NAME" --parent-id "$PROJECT" \
     --image python:3.12-slim \
     --container-command "sh" \
     --args "/andy/job-entry.sh $RUNS ${ANDY_SUITE_ARGS:-}" \
     --inject-file "$ROOT/cloud/job-entry.sh:/andy/job-entry.sh" \
-    --inject-file "$BUNDLE:/andy/bundle.b64" \
+    --inject-file "$BUNDLE:/andy/bundle.xz" \
     --env-secret "NEBIUS_API_KEY=$SECRET" \
     --platform cpu-d3 --preset 2vcpu-8gb --disk-size 20Gi \
     --timeout 1h --restart-policy never >/dev/null

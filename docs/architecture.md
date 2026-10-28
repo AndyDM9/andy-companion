@@ -257,7 +257,8 @@ remain. Without AbortController, the status guard caps requests but cannot cance
 - `scripts/doctor.py --live`: the health check before filming.
 - No log line holds conversation text: `privacy.py` redacts the app's records as they are made,
   and `voice/serve.py` silences the transcript prints of every console in the voice server ("USER:",
-  "ASSISTANT:" and, since 2026-10-25, "Live:"). The filter is not trusted alone: `scripts/doctor.py --live`
+  "ASSISTANT:" and, since 2026-10-25, "Live:"). Since 2026-10-28 it also takes out any tool call the model wrote
+  as text (`<tool_call>`, `<function=…>`) before a sentence is spoken, logging only how many characters. The filter is not trusted alone: `scripts/doctor.py --live`
   reads the last day of the voice log and fails on any line that is not one of the kinds it may write
   (decision 0017).
 - A reminder's words are kept as said, less a time at their end ("take a pill at eight" is kept as "take a

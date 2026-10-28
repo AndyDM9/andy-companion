@@ -45,8 +45,8 @@ Andy is a small home robot for older adults who live at home, and the family who
 letter and by phone: adults 60 and over reported about $3 billion lost to fraud in 2025 ([FTC](https://search.ftc.gov/news-events/news/press-releases/2026/10/ftc-issues-annual-report-congress-agencys-actions-protect-older-adults)). Andy reads the
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
-messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [96, 95 and 92 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) text cases passed with the previous profile; both evaluations ran as Nebius
-Serverless Jobs. The current profile scored [93, 94 and 94 of 97 in three local text-suite runs](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-consent-source-local.json), with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
+messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [91, 95 and 95 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) text cases passed with the current profile; both evaluations ran as Nebius
+Serverless Jobs. Three local runs of the same profile scored [93, 94 and 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-consent-source-local.json); each run has the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Eight models run
   on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
@@ -162,12 +162,11 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- Current text-suite runs scored [93, 94 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-consent-source-local.json), with real confirmation/source checks and synthetic tools.
-  Photo-story memory offers fail all three runs; accepting a refusal and supportive-response completeness
-  twice each; future-event offers, activity-reminder offers and new-story wording once each.
-  No unapproved write effect was reported. The older Serverless Job scores
-  predate these changes. A working watch search is founder-confirmed and untimed; physical measurements
-  and the final submission-time Serverless Job remain pending.
+- The current profile scored [91, 95 and 95 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) as a Nebius Serverless Job and [93, 94 and 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-consent-source-local.json)
+  locally, with real confirmation/source checks and synthetic tools. Photo-story memory offers fail every run; other
+  offers, a refusal, a story and a crisis reply vary. Once, Nemotron wrote the letter-reading tool's call out as text
+  instead of making it; Andy no longer speaks such text. No unapproved write effect was reported. A working watch
+  search is founder-confirmed and untimed; physical measurements remain pending.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.

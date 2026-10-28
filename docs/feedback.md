@@ -63,6 +63,10 @@ immediate.
   you looked into: <the question>", it started the same research again, seven times in five minutes (2026-10-25,
   on the robot), and "stop searching" had nothing to stop. Wording the hand-over as finished ("do not call it
   again") and a guard in code fixed it; a note on tool re-invocation from tool results would help agent builders.
+- **Tool calls written as text:** in one of three suite runs (2026-10-28) a letter case's whole reply was
+  `<tool_call> <function=read_letter </function>`, a malformed call in the content instead of `tool_calls`. A voice
+  pipeline speaks whatever content it gets; we now strip such markup before speech. A server-side check that never
+  returns tool-call markup as content would protect every voice builder.
 - **Adversarial pages:** filling a structured card from a scam letter, it put the scam's own demand in
   "to do". The decision had to move into code.
 
@@ -210,7 +214,8 @@ HTTPS address and the plain IP:port refused a request without it (2026-10-25).
 - **The cheapest GPU isn't easy to find:** L40S is offered only in eu-north1, and the endpoints guide's only example
   is an H100. Showing the cheapest GPU per region in the endpoint form would cut a prototype's cost at once.
 - **Jobs accept at most 64 KB of injected files.** We ship a compressed bundle, and on 2026-10-20 the suite's
-  outgrew it (49.6 KB gzipped is 66 KB in base64); xz brought it to 44 KB. A way to mount a folder or object
+  outgrew it (49.6 KB gzipped is 66 KB in base64); xz brought it to 44 KB. On 2026-10-28 it was refused again ("plaintext must not exceed 65536 bytes"):
+  the files are encoded once more inside the limit, so 40 KB of xz sent as base64 text is over it, and sent as bytes it fits. A way to mount a folder or object
   storage into a job would end this.
 - **AI Cloud bills separately from Token Factory.** That means a second card and a top-up.
 - **A job's whole request may hold 64 KB, and a new account may run two VMs at once.** Our scam evaluation

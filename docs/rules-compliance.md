@@ -8,6 +8,11 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 final Serverless Job: the current profile scored 91, 95 and 95 of 97 on Nebius (the same
+inputs as the local 93, 94, 94); README, Devpost source and judges' guide cite both, failures included. The
+voice server now leaves tool-call markup unspoken; no model, provider, licence or access change. Rules
+re-read live on 2026-10-28 (through a browser request): dates, video and requirements unchanged.
+
 October 28 repository review (judge's view): the README gains a plain-text tests badge (no logo,
 like the other two). The video, the release and the social preview are prepared as checklist steps,
 not done: the README keeps saying the video is pending until a public video exists. PLAN's older
