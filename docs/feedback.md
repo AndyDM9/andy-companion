@@ -171,9 +171,12 @@ minutes), then 3.5 s per description.
 
 **Used for:** speech to text, locally, in Hugging Face's speech-to-speech server.
 **Worked:** 0.02 to 0.08 s per utterance on the desktop's GPU. Excellent for a home robot.
-**Needs work:** nothing we could measure in the model itself. What a home robot misses is who is speaking: with two
-people in the room Andy can't tell their words apart, so it keeps nothing about a person in company. Speaker turns
-from the same model, on the same GPU, would be the next thing we'd use.
+**Needs work:** no way to say which languages to expect. On the robot (2026-10-28), one turn of the founder's
+accented English and one muffled turn came out in Cyrillic, detected as Ukrainian and Russian, and the conversation
+model answered in Russian. Andy speaks English and Spanish, so we now treat another alphabet as unclear and ask again.
+A list of allowed languages at decode time (we would pass `en,es`) would fix this at the source for every bilingual
+assistant. What a home robot also misses is who is speaking: with two people in the room Andy can't tell their words
+apart, so it keeps nothing about a person in company. Speaker turns from the same model would be the next thing we'd use.
 **Onboarding (zero to hello world):** it worked out of the box in speech-to-speech. The only work was privacy: the server prints
 every transcript to the console whatever `--log_transcripts` says, so we filter those prints. A later version added
 live transcription ("Live: …", printed as rich Text) that our filter didn't know: heard words reached the journal for ten
