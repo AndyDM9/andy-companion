@@ -71,8 +71,12 @@ QUOTED_ASKS = {
     ("share", True): "Ese mensaje me pide que comparta algo con su familia. Solo lo hago cuando usted me lo pide, así "
                      "que no he compartido nada."}
 QUOTE_MARKS = ":\"'“‘« "
-_SPANISH = re.compile(r"[ñ¿¡]|\b(s[ií]|lea|l[eé]ame|este|esta|mensaje|correo|texto|carta|nota|dice|familia|"
-                      r"recuerda|recuerde|guarda|guarde|comparte|compártelo|por favor)\b")
+# Spanish words, for the language of Andy's fixed words. A few keywords missed most Spanish: "Recuérdame a las cinco…"
+# got its memory question in English (2026-10-28), and "Mi nieta tiene su recital el jueves" would have too.
+_SPANISH = re.compile(r"[ñ¿¡]|\b(s[ií]|lea|l[eé]ame|este|esta|mensaje|correo|texto|carta|nota|dice|familia|hija|hijo|"
+                      r"recuerda|recuerde|guarda|guarde|comparte|compártelo|compartir|por favor)\b")
+_SPANISH_SMALL = re.compile(r"\b(el|la|los|las|que|de|del|mi|mis|su|sus|es|en|con|por|para|una|un|y|tiene|tengo|"
+                            r"viene|vienen|voy|va|hoy|mañana)\b")
 
 _last: Dict[str, str] = {"words": ""}
 CONFIRM_FOR_S = 120.0
@@ -126,7 +130,8 @@ def spoken_message(words: str) -> bool:
 
 
 def _spanish(text: str) -> bool:
-    return bool(_SPANISH.search(text.lower()))
+    words = str(text).lower()
+    return bool(_SPANISH.search(words)) or len(_SPANISH_SMALL.findall(words)) >= 2
 
 
 def _normal(text: str) -> str:
@@ -153,6 +158,14 @@ def readback(name: str, arguments: dict, content: str, spanish: bool = False) ->
             many = what.lower().endswith("s") and not what.lower().endswith(("ss", "us", "is"))
             return (f"¿Quiere que recuerde dónde {'están' if many else 'está'} {what}: {where}?" if spanish else
                     f"Shall I remember where your {what} {'are' if many else 'is'}: {where}?")
+    if re.search(r"[.!?]\s+\S", content) or len(content) > 80:
+        # More than a sentence inside the question ("Shall I remember this: “… We swam every single day.”") lost its
+        # question mark when read out, and sounded like something kept (a photo's story, 2026-10-28): the words
+        # first, then the question. Read back alone, a story sounded like a recording of it; a thank-you first is
+        # right for a happy story and a sad one alike.
+        body = content.strip() if content.strip()[-1:] in ".!?" else content.strip() + "."
+        return (f"Gracias por contármelo. «{body}» ¿Quiere que lo recuerde?" if spanish else
+                f"Thank you for telling me. “{body}” Shall I remember that?")
     return f"¿Quiere que recuerde esto: “{content}”?" if spanish else f"Shall I remember this: “{content}”?"
 
 
@@ -249,7 +262,7 @@ class Confirmation:
             return dict(NOT_SHARED)
         # A bare yes with nothing read back yet (the model asked in its own words) prepares the exact proposal
         # below, which needs its own fresh yes; refusing it sent the model round the same question (2026-10-28).
-        spanish = bool(re.search(r"\b(s[ií]|familia|hija|hijo|recuerda|guarde|compartir)\b", text))
+        spanish = _spanish(text)
         question = readback(name, arguments, content, spanish)
         self.pending = {"name": name, "fingerprint": fingerprint, "question": question, "spoken": False,
                         "until": self.clock() + CONFIRM_FOR_S}

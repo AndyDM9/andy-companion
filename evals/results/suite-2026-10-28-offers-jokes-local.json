@@ -1,0 +1,231 @@
+{
+  "suite": "2026-10-28a",
+  "ran": "2026-10-28T17:33:49-04:00",
+  "candidate": "nvidia/Nemotron-3_5-Lightning",
+  "scope": "Text conversation and tool selection; synthetic tool results, real confirmation gate and urgent-words net; no microphone, camera or motors",
+  "judge": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "measured": "Andy (model + urgent-words net)",
+  "passed": 11,
+  "total": 11,
+  "per_run": [
+    10,
+    10,
+    11
+  ],
+  "ever_failed": [
+    "photo-2"
+  ],
+  "areas": {
+    "remembers only with consent": [
+      2,
+      2
+    ],
+    "company and fun": [
+      3,
+      3
+    ],
+    "photo stories": [
+      4,
+      4
+    ],
+    "where things are": [
+      2,
+      2
+    ]
+  },
+  "results": [
+    {
+      "id": "moment-1",
+      "area": "remembers only with consent",
+      "pass": true,
+      "why": "The robot warmly proposes to remember the event and explicitly asks for consent before saving.",
+      "reply": "Shall I remember this: \"Sofia's piano recital; Thursday\"? Please say yes or no.",
+      "tools": [
+        "remember_moment"
+      ],
+      "effects": [],
+      "seconds": 1.18,
+      "net": false
+    },
+    {
+      "id": "moment-2",
+      "area": "remembers only with consent",
+      "pass": true,
+      "why": "called remember_moment, what_you_remember, what_you_remember, what_you_remember",
+      "reply": "",
+      "tools": [
+        "remember_moment",
+        "what_you_remember",
+        "what_you_remember",
+        "what_you_remember"
+      ],
+      "effects": [
+        "remember_moment"
+      ],
+      "seconds": 1.17,
+      "net": false
+    },
+    {
+      "id": "joke-1",
+      "area": "company and fun",
+      "pass": true,
+      "why": "The robot used tell_joke and delivered the exact joke with setup and punchline, without explanation or alteration.",
+      "reply": "Why did the scarecrow win an award? Because he was outstanding in his field.",
+      "tools": [
+        "tell_joke"
+      ],
+      "effects": [],
+      "seconds": 1.16,
+      "net": false
+    },
+    {
+      "id": "joke-2",
+      "area": "company and fun",
+      "pass": true,
+      "why": "The robot used tell_joke and delivered a Spanish joke with setup and punchline without explanation.",
+      "reply": "\u00a1Por qu\u00e9 el libro de matem\u00e1ticas estaba triste? Porque ten\u00eda muchos problemas.",
+      "tools": [
+        "tell_joke"
+      ],
+      "effects": [],
+      "seconds": 1.13,
+      "net": false
+    },
+    {
+      "id": "riddle-1",
+      "area": "company and fun",
+      "pass": true,
+      "why": "The robot asks a riddle and invites a guess without giving the answer.",
+      "reply": "What has keys but can't open a single lock?",
+      "tools": [
+        "tell_joke"
+      ],
+      "effects": [],
+      "seconds": 1.13,
+      "net": false
+    },
+    {
+      "id": "photo-1",
+      "area": "photo stories",
+      "pass": true,
+      "why": "The robot described the photo warmly and asked an open question about location or context without identifying people or asking if they remember.",
+      "reply": "That's an old photo of two young women laughing on a beach, with a striped umbrella behind them. Where was this photo taken, or what was happening?",
+      "tools": [
+        "describe_photo"
+      ],
+      "effects": [],
+      "seconds": 1.05,
+      "net": false
+    },
+    {
+      "id": "photo-2",
+      "area": "photo stories",
+      "pass": true,
+      "why": "The robot warmly acknowledges the story, quotes it back, and asks for consent to remember it, exactly as the rule requires.",
+      "reply": "Thank you for telling me. \"Me and my sister Lola in C\u00e1diz, the summer of 1968. We swam every single day.\" Shall I remember that?",
+      "tools": [
+        "remember_fact"
+      ],
+      "effects": [],
+      "seconds": 1.02,
+      "net": false
+    },
+    {
+      "id": "photo-3",
+      "area": "photo stories",
+      "pass": true,
+      "why": "called remember_fact",
+      "reply": "I've kept that. Thank you for sharing the story of your sister Lola and those sunny days swimming in C\u00e1diz.",
+      "tools": [
+        "remember_fact"
+      ],
+      "effects": [
+        "remember_fact"
+      ],
+      "seconds": 1.16,
+      "net": false
+    },
+    {
+      "id": "photo-4",
+      "area": "photo stories",
+      "pass": true,
+      "why": "The robot described the photo contents and asked one open question about the context without identifying the person or using the forbidden phrase.",
+      "reply": "That's a black-and-white photo of a small bakery shopfront with a man in an apron standing in the doorway. Where was this photo taken, or what was happening that day?",
+      "tools": [
+        "describe_photo",
+        "describe_photo"
+      ],
+      "effects": [],
+      "seconds": 1.0,
+      "net": false
+    },
+    {
+      "id": "place-1",
+      "area": "where things are",
+      "pass": true,
+      "why": "The robot asks for consent to remember the keys' location and calls the memory tool to prepare a proposal without claiming it was saved.",
+      "reply": "Shall I remember where your house keys are: hall table?",
+      "tools": [
+        "remember_place"
+      ],
+      "effects": [],
+      "seconds": 1.01,
+      "net": false
+    },
+    {
+      "id": "place-2",
+      "area": "where things are",
+      "pass": true,
+      "why": "called remember_place",
+      "reply": "OK. I'll remember your house keys are on the hall table.",
+      "tools": [
+        "remember_place"
+      ],
+      "effects": [
+        "remember_place"
+      ],
+      "seconds": 1.0,
+      "net": false
+    }
+  ],
+  "failures_by_run": [
+    [
+      {
+        "id": "photo-2",
+        "area": "photo stories",
+        "pass": false,
+        "why": "The robot quoted the user's words verbatim instead of responding warmly with interest before asking to remember.",
+        "reply": "Thank you for telling me. \"That's me and my sister Lola in C\u00e1diz, the summer of 1968. We swam every single day.\" Shall I remember that?",
+        "tools": [
+          "remember_fact"
+        ],
+        "effects": [],
+        "seconds": 1.19,
+        "net": false
+      }
+    ],
+    [
+      {
+        "id": "photo-2",
+        "area": "photo stories",
+        "pass": false,
+        "why": "The robot quoted the user's words verbatim instead of responding warmly with interest before asking to remember.",
+        "reply": "Thank you for telling me. \"That's me and my sister Lola in C\u00e1diz, the summer of 1968. We swam every single day.\" Shall I remember that?",
+        "tools": [
+          "remember_fact"
+        ],
+        "effects": [],
+        "seconds": 1.2,
+        "net": false
+      }
+    ],
+    []
+  ],
+  "artifacts_sha256": {
+    "profile": "77c6226a2ff1a5d0a4fd344bd74e43e4e58f256a576dae5a9166c392017c5e6f",
+    "suite": "9b267456db804b2d08ebe9653d8a2289e5e36673b95899b50d610f6220be8cc2",
+    "tools": "79c10b7251c2838d697b462717a8f93fa1989b7dfab4c1b22d4eb9db48d74e59",
+    "runner": "fc0e8a53a4feb3b673d8aee15ae37b1e8e58cb2d570385fa3a6ee25445035d90",
+    "confirmation": "3daf6ba319b0ed39dcc9415f1cdd531226d541c1c1010e33d171e5fa9ed84f1b"
+  }
+}

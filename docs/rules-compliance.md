@@ -8,9 +8,10 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
-October 28 evening fixes: the README, Devpost source, judges' guide and scorecard index now cite the evening's
-Serverless Job, 94, 95 and 96 of 97 (the afternoon's 92, 93 and 94 kept and linked), and the nine permission cases'
-9, 9 and 9 of 9; the limitations still say a photo story's memory offer fails most runs and that a written tool call
+October 28 evening fixes: the README, Devpost source, judges' guide and scorecard index now cite three Serverless
+Jobs on the final code, 94.2 of 97 on average over nine runs (the afternoon's 92, 93 and 94 and the evening's
+intermediate runs kept and linked), and the nine permission cases' 9, 9 and 9 of 9; the README's new "A fast model,
+held by code" cites only measured before-and-after figures from these scorecards; the limitations still say a photo story's memory offer fails most runs and that a written tool call
 that fits no tool leaves a silent turn. The changes are Andy's own code and wording (a written tool call made as the
 real call, fixed words for quoted messages, a Spanish crisis example in *usted*): no new model, provider, service,
 data flow, licence or access. No condition names or outcome claims added.

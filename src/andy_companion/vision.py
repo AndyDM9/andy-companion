@@ -209,7 +209,7 @@ SWITCHED_OFF = "My eyes are switched off right now, so I can't see. They can be 
 # How to talk about a photo (PLAN B35): one open question, and a story kept only after a yes.
 PHOTO_HOW = ("Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or "
              "what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then "
-             "call remember_fact to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, "
+             "call remember_fact with a short line of their story. If confirmation_needed, read its 'say' exactly, "
              "wait for a yes, then call remember_fact again with the same fact. Do this before asking another question. "
              "Nothing is kept before confirmation.")
 

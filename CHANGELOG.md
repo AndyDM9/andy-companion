@@ -5,6 +5,30 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Memory offers decided in code, jokes as words to say, the suite measured nine times
+
+- **A note in code on the person's turn** (`turn_notes.py`, in the voice server and the suite): something coming up
+  with its day ("Sofia has her recital on Thursday"), or a photo's story just told, gets Andy's own note in that
+  request only, so the memory offer is prepared first; questions, requests to Andy, quoted messages, a no and anything
+  already asked for get none (in both suites, only moment-1 and photo-2 do). A future event's offer was missed in 6
+  of 12 runs, then 1 of 15. A photo's story now always gets the real offer through the consent check.
+- **A story read back first, asked about last:** a memory question holding more than a sentence reads "Thank you for
+  telling me. “…” Shall I remember that?". Read as "Shall I remember this: “… every single day.”", its question mark
+  was lost, and it sounded like something already kept.
+- **The question in the person's language:** a few Spanish keywords missed most Spanish ("Recuérdame a las cinco…"
+  got an English question); common small words now count too, and a place's accent ("Cádiz") does not.
+- **Jokes and riddles as words to say:** given the setup, punchline and pacing, Nemotron said the pacing too
+  ("**Setup:** … (a moment of silence…)", 2 of 15 runs), and the riddle's "I'll cheer a right guess"; now the tool
+  gives the words (0 of 12 runs; 26 of 26 local tries clean). The photo guidance's "one short line in their words",
+  which Nemotron quoted back, is "a short line of their story" in the tool, its suite copy and the profile.
+- **Tried and dropped:** a warm sentence before every memory question (in the profile and the tool's guidance): the
+  model then opened with "I'll remember…" or "I've noted…" before asking, a false claim. Reverted.
+- **Measured on the final code:** three Nebius Serverless Jobs, nine runs, **94.2 of 97 on average** (93 to 96),
+  against 93.2 over the nine runs earlier that day ([1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json), [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json)); the evening's
+  intermediate Jobs (94, 95, 96; 95, 93, 95; 97, 94, 97) kept. Still failing most runs: photo-2, where the judge wants
+  a warmer word before the story is read back. The README gains "A fast model, held by code": each catch in code
+  with its before-and-after runs; the headline, Devpost source, judges' guide and scorecard index cite the nine runs.
+
 ### Three of Nemotron's reply problems fixed, with the robot back on USB
 
 The robot was plugged back in: the daemon still held the unplugged motor connection ("Motor communication error"), so

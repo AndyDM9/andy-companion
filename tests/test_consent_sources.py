@@ -196,3 +196,31 @@ def test_quoted_words_offered_as_permission_get_words_to_say(words, said):
     gate.hear(words)
     result = gate.authorize('remember_fact', {'fact': 'Enjoys gardening.'})
     assert result['reason'] == 'quoted_content' and result['say'] == said and not gate.used
+
+
+# 2026-10-28: "Recuérdame a las cinco…" got its memory question in English; a few keywords missed most Spanish.
+@pytest.mark.parametrize('words,spanish', [
+    ('Recuérdame a las cinco de la tarde llamar a mi hermana Rosa.', True),
+    ('Mi nieta tiene su recital el jueves.', True),
+    ('Fuimos al parque con mi prima.', True),
+    ('Sí, por favor.', True),
+    ("That's me and my sister Lola in Cádiz, the summer of 1968. We swam every single day.", False),   # a place's accent
+    ('I like a la carte dinners on Thursday.', False),
+    ('My granddaughter Sofia has her piano recital on Thursday.', False),
+])
+def test_the_question_is_asked_in_the_persons_language(words, spanish):
+    gate = consent.Confirmation()
+    gate.hear(words)
+    question = gate.authorize('remember_moment', {'what': 'A recital', 'day': 'Thursday'})['say']
+    assert question.startswith('¿Quiere') is spanish
+
+
+def test_a_story_is_read_back_first_and_asked_about_last():
+    gate = consent.Confirmation()
+    gate.hear("That's me and my sister Lola in Cádiz, the summer of 1968. We swam every single day.")
+    story = "Me and my sister Lola in Cádiz, the summer of 1968. We swam every single day."
+    assert gate.authorize('remember_fact', {'fact': story})['say'] == (
+        f"Thank you for telling me. “{story}” Shall I remember that?")
+    gate = consent.Confirmation()
+    gate.hear('I enjoy gardening.')
+    assert gate.authorize('remember_fact', {'fact': 'Enjoys gardening.'})['say'] == 'Shall I remember this: “Enjoys gardening.”?'

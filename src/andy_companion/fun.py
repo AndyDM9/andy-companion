@@ -104,12 +104,10 @@ RIDDLES: Dict[str, List[tuple]] = {
 }
 
 HOW = {
-    "joke": ("Tell it in your own voice: the setup, a short pause, then the punchline, word for word. Don't "
-             "explain it or laugh at it yourself. Then let them react, and enjoy it with them. One at a time; "
-             "tell another only if they ask."),
-    "riddle": ("Ask the riddle and let them guess; there's no hurry. Whatever they say, be warm: a right guess "
-               "gets a cheer, a wrong one gets the answer gently, never a correction. If they say 'tell me', "
-               "give the answer."),
+    "joke": ("Say 'say' exactly, then stop and let them react, and enjoy it with them. Don't explain it or laugh "
+             "at it yourself. One at a time; tell another only if they ask."),
+    "riddle": ("Say 'say' exactly and stop, so they can guess; there's no hurry. Only when they answer: a right "
+               "guess gets a cheer, a wrong one the answer, gently, never a correction; 'tell me' gets the answer."),
 }
 
 
@@ -146,5 +144,7 @@ def pick(kind: str = "joke", language: str = "en", now: Optional[float] = None, 
     _write(told)
     first, second = pool[i]
     if kind == "riddle":
-        return {"riddle": first, "answer": second, "how": HOW["riddle"]}
-    return {"setup": first, "punchline": second, "how": HOW["joke"]}
+        return {"riddle": first, "answer": second, "say": first, "how": HOW["riddle"]}
+    # The joke as words to say: given the setup, the punchline and how to pace them, Nemotron sometimes said the
+    # pacing too ("**Setup:** … (a moment of silence…)", twice in one Job on 2026-10-28).
+    return {"setup": first, "punchline": second, "say": f"{first} {second}", "how": HOW["joke"]}

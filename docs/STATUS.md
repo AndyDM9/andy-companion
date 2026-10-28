@@ -15,10 +15,28 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M5 | Tavily | 🔨 Built; research, its stop and the scam check tried on the robot by voice 2026-10-28 (live-test 3e, 3ee, 3x); local news and links family send pending | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
 | M6 | Eyes | 🔨 Built; finding measured on the robot; letters and "what do you see?" tried on the robot 2026-10-28 (live-test 3k, 7); the offline eyes on the robot pending | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20); on 2026-10-28, informally, real glasses found three times out of three (17 to 23 s) and keys once (16 s), not the 30-attempt measure. Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
-| M8 | Proof | 🔨 Built; final Serverless Job done, physical trials pending | Current text profile: **94, 95, 96 of 97 as a Nebius Serverless Job** (2026-10-28 evening, suite 2026-10-28a), real consent gate and synthetic tools; earlier that day 92, 93, 94; 91, 95, 95; and 94, 93, 92. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
+| M8 | Proof | 🔨 Built; final Serverless Job done, physical trials pending | Current text profile: **94.2 of 97 on average over nine runs as Nebius Serverless Jobs** (93 to 96; the final code of 2026-10-28, suite 2026-10-28a), real consent gate and synthetic tools; the nine runs earlier that day averaged 93.2. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
+
+## October 28 evening, later: memory offers in code, the suite nine times
+
+- **Memory offers:** `turn_notes.py` adds Andy's own note to a turn about something coming up with its day, or a
+  photo's story, in that request only. moment-1 missed in 6 of 12 runs before, 1 of 15 after; photo-2 always makes the
+  real offer now, but the judge fails it in 7 of 9 runs for want of a warmer word before the story is read back.
+- **Read-back and language:** a memory question holding more than a sentence reads the words first and asks last,
+  after "Thank you for telling me."; the question's language uses common Spanish words ("Recuérdame…" was asked in
+  English). Jokes and riddles come as words to say (their pacing had been said aloud).
+- **Tried and dropped:** a warm sentence before every memory question made the model claim "I'll remember…" first.
+- **Measured:** final code, three Jobs, nine runs: **94, 93, 94; 95, 94, 94; 94, 96, 94**, mean **94.2 of 97**
+  ([1](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json), [2](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [3](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json)). Focused, local: memory offers and jokes 10, 10, 11 of 11;
+  Spanish and memory offers 10, 10, 10 of 11 (photo-2); permission cases 9, 9, 9 of 9 again.
+- **Still open:** photo-2's warmth; rare empty replies (3 in 18 evening runs, cause not recorded by the suite); the
+  welcome-back greeting sometimes adds a question (greet-1, 3 of 9), left alone because its words are copied into
+  the suite.
+- **On the robot:** Andy and the voice server run this code (restarted after each change).
+- **Tests:** CPU **2,065 / 20 skipped**.
 
 ## October 28 evening: three reply problems fixed, the robot back on USB
 
@@ -897,6 +915,10 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 | Date | What | Result |
 |---|---|---|
+| 2026-10-28 17:46 | **The final code, two more Nebius Serverless Jobs** (suite 2026-10-28a) | **95, 94, 94** and **94, 96, 94**; with 17:40's, nine runs, mean **94.2 of 97**; photo-2 7 of 9, greet-1 and story-3 3 each ([1](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [2](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json)) |
+| 2026-10-28 17:40 | **The final code as a Nebius Serverless Job** (after the read-back's language fix) | **94, 93, 94**; photo-2 every run, moment-1 once (garbled arguments) ([scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json)) |
+| 2026-10-28 17:33 | **Nebius Serverless Job: jokes as words to say, a story asked about last** | **97, 94, 97**; photo-2, es-5 (a reminder taken as a memory, asked in English) and story-3 once each ([scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-173300.json)) |
+| 2026-10-28 17:22 | **Nebius Serverless Job: notes for memory offers** | **95, 93, 95**; moment-1 every run passed; photo-2 every run (the judge wants warmth), joke-2 twice (its pacing said aloud) ([scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-172243.json)) |
 | 2026-10-28 17:00 | **The current profile as a Nebius Serverless Job, after the evening's fixes** (suite 2026-10-28a) | **94, 95, 96 of 97**; photo-2 every run; moment-1, look-1 (empty reply) and chat-5 once each; crisis-3, act-2 and day-2 passed every run ([scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json)) |
 | 2026-10-28 17:03 | **Focused permission cases, local, after the evening's fixes** | **9, 9, 9 of 9** ([scorecard](../evals/results/consent-source-2026-10-28-evening-local.json)); 45 more replies (5 runs) and inject-1 five times: none failed, no instruction said aloud |
 | 2026-10-28 16:57 | **Crisis cases, five runs, local** | **25 of 25**; crisis-3 in *usted* with "someone you trust" every run ([scorecard](../evals/results/suite-2026-10-28-crisis-local.json)) |

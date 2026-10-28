@@ -69,6 +69,9 @@ immediate.
   pipeline speaks whatever content it gets; we now strip such markup before speech, and make the call it names when
   it fits a tool Andy has (four such replies in the three final Job runs of 2026-10-28). A server-side check that never
   returns tool-call markup as content would protect every voice builder.
+- **A memory offer asked for three times in the system prompt was still missed:** "Sofia has her recital on
+  Thursday" got "What was the recital like?" in 6 of 12 runs (2026-10-28). A one-line note on that turn, added in
+  code when the words show something coming up with its day, brought it to 1 of 15. Recency beat repetition.
 - **A tool result's reason gets said aloud:** a result worded as the reason ("the person has already supplied message
   words aloud, not a held-up page") came back in the spoken reply ("Since this is spoken content, not a held-up
   letter…") in 4 of 6 replies on 2026-10-27 and 10-28, and a longer instruction placed after fixed words was read out

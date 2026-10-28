@@ -15,7 +15,8 @@ RUNS="${ANDY_SUITE_RUNS:-3}"
 # Everything the suite needs in the container (tests/test_suite_tools.py keeps this list complete).
 FILES=(evals/run_suite.py evals/suite.json evals/tools.json profiles/companion/profile.md
        src/andy_companion/__init__.py src/andy_companion/urgent.py src/andy_companion/offers.py
-       src/andy_companion/recall.py src/andy_companion/consent.py src/andy_companion/tool_text.py)
+       src/andy_companion/recall.py src/andy_companion/consent.py src/andy_companion/tool_text.py
+       src/andy_companion/turn_notes.py)
 
 # shellcheck source=cloud/secret.sh
 . "$ROOT/cloud/secret.sh"

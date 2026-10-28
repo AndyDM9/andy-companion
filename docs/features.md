@@ -19,7 +19,7 @@ the evidence below and [current status](STATUS.md) when describing what has been
 | Talk, know the day and set reminders | On the robot on 2026-10-28: the time, today's plan, talking over Andy, and a reminder said on time (live-test 2, 3m, 3c, 13) | The core filming pass |
 | Tavily lookups and background research | Runtime integrations, written-case comparisons and source displays; research, its stop and the scam check tried on the robot on 2026-10-28 (live-test 3e, 3ee, 3x) | Local news and a link family send, on the robot |
 | Local Cosmos vision fallback | Simulation and camera-IPC fallback checks, with no retained frame/description | Optional real voice/finder fallback demonstration after the core tasks pass; full offline conversation is not provided |
-| Memory/photo-story offers | Permission enforced in code; [current text runs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json) retain inconsistent offers | Treat the offer as variable; use verified explicit requests in demonstrations and do not promise an automatic offer every time |
+| Memory/photo-story offers | Permission enforced in code; [current text runs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json) retain inconsistent offers | Treat the offer as variable; use verified explicit requests in demonstrations and do not promise an automatic offer every time |
 
 The fixed 30-attempt plan is our measurement protocol, not a hackathon eligibility threshold. It
 stores fixed labels, outcomes and times only; all attempts count, including errors. Code tests,

@@ -21,6 +21,10 @@ too: `written_calls_made` holds a written call back from the reply's words as th
 ends without a real call, makes the calls it names (andy_companion.tool_text: only tools Andy has, with their own
 parameters). The tool's answer then reaches the model as for any call. Only the tools' names are logged.
 
+When the person mentions something coming up with its day, or tells the story behind a photo, `notes_added` adds
+Andy's own note to their turn in the request (andy_companion.turn_notes), so the model prepares the memory offer it
+kept missing; the note is never kept in the conversation, and only its kind is logged.
+
 Andy speaks English and Spanish. Parakeet hears 25 languages and writes what it thinks it heard: on 2026-10-28 two
 turns on the robot, an accented one and a muffled one, came out in Cyrillic (detected as Ukrainian and Russian),
 and Andy answered one in Russian. `only_our_languages` takes a transcript in another alphabet as unclear (Andy asks
@@ -42,7 +46,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from andy_companion import tool_text  # noqa: E402
+from andy_companion import tool_text, turn_notes  # noqa: E402
 from andy_companion.privacy import is_transcript_print  # noqa: E402
 
 
@@ -192,6 +196,26 @@ def written_calls_made(handler_class, kinds) -> None:
         setattr(handler_class, name, events)
 
 
+def notes_added(handler_class) -> None:
+    """Each request carries Andy's own note on the person's turn when it needs one, in the request only."""
+    original = handler_class._serialize
+    if getattr(original, "_andy_notes", False):
+        return
+
+    def serialize(self, active_chat):
+        messages = original(self, active_chat)
+        if not isinstance(messages, list):
+            return messages
+        noted = turn_notes.with_note(messages)
+        if noted is not messages:
+            logger.info("voice: a note was added to the turn (%s)",
+                        "a photo's story" if turn_notes.note_for(messages) == turn_notes.PHOTO else "something coming up")
+        return noted
+
+    serialize._andy_notes = True
+    handler_class._serialize = serialize
+
+
 OUR_LANGUAGES = ("en", "es")
 # Worded so the model asks again: tried on Nemotron 3.5 Lightning with Andy's profile, 6 of 6 in each language,
 # at the start of a conversation and after it; a plainer "[The words could not be made out.]" set off random tools.
@@ -245,6 +269,7 @@ if __name__ == "__main__":
     from speech_to_speech.LLM.chat_completions_language_model import ChatCompletionsApiModelHandler
 
     written_calls_made(ChatCompletionsApiModelHandler, base_openai_compatible_language_model)
+    notes_added(ChatCompletionsApiModelHandler)
     from speech_to_speech.STT.parakeet_tdt_handler import ParakeetTDTSTTHandler
 
     only_our_languages(ParakeetTDTSTTHandler)

@@ -26,13 +26,13 @@ from typing import Optional
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "src"))   # Andy's own urgent-words net, the same code the robot runs
 try:
-    from andy_companion import consent, offers, recall, tool_text, urgent
+    from andy_companion import consent, offers, recall, tool_text, turn_notes, urgent
 except ImportError:  # pragma: no cover
-    consent = offers = recall = tool_text = urgent = None
+    consent = offers = recall = tool_text = turn_notes = urgent = None
 # The photo tool's own guidance, copied (this file stays standard library only; a test keeps the two the same).
 PHOTO_HOW = ("Say in one or two warm sentences what is in it, then ask one open question about it: where it was taken, or "
              "what was happening. Offer nothing else yet. When they tell you its story, say one warm sentence about it, then "
-             "call remember_fact to prepare one short line in their words. If confirmation_needed, read its 'say' exactly, "
+             "call remember_fact with a short line of their story. If confirmation_needed, read its 'say' exactly, "
              "wait for a yes, then call remember_fact again with the same fact. Do this before asking another question. "
              "Nothing is kept before confirmation.")
 BASE = os.environ.get("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1/").rstrip("/")
@@ -158,15 +158,18 @@ def fake_result(name: str, case: Optional[dict] = None) -> dict:
         args = (case or {}).get("_args", {})
         if args.get("kind") == "riddle":
             return {"riddle": "What has keys but can't open a single lock?", "answer": "A piano.",
-                    "how": "Ask the riddle and let them guess; there's no hurry. Whatever they say, be warm: a right guess "
-                           "gets a cheer, a wrong one gets the answer gently, never a correction. If they say 'tell me', give the answer."}
+                    "say": "What has keys but can't open a single lock?",
+                    "how": "Say 'say' exactly and stop, so they can guess; there's no hurry. Only when they answer: a right "
+                           "guess gets a cheer, a wrong one the answer, gently, never a correction; 'tell me' gets the answer."}
         if args.get("language") == "es":
             return {"setup": "¿Por qué el libro de matemáticas estaba triste?", "punchline": "Porque tenía muchos problemas.",
-                    "how": "Tell it in your own voice: the setup, a short pause, then the punchline, word for word. Don't "
-                           "explain it or laugh at it yourself. Then let them react, and enjoy it with them. One at a time; tell another only if they ask."}
+                    "say": "¿Por qué el libro de matemáticas estaba triste? Porque tenía muchos problemas.",
+                    "how": "Say 'say' exactly, then stop and let them react, and enjoy it with them. Don't explain it or "
+                           "laugh at it yourself. One at a time; tell another only if they ask."}
         return {"setup": "Why did the scarecrow win an award?", "punchline": "Because he was outstanding in his field.",
-                "how": "Tell it in your own voice: the setup, a short pause, then the punchline, word for word. Don't "
-                       "explain it or laugh at it yourself. Then let them react, and enjoy it with them. One at a time; tell another only if they ask."}
+                "say": "Why did the scarecrow win an award? Because he was outstanding in his field.",
+                "how": "Say 'say' exactly, then stop and let them react, and enjoy it with them. Don't explain it or "
+                       "laugh at it yourself. One at a time; tell another only if they ask."}
     if name == "story":         # shaped like andy_companion.stories (part 2 of the O. Henry when carrying on)
         args = (case or {}).get("_args", {})
         how = ("Read 'text' aloud exactly as written, word for word, at an easy pace, with feeling but no voices or "
@@ -290,8 +293,10 @@ def run_case(case: dict, system: str) -> dict:
                         permission.authorize(fn["name"], json.loads(fn.get("arguments") or "{}"))
                 permission.said(entry.get("content") or "")
         permission.hear(case["say"])
-    msg = as_on_the_robot(chat(CANDIDATE, [{"role": "system", "content": system}, *history,
-                                           {"role": "user", "content": case["say"]}], tools=tool_specs()))
+    asked = [{"role": "system", "content": system}, *history, {"role": "user", "content": case["say"]}]
+    if turn_notes is not None:   # as on the robot: Andy's own note on the turn, in this request only
+        asked = turn_notes.with_note(asked)
+    msg = as_on_the_robot(chat(CANDIDATE, asked, tools=tool_specs()))
     seconds = round(time.time() - started, 2)
     first = " ".join(str(msg.get("content") or "").split())
     spoken = [first] if first else []

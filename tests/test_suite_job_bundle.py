@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parent.parent
 BIG = random.Random(1).randbytes(60_000)
 SUITE_FILES = ("evals/run_suite.py evals/suite.json evals/tools.json profiles/companion/profile.md "
                "src/andy_companion/__init__.py src/andy_companion/urgent.py src/andy_companion/offers.py "
-               "src/andy_companion/recall.py src/andy_companion/consent.py src/andy_companion/tool_text.py")
+               "src/andy_companion/recall.py src/andy_companion/consent.py src/andy_companion/tool_text.py "
+               "src/andy_companion/turn_notes.py")
 
 pytestmark = pytest.mark.skipif(not all(shutil.which(t) for t in ("tar", "xz", "base64")),
                                 reason="needs tar, xz and base64")
