@@ -91,6 +91,59 @@ def test_listener_stops_when_told_to():
     assert wake.heard(iter([b"x"] * 100), rec, should_stop=lambda: True, check_every=1) is None
 
 
+def test_a_stalled_sound_server_never_stops_the_wake_checks(monkeypatch):
+    """parec gives nothing (a stalled sound server): the listener still asks, about once a second, whether a reminder
+    has come due, and stops parec when it has. A plain read waited forever (2026-10-28 review)."""
+    import os
+    import threading
+
+    read_end, write_end = os.pipe()            # nothing is ever written: the pipe stays open and silent
+    stopped = []
+
+    class Parec:
+        def __init__(self, *args, **kwargs):
+            self.stdout = os.fdopen(read_end, "rb", buffering=0)
+
+        def terminate(self):
+            stopped.append(True)
+
+        def wait(self, timeout=None):
+            return 0
+
+    monkeypatch.setattr(wake.subprocess, "Popen", Parec)
+    asked, out = [], []
+    rec = FakeRecognizer([])
+
+    def reminder_due():
+        asked.append(True)
+        return len(asked) >= 2
+
+    listener = threading.Thread(target=lambda: out.append(wake.heard(wake.mic_chunks("robot"), rec, reminder_due)),
+                                daemon=True)
+    listener.start()
+    listener.join(timeout=6)
+    try:
+        assert not listener.is_alive() and out == [None]                 # it asked, and stopped listening
+        assert len(asked) == 2 and stopped == [True]                     # parec is stopped too
+    finally:
+        os.close(write_end)                                              # lets a stuck read end, if there is one
+
+
+def test_audio_comes_in_whole_chunks_however_the_pipe_splits_it():
+    import os
+
+    read_end, write_end = os.pipe()
+    os.write(write_end, b"a" * (wake.CHUNK - 10))
+    pipe = os.fdopen(read_end, "rb", buffering=0)
+    chunks = wake.chunks_of(pipe, wait_s=0.05)
+    assert next(chunks) == b""                                           # not a whole chunk yet: a moment to check
+    os.write(write_end, b"b" * 10)
+    assert next(chunks) == b"a" * (wake.CHUNK - 10) + b"b" * 10
+    os.close(write_end)
+    assert list(chunks) == []                                            # parec ended
+    pipe.close()
+
+
 def test_chimes_are_short_clean_wavs():
     for name in chimes.TUNES:
         data = chimes.wav_bytes(name)

@@ -13,6 +13,7 @@ import io
 import os
 import json
 import logging
+import select
 import subprocess
 import urllib.request
 import zipfile
@@ -91,33 +92,56 @@ def ensure_model(language: str = "en") -> Path:
     return folder
 
 
-def mic_chunks(source: str) -> Iterator[bytes]:
-    """Raw 16 kHz mono audio from the robot's microphones, 0.1 s at a time."""
+READ_WAIT_S = 1.0   # no sound for this long: an empty chunk, so the caller's wake checks still run
+
+
+def chunks_of(pipe, wait_s: float = READ_WAIT_S, size: int = CHUNK) -> Iterator[bytes]:
+    """`size` bytes at a time from a pipe, and b"" whenever nothing has come for `wait_s`. A plain read waited forever
+    on a stalled sound server, so a due reminder or the end of a quiet spell never woke Andy (2026-10-28 review)."""
+    buf = b""
+    while True:
+        ready, _, _ = select.select([pipe], [], [], wait_s)
+        if not ready:
+            yield b""
+            continue
+        data = os.read(pipe.fileno(), size - len(buf))
+        if not data:
+            return
+        buf += data
+        if len(buf) >= size:
+            yield buf
+            buf = b""
+
+
+def mic_chunks(source: str, wait_s: float = READ_WAIT_S) -> Iterator[bytes]:
+    """Raw 16 kHz mono audio from the robot's microphones, 0.1 s at a time (b"" while none comes)."""
     proc = subprocess.Popen(
         ["parec", f"--device={source}", "--format=s16le", f"--rate={RATE}", "--channels=1", "--raw",
          "--latency-msec=100"],
-        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, bufsize=0,
     )
     try:
-        while True:
-            data = proc.stdout.read(CHUNK)
-            if not data:
-                return
-            yield data
+        yield from chunks_of(proc.stdout, wait_s)
     finally:
         proc.terminate()
-        proc.wait(timeout=5)
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:      # stuck in the sound server: don't leave it behind
+            proc.kill()
+            proc.wait(timeout=5)
 
 
 def heard(chunks: Iterator[bytes], recognizer, should_stop: Callable[[], bool], check_every: int = 10,
           triggers=TRIGGERS, also=()) -> Optional[str]:
     """Feed audio until a wake phrase is recognised ("phrase") or should_stop() says another reason
     to wake (or to stop listening) has come up (None). `also`: more (recognizer, triggers) pairs fed the
-    same audio, such as the Spanish one."""
+    same audio, such as the Spanish one. An empty chunk (no sound came) is a moment to check, not audio."""
     listeners = [(recognizer, triggers), *also]
     for i, data in enumerate(chunks):
-        if i % check_every == 0 and should_stop():
+        if (not data or i % check_every == 0) and should_stop():
             return None
+        if not data:
+            continue
         for rec, words in listeners:
             if rec.AcceptWaveform(data) and is_trigger(json.loads(rec.Result()).get("text", ""), words):
                 logger.info("Wake phrase heard")
