@@ -203,6 +203,14 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       own family photos with consent, not the sample landscapes)
 - [ ] English captions throughout, and English subtitles for any Spanish (draft: `scripts/draft_captions.py`)
 - [ ] After filming the settings code: "Make a new settings link"
+- [ ] **When the video is public, the README opens on it** (prepared 2026-10-28; `ID` is the YouTube video's id):
+      1. Under the badges, before the bold one-line description, add
+         `[![Watch Andy on the real robot](https://img.youtube.com/vi/ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=ID)`
+         and a line `**[Watch Andy on the real robot](https://www.youtube.com/watch?v=ID)**`, then a blank line.
+      2. Delete the paragraph starting `**Review status, October 27:**`, and in the paragraph starting
+         `**Judging it without a robot:**` delete `the real-robot video is still pending. `.
+      3. `grep -n -i "video" README.md docs/judging.md docs/submission.md | grep -i "pending\|not yet"`: change
+         each line the public video makes untrue, and only those. Then the usual record and checks.
 
 ## The Devpost form
 
@@ -249,6 +257,12 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] City Winner Awards: not applicable (Miami is not one of the 20 listed cities)
 - [ ] Submitted before 2026-10-30, 10:00 PT (target 2026-10-27)
 - [ ] The submitted commit tagged `hackathon-submission`, and the tag linked on the form
+- [ ] **A GitHub Release from that tag** (a bare tag doesn't show in the repository's Releases box):
+      `gh release create hackathon-submission --verify-tag --title "Andy, as submitted to the Nebius x NVIDIA hackathon"`
+      with short notes: the video link, the Devpost link, the two public demos, the judges' guide
+      (`docs/judging.md`), and that the repository stays unchanged at this tag through judging (2026-12-15)
+- [ ] *(founder, in the browser)* **The repository's social preview image**: Settings → General → Social preview,
+      the Devpost thumbnail (1280×640 works best), so a shared link shows Andy instead of GitHub's text card
 - [ ] The live rules page re-read the day before submitting (amendments take effect when posted)
 
 ## Through judging (to 2026-12-15)

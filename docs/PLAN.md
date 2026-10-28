@@ -287,8 +287,8 @@ desktop/dashboard settings (decision 0020). Physical checks and the final submis
 
 After USB reconnection the real launch found a tool-name collision missed by the install checks:
 fixed with `remember_fact` and SDK startup CI (decision 0021). Andy reached its conversation loop;
-spoken task checks and physical finder trials remain pending. The current version e text run is
-94, 94 and 95 of 97. The live links were refreshed privately, and the demo now rejects household modules.
+spoken task checks and physical finder trials remain pending. The version e text run was then
+94, 94 and 95 of 97 (superseded on 2026-10-27 by the current profile's 93, 94 and 94 of 97). The live links were refreshed privately, and the demo now rejects household modules.
 
 | # | Item | Status |
 |---|---|---|

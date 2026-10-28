@@ -20,6 +20,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
 
+## October 28 repository review
+
+- **Judge's view:** demos running and fast; README, licence and links in order. **Open:** the public video
+  (and the README then opening on it, steps prepared in the checklist), the tag with a GitHub Release,
+  the social preview image (founder), and submitting the Devpost draft. A tests badge was added.
+
 ## October 28 closer look without a picture
 
 - **Fixed:** a closer look where the camera gave no picture was spoken as "I looked closer and it wasn't

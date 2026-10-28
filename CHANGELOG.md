@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The repository as a judge sees it
+
+- Reviewed the GitHub page, README and demos from a judge's side. Both public demos run and open in
+  under a second; licence, description, topics and homepage are set. The gaps are the video, the tag
+  (17 Devpost links point at it and 404 until it exists) and submitting the draft.
+- Added a tests badge to the README (plain text, like the other two). PLAN's "current" 94, 94, 95 of
+  97 is now labelled as superseded by 93, 94, 94, as everywhere else.
+- Prepared, in the checklist: the exact README change that puts the video first once it is public, a
+  GitHub Release from the `hackathon-submission` tag, and the founder's social preview image.
+
 ### A closer look without a picture is not "it wasn't them"
 
 - Checked Andy for the three faults Codex reproduced in another project this morning: an old found

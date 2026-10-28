@@ -2,6 +2,7 @@
 
 [![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-1c5244)](LICENSE)
 [![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
+[![Tests](https://img.shields.io/github/actions/workflow/status/AndyDM9/andy-companion/tests.yml?branch=main&label=tests)](https://github.com/AndyDM9/andy-companion/actions/workflows/tests.yml)
 
 **A small home robot for older adults who live at home, and the family who help.** It reads the letter in your
 hand and looks around the room for your glasses. Built with NVIDIA Nemotron on Nebius

@@ -8,6 +8,11 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 repository review (judge's view): the README gains a plain-text tests badge (no logo,
+like the other two). The video, the release and the social preview are prepared as checklist steps,
+not done: the README keeps saying the video is pending until a public video exists. PLAN's older
+score is relabelled as superseded; no claim, model, licence, visibility or access arrangement changed.
+
 October 28 outline addition (0042): rechecked the official new/existing-work, third-party integration,
 required platform/model and source/instructions provisions. The normal NVIDIA/Nebius runtime stays
 in place. The optional loopback display client is independently written; no other application's
