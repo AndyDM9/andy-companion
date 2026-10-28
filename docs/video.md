@@ -106,7 +106,8 @@ described (3y, shot 5).
       not visible.
 - [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the TV if possible.
 - [ ] After filming: `cloud/guard-endpoint.sh stop`. If the
-      settings code was filmed, "Make a new settings link".
+      settings code was filmed, "Make a new settings link". Then `python3 scripts/settings.py new-screen-link` and
+      open the new screen link on the TV (the screen link appeared once in an audit session's output on 2026-10-28).
 
 ## Shots
 

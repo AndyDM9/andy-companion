@@ -211,3 +211,21 @@ def test_a_page_open_when_its_link_was_replaced_is_told_so_not_that_andy_is_off(
         assert json.loads(body) == {"error": f"{head} {line}", "gone": True}
         assert old_setup not in body and old_family not in body
     assert board.next_for_person() is None                                # nothing reached Andy
+
+
+@pytest.mark.parametrize("language", ["en", "es"])
+def test_a_replaced_screen_link_says_so_on_the_tv(server, language):
+    """2026-10-28: the screen link could not be replaced at all (only the settings and family links could). Now it
+    can, and the TV page still open with the old link reloads into a kind page instead of looking as if Andy were
+    off; neither answer echoes the token."""
+    settings.update(language=language)
+    old = board.tokens()["screen"]
+    assert board.new_screen_link() != old and board.tokens()["screen"] != old
+    code, kind, body = fetch_error(f"{server}/api/screen?t={old}")
+    _, head, line = screen_server.EXPIRED["/screen"][language]
+    assert code == 410 and json.loads(body) == {"error": f"{head} {line}", "gone": True} and old not in body
+    code, kind, body = fetch_error(f"{server}/screen?t={old}")
+    assert code == 404 and kind.startswith("text/html") and head in body and old not in body
+    with urllib.request.urlopen(f"{server}/screen?t={board.tokens()['screen']}", timeout=5) as r:
+        page = r.read().decode()
+    assert r.status == 200 and "r.status === 410" in page and "location.reload()" in page

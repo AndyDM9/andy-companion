@@ -103,7 +103,7 @@ def test_public_demo_refuses_writes_and_does_not_keep_a_visitor_name(public_demo
                                       "/view?t=demo-screen&i=../../etc/passwd"])
 def test_demo_does_not_open_private_routes_with_missing_or_wrong_tokens(public_demo, path):
     code, _, body = request(public_demo, path)
-    if path.startswith(("/api/setup", "/api/family")):    # the replaced-link words for an open page, and nothing else
+    if path.startswith(("/api/setup", "/api/family", "/api/screen")):   # the replaced-link words, and nothing else
         assert code == 410 and set(json.loads(body)) == {"error", "gone"}
     else:
         assert code == 404

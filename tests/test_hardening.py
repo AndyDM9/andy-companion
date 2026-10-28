@@ -50,7 +50,7 @@ def test_bad_bodies_get_a_400_not_a_crash(server):
 def test_a_token_outside_ascii_is_just_wrong(server):
     conn = http.client.HTTPConnection("127.0.0.1", server, timeout=5)
     conn.request("GET", "/api/screen?t=%C3%A9")
-    assert conn.getresponse().status == 404
+    assert conn.getresponse().status == 410               # a wrong token, told "replaced" like any other (not a 500)
     assert not screen_server._ok("é", "screen")
 
 

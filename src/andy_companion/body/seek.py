@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import os
 import math
+import logging
 from typing import Optional
 from dataclasses import dataclass, field
 
@@ -56,6 +57,13 @@ PERSON_COOLDOWN_S = 20.0           # after a follow ends, no new person follow f
 # head height a missing face means they're side-on, not above, and Andy tilted up 28 degrees for nothing.
 LOOK_UP = math.radians(float(os.environ.get("ANDY_SEEK_LOOK_UP_DEG", "0")))
 PRESENT_S = 30.0                   # a person seen this recently is here: don't look around for them
+# A "person" in one place, followed three times in ten minutes without a face ever showing, is not followed there for
+# ten minutes, or until a face is seen. On 2026-10-28, with nobody home, a box at the edge of the view that never moved
+# (a coat or a lamp) scored 0.48 to 0.52 against 0.45 needed, and Andy turned to it about every 25 s all evening.
+FACELESS_FOLLOWS = 3
+FACELESS_WINDOW_S = 600.0
+STILL_IGNORE_S = 600.0
+SAME_PLACE = math.radians(8)
 RESCAN_AFTER_S = (60.0, 120.0, 240.0)   # while they're away, look again after these waits, then stop
 
 
@@ -130,10 +138,16 @@ class Seek:
     _return_to: float = 0.0                   # where the first person was, to go back if nobody is there
     _home_to: float = 0.0                     # where HOME goes (the centre, or back to the first person)
     _ignored: list = field(default_factory=list)   # (world yaw, until): directions with nobody there
+    _follow_since: Optional[float] = None     # when the current person follow began
+    _follow_yaw: float = 0.0                  # its world yaw
+    _faceless: list = field(default_factory=list)  # (time, world yaw) of follows that never found a face
+    _still: list = field(default_factory=list)     # (world yaw, until): a "person" there never had a face
     log: list = field(default_factory=list)
 
     def _start(self, state: str, goal: float, head_world_yaw: float) -> Decision:
         self.state, self._goal, self._arrived_at = state, max(-self.clamp, min(self.clamp, goal)), None
+        if state == "PERSON":
+            self._follow_since, self._follow_yaw = self._last_t, self._goal
         self._cmd = head_world_yaw
         self.log.append(state)
         return Decision(head_yaw=self._cmd, weight=SEEK_WEIGHT)
@@ -145,6 +159,25 @@ class Seek:
         if state == "REST":
             self._rested_at = self._last_t
         return Decision(weight=1.0)
+
+    def _note_faceless(self) -> None:
+        """A person follow ended: if no face was seen during it, remember where; three there in ten minutes and that
+        direction is still, not a person."""
+        now = self._last_t or 0.0
+        if self._follow_since is None or (self._face_seen_at is not None and self._face_seen_at >= self._follow_since):
+            self._follow_since = None
+            return
+        yaw, self._follow_since = self._follow_yaw, None
+        self._faceless = [(t, y) for t, y in self._faceless if now - t < FACELESS_WINDOW_S] + [(now, yaw)]
+        if sum(abs(y - yaw) < SAME_PLACE for _, y in self._faceless) >= FACELESS_FOLLOWS:
+            self._still = [(y, until) for y, until in self._still if until > now] + [(yaw, now + STILL_IGNORE_S)]
+            self._faceless = [(t, y) for t, y in self._faceless if abs(y - yaw) >= SAME_PLACE]
+            self.log.append("STILL")
+            logging.getLogger("andy.body").info("seek: no face after %d follows toward %.0f degrees; left alone for %.0f minutes",
+                                                FACELESS_FOLLOWS, math.degrees(yaw), STILL_IGNORE_S / 60)
+
+    def _is_still(self, world_yaw: float, now: float) -> bool:
+        return any(until > now and abs(world_yaw - y) < SAME_PLACE for y, until in self._still)
 
     def _second_voice(self, now: float, face: bool, head_world_yaw: float, user_speaking: bool, robot_speaking: bool,
                       doa_angle: Optional[float]) -> Optional[Decision]:
@@ -183,6 +216,7 @@ class Seek:
     def _home(self) -> Decision:
         if self.state == "PERSON" or "PERSON" in self.log[-3:]:
             self._person_cooldown_until = (self._last_t or 0.0) + PERSON_COOLDOWN_S
+            self._note_faceless()
         self.state, self._goal, self._arrived_at = "HOME", 0.0, None
         self.log.append("HOME")
         return Decision(head_yaw=self._cmd, head_up=self._up)
@@ -201,6 +235,9 @@ class Seek:
             self._heard_from = None
             self._up = 0.0
             self._rescans = 0
+            self._faceless, self._still = [], []          # someone is here: every direction may be a person again
+        if person_yaw is not None and head_world_yaw is not None and self._is_still(head_world_yaw + person_yaw, now):
+            person_yaw = person_top = None                # the still thing that looks like a person: not them
         if person_yaw is not None:
             if self._person_seen_at is None or now - self._person_seen_at > PERSON_GAP_S:
                 self._person_streak_since = now

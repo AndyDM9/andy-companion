@@ -217,7 +217,9 @@ and Andy's search in Pollen's MuJoCo simulation. The details, and why each model
 ### A fast model, held by code
 
 Nemotron 3.5 Lightning answers in about a second, which a spoken conversation needs. Where it drifted, Andy's code now
-decides; each catch came from a failure the suite showed, and was measured again on Nebius Serverless Jobs:
+decides; each catch came from a failure the suite showed, and was measured again on Nebius Serverless Jobs
+(decisions [0043](docs/decisions/0043-make-a-tool-call-written-as-text.md) to
+[0045](docs/decisions/0045-tool-results-give-words-not-reasons.md)):
 
 | Where the model drifted | What Andy's code does | Runs that failed, before → after |
 |---|---|---|
@@ -571,7 +573,8 @@ Every command runs from the repository's root.
    network. Open **Set up Andy** on a phone to choose the town, local news sites, what's-on pages,
    language, pace, volume and captions. Open **the screen** on a TV, and send **the family page**
    to family. **Under the hood** has its own link, which opens only that page; the gear on the TV
-   opens it too.
+   opens it too. `new-family-link` and `new-screen-link` replace a link that has been shared too widely; the old one
+   then shows a page saying it was replaced.
 6. **Optional: eyes and the second look.** With the [Nebius CLI](https://docs.nebius.com/cli), run
    `cloud/vision-endpoint.sh create` (and `cloud/guard-endpoint.sh create`), then `status` until it is
    RUNNING. `create` asks first (it is billed by the hour) and keeps the endpoint's token in Nebius MysteryBox

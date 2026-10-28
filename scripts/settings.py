@@ -6,6 +6,7 @@
     python3 scripts/settings.py events add https://library.example.org/events
     python3 scripts/settings.py links                     (the screen, family, under-the-hood and settings addresses)
     python3 scripts/settings.py new-family-link           (the old family link stops working)
+    python3 scripts/settings.py new-screen-link           (the old screen link stops working; open the new one on the TV)
     python3 scripts/settings.py sample-photos             (six sample landscapes for the idle screen)
     python3 scripts/settings.py remove-sample-photos
 
@@ -34,7 +35,7 @@ def main(argv: list[str]) -> int:
     if not argv or argv[0] == "show":
         print(json.dumps({k: v for k, v in settings.get().items() if k != "last_morning"}, indent=2))
         return 0
-    if argv[0] in ("links", "new-family-link"):
+    if argv[0] in ("links", "new-family-link", "new-screen-link"):
         import os
 
         from andy_companion import app_mode, screen_server
@@ -42,6 +43,8 @@ def main(argv: list[str]) -> int:
         app_mode.load_env(("ANDY_SCREEN_PORT",))
         if argv[0] == "new-family-link":
             board.new_family_link()
+        if argv[0] == "new-screen-link":
+            board.new_screen_link()
         t = board.tokens()
         port = os.environ.get("ANDY_SCREEN_PORT", "8090")
         host = screen_server.lan_host()          # the same address the TV's settings code uses

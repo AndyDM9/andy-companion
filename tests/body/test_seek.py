@@ -374,3 +374,58 @@ def test_the_look_around_sweeps_slower_than_a_turn_to_a_voice():
     s.step(t, **_common())
     swept = abs(s._cmd - start)
     assert swept <= s.scan_rate * 1.0 + 1e-6 and s.scan_rate < s.rate
+
+
+def _follow_until_rest(s, t, yaw, limit=60):
+    """A steady sighting at world yaw `yaw` with no face, until the follow ends and Andy rests."""
+    while s.state != "PERSON" and t < limit:
+        t += 0.1
+        s.step(t, **_common(person_yaw=yaw))
+    while s.state != "REST" and t < limit:
+        t += 0.1
+        s.step(t, **_common())
+    return t
+
+
+def test_a_still_thing_that_looks_like_a_person_is_left_alone():
+    """2026-10-28, nobody home: a box at the edge of the view that never moved (0.48 to 0.52, with 0.45 needed) and
+    Andy turned to it about every 25 s all evening. Three follows there with no face: that direction is left alone,
+    a person elsewhere is still followed, and a face makes every direction count again."""
+    import math
+    s = seek.Seek()
+    s.step(0.0, **_common(face=True))
+    t = 0.0
+    for _ in range(seek.FACELESS_FOLLOWS):
+        t = _follow_until_rest(s, t, math.radians(30), limit=t + 120)
+        t += seek.PERSON_COOLDOWN_S + 1
+    assert "STILL" in s.log
+    end = t + 10
+    while t < end:
+        t += 0.1
+        s.step(t, **_common(person_yaw=math.radians(30)))
+    assert s.state == "REST", "the still thing is not followed again"
+    end = t + 5
+    while t < end:
+        t += 0.1
+        s.step(t, **_common(person_yaw=math.radians(-40)))
+    assert s.state == "PERSON", "someone elsewhere still is"
+    s.step(t + 0.1, **_common(face=True))
+    assert s._still == [] and s._faceless == []
+
+
+def test_a_person_whose_face_shows_is_never_taken_for_a_still_thing():
+    import math
+    s = seek.Seek()
+    s.step(0.0, **_common(face=True))
+    t = 0.0
+    for _ in range(seek.FACELESS_FOLLOWS + 1):
+        while s.state != "PERSON" and t < 400:
+            t += 0.1
+            s.step(t, **_common(person_yaw=math.radians(30)))
+        t += 0.1
+        s.step(t, **_common(face=True))                   # they turn round: a face
+        while s.state != "REST" and t < 400:
+            t += 0.1
+            s.step(t, **_common())
+        t += seek.PERSON_COOLDOWN_S + 1
+    assert "STILL" not in s.log and s._still == []

@@ -20,6 +20,19 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
 
+## October 28, later that night: ready for filming
+
+- **Following a still thing, fixed:** with nobody home, Andy turned toward "a person" about every 25 s all evening
+  (53 in the 18:00 hour). The detector saw a box at the right edge of the view that never moved, at 0.48 to 0.52
+  (0.45 needed): a coat or a lamp, by the numbers (no picture looked at). `body/seek.py` now leaves a direction alone
+  for ten minutes after three follows there without a face; on the robot, after the third, no follow in the next four
+  minutes. Worth a look before filming: whatever stands about 33° to Andy's right.
+- **The screen link is replaceable** (`scripts/settings.py new-screen-link`), with a "replaced" page; after filming.
+- **Prepared as video.md asks:** sample landscapes and the two 2026-10-13 facts deleted. Kept: a daily 8:00 am
+  reminder, a moment of October 25, a note shared on October 25 (the founder's to keep or delete).
+- **Decisions 0043 to 0045** written for the evening's choices; the settings page renders cleanly (phone, desktop).
+- **Tests:** CPU **2,103 / 20 skipped**.
+
 ## October 28 night: everything checked that needs no one at home
 
 The founder was out; the robot was on USB with Andy running. Checked live, numbers only:

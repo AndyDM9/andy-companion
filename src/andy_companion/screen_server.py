@@ -539,6 +539,10 @@ EXPIRED = {
                        "Ask whoever set up Andy for the new one."),
                 "es": ("Enlace familiar reemplazado", "Este enlace familiar ha sido reemplazado.",
                        "Pida el nuevo a quien configuró a Andy.")},
+    "/screen": {"en": ("Screen link replaced", "This screen link has been replaced.",
+                       "On the computer beside Andy, open the new screen link on this TV."),
+                "es": ("Enlace de pantalla reemplazado", "Este enlace de pantalla ha sido reemplazado.",
+                       "En el ordenador junto a Andy, abra el nuevo enlace de pantalla en esta televisión.")},
     "/hood": {"en": ("Link replaced", "This link has been replaced.",
                      "The gear on Andy's screen opens Under the hood."),
               "es": ("Enlace reemplazado", "Este enlace ha sido reemplazado.",
@@ -558,8 +562,9 @@ def expired_page(path: str, language: Optional[str] = None) -> bytes:
 
 
 def _replaced(path: str, q: Dict[str, str]) -> str:
-    """The page ("/setup" or "/family") whose API this address is, when its token does not open it; else ""."""
-    for page, key, kind in (("/setup", "s", "setup"), ("/family", "k", "family")):
+    """The page ("/setup", "/family" or "/screen") whose API this address is, when its token does not open it; else
+    ""."""
+    for page, key, kind in (("/setup", "s", "setup"), ("/family", "k", "family"), ("/screen", "t", "screen")):
         if (path == "/api" + page or path.startswith("/api" + page + "/")) and not _ok(q.get(key), kind):
             return page
     return ""

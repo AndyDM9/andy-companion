@@ -5,6 +5,26 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Ready for filming, a still "person" left alone, the screen link replaceable, decisions recorded
+
+- **Andy no longer turns all evening to a coat.** With nobody home, Andy turned toward "a person" about every 25 s
+  (53 times in one hour): the person detector saw a box at the edge of the view that never moved, at 0.48 to 0.52
+  confidence against 0.45 needed, and following has no face to find there. Now a direction followed three times in
+  ten minutes without a face is left alone for ten minutes, or until a face is seen (`body/seek.py`). On the robot,
+  after the third follow: none in the next four minutes, where there had been about ten.
+- **The screen link can be replaced:** `scripts/settings.py new-screen-link`, as the family and settings links could
+  be. The TV page still open with the old link reloads into a page saying so (English or Spanish), instead of looking
+  as if Andy were off; the screen's questions answer 410, like the family and settings pages'. The filming plan
+  replaces it after filming.
+- **Ready for filming, as the plan asks:** the six sample landscapes and the two facts kept on 2026-10-13 deleted
+  (by their dates, through Andy's own deletes; no words read). Left for the founder: a daily 8:00 am reminder, a
+  moment dated October 25 (deleted a week after its date) and a note shared on October 25.
+- **Decisions recorded:** 0043 (a tool call written as text is made), 0044 (Andy's own note on a turn, for a memory
+  offer and the clock) and 0045 (tool results give words to say, not reasons), linked from the README's "A fast
+  model, held by code" and the decisions index's "Start here".
+- **Also checked:** the settings page in headless Chrome at phone and desktop widths (no error, no sideways scroll,
+  no text under 17 px).
+
 ### Everything that needs no one at home, checked on the robot
 
 With the founder out and the robot on USB: the eyes (Super VL 2.1 s, Cosmos 8B as the fallback 4.5 s, on a real

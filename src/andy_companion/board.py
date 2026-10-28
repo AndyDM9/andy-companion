@@ -173,6 +173,15 @@ def new_setup_link() -> str:
     return data["setup"]
 
 
+def new_screen_link() -> str:
+    """Make a new screen token, so an old screen link stops working (the TV then needs the new one). Until
+    2026-10-28 only the settings and family links could be replaced."""
+    data = tokens()
+    data["screen"] = secrets.token_urlsafe(12)
+    _write(TOKENS, data)
+    return data["screen"]
+
+
 def new_family_link() -> str:
     """Make a new family token, so an old link stops working."""
     data = tokens()

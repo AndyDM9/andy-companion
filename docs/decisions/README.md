@@ -8,8 +8,9 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 check), [0011](0011-the-eyes-on-token-factory.md) to [0013](0013-the-finder-tested-in-simulation.md) (the eyes and the
 finder), [0015](0015-cosmos-on-this-computer-as-the-offline-eyes.md) (the offline eyes),
 [0018](0018-one-confirmation-for-one-proposed-action.md) (consent) and
-[0022](0022-judge-testing-without-sharing-provider-keys.md) (how judges can test it). Most later ones harden
-what these built.
+[0022](0022-judge-testing-without-sharing-provider-keys.md) (how judges can test it), and
+[0043](0043-make-a-tool-call-written-as-text.md) to [0045](0045-tool-results-give-words-not-reasons.md) (where code
+holds a fast model: written tool calls made, notes on a turn, words to say). Most later ones harden what these built.
 
 | # | Decision | Date | Status |
 |---|---|---|---|
@@ -55,3 +56,6 @@ what these built.
 | [0040](0040-unreadable-mode-does-not-wake-andy.md) | Unreadable saved mode pauses automatic wakes until explicit intent restores valid control state | 2026-10-27 | accepted |
 | [0041](0041-preflight-requires-current-counts-and-final-text.md) | Preflight requires current audio counts and usable final model text | 2026-10-27 | accepted |
 | [0042](0042-outline-only-the-confirmed-screen-copy.md) | Outline only the confirmed screen copy using an optional local mask | 2026-10-28 | accepted |
+| [0043](0043-make-a-tool-call-written-as-text.md) | A tool call the model writes as text is made, when it fits a tool Andy has | 2026-10-28 | accepted |
+| [0044](0044-andys-own-note-on-a-turn.md) | Andy's own note on a turn, for a memory offer due and for the clock | 2026-10-28 | accepted |
+| [0045](0045-tool-results-give-words-not-reasons.md) | Tool results give the words to say, not the reasons | 2026-10-28 | accepted |

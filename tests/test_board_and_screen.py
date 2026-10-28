@@ -127,7 +127,8 @@ def test_screen_and_family_need_their_own_tokens(server):
     for path in ("/screen", "/api/screen", "/family", f"/screen?t={t['family']}", f"/family?k={t['screen']}"):
         with pytest.raises(urllib.error.HTTPError) as e:
             get(server + path)
-        assert e.value.code == 404
+        # the screen's own questions, like the family page's, answer 410 "replaced" (2026-10-28); pages answer 404
+        assert e.value.code == (410 if path == "/api/screen" else 404)
 
 
 def test_the_screen_shows_the_day_and_what_andy_is_showing(server):
