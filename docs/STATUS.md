@@ -22,6 +22,10 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 28 deep review
 
+- **Motion:** looks hold past their longest wait and replace each other in the same tick; one search at a time;
+  direct turns; taught moves ease back from the current pose. Open: seek-steering snap at a search's start, a
+  stalled wake listener, a reminder wake without the screen server's live state.
+
 - **Fixed and tested** (36 new cases): languages other than English/Spanish taken as unclear; medicine-themed scam
   letters keep the warning; a found sign survives an Ultra failure; the consent loop; research guard, retry and stop;
   amounts over $1,000; finder wording; photo deletion, long links, the caption over a photo, Spanish screen text.

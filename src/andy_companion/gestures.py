@@ -236,6 +236,10 @@ async def learn(name: str, robot: Any, manager: Any, *, sleep: Callable, clock: 
         # A move starting where the hand left them, playing before the motors come back: no snap.
         last = (samples[-1][1], samples[-1][2]) if samples else start
         try:
+            try:      # where the head is now, not six seconds ago: following the person moved it (2026-10-28 review)
+                head = robot.get_current_head_pose()
+            except Exception:
+                pass
             manager.queue_move(queue(Home(head, last, start)))
             await sleep(0.15)
         finally:                    # whatever happened, the antennas never stay limp (2026-10-25 review)

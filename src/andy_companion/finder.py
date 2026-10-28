@@ -49,7 +49,6 @@ logger = logging.getLogger("andy.finder")
 
 SWEEP_DEG = (55.0, 18.0, -18.0, -55.0)     # left to right, Pollen's convention (positive is left)
 PITCH_DEG = 15.0                           # a little down, where things are put down
-HOLD_S = 1.1
 SETTLE_S = 0.6                             # into the hold, before the frame is taken
 POINT_HOLD_S = 3.5
 FX, CX = 1116.0, 953.0                     # body.person's defaults: about 81 degrees across
@@ -57,7 +56,7 @@ CY = 542.0                                 # the middle of a 1080-line frame, fo
 TILES = (3, 2)                             # columns and rows of the zoomed tiles in each view
 OVERLAP = 0.15                             # so a thing on a tile's edge is whole in its neighbour
 TILE_WIDTH, TILE_QUALITY = 1024, 90        # tiles are sent at their own size (never shrunk), JPEG quality 90
-CLOSER_HOLD_S = 1.2                        # looking closer: the turn, then still for the close-up
+
 CLOSE_UP = 0.5                             # the close-up: the middle half of the frame across and down
 MAX_CLOSER = 2                             # sightings looked at closer before saying it couldn't be seen
 SAME_PLACE_DEG = 6.0                       # sightings this close together are one thing
@@ -69,6 +68,28 @@ REACH_YAW_DEG, REACH_PITCH_DEG = 60.0, 35.0  # where the head can turn without t
 # at from 60 (2026-10-20). Covers all the sweep sees (about 95); ANDY_FINDER_TURN=off keeps the head's own reach.
 TURN_YAW_DEG = 110.0
 WAIT_ARRIVE_S, POLL_S = 1.5, 0.1           # how long to wait for a head that started its move late
+# Each look holds still longer than the longest wait for it plus the settling (2026-10-28 review: a 1.1 s hold ended
+# while a head swaying with Andy's speech was still arriving; the breathing move took it back to the middle mid-picture,
+# then the next look jumped). The next move clears the queue first (next_move), so a long hold never slows the sweep.
+HOLD_S = WAIT_ARRIVE_S + SETTLE_S + 0.3
+CLOSER_HOLD_S = HOLD_S                     # looking closer: the turn, then still for the close-up and its question
+
+
+def next_move(manager: Any, move: Any) -> None:
+    """Replace whatever look is holding with this one, in the same tick (Pollen's queue): no gap, no wait."""
+    clear = getattr(manager, "clear_move_queue", None)
+    if callable(clear):
+        clear()
+    manager.queue_move(move)
+
+
+# One search at a time: two at once (two find_object calls in one reply) interleaved their looks and the first one's
+# hand-back to face following ran in the middle of the second (2026-10-28 review). A search's hand-back, a few seconds
+# after it ends, is skipped once a newer search has the head; the newer one then hands it back, face following too.
+_searching = {"on": False, "n": 0, "restore": False}
+BUSY = {"found": False, "busy": True,
+        "how": "You are already looking around the room for something. Say so in a few words; that search's answer "
+               "comes by itself. Do not call find_object again now."}
 VIEW_WIDTH, VIEW_QUALITY = 480, 70         # the TV's strip: small enough for four in memory, clear at a glance
 ASK = ("You are the eyes of a home companion robot helping someone find their {what}. Look at this picture. "
        "Is their {what} visible? Answer as JSON: seen (true or false), x (where it is across the picture, "
@@ -400,7 +421,7 @@ async def closer_look(robot: Any, manager: Any, antennas: tuple, place: Dict[str
     to = aim(place)
     quiet_tracking(robot)
     step = look.HoldLook(robot.get_current_head_pose(), antennas, to[0], to[1], CLOSER_HOLD_S)
-    manager.queue_move(queueable(step))
+    next_move(manager, queueable(step))
     looking_at.set(place.get("noticed", "closer"), step.duration + 0.5)
     await sleep(step.turn_s)
     there = await arrive(robot, *to, sleep)
@@ -441,7 +462,12 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
     from andy_companion.body import hold
     from andy_companion import board
 
-    tracking = bool(getattr(manager, "_head_tracking", False)) and hasattr(manager, "set_head_tracking")
+    if _searching["on"]:
+        return dict(BUSY)
+    _searching["on"], _searching["n"] = True, _searching["n"] + 1
+    mine = _searching["n"]
+    tracking = (bool(getattr(manager, "_head_tracking", False)) or _searching["restore"]) and hasattr(manager, "set_head_tracking")
+    _searching["restore"] = tracking
     hold.begin(manager)                  # seek, face following, the glance and idle hand-back stand down
     if tracking:
         manager.set_head_tracking(False)
@@ -477,10 +503,14 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
             out["how"] = out["how"] + " " + moved_note(hint, bool(out.get("found")))
         return out
     finally:
+        _searching["on"] = False             # first, whatever happens below
         await asyncio.to_thread(board.end_search, search)
         back = BACK_TO_FACE_S + (POINT_HOLD_S if out.get("found") else 0.0)
 
         def face_back() -> None:
+            if _searching["n"] != mine:          # a newer search has the head now; it hands it back
+                return
+            _searching["restore"] = False
             hold.end(manager)
             if tracking:
                 try:
@@ -564,7 +594,7 @@ async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any]
     if not got or not got["checked"].get("yes"):
         return {}
     chosen = confirmed_place(place, got)
-    manager.queue_move(queueable(look.HoldLook(robot.get_current_head_pose(), antennas, chosen["yaw"], chosen["pitch"],
+    next_move(manager, queueable(look.HoldLook(robot.get_current_head_pose(), antennas, chosen["yaw"], chosen["pitch"],
                                                POINT_HOLD_S)))
     looking_at.set("pointing", POINT_HOLD_S + 1.0)
     try:
@@ -628,7 +658,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         sent = (math.radians(deg), pitch)
         quiet_tracking(robot)
         step = look.HoldLook(pose, antennas, sent[0], sent[1], HOLD_S)
-        manager.queue_move(queueable(step))
+        next_move(manager, queueable(step))
         looking_at.set("room", step.duration + 1.0)
         await sleep(step.turn_s)
         there = await arrive(robot, *sent, sleep)
@@ -717,7 +747,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
                    "that the screen shows where you looked. Offer to look again if they move something or hold it "
                    "nearer, or suggest one likely place to check. No guessing.")
         return {"found": False, "what": what, "looked": len(frames), "how": how}
-    manager.queue_move(queueable(look.HoldLook(robot.get_current_head_pose(), antennas, chosen["yaw"], chosen["pitch"],
+    next_move(manager, queueable(look.HoldLook(robot.get_current_head_pose(), antennas, chosen["yaw"], chosen["pitch"],
                                                POINT_HOLD_S)))
     looking_at.set("pointing", POINT_HOLD_S + 1.0)
     await asyncio.to_thread(record, what, frames, results, i,

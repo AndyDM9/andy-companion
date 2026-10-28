@@ -5,6 +5,20 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The head's motion during a search, from the body review
+
+- Each look held 1.1 s while the picture could wait up to 1.5 s for a head swaying with Andy's speech: the look
+  ended first, the breathing move glided the head to the middle mid-picture, then the next look jumped (reproduced
+  with Pollen's queue and a fake robot: a 15.7 to 53.9 degree jump). Each look now holds 2.4 s and the next replaces
+  it in the same tick (clear, then queue), so a sweep is no slower.
+- One search at a time: a second `find_object` while one runs is told Andy is already looking; a search's hand-back
+  to face following, a few seconds after it ends, is skipped once a newer search has the head.
+- A turn between the far sides goes the direct way, never past straight behind; a taught move eases back from where
+  the head is now, not where it was six seconds before.
+- Left open, rarer: a snap at a search's start while seek is steering toward a second voice; the wake listener
+  waiting on a stalled sound server; a reminder wake ending mid-talk if the screen server failed to start.
+- **5 new cases** (the taught-move one fails on the old code); CPU **1,950 / 18 skipped**.
+
 ### Deep review: what Andy hears, says and shows, fixed and tested
 
 Three independent code reviews (conversation tools; body, finder and supervisor; screen and pages) and the founder's

@@ -29,7 +29,10 @@ class HoldLook:
         self.antennas = (float(antennas[0]), float(antennas[1]))
         self.r0, self.p0, self.y0 = _rpy(self.start)
         yaw = max(-MAX_YAW_RAD, min(MAX_YAW_RAD, yaw))
-        self.dyaw = (yaw - self.y0 + math.pi) % (2 * math.pi) - math.pi
+        # The direct way round: both ends face forward, so never through behind the robot (2026-10-28 review: +94 to
+        # -94 degrees went +172, past straight behind). Only a reading beyond the head's own range is wrapped.
+        raw = yaw - self.y0
+        self.dyaw = raw if abs(raw) <= 2 * MAX_YAW_RAD else (raw + math.pi) % (2 * math.pi) - math.pi
         self.dpitch = pitch - self.p0
         self.droll = -self.r0
         self.turn_s = max(MIN_TURN_S, 1.875 * max(abs(self.dyaw), abs(self.dpitch)) / PEAK_RAD_S)
