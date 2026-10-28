@@ -99,10 +99,12 @@ def _refresh(live_at: float, weather: Optional[Dict], tavily: Dict, cloud_due: b
         local.append(tile("Weather", "ok", "National Weather Service, refreshed every 30 minutes") if weather
                      else tile("Weather", "unknown", "No town set, or not fetched yet"))
         if tavily and tavily.get("used") is not None:
-            limit = tavily.get("limit")
-            near = bool(limit) and tavily["used"] > 0.9 * limit
+            used, limit, paygo = tavily["used"], tavily.get("limit"), tavily.get("paygo")
+            # Past the plan's credits, pay as you go carries on (2026-10-28 on the robot: "4964 of 1000" read as a fault).
+            near = bool(limit) and used > 0.9 * limit and not paygo
             local.append(tile("Tavily", "warn" if near else "ok",
-                              f"{tavily['used']} of {limit or '?'} credits this month"))
+                              f"{used:,} credits this month, {limit:,} in the plan and {paygo:,} pay as you go" if paygo and limit
+                              else f"{used:,} of {limit:,} credits this month" if limit else f"{used:,} credits this month"))
         else:
             local.append(tile("Tavily", "unknown", "Credits not reported yet"))
         _cache.update(local=local, local_at=now)

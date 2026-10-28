@@ -22,6 +22,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 28 on the robot
 
+- **Hood page:** the empty state on one line; Tavily credits said with pay as you go, not as a warning.
+
 - **Founder's voice:** scam check, three letters, describe the view, research and "stop looking", barge-in and
   Spanish all ran the right tools. The scam check's 7.3 s silence now has a "Checking this message" card at once.
   **Open:** one `go_to_sleep` after `set_language` in the same turn.

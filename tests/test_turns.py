@@ -269,7 +269,7 @@ def test_tavily_credits_reach_the_hood_page_as_numbers_only(server, monkeypatch)
                                                            "by": {"search": 79, "extract": 5, "query": "my words"}})
     turns.tavily_usage_loop(rounds=1)
     t = hood(server)["tavily"]
-    assert t == {"plan": "Researcher", "used": 84, "limit": 1000,
+    assert t == {"plan": "Researcher", "used": 84, "limit": 1000, "paygo": None,
                  "by": {"search": 79, "extract": 5, "crawl": 0, "map": 0, "research": 0}}
 
 
@@ -286,7 +286,7 @@ def test_usage_reads_the_account_and_tags_the_project(monkeypatch):
         return io.BytesIO(json.dumps({"account": {"current_plan": "Researcher", "plan_usage": 84, "plan_limit": 1000,
                                                   "search_usage": 79, "extract_usage": 5}}).encode())
 
-    assert web.usage(opener)["used"] == 84
+    assert web.usage(opener)["used"] == 84 and web.usage(opener)["paygo"] is None
     assert seen == {"method": "GET", "project": None}           # the account's month, not one project's
     web.look_up("library hours", opener=lambda req, timeout=None: (seen.update(tag=req.headers.get("X-project-id"))
                                                                     or io.BytesIO(b'{"results": []}')))

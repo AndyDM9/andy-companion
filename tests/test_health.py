@@ -60,3 +60,16 @@ def test_tiles_refresh_in_the_background_and_never_hold_up_the_page(monkeypatch)
     names = {t["name"]: t for t in health.tiles(time.time(), None, {"used": 950, "limit": 1000})}
     assert names["Tavily"]["status"] == "warn" and names["Weather"]["status"] == "unknown"
     assert names["Eyes on Nebius"]["detail"] == "Stopped (no cost)"
+
+
+def test_pay_as_you_go_past_the_plan_is_said_plainly_not_as_a_warning(monkeypatch):
+    """2026-10-28 on the robot's hood page: "4964 of 1000 credits" in yellow, read as a fault; pay as you go was on."""
+    monkeypatch.setattr(health, "daemon", lambda: health.tile("Robot", "ok", "Daemon running"))
+    monkeypatch.setattr(health, "voice", lambda: health.tile("Voice", "ok", "ready"))
+    monkeypatch.setattr(health, "cloud", lambda: [])
+    health._refresh(time.time(), None, {"used": 4964, "limit": 1000, "paygo": 3964}, False)
+    tavily = next(t for t in health._cache["local"] if t["name"] == "Tavily")
+    assert tavily["status"] == "ok" and tavily["detail"] == "4,964 credits this month, 1,000 in the plan and 3,964 pay as you go"
+    health._refresh(time.time(), None, {"used": 950, "limit": 1000, "paygo": None}, False)
+    tavily = next(t for t in health._cache["local"] if t["name"] == "Tavily")
+    assert tavily["status"] == "warn" and tavily["detail"] == "950 of 1,000 credits this month"

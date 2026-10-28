@@ -165,7 +165,7 @@ def set_tavily(data: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError("bad usage")
     by = data.get("by") if isinstance(data.get("by"), dict) else {}
     clean = {"plan": " ".join(str(data.get("plan", "")).split())[:40], "used": _ms(data.get("used")),
-             "limit": _ms(data.get("limit")),
+             "limit": _ms(data.get("limit")), "paygo": _ms(data.get("paygo")),
              "by": {k: _ms(by.get(k)) or 0 for k in ("search", "extract", "crawl", "map", "research")}}
     _tavily.clear()
     _tavily.update(clean)

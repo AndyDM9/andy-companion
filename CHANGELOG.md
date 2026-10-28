@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Under the hood, as filmed
+
+- After every restart the hood's empty state broke "waiting for a turn" over three lines beside its hint; it now
+  sits on one line. Tavily read "4964 of 1000 credits this month" in yellow, a fault to any reader: the account is on
+  pay as you go past the plan's 1,000. The hood and its tile now say "4,964 credits this month, 1,000 in the plan and
+  3,964 pay as you go" (English and Spanish), warn only without pay as you go, and every count has its separators.
+  Seen on the robot's own page after a restart. **1 new case**, 2 updated.
+
 ### The founder's spoken tests on the robot, and the scam check's silence
 
 - The founder's own voice, logged as tool names and timings only: a scam message (`check_message`), three letters

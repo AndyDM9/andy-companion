@@ -452,5 +452,5 @@ def usage(opener=None) -> Dict[str, Any]:
         return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
 
     return {"plan": str(account.get("current_plan", ""))[:40], "used": num(account.get("plan_usage")),
-            "limit": num(account.get("plan_limit")),
+            "limit": num(account.get("plan_limit")), "paygo": num(account.get("paygo_usage")),
             "by": {k: num(account.get(f"{k}_usage")) or 0 for k in ("search", "extract", "crawl", "map", "research")}}
