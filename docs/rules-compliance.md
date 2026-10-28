@@ -12,8 +12,8 @@ October 28 claims review: the model list now includes YOLOX (Apache-2.0, credite
 Open-Meteo, the National Weather Service and Wikipedia; consent and letter-number claims match the code exactly.
 No new service, model or data flow was added: these were already in use and are now disclosed.
 
-October 28 final Serverless Job: the current profile scored 91, 95 and 95 of 97 on Nebius (the same
-inputs as the local 93, 94, 94); README, Devpost source and judges' guide cite both, failures included. The
+October 28 final Serverless Job: the current profile (suite 2026-10-28a) scored 92, 93 and 94 of 97 on Nebius, after
+earlier runs of 91, 95, 95 and 94, 93, 92; README, Devpost source and judges' guide cite both, failures included. The
 voice server now leaves tool-call markup unspoken; no model, provider, licence or access change. Rules
 re-read live on 2026-10-28 (through a browser request): dates, video and requirements unchanged.
 

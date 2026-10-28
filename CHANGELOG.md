@@ -5,6 +5,16 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The final runs on the final code
+
+- **Nebius Serverless Job, suite 2026-10-28a: 92, 93 and 94 of 97.** The keys case no longer fails. Photo-story and
+  future-event memory offers fail every run; the rest varies. README, Devpost source, judges' guide, scorecard
+  index, PLAN and STATUS now cite it, with the two earlier runs of the day.
+- **Focused permission cases: 6, 5 and 7 of 9** (were 8, 8, 7). quoted-yes failed every run: after a quoted "Yes
+  please", the model says "I'll keep that in mind" though the gate kept nothing. It fails the same way with this
+  morning's gate and wording (0 of 3), so the drop is the model's. A firmer refusal message was tried and made it
+  worse; not kept. No write effect in any run.
+
 ### A read-back a person would say, and a tool name never spoken
 
 - The Nebius rerun after the consent change scored **94, 93, 92 of 97** (suite 2026-10-26e). Its keys case failed

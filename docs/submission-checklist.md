@@ -151,7 +151,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
 - [x] Current text profile evaluated locally: 93, 94 and 94 of 97, input/code hashes recorded; physical trials remain separate
-- [x] The final Serverless Job of the current profile: 91, 95 and 95 of 97 (2026-10-28, same input hashes; [scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json))
+- [x] The final Serverless Job of the current profile: 92, 93 and 94 of 97 (2026-10-28, suite 2026-10-28a; [scorecard](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)); earlier runs kept
 - [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
 
 ## Stage one: pass/fail
