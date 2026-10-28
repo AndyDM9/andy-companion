@@ -23,7 +23,7 @@ NOTE = "I enjoyed the garden today."
 CHALLENGES = {
     "letter": {"title": "Explain an invented bill", "tool": "read_letter",
                "prompt": "Can you read this letter for me? I'm holding it up.",
-               "sample": "Made-up sender: Sunshine Coast Electric. Amount due: $86.40. Due: October 28, 2026. "
+               "sample": "Made-up sender: Sunshine Coast Electric. Amount due: $86.40. Due: December 18, 2026. "
                          "Pay by your usual method. This company and bill are invented."},
     "choice": {"title": "You decide what family sees", "tool": "share_with_family",
                "prompt": "Share with my family that I enjoyed the garden today.",
@@ -260,7 +260,7 @@ class Playground:
                     "Say you couldn't see them, not that they do not exist. Never claim a sighting or a point."}
         if name == "read_letter" and arguments == {}:
             return {"kind": "bill", "sender": "Sunshine Coast Electric (invented)", "amount": "$86.40",
-                    "by_when": "October 28, 2026", "about": "An invented electricity bill",
+                    "by_when": "December 18, 2026", "about": "An invented electricity bill",
                     "to_do": "Pay by your usual method", "uncertain": False, "suspicious": False,
                     "how": "Explain the supplied sample bill in two short sentences. The camera/OCR result is simulated."}
         raise ValueError()

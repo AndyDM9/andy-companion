@@ -72,6 +72,9 @@ immediate.
 - **A memory offer asked for three times in the system prompt was still missed:** "Sofia has her recital on
   Thursday" got "What was the recital like?" in 6 of 12 runs (2026-10-28). A one-line note on that turn, added in
   code when the words show something coming up with its day, brought it to 1 of 15. Recency beat repetition.
+- **A rare garbled reply:** once in about 3,500 replies on 2026-10-28 (a medical question in the suite), Nemotron 3.5
+  Lightning returned "-----.---.----.------... the. the to---------…" instead of words. A voice pipeline would try to
+  say it; a server-side check for degenerate output would help every voice builder.
 - **A tool result's reason gets said aloud:** a result worded as the reason ("the person has already supplied message
   words aloud, not a held-up page") came back in the spoken reply ("Since this is spoken content, not a held-up
   letter…") in 4 of 6 replies on 2026-10-27 and 10-28, and a longer instruction placed after fixed words was read out

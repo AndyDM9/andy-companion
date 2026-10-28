@@ -14,27 +14,44 @@ runs as-is in a plain container). Nothing here logs or keeps the words.
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Any, Dict, List, Optional
 
+from andy_companion import urgent
+
 MOMENT = ("[Andy's own check, not something they said: they mentioned something coming up, with its day. Before any "
           "other question, call remember_moment with what it is and the day, then read its question exactly and wait.]")
+TIME = ("[Andy's own check, not something they said: they asked the time or the date. Call get_today and answer from "
+        "what it gives; never say a time or a date it did not give.]")
 PHOTO = ("[Andy's own check, not something they said: they just told the photo's story. Call remember_fact now "
          "with a short line of it, as they said it, before anything else.]")
 
+# A day for a dated memory: not "tonight" or "this evening" (2026-10-28 review: "We are having fish for dinner
+# tonight" got the note), and "mañana" as tomorrow, not "esta mañana" (this morning).
 _DAY = re.compile(
-    r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|tomorrow|tonight|this (?:weekend|evening|afternoon)|"
+    r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|tomorrow|this weekend|"
     r"next (?:week|month|weekend)|lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo|pasado mañana|"
-    r"esta (?:noche|tarde)|este fin de semana|la (?:semana|pr[oó]xima semana) que viene|la pr[oó]xima semana)\b"
-    r"|(?<!esta )(?<!la )(?<!por la )\bmañana\b(?! por la| temprano)")
+    r"este fin de semana|la (?:semana|pr[oó]xima semana) que viene|la pr[oó]xima semana)\b"
+    r"|(?<!esta )(?<!la )(?<!por la )\bmañana\b")
+# What makes it an event. Not a bare "going" or "voy a": "I'm going to bed, see you tomorrow" and "Mañana va a
+# llover" are not events (2026-10-28 review).
 _EVENT = re.compile(
     r"\b(?:visit\w*|coming|comes|come over|arriv\w*|appointment|recital|birthday|anniversary|party|concert|dinner|"
-    r"lunch|doctor|dentist|meeting|game|match|wedding|church|mass|class|trip|flight|going|plumber|play|show|"
+    r"lunch|doctor|dentist|meeting|game|match|wedding|church|mass|class|trip|flight|plumber|play|show|"
     r"graduation|cita|visita\w*|viene|vienen|llega\w*|cumpleaños|aniversario|fiesta|concierto|cena|comida|m[eé]dico|"
-    r"dentista|reuni[oó]n|partido|boda|misa|clase|viaje|vuelo|fontanero|voy|vamos|va a|van a)\b")
+    r"dentista|reuni[oó]n|partido|boda|misa|clase|viaje|vuelo|fontanero)\b")
 _PAST = re.compile(
     r"\b(?:was|were|went|had|did|came|visited|last|ago|yesterday|used to|fue|fueron|fui|tuve|tuvo|vino|vinieron|"
     r"ayer|hace \w+ (?:d[ií]as|semanas))\b")
+# Asking the time or the date: "What time is it?" was answered "The current time is 10:15 AM." with no clock call,
+# once in nine runs on 2026-10-28. Not "What time does the library open?", "What's on today?" or "un día como hoy".
+_TIME = re.compile(
+    r"\bwhat time is it\b|\bwhat(?:'s| is) the (?:time|date)\b|\bwhat day is (?:it|today)\b|"
+    r"\bwhat(?:'s| is) today(?:'s date)?\W*$|\bwhat(?:'s| is) the date today\b|"
+    r"\b(?:it'?s|is it|today is) (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b(?:.*\btoday\b)?|"
+    r"\bqu[eé] hora es\b|\bqu[eé] d[ií]a es(?: hoy)?\b|\ba qu[eé] (?:d[ií]a )?estamos\b|\bcu[aá]l es la fecha\b|"
+    r"\bqu[eé] fecha es\b|\bhoy es (?:lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\b")
 # Asked for already, or a question, or a no: the model handles these as they are.
 _ASKED = re.compile(
     r"\b(?:remember|remind|forget|note|recuerd\w*|ap[uú]nt\w*|anot\w*|olvid\w*|av[ií]s\w*)\b")
@@ -77,13 +94,25 @@ def _after_photo(earlier: List[Dict[str, Any]]) -> bool:
             continue
         if any(name in MEMORY_TOOLS for name in names):
             return False
+        results = [_result(m.get("content")) for m in earlier[i + 1:] if m.get("role") == "tool"]
+        if any("error" in r or not r.get("description") for r in results):
+            return False                                # nothing was seen: there is no story to keep
         if "describe_photo" in names:
             return True
-        if "describe_view" in names:                    # a photo held up, not the room: its result says so
-            result = " ".join(_text(m.get("content")) for m in earlier[i + 1:] if m.get("role") == "tool")
-            return bool(_PHOTO.search(result.lower()))
+        if "describe_view" in names:                    # a photo held up, not the room: what was seen says so
+            # Only the description: the tool's own note ("the picture was not kept") says "picture" every time
+            # (2026-10-28 review: an ordinary look at the room got the photo note).
+            return any(_PHOTO.search(str(r.get("description", "")).lower()) for r in results)
         return False
     return False
+
+
+def _result(content: Any) -> Dict[str, Any]:
+    try:
+        data = json.loads(_text(content))
+    except ValueError:
+        return {}
+    return data if isinstance(data, dict) else {}
 
 
 def note_for(messages: List[Dict[str, Any]]) -> Optional[str]:
@@ -92,8 +121,13 @@ def note_for(messages: List[Dict[str, Any]]) -> Optional[str]:
         return None
     said = " ".join(_text(messages[-1].get("content")).split())
     words = said.lower().replace("’", "'")
-    if not said or said.startswith("[") or any(rule.search(words) for rule in (_ASKED, _QUESTION, _REFUSAL, _REQUEST,
-                                                                                _QUOTED)):
+    if not said or said.startswith("[") or urgent.is_urgent(said):
+        # Crisis or urgent words are never a memory to offer: "I am going to kill myself tomorrow" got the
+        # moment note (2026-10-28 review), ahead of the urgent net, which only follows Andy's first reply.
+        return None
+    if _TIME.search(words):
+        return TIME
+    if any(rule.search(words) for rule in (_ASKED, _QUESTION, _REFUSAL, _REQUEST, _QUOTED)):
         return None
     if len(words.split()) >= 5 and _after_photo(messages[:-1]):
         return PHOTO

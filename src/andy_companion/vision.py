@@ -55,6 +55,15 @@ PROMPT = ("You are the eyes of a home companion robot, talking to an older adult
           "Otherwise describe what is in the picture in two or three short, plain sentences, most important first. "
           "Never say who a person is, or guess their age, health or mood; describe only what is there. If text is "
           "visible, mention it briefly. If the picture is too dark or blurry, say so.")
+# A photo family sent is the whole picture, not something held up: given PROMPT, its "something they are holding or
+# showing you" made the description of a landscape begin "There is no person or object being held in this photo"
+# (2026-10-28, on the robot's computer), which Andy could have said aloud.
+PHOTO_PROMPT = ("You are the eyes of a home companion robot, talking to an older adult about a photo their family sent "
+                "them. Describe what is in the photo in two or three short, plain sentences, most important first: "
+                "any people and what they are doing, then the place; never mention what is not there. Never say where "
+                "anything is in the picture. "
+                "Never say who a person is, or guess their age, health or mood. If text is visible, mention it briefly. If "
+                "the photo is too dark or blurry, say so.")
 # The camera's view at 1280 across, and its middle at full detail beside it: shrunk to 768 across, a small toy held up
 # became "a computer mouse" (2026-10-25). In a test, a toy gorilla 130 px tall in a 1920 px room was named 2 of 2 this
 # way, 1 of 2 at 768; about 0.7 s more. A family photo is the whole picture, so it goes alone.
@@ -250,15 +259,18 @@ def middle(frame: Any) -> Any:
     return frame[int(h * top):int(h * bottom), int(w * left):int(w * right)]
 
 
-def describe(frame: Any, question: str = "", opener: Optional[Callable] = None, close: bool = True) -> str:
-    """What is in a picture, in a few sentences; with `close`, the camera's view sent with its middle at full detail."""
+def describe(frame: Any, question: str = "", opener: Optional[Callable] = None, close: bool = True,
+             prompt: Optional[str] = None) -> str:
+    """What is in a picture, in a few sentences; with `close`, the camera's view sent with its middle at full detail.
+    `prompt` replaces the camera's own (a family photo has its own, PHOTO_PROMPT)."""
     e = eyes()
     why = ready(e, opener)
     if why:
         raise VisionError(why)
     pictures = [jpeg(frame, VIEW_WIDTH)] + ([jpeg(middle(frame), MIDDLE_WIDTH, 90)] if close else [])
     ask = f"They asked: {' '.join(question.split())[:200]}" if question.strip() else ""
-    content = [{"type": "text", "text": PROMPT.format(ask=ask) + (MIDDLE_NOTE if close else "")}]
+    text = prompt if prompt is not None else PROMPT.format(ask=ask)
+    content = [{"type": "text", "text": text + (MIDDLE_NOTE if close else "")}]
     content += [{"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + base64.b64encode(p).decode()}}
                 for p in pictures]
     try:
@@ -321,7 +333,7 @@ def describe_photo(photo_id: str, opener: Optional[Callable] = None) -> dict:
     if frame is None:   # imread gives None, not an error, for a file it cannot read
         return {"error": "I couldn't open that photo."}
     try:
-        return {"description": describe(frame, "This is a photo a family member sent.", opener, close=False),
+        return {"description": describe(frame, opener=opener, close=False, prompt=PHOTO_PROMPT),
                 "how": PHOTO_HOW}
     except VisionError as e:
         return {"error": str(e)}

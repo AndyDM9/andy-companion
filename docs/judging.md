@@ -132,8 +132,9 @@ The last command prints local links on port 8093; Ctrl+C stops it and removes it
 It makes its own temporary store, even if Andy's normal data folder exists. No robot program is started.
 If the port is occupied, use `ANDY_DEMO_PORT=8094 uv run --locked python scripts/demo_screen.py --public`.
 
-The CPU suite runs more than 1,000 checks; the latest counts are in [STATUS.md](STATUS.md). Some tests require
-the robot SDK or MuJoCo and are skipped in this small environment. To exercise the real OCR test too,
+Expect about 2,100 passed and 20 skipped (21 without Tesseract) at the latest commit; [STATUS.md](STATUS.md) has the
+counts by date. The skipped tests need the robot SDK, MuJoCo or the voice server's own environment
+(`voice/`), which this small environment does not install. To exercise the real OCR test too,
 install `tesseract-ocr` and `tesseract-ocr-spa` through your Linux package manager; without Tesseract,
 that test adds one skip. [GitHub Actions](https://github.com/AndyDM9/andy-companion/actions/workflows/tests.yml)
 installs OCR support and runs the CPU suite, a separate-process public demo check and an installed-wheel check.
@@ -158,11 +159,11 @@ Serverless Jobs, simulation, desk images and physical trials. Every retained run
 
 | Evidence | Result | Boundary |
 |---|---|---|
-| [Current profile on Serverless Jobs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json) | 94.2 of 97 on average, nine runs (93 to 96) | Suite 2026-10-28a, the final code of 2026-10-28: [94, 93, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json), [95, 94, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [94, 96, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json); as the evening's fixes went in (written tool calls made, fixed words, notes for memory offers, the Spanish crisis example) [94, 95, 96](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json), [95, 93, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-172243.json), [97, 94, 97](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-173300.json); earlier runs on 2026-10-28 [92, 93, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json), [91, 95, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) and [94, 93, 92](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-120605.json); synthetic tool results; no microphone/camera/motors |
+| [Current profile on Serverless Jobs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json) | 94.8 of 97 on average, nine runs (93 to 96) | Suite 2026-10-28a, the final code of 2026-10-28: [95, 93, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json), [95, 94, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [96, 95, 96](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json); before the review's fixes and the clock note [94, 93, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json), [95, 94, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [94, 96, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json), after the fixes [95, 96, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-182331.json), [96, 95, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-182339.json), [94, 95, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-182917.json); as the evening's fixes went in (written tool calls made, fixed words, notes for memory offers, the Spanish crisis example) [94, 95, 96](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json), [95, 93, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-172243.json), [97, 94, 97](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-173300.json); earlier runs on 2026-10-28 [92, 93, 94](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json), [91, 95, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) and [94, 93, 92](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-120605.json); synthetic tool results; no microphone/camera/motors |
 | [Earlier profile, local](../evals/results/suite-2026-10-27-consent-source-local.json) | 93, 94, 94 of 97 | Real API calls, real confirmation/source checks, synthetic tool results; memory/activity offers, refusal/story wording and supportive-response failures retained; no microphone/camera/motors |
 | [Previous profile on Serverless Jobs](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) | 96, 95, 92 of 97 | Historical profile; does not validate the October 26 changes |
 | [Scam comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json) | Andy: 58/60 scams, 0/60 ordinary flagged | Written test cases, not household messages; model baselines and errors included |
-| [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; on 2026-10-28, informally, real glasses found 3 times out of 3 and keys once ([live test](live-test.md) 3t), not a scored trial; the revised body turn still needs physical validation |
+| [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; on 2026-10-28, informally, real glasses found 3 times out of 3 and keys once ([robot test record](live-test.md), the finder rows), not a scored trial; the revised body turn still needs physical validation |
 
 Optional evaluations need your own Token Factory key and consume credits. For a short text sample,
 enter the key at a hidden Bash prompt; it is passed through the environment, never an argument or file:
@@ -174,7 +175,8 @@ uv run --locked python evals/run_suite.py --only greet-1,share-2,letter-2 --runs
 unset NEBIUS_API_KEY
 ```
 
-Inspect `passed`, `total` and the failures in that synthetic scorecard. A completed evaluation can
+Inspect `per_run`, `total` and the failures in that synthetic scorecard (`passed` and `areas` describe only the
+last run; `per_run` has every run, and `failures_by_run` each run's failures). A completed evaluation can
 contain failures; a successful process exit alone does not mean every case passed. Remove `--only`
 to run all 97 cases. No microphone, camera or motors are exercised. This sample uses no Tavily key.
 [The simulation instructions](../sim/README.md) describe a separate optional model-backed finder test.

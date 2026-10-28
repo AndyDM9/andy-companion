@@ -21,9 +21,10 @@ too: `written_calls_made` holds a written call back from the reply's words as th
 ends without a real call, makes the calls it names (andy_companion.tool_text: only tools Andy has, with their own
 parameters). The tool's answer then reaches the model as for any call. Only the tools' names are logged.
 
-When the person mentions something coming up with its day, or tells the story behind a photo, `notes_added` adds
-Andy's own note to their turn in the request (andy_companion.turn_notes), so the model prepares the memory offer it
-kept missing; the note is never kept in the conversation, and only its kind is logged.
+When the person mentions something coming up with its day, tells the story behind a photo, or asks the time or the
+date, `notes_added` adds Andy's own note to their turn in the request (andy_companion.turn_notes), so the model
+prepares the memory offer it kept missing, or asks the clock; the note is never kept in the conversation, and only
+its kind is logged.
 
 Andy speaks English and Spanish. Parakeet hears 25 languages and writes what it thinks it heard: on 2026-10-28 two
 turns on the robot, an accented one and a muffled one, came out in Cyrillic (detected as Ukrainian and Russian),
@@ -208,8 +209,9 @@ def notes_added(handler_class) -> None:
             return messages
         noted = turn_notes.with_note(messages)
         if noted is not messages:
-            logger.info("voice: a note was added to the turn (%s)",
-                        "a photo's story" if turn_notes.note_for(messages) == turn_notes.PHOTO else "something coming up")
+            kinds = {turn_notes.PHOTO: "a photo's story", turn_notes.MOMENT: "something coming up",
+                     turn_notes.TIME: "the time or the date"}
+            logger.info("voice: a note was added to the turn (%s)", kinds.get(turn_notes.note_for(messages), "other"))
         return noted
 
     serialize._andy_notes = True

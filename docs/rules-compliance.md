@@ -8,8 +8,10 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 night audit: the judges' guided Space's invented bill is now due December 18, 2026, after judging ends (it was due October 28 and would have read as overdue); still invented, still labelled so. The judges' guide and README gain clearer test expectations and demo commands. No new service, model, data flow or claim.
+
 October 28 evening fixes: the README, Devpost source, judges' guide and scorecard index now cite three Serverless
-Jobs on the final code, 94.2 of 97 on average over nine runs (the afternoon's 92, 93 and 94 and the evening's
+Jobs on the final code, 94.8 of 97 on average over nine runs (the afternoon's 92, 93 and 94 and the evening's
 intermediate runs kept and linked), and the nine permission cases' 9, 9 and 9 of 9; the README's new "A fast model,
 held by code" cites only measured before-and-after figures from these scorecards; the limitations still say a photo story's memory offer fails most runs and that a written tool call
 that fits no tool leaves a silent turn. The changes are Andy's own code and wording (a written tool call made as the

@@ -73,10 +73,19 @@ QUOTED_ASKS = {
 QUOTE_MARKS = ":\"'“‘« "
 # Spanish words, for the language of Andy's fixed words. A few keywords missed most Spanish: "Recuérdame a las cinco…"
 # got its memory question in English (2026-10-28), and "Mi nieta tiene su recital el jueves" would have too.
-_SPANISH = re.compile(r"[ñ¿¡]|\b(s[ií]|lea|l[eé]ame|este|esta|mensaje|correo|texto|carta|nota|dice|familia|hija|hijo|"
+# A name is not a language: "Mrs. Peña" and "Dr. De La Cruz" made an English story's question Spanish (2026-10-28
+# review), so ñ alone is not a sign, it takes three small words, and the household's language decides a near miss.
+_SPANISH = re.compile(r"[¿¡]|\b(s[ií]|lea|l[eé]ame|este|esta|mensaje|correo|texto|carta|nota|dice|familia|hija|hijo|"
                       r"recuerda|recuerde|guarda|guarde|comparte|compártelo|compartir|por favor)\b")
-_SPANISH_SMALL = re.compile(r"\b(el|la|los|las|que|de|del|mi|mis|su|sus|es|en|con|por|para|una|un|y|tiene|tengo|"
-                            r"viene|vienen|voy|va|hoy|mañana)\b")
+_SPANISH_SMALL = re.compile(r"\b(el|la|los|las|que|de|del|al|mi|mis|su|sus|es|en|con|por|para|una|un|y|me|te|lo|le|"
+                            r"se|muy|pero|porque|está|estoy|tiene|tengo|viene|vienen|voy|va|hoy|mañana)\b")
+# A message read out that asks Andy itself to keep or share it, not one that reminds the person: "Don't forget your
+# pills, love you!" from a daughter got "That message asks me to remember something" (2026-10-28 review).
+_TO_ANDY = re.compile(r"^\W*(?:(?:please|andy|ok|okay|por favor)\W+)*(?:remember|recuerd\w*|recu[eé]rd\w*|save|"
+                      r"guard\w*|gu[aá]rd\w*|note|anot\w*|an[oó]t\w*|apunt\w*|ap[uú]nt\w*|keep|share|compart\w*|"
+                      r"comp[aá]rt\w*|send|env[ií]\w*|tell (?:my|the)|d[ií]le\w*)\b")
+_TO_PERSON = re.compile(r"\b(?:you|your|yours|tu|tus|te|ti)\b")
+_ABBREVIATION = re.compile(r"\b(?:Dr|Mr|Mrs|Ms|St|Sr|Sra|Srta|Jr|Prof)\.", re.I)
 
 _last: Dict[str, str] = {"words": ""}
 CONFIRM_FOR_S = 120.0
@@ -131,7 +140,14 @@ def spoken_message(words: str) -> bool:
 
 def _spanish(text: str) -> bool:
     words = str(text).lower()
-    return bool(_SPANISH.search(words)) or len(_SPANISH_SMALL.findall(words)) >= 2
+    small = len(_SPANISH_SMALL.findall(words))
+    if _SPANISH.search(words) or small >= 3:
+        return True
+    try:                                  # on the robot; the suite's container has no settings
+        from andy_companion import settings
+        return small >= 1 and settings.get().get("language") == "es"
+    except Exception:
+        return False
 
 
 def _normal(text: str) -> str:
@@ -158,7 +174,7 @@ def readback(name: str, arguments: dict, content: str, spanish: bool = False) ->
             many = what.lower().endswith("s") and not what.lower().endswith(("ss", "us", "is"))
             return (f"¿Quiere que recuerde dónde {'están' if many else 'está'} {what}: {where}?" if spanish else
                     f"Shall I remember where your {what} {'are' if many else 'is'}: {where}?")
-    if re.search(r"[.!?]\s+\S", content) or len(content) > 80:
+    if re.search(r"[.!?]\s+\S", _ABBREVIATION.sub("", content)) or len(content) > 80:
         # More than a sentence inside the question ("Shall I remember this: “… We swam every single day.”") lost its
         # question mark when read out, and sounded like something kept (a photo's story, 2026-10-28): the words
         # first, then the question. Read back alone, a story sounded like a recording of it; a thank-you first is
@@ -190,7 +206,8 @@ class Confirmation:
         if not spoken_message(self.words):
             return None
         payload = self.words[len(request_introduction(self.words)):].lstrip(QUOTE_MARKS).lower()
-        asks = "share" if SHARE_ASKED.search(payload) else "save" if ASKED.search(payload) else None
+        to_andy = bool(_TO_ANDY.match(payload)) and not _TO_PERSON.search(payload)
+        asks = None if not to_andy else "share" if SHARE_ASKED.search(payload) else "save" if ASKED.search(payload) else None
         if asks:
             return {"camera_read": False, "reason": "spoken_message",
                     "say": QUOTED_ASKS[(asks, _spanish(self.words))],

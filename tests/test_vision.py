@@ -53,8 +53,12 @@ def test_the_view_goes_with_its_middle_at_full_detail(endpoint):
     assert sizes == [(720, 1280), (810, 960)]           # the view at 1280 across; its middle never shrunk
     assert "held up" in parts[0]["text"] and "holding or showing you" in parts[0]["text"]
     op = Opener()
-    vision.describe(frame, "This is a photo a family member sent.", opener=op, close=False)
-    assert len(op.requests[0][1]["messages"][0]["content"]) == 2                  # a photo goes alone
+    vision.describe(frame, opener=op, close=False, prompt=vision.PHOTO_PROMPT)
+    parts = op.requests[0][1]["messages"][0]["content"]
+    assert len(parts) == 2                                                        # a photo goes alone
+    # its own prompt: nothing about something held up, the same rules about people (2026-10-28)
+    assert parts[0]["text"] == vision.PHOTO_PROMPT and "holding" not in parts[0]["text"] and "held" not in parts[0]["text"]
+    assert "Never say who a person is" in vision.PHOTO_PROMPT and "age, health or mood" in vision.PHOTO_PROMPT
 
 
 def test_switched_off_without_an_endpoint(monkeypatch):

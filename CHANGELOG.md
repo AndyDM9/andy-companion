@@ -5,6 +5,44 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Everything that needs no one at home, checked on the robot
+
+With the founder out and the robot on USB: the eyes (Super VL 2.1 s, Cosmos 8B as the fallback 4.5 s, on a real
+camera frame), all five Tavily APIs through `web.py`, a reminder said by the robot and deleted, a family photo and
+message announced and the photo described, the demo prize letter's card with **Be careful** first on the TV, and the
+screen pages in headless Chrome. A judge's path from a fresh public clone passed (install, 2,065 tests, demos, Docker,
+19 links, every first-screen figure).
+
+- **Family photos get their own prompt:** through the camera's, a landscape was described as "There is no person or
+  object being held in this photo", which Andy could have said aloud. `vision.PHOTO_PROMPT` keeps the same rules
+  about people (never who, never age, health or mood).
+- **The judges' sample bill** is due December 18, 2026, after judging ends, not October 28.
+- **An independent review of the evening's code** found five problems, all confirmed by running it, all fixed with
+  tests (it found the voice server's wrappers sound under streaming, interruption and the non-streaming path):
+  - **Crisis words got the memory note:** "I am going to kill myself tomorrow" matched something coming up with its
+    day, so Andy's first reply could have offered to remember it before the 911/988 net, which follows that reply.
+    No note now when the urgent check fires; "going", "voy a" and the like no longer make an event.
+  - **The photo note followed any look at the room:** the camera tool's own remark says "picture". Only what was seen
+    counts now, and a look that failed gets no note.
+  - **Everyday speech misfired** ("I'm going to bed, see you tomorrow", "Mañana va a llover", "fish for dinner
+    tonight"), and "mañana por la tarde" was missed. "Tonight" no longer counts as a day for a dated memory.
+  - **An English speaker could be asked in Spanish:** "Mrs. Peña" or "Dr. De La Cruz" was enough. It takes three
+    Spanish small words now, or the household's language for a near miss; a title's full stop is not a sentence end.
+  - **A family text reminding the person** ("Don't forget your pills, love you!") got "That message asks me to
+    remember something". The fixed words are only for a message that asks Andy itself.
+- **The clock, decided in code too:** "What time is it?" was once answered "The current time is 10:15 AM." with no
+  clock call. A time or date question now gets Andy's own note to call `get_today` first (20 of 20 local tries).
+- **Measured on the final code:** three Nebius Serverless Jobs, nine runs, **94.8 of 97 on average** (93 to 96;
+  [1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json), [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json)); after the review's fixes but before the clock note, 95.1. The README,
+  Devpost source, judges' guide and scorecard index cite the final nine. One reply in about 3,500 was garbled
+  ("-----.---. the. the to…"): a limitation, and feedback for NVIDIA.
+- **The suite's job bundle** (46.6 KB, 63.1 KB once Nebius encodes it) is checked against the real 65,536-byte limit
+  with 1,500 bytes spare, instead of a 5% margin; a module the suite carries may import another the job carries.
+- **For judges:** the suite's average links all three scorecards; the guide says what to expect from the tests and that a
+  scorecard's `passed` is its last run (`per_run` has every run); the README's demo commands match the guide's
+  (`--locked`, `--public`, the port); the OSMesa packages are named, with `MUJOCO_GL=egl` for NVIDIA machines; the
+  finder row names the robot test record in words, not a row number.
+
 ### Memory offers decided in code, jokes as words to say, the suite measured nine times
 
 - **A note in code on the person's turn** (`turn_notes.py`, in the voice server and the suite): something coming up

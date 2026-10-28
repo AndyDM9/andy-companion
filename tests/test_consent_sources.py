@@ -207,6 +207,10 @@ def test_quoted_words_offered_as_permission_get_words_to_say(words, said):
     ("That's me and my sister Lola in Cádiz, the summer of 1968. We swam every single day.", False),   # a place's accent
     ('I like a la carte dinners on Thursday.', False),
     ('My granddaughter Sofia has her piano recital on Thursday.', False),
+    ('My neighbour Mrs. Peña is lovely, she brings soup on Fridays.', False),      # a name is not a language
+    ('My new doctor is Dr. De La Cruz, he is very kind.', False),
+    ('Fuimos al parque con mi prima.', True),
+    ('Me gusta el café con leche.', True),
 ])
 def test_the_question_is_asked_in_the_persons_language(words, spanish):
     gate = consent.Confirmation()
@@ -224,3 +228,21 @@ def test_a_story_is_read_back_first_and_asked_about_last():
     gate = consent.Confirmation()
     gate.hear('I enjoy gardening.')
     assert gate.authorize('remember_fact', {'fact': 'Enjoys gardening.'})['say'] == 'Shall I remember this: “Enjoys gardening.”?'
+
+
+@pytest.mark.parametrize('words', [
+    'Read me this text from my daughter: "Don\'t forget your pills, love you!"',
+    'Here is a text from my son: "Hi Mom, remember to call Aunt Rosa on Sunday!"',
+])
+def test_a_message_that_reminds_the_person_is_answered_not_refused(words):
+    gate = consent.Confirmation()
+    gate.hear(words)
+    result = gate.camera_read_check()
+    assert result['camera_read'] is False and 'say' not in result
+
+
+def test_a_title_is_not_a_second_sentence():
+    gate = consent.Confirmation()
+    gate.hear('My neighbour Mrs. Peña brings soup on Fridays.')
+    assert gate.authorize('remember_fact', {'fact': 'Mrs. Peña brings soup on Fridays.'})['say'] == (
+        'Shall I remember this: “Mrs. Peña brings soup on Fridays.”?')

@@ -67,6 +67,12 @@ def test_the_job_carries_every_module_the_suite_imports_and_they_need_only_the_s
                 [node.module] if isinstance(node, ast.ImportFrom) and node.module else [])
             for mod in mods:
                 top = mod.split(".")[0]
+                if top == "andy_companion":     # another of Andy's modules: only one the job carries too
+                    inner = [a.name for a in node.names] if isinstance(node, ast.ImportFrom) and mod == "andy_companion" \
+                        else [mod.split(".")[1]]
+                    for sub in inner:
+                        assert f"src/andy_companion/{sub}.py" in files, f"{path} imports {sub}, not sent with the job"
+                    continue
                 assert top in sys.stdlib_module_names or top == "__future__", f"{path} imports {mod}"
 
 

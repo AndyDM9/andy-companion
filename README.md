@@ -32,9 +32,9 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 ![Andy's own search for a rubber duck in Pollen's MuJoCo scene: on the left the room with an arrow for where Andy's eye points, on the right what it sees, with the zoomed tiles, the sighting, the close-up and the point](docs/images/sim-search.gif)
 
-- **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
+- **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot, 2026-10-14 to 10-18 ([summary](evals/results/robot-timings-2026-10-20-1550.json), from Andy's own log, numbers only)
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **94.2 of 97** spoken situations handled right on average over nine text-only runs (93 to 96) as Nebius Serverless Jobs, judged by Nemotron 3 Ultra, with Andy's real consent check around stand-in tools ([scorecards](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json), [every run](evals/results/README.md))
+- **94.8 of 97** spoken situations handled right on average over nine text-only runs (93 to 96) as Nebius Serverless Jobs, judged by Nemotron 3 Ultra, with Andy's real consent check around stand-in tools (scorecards [1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json), [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json); [every run](evals/results/README.md))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -221,15 +221,17 @@ decides; each catch came from a failure the suite showed, and was measured again
 
 | Where the model drifted | What Andy's code does | Runs that failed, before → after |
 |---|---|---|
-| A tool call written out as text (`<tool_call> <function=get_today>…`), so the turn did nothing | The voice server makes the call when it names a tool Andy has, with that tool's own parameters ([tool_text.py](src/andy_companion/tool_text.py)) | 4 in 9 → 0 in 18 (3 empty replies, cause not recorded) |
-| A memory offer missed: "Sofia has her recital on Thursday" answered with "What was the recital like?" | A note in code on that turn, so the offer is prepared first; nothing is kept without a yes ([turn_notes.py](src/andy_companion/turn_notes.py)) | 6 in 12 → 1 in 15 |
+| A tool call written out as text (`<tool_call> <function=get_today>…`), so the turn did nothing | The voice server makes the call when it names a tool Andy has, with that tool's own parameters ([tool_text.py](src/andy_companion/tool_text.py)) | 4 in 9 → 0 in 36 (3 empty replies, cause not recorded) |
+| A memory offer missed: "Sofia has her recital on Thursday" answered with "What was the recital like?" | A note in code on that turn, so the offer is prepared first; nothing is kept without a yes ([turn_notes.py](src/andy_companion/turn_notes.py)) | 6 in 12 → 1 in 33 |
+| A time said without asking the clock ("The current time is 10:15 AM.") | The same note on a time or date question, so the clock is asked first ([turn_notes.py](src/andy_companion/turn_notes.py)) | 1 in 27 → 0 in 9; 20 of 20 local tries asked the clock |
 | A tool's reasoning said aloud ("Since this is spoken content, not a held-up letter…"), and a quoted "yes please" answered with "I've noted that" | The tool gives the words to say, never its reasons ([consent.py](src/andy_companion/consent.py)) | the nine permission cases: 6, 5, 7 of 9 → 9, 9, 9 |
-| A joke's pacing said aloud ("**Setup:** … (a moment of silence)") | The joke comes as words to say ([fun.py](src/andy_companion/fun.py)) | 2 in 15 → 0 in 12 (1 empty reply) |
+| A joke's pacing said aloud ("**Setup:** … (a moment of silence)") | The joke comes as words to say ([fun.py](src/andy_companion/fun.py)) | 2 in 15 → 0 in 30 (1 empty reply) |
 | The crisis line left out ("everyone would be better off without me") | The urgent-words net asks for the 988 or 911 sentence, and plays it from a recording if the model can't ([urgent.py](src/andy_companion/urgent.py)) | 2 in 3 → 0 in 15 |
 
-Over the nine runs of the final code the suite averages **94.2 of 97**, against 93.2 over the nine runs earlier that
+Over the nine runs of the final code the suite averages **94.8 of 97**, against 93.2 over the nine runs earlier that
 day; what still fails is mostly a photo story's offer, which the judge wants warmer, and single slips that vary from
-run to run ([every run](evals/results/README.md)).
+run to run ([every run](evals/results/README.md)). An independent review of these catches found five ways they
+misfired, among them crisis words that got the memory note; all were fixed before these runs (CHANGELOG, 2026-10-28).
 
 ## How Andy uses Tavily
 
@@ -279,11 +281,14 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets Andy's 38 tools and their real
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Now: 94.2 of 97 on average** over nine runs of the final code (94, 93, 94; 95, 94, 94; 94, 96, 94: three Nebius
-  Serverless Jobs on the evening of 2026-10-28, suite 2026-10-28a; [1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json),
-  [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json)). A photo story's memory offer failed 7 of the 9 runs (the judge wants a warmer word before
-  Andy reads the story back); a greeting with a question added and a made-up story's ending 3 times each; the rest
-  once or twice. As the evening's fixes went in: 94, 95, 96 ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json)), 95, 93, 95
+- **Now: 94.8 of 97 on average** over nine runs of the final code (95, 93, 95; 95, 94, 94; 96, 95, 96: three Nebius
+  Serverless Jobs on the evening of 2026-10-28, suite 2026-10-28a; [1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json),
+  [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json)). A photo story's memory offer failed 8 of the 9 runs (the judge wants a warmer word before
+  Andy reads the story back); an event's reminder offer 5 times; the rest once to three times, among them once a
+  garbled reply ("-----.---. the. the to…"). Before the review's fixes and the clock note, nine runs averaged 94.2
+  ([1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174033.json), [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174601.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-174603.json)), and after the fixes but before the note, 95.1 ([1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-182331.json),
+  [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-182339.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-182917.json)): the difference between the last two is within run-to-run variation. As the evening's
+  fixes went in: 94, 95, 96 ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-170037.json)), 95, 93, 95
   ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-172243.json)) and 97, 94, 97 ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-173300.json)).
 - **Before:** that afternoon, 92, 93 and 94 ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)): the
   Spanish crisis reply used *tú* and left out "someone you trust", and twice Nemotron wrote the tool call out as text;
@@ -466,11 +471,12 @@ What doesn't work yet, and what our numbers don't show.
   was tried on the robot once, on 2026-10-28: the offer and the save; turning back to the remembered spot not yet.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
-- **Text behaviour still varies:** the current profile scored **94.2 of 97 on average** over nine runs as Nebius
+- **Text behaviour still varies:** the current profile scored **94.8 of 97 on average** over nine runs as Nebius
   Serverless Jobs (93 to 96), with the actual confirmation gate and synthetic tools ([scorecards](evals/results/README.md)); the nine
   runs earlier on 2026-10-28 averaged 93.2. A photo story's memory offer fails most runs (Andy offers, through the
   real consent check, but the judge wants a warmer word first); the rest varies from run to run: a greeting with a
-  question added, a made-up story's ending, now and then an empty reply. The gate prevents an unapproved save; it does not make the model consistently offer one. The nine focused
+  offer missed, a made-up story's ending, now and then an empty reply, and once in about 3,500 replies a garbled one
+  that the robot would try to say. The gate prevents an unapproved save; it does not make the model consistently offer one. The nine focused
   permission cases scored 9, 9 and 9 of 9 that evening ([scorecard](evals/results/consent-source-2026-10-28-evening-local.json)),
   after 6, 5 and 7 that afternoon, when the model claimed to have kept words read from a message. Nemotron still
   sometimes writes a tool call out as text (2 of 12 tries of one request): Andy makes the call when it names a tool
@@ -511,13 +517,15 @@ What doesn't work yet, and what our numbers don't show.
 
 ## Try it without a robot
 
-- **The screen and pages, on sample data:** `uv sync && uv run python scripts/demo_screen.py`, then open
-  the addresses it prints. No robot, GPU or keys. `--public` serves the same pages read-only for anyone
-  to open; `scripts/space.sh build` puts them together as a Hugging Face Space (`space/`).
+- **The screen and pages, on sample data:** `uv sync --locked && uv run --locked python scripts/demo_screen.py --public`,
+  then open the addresses it prints (port 8093; another with `ANDY_DEMO_PORT=8094`). No robot, GPU or keys.
+  Without `--public` the family and settings pages also accept sample changes; `scripts/space.sh build` puts the
+  pages together as a Hugging Face Space (`space/`).
 - **Andy's search in simulation,** with only a Token Factory key, no robot: `cd sim && uv sync && cd ..`, then
   `MUJOCO_GL=egl uv run --project sim python sim/finder_sim.py --trials 10`, with the key in the environment
   ([hidden prompt](docs/judging.md#inspect-evidence-and-optionally-call-the-models)). It fetches Pollen's
-  scene from PyPI once; CPU rendering needs OSMesa system libraries as well as `MUJOCO_GL=osmesa`.
+  scene from PyPI once; on an NVIDIA machine `MUJOCO_GL=egl` renders on the GPU; CPU rendering needs `MUJOCO_GL=osmesa`
+  and the OSMesa libraries (`libosmesa6 libgl1` on Debian or Ubuntu).
   A keyless renderer check and the dependencies are in [sim/](sim/README.md).
 - **The conversation suite,** with only a Token Factory key: `uv run python evals/run_suite.py --runs 1`.
 - **The scam evaluation,** with only a Token Factory key, against the saved Tavily warnings:
