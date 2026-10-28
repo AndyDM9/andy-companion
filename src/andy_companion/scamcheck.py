@@ -5,8 +5,8 @@ evaluation that measures it (evals/scam_eval.py), both with strict schemas:
 
 1. **The message alone** (NVIDIA Nemotron 3.5 Lightning, MODEL): which sign of a known scam it shows, if
    any, quoting its words; code accepts a sign only if the quoted words are in the message.
-2. **Each Tavily warning, one question** (NVIDIA Nemotron 3 Ultra, MATCH_MODEL, only when there are
-   warnings): does the message use the same trick this consumer-protection warning describes (the same
+2. **Up to six Tavily warnings, one question judging each** (NVIDIA Nemotron 3 Ultra, MATCH_MODEL, only when there
+   are warnings): does the message use the same trick this consumer-protection warning describes (the same
    trick, not the same topic)? A match marks it, and names the source Andy can say aloud ("the FTC warns
    about messages like this").
 

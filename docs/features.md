@@ -102,7 +102,7 @@ simulation, founder observations and formal physical trials retain their separat
   - When a page asks for gift cards or money transfers, threatens arrest or a cut-off, rushes you, or
     announces a prize, code (not the model) puts **Be careful** first. It never shows the page's demand
     as a thing to do, says "Don't call or pay yet. Check with family first", and hides the page's
-    numbers from the model.
+    account, phone and reference numbers (four digits or more) from the model; amounts and dates stay.
   - A recognized medicine page gets only the fixed suggestion to ask a pharmacist or doctor; its text
     and free-text card fields are not handed to the conversation model. Account and phone numbers
     are hidden on ordinary cards.
@@ -113,7 +113,7 @@ simulation, founder observations and formal physical trials retain their separat
   pages, **a link** someone sent, and **whether a message looks like a known scam** (searched on
   consumer-protection sites only, at advanced depth, with the message's numbers and links removed
   first). Nemotron 3.5 Lightning looks for the message's own sign, and Nemotron 3 Ultra checks it against
-  each warning found: the same trick, not merely the same topic. Measured on 120 messages, three runs as
+  up to six warnings found, in one question that judges each: the same trick, not merely the same topic. Measured on 120 messages, three runs as
   Nebius Jobs: 58 of 60 scams caught, none of 60 ordinary messages flagged
   ([decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md)). On the TV, "Be careful: a known
   scam", then what to do ("Don't reply, pay or give any details. Check with family first."), then three
@@ -201,7 +201,7 @@ plain page saying what to do, never a bare error.
 - **Family see only what you ask Andy to share,** can send Andy a message, a link or a photo, and Andy
   always tells you who looked.
 - **Everything Andy keeps, on one page.** Helpers see reminders, remembered moments and facts, shared
-  notes, photos and pending messages and research answers, and can delete them; Andy tells you who
+  notes, photos, where things are, moves taught by hand, and pending messages and research answers, and can delete them; Andy tells you who
   deleted what. Delete everything clears the current card, captions and views too. Cards and research
   live only in the local screen server's memory, never in a file.
 - **Set up from a phone, never behind your back.** A helper sets the town, news sites, language,

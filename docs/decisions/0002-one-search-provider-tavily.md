@@ -1,6 +1,6 @@
 # 0002: Tavily is the only web provider
 
-**Date:** 2026-10-13. **Status:** accepted.
+**Date:** 2026-10-13. **Status:** accepted; amended by 0004 and 0006.
 
 ## Context
 

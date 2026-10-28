@@ -1,6 +1,6 @@
 # 0018: One confirmation authorizes one proposed action
 
-**Date:** 2026-10-26. **Status:** accepted.
+**Date:** 2026-10-26. **Status:** accepted; amended by 0021.
 
 ## Context
 

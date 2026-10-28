@@ -114,7 +114,7 @@
   .link:last-of-type { border-bottom: 0; }
   .link strong { display: block; font-size: 20px; }
   .link p { margin: 2px 0 0; }
-  .link input[readonly] { margin-top: 12px; font-size: 16px; }
+  .link input[readonly] { margin-top: 12px; font-size: 17px; }
 
   .facts { list-style: none; padding: 0; margin: 10px 0 0; }
   .facts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
@@ -352,7 +352,7 @@
     "recovery_hint": "These reminders are not active. Their original data is kept for review. Deleting a copy removes it.",
     "k_settings_recovery": "Settings needing review", "settings_recovery_item": "Saved settings copy — could not be loaded",
     "settings_recovery_hint": "Andy is using default settings for choices you have not set again. The unreadable original is kept for review and is not used. Deleting this copy removes it.",
-    "k_reminder": "Reminders", "k_moment": "Remembered moments", "k_fact": "Remembered facts", "k_shared": "Shared with family", "k_place": "Where things are", "k_pending": "Waiting to be said",
+    "k_reminder": "Reminders", "k_moment": "Remembered moments", "k_fact": "Remembered facts", "k_shared": "Shared with family", "k_place": "Where things are", "k_gesture": "Moves taught by hand", "k_pending": "Waiting to be said",
     "k_photo": "Photos from family", "photo_item": "Photo",
     "none_yet": "None yet: {list}.", "nothing_kept": "Andy keeps nothing yet besides these settings.",
     "delete": "Delete", "delete_armed": "Delete? Tap again", "delete_aria": "Delete {label}",
@@ -427,7 +427,7 @@
     "recovery_hint": "Estos recordatorios no están activos. Los datos originales se conservan para revisarlos. Al borrar una copia se elimina.",
     "k_settings_recovery": "Ajustes por revisar", "settings_recovery_item": "Copia guardada de ajustes que no se pudo leer",
     "settings_recovery_hint": "Andy usa los ajustes predeterminados para las opciones que aún no has vuelto a configurar. El original ilegible se conserva para revisarlo y no se usa. Al borrar esta copia se elimina.",
-    "k_reminder": "Recordatorios", "k_moment": "Momentos recordados", "k_fact": "Cosas recordadas", "k_shared": "Compartido con la familia", "k_place": "Dónde están las cosas", "k_pending": "Pendiente de decir",
+    "k_reminder": "Recordatorios", "k_moment": "Momentos recordados", "k_fact": "Cosas recordadas", "k_shared": "Compartido con la familia", "k_place": "Dónde están las cosas", "k_gesture": "Movimientos enseñados a mano", "k_pending": "Pendiente de decir",
     "k_photo": "Fotos de la familia", "photo_item": "Foto",
     "none_yet": "Nada todavía: {list}.", "nothing_kept": "Andy todavía no guarda nada aparte de estos ajustes.",
     "delete": "Borrar", "delete_armed": "¿Borrar? Toque otra vez", "delete_aria": "Borrar {label}",
@@ -611,7 +611,7 @@
   }
 
   // --- What Andy remembers ----------------------------------------------------------------------------
-  const KEPT = ["reminder", "moment", "fact", "shared", "photo", "place", "pending", "recovery", "settings_recovery"];
+  const KEPT = ["reminder", "moment", "fact", "shared", "photo", "place", "gesture", "pending", "recovery", "settings_recovery"];
   const RECOVERY = ["recovery", "settings_recovery"];
   function renderKept(kept) {
     const box = $("kept"); box.replaceChildren();

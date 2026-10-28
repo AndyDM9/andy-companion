@@ -19,6 +19,7 @@ This repository is Apache-2.0 ([LICENSE](../LICENSE)). It uses, under their own 
 | Pollen's MuJoCo scene for the Reachy Mini (`sim/`: fetched from the `reachy_mini` package on PyPI at run time; the scene itself is not stored in this repository, only our renders of it, `docs/images/sim-search.gif` and `.mp4`) | Apache-2.0, with the package | Pollen Robotics |
 | MuJoCo (the simulation) | Apache-2.0 | Google DeepMind |
 | OpenCV (camera pictures, the wave) and Tesseract (reading letters) | Apache-2.0 each | OpenCV team; Tesseract contributors |
+| YOLOX person detection from the OpenCV model zoo (`object_detection_yolox_2022nov.onnx`, fetched from Hugging Face at a pinned revision, `body/person.py`) | Apache-2.0 | Megvii (YOLOX); OpenCV model zoo |
 | vLLM (serving models on our own Nebius endpoints) | Apache-2.0 | vLLM project |
 | Hugging Face speech-to-speech | Apache-2.0 | Hugging Face |
 | Vosk and its small English and Spanish models, `vosk-model-small-en-us-0.15` and `vosk-model-small-es-0.42` (wake phrase) | Apache-2.0 (each model as listed by Alpha Cephei) | Alpha Cephei |

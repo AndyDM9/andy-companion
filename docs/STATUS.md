@@ -20,6 +20,12 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
 
+## October 28 claims review
+
+- **Independent review** of README, architecture, features, decisions and the Devpost text against the code:
+  twelve mismatches, all fixed (see the changelog). The one in code: taught moves are now on the settings page and
+  in "delete everything". **5 new cases**. Model IDs, endpoints, defaults and every published number checked out.
+
 ## October 28 audit of the published parts
 
 - **Verified:** both test environments, an anonymous keyless clone, the tool list, 419 relative links, key and

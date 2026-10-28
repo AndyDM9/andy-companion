@@ -56,7 +56,7 @@ The author operates the supporting computer; judges do not need personal desktop
 
 **"Can you read this for me?"** You hold up a letter. Andy reads it on this computer and explains it,
 and the TV shows it in large print. If the page asks for gift cards or rushes you, code (not the model)
-puts **Be careful** first, and Andy never reads out the page's numbers.
+puts **Be careful** first, and Andy never sees or reads out the page's account, phone or reference numbers.
 
 ![A letter on Andy's screen, with a warning (sample data)](docs/images/tv-letter.png)
 
@@ -139,8 +139,8 @@ $1.55 an hour while running). Every price and assumption: [docs/cost.md](docs/co
 
 ## Every model, and where it runs
 
-Thirteen models: eight on the computer beside the robot, two of them NVIDIA's, so Andy hears, speaks, wakes,
-reads and follows a face at home, with optional local vision; and five NVIDIA Nemotron models on Nebius.
+Fourteen models: nine on the computer beside the robot, two of them NVIDIA's, so Andy hears, speaks, wakes,
+reads and follows you at home, with optional local vision; and five NVIDIA Nemotron models on Nebius.
 
 **On this computer, beside the robot**
 
@@ -152,7 +152,8 @@ reads and follows a face at home, with optional local vision; and five NVIDIA Ne
 | The wake phrase, while Andy sleeps or is quiet | **Vosk** small models, English 0.15 and Spanish 0.42 | CPU, offline | |
 | Reading the letter in your hand | **Tesseract** OCR, English and Spanish | CPU; only the text leaves | |
 | Finding a face to follow (detection, never recognition) | **YuNet** (Pollen's `face_detection_yunet_2026may`) on ONNX Runtime | CPU, in Pollen's robot software | |
-| Local vision fallback | NVIDIA **Cosmos Reason 2 8B** (2B on a smaller GPU) | GPU, vLLM on 127.0.0.1 only ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)) | in simulation pointed 22 of 23 (8B), 18 of 23 (2B); tried end to end on this computer, not yet on the robot |
+| Finding a person whose face isn't visible (back turned, across the room), to follow and to notice someone is home | **YOLOX** (OpenCV model zoo, `object_detection_yolox_2022nov`) on OpenCV | CPU, about 3 frames a second, nothing kept (`ANDY_PERSON_FOLLOW=off` turns it off) | |
+| Local vision fallback | NVIDIA **Cosmos Reason 2 8B** on this desktop (the shipped default is 2B, for one GPU) | GPU, vLLM on 127.0.0.1 only ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)) | in simulation pointed 22 of 23 (8B), 18 of 23 (2B); tried end to end on this computer, not yet on the robot |
 
 Seeing a wave, the head's glance and turning to a voice need no model: motion in OpenCV, and the robot's own
 microphones.
@@ -179,7 +180,7 @@ search in Pollen's MuJoCo simulation. The details, and why each model, follow.
 | Conversation and tool calls | NVIDIA **Nemotron 3.5 Lightning** | **Nebius Token Factory** (zero data retention on) |
 | Hearing | NVIDIA **Parakeet TDT 0.6B v3** | Local GPU, inside [speech-to-speech](https://github.com/huggingface/speech-to-speech) |
 | Eyes: "what do you see?", family photos and finding things in the room | NVIDIA **Nemotron 3.5 Super VL**, structured output, reasoning off | **Nebius Token Factory**; or NVIDIA Nemotron Nano 12B v2 VL (FP8, vLLM 0.30.0) on our own **Nebius Serverless Endpoint**, one L40S ([cloud/vision-endpoint.sh](cloud/vision-endpoint.sh)), with `ANDY_VISION=endpoint` |
-| Local eyes, when the primary vision service cannot be reached | NVIDIA **Cosmos Reason 2 8B** on a free 24 GB GPU (2B beside the voice), the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house. Tried end to end on this computer, not yet on the robot |
+| Local eyes, when the primary vision service cannot be reached | NVIDIA **Cosmos Reason 2**, 2B by default (beside the voice), 8B with a free 24 GB GPU as on this desktop, the same structured questions | This computer's second GPU, vLLM 0.32.0 on 127.0.0.1 only ([local-eyes/](local-eyes/run.sh), [decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)); `ANDY_VISION=local` keeps every picture in the house. Tried end to end on this computer, not yet on the robot |
 | A second look at the person's words, for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety**, with a policy written for this, vLLM 0.20.2 | A second **Nebius Serverless Endpoint**, one L40S ([cloud/guard-endpoint.sh](cloud/guard-endpoint.sh)) |
 | Thinking a hard question through ("help me think it through") and judging Andy's answers | NVIDIA **Nemotron 3 Ultra** | Nebius Token Factory |
 | Large-print letter cards and vetting On this day | NVIDIA **Nemotron 3.5 Lightning**, structured output (strict JSON schema) | Nebius Token Factory |
@@ -332,7 +333,9 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
   it found that a package update had added a print the filter didn't know, for ten days; fixed and cleared).
 - **What Andy keeps,** in owner-only files on its own computer: reminders, facts and moments you asked it
   to remember (moments for 7 days), notes you shared with family, messages and photos family sent
-  (photos for 7 days), your settings, a story bookmark, and joke numbers. Current screen cards and research
+  (photos for 7 days), where you said your things are, moves taught by hand (by their names), your settings, a
+  story bookmark, and joke numbers. All of it but the settings, bookmark and joke numbers is listed on the
+  settings page, where any item or everything can be deleted. Current screen cards and research
   questions and answers live only in the local screen server's memory; a restart forgets them. Pending
   messages and answers are listed on the settings page. Delete everything also clears the current card,
   captions and views. Andy tells you who deleted what.
@@ -353,7 +356,9 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
     nowhere, with Cosmos Reason 2 on this computer as the eyes)
     only when you ask "what do you see?", ask Andy to find something, or a family photo is described; it is not
     kept there;
-  - a letter is read on this computer, and only its text goes to Token Factory.
+  - a letter is read on this computer, and only its text goes to Token Factory;
+  - for the weather, the town's name to Open-Meteo's geocoding and its coordinates to the National Weather
+    Service; for "On this day", today's date to Wikipedia.
 - **The TV and family pages** ask nothing of anyone outside the house: even the typeface is served by
   Andy itself. They are served on the home network over plain HTTP, each page behind its own long token, and the
   server refuses anyone connecting from outside private, loopback, link-local or home-VPN addresses.
@@ -390,7 +395,7 @@ Each principle comes from published research, and each has something you can see
 | Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | On the robot the reply starts a median 0.94 s after the words are understood (62 turns); each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
 | Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
-| The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only after "Shall I remember that?" (checked in code); shares only what you ask; tells you who looked and who changed a setting |
+| The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only when you ask it to, or after "Shall I remember that?" and a yes (checked in code); shares only what you ask; tells you who looked and who changed a setting |
 | No ageist assumptions, no talking down | [WHO, 2022](https://www.who.int/publications/i/item/9789240040793); research on patronising speech to older adults | Plain words, never "sweetie" or baby talk; *usted* in Spanish; no jokes about age, memory or health (tested) |
 
 ## Path to shipping

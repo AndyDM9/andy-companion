@@ -1,6 +1,6 @@
 # 0012: The finder zooms in, then looks closer
 
-**Date:** 2026-10-20. **Status:** accepted. **Changes:** how `find_object` reads its views (finder.py).
+**Date:** 2026-10-20. **Status:** accepted; amended by 0016. **Changes:** how `find_object` reads its views (finder.py).
 
 ## Context
 

@@ -89,6 +89,17 @@ def forget(name: str) -> bool:
     return True
 
 
+def remove(key: str) -> bool:
+    """Forget one gesture by its exact kept name (the settings page's delete): never by words, which could match
+    another."""
+    data = _load()
+    if key not in data:
+        return False
+    del data[key]
+    _save(data)
+    return True
+
+
 def keep(name: str, points: List[Point]) -> None:
     data = _load()
     data.pop(next((k for k in data if k.lower() == tidy_name(name).lower()), ""), None)

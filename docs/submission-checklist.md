@@ -210,7 +210,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
          and a line `**[Watch Andy on the real robot](https://www.youtube.com/watch?v=ID)**`, then a blank line.
       2. Delete the paragraph starting `**Review status, October 27:**`, and in the paragraph starting
          `**Judging it without a robot:**` delete `the real-robot video is still pending. `.
-      3. `grep -n -i "video" README.md docs/judging.md docs/submission.md | grep -i "pending\|not yet"`: change
+      3. `grep -n -i "video" README.md docs/judging.md docs/submission.md | grep -i "pending\|not yet\|planned"`: change
          each line the public video makes untrue, and only those. Then the usual record and checks.
 
 ## The Devpost form

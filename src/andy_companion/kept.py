@@ -13,7 +13,7 @@ import tempfile
 from datetime import datetime
 from typing import Any, Dict, List
 
-from andy_companion import board, moments, places, reminders, settings
+from andy_companion import board, gestures, moments, places, reminders, settings
 from andy_companion.privacy import MEMORY_FILE
 
 KINDS = {"reminder": ("a reminder", "reminders"), "moment": ("a remembered moment", "remembered moments"),
@@ -21,7 +21,8 @@ KINDS = {"reminder": ("a reminder", "reminders"), "moment": ("a remembered momen
          "pending": ("a message waiting to be said", "messages waiting to be said"),
          "recovery": ("a saved reminder copy needing review", "saved reminder copies needing review"),
          "settings_recovery": ("a saved settings copy needing review", "saved settings copies needing review"),
-         "photo": ("a photo from family", "photos from family"), "place": ("a remembered place", "remembered places")}
+         "photo": ("a photo from family", "photos from family"), "place": ("a remembered place", "remembered places"),
+         "gesture": ("a move taught by hand", "moves taught by hand")}
 
 
 def _facts() -> List[Dict[str, Any]]:
@@ -57,6 +58,9 @@ def summary() -> Dict[str, List[Dict[str, str]]]:
         "shared": [{"id": s["id"], "text": s["note"], "when": _when(s["at"])} for s in board.shared()],
         "photo": [{"id": p.stem, "text": "Photo", "when": _when(p.stat().st_mtime)} for p in photos],
         "place": [{"id": p["id"], "text": f"{p['what']}: {p['where']}", "when": _when(p["at"])} for p in places.kept()],
+        # Moves taught by hand carry a name ("Sofia's wave"): listed and forgotten here too (2026-10-28 audit).
+        "gesture": [{"id": name, "text": name, "when": _when(g["at"]) if isinstance(g.get("at"), (int, float)) else ""}
+                    for name, g in gestures._load().items() if isinstance(g, dict)],
         "recovery": [{"id": r["id"], "text": "Saved reminder copy — could not be loaded", "when": _when(r["at"])}
                      for r in reminders.recovery_files()],
         "settings_recovery": [{"id": r["id"], "text": "Saved settings copy — could not be loaded", "when": _when(r["at"])}
@@ -89,6 +93,8 @@ def delete(kind: str, item_id: str) -> bool:
         return board.unshare(item_id)
     if kind == "place":
         return places.remove(item_id)
+    if kind == "gesture":
+        return gestures.remove(item_id)
     if kind == "pending":
         return board.delete_pending(item_id)
     if kind == "photo":

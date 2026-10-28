@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Docs and code aligned after an independent claims review
+
+- **Moves taught by hand** (named, e.g. "Sofia's wave") were kept but not listed on the settings page, and
+  "delete everything" left them. Now listed in English and Spanish, deleted one by one by exact name, and part of
+  deleting everything. **5 new cases**.
+- **Model table:** YOLOX person detection (OpenCV model zoo, on by default) was missing: now fourteen models, nine
+  at home, in the README and Devpost text, with a credits row. Cosmos: 8B on this desktop, 2B the shipped default.
+- **Claims made exact:** remembering happens when asked or after a yes; the letter's hidden numbers are account,
+  phone and reference numbers (amounts and dates stay); the scam check asks one question over up to six warnings;
+  what leaves the house now includes the town to Open-Meteo and the National Weather Service and the date to
+  Wikipedia; what Andy keeps lists places and taught moves; "what do you see?" pictures are recorded only under
+  `ANDY_FINDER_RECORD`, like finder tries.
+- **Architecture:** rows for eleven modules that had none, the finder's body turn, the date. Decision statuses
+  for 0002, 0012 and 0018 match the index. Phone-page link text is 17 px, as the README says. The Devpost text no
+  longer dates filming to October 27.
+
 ### Audit of everything published, and the health check names who holds Andy's ports
 
 - The health check passed "Voice server" and "Screen and family page" while Andy was stopped: another project's

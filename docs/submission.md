@@ -48,9 +48,9 @@ and looks things up with Tavily while it keeps talking with you. Measured: [58 o
 messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [91, 95 and 95 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) text cases passed with the current profile; both evaluations ran as Nebius
 Serverless Jobs. Three local runs of the same profile scored [93, 94 and 94](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/suite-2026-10-27-consent-source-local.json); each run has the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
-  Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Eight models run
+  Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Nine models run
   on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
-  reading letters and finding a face.
+  reading letters and finding a face or a person.
 - **Nebius:** Token Factory answers every turn: a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json) from your words being understood to Andy's
   first sound, 54 turns on the robot. **Serverless Jobs** run Andy's search in Pollen's MuJoCo simulation, scored
   against the scene's truth, and the tests; a **Serverless Endpoint**, started when needed, serves NVIDIA Nemotron
@@ -61,7 +61,7 @@ Serverless Jobs. Three local runs of the same profile scored [93, 94 and 94](htt
   you", and talking over Andy stops it. Installs as a
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
 - **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
-  with older adults yet. The planned video uses live robot shots, with no cuts in the pauses; filming is October 27.
+  with older adults yet. The video uses live robot shots, with no cuts in the pauses; filming is planned before submission.
 - **Testing access:** [short testing instructions](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md):
   a public sample demo without keys, reproducible software checks, optional model evaluations and a free live robot demonstration on request.
 
@@ -76,7 +76,7 @@ only what you ask it to keep.
 ### What it does
 
 Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three interactions bring the
-camera, moving body and TV together. Filming is planned for October 27; each interaction's current test status is
+camera, moving body and TV together. Filming is planned before submission; each interaction's current test status is
 recorded in the repository's live-test checklist:
 
 - **"Can you read this for me?"** You hold up a letter. Andy reads it and the TV shows it in large print. If the
