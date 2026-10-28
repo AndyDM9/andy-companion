@@ -110,6 +110,20 @@ def test_asking_again_turns_straight_to_where_they_were_left():
     assert posted[-1][1:] == ([True], 0)
 
 
+def test_remembered_place_also_outlines_only_the_confirmed_screen_picture(monkeypatch):
+    from andy_companion import outline
+    calls = []
+    def draw(frame, what, point):
+        calls.append((what, point))
+        return frame.copy()
+    monkeypatch.setattr(outline, 'draw', draw)
+    places.keep('keys', 'on the hall table', .3, .2)
+    out, robot, manager, posted = run([EMPTY], lambda *a: {'yes': True, 'x': .4, 'y': .6, 'where': ''},
+                                     asker=lambda *a: pytest.fail('no sweep'))
+    assert out['found'] and out['where_it_was'] and len(manager.moves) == 2
+    assert calls == [('keys', (.4, .6))] and posted[-1][1:] == ([True], 0)
+
+
 def test_not_where_they_were_left_means_a_sweep_and_saying_so():
     places.keep("keys", "on the hall table", math.radians(30), math.radians(20))
     calls = []

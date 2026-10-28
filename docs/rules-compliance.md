@@ -8,6 +8,16 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 outline addition (0042): rechecked the official new/existing-work, third-party integration,
+required platform/model and source/instructions provisions. The normal NVIDIA/Nebius runtime stays
+in place. The optional loopback display client is independently written; no other application's
+code, brand plans, checkpoints or credentials are included. A separately operated SAM service has
+its own [licence](https://huggingface.co/facebook/sam3.1/blob/main/LICENSE), acknowledged in the
+[feature instructions](object-outline.md). It is not relabelled Apache-2.0 or bundled here. The
+example is our own synthetic illustration with an existing local service's mask, not a physical
+trial or independently verified weight provenance. This feature stays off in the household until
+staged camera/alignment/timing checks; it does not complete the video, access or submission items.
+
 October 27 preflight verification (0041): README now accurately scopes model text probes, endpoint
 catalogues and current audio counts. Invented fault tests and a stopped-state diagnostic add no
 physical or completed-submission evidence. No model, hosting, access, licence, visibility or video

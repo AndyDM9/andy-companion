@@ -7,7 +7,8 @@ Key: M = milestone, B = plan item, C = a step near submission, round N = one day
 Global AI Hackathon: the Physical AI track, and Best Use of Tavily. A project wins one Overall award, or one
 track award and one bonus award, never both (rules, section 8).
 
-**Deadline:** submissions close **2026-10-30, 10:00 PT**. We submit by **2026-10-27**.
+**Deadline:** submissions close **2026-10-30, 10:00 PT**. The internal October 27 submission target
+was missed; filming remains deferred by the founder. Final submission is still pending.
 
 **Submission freeze:** the [October 27 organiser reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
 says not to edit the code repository, video or project materials after the deadline. Freeze this

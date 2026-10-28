@@ -98,6 +98,15 @@ any data, and requires its own new temporary store; it must never replace a live
 
 ## Parts, and what each owns
 
+Optional display outline (0042): after the existing close-up confirmation and point are chosen,
+`outline.py` can send that crop/label to an explicitly configured numeric-loopback mask service.
+Validated numeric contours are painted on a separate screen copy; no SVG is rendered. Nemotron
+confirmation/angles and the original recording frames are untouched. The annotated JPEG follows
+the existing two-minute authenticated RAM-only view route; no new store/family path. The backend
+is disabled by default, separately operated/licensed, and never started by Andy. Invalid, ambiguous
+or unavailable masks leave the ordinary picture; cancellation while awaiting the worker prevents
+late publication. It makes no physical-improvement claim. [Interface and limits](object-outline.md).
+
 | Part | Owns | Must not |
 |---|---|---|
 | `voice/` | Hearing, end-of-turn detection, the model call, speaking | Store audio or text; hold keys in the repository |

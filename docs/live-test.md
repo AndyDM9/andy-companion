@@ -30,6 +30,12 @@ It changes only its own process settings. The spoken recovery and hood checks be
 
 ## Before
 
+**Optional outline, October 28:** only when a compatible loopback mask service is deliberately
+configured, follow [object-outline.md](object-outline.md). Check the contour on the confirmed object,
+nearby look-alikes, no-mask/timeout fallback, cancellation and deletion during an in-flight request.
+Record actual alignment and end-to-end time separately; software/illustration tests are not physical
+results. Leave this option off while another app uses the shared robot/GPU/ports.
+
 The live doctor (0041) now rejects missing/unsupported/stale audio counts and incomplete model replies.
 Its Token Factory probes use fixed invented text; endpoint catalogue checks are labelled separately.
 On October 27 the services were already stopped cleanly and saved mode was asleep: the check passed

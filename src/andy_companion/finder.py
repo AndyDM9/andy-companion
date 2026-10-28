@@ -554,7 +554,10 @@ async def where_it_was(what: str, robot: Any, manager: Any, hint: Dict[str, Any]
                                                POINT_HOLD_S)))
     looking_at.set("pointing", POINT_HOLD_S + 1.0)
     try:
-        poster(views_for_screen([got["frame"][got["box"]]]), [True], 0)
+        from andy_companion import outline
+        picture = await asyncio.to_thread(outline.draw, got["frame"][got["box"]], what,
+                                         (got["checked"].get("x", 0.5), got["checked"].get("y", 0.5)))
+        poster(views_for_screen([picture]), [True], 0)
     except Exception:
         pass   # the TV is a help, never a reason to stop
     where = chosen["where"] or hint.get("where", "")
@@ -643,6 +646,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     chosen: Optional[Dict[str, Any]] = None
     closer: List[Dict[str, Any]] = []
     close_picture: Any = None
+    close_point = (0.5, 0.5)
     close_ups: List[Any] = []
     if places and not zoom():                       # one shrunk frame per view, as before: the first sighting
         chosen = dict(places[0])
@@ -660,6 +664,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         if got["checked"].get("yes"):
             chosen = confirmed_place(place, got)
             close_picture = got["frame"][got["box"]].copy()
+            close_point = (got["checked"].get("x", 0.5), got["checked"].get("y", 0.5))
             break
     i = chosen["view"] if chosen else None
     # Numbers only, never pictures or words: how many places were seen, how many closer looks, how long.
@@ -672,7 +677,7 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
         try:
             shown = list(frames)
             if i is not None and close_picture is not None:
-                shown[i] = close_picture                 # the closer look, in place of the wide view it came from
+                shown[i] = close_picture  # confirmed close-up, optionally outlined on this display copy
             poster(views_for_screen(shown), [bool(r.get("seen")) for r in results], i)
         except Exception:
             pass   # the TV is a help, never a reason to stop
@@ -698,6 +703,10 @@ async def _find(what: str, robot: Any, manager: Any, *, asker: Callable = ask, c
     await asyncio.to_thread(record, what, frames, results, i,
                             {**seconds, "to_point": round(clock() - start, 2), "closer": closer}, None,
                             [[round(math.degrees(a), 1) for a in ps] for ps in poses], close_ups)
+    if close_picture is not None:
+        from andy_companion import outline
+        # The worker only returns pixels. If cancelled while it waits for a mask, it cannot publish later.
+        close_picture = await asyncio.to_thread(outline.draw, close_picture, what, close_point)
     await asyncio.to_thread(show_views)
     where = chosen["where"]
     await asyncio.to_thread(board.show, "seen", f"Your {what}", [{"summary": where}] if where else [])

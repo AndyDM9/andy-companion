@@ -55,6 +55,7 @@ simulation, founder observations and formal physical trials retain their separat
 
 ## Your day
 
+
 - **It knows the day, and never guesses it.** "What's on today?" gets the same words every time, the
   morning plan comes once each morning, and the screen shows it as a **Today** card.
 - **Reminders at the times you choose, in your words**, one-off or daily. A reminder wakes Andy if it
@@ -75,6 +76,11 @@ simulation, founder observations and formal physical trials retain their separat
   speaking.
 
 ## Seeing
+
+- **Optional object outline:** a separately operated local mask service can outline an already
+  confirmed object on the screen copy. Off by default; no change to search, confirmation or pointing.
+  Software/illustration checks pass; physical alignment/timing remain unverified.
+  [Setup, example and limits](object-outline.md).
 
 - **"Where did I leave my glasses?"** Andy looks around the room, a little down where things are put
   down, and NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of the four views as six zoomed tiles at once.

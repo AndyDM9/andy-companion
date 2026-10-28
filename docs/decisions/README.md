@@ -46,3 +46,4 @@ gets a dated amendment, or a new decision that replaces it. New ones start from 
 | [0039](0039-physical-scorecards-use-only-validated-metadata.md) | Physical scorecards validate metadata, distinguish errors and preserve previous files | 2026-10-27 | accepted |
 | [0040](0040-unreadable-mode-does-not-wake-andy.md) | Unreadable saved mode pauses automatic wakes until explicit intent restores valid control state | 2026-10-27 | accepted |
 | [0041](0041-preflight-requires-current-counts-and-final-text.md) | Preflight requires current audio counts and usable final model text | 2026-10-27 | accepted |
+| [0042](0042-outline-only-the-confirmed-screen-copy.md) | Outline only the confirmed screen copy using an optional local mask | 2026-10-28 | accepted |

@@ -6,6 +6,7 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 
 | Question | The scorecard to read |
 |---|---|
+| Can Andy outline the confirmed object on its screen copy? | [object-outline-audit-2026-10-28.json](object-outline-audit-2026-10-28.json): optional numeric-loopback client, contour validation/fallback/cancellation, both full suites and an own-illustration local-service probe. Disabled in the household; no new camera, motor or physical-accuracy result |
 | Does preflight distinguish verified replies/counts from unknown data? | [preflight-verification-audit-2026-10-27.json](preflight-verification-audit-2026-10-27.json): final-text checks, typed current watchdog counts and explicit catalogue labels; invented fault tests and a separate stopped/asleep live diagnostic. No physical task result |
 | Can damaged sleep/quiet state break startup? | [mode-integrity-audit-2026-10-27.json](mode-integrity-audit-2026-10-27.json): schema checks, explicit recovery, desktop pause and dashboard-start status; invented faults, both full suites, installed wheel and separate live preflight. Reminders can be delayed until correction; no new physical result |
 | What should improve before submission? | [function-strategy-audit-2026-10-27.json](function-strategy-audit-2026-10-27.json): current rules/function evidence/priorities and strict metadata-only trial scoring, with invented-file tests and a separate health probe; no new physical rate or completed submission |

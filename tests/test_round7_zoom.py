@@ -169,6 +169,57 @@ def test_andy_looks_closer_then_points_and_the_tv_shows_the_close_up():
     assert shown.shape[1] == finder.VIEW_WIDTH and shown[shown.shape[0] // 2, shown.shape[1] // 2, 0] > 200   # the close-up
 
 
+@pytest.mark.parametrize('confirmed', [True, False])
+def test_outline_runs_only_after_confirmation_and_only_changes_the_screen(monkeypatch, confirmed):
+    from andy_companion import outline
+    calls = []
+    def draw(frame, what, point):
+        calls.append((what, point, frame.shape))
+        return np.full_like(frame, 250)
+    monkeypatch.setattr(outline, 'draw', draw)
+    out, robot, manager, posted = run([EMPTY] * 2 + [frame_with_spot(.5, .5), EMPTY, EMPTY],
+        lambda *a: {'yes': confirmed, 'x': .4, 'y': .6, 'where': 'by the lamp'})
+    assert out['found'] is confirmed and len(manager.moves) == (6 if confirmed else 5)
+    assert len(calls) == int(confirmed)
+    if confirmed:
+        assert calls == [('glasses', (.4, .6), (540, 960, 3))]
+        import cv2
+        image = cv2.imdecode(np.frombuffer(posted[-1][0][2], np.uint8), 1)
+        assert image.min() > 240
+
+
+def test_cancellation_while_outlining_cannot_publish_the_late_picture(monkeypatch):
+    import threading
+    from andy_companion import outline
+    entered, release, finished = threading.Event(), threading.Event(), threading.Event()
+    def draw(frame, *args):
+        entered.set()
+        release.wait(3)
+        finished.set()
+        return frame
+    monkeypatch.setattr(outline, 'draw', draw)
+    posted = []
+    async def scenario():
+        robot = Robot([EMPTY] * 2 + [frame_with_spot(.5, .5), EMPTY, EMPTY])
+        manager = Manager(); robot.manager = manager
+        async def no_wait(_):
+            pass
+        task = asyncio.create_task(finder.find('glasses', robot, manager, asker=spot_asker,
+            checker=lambda *a: {'yes': True, 'x': .5, 'y': .5, 'where': ''},
+            poster=lambda *a: posted.append(a), queueable=lambda m: m, sleep=no_wait, clock=lambda: 0))
+        try:
+            assert await asyncio.to_thread(entered.wait, 2)
+            task.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await task
+        finally:
+            release.set()
+        assert await asyncio.to_thread(finished.wait, 2)
+        await asyncio.sleep(.02)
+        assert all(p[2] is None for p in posted)
+    asyncio.run(scenario())
+
+
 def test_a_no_up_close_moves_on_and_then_says_it_was_not_them():
     sweep = [frame_with_spot(0.3, 0.5), EMPTY, frame_with_spot(0.7, 0.5), EMPTY]   # two places
     asked = []

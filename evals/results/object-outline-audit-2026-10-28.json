@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-28",
+  "scope": "Optional display-only local mask client. Independent implementation; no search/confirmation/motor change. Disabled in the household. No real camera or physical trial in this audit.",
+  "decision": "docs/decisions/0042-outline-only-the-confirmed-screen-copy.md",
+  "runtime": {
+    "setting": "ANDY_OUTLINE_URL",
+    "default": "disabled",
+    "service": "separately operated compatible numeric-loopback HTTP mask service; no server or weights bundled",
+    "new_package_dependencies": 0,
+    "new_cloud_calls": 0,
+    "household_configuration_changed": false,
+    "robot_or_model_services_started_stopped": false,
+    "andy_services_observed": "inactive",
+    "annotation": "copy only after confirmation/point queued; recording uses originals",
+    "view_retention": "existing authenticated RAM-only JPEG view route, two-minute expiry",
+    "cancellation": "worker returns pixels only; cancellation while awaiting it cannot publish late",
+    "limits": {
+      "max_image_side": 1024,
+      "max_reply_bytes": 262144,
+      "max_masks": 12,
+      "max_components_per_mask": 16,
+      "max_path_points_per_mask": 512,
+      "network_operation_timeout_seconds": 0.8,
+      "end_to_end_latency_guarantee": false
+    }
+  },
+  "verification": {
+    "new_cases": 67,
+    "targeted": 107,
+    "cpu": {
+      "passed": 1881,
+      "skipped": 16
+    },
+    "installed_robot_environment": {
+      "passed": 1930,
+      "skipped": 1
+    },
+    "wheel_resource_checks": 3,
+    "installed_base_wheel_import_disabled_path": "pass, no optional imports or connection",
+    "changed_python_lint": "pass",
+    "diff_check": "pass",
+    "local_service_probe": {
+      "scope": "One own synthetic cup illustration sent to existing loopback mask service; no camera, robot controller, provider key or household input. Not an accuracy or physical result.",
+      "accepted_outline": true,
+      "wall_seconds": 0.321,
+      "services_started_or_stopped": false,
+      "configuration_changed": false
+    },
+    "sample_asset": "docs/images/object-outline-example.png",
+    "weights_independently_verified": false,
+    "test_inputs": "Invented pixels, masks, local HTTP fixtures and controlled cancellation; no household pictures, words or provider response text retained."
+  },
+  "publication": {
+    "source": "pending",
+    "screen_preview": "pending"
+  },
+  "open": [
+    "Optional setting not enabled in household; coordinate non-conflicting service/robot/GPU ports before activation.",
+    "Real camera alignment, thin objects, crowded/absent/look-alike cases and end-to-end time unverified.",
+    "Concurrent deletion during in-flight work still needs verification; cancellation test is narrower.",
+    "No improved physical finder rate, camera-quality or service-availability claim.",
+    "Video still deferred; final Job/release/app pin, testing/access and actual Devpost reconciliation/submission pending."
+  ]
+}

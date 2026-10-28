@@ -211,6 +211,11 @@ search in Pollen's MuJoCo simulation. The details, and why each model, follow.
 
 ## Measured (Reachy Mini Lite)
 
+Optional: a [local object outline](docs/object-outline.md) can mark the confirmed closer view on
+the screen. It is off by default and needs a separately operated mask service; it never changes
+Nemotron's confirmation or pointing. Software and synthetic-illustration checks are available;
+physical alignment/timing checks remain pending. No SAM model/server is bundled with Andy.
+
 | Step | Time |
 |---|---|
 | Parakeet speech-to-text | 0.02–0.08 s (2026-10-13) |

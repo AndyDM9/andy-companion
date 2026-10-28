@@ -22,7 +22,7 @@ def data_dir(name: str) -> Path:
 APP_KEYS = ("TAVILY_API_KEY", "TAVILY_PROJECT", "NEBIUS_API_KEY", "NEBIUS_BASE_URL", "ANDY_VISION",
             "ANDY_VISION_URL", "ANDY_VISION_TOKEN", "ANDY_FINDER_RECORD", "ANDY_GUARD_URL", "ANDY_GUARD_TOKEN", "ANDY_VOICE_URL",
             "ANDY_VISION_FALLBACK", "ANDY_LOCAL_EYES_URL", "ANDY_LOCAL_EYES_MODEL", "ANDY_WAVE_DEBUG",
-            "ANDY_SCREEN_PORT", "ANDY_VISION_MODEL", "ANDY_FINDER_TURN")
+            "ANDY_SCREEN_PORT", "ANDY_VISION_MODEL", "ANDY_FINDER_TURN", "ANDY_OUTLINE_URL")
 # What the supervisor's own process needs: it hosts the screen server, whose setup page finds the town's
 # events calendar with Tavily (setup_page.suggest_events_page), and which eyes are chosen and which Cosmos runs
 # here (no key), for the hood page's "where it ran". The weather and the health tiles need no key.

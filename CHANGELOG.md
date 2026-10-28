@@ -3,6 +3,24 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-28
+
+### Outline a confirmed object on the screen copy
+
+- Added an independent optional loopback mask client (0042), off by default, with strict numeric
+  geometry/size checks, proxy/redirect refusal and unmodified-picture fallback. It paints a real
+  mask contour, without replacing Nemotron confirmation, search or pointing. Both a fresh search
+  and remembered-place confirmation use it; cancelled annotation cannot publish a late image.
+- Annotated copies use existing authenticated two-minute RAM-only views; original/recording frames
+  stay untouched. No new dependency, cloud call or automatic model/service startup. Document the
+  compatible-service prerequisite, separately licensed SAM backend, example and remaining trials.
+- **67 new cases**, **107** targeted; CPU **1,881 / 16 skipped**, installed robot environment **1,930 /
+  1 skipped**, three wheel checks, installed base-wheel import, lint/diff pass. A real existing local
+  service outlined an own illustration in **0.321 s**; no camera/physical/accuracy result inferred.
+- Household services/configuration unchanged while another app uses the hardware. Camera alignment,
+  look-alikes/absence, in-flight deletion and end-to-end timing remain pending. Record the missed
+  internal October 27 target and deferred filming; official deadline/release/submission stay open.
+
 ## 2026-10-27
 
 ### Make preflight verification match what was actually checked

@@ -1,6 +1,6 @@
 # Status
 
-**Last updated 2026-10-27.** Update this file in the same commit as any change it describes.
+**Last updated 2026-10-28.** Update this file in the same commit as any change it describes.
 The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history is in [CHANGELOG.md](../CHANGELOG.md).
 
 ## At a glance
@@ -17,8 +17,31 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
 | M8 | Proof | 🔨 Built; final run before submitting | Current text profile: **93, 94, 94 of 97 locally**, real consent gate and synthetic tools. Earlier profile's latest Serverless Job: **96, 95, 92 of 97** (2026-10-25). Final submission-time Job still pending. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
-| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming 2026-10-27, as the founder chose on October 26 |
+| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
 
+
+## October 28 optional object outline
+
+- **Built (0042):** a separately operated local mask service can outline an already-confirmed object
+  on the screen copy. Off by default. Numeric loopback only, proxies/redirects disabled, bounded
+  replies/geometry; exactly one qualifying contour must contain Nemotron's point. No usable mask
+  means the ordinary picture. No search/confirmation/angle change, new package or model startup.
+- **Verification:** **67 new cases**, **107** targeted cases; CPU **1,881 / 16 skipped**, installed robot
+  environment **1,930 / 1 skipped**, **three** wheel-resource checks and installed-base-wheel import
+  smoke pass, as do Python lint/diff checks. Invented masks, loopback HTTP and synthetic pixels;
+  confirmation-only/remembered-place paths and cancellation while awaiting a mask are covered.
+- **Actual local service:** one own synthetic cup illustration produced an accepted contour in
+  **0.321 s**. No camera/robot, household input or cloud call; no independently verified weight
+  provenance. The labelled [example](images/object-outline-example.png) is not a physical result.
+- **Operation:** household configuration and services untouched; existing three Andy services remain
+  inactive while the shared setup is used elsewhere. Client/server ports must differ from screen
+  and voice. This repo ships the client/interface, not a mask server/weights. Existing image auth,
+  RAM expiry and clearing route apply; a late annotation worker only returns pixels.
+- **Pending:** actual camera alignment, crowded/absent/look-alike cases, in-flight deletion and full
+  timing before filming the option. No new physical finder rate. Video is still deferred; the old
+  October 27 internal target was missed. Final Job/release/app pin, free testing/access and actual
+  Devpost reconciliation/submission remain open. [Instructions](object-outline.md),
+  [audit metadata](../evals/results/object-outline-audit-2026-10-28.json).
 
 ## October 27 preflight verification audit
 

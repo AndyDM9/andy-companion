@@ -6,6 +6,9 @@ in the same commit that makes it true.
 
 ## Final readiness, re-audited October 26–27
 
+- [x] Optional display-only contour client implemented independently, disabled by default; original frames/confirmation/pointing unchanged, numeric-loopback/geometry/HTTP/fallback/cancellation tests and real own-illustration service probe pass (0042)
+- [ ] Configure a non-conflicting licensed mask service and verify camera alignment, nearby look-alikes, timeout/cancellation/concurrent deletion and end-to-end timing before filming the optional contour; no improved physical rate claimed
+
 - [x] Preflight validates usable final text and current typed audio counts; unknown/stale metadata cannot pass, malformed metadata cannot crash it, endpoint catalogues are accurately labelled; 58 new cases and both full suites pass
 - [x] Diagnostic fix published with four matching anonymous files, fresh locked-clone tests, hosted CPU/wheel/SDK checks and documentation/history checks; no app/preview deployment required
 - [ ] Fresh awake physical preflight and observed tasks after the cleanly stopped/asleep state seen in the latest diagnostic; 17/22 stopped-state checks do not complete them
