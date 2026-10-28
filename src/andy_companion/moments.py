@@ -143,13 +143,16 @@ def forget_one(text_or_id: str, today: Optional[date] = None) -> Dict[str, Any]:
             "say": "More than one moment matches. Ask which one they mean, then forget it by its id."}
 
 
-def spoken_day(on: str, today: Optional[date] = None) -> str:
+def spoken_day(on: str, today: Optional[date] = None, language: str = "en") -> str:
+    """"today", "tomorrow", "yesterday" or "Friday, October 16"; in Spanish for the settings page of a Spanish
+    household ("hoy", "viernes, 16 de octubre")."""
+    from andy_companion import words
+
     today = today or date.today()
     d = date.fromisoformat(on)
-    if d == today:
-        return "today"
-    if d == today + timedelta(days=1):
-        return "tomorrow"
-    if d == today - timedelta(days=1):
-        return "yesterday"
+    for key, offset in (("today", 0), ("tomorrow", 1), ("yesterday", -1)):
+        if d == today + timedelta(days=offset):
+            return words.kept_word(key, language)
+    if words.lang(language) == "es":
+        return words.date_shown(d, "es", with_weekday=True)
     return d.strftime("%A, %B %-d")

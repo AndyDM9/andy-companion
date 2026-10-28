@@ -239,10 +239,10 @@
   const api = (path) => path + "?k=" + encodeURIComponent(key);
   const $ = (id) => document.getElementById(id);
   const UI = JSON.parse($("ui").textContent);
-  let name = "", lang = "en", person = "";
-  // The household's language is known only after the page has told the person who looked (the family API
-  // answers then); the last one seen is kept on this phone so the first question is in it next time.
-  try { name = localStorage.getItem("andy-family-name") || ""; lang = localStorage.getItem("andy-family-lang") === "es" ? "es" : "en"; } catch (e) {}
+  // The household's language comes with the page itself (Andy serves it with <html lang>), so the first question is
+  // in it on a first visit too, before the visit is told and the family API answers.
+  let name = "", lang = document.documentElement.lang === "es" ? "es" : "en", person = "";
+  try { name = localStorage.getItem("andy-family-name") || ""; } catch (e) {}
 
   function t(k, values) {
     const p = person;
@@ -285,11 +285,8 @@
   async function open() {
     await send("/api/family/look", { name });
     const data = await send("/api/family", null, "GET");
-    // Read only if the server sends them (it does not yet): the household's language and the person's name.
-    if (data.language === "es" || data.language === "en") {
-      lang = data.language;
-      try { localStorage.setItem("andy-family-lang", lang); } catch (e) {}
-    }
+    // The household's language as it is now (it may have changed since the page was opened), and the person's name.
+    if (data.language === "es" || data.language === "en") lang = data.language;
     person = typeof data.person_name === "string" ? data.person_name : "";
     $("who").hidden = true; $("page").hidden = false;
     const list = $("notes"); list.textContent = "";

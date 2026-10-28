@@ -664,13 +664,21 @@ class Handler(BaseHTTPRequestHandler):
 
     def _page(self, name: str) -> None:
         body = (PAGES / name).read_bytes()
-        if name == "hood.html" and _language() == "es":       # the TV's Spanish menu opens it: the page in Spanish
+        # The household's language in the page itself: the TV's Spanish menu opens the hood, and the family page asks
+        # for a name in it on a first visit, before anything is asked of Andy (2026-10-28 review: it asked in English).
+        if name in ("hood.html", "family.html", "setup.html") and _language() == "es":
             body = body.replace(b'<html lang="en">', b'<html lang="es">', 1)
         self._send(200, body, "text/html; charset=utf-8")
 
     def _expired(self, path: str) -> None:
         """A page link that no longer opens (replaced, or mistyped): a kind page saying what to do, still a 404."""
         self._send(404, expired_page(path), "text/html; charset=utf-8")
+
+    def _error(self, reason: str, code: int) -> None:
+        """Why the settings or family page's request can't be done, in the household's language (words.problem)."""
+        from andy_companion import words
+
+        self._json({"error": words.problem(reason, _language())}, code)
 
     def _gone(self, page: str) -> None:
         """A page already open when its link was replaced asks with the old token: 410 and the kind page's words, in
@@ -756,7 +764,7 @@ class Handler(BaseHTTPRequestHandler):
             # read or kept: "Anna looked" would show one visitor's words to the next.
             if url.path == "/api/family/look" and _ok(q.get("k"), "family"):
                 return self._json({"ok": True})
-            return self._json({"error": READ_ONLY_ERROR}, 403)
+            return self._error(READ_ONLY_ERROR, 403)
         local = self.client_address[0] in ("127.0.0.1", "::1")
         if url.path == "/api/transient" and _ok(q.get("t"), "screen") and local:
             length = self._length()
@@ -814,7 +822,7 @@ class Handler(BaseHTTPRequestHandler):
         if url.path.startswith("/api/setup") and _ok(q.get("s"), "setup"):
             length = self._length()
             if not 0 <= length <= MAX_SETUP_BODY:
-                return self._json({"error": "That is too long."}, 413)
+                return self._error("That is too long.", 413)
             try:
                 data = _object(self.rfile.read(length))
                 if not isinstance(data, dict):
@@ -851,20 +859,20 @@ class Handler(BaseHTTPRequestHandler):
                     board.new_family_link()
                     return self._json({"ok": True, **setup_state()})
             except ValueError as e:
-                return self._json({"error": str(e)}, 400)
+                return self._error(str(e), 400)
             except (TypeError, AttributeError, OverflowError):
-                return self._json({"error": "Something went wrong; please try again."}, 400)
+                return self._error("Something went wrong; please try again.", 400)
             return self._send(404, b"Not found", "text/plain")
         if _replaced(url.path, q):
             return self._gone(_replaced(url.path, q))
         if url.path.startswith("/api/family/") and _ok(q.get("k"), "family") and not family_allowed():
-            return self._json({"error": "That's a lot at once; please wait a minute and try again."}, 429)
+            return self._error("That's a lot at once; please wait a minute and try again.", 429)
         if not url.path.startswith("/api/family/") or not _ok(q.get("k"), "family"):
             return self._send(404, b"Not found", "text/plain")
         length = self._length()
         limit = board.MAX_PHOTO_BYTES * 4 // 3 + MAX_BODY if url.path == "/api/family/photo" else MAX_BODY
         if not 0 <= length <= limit:
-            return self._json({"error": "That is too long."}, 413)
+            return self._error("That is too long.", 413)
         try:
             data = _object(self.rfile.read(length))
             if url.path == "/api/family/look":
@@ -888,9 +896,9 @@ class Handler(BaseHTTPRequestHandler):
                 board.suggestion_from_page(data.get("name", ""), data.get("what", ""), data.get("when"))
                 return self._json({"ok": True})
         except ValueError as e:
-            return self._json({"error": str(e)}, 400)
+            return self._error(str(e), 400)
         except (TypeError, AttributeError, OverflowError):
-            return self._json({"error": "Something went wrong; please try again."}, 400)
+            return self._error("Something went wrong; please try again.", 400)
         return self._send(404, b"Not found", "text/plain")
 
 

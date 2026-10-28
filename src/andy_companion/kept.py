@@ -11,9 +11,9 @@ import json
 import os
 import tempfile
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from andy_companion import board, gestures, moments, places, reminders, settings
+from andy_companion import board, gestures, moments, places, reminders, settings, words
 from andy_companion.privacy import MEMORY_FILE
 
 KINDS = {"reminder": ("a reminder", "reminders"), "moment": ("a remembered moment", "remembered moments"),
@@ -42,31 +42,51 @@ def _write_facts(facts: List[Dict[str, Any]]) -> None:
     os.replace(tmp, MEMORY_FILE)
 
 
-def _when(ts: float) -> str:
-    return datetime.fromtimestamp(ts).strftime("%a, %b %-d, %-I:%M %p").replace("AM", "am").replace("PM", "pm")
+def _when(ts: float, language: str = "en") -> str:
+    """"Wed, Oct 28, 11:59 am"; in Spanish as the family page writes it, "miércoles, 28 de octubre, 11:59" (2026-10-28
+    review: a Spanish household's settings page showed English dates)."""
+    dt = datetime.fromtimestamp(ts)
+    if language == "es":
+        return f"{words.date_shown(dt, 'es', with_weekday=True)}, {dt:%H:%M}"
+    return dt.strftime("%a, %b %-d, %-I:%M %p").replace("AM", "am").replace("PM", "pm")
 
 
-def summary() -> Dict[str, List[Dict[str, str]]]:
+def _waiting(entry: Dict[str, Any], language: str = "en") -> str:
+    """What waits to be said, as the settings page lists it: its own words, or what it is and who sent it. Unnamed,
+    the page showed its type: "Look", "Message", "Photo" (2026-10-28 review)."""
+    own = entry.get("topic") or entry.get("text") or entry.get("what") or entry.get("caption")
+    if own:
+        return str(own)
+    name = " ".join(str(entry.get("name") or "").split())[:board.NAME_LEN]
+    key = {"look": "look", "message": "link", "photo": "photo"}.get(str(entry.get("type")))
+    if key is None:
+        return words.kept_word("other", language)
+    return words.kept_word(key if name else key + "_anon", language, name=name)
+
+
+def summary(language: Optional[str] = None) -> Dict[str, List[Dict[str, str]]]:
+    """Everything kept, with times and fixed words in the household's language (the person's own words as they are)."""
+    lg = words.lang(language or board._language())
     photos = sorted(board.PHOTOS.glob("*.jpg"), key=lambda p: p.stat().st_mtime) if board.PHOTOS.is_dir() else []
+    daily = " · " + words.kept_word("daily", lg)
     return {
-        "reminder": [{"id": r["id"], "text": r["text"], "when": _when(r["due"]) + (" · daily" if r.get("repeat") == "daily" else "")}
+        "reminder": [{"id": r["id"], "text": r["text"], "when": _when(r["due"], lg) + (daily if r.get("repeat") == "daily" else "")}
                      for r in reminders.pending()],
-        "moment": [{"id": m["id"], "text": m["what"], "when": moments.spoken_day(m["on"])}
+        "moment": [{"id": m["id"], "text": m["what"], "when": moments.spoken_day(m["on"], language=lg)}
                    for m in moments._load() if not moments._expired(m)],     # past ones too: kept a week to ask after
         "fact": [{"id": f["id"], "text": str(f.get("text", "")),
-                  "when": _when(f["createdAt"] / 1000) if isinstance(f.get("createdAt"), (int, float)) else ""} for f in _facts()],
-        "shared": [{"id": s["id"], "text": s["note"], "when": _when(s["at"])} for s in board.shared()],
-        "photo": [{"id": p.stem, "text": "Photo", "when": _when(p.stat().st_mtime)} for p in photos],
-        "place": [{"id": p["id"], "text": f"{p['what']}: {p['where']}", "when": _when(p["at"])} for p in places.kept()],
+                  "when": _when(f["createdAt"] / 1000, lg) if isinstance(f.get("createdAt"), (int, float)) else ""} for f in _facts()],
+        "shared": [{"id": s["id"], "text": s["note"], "when": _when(s["at"], lg)} for s in board.shared()],
+        "photo": [{"id": p.stem, "text": "Photo", "when": _when(p.stat().st_mtime, lg)} for p in photos],
+        "place": [{"id": p["id"], "text": f"{p['what']}: {p['where']}", "when": _when(p["at"], lg)} for p in places.kept()],
         # Moves taught by hand carry a name ("Sofia's wave"): listed and forgotten here too (2026-10-28 audit).
-        "gesture": [{"id": name, "text": name, "when": _when(g["at"]) if isinstance(g.get("at"), (int, float)) else ""}
+        "gesture": [{"id": name, "text": name, "when": _when(g["at"], lg) if isinstance(g.get("at"), (int, float)) else ""}
                     for name, g in gestures._load().items() if isinstance(g, dict)],
-        "recovery": [{"id": r["id"], "text": "Saved reminder copy — could not be loaded", "when": _when(r["at"])}
+        "recovery": [{"id": r["id"], "text": "Saved reminder copy — could not be loaded", "when": _when(r["at"], lg)}
                      for r in reminders.recovery_files()],
-        "settings_recovery": [{"id": r["id"], "text": "Saved settings copy — could not be loaded", "when": _when(r["at"])}
+        "settings_recovery": [{"id": r["id"], "text": "Saved settings copy — could not be loaded", "when": _when(r["at"], lg)}
                               for r in settings.recovery_files()],
-        "pending": [{"id": e["id"], "text": str(e.get("topic") or e.get("text") or e.get("what") or e.get("caption") or e.get("type", "")),
-                     "when": _when(e["at"])} for e in board.pending_entries()
+        "pending": [{"id": e["id"], "text": _waiting(e, lg), "when": _when(e["at"], lg)} for e in board.pending_entries()
                     if e.get("id") and e.get("type") not in board.KEPT_UNTIL_SAID],
     }
 

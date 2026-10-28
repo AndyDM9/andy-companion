@@ -509,7 +509,7 @@
   const text = (el, v) => { el.textContent = v; return el; };
   const make = (tag, props) => Object.assign(document.createElement(tag), props || {});
   const UI = JSON.parse($("ui").textContent);
-  let lang = "en", person = "", who = "", S = null;
+  let lang = document.documentElement.lang === "es" ? "es" : "en", person = "", who = "", S = null;   // as Andy served it
   try { who = localStorage.getItem("andy-setup-name") || ""; } catch (e) {}
 
   // One phrase from the table, with the person's name (or "them") and any values put in.
@@ -815,6 +815,7 @@
   // already in it.
   (async () => {
     if (who) $("name").value = who;
+    translate();
     try {
       const s = await call("/api/setup");
       lang = s.settings.language === "es" ? "es" : "en";

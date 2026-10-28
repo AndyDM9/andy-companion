@@ -160,3 +160,113 @@ def sky(short: str, language: str = "en") -> str:
            "probables " if "likely" in s else "")
     rain = how + " y ".join(kinds)
     return f"{base}, con {rain}" if base else rain[0].upper() + rain[1:]
+
+
+# What the settings page lists as kept (kept.summary), beyond the person's own words: a reminder said every day, and
+# what waits to be said when it has no words of its own (2026-10-28 review: the page showed "Look", "Message", "Photo").
+KEPT = {
+    "en": {"daily": "daily", "today": "today", "tomorrow": "tomorrow", "yesterday": "yesterday",
+           "look": "{name} looked at the shared notes", "look_anon": "Someone looked at the shared notes",
+           "link": "A link from {name}", "link_anon": "A link from family",
+           "photo": "A photo from {name}", "photo_anon": "A photo from family", "other": "Something to pass on"},
+    "es": {"daily": "cada día", "today": "hoy", "tomorrow": "mañana", "yesterday": "ayer",
+           "look": "{name} miró las notas compartidas", "look_anon": "Alguien miró las notas compartidas",
+           "link": "Un enlace de {name}", "link_anon": "Un enlace de la familia",
+           "photo": "Una foto de {name}", "photo_anon": "Una foto de la familia", "other": "Algo que transmitir"},
+}
+
+
+def kept_word(key: str, language: str = "en", **values: str) -> str:
+    return KEPT[lang(language)][key].format(**values)
+
+
+# What the settings and family pages are told when something can't be done, in Spanish (usted, as on the pages). The
+# reasons are written in English where they are raised; the screen server says them in the household's language
+# (2026-10-28 review: a Spanish household read "Choose a time later than now."). A test checks every one is here.
+PROBLEMS_ES: Dict[str, str] = {
+    # the screen server
+    "That is too long.": "Es demasiado largo.",
+    "Something went wrong; please try again.": "Algo salió mal; pruebe otra vez.",
+    "That is not a number.": "Eso no es un número.",
+    "That's a lot at once; please wait a minute and try again.": "Es mucho a la vez; espere un minuto y pruebe otra vez.",
+    "This is a public demo with sample data: nothing you send is kept or shown to anyone.":
+        "Esta es una demostración pública con datos de ejemplo: nada de lo que envíe se guarda ni se muestra a nadie.",
+    "Your first name is needed, so Andy can tell them who deleted it.":
+        "Hace falta su nombre, para que Andy pueda decir quién lo borró.",
+    "Your first name is needed, so Andy can tell them who changed it.":
+        "Hace falta su nombre, para que Andy pueda decir quién lo cambió.",
+    "That was already gone.": "Eso ya se había borrado.",
+    "Unknown kind of item.": "No se reconoce ese tipo de elemento.",
+    # the settings
+    "Use web addresses, one per line.": "Use direcciones web, una por línea.",
+    "Settings must be an object of named choices.": "Los ajustes no tienen la forma esperada.",
+    "Settings must be an object.": "Los ajustes no tienen la forma esperada.",
+    "Their first name must be text.": "El nombre de la persona debe ser texto.",
+    "The town must be text.": "La ciudad debe ser texto.",
+    "The language is English or Spanish.": "El idioma es inglés o español.",
+    "The pace is normal or slow.": "El ritmo es normal o más despacio.",
+    "The volume is a number from 10 to 100.": "El volumen es un número del 10 al 100.",
+    "The screen's direction is a number of degrees from -120 to 120.":
+        "La dirección de la pantalla es un número de grados entre -120 y 120.",
+    "The screen is above, level with or below Andy's eyes.":
+        "La pantalla está por encima, a la altura o por debajo de los ojos de Andy.",
+    "The night clock shows at the hours chosen, while Andy is asleep, or never.":
+        "El reloj de noche aparece a las horas elegidas, mientras Andy duerme, o nunca.",
+    "Night hours are from 0 to 23.": "Las horas de la noche van de 0 a 23.",
+    "A saved setting has an unsupported value.": "Un ajuste guardado tiene un valor no admitido.",
+    "Settings could not be read or preserved. No settings changes were made.":
+        "No se pudieron leer ni conservar los ajustes. No se hizo ningún cambio.",
+    "Settings changes have an unsupported field or value.": "Los cambios tienen un campo o un valor no admitido.",
+    # what family send
+    "A name is needed.": "Hace falta un nombre.",
+    "A name and a message or link are needed.": "Hacen falta un nombre y un mensaje o un enlace.",
+    "That link doesn't look right. Send a web address that starts with https://.":
+        "Ese enlace no parece correcto. Envíe una dirección web que empiece por https://.",
+    "A link starts with http:// or https://.": "Un enlace empieza por http:// o https://.",
+    "A name and what to remind them about are needed.": "Hacen falta un nombre y qué recordarle.",
+    "A suggestion can't carry a link. Send a link as a message instead.":
+        "Una sugerencia no puede llevar un enlace. Envíe el enlace como mensaje.",
+    "Choose a day and a time.": "Elija un día y una hora.",
+    "Choose a time later than now.": "Elija una hora más tarde que ahora.",
+    "Choose a time within the next week.": "Elija una hora dentro de la próxima semana.",
+    "Choose a time.": "Elija una hora.",
+    "Choose a day.": "Elija un día.",
+    "The photo must be smaller than 8 MB.": "La foto debe ocupar menos de 8 MB.",
+    "Send the photo as a JPEG, PNG or WebP.": "Envíe la foto como JPEG, PNG o WebP.",
+    "That photo is too large to show; send a smaller copy.":
+        "Esa foto es demasiado grande para mostrarla; envíe una copia más pequeña.",
+    "That file is not a photo Andy can show.": "Ese archivo no es una foto que Andy pueda mostrar.",
+    "The photo could not be prepared.": "No se pudo preparar la foto.",
+    "Andy has a lot waiting to be passed on. Please try again later.":
+        "Andy tiene muchas cosas pendientes de transmitir. Pruebe otra vez más tarde.",
+    "A name and what changed are needed.": "Hacen falta un nombre y lo que cambió.",
+    "A name and what was deleted are needed.": "Hacen falta un nombre y lo que se borró.",
+}
+# Reasons with a number or the helper's own words in them.
+PROBLEM_PATTERNS_ES = (
+    (r'"(.*)" is not a web address\. Use one per line, like wlrn\.org\.',
+     r"«\1» no es una dirección web. Use una por línea, como wlrn.org."),
+    (r"Up to (\d+) sites, please\.", r"Hasta \1 sitios, por favor."),
+    (r"Their first name can have letters, spaces, hyphens and apostrophes, up to (\d+) in all\.",
+     r"El nombre puede tener letras, espacios, guiones y apóstrofos, hasta \1 en total."),
+    (r"Choose on or off for .+\.", "Elija sí o no para esa opción."),
+    (r"That link is too long\. Send a shorter web address, up to (\d+) characters\.",
+     r"Ese enlace es demasiado largo. Envíe una dirección web más corta, de hasta \1 caracteres."),
+    (r"Keep it short: up to (\d+) characters\.", r"Que sea breve: hasta \1 caracteres."),
+)
+
+
+def problem(message: str, language: str = "en") -> str:
+    """A reason something can't be done, in the household's language. Anything not written here reads as the general
+    "something went wrong" in Spanish rather than as English."""
+    import re
+
+    if lang(language) != "es":
+        return message
+    if message in PROBLEMS_ES:
+        return PROBLEMS_ES[message]
+    for pattern, spanish in PROBLEM_PATTERNS_ES:
+        found = re.fullmatch(pattern, message, re.S)
+        if found:
+            return found.expand(spanish)
+    return PROBLEMS_ES["Something went wrong; please try again."]
