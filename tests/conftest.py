@@ -13,6 +13,17 @@ import tempfile
 os.environ["ANDY_DATA_DIR"] = tempfile.mkdtemp(prefix="andy-tests-")
 atexit.register(shutil.rmtree, os.environ["ANDY_DATA_DIR"], True)   # removed when the run ends
 
+# Git's own repository variables, which the pre-commit hook passes to the tests: from a linked worktree GIT_DIR is an
+# absolute path, so the fixtures' `git -C <tmp>` init, commit, tag and config reached the real repository instead of
+# their throwaway ones (2026-10-28: test commits on the branch, a release tag, a fixture identity and core.bare=true in
+# the shared config). Every git a test runs works on the folder it names.
+for _name in [*os.environ]:
+    if _name in ("GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_CONFIG", "GIT_CONFIG_PARAMETERS", "GIT_CONFIG_COUNT",
+                 "GIT_OBJECT_DIRECTORY", "GIT_DIR", "GIT_WORK_TREE", "GIT_IMPLICIT_WORK_TREE", "GIT_GRAFT_FILE",
+                 "GIT_INDEX_FILE", "GIT_NO_REPLACE_OBJECTS", "GIT_REPLACE_REF_BASE", "GIT_PREFIX", "GIT_SHALLOW_FILE",
+                 "GIT_COMMON_DIR") or _name.startswith(("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_")):
+        del os.environ[_name]
+
 import pytest  # noqa: E402
 
 
