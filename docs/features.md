@@ -1,6 +1,6 @@
 # What Andy does, in full
 
-Reviewed 2026-10-27. Hardware steps without a result remain unverified on the robot.
+Reviewed 2026-10-28. Hardware steps without a result in the [live test](live-test.md) remain unverified on the robot.
 
 The README has the short version. Each item here says what Andy does and, where it matters, what is
 decided in code rather than by the model. How each was tested is in the [changelog](../CHANGELOG.md)
@@ -13,13 +13,13 @@ the evidence below and [current status](STATUS.md) when describing what has been
 
 | Function | Evidence available | Highest-priority remaining check |
 |---|---|---|
-| Find an object, inspect it and point | Software/simulation checks; earlier physical scorecard: [3 correct points in 9 attempts, 6 misses](../evals/results/finder-eval-2026-10-20-2037.json). Later founder reports of glasses/watch finds are untimed | Run the current fixed physical plan, including present/absent objects, errors and timings; separately test a moved object and a TV-photo decoy |
-| Read an invented letter and explain/check it | Local OCR, classifier/source/consent checks and model tests; public guided examples use simulated OCR | Observe the held-page voice-to-screen flow on the actual robot, including an ordinary bill and an invented suspicious letter |
-| Keep/share with the person's choice | Actual confirmation-gate tests and public guided separate Yes/No paths | Complete spoken requests with the real phone page; verify No leaves nothing shared and Yes shares only the read-back item |
-| Talk, know the day and set reminders | Prior physical verification; founder confirms a correct-time answer; software/audio health checks | Fresh observed interruption, due-reminder and core filming pass; health checks alone do not verify the spoken task |
-| Tavily lookups and background research | Runtime integrations, written-case comparisons and source displays | Observe research, stop it, and verify no later answer reappears after cancellation |
+| Find an object, inspect it and point | Software/simulation checks; earlier physical scorecard: [3 correct points in 9 attempts, 6 misses](../evals/results/finder-eval-2026-10-20-2037.json). On 2026-10-28, informally, real glasses found three times out of three (17 to 23 s) and keys once (16 s) | Run the current fixed physical plan, including present/absent objects, errors and timings; separately test a moved object and a TV-photo decoy |
+| Read an invented letter and explain/check it | Local OCR, classifier/source/consent checks and model tests; public guided examples use simulated OCR; printed bills read on the robot on 2026-10-28 (live-test 3k) | Observe the invented prize letter's **Be careful** card on the robot (3l) |
+| Keep/share with the person's choice | Actual confirmation-gate tests and public guided separate Yes/No paths; keeping where the keys are, after a read-back and a yes, tried on the robot on 2026-10-28 (live-test 3bb) | Complete spoken requests with the real phone page; verify No leaves nothing shared and Yes shares only the read-back item |
+| Talk, know the day and set reminders | On the robot on 2026-10-28: the time, today's plan, talking over Andy, and a reminder said on time (live-test 2, 3m, 3c, 13) | The core filming pass |
+| Tavily lookups and background research | Runtime integrations, written-case comparisons and source displays; research, its stop and the scam check tried on the robot on 2026-10-28 (live-test 3e, 3ee, 3x) | Local news and a link family send, on the robot |
 | Local Cosmos vision fallback | Simulation and camera-IPC fallback checks, with no retained frame/description | Optional real voice/finder fallback demonstration after the core tasks pass; full offline conversation is not provided |
-| Memory/photo-story offers | Permission enforced in code; [current text runs](../evals/results/suite-2026-10-27-consent-source-local.json) retain inconsistent offers | Treat the offer as variable; use verified explicit requests in demonstrations and do not promise an automatic offer every time |
+| Memory/photo-story offers | Permission enforced in code; [current text runs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) retain inconsistent offers | Treat the offer as variable; use verified explicit requests in demonstrations and do not promise an automatic offer every time |
 
 The fixed 30-attempt plan is our measurement protocol, not a hackathon eligibility threshold. It
 stores fixed labels, outcomes and times only; all attempts count, including errors. Code tests,
@@ -37,7 +37,7 @@ simulation, founder observations and formal physical trials retain their separat
   listener; while it thinks or looks something up, they lean slowly, so a pause never looks dead.
 - **Body language from research, built and switched off for now.** A glance away while thinking
   (Andrist, Mutlu and Gleicher 2013) and a head tilt as a question ends (Mara and Appel 2015) are
-  built and tested in code. They are off (`ANDY_EXPRESSIVE=on` turns them on) because on the robot
+  built and tested in code. They are off (`ANDY_EXPRESSIVE=on ./scripts/andy` turns them on: an environment variable, not an env-file setting) because on the robot
   Andy began cancelling its own answers when they went live, most likely the head's motor sound
   reaching the microphones. They come back only after a check on the robot.
 - **It says it's a robot, from the first word:** "Good morning! I'm Andy, your robot companion, here
@@ -113,7 +113,7 @@ simulation, founder observations and formal physical trials retain their separat
   pages, **a link** someone sent, and **whether a message looks like a known scam** (searched on
   consumer-protection sites only, at advanced depth, with the message's numbers and links removed
   first). Nemotron 3.5 Lightning looks for the message's own sign, and Nemotron 3 Ultra checks it against
-  up to six warnings found, in one question that judges each: the same trick, not merely the same topic. Measured on 120 messages, three runs as
+  up to four warnings found, in one question that judges each: the same trick, not merely the same topic. Measured on 120 messages, three runs as
   Nebius Jobs: 58 of 60 scams caught, none of 60 ordinary messages flagged
   ([decision 0007](decisions/0007-the-scam-check-two-narrow-questions.md)). On the TV, "Be careful: a known
   scam", then what to do ("Don't reply, pay or give any details. Check with family first."), then three
@@ -157,8 +157,9 @@ credits Tavily reported ("Found with Tavily: search (basic), 1.4 s, 1 credit"), 
 so far and the number of sites read.
 
 Under Andy's state, a small line says what its head is turned to: "Looking at you" while it talks with you,
-"Looking at the screen" when it glances at the TV, "Looking around the room" while it searches, "Pointing
-at what it found". It says only that, never what the camera sees.
+"Looking at the screen" when it glances at the TV, "Looking around the room" while it searches, "Looking
+closer", "Looking where they were left", "Pointing at what it found", and what it noticed: "Turning to a voice",
+"Waving back". It says only that, never what the camera sees.
 
 When nothing is on the screen in the day and Andy is waiting, a line at the foot suggests one thing to say,
 a new one every 20 seconds: "Try asking: “Where did I leave my glasses?”". It goes while Andy speaks, and a

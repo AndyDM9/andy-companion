@@ -20,7 +20,11 @@ This repository is Apache-2.0 ([LICENSE](../LICENSE)). It uses, under their own 
 | MuJoCo (the simulation) | Apache-2.0 | Google DeepMind |
 | OpenCV (camera pictures, the wave) and Tesseract (reading letters) | Apache-2.0 each | OpenCV team; Tesseract contributors |
 | YOLOX person detection from the OpenCV model zoo (`object_detection_yolox_2022nov.onnx`, fetched from Hugging Face at a pinned revision, `body/person.py`) | Apache-2.0 | Megvii (YOLOX); OpenCV model zoo |
-| vLLM (serving models on our own Nebius endpoints) | Apache-2.0 | vLLM project |
+| vLLM (serving models on our own Nebius endpoints, and the offline eyes on this computer) | Apache-2.0 | vLLM project |
+| YuNet face detection (OpenCV model zoo, fetched by Pollen's Reachy Mini SDK as `face_detection_yunet_2026may`) | MIT | Shiqi Yu and contributors (YuNet); OpenCV model zoo; Pollen Robotics |
+| ONNX Runtime (runs YuNet and Smart Turn) | MIT | Microsoft |
+| faster-qwen3-tts (made the recorded urgent sentences, `urgent_audio/regenerate.py`) | MIT | its authors |
+| NumPy, Pillow and huggingface_hub (arrays, the simulation's film, fetching YOLOX) | BSD-3-Clause; MIT-CMU (HPND); Apache-2.0 | NumPy developers; Pillow contributors; Hugging Face |
 | Hugging Face speech-to-speech | Apache-2.0 | Hugging Face |
 | Vosk and its small English and Spanish models, `vosk-model-small-en-us-0.15` and `vosk-model-small-es-0.42` (wake phrase) | Apache-2.0 (each model as listed by Alpha Cephei) | Alpha Cephei |
 | segno (the settings QR code) | BSD-3-Clause | Lars Heuer |

@@ -2,7 +2,7 @@
 
 The text for the Devpost form, field by field. Every sentence is true and checkable in the repository; each number
 comes from the scorecard or measurement named in the README. Rewritten 2026-10-21 to the length and shape of
-recent winning entries (about 2,000 words now, Devpost's own headings, each number said once); re-read against
+recent winning entries (about 2,400 words now, Devpost's own headings, each number said once); re-read against
 [rules-compliance.md](rules-compliance.md) before submitting. Every number links to its scorecard or source; the
 links point at the `hackathon-submission` tag on GitHub, so they work once the tag is pushed and the repository is public. The fuller story is in the [README](../README.md).
 
@@ -16,17 +16,16 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
 - **Try it:** https://huggingface.co/spaces/andydm/andy-companion-judge (guided real AI with invented inputs and simulated tools),
   https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
-  https://huggingface.co/spaces/andydm/andy-companion-app (the Reachy Mini app)
-- **Testing instructions:** The public Space demonstrates the screens on sample data; it has no connected
-  robot or live model calls. A separate guided playground at https://andydm-andy-companion-judge.hf.space/
-  provides author-funded real Nemotron replies to fixed invented examples, with simulated camera/search/family
-  effects and no visitor key. It supplements hardware access; public usage limits apply. For a free test of the real robot, request a session through
-  https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml or contact the entrant through
-  the organisers. The author supplies the robot, computer and API access during that session; judges do not
-  need to purchase credits or receive personal desktop/provider credentials. The public GitHub request form
-  requires sign-in; the organiser contact route is also available. Requested physical hardware access will
-  be agreed separately with the organisers; a video call is not a confirmed substitute and the final
-  physical-access method is pending. Reproduction with your own equipment and keys is optional. Instructions and limits:
+  https://huggingface.co/spaces/andydm/andy-companion-app (the Reachy Mini app, which installs on a robot and needs the local voice server)
+- **Testing instructions:** Two public pages need no key or sign-in. The guided examples at
+  https://andydm-andy-companion-judge.hf.space/ give real Nemotron replies to invented inputs, funded by the author,
+  with the camera, search and family effects simulated; usage limits apply. Andy's screens on sample data at
+  https://huggingface.co/spaces/andydm/andy-companion have no connected robot or live model calls. To try the real
+  robot free, on a live video call, request a session at
+  https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml (GitHub sign-in) or contact the entrant
+  through the organisers. The author supplies the robot, computer and API access, so judges do not need to purchase
+  credits or receive any credentials. If the organisers want hands-on hardware access, we will arrange it with them.
+  Reproducing it with your own equipment and keys is optional. Instructions and limits:
   https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md
 - **Built with:** nebius-token-factory, nebius-ai-cloud, nebius-serverless-endpoints, nebius-serverless-jobs,
   nvidia-nemotron, nemotron-3.5-lightning, nemotron-3-ultra, nemotron-3.5-super-vl, nemotron-content-safety,
@@ -45,25 +44,28 @@ Andy is a small home robot for older adults who live at home, and the family who
 letter and by phone: adults 60 and over reported about $3 billion lost to fraud in 2025 ([FTC](https://search.ftc.gov/news-events/news/press-releases/2026/10/ftc-issues-annual-report-congress-agencys-actions-protect-older-adults)). Andy reads the
 letter in your hand and puts **Be careful** first on a risky one, looks around the room and points at your glasses,
 and looks things up with Tavily while it keeps talking with you. Measured: [58 of 60 scams caught, none of 60 ordinary
-messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [92, 93 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) text cases passed with the current profile; both evaluations ran as Nebius
-Serverless Jobs, each run with the real confirmation gate around synthetic tools. Entered in the **Physical AI track**.
+messages flagged](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json); [92, 93 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) spoken situations handled right in three text-only runs, judged by NVIDIA Nemotron 3 Ultra with Andy's real consent check
+around stand-in tools; both evaluations ran as Nebius Serverless Jobs. Entered in the **Physical AI track**.
 - **Track fit:** an embodied agent on a Pollen Reachy Mini. Pollen's conversation app is the agent runtime; NVIDIA
   Nemotron on Nebius Token Factory talks, sees and decides, and its answers move the robot's head. **Nine models run
-  on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (tried on the home computer, not yet on the robot), with local models for the wake phrase,
+  on the computer beside the robot:** NVIDIA Parakeet hears, Qwen3-TTS speaks, and NVIDIA Cosmos Reason 2 can run vision locally (it answered for a robot camera frame with the cloud eyes blocked, not yet in a spoken turn), with local models for the wake phrase,
   reading letters and finding a face or a person.
 - **Nebius:** Token Factory answers every turn: a median of [1.06 s](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/robot-timings-2026-10-20-1550.json) from your words being understood to Andy's
   first sound, 54 turns on the robot. **Serverless Jobs** run Andy's search in Pollen's MuJoCo simulation, scored
   against the scene's truth, and the tests; a **Serverless Endpoint**, started when needed, serves NVIDIA Nemotron
   3.5 Content Safety as a second check on what the person says.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
-  **Built for ageing eyes and ears:** Atkinson Hyperlegible (the Braille Institute's typeface for low vision), no
-  text under 14 px, captions on by default at 7:1 contrast, a slower pace on request, louder at "I can't hear
+  **Built to be read and heard across a room:** large type in Atkinson Hyperlegible (the Braille Institute's typeface,
+  every letter easy to tell apart), 17 px or larger on the phone pages, captions on by default at 7:1 contrast, a slower pace on request, louder at "I can't hear
   you", and talking over Andy stops it. Installs as a
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
-- **Limits, said plainly:** at home it pointed at hidden glasses 3 of 9 times, never at the wrong place; no study
-  with older adults yet. The video uses live robot shots, with no cuts in the pauses; filming is planned before submission.
+- **Limits, said plainly:** in 9 scored tries at home (2026-10-20) it pointed at hidden glasses 3 times, never at the
+  wrong place; on 2026-10-28, informally, it found real glasses 3 times out of 3 (17 to 23 s) and keys once, and the
+  30-try measure is still to do. No study with older adults yet. The video uses live robot shots, with no cuts in the pauses; filming is planned before submission.
 - **Testing access:** [short testing instructions](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md):
-  a public sample demo without keys, reproducible software checks, optional model evaluations and a free live robot demonstration on request.
+  [guided examples with real Nemotron replies](https://andydm-andy-companion-judge.hf.space/) and the screens on sample
+  data, both without keys; reproducible software checks; optional model evaluations; and a free live robot
+  demonstration on request.
 
 ### Inspiration
 
@@ -91,17 +93,18 @@ recorded in the repository's live-test checklist:
   where it found it.
 
 Andy also checks a message you only mention ("a man called saying my grandson is in jail"), keeps reminders in your
-words, every day if you like ("every morning at eight, my blood pressure pills": a reminder, never a dose), turns a
+words, every day if you like ("every morning at eight, take my pills": a reminder, never a dose), turns a
 family photo into a story, speaks English and Spanish, and waves its antennas back when you wave (tried on the
-robot). Family see only what you share, and Andy tells you who looked. New and tested in code, not yet tried on the
-robot: turning to a second person speaking, a move taught by hand, and remembering where you put your keys.
+robot). Family see only what you share, and Andy tells you who looked. It remembers where you put your keys if you
+say yes (tried on the robot). New and tested in code, not yet tried on the robot: turning to a second person speaking,
+and a move taught by hand.
 
 ### How we built it
 
 - **At home:** NVIDIA Parakeet TDT 0.6B v3 and Qwen3-TTS on the home computer's GPU, so your voice never leaves the
   house, only words do; Silero VAD and Smart Turn v3.2, Vosk, Tesseract and YuNet on its CPU; and NVIDIA Cosmos
   Reason 2 for local vision; the conversation still calls Token Factory.
-- **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 profile tools, plus two SDK task controls; NVIDIA Nemotron 3
+- **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 of Andy's own tools, plus Pollen's two for checking or cancelling a running task; NVIDIA Nemotron 3
   Ultra takes hard questions and judges the tests. Zero data retention is on.
 - **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed-in parts, all 24
   at once in about 1.8 s, then a strict yes or no about a close-up. On one room photo, zooming in took the search
@@ -146,7 +149,13 @@ that source without false alarms. About [$17 per 1,000 checks](https://github.co
 
 ### Accomplishments that we're proud of
 
-Every number has a dated scorecard in the repository, failures included, and Andy claims only what it shows.
+- **A language model that moves a robot's head to find things,** with nothing trained: it looks around, zooms in,
+  turns to look closer, checks and points, and in its scored tries at home it never pointed at the wrong place.
+- **A scam check with no false alarms and a source for every warning:** Tavily's consumer-protection warnings,
+  matched by Nemotron 3 Ultra, flagged none of 60 ordinary messages and named its source in 170 of 174 scam verdicts.
+- **Rules in code under the model:** **Be careful** first on a risky letter, a letter's numbers never reaching the
+  model, one yes for one exact save or share, and the 911 or 988 line on urgent words.
+- **Every number has a dated scorecard in the repository,** failures included, and Andy claims only what it shows.
 
 ### What we learned
 
@@ -162,16 +171,16 @@ profile and tools, three runs each, beside a baseline. And put hard rules in cod
   saw in 5 of them but the closer look didn't confirm. Andy now turns its body to look past the head's reach; that is
   checked against Pollen's kinematics, not yet tried on the robot.
 - No study with older adults yet; a pilot with an ethics review comes next.
-- The current profile scored [92, 93 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) as a Nebius Serverless Job (earlier runs today: 91, 95, 95
-  and 94, 93, 92), with the real confirmation gate and synthetic tools. Photo-story and future-event memory offers fail
-  most runs; a refusal and a crisis reply vary. Twice Nemotron wrote a tool call out as text; Andy no longer speaks
-  such text. No unapproved write effect was reported. A working watch
-  search is founder-confirmed and untimed; physical measurements remain pending.
+- The current profile scored [92, 93 and 94 of 97](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) as a Nebius Serverless Job (earlier runs on 2026-10-28:
+  91, 95, 95 and 94, 93, 92), with the real confirmation gate and synthetic tools. Photo-story and future-event memory
+  offers fail most runs; a refusal and a crisis reply vary. In four replies across those runs Nemotron wrote a tool
+  call (or a tool's name) out as text; Andy no longer speaks such text. No unapproved write effect was reported. The
+  30-try physical finder measure is still to do.
 - It needs a computer with an NVIDIA GPU beside the robot, not yet a Jetson; English and Spanish only.
 - Our numbers are our own and small: the scam check's 120 messages were written by us for the test, not taken from
   real households; the suite is judged by a model; and the cost is an estimate from list prices, not a bill.
-- The local vision fallback needs a GPU of its own (the 8B model a whole 24 GB one) and hasn't been tried on the
-  robot with the primary vision service blocked. The voice conversation and tool selection still need Token
+- The local vision fallback needs a GPU of its own (the 8B model a whole 24 GB one) and hasn't been tried in a spoken
+  turn on the robot with the primary vision service blocked. The voice conversation and tool selection still need Token
   Factory: this is not a complete offline assistant. GR00T and Sonic are for robots with arms or legs.
 
 ### What's next for Andy
@@ -194,6 +203,7 @@ below.
 
 ### How to test it without a robot
 
-The screens on sample data, no keys: https://huggingface.co/spaces/andydm/andy-companion. Andy's search in
+Guided examples with real Nemotron replies, no keys: https://andydm-andy-companion-judge.hf.space/. The screens on
+sample data, no keys: https://huggingface.co/spaces/andydm/andy-companion. Andy's search in
 simulation: a 20-second film there and in the README, rerun with a Token Factory key. The real robot: live on a video
 call until judging ends ([ask here](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)), and the hardware on request.

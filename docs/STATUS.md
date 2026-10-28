@@ -9,16 +9,35 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 |---|---|---|---|
 | M0 | Andy talks through Nemotron | ✅ Done 2026-10-13 | Parakeet, Nemotron 3.5 Lightning on Token Factory and Qwen3-TTS on the robot; measured below |
 | M1 | Clock and reminders | ✅ Done 2026-10-13 | Verified on the robot: the time of day from the clock; a reminder set by voice, listed, and said unprompted when due |
-| M2 | Privacy floor | USB reconnected; startup fixed; voice and consent task checks pending | Previous live verification: no conversation text in any log, tool arguments not logged, no transcript printed by the voice server; Andy's memory only what the person asked it to keep |
-| M3 | Body behaviours | ✅ Done 2026-10-13; more on 2026-10-20 | Looking at the person while speaking, following, sleep, quiet and wake, verified by the founder on the robot. Added 2026-10-20 and tested in code, awaiting the robot: turning to a second voice, waving back, moves taught by hand ([live-test.md](live-test.md) 3aa to 3dd) |
+| M2 | Privacy floor | Consent before keeping tried on the robot 2026-10-28 (live-test 3bb); sharing by voice pending | Previous live verification: no conversation text in any log, tool arguments not logged, no transcript printed by the voice server; Andy's memory only what the person asked it to keep |
+| M3 | Body behaviours | ✅ Done 2026-10-13; more on 2026-10-20 | Looking at the person while speaking, following, sleep, quiet and wake, verified by the founder on the robot. Added 2026-10-20: waving back tried on the robot 2026-10-25 (3dd) and remembering where things are 2026-10-28 (3bb); turning to a second voice and moves taught by hand tested in code, awaiting the robot ([live-test.md](live-test.md) 3aa, 3cc) |
 | M4 | The day, the same way every time | ✅ Done 2026-10-13 | The day plan, reminders in the person's words, pace and volume that stick, jokes, stories and On this day; English and Spanish |
-| M5 | Tavily | 🔨 Built, awaiting the live test | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
-| M6 | Eyes | 🔨 Built; finding measured on the robot, the rest awaiting the live test | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20). Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
+| M5 | Tavily | 🔨 Built; research, its stop and the scam check tried on the robot by voice 2026-10-28 (live-test 3e, 3ee, 3x); local news and links family send pending | Five APIs at runtime: search (news, look-ups, scam warnings at advanced depth), extract (links family send), crawl (what's on), map (the town's events page, at setup) and research (streamed to the TV). The scam check measured five ways ([results](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)) |
+| M6 | Eyes | 🔨 Built; finding measured on the robot; letters and "what do you see?" tried on the robot 2026-10-28 (live-test 3k, 7); the offline eyes on the robot pending | Nemotron 3.5 Super VL on Token Factory by default (decision 0011), Nano VL on our own endpoint as the option; letters read on this computer; finding things reads four views as zoomed tiles and looks closer before pointing (decision 0012), tested in simulation as Nebius Serverless Jobs (decision 0013) and on the robot at home: pointed 3 of 9, never wrong, every miss a chair past the head's reach (2026-10-20); on 2026-10-28, informally, real glasses found three times out of three (17 to 23 s) and keys once (16 s), not the 30-attempt measure. Offline eyes, NVIDIA Cosmos Reason 2 on this computer (8B on this desktop, 2B for one GPU), as the fallback (2026-10-25, [decision 0015](decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)), measured in simulation |
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
 | M8 | Proof | 🔨 Built; final Serverless Job done, physical trials pending | Current text profile: **92, 93, 94 of 97 as a Nebius Serverless Job** (2026-10-28, suite 2026-10-28a), real consent gate and synthetic tools; earlier today 91, 95, 95 and 94, 93, 92. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
-| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming deferred by the founder; no new filming date confirmed |
+| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
+
+## October 28 documentation audit, without the robot
+
+- **Three independent reads** (a judge's view, and two fact-checks against the scorecards and code): about 450 claims
+  checked, 48 mismatches or gaps, all fixed. Links: 445 relative links and anchors resolve.
+- **For judges:** the README gains "How Andy uses Tavily" (five APIs, the scam card, what Tavily adds, measured), an
+  FTC line on why it matters, a status line with today's robot results and a shorter suite history. The Devpost text
+  no longer says the scam evaluation had a confirmation gate, and adds today's informal finds; the scorecard index
+  leads with results, audits after; the judges' guide leads with the invented bill and has a Tavily row.
+- **Corrected:** remembering where things are was tried on the robot (three places said not yet); YOLOX looks about
+  1.4 times a second, not 3; Ultra checks up to four warnings, not six; eight looking-at names, not four; tool calls
+  written as text happened four times in today's Jobs, not twice; quoted-yes failed every 2026-10-28 run (it passed
+  on 2026-10-27).
+- **Added:** credits for YuNet, ONNX Runtime and four libraries; `.env.example` lines for the voice server's model,
+  turn cap and address and the offline eyes' port; the missing page in the docs map; tonight's filming plan updated.
+- **Seen, not fixed:** in the permission cases Nemotron sometimes speaks its own reasoning about a quoted message
+  ("Since this is spoken content, not a held-up letter…"), and two of the six final-Job failures were tool calls
+  written as text, which the voice server now drops, so that turn says nothing.
+- **Tests:** CPU **1,994 / 18 skipped**.
 
 ## October 28 review complete
 
@@ -28,8 +47,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 ## October 28 functional sweep
 
-- **On the robot, by clips and the founder's voice:** 15 live-test rows checked today (1, 2, 3c, 3d, 3e, 3ee, 3gg,
-  3k, 3m, 3n, 3q, 3t, 3x, 3bb, 13, 20), each noting how it was seen. A due reminder was said unprompted on time.
+- **On the robot, by clips and the founder's voice:** 17 live-test rows checked today (1, 2, 3c, 3d, 3e, 3ee, 3gg,
+  3k, 3m, 3n, 3q, 3t, 3x, 3bb, 7, 13, 20), each noting how it was seen. A due reminder was said unprompted on time.
 - **Open:** the Spanish switch by voice (not reached by clip), the antenna wiggle and chimes (not observed), letters'
   cards seen by Claude (the founder confirmed them), the 30-attempt finder measure.
 
@@ -42,7 +61,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Fixed and tested** (36 new cases): languages other than English/Spanish taken as unclear; medicine-themed scam
   letters keep the warning; a found sign survives an Ultra failure; the consent loop; research guard, retry and stop;
   amounts over $1,000; finder wording; photo deletion, long links, the caption over a photo, Spanish screen text.
-- **Pending:** the body review's head-motion findings (next), the suite re-run on Nebius after the consent change.
+- **Pending:** the body review's head-motion findings (next), the suite re-run on Nebius after the consent change
+  (both done later that day: "October 28 review complete" and the 92, 93, 94 Job).
 
 ## October 28 on the robot
 
@@ -87,7 +107,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   against the installed speech package. Takes effect at the next `andy-voice` start; not yet heard on the robot.
 - **Fixed:** the job's bundle had outgrown Nebius's 64 KB (injected files are encoded once more on the way): it now
   travels as xz bytes, 39.9 KB.
-- **Pending:** a spoken letter on the robot before filming (live-test 3k).
+- **Pending:** a spoken letter on the robot before filming (live-test 3k; done later that day).
 
 ## October 28 repository review
 

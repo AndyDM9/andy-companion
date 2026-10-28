@@ -4,7 +4,6 @@ the turn's language stays English or Spanish. Latin-script words always pass unt
 
 import importlib.util
 import logging
-import types
 from pathlib import Path
 
 import pytest

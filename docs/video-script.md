@@ -1,6 +1,6 @@
-# Narration for the October 27 filming
+# Narration for the filming
 
-[video.md](video.md) is the single timing and shot plan, revised October 26. Use its narration and
+[video.md](video.md) is the single timing and shot plan, revised October 26 and checked October 28. Use its narration and
 live requests; the previous alternative cut is retired so there are not two conflicting schedules.
 
 The first shot shows the real robot responding to a letter. The long take is at least 72 seconds,

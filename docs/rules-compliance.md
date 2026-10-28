@@ -8,6 +8,15 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 documentation audit (a judge's read and two fact-checks, without the robot): the README gains "How Andy
+uses Tavily" (the five APIs as they are called in `web.py`, and the measured scam result already published) and one
+FTC figure checked against the FTC's own release; the Devpost text no longer says the scam evaluation had a
+confirmation gate, adds the October 28 informal finds labelled as not the 30-try measure, and states hardware access
+as "arranged with the organisers if they request it" (the earlier caution that a video call is no confirmed substitute
+is kept in the judges' guide). Credits add YuNet (MIT), ONNX Runtime (MIT), faster-qwen3-tts (MIT), NumPy, Pillow and
+huggingface_hub, all already in use. No claim was added without a scorecard or dated record; no model, provider,
+licence, visibility or access arrangement changed.
+
 October 28 claims review: the model list now includes YOLOX (Apache-2.0, credited); what leaves the house names
 Open-Meteo, the National Weather Service and Wikipedia; consent and letter-number claims match the code exactly.
 No new service, model or data flow was added: these were already in use and are now disclosed.

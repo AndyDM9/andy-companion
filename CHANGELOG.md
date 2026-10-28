@@ -5,6 +5,32 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### The documents, audited without the robot
+
+A judge's-eye read and two fact-checks of every judge-facing document against the scorecards and code (about 450
+claims), with the robot unplugged:
+
+- **The README** gains "How Andy uses Tavily": the five APIs as `web.py` calls them, the scam card, and what Tavily
+  adds, measured. It also gains one FTC figure on why it matters (checked against the FTC's release), a status line
+  with today's robot results, the suite's history in two bullets, and plainer words ("40 tools: 38 of Andy's own and
+  Pollen's two…", "a typeface where every letter is easy to tell apart").
+- **The Devpost text** no longer says the scam evaluation had a confirmation gate; it adds today's informal finds
+  (labelled as not the 30-try measure), Accomplishments as four points, the guided examples in "How to test it", a
+  shorter testing-instructions field, and "take my pills" for the medicine example.
+- **Corrected everywhere:** remembering where things are was tried on the robot today (3bb); "what do you see?" ticked
+  in the live test (row 7, three calls of 2.1 to 2.4 s); YOLOX about 1.4 looks a second (also the module's
+  docstring); up to four warnings, not six; eight looking-at names; four tool calls written as text, not two;
+  quoted-yes failed every 2026-10-28 run; "today" replaced by dates; the 30-try measure, not a watch, is what's pending.
+- **The scorecard index** leads with results (scam check, timings, finder, simulation, suite) and lists the
+  engineering audits after; "current" now means the 2026-10-28 Job.
+- **Smaller:** credits for YuNet, ONNX Runtime, faster-qwen3-tts, NumPy, Pillow and huggingface_hub; `.env.example`
+  documents `ANDY_MODEL`, `ANDY_MAX_TURN_S`, `ANDY_VOICE_URL`, `ANDY_LOCAL_EYES_PORT` and `ANDY_LOCAL_EYES_URL`, and
+  says the Job scripts read the Nebius project from the shell; `cloud/README` lists `delete`; SECURITY names the
+  home-VPN range; the app page says the offline eyes are optional; the decisions index has a "Start here" line; the
+  architecture opens with its three paths and what code decides; the video plan lists what passed today and the two
+  shots still to check (3l, 3y). One unused test import removed.
+- **CPU 1,994 / 18 skipped.**
+
 ### The rest of the review, merged
 
 Six remaining findings from the morning's reviews, fixed in a separate worktree with a failing-first test each, then

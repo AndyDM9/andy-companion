@@ -17,9 +17,14 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 **[Testing instructions for judges](docs/judging.md):** a short route through the public demo,
 an anonymous fresh install, the tests and optional model evaluations, with expected results and limits.
 
-**Review status, October 27:** public software demos and reproducible tests are available. The
-real-robot video, photographs and remaining [physical checks](docs/judging.md#what-is-still-pending)
-are pending. The images below use sample data; the search animation is simulation.
+**Status, October 28:** on the robot, Andy read printed letters, found real glasses each of the three times it
+was asked (informally, not yet the planned 30 tries), ran Tavily research and stopped it on request, and remembered
+where the keys were ([robot test record](docs/live-test.md)). The real-robot video and photographs come next, and
+[some physical checks](docs/judging.md#what-is-still-pending) are still to do. The images below use sample data; the
+search animation is simulation.
+
+**Why it matters:** adults 60 and over reported losing about $3 billion to fraud in 2025, and they were more likely
+than younger adults to report losing money to prize scams and to scammers posing as family ([FTC](https://search.ftc.gov/news-events/news/press-releases/2026/10/ftc-issues-annual-report-congress-agencys-actions-protect-older-adults)).
 
 **Why a robot, not a smart speaker?** Andy looks at you while you talk and turns as you move. When it
 shows you something on the TV it turns its head to the screen, so your eyes follow. It reads the letter
@@ -29,7 +34,7 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 
 - **1.06 s** median from the moment your words are understood (Parakeet's transcript) to Andy's first sound, over 54 real turns on the robot ([scorecard](evals/results/robot-timings-2026-10-20-1550.json))
 - **58 of 60** scams caught and **none of 60** ordinary messages flagged: Tavily's warnings judged by NVIDIA Nemotron 3 Ultra, as Nebius Serverless Jobs ([scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json))
-- **92, 93 and 94 of 97** text cases for the current profile as a Nebius Serverless Job, with the real confirmation gate around synthetic tools; earlier runs today scored 91, 95, 95 and 94, 93, 92 ([current](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json), [every run](evals/results/README.md))
+- **92, 93 and 94 of 97** spoken situations handled right in three text-only runs as a Nebius Serverless Job, judged by Nemotron 3 Ultra, with Andy's real consent check around stand-in tools ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json), [every run](evals/results/README.md))
 - **About $2.30 a month, estimated** from list prices, for one household's conversation and web lookups ([cost](docs/cost.md))
 
 **What's new here:**
@@ -40,17 +45,14 @@ in your hand. Ask where your glasses are, and it looks around the room and point
 - **Rules in code under the model:** **Be careful** on a risky letter whatever the model says, consent before
   anything is remembered, and no recordings or transcripts.
 
-**Judging it without a robot:** the real-robot video is still pending. Watch the
-search above, from Andy's own code and live model calls, and rerun it with a Token Factory key ([sim/](sim/README.md));
-try [three guided AI examples](https://andydm-andy-companion-judge.hf.space/) with real Nemotron replies
-and simulated camera/search/family effects, funded by the author with no visitor key;
-open the screens on sample data with no keys at all ([try it](#try-it-without-a-robot)); read every scorecard,
-failures included ([evals/results/](evals/results/README.md)); or [ask for the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml),
-any time until 2026-12-15.
-Organiser-requested physical access is arranged separately; a video call is not a confirmed substitute.
-The author operates the supporting computer; judges do not need personal desktop or API credentials.
+**Judging it without a robot:** watch the search above, from Andy's own code and live model calls, and rerun it
+with a Token Factory key ([sim/](sim/README.md)); try [three guided AI examples](https://andydm-andy-companion-judge.hf.space/)
+with real Nemotron replies (camera, search and family effects simulated; funded by the author, no visitor key); open
+the screens on sample data ([try it](#try-it-without-a-robot)); read every scorecard, failures included
+([evals/results/](evals/results/README.md)); or [see the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)
+until 2026-12-15. Hardware access the organisers request is arranged with them ([testing access](docs/judging.md#testing-costs-and-access)).
 
-**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [every model and where it runs](#every-model-and-where-it-runs), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
+**Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [every model and where it runs](#every-model-and-where-it-runs), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [how it uses Tavily](#how-andy-uses-tavily), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 
 ## Three moments
 
@@ -82,7 +84,7 @@ with its sources. "Stop looking" or "never mind" stops it at once.
 - **Notices the room by itself** (new; waving back tried on the robot, turning to a voice not yet): when someone else speaks from the side, Andy turns to them (and back if nobody is
   there, such as the TV); wave at it and its antennas wave back. The TV says what it noticed ("Turning to a voice",
   "Waving back").
-- **Remembers where you put things, if you want** (new; tested in code and the suite, not yet tried on the robot): "my keys are here" gets "Shall I remember where they are?";
+- **Remembers where you put things, if you want** (new; the offer and the save tried on the robot on 2026-10-28): "my keys are here" gets "Shall I remember where they are?";
   later "where are my keys?" turns straight to that spot and checks up close before looking around.
 - **Learns a move by hand** (new; tested in code and the suite, not yet tried on the robot): a grandchild moves Andy's antennas for six seconds, and "do Sofia's wave" plays it
   back, gently (its antennas only).
@@ -106,7 +108,7 @@ with its sources. "Stop looking" or "never mind" stops it at once.
   | Tavily's warnings, matched by Lightning | 60 (94–100%) | 24 (29–53%) |
   | **Andy: Tavily's warnings, matched by Ultra** | **58 (89–99%)** | **0 (0–6%)** |
 
-  In brackets, the Wilson 95% interval over the 60 messages. Read plainly: on scams caught, Andy and the
+  Each figure is the mean of three runs; in brackets, the Wilson 95% interval over the 60 messages. Read plainly: on scams caught, Andy and the
   models alone overlap, so we don't claim Andy catches more. What Tavily plus a careful second question buys
   is warnings with a named source and **no false alarms, where Tavily with the fast model flags 40% of
   ordinary messages**: only a strong model tells the same trick from the same topic. One check costs about
@@ -152,7 +154,7 @@ reads and follows you at home, with optional local vision; and five NVIDIA Nemot
 | The wake phrase, while Andy sleeps or is quiet | **Vosk** small models, English 0.15 and Spanish 0.42 | CPU, offline | |
 | Reading the letter in your hand | **Tesseract** OCR, English and Spanish | CPU; only the text leaves | |
 | Finding a face to follow (detection, never recognition) | **YuNet** (Pollen's `face_detection_yunet_2026may`) on ONNX Runtime | CPU, in Pollen's robot software | |
-| Finding a person whose face isn't visible (back turned, across the room), to follow and to notice someone is home | **YOLOX** (OpenCV model zoo, `object_detection_yolox_2022nov`) on OpenCV | CPU, about 3 frames a second, nothing kept (`ANDY_PERSON_FOLLOW=off` turns it off) | |
+| Finding a person whose face isn't visible (back turned, across the room), to follow and to notice someone is home | **YOLOX** (OpenCV model zoo, `object_detection_yolox_2022nov`) on OpenCV | CPU, about 1.4 frames a second while following and fewer when nobody is in view, nothing kept (`ANDY_PERSON_FOLLOW=off` turns it off) | |
 | Local vision fallback | NVIDIA **Cosmos Reason 2 8B** on this desktop (the shipped default is 2B, for one GPU) | GPU, vLLM on 127.0.0.1 only ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)) | in simulation pointed 22 of 23 (8B), 18 of 23 (2B); tried end to end on this computer, not yet on the robot |
 
 Seeing a wave, the head's glance and turning to a voice need no model: motion in OpenCV, and the robot's own
@@ -162,14 +164,14 @@ microphones.
 
 | What it does | Model | Runs on | Measured |
 |---|---|---|---|
-| Every turn: conversation, 38 profile tools and two SDK task controls | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
+| Every turn: conversation, and 40 tools: 38 of Andy's own and Pollen's two for checking or cancelling a running task | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
 | Eyes: what's in view, family photos, finding things | NVIDIA **Nemotron 3.5 Super VL** | Token Factory | zoomed in, the search went from 0 of 9 to 9 of 9 at the desk |
 | Hard questions, and the judge of the tests | NVIDIA **Nemotron 3 Ultra** | Token Factory | the scam check: 58 of 60 caught, none of 60 ordinary flagged |
-| A second check for signs of crisis | NVIDIA **Nemotron 3.5 Content Safety** | Serverless Endpoint (our vLLM) | 7 of 8 held-out phrasings, no false alarm |
+| A second check of the person's words, for crisis phrasings the word list misses | NVIDIA **Nemotron 3.5 Content Safety** | Serverless Endpoint (our vLLM) | 7 of 8 held-out phrasings, no false alarm |
 | Eyes, as an option (`ANDY_VISION=endpoint`) | NVIDIA **Nemotron Nano 12B v2 VL** (FP8) | Serverless Endpoint | a description in 3.45 s |
 
-Nebius **Serverless Jobs** run the tests: the 97-situation conversation suite, the scam check five ways, and Andy's
-search in Pollen's MuJoCo simulation. The details, and why each model, follow.
+Nebius **Serverless Jobs** run the tests: the 97-situation conversation suite, the scam check's four model-based ways,
+and Andy's search in Pollen's MuJoCo simulation. The details, and why each model, follow.
 
 ## How it uses NVIDIA and Nebius
 
@@ -208,15 +210,35 @@ search in Pollen's MuJoCo simulation. The details, and why each model, follow.
   Pollen's MuJoCo scene with things placed at random, Andy's own search on what a virtual eye sees, scored against
   the scene's truth. Two jobs, 30 trials each, with a glasses-sized duck: zoomed in with the closer look, pointed at
   it 18 of 23 times with **no false find in 7** (error 0.76°); the old way 19 of 23, but **3 false finds in 7**
-  (error 2.73°) ([on](evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json),
+  (error 2.73°): the closer look costs one find in 23 and removes every false one ([on](evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json),
   [off](evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json)).
 
-## Measured (Reachy Mini Lite)
+## How Andy uses Tavily
 
-Optional: a [local object outline](docs/object-outline.md) can mark the confirmed closer view on
-the screen. It is off by default and needs a separately operated mask service; it never changes
-Nemotron's confirmation or pointing. Software and synthetic-illustration checks are available;
-physical alignment/timing checks remain pending. No SAM model/server is bundled with Andy.
+Five of Tavily's APIs, each where it fits. The scam check and research ran on the robot on 2026-10-28
+([live-test](docs/live-test.md) 3e, 3ee, 3x).
+
+| Ask Andy | Tavily | What the person sees and hears |
+|---|---|---|
+| "Does this message look like a scam?", or a risky letter Andy offers to look up | **search**, advanced depth, only on nine consumer-protection sites (the FTC, AARP, the BBB, the FBI…), with the message's numbers and links removed first | **Be careful**, the message's own sign, the warning found and its site, and why Nemotron 3 Ultra judged it the same trick |
+| "Could you look into whether…?" | **research**, streamed | each step on the TV while Andy keeps talking; the dated answer with its sources; "stop looking" cancels it |
+| "What's the local news?", "When does the library open?" | **search**; for news, the household's own papers first | the answer, and where it came from |
+| "What's on this week?" | **crawl** of the town's events page, found once at setup with **map** | what's on, with dates |
+| A link family send | **extract** | what the page says, in plain words |
+
+Under every answer the TV says how it was found ("Found with Tavily: search (advanced), 3.1 s, 2 credits"). Safe
+search is on for every search, every search, extract, crawl and research request carries `X-Project-ID`, one conversation's requests share an
+`X-Session-Id`, and `/hood` shows the credits used ([web.py](src/andy_companion/web.py)).
+
+![A scam check on Andy's screen: Be careful, the message's sign, the FTC warning found with Tavily, and why Nemotron 3 Ultra says it matches (sample data)](docs/images/tv-scam-receipt.png)
+
+**What Tavily adds, measured:** on 120 messages, Tavily's warnings checked by Nemotron 3 Ultra caught 58 of 60 scams,
+flagged none of 60 ordinary messages, and named the source in 170 of 174 scam verdicts
+([the five ways](#what-andy-does), [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)). The models
+alone caught about as many, so what Tavily adds is the source: a warning the person and their family can read for
+themselves, about $0.017 a check.
+
+## Measured (Reachy Mini Lite)
 
 | Step | Time |
 |---|---|
@@ -234,43 +256,28 @@ only, in memory; never the words. In English or Spanish, like the household.
 ![Under the hood (sample turns)](docs/images/hood.png)
 
 **The conversation suite** ([evals/](evals/)): 97 spoken situations in 22 areas, English and Spanish,
-judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools and their real descriptions; the SDK's two task-control tools are outside this suite
+judged by NVIDIA Nemotron 3 Ultra. The model gets Andy's 38 tools and their real descriptions; Pollen's two task-control tools are outside this suite
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Current profile as a Nebius Serverless Job: 92, 93 and 94 of 97** (2026-10-28, suite 2026-10-28a;
-  [scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)). Photo-story memory offers and a future event's memory offer failed all three
-  runs; the Spanish crisis reply's "someone you trust" and accepting a refusal without offering more twice each; an
-  activity offer and a day question once each, without a tool call.
-- **Earlier today, as Nebius Serverless Jobs:** 91, 95, 95 ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json)) and 94, 93, 92
-  ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-120605.json)) on suite 2026-10-26e, before the read-back and consent fixes. In the first,
-  Nemotron once wrote a letter's tool call out as text; in the second, a reply was a tool name written as text.
-  Andy's voice server no longer speaks either (since 2026-10-28).
-- **Earlier profile, local text suite: 93, 94 and 94 of 97** (2026-10-27;
-  [scorecard](evals/results/suite-2026-10-27-consent-source-local.json)), with synthetic tool results and real confirmation/source checks.
-  Photo-story memory offers fail each run; supportive-response completeness and accepting a refusal
-  twice each; future-event offer, activity-reminder offer and new-story wording once each. These are not physical robot trials. All exploratory runs are retained.
-- **Watch routing:** [20/20 streaming checks](evals/results/watch-routing-2026-10-26.json) on invented
-  requests/non-requests; the founder subsequently confirmed a working local watch search, untimed.
-  This does not add a scored pointing trial or validate the entire physical finder.
-- **Earlier profile, Nebius Serverless Job: 96, 95 and 92 of 97** (2026-10-25, with the daily medicine reminders;
-  [scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json)). Seven cases failed at least once, each but one seen varying before: a photo
-  read as a letter (photo-4, twice), and once each a search made as well as research (look-1), a hard question
-  answered without the bigger model (think-1), a riddle and a photo story without their tools (riddle-1, photo-1),
-  the Spanish crisis reply without "someone you trust" (crisis-3), and the new one, an ordinary bill's account
-  number read aloud (letter-3): Andy's code now hides such numbers in every letter it is given. Before that, 93, 92 and 92 of 94 ([scorecard](evals/results/2026-10-25-nebius-job-andy-suite-20261025-170439.json)),
-  and 92, 91 and 94 ([2026-10-20](evals/results/2026-10-20-nebius-job-andy-suite-20261020-195645.json)).
-- **Before, as a Job:** 79, 79 and 79 of 81 (2026-10-13;
-  [scorecard](evals/results/2026-10-13-nebius-job-andy-suite-20261013-230345.json)).
-- **Baseline:** 27 of 36, before any fixes.
+- **Now: 92, 93 and 94 of 97** (2026-10-28, suite 2026-10-28a, as a Nebius Serverless Job;
+  [scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)). Photo-story memory offers and a
+  future event's memory offer failed all three runs; the Spanish crisis reply's "someone you trust" and accepting a
+  refusal without offering more twice each; an accepted reminder and a time question once each, where Nemotron wrote
+  the tool call out as text (Andy's voice server no longer speaks such text).
+- **Before:** earlier on 2026-10-28, before the read-back and consent fixes, 91, 95, 95 and 94, 93, 92; the previous
+  profile 93, 94, 94 (local, 2026-10-27) and 96, 95, 92 (as a Job, 2026-10-25); 79, 79, 79 of 81 (2026-10-13); and a
+  baseline of 27 of 36 before any fixes. Every run, each failure with the judge's reason:
+  [evals/results/](evals/results/README.md).
 - **What the suite has found**, each fixed and recorded in [evals/suite.json](evals/suite.json):
   - Andy said it had no camera, and once invented a time;
   - no crisis line in 2 of 3 runs for "everyone would be better off without me" (15 of 15 after);
   - a judge that passed a reply reading out a scam's phone number, and a harness that never judged the
     rules of tool cases;
   - a story recited from the model's memory;
-  - a scam warning delayed by a follow-up question.
+  - a scam warning delayed by a follow-up question;
+  - an ordinary bill's account number read aloud (Andy's code now hides such numbers in every letter it is given).
 - **Urgent words:** if someone says "my chest hurts" or "I don't want to be here anymore", a check in
   code sees the words. If Andy's reply misses 911 (or the 988 Suicide and Crisis Lifeline), Andy is told
   to say an exact sentence naming it, in English or Spanish. Grief and everyday phrases ("I'm dying to
@@ -341,12 +348,8 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
   questions and answers live only in the local screen server's memory; a restart forgets them. Pending
   messages and answers are listed on the settings page. Delete everything also clears the current card,
   captions and views. Andy tells you who deleted what.
-- **Unreadable reminder data:** Settings lists the saved original under **Reminders needing review**,
-  without displaying its damaged contents. These reminders are inactive until reviewed. A helper
-  can delete one saved copy or use Delete everything; there is no automatic repair or restoration.
-- **Unreadable settings:** Settings lists the inactive original under **Settings needing review**,
-  without displaying its contents. Defaults apply to choices not set again. A helper can delete one
-  saved copy or use Delete everything; the original is never restored automatically.
+- **A damaged reminder or settings file** is set aside, never shown or repaired automatically, and listed on the
+  settings page for a helper to delete; until then those reminders are off and defaults apply.
 - **Permission belongs to one action:** sharing reads back the exact proposed note, waits for a fresh yes,
   and permits that same note once, within two minutes. Saving offers use the same check; an explicit
   request to remember one item can save it directly. An unrelated yes never authorizes sharing.
@@ -372,8 +375,8 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
 Andy is used by voice, from across a room, by people of any eyesight or hearing, so access is the product:
 - **Nothing to read, tap or install for the person.** The core interaction is spoken; the TV supplements speech, and the family and settings pages are for helpers.
 - **All of Andy's words as captions** on the TV, at reading pace, three lines at a time, on by default.
-- **Readable from across the room:** large type in Atkinson Hyperlegible (made by the Braille Institute for
-  low-vision readers), and every text colour at 7:1 contrast (WCAG AAA) against the worst glow or photo
+- **Readable from across the room:** large type in Atkinson Hyperlegible (made by the Braille Institute so that
+  every letter is easy to tell apart), and every text colour at 7:1 contrast (WCAG AAA) against the worst glow or photo
   behind it, tested (`tests/test_screen_design.py`).
 - **A calm screen** in the settings: no movement and no see-through panels; the TV also follows the
   system's reduced-motion setting.
@@ -394,7 +397,7 @@ Each principle comes from published research, and each has something you can see
 
 | Principle | Source | What Andy does |
 |---|---|---|
-| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | On the robot the reply starts a median 0.94 s after the words are understood (62 turns); each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
+| Fast replies, clear turn-taking, controls the person can change | [International Psychogeriatrics, 2026](https://www.sciencedirect.com/science/article/pii/S1041610226000347) | On the robot Andy's first sound comes a median 1.06 s after the words are understood (54 turns); each turn's time, from when the voice server hears you finish to Andy's first sound, is shown live on the `/hood` page; you can talk over Andy and it stops at once; "slower", "louder", "be quiet for an hour" stick |
 | Support human contact, never replace it | Same study | Passes on family messages and photos; encourages a call or a visit; never says it replaces anyone |
 | Never present as human | [Berridge et al., 2023](https://pubmed.ncbi.nlm.nih.gov/36895732) | Says it is a robot whenever it matters; never speaks as anyone, even when asked (tested in the suite) |
 | The older adult decides what is collected and shared | [University of Washington, 2023](https://www.washington.edu/news/2023/09/06/qa-older-adults-want-more-say-in-companion-robots-ai-and-data-collection) | Remembers only when you ask it to, or after "Shall I remember that?" and a yes (checked in code); shares only what you ask; tells you who looked and who changed a setting |
@@ -426,7 +429,7 @@ What doesn't work yet, and what our numbers don't show.
 - **Finding things at home misses more than it finds.** In 9 tries on the robot with the pair the founder hid
   (2026-10-20, during development; [scorecard](evals/results/finder-eval-2026-10-20-2037.json)), Andy pointed at them 3 times (95% interval 12 to 65%) and
   **never at the wrong place**. The 6 misses were all a pair on a chair: the sweep saw it in 5 of them, but the
-  closer look didn't confirm it, so Andy said it couldn't see them rather than guess. Read again with today's code,
+  closer look didn't confirm it, so Andy said it couldn't see them rather than guess. Read again with the code of that day,
   the sweep alone picks a view holding glasses in 7 of 9 and a wrong one in 2, which is what the closer look is
   there to stop ([compare](evals/results/finder-compare-2026-10-20-2037.json)): the closer look is where the chair is
   lost, and it is the next thing to fix. On 2026-10-28, informally and in one room, Andy found real glasses on the
@@ -435,20 +438,22 @@ What doesn't work yet, and what our numbers don't show.
   (decision 0013), but rendered pictures are cleaner than a room. Since 2026-10-25 (decision 0016) Andy turns its
   body as well as its head to look closer at something past the head's 60 degrees, as Pollen's kinematics allow;
   checked against those kinematics, not yet on the robot.
-- **Turning to a voice, moves taught by hand and remembering where things are are new** (2026-10-20):
-  tested in code and in the suite, not yet tried on the robot. The microphones can't tell a voice in front from one behind.
+- **Turning to a voice and moves taught by hand are new** (2026-10-20): tested in code and in the suite, not yet
+  tried on the robot. The microphones can't tell a voice in front from one behind. Remembering where things are
+  was tried on the robot once, on 2026-10-28: the offer and the save; turning back to the remembered spot not yet.
 - **The scam check missed 2 of 60 scams.** It says a message looks like a known kind of scam, never that
   a message is safe, and always suggests checking with family first.
 - **Text behaviour still varies:** the current profile scored **92, 93 and 94 of 97** as a Nebius Serverless
   Job, with the actual confirmation gate and synthetic tools ([scorecard](evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json)); two earlier runs
-  today scored 91, 95, 95 and 94, 93, 92. Photo-story and future-event memory offers fail most runs; the rest
+  on 2026-10-28 scored 91, 95, 95 and 94, 93, 92. Photo-story and future-event memory offers fail most runs; the rest
   varies: a refusal accepted with something more offered, a reminder offer missed, a supportive or crisis reply
   missing a line. The gate prevents an unapproved save; it does not make the model consistently offer one. The nine
-  focused permission cases scored 6, 5 and 7 of 9 today ([scorecard](evals/results/consent-source-2026-10-28-local.json)):
-  after words read from a message ("Yes please"), the model sometimes says "I'll keep that in mind" although
-  nothing was kept (it fails the same way on yesterday's code). In one Job run a letter case got no spoken warning:
-  Nemotron wrote the reading tool's call out as text. Andy no longer speaks such text, but that turn reads nothing;
-  the **Be careful** card comes once the letter is read. Earlier profiles and audit failures remain published.
+  focused permission cases scored 6, 5 and 7 of 9 on 2026-10-28 ([scorecard](evals/results/consent-source-2026-10-28-local.json)):
+  after words read from a message ("Yes please"), the model said in every run that it had kept something ("I've
+  noted…", "I'll keep that in mind") although nothing was kept (it fails the same way on the 2026-10-27 code). In
+  four replies across the three Job runs on 2026-10-28, Nemotron wrote a tool call (or a tool's name) out as text.
+  Andy no longer speaks such text, but that turn does nothing; for a letter, the **Be careful** card comes once the
+  letter is read. Earlier profiles and audit failures remain published.
 - **What the numbers measure, and what they don't:**
   - the 1.06 s starts when your words are understood (Parakeet's transcript), not when you stop speaking: the wait
     for the end of your words comes before it and is not in the figure;
@@ -468,7 +473,8 @@ What doesn't work yet, and what our numbers don't show.
   (seed 11, the trials where Super VL pointed 21 of 23 times), Cosmos Reason 2 8B pointed at the duck 22 of 23 times (Super VL 21, inside the same interval), never at
   the wrong place, with a median error of 1.95° against Super VL's 0.78°, in 4.8 s against 3.2 s; it fills a 24 GB
   GPU. The 2B model fits beside the voice but pointed 18 of 23 times, three at the wrong place, 3.06°. Neither has
-  yet been tried on the robot with the primary vision service blocked. This is a vision fallback, not a
+  yet been tried in a spoken turn on the robot with the primary vision service blocked (one robot camera frame
+  reached the 8B model in 2.9 s, 2026-10-26). This is a vision fallback, not a
   complete offline voice assistant: the conversation and its tool selection still require Token Factory
   ([decision 0015](docs/decisions/0015-cosmos-on-this-computer-as-the-offline-eyes.md)).
 - **Of the Physical AI track's NVIDIA models, Andy uses Nemotron, Cosmos Reason 2 and Parakeet.** GR00T and Sonic are
@@ -580,7 +586,7 @@ choice was made ([decisions](docs/decisions/README.md)).
 | `scripts/` | Running Andy (`andy`, `install-services.sh`), the health check (`doctor.py`), the Devpost form's fields with every link checked (`devpost.py`), settings links, the demo screen, captions and GIFs for the video |
 | `systemd/` | The three user services: the voice server, Andy, and the offline eyes |
 | `local-eyes/` | The offline eyes: NVIDIA Cosmos Reason 2 served by vLLM on 127.0.0.1, in their own environment |
-| `.githooks/` | Commit hooks: tests, key/env-file checks and rejection of recognised private AI-session links/trailers |
+| `.githooks/` | Commit hooks: the tests, and checks that keep keys, env files and private links out of commits |
 | [`sim/`](sim/README.md) | Andy's search in Pollen's MuJoCo scene (`finder_sim.py`) and its film (`replay.py`), in their own environment |
 | `space/` | The public demo of the screens as a Hugging Face Space (Docker, sample data, no keys) |
 | `reachy_app/` | Andy packaged as a Reachy Mini app, with its landing page, published on Hugging Face ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)) |

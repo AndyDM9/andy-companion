@@ -2,13 +2,13 @@
 
 Andy is a Reachy Mini companion robot built with NVIDIA Nemotron on Nebius and Tavily.
 Start with the guided AI examples or public screens; the commands below test the software without hardware.
-Last verified October 27, 2026. The real-robot video and photographs are still pending.
+Last verified October 28, 2026. The real-robot video and photographs are still pending.
 
 ## Start a review
 
 | Open | Try | Expected result and boundary |
 |---|---|---|
-| [Guided AI examples](https://andydm-andy-companion-judge.hf.space/) | Choose **When the glasses are absent**, then **Try this example**. For sharing, start **You decide what family sees**, then choose Yes or No separately. | Real Nemotron replies and tool trace. The absent-room result is simulated. The sample family state changes only after the separate Yes; No leaves nothing shared. No login, visitor key, microphone, upload or connected robot. |
+| [Guided AI examples](https://andydm-andy-companion-judge.hf.space/) | Choose **Explain an invented bill**, then **Try this example**; then **When the glasses are absent**. For sharing, start **You decide what family sees**, then choose Yes or No separately. | Real Nemotron replies and tool trace. The letter's reading and the absent-room result are simulated. The sample family state changes only after the separate Yes; No leaves nothing shared. No login, visitor key, microphone, upload or connected robot. |
 | [Andy's screen](https://andydm-andy-companion.hf.space/screen?t=demo-screen) | Open **What can I ask?**; close it with Escape/Back. Wait for the next sample card. | Voice examples and rotating invented cards. These pages are read-only; disabled/refused writes are intentional. No model or robot runs here. |
 | [Evidence](../evals/results/README.md) and [limitations](../README.md#limitations) | Compare current text results, historical Jobs, simulation and physical finder trials. | Sources, failures and dates are available. A software pass or simulation result is not a new physical success rate. |
 | [Fresh install](#reproduce-the-keyless-checks) | Clone, sync and run the CPU suite. | No key or robot required. Optional SDK/simulation tests may skip; this is software verification. |
@@ -26,6 +26,7 @@ need to enter a personal API key. The public examples supplement the working-pro
 | Design | Guided examples, the screen/family/settings pages and [accessibility](../README.md#accessibility); hardware-flow checks still pending are listed below |
 | Potential impact | [Audience research](../README.md#built-on-what-older-adults-have-said-they-want), [cost/path to shipping](../README.md#path-to-shipping) and limitations; no target-user study is claimed |
 | Quality of the idea | [Three moments](../README.md#three-moments), the finder and [Tavily comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json), with the code boundaries in [decisions](decisions/README.md) |
+| Best Use of Tavily | [How Andy uses Tavily](../README.md#how-andy-uses-tavily): five APIs, the scam check measured five ways; code in `src/andy_companion/web.py`, `looking.py` and `scamcheck.py` |
 
 ## Testing costs and access
 
@@ -157,11 +158,11 @@ Serverless Jobs, simulation, desk images and physical trials. Every retained run
 
 | Evidence | Result | Boundary |
 |---|---|---|
-| [Current profile on Serverless Jobs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) | 92, 93, 94 of 97 | Suite 2026-10-28a; earlier runs today [91, 95, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) and [94, 93, 92](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-120605.json); synthetic tool results; no microphone/camera/motors |
+| [Current profile on Serverless Jobs](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-121449.json) | 92, 93, 94 of 97 | Suite 2026-10-28a; earlier runs on 2026-10-28 [91, 95, 95](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-103654.json) and [94, 93, 92](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-120605.json); synthetic tool results; no microphone/camera/motors |
 | [Earlier profile, local](../evals/results/suite-2026-10-27-consent-source-local.json) | 93, 94, 94 of 97 | Real API calls, real confirmation/source checks, synthetic tool results; memory/activity offers, refusal/story wording and supportive-response failures retained; no microphone/camera/motors |
 | [Previous profile on Serverless Jobs](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) | 96, 95, 92 of 97 | Historical profile; does not validate the October 26 changes |
 | [Scam comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json) | Andy: 58/60 scams, 0/60 ordinary flagged | Written test cases, not household messages; model baselines and errors included |
-| [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; the revised body turn still needs physical validation |
+| [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; on 2026-10-28, informally, real glasses found 3 times out of 3 and keys once ([live test](live-test.md) 3t), not a scored trial; the revised body turn still needs physical validation |
 
 Optional evaluations need your own Token Factory key and consume credits. For a short text sample,
 enter the key at a hidden Bash prompt; it is passed through the environment, never an argument or file:
@@ -209,13 +210,5 @@ development copy unless organisers explicitly permit a change, as their
 [final reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
 requires. The tag/app pin is our reproducibility check; it does not replace that freeze.
 
-Before final export, run `uv run python scripts/devpost.py --ref hackathon-submission --final`.
-It first rejects a placeholder video, missing local tag, changed snapshot or unpinned app. It then
-checks that the exact public GitHub tag resolves to the same commit and that the published Reachy
-Mini app's package metadata matches the tested file, followed by public links. Missing/mismatched
-metadata, a failed lookup or a broken link stops final export before any copy-ready fields are printed.
-These checks need public GitHub/Hugging Face access, no account or key; they never publish or move a
-tag or update the app. If a lookup fails, resolve access/publication and retry; draft export is still
-available. This is our reproducibility gate, not proof of future immutability or every app asset.
-YouTube visibility, duration, footage, photo rights, hardware results and actual submission remain
-manual checks in the checklist.
+Our own release check before submitting (the tag, the app pin and every link) is in the
+[submission checklist](submission-checklist.md).

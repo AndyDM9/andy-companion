@@ -216,14 +216,17 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 ## The Devpost form
 
 - [ ] **Before pasting the final text:** the letter (live-test 3k, 3l), the research streamed to the TV (3e) and the
-      photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; The draft describes planned filming on October 27; it can describe completed footage only after recording. A moment that doesn't work leaves the video and the text says "not yet tried on the
+      photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; The draft describes planned filming (the evening of October 28); it can describe completed footage only after recording. A moment that doesn't work leaves the video and the text says "not yet tried on the
       robot".
 - [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
       `uv run python scripts/devpost.py --ref hackathon-submission --final` once the tag is pushed, and paste again.
       First commit the final text, feedback and app pin, validate, then tag/push that commit. Export from
       that unchanged snapshot; the command rejects files that differ from the tag.
       Every link opens (2026-10-25: 18 of 19 from here; ftc.gov refuses this network, its two pages confirmed from
-      another).
+      another). `--final` rejects a placeholder video, a missing local tag, a changed snapshot or an unpinned app,
+      then checks that the public tag resolves to the same commit, that the published app's package metadata
+      matches, and every link; it never publishes or moves a tag. YouTube visibility, duration, footage, photo
+      rights, hardware results and the submission itself stay manual checks.
 - [ ] **A complete draft submitted by 2026-10-22**, for Devpost's eligibility check (it covers entries in by
       2026-10-23 10:00 PT); editing continues afterwards. *Missed:* the draft was **saved** (not submitted) on
       2026-10-25 as devpost.com/software/andy-b45hds: overview, story, 25 tags, three links and every additional-info

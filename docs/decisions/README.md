@@ -3,6 +3,14 @@
 One file per decision: the context, what was decided, why, and when to revisit it. A changed decision
 gets a dated amendment, or a new decision that replaces it. New ones start from [TEMPLATE.md](TEMPLATE.md).
 
+**Start here:** the product's main choices are [0001](0001-voice-stack.md) (the voice stack),
+[0002](0002-one-search-provider-tavily.md) (Tavily), [0007](0007-the-scam-check-two-narrow-questions.md) (the scam
+check), [0011](0011-the-eyes-on-token-factory.md) to [0013](0013-the-finder-tested-in-simulation.md) (the eyes and the
+finder), [0015](0015-cosmos-on-this-computer-as-the-offline-eyes.md) (the offline eyes),
+[0018](0018-one-confirmation-for-one-proposed-action.md) (consent) and
+[0022](0022-judge-testing-without-sharing-provider-keys.md) (how judges can test it). Most later ones harden
+what these built.
+
 | # | Decision | Date | Status |
 |---|---|---|---|
 | [0001](0001-voice-stack.md) | The voice stack: Parakeet, Nemotron on Token Factory, Qwen3-TTS | 2026-10-13 | accepted |

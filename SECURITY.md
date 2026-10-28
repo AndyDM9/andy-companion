@@ -10,7 +10,7 @@ it, and what it lets someone do. This is a small project kept by one person; exp
 
 - **The screen server** (`src/andy_companion/screen_server.py`): the TV, family, settings and under-the-hood pages,
   served on the home network over plain HTTP. Each page has its own long random token, compared in constant time;
-  the server refuses clients from outside private, loopback and link-local addresses; the endpoints that post
+  the server refuses clients from outside private, loopback, link-local and home-VPN (100.64.0.0/10) addresses; the endpoints that post
   captions, turns and views also require this computer itself.
 - **Key handling:** the private env file (`~/.config/companion-hackathon/.env`, mode 600), what each program reads
   from it, and the cloud scripts (`cloud/`), which keep keys and endpoint tokens off command lines and in Nebius

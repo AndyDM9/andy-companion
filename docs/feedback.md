@@ -255,4 +255,4 @@ research, streamed to the TV step by step.
 - `map` came back empty for a town site that refuses crawlers; saying so in the response, rather than an
   empty list, would help.
 **Onboarding (zero to hello world):** one key and plain HTTPS calls to the REST API (no SDK needed, so the robot adds no dependency); a working search within minutes.
-**Would we build with it again?** Yes: one key gives a robot search, extract, crawl, map and research, and the consumer-protection warnings it finds measurably sharpen the scam check.
+**Would we build with it again?** Yes: one key gives a robot search, extract, crawl, map and research, and the consumer-protection warnings it finds give every scam verdict a source the person can check (checked by Nemotron 3 Ultra, with no false alarms in 60 ordinary messages).

@@ -2,7 +2,8 @@
 
 Pollen's tracking follows faces only and recentres 2 s after losing one. While no face is seen,
 this finds a *person* in the camera picture with YOLOX (OpenCV model zoo, Apache-2.0, pinned on
-Hugging Face) about 3 times a second on 2 CPU threads, and gives seek the direction to turn to.
+Hugging Face) about 1.4 times a second on 2 CPU threads (less often when nobody has been seen for a while),
+and gives seek the direction to turn to.
 
 Privacy, as with faces: frames are looked at and dropped; nothing is stored or sent anywhere.
 

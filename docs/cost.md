@@ -8,7 +8,7 @@ are from Nebius Token Factory's model list and Tavily's pricing page on **2026-1
 | Part | Price (2026-10-14) | Assumed use | Per month |
 |---|---|---|---|
 | Conversation: NVIDIA Nemotron 3.5 Lightning on Token Factory | $0.06 per million input tokens, $0.24 per million output | 80 model calls a day (about 50 turns, some with a tool); 10,000 input tokens a call (7,514 measured for Andy's instructions and 35 tools, plus the conversation so far); 80 output tokens a call | **about $1.50** |
-| Hard questions and the scam check's warning match: Nemotron 3 Ultra | $1.00 per million input, $3.00 per million output | 2 "think it through" and 2 scam checks a day, about 1,500 tokens in and 1,500 out each | **about $0.75** |
+| Hard questions and the scam check's warning match: Nemotron 3 Ultra | $1.00 per million input, $3.00 per million output | 2 "think it through" and 2 scam checks a day, about 1,500 tokens in and 1,500 out each (an upper bound: a scam check's match measured about 560 in and 10 out) | **about $0.75** |
 | Letter cards and On this day: Lightning, structured output | as above | a few calls a day, under 2,000 tokens each | **under $0.05** |
 | The web: Tavily | Free up to 1,000 credits a month; then $0.008 a credit | 10 searches a day at basic depth (1 credit), 2 scam checks (2 credits each), 2 research tasks a week (about 25 credits each, estimated from this month's use) | **about 640 credits: free**, or about $5 if paid |
 | Hearing (Parakeet) and speaking (Qwen3-TTS) | Free: they run on the home computer's GPU | — | **$0** |

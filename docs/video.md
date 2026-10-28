@@ -1,7 +1,7 @@
 # The video
 
 The plan for the entry's video: the rules it must meet, the checklist before filming, the shots, and what
-happens after. Last revised 2026-10-26; filming October 27.
+happens after. Last revised 2026-10-28; filming the evening of October 28.
 
 **Rules** (Devpost, re-read 2026-10-13; every rule and how we meet it is in
 [rules-compliance.md](rules-compliance.md)):
@@ -52,6 +52,13 @@ long, unedited takes.
 
 ## Before filming
 
+**Already passed on the robot on October 28** ([live-test.md](live-test.md)): a printed bill read (3k), research
+on the TV (3e) and stopped without restarting (3ee), real glasses found three times in 17 to 23 s (3t, informal),
+talking over Andy (3c), today's plan (3m), a joke (3n), On this day (3q), the weather (3d, 3gg), "what do you see?"
+(7), remembered keys (3bb), a reminder said on time (13), goodnight and the wake phrase (20, 1). **Still to check
+before the takes that use them:** the prize letter's **Be careful** card (3l, shot 1) and a family photo arriving and
+described (3y, shot 5).
+
 - [ ] **Core filming pass, on the robot:** the invented letter (3k/3l), research on the TV (3e),
       stopping research without restarting it (3ee), the glasses search (3t), the photo delivery/description (3y),
       following and voice interruption. If a reminder is included, check 3hh; if the side body turn is included,
@@ -59,7 +66,10 @@ long, unedited takes.
       not block the core take. Any beat that fails comes out of the shots below,
       the Devpost text and the gallery: the video shows only what works (the rules), and the texts say "not yet
       tried on the robot" until it has been.
+- [ ] **The robot plugged in and its daemon restarted** if it was unplugged, then start Andy's services by hand
+      (`systemctl --user start andy-voice andy`): since 2026-10-28 they no longer start at login.
 - [ ] **Only Andy drives the robot** (the doctor's check): no other robot app running, and nothing that starts one.
+      Another project's services can hold Andy's voice and screen ports (8765, 8090); the doctor names them.
 - [ ] `uv run python scripts/prepare_demo.py check` shows no ✗ (the night clock off while filming, captions on,
       the screen's place set, the town set, English).
 - [ ] `uv run python scripts/prepare_demo.py letters`, then print the made-up prize letter and electric bill
@@ -88,7 +98,8 @@ long, unedited takes.
       Andy; within about 60° of straight ahead unless live-test 3t3 showed the body turn working (decision 0016),
       when somewhere to the side shows the turn; not on a dark chair, where Andy missed them in tries.
 - [ ] The family page open on a second phone; **our own photo**, with the family's agreement (not a
-      sample landscape).
+      sample landscape). On the settings page, delete the sample landscapes and the two facts kept on
+      2026-10-13, so the TV and "What do you remember?" show only what was set up for filming.
 - [ ] A printed letter that asks for "a fee to release your prize", from a **made-up sender** (no real
       agency, bank or company name).
 - [ ] No music; no third-party logos in shot (cover any on mugs, books, screens); browser tabs and links
@@ -99,8 +110,8 @@ long, unedited takes.
 
 ## Shots
 
-Revised October 26 for October 27 filming: fewer required behaviors in the long take, a full 30 seconds
-for the glasses search, and current measurement scope beside every score.
+Revised October 26 and checked again October 28: fewer required behaviors in the long take, a full 30 seconds
+for the glasses search (17 to 23 s on October 28), and current measurement scope beside every score.
 
 | # | Time | What we see | What is said |
 |---|---|---|---|
