@@ -67,7 +67,8 @@ def test_each_look_holds_past_its_longest_wait_and_the_next_replaces_it_at_once(
                            zoom.frame_with_spot(0.5, 0.5, value=230)], lambda f, w: {"yes": True, "x": .5, "y": .5, "where": ""})
     assert out["found"]
     moves = [entry for entry in manager.log if entry in ("clear", "move")]
-    assert moves == ["clear", "move"] * 6           # four views, the closer look, the point: each replaces the last
+    # Holding still where the head was, four views, the closer look, the point: each replaces the last.
+    assert moves == ["clear", "move"] * 7
 
 
 def test_a_second_search_while_one_runs_is_told_to_wait():

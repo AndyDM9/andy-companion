@@ -83,6 +83,28 @@ def next_move(manager: Any, move: Any) -> None:
     manager.queue_move(move)
 
 
+def hold_still(robot: Any, manager: Any, queueable: Optional[Callable] = None) -> None:
+    """The head held where it is, queued before the other behaviours stand down (body.hold), so the first held tick
+    starts there (2026-10-28 review: seek was turning toward a voice as a search began; held, it stopped steering and
+    the head jumped toward the middle). The sweep's first look replaces it at once (next_move)."""
+    from andy_companion.body import look
+
+    if not callable(getattr(manager, "clear_move_queue", None)):
+        return     # a hold nothing can replace would hold up the sweep's first look for its whole length
+    try:
+        pose = robot.get_current_head_pose()
+        at = head_angles(robot)
+        try:
+            antennas = tuple(float(a) for a in robot.get_current_joint_positions()[1][:2])
+        except Exception:
+            antennas = (0.0, 0.0)
+        if pose is None or at is None:
+            return
+        next_move(manager, (queueable or look.queueable)(look.HoldLook(pose, antennas, at[0], at[1], HOLD_S)))
+    except Exception:
+        pass   # holding still is a help, never a reason not to search
+
+
 # One search at a time: two at once (two find_object calls in one reply) interleaved their looks and the first one's
 # hand-back to face following ran in the middle of the second (2026-10-28 review). A search's hand-back, a few seconds
 # after it ends, is skipped once a newer search has the head; the newer one then hands it back, face following too.
@@ -468,6 +490,7 @@ async def find(what: str, robot: Any, manager: Any, **kw: Any) -> Dict[str, Any]
     mine = _searching["n"]
     tracking = (bool(getattr(manager, "_head_tracking", False)) or _searching["restore"]) and hasattr(manager, "set_head_tracking")
     _searching["restore"] = tracking
+    hold_still(robot, manager, kw.get("queueable"))
     hold.begin(manager)                  # seek, face following, the glance and idle hand-back stand down
     if tracking:
         manager.set_head_tracking(False)

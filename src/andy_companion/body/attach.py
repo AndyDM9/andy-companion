@@ -32,6 +32,9 @@ def seek_step(manager, now, head, tracking, head_world_yaw, move_playing):
     from andy_companion.body import hold
 
     if hold.active(manager):            # a search owns the head: no seeking, no weight asked for
+        seeker = manager.__dict__.get("_andy_seek")
+        if seeker is not None:
+            seeker.stand_down()         # nothing from before the search resumes after it
         return head
     seeker = manager.__dict__.setdefault("_andy_seek", seek.Seek())
     cache = manager.__dict__.setdefault("_andy_seek_cache", {"t_face": -1e9, "face": False, "t_doa": -1e9, "doa": None,

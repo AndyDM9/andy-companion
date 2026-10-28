@@ -170,6 +170,12 @@ class Seek:
         self.log[-1] = "TURN"
         return decision
 
+    def stand_down(self) -> None:
+        """A search has the head (body.hold): drop the turn or follow under way, as when tracking is off. Frozen, it
+        resumed after the search and snapped the head toward a voice from before it (2026-10-28 review)."""
+        self.state, self._for_voice, self._home_to, self._arrived_at = "FOLLOW", False, 0.0, None
+        self._second_since, self._tracking_since = None, None
+
     def _rest(self) -> Decision:
         """The search ended empty: bring the head home gently first (HOME), then REST."""
         return self._home()
