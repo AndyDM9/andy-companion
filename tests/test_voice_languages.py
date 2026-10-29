@@ -70,3 +70,31 @@ def test_a_kept_turn_logs_only_a_count(serve, caplog):
     with caplog.at_level(logging.INFO, logger="andy.voice"):
         serve.our_language("Энди, go to sleep, пожалуйста", "en", "en")
     assert [r.getMessage() for r in caplog.records] == ["voice: a turn heard as en kept its Latin words (1 left out)"]
+
+
+def test_andy_asks_once_then_leaves_speech_in_another_language_alone(serve):
+    """2026-10-29: 46 turns in another alphabet in four minutes near the robot, and Andy answered 21 of them."""
+    class Holder:
+        pass
+
+    h = Holder()
+    assert serve.unclear_once(h, EN, now=100.0) == EN                 # asked once
+    assert serve.unclear_once(h, EN, now=105.0) == ""                 # more close behind: no reply
+    assert serve.unclear_once(h, ES, now=130.0) == ""                 # each one keeps the stretch going
+    assert serve.unclear_once(h, "", now=140.0) == ""
+    assert serve.unclear_once(h, EN, now=170.0) == EN                 # 40 s since the last: asked again
+    assert serve.unclear_once(h, "Andy, what time is it?", now=172.0) == "Andy, what time is it?"
+    assert serve.unclear_once(h, EN, now=175.0) == EN                 # a clear turn ended the stretch
+
+
+def test_the_language_filter_asks_once_on_the_handler(serve):
+    class Handler:
+        last_language = "en"
+
+        def _process_nano_parakeet(self, audio_input):
+            return audio_input
+
+    serve.only_our_languages(Handler)
+    h = Handler()
+    assert h._process_nano_parakeet(("Проверь это сообщение", "ru")) == (EN, "en")
+    assert h._process_nano_parakeet(("Да, конечно, я понял", "ru")) == ("", "en")

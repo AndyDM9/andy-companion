@@ -61,3 +61,4 @@ holds a fast model: written tool calls made, notes on a turn, words to say). Mos
 | [0045](0045-tool-results-give-words-not-reasons.md) | Tool results give the words to say, not the reasons | 2026-10-28 | accepted |
 | [0046](0046-spanish-wake-listener-only-for-spanish.md) | The Spanish wake listener runs only when Andy speaks Spanish | 2026-10-29 | accepted |
 | [0047](0047-sleep-after-andys-own-goodnight.md) | Andy goes to sleep after its own goodnight, when the person asked for sleep | 2026-10-29 | accepted |
+| [0048](0048-ask-once-about-speech-in-another-language.md) | Andy asks once about speech in another language, then leaves it alone | 2026-10-29 | accepted |

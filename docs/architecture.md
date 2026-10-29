@@ -292,7 +292,8 @@ remain. Without AbortController, the status guard caps requests but cannot cance
   kind. The suite (`evals/run_suite.py`) does both the same way. It also keeps
   what reaches the model to English and Spanish: a transcript mostly in another alphabet is passed on as unclear (a
   stray word in one, such as "Andy" written in Cyrillic, is read as "Andy" or left out), so Andy
-  asks again (only the detected language code is logged). The filter is not trusted alone: `scripts/doctor.py --live`
+  asks again, once: more such turns within 30 s are passed on empty and get no reply (decision 0048; only the
+  detected language code is logged). The filter is not trusted alone: `scripts/doctor.py --live`
   reads the last day of the voice log and fails on any line that is not one of the kinds it may write
   (decision 0017).
 - A reminder's words are kept as said, less a time at their end ("take a pill at eight" is kept as "take a

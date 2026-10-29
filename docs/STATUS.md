@@ -20,6 +20,15 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
 
+## October 29: asked once about speech in another language
+
+- **Seen on the robot, 12:10 to 12:14:** 46 turns mostly in another alphabet (talk nearby, by every sign not said to
+  Andy); Andy answered 21 of them asking to hear it again.
+- **Fixed:** Andy asks once; more such turns within 30 s of the last get no reply, until a clear turn or a pause
+  ([decision 0048](decisions/0048-ask-once-about-speech-in-another-language.md)).
+- **Sleep, checked on the robot after decision 0047:** at 12:14 the exact spoken control put Andy to sleep (the
+  model's own call, a second later, did no harm), and at 12:21 the model's call did; the founder: "now it's better".
+
 ## October 29: a goodnight that didn't put Andy to sleep
 
 - **Seen on the robot, 12:06:** one turn heard wholly as Russian, taken as unclear; the next, in English (20

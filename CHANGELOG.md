@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### Andy asks once about speech in another language
+
+On the robot, over four minutes of talk nearby in another language, Andy answered 21 of 46 turns with "please say
+that again". Now it asks once; further turns mostly in another alphabet within 30 s of the last are left unanswered,
+until a clear turn or a pause (`voice/serve.py`, `unclear_once`, with tests;
+[decision 0048](docs/decisions/0048-ask-once-about-speech-in-another-language.md)). Also checked on the robot: two
+requests to sleep, at 12:14 and 12:21, each put Andy to sleep.
+
 ### Andy goes to sleep after its own goodnight
 
 On the robot, asked to sleep in words that were not one of the exact spoken controls, the model said "Good night!

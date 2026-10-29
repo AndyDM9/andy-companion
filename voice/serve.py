@@ -30,7 +30,8 @@ Andy speaks English and Spanish. Parakeet hears 25 languages and writes what it 
 turns on the robot, an accented one and a muffled one, came out in Cyrillic (detected as Ukrainian and Russian),
 and Andy answered one in Russian. `only_our_languages` takes a transcript in another alphabet as unclear (Andy asks
 again, in its language) and keeps the turn's language English or Spanish. Latin-script words pass untouched.
-Only the detected language code is logged, never the words.
+Andy asks once: more such turns close behind are left unanswered (`unclear_once`), as speech in another language
+near the robot is not said to Andy. Only the detected language code is logged, never the words.
 
 The Token Factory key comes from the environment (NEBIUS_API_KEY, from run.sh's private .env file), never
 the command line: any process on this shared computer can read a command line (`ps`), but only this user
@@ -43,6 +44,7 @@ import logging
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -253,8 +255,29 @@ def our_language(text: str, language, last) -> tuple:
     return " ".join(words), keep
 
 
+UNCLEAR_QUIET_S = 30.0
+
+
+def unclear_once(holder, text: str, now=None) -> str:
+    """Andy asks once. An unclear turn within UNCLEAR_QUIET_S of the last one is left unanswered: an empty transcript,
+    so the model is not called. On 2026-10-29 Andy answered 21 of 46 turns in another alphabet in four minutes, speech
+    near the robot that was not said to it. A clear turn ends the stretch."""
+    if not text:
+        return text
+    if text not in UNCLEAR.values():
+        holder._andy_unclear_at = None
+        return text
+    now = time.monotonic() if now is None else now
+    last, holder._andy_unclear_at = getattr(holder, "_andy_unclear_at", None), now
+    if last is not None and now - last < UNCLEAR_QUIET_S:
+        logger.info("voice: an unclear turn %.0f s after the last was left unanswered", now - last)
+        return ""
+    return text
+
+
 def only_our_languages(handler_class) -> None:
-    """The speech-to-text handler's final transcripts, kept to English and Spanish (our_language)."""
+    """The speech-to-text handler's final transcripts, kept to English and Spanish (our_language), and asked about
+    once (unclear_once)."""
     for name in ("_process_nano_parakeet", "_process_mlx_final"):
         original = getattr(handler_class, name, None)
         if original is None or getattr(original, "_andy_languages", False):
@@ -262,7 +285,8 @@ def only_our_languages(handler_class) -> None:
 
         def final(self, audio_input, _original=original):
             text, language = _original(self, audio_input)
-            return our_language(text, language, getattr(self, "last_language", "en"))
+            text, keep = our_language(text, language, getattr(self, "last_language", "en"))
+            return unclear_once(self, text), keep
 
         final._andy_languages = True
         setattr(handler_class, name, final)
