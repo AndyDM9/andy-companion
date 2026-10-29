@@ -8,6 +8,8 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 final readiness review: the live rules page re-read that evening, its submission requirements unchanged (Physical AI needs no hosted demo URL; text description; video under 3 minutes, public on YouTube, at least one minute of the robot operating, no third-party marks or music; English; hardware access on request). The final export gate lists only the three items that wait for the video: its URL, the `hackathon-submission` tag and the app's pin to it. Re-read once more on submission day.
+
 October 28 scenario review: shot 5 gets 22 s (a photo's arrival and description cannot fit 14 s uncut), shot 2's line is shorter (6 s), the total stays 2:56; on-screen text is burned in; the research is saved in research.md.
 
 October 28 video research: the shot plan adds a caption with the README's FTC figure and its source, labels robot shots "Real robot · autonomous · 1× speed · no cuts" (true of every robot shot: none is cut, sped up or teleoperated), and keeps one uncut 72 s take, which meets both the rules' "at least one minute of footage" and the track's "a 1-minute clip".
