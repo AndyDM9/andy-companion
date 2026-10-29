@@ -227,7 +227,7 @@ def test_a_story_is_read_back_first_and_asked_about_last():
         f"Thank you for telling me. “{story}” Shall I remember that?")
     gate = consent.Confirmation()
     gate.hear('I enjoy gardening.')
-    assert gate.authorize('remember_fact', {'fact': 'Enjoys gardening.'})['say'] == 'Shall I remember this: “Enjoys gardening.”?'
+    assert gate.authorize('remember_fact', {'fact': 'Enjoys gardening.'})['say'] == 'Shall I remember this: “Enjoys gardening”?'
 
 
 @pytest.mark.parametrize('words', [
@@ -245,4 +245,13 @@ def test_a_title_is_not_a_second_sentence():
     gate = consent.Confirmation()
     gate.hear('My neighbour Mrs. Peña brings soup on Fridays.')
     assert gate.authorize('remember_fact', {'fact': 'Mrs. Peña brings soup on Fridays.'})['say'] == (
-        'Shall I remember this: “Mrs. Peña brings soup on Fridays.”?')
+        'Shall I remember this: “Mrs. Peña brings soup on Fridays”?')
+
+
+def test_a_note_to_share_is_read_back_with_one_full_stop():
+    """2026-10-28 design review: judges saw "Your note says: “I enjoyed the garden today.”. Shall I share…"."""
+    for note, said in (("I enjoyed the garden today.", "“I enjoyed the garden today.” Shall I"),
+                       ("I enjoyed the garden today", "“I enjoyed the garden today.” Shall I")):
+        gate = consent.Confirmation()
+        gate.hear('Share with my family that I enjoyed the garden today.')
+        assert said in gate.authorize('share_with_family', {'note': note})['say']

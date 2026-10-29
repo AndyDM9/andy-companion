@@ -5,6 +5,22 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-28
 
+### Every public page reviewed as a judge sees it
+
+Each page judges reach, in headless Chrome at TV, desktop and phone widths, with no script error and no sideways
+scroll: the guided examples (two run live, as a judge would: the invented bill explained in 1.4 s, the share
+confirmation with its Yes and No), the demo's front page, its TV, family, settings and under-the-hood pages (past the
+name step), and the Reachy app page.
+
+- **The share question's punctuation:** judges would have read "Your note says: “I enjoyed the garden today.”. Shall
+  I share this with your family?". One full stop now, inside the quotes; "Shall I remember this: “Enjoys
+  gardening”?" loses its stray one too (English and Spanish).
+- **The public demo looked broken:** its under-the-hood page showed amber "The robot's daemon does not answer" and
+  "The voice server is not running". There is no robot in the demo, which is not a fault: those two tiles are grey
+  there and say "Not in this demo".
+- `consent.py` changed after the final Serverless Jobs only in that punctuation; their `confirmation` hash is of the
+  file before it (noted in the scorecard index).
+
 ### Ready for filming, a still "person" left alone, the screen link replaceable, decisions recorded
 
 - **Andy no longer turns all evening to a coat.** With nobody home, Andy turned toward "a person" about every 25 s

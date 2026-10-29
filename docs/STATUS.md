@@ -20,6 +20,16 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
 
+## October 28, design review of every public page
+
+- **Seen as a judge would,** in headless Chrome (TV, desktop, phone), no script error or sideways scroll anywhere:
+  the guided examples (two run live: the bill explained in 1.4 s by Nemotron, the share confirmation from Andy's own
+  consent code), the demo's front page, TV, family and settings pages past their name step, under the hood, and the
+  Reachy app page. The TV, family page and app page read well across a room and on a phone.
+- **Fixed:** the share question's double full stop ("…today.”."), shown to judges in the guided example; the public
+  demo's amber robot and voice tiles, which made it look broken (grey, "Not in this demo", there only).
+- **Noted:** `consent.py` changed after the final Jobs only in that punctuation (their hash is of the earlier file).
+
 ## October 28, later that night: ready for filming
 
 - **Following a still thing, fixed:** with nobody home, Andy turned toward "a person" about every 25 s all evening

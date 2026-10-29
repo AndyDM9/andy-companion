@@ -229,3 +229,18 @@ def test_a_replaced_screen_link_says_so_on_the_tv(server, language):
     with urllib.request.urlopen(f"{server}/screen?t={board.tokens()['screen']}", timeout=5) as r:
         page = r.read().decode()
     assert r.status == 200 and "r.status === 410" in page and "location.reload()" in page
+
+
+def test_the_public_demo_does_not_show_a_missing_robot_as_a_fault(monkeypatch):
+    """2026-10-28 design review: the public demo's hood showed amber "The robot's daemon does not answer" and "The voice
+    server is not running", which looked broken; there, they are grey and say they are not part of the demo."""
+    from andy_companion import health
+    tiles = [health.tile("Robot", "warn", "The robot's daemon does not answer"),
+             health.tile("Voice", "warn", "The voice server is not running"), health.tile("Tavily", "ok", "Tavily")]
+    monkeypatch.setattr(health, "tiles", lambda *a, **k: tiles)
+    monkeypatch.setattr(screen_server, "INDEX", None)
+    assert screen_server._health() == tiles                                       # Andy's own server: as they are
+    monkeypatch.setattr(screen_server, "INDEX", b"<html>demo</html>")
+    shown = screen_server._health()
+    assert [(t["name"], t["status"]) for t in shown] == [("Robot", "off"), ("Voice", "off"), ("Tavily", "ok")]
+    assert all("Not in this demo" in t["detail"] for t in shown[:2])

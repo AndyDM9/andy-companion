@@ -290,10 +290,18 @@ def proof(results: Path = RESULTS) -> Optional[Dict[str, Any]]:
             "ran_on": best.get("ran_on", "this computer")}
 
 
+# In the public demo there is no robot or voice server, which is not a fault: amber "does not answer" tiles made the
+# demo look broken (2026-10-28 design review), so there they read as not part of the demo, in grey.
+NOT_IN_DEMO = {"Robot": "Not in this demo: no robot here", "Voice": "Not in this demo: no voice server here"}
+
+
 def _health() -> List[Dict[str, str]]:
     from andy_companion import health
 
-    return health.tiles(float(_live["at"]), _weather["card"], _tavily)
+    tiles = health.tiles(float(_live["at"]), _weather["card"], _tavily)
+    if INDEX is None:
+        return tiles
+    return [health.tile(t["name"], "off", NOT_IN_DEMO[t["name"]]) if t.get("name") in NOT_IN_DEMO else t for t in tiles]
 
 
 def _language() -> str:

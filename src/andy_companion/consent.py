@@ -165,9 +165,12 @@ def _yes_to(text: str, name: str) -> bool:
 def readback(name: str, arguments: dict, content: str, spanish: bool = False) -> str:
     """The exact proposal, as a question a person would ask (2026-10-28: "The memory would be: “house keys; hall
     table”. Shall I remember this?" read to the suite's judge, and would sound to a person, like something kept)."""
+    # One full stop, inside the quotes: "“I enjoyed the garden today.”." was shown to judges (2026-10-28 design review).
+    said = content.strip()
+    ended = said if said[-1:] in ".!?" else said + "."
     if name in SHARING:
-        return (f"Su nota dice: “{content}”. ¿Quiere que comparta esto con su familia?" if spanish else
-                f"Your note says: “{content}”. Shall I share this with your family?")
+        return (f"Su nota dice: “{ended}” ¿Quiere que comparta esto con su familia?" if spanish else
+                f"Your note says: “{ended}” Shall I share this with your family?")
     if name == "remember_place":
         what, where = (str(arguments.get(k, "")).strip() for k in ("what", "said_where"))
         if what and where:
@@ -179,10 +182,10 @@ def readback(name: str, arguments: dict, content: str, spanish: bool = False) ->
         # question mark when read out, and sounded like something kept (a photo's story, 2026-10-28): the words
         # first, then the question. Read back alone, a story sounded like a recording of it; a thank-you first is
         # right for a happy story and a sad one alike.
-        body = content.strip() if content.strip()[-1:] in ".!?" else content.strip() + "."
-        return (f"Gracias por contármelo. «{body}» ¿Quiere que lo recuerde?" if spanish else
-                f"Thank you for telling me. “{body}” Shall I remember that?")
-    return f"¿Quiere que recuerde esto: “{content}”?" if spanish else f"Shall I remember this: “{content}”?"
+        return (f"Gracias por contármelo. «{ended}» ¿Quiere que lo recuerde?" if spanish else
+                f"Thank you for telling me. “{ended}” Shall I remember that?")
+    short = said.rstrip(".")                      # "“Enjoys gardening”?", not "“Enjoys gardening.”?"
+    return f"¿Quiere que recuerde esto: “{short}”?" if spanish else f"Shall I remember this: “{short}”?"
 
 
 class Confirmation:
