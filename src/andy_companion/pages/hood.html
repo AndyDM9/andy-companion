@@ -82,7 +82,7 @@
   .health .dot::before { content: ""; width: .7em; height: .7em; border-radius: 50%; background: var(--soft); flex: none; }
   .health .dot[data-status="ok"]::before { background: var(--tool); }
   .health .dot[data-status="warn"]::before { background: var(--gold); }
-  .health .dot[data-status="off"]::before { background: transparent; box-shadow: inset 0 0 0 2px var(--soft); }
+  .health .dot[data-status="off"]::before, .health .dot[data-status="demo"]::before { background: transparent; box-shadow: inset 0 0 0 2px var(--soft); }
   .health .dot i { font-style: normal; color: var(--soft); }
   .tally .num { color: var(--ink); font-weight: 700; }
 
@@ -204,7 +204,7 @@
                      `${t.nebius} tool ${t.nebius === 1 ? "call" : "calls"} on Nebius/Token Factory`,
                      `${t.tavily} Tavily ${t.tavily === 1 ? "call" : "calls"}`,
                      `${t.eyes} ${t.eyes === 1 ? "look" : "looks"} with Nemotron VL`],
-      status: { off: "stopped", unknown: "not checked" }, earlier: "Earlier turns",
+      status: { off: "stopped", unknown: "not checked", demo: "not in this demo" }, earlier: "Earlier turns",
       stack: { hearing: ["Hearing", "NVIDIA Parakeet TDT 0.6B v3, on this computer's graphics card"],
                thinking: ["Thinking and tools", "NVIDIA Nemotron 3.5 Lightning on Nebius Token Factory, zero data retention"],
                eyes: ["Eyes", "NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory, only when asked"],
@@ -242,7 +242,7 @@
                      `${t.nebius} ${t.nebius === 1 ? "llamada" : "llamadas"} a herramientas en Nebius/Token Factory`,
                      `${t.tavily} ${t.tavily === 1 ? "llamada" : "llamadas"} a Tavily`,
                      `${t.eyes} ${t.eyes === 1 ? "mirada" : "miradas"} con Nemotron VL`],
-      status: { off: "apagado", unknown: "sin comprobar" }, earlier: "Turnos anteriores",
+      status: { off: "apagado", unknown: "sin comprobar", demo: "no en esta demo" }, earlier: "Turnos anteriores",
       stack: { hearing: ["Oír", "NVIDIA Parakeet TDT 0.6B v3, en la tarjeta gráfica de esta computadora"],
                thinking: ["Pensar y herramientas", "NVIDIA Nemotron 3.5 Lightning en Nebius Token Factory, sin retención de datos"],
                eyes: ["La vista", "NVIDIA Nemotron 3.5 Super VL en Nebius Token Factory, solo cuando se le pide"],

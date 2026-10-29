@@ -17,7 +17,7 @@ name step), and the Reachy app page.
   gardening”?" loses its stray one too (English and Spanish).
 - **The public demo looked broken:** its under-the-hood page showed amber "The robot's daemon does not answer" and
   "The voice server is not running". There is no robot in the demo, which is not a fault: those two tiles are grey
-  there and say "Not in this demo".
+  there and say "not in this demo".
 - `consent.py` changed after the final Serverless Jobs only in that punctuation; their `confirmation` hash is of the
   file before it (noted in the scorecard index).
 

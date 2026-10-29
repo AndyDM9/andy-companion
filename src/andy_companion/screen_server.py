@@ -301,7 +301,7 @@ def _health() -> List[Dict[str, str]]:
     tiles = health.tiles(float(_live["at"]), _weather["card"], _tavily)
     if INDEX is None:
         return tiles
-    return [health.tile(t["name"], "off", NOT_IN_DEMO[t["name"]]) if t.get("name") in NOT_IN_DEMO else t for t in tiles]
+    return [health.tile(t["name"], "demo", NOT_IN_DEMO[t["name"]]) if t.get("name") in NOT_IN_DEMO else t for t in tiles]
 
 
 def _language() -> str:

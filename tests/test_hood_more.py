@@ -242,5 +242,7 @@ def test_the_public_demo_does_not_show_a_missing_robot_as_a_fault(monkeypatch):
     assert screen_server._health() == tiles                                       # Andy's own server: as they are
     monkeypatch.setattr(screen_server, "INDEX", b"<html>demo</html>")
     shown = screen_server._health()
-    assert [(t["name"], t["status"]) for t in shown] == [("Robot", "off"), ("Voice", "off"), ("Tavily", "ok")]
+    assert [(t["name"], t["status"]) for t in shown] == [("Robot", "demo"), ("Voice", "demo"), ("Tavily", "ok")]
+    page = (Path(screen_server.__file__).parent / "pages" / "hood.html").read_text()
+    assert 'demo: "not in this demo"' in page and 'demo: "no en esta demo"' in page and 'data-status="demo"' in page
     assert all("Not in this demo" in t["detail"] for t in shown[:2])

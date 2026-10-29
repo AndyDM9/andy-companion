@@ -1,6 +1,7 @@
 """The hood page's health tiles: one glance at everything Andy depends on.
 
-Each tile is {"name", "status": "ok" | "off" | "warn" | "unknown", "detail"}: words as well as a colour.
+Each tile is {"name", "status": "ok" | "off" | "warn" | "unknown", "detail"}: words as well as a colour (the public
+demo of the screens shows the robot and the voice server as "demo": not part of it).
 Local checks (the robot's daemon, the voice server, Andy's app, quiet or asleep) refresh every 30
 seconds; the Nebius endpoints every five minutes, because they cost money while running and someone
 should see that at a glance. Everything runs in the background; a page never waits for a check.
