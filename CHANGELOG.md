@@ -23,6 +23,8 @@ name step), and the Reachy app page.
   two lessons (a one-line note on the turn beat three paragraphs of prompt; a model told why will say the why).
 - **The architecture diagram:** the offline eyes read "when the cloud's don't answer", not "vision fallback only";
   its text description names the voice server's checks in code.
+- **The long take's interruption:** talk over a reply with a new question, not "Andy, stop": with research running,
+  a request to stop can also stop the research (`look_into`), and its answer would never arrive on camera.
 - **The video's results card, word for word:** shot 6 in `docs/video.md` now gives the three figures as the README
   states them, each with its scope, so filming tomorrow needs no looking up.
 - `consent.py` changed after the final Serverless Jobs only in that punctuation; their `confirmation` hash is of the
