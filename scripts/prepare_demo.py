@@ -46,7 +46,7 @@ pay a <b>processing fee of $500 within 24 hours</b>, using gift cards from any s
 <p>Account 0000-1234</p>
 <h1>Your bill for September</h1>
 <p>Amount due: <span class="big">$86.40</span></p>
-<p>Due date: <b>October 28, 2026</b></p>
+<p>Due date: <b>November 20, 2026</b></p>
 <p>Pay online, by phone or by mail, as usual. Thank you for being a customer.</p>
 <p class="small">Made up for a demonstration: this company and account do not exist.</p>""",
 }
