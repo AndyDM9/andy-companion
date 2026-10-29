@@ -24,6 +24,26 @@ physical accuracy. The fixed physical trial plan, a real uninterrupted hardware 
 potential-user feedback remain stronger missing evidence than another broad feature catalogue.
 No product comparison can establish or guarantee an award.
 
+## The demo video: what wins (researched 2026-10-28)
+
+The founder asked what the best hackathon videos do, so it could be followed when filming. Sources: this hackathon's
+rules and judges, Devpost's guidance and its participants' tips, other judging tables, and how robot makers make demos
+people believe. The plan that follows from it is [video.md](video.md); a step-by-step guide was made for filming day.
+
+| Source | What it says | What we do |
+|---|---|---|
+| [The rules](https://nebiusglobalaihackathon.devpost.com/rules) (read live) | Under 3 minutes, and "judges are not required to watch beyond three minutes"; footage of the project working on its device; public on YouTube; no third-party trademarks or copyrighted music without permission; Physical AI: "at least one minute of footage showing the physical hardware/robot actually operating" | 2:56; the real robot throughout; public; no music, no logos; 72 s of the robot in one take, about two minutes in all |
+| The Physical AI track's description, as [reproduced in a listing](https://www.startupnetworks.co.uk/links/link/30717-nebius-x-nvidia-global-ai-hackathon) | "at least a 1-minute clip"; audio covering how Nebius Token Factory and NVIDIA Nemotron were used | One uncut 72 s take meets both readings; the models and Token Factory named aloud (shots 2 and 6) |
+| [This hackathon's judges, live](https://www.youtube.com/watch?v=LjCh-ZIyjx4) (October 20; Nebius, Tavily and NVIDIA, including NVIDIA's physical AI and robotics advocate) | "That wow in like 30 seconds or less"; know who your user is; "if it doesn't contribute to that 30 seconds to wow", question whether it belongs; publishing failure cases reads as rigour; honesty about what isn't done yet | The letter first, no title slide; "older adults who live at home, and the family who help" in the first caption; one story; limits in the closing caption |
+| [Devpost: video-making best practices](https://help.devpost.com/article/84-video-making-best-practices) | Open like a movie trailer: what it does in the first seconds; show the real thing rather than marketing; script and rehearse; several takes; upload early, as processing can take hours | Live robot opening; narration timed with a stopwatch; two or three takes a shot; upload the evening before |
+| [Devpost: six tips from participants](https://info.devpost.com/blog/6-tips-for-making-a-hackathon-demo-video) | Elevator pitch first; a script; don't speed up the audio; show the project in use, not slides; judges must clearly see and hear; YouTube gives the link before processing ends; mark it "not made for kids" | No speed-ups; close-up sound for Andy and the person; "not made for kids"; only a 14 s technical section, with a moving simulation clip |
+| [A Devpost judging Q&A](https://www.youtube.com/watch?v=DCXjvKmUIGY) (another hackathon) | Judges watch the first minutes, then go to the repository; wow them in the first 30 seconds so they read the rest | The README's first screen carries the same three moments as the video |
+| [JetBrains: notes from the judging table](https://blog.jetbrains.com/ai/2026/06/how-to-win-a-hackathon-notes-from-the-judging-table) | Something working within about 90 seconds; put the judge in the user's shoes; be direct about what works and what doesn't; rehearse aloud and time it | Working in the first second; the founder as the person using Andy; limits stated |
+| Robot makers' demos: [1X](https://www.youtube.com/watch?v=iHXuU3nTXfQ), [EngineAI](https://www.facebook.com/ainewshuborg/posts/the-engineai-t800no-cgi-no-ai-video-no-cutsjust-raw-uncut-4k-60fps-footage-of-th/828959883534327), [MindOn](https://www.humanoidsdaily.com/news/mindon-mind-1-human-speed-robot-demo); [Epoch AI](https://epoch.ai/publications/where-autonomy-works-evaluating-robot-capabilities-in-2026) on why | Label footage "autonomous, 1× speed, no cuts, no teleoperation"; Epoch AI: most robot demos are "short, heavily edited clips", and "variably sped-up video makes this hard to assess" | Every robot shot labelled "Real robot · autonomous · 1× speed · no cuts", which is true of each; the TV's clock in the long take shows no cut |
+
+**What we left out:** music (the rules restrict it, and none is needed), a title slide or a team introduction before the
+robot, a slide deck, and any sped-up or trimmed robot moment.
+
 ## Conversation (researched 2026-10-13)
 
 **What we found:**

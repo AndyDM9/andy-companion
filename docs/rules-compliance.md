@@ -8,6 +8,8 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 scenario review: shot 5 gets 22 s (a photo's arrival and description cannot fit 14 s uncut), shot 2's line is shorter (6 s), the total stays 2:56; on-screen text is burned in; the research is saved in research.md.
+
 October 28 video research: the shot plan adds a caption with the README's FTC figure and its source, labels robot shots "Real robot · autonomous · 1× speed · no cuts" (true of every robot shot: none is cut, sped up or teleoperated), and keeps one uncut 72 s take, which meets both the rules' "at least one minute of footage" and the track's "a 1-minute clip".
 
 October 28 Devpost source: "Challenges" gains the evening's measured catches in code (93.2 to 94.8 of 97 on average over nine Serverless Job runs each, linked to decisions 0043 to 0045) and "What we learned" two lessons from them; the architecture diagram's offline-eyes line reads "when the cloud's don't answer". No new service or claim.
@@ -387,7 +389,7 @@ comparisons, not logos or copied assets. The final video and real physical trial
 | README with setup instructions and how to run it | ✅ | README "Setup" |
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |
 | Video under three minutes | 🔶 | [video.md](video.md): 2:56 as planned (retimed 2026-10-26); time a rough cut |
-| Video shows the project working on its device; Physical AI: **"a 1-minute clip"** of the robot operating | 🔶 | One clip: shot 3, 72 s, one take, never cut; with shots 1, 4, 5 and 6 the robot is live about 2:05 ([video.md](video.md)) |
+| Video shows the project working on its device; Physical AI: **"a 1-minute clip"** of the robot operating | 🔶 | One clip: shot 3, 72 s, one take, never cut; with shots 1, 4 and 5 the robot operates about 2:18 of 2:56 ([video.md](video.md)) |
 | Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-27. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
 | The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
 | Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |

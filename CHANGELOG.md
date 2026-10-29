@@ -23,6 +23,10 @@ name step), and the Reachy app page.
   two lessons (a one-line note on the turn beat three paragraphs of prompt; a model told why will say the why).
 - **The architecture diagram:** the offline eyes read "when the cloud's don't answer", not "vision fallback only";
   its text description names the voice server's checks in code.
+- **The scenario reviewed against the research:** shot 5 gets 22 s (a photo's arrival and description cannot fit the
+  old 14 s without a cut inside a robot shot), shot 2's line is 6 s ("Andy is a home robot, built with NVIDIA Nemotron
+  on Nebius Token Factory, and Tavily"), the total stays 2:56; on-screen text is burned in (YouTube's captions are off
+  by default); YouTube chapters; a tripod at 1080p. The research is saved, with every source, in `docs/research.md`.
 - **Video research:** the live rules, the judges' October 20 session, Devpost's guidance and robot makers' practice.
   The plan gains a "1× speed · autonomous · no cuts" label on robot shots, the FTC problem line as a caption in shot 1,
   close-up sound for Andy's voice, and uploading the evening before; one uncut take meets both the rules' "one minute of

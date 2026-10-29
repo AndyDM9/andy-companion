@@ -116,7 +116,8 @@ described (3y, shot 5).
       agency, bank or company name).
 - [ ] No music; no third-party logos in shot (cover any on mugs, books, screens); browser tabs and links
       not visible.
-- [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the TV if possible.
+- [ ] Quiet room, warm light, the camera on a tripod at Andy's eye level, landscape, 1080p or better; a second
+      camera on the TV if possible.
 - [ ] Sound: a second phone recording beside Andy's speaker for every take, a phone or clip mic near the person; one
       clap at the start of each take.
 - [ ] After filming: `cloud/guard-endpoint.sh stop`. If the
@@ -131,12 +132,16 @@ for the glasses search (17 to 23 s on October 28), and current measurement scope
 | # | Time | What we see | What is said |
 |---|---|---|---|
 | 1 | 0:00–0:24 | **Hook, live:** hold up the invented prize letter. Andy reads it; the TV shows **Be careful** and Andy glances at it. A web lookup follows only if it fits naturally. | Andy answers live. First caption: "Andy reads the letter in your hand. A home robot for older adults who live at home, and the family who help." While Andy reads: "Adults 60 and over reported losing about $3 billion to fraud in 2025 (FTC)." No title slide before the robot. |
-| 2 | 0:24–0:36 | Founder with Andy and the TV in shot. | "Andy turns toward you, reads a letter you hold up, and looks around for your glasses. Built with NVIDIA Nemotron on Nebius Token Factory, and Tavily." |
-| 3 | 0:36–1:48 | **One 72-second take, uncut.** Ask for today's plan. Walk a little while asking Andy to research whether the farmers market is on Saturday. The TV shows progress; Andy follows. Ask "Do I need an umbrella tomorrow?" and talk over the forecast with a new question ("Andy, what time is it?"): not "stop", which while the research runs can also stop the research (`look_into` stops on a request to stop). Let the research answer arrive if it finishes during the take. | Only the person's requests are planned. Keep the pauses. The live hood page can be a small inset. A reminder, wave or turn to a second voice is optional, only if already verified; none is required for this take. If research finishes later, show its actual result elsewhere without implying it happened faster. |
-| 4 | 1:48–2:18 | **Glasses, uncut:** someone else places them within the verified search area. Andy sweeps, turns, checks and points; the TV shows its views. | Caption: "Look → choose a view → turn → check → point. NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory." Use the body turn only after live-test 3t3 passes. |
-| 5 | 2:18–2:32 | A family member sends an agreed photo; it appears on the TV and Andy describes it. | Live. The memory offer is optional: include it only if the revised confirmation flow passes on the robot. A photo arriving and being described is enough for this shot. |
-| 6 | 2:32–2:48 | Architecture, a short clearly labelled simulation clip, and the measured results. | "Parakeet hears at home. Nemotron talks and sees on Nebius Token Factory. Serverless Jobs evaluate the search and conversation. Those tests are separate from these real robot scenes." Use current scores with their dates and scope, not the older profile's score as proof of the new code. |
+| 2 | 0:24–0:32 | Founder with Andy and the TV in shot. | "Andy is a home robot, built with NVIDIA Nemotron on Nebius Token Factory, and Tavily." (15 words, about 6 s; what it does is shown, not said) |
+| 3 | 0:32–1:44 | **One 72-second take, uncut.** Ask for today's plan. Walk a little while asking Andy to research whether the farmers market is on Saturday. The TV shows progress; Andy follows. Ask "Do I need an umbrella tomorrow?" and talk over the forecast with a new question ("Andy, what time is it?"): not "stop", which while the research runs can also stop the research (`look_into` stops on a request to stop). Let the research answer arrive if it finishes during the take. | Only the person's requests are planned. Keep the pauses. The live hood page can be a small inset. A reminder, wave or turn to a second voice is optional, only if already verified; none is required for this take. If research finishes later, show its actual result elsewhere without implying it happened faster. |
+| 4 | 1:44–2:12 | **Glasses, uncut:** someone else places them within the verified search area. Andy sweeps, turns, checks and points; the TV shows its views. | Caption: "Look → choose a view → turn → check → point. NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory." Use the body turn only after live-test 3t3 passes. |
+| 5 | 2:12–2:34 | A family member sends an agreed photo; it appears on the TV and Andy describes it. | Live, uncut: start as the photo reaches the TV, then "Andy, what's in the photo?" and the description, about 22 s (14 s, the earlier slot, could not hold it without a cut). The memory offer goes in a separate extra clip, not this cut, unless shot 4 runs short. |
+| 6 | 2:34–2:48 | Architecture, a short clearly labelled simulation clip, and the measured results. | "Parakeet hears at home. Nemotron talks and sees on Nebius Token Factory. Serverless Jobs evaluate the search and conversation. Those tests are separate from these real robot scenes." Use current scores with their dates and scope, not the older profile's score as proof of the new code. |
 | 7 | 2:48–2:56 | Andy and the TV, then repository address. | "No recordings or transcripts. Kept and shared with your permission. Open source." Caption: "Limits and every scorecard in the repository. No study with older adults yet." |
+
+**On-screen text is burned into the picture,** not left to YouTube's captions, which viewers must switch on: the
+problem line, the "Real robot · autonomous · 1× speed · no cuts" labels, the shot captions and shot 6's results. The SRT
+file is the full transcript besides.
 
 **Shot 6's results, word for word** (as the README states them, 2026-10-28; each with its scope):
 - "1.06 s from your words being understood to Andy's first sound: median of 54 real turns on the robot."
@@ -170,6 +175,8 @@ a social clip, with English subtitles.
       every line against the video before uploading.
 - [ ] GIFs for the README and the Devpost gallery from the robot clips:
       `scripts/make_gif.sh clip.mp4 docs/images/<name>.gif [start] [seconds] [width]`.
+- [ ] YouTube chapters in the description, so judges can jump: "0:00 Reads your letter · 0:32 One minute, uncut ·
+      1:44 Finds your glasses · 2:12 A photo from family · 2:34 How it's built and measured".
 - [ ] Upload by the evening of October 29 (processing can take hours; the deadline is October 30, 10:00 PT).
 - [ ] YouTube: **Public**, **"No, it's not made for kids"** (that setting makes a video hard for judges
       to reach). The title names the project and the event, like the winners' (for example "Andy: a home robot that reads your
