@@ -3,6 +3,17 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-29
+
+### "Andy, go to sleep" understood again
+
+On the robot, the founder asked Andy to go to sleep four times and was told each time it couldn't make out the
+words; once the model, told only to ask again, started a search instead. The voice log showed why without any words:
+each turn was heard as English but taken as unclear. Parakeet had written one word, almost surely "Andy", in Cyrillic,
+and the October 28 filter took any turn with a Cyrillic letter as a mishearing. Now only a turn mostly in another
+alphabet is unclear; "Andy" in Cyrillic reads as "Andy", and any other stray word is left out (`voice/serve.py`,
+`our_language`, with tests). Logged as a count only.
+
 ## 2026-10-28
 
 ### Every public page reviewed as a judge sees it

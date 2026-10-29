@@ -226,13 +226,31 @@ UNCLEAR = {"en": "[Andy couldn't make out these words: ask the person to say it 
 OTHER_ALPHABET = re.compile(r"[\u0370-\u03ff\u0400-\u052f]")     # Greek and Cyrillic: Parakeet's non-Latin ones
 
 
+# "Andy" as Parakeet sometimes writes it in Cyrillic, inside an otherwise English or Spanish turn.
+ANDY_IN_CYRILLIC = re.compile(r"^(\W*)[ЭэЕеЄєАа]нд[иіыi](\W*)$")
+
+
 def our_language(text: str, language, last) -> tuple:
-    """(text, language) kept to Andy's languages: another alphabet is a mishearing, said as unclear."""
+    """(text, language) kept to Andy's languages. A turn mostly in another alphabet is a mishearing, said as unclear.
+    A turn mostly in Latin letters keeps its words: on 2026-10-29 "Andy, go to sleep" came out with one word in
+    Cyrillic (heard as English), the whole turn was taken as unclear four times running, and the model, told only to
+    ask again, started a search instead. Now "Andy" in Cyrillic reads as "Andy", and any other stray word is left out."""
     keep = language if language in OUR_LANGUAGES else last if last in OUR_LANGUAGES else "en"
-    if text and OTHER_ALPHABET.search(text):
+    if not text or not OTHER_ALPHABET.search(text):
+        return text, keep
+    named = []                                    # "Andy" first, so the name never counts against the turn
+    for word in text.split():
+        match = ANDY_IN_CYRILLIC.match(word)
+        named.append(match.group(1) + "Andy" + match.group(2) if match else word)
+    letters = [c for c in " ".join(named) if c.isalpha()]
+    other = sum(1 for c in letters if OTHER_ALPHABET.match(c))
+    if other * 2 > len(letters):
         logger.info("voice: a turn heard as %s was taken as unclear", language if isinstance(language, str) else "?")
         return UNCLEAR[keep], keep
-    return text, keep
+    words = [w for w in named if not OTHER_ALPHABET.search(w)]
+    logger.info("voice: a turn heard as %s kept its Latin words (%d left out)",
+                language if isinstance(language, str) else "?", len(named) - len(words))
+    return " ".join(words), keep
 
 
 def only_our_languages(handler_class) -> None:

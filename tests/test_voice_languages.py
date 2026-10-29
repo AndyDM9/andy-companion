@@ -29,6 +29,12 @@ def serve():
     ("Andy, ¿qué hora es?", "es", "en", ("Andy, ¿qué hora es?", "es")),
     ("Andy where are my glasses please", "pl", "en", ("Andy where are my glasses please", "en")),   # accented English
     ("", "en", "en", ("", "en")),
+    # 2026-10-29: one word in Cyrillic inside an English turn sank the whole turn four times running
+    ("Энди, go to sleep.", "en", "en", ("Andy, go to sleep.", "en")),
+    ("Енді go to sleep", "en", "en", ("Andy go to sleep", "en")),
+    ("Andy, what time is it пожалуйста?", "en", "en", ("Andy, what time is it", "en")),
+    ("Энди, buenas noches.", "es", "en", ("Andy, buenas noches.", "es")),
+    ("Энди, ложись спать", "ru", "en", (EN, "en")),                      # mostly Cyrillic: still unclear
 ])
 def test_only_english_and_spanish_reach_the_model(serve, text, language, last, want):
     assert serve.our_language(text, language, last) == want
@@ -58,3 +64,9 @@ def test_the_installed_speech_package_still_has_what_we_wrap():
     pytest.importorskip("speech_to_speech", reason="the voice environment is not installed here")
     from speech_to_speech.STT.parakeet_tdt_handler import ParakeetTDTSTTHandler
     assert callable(ParakeetTDTSTTHandler._process_nano_parakeet)
+
+
+def test_a_kept_turn_logs_only_a_count(serve, caplog):
+    with caplog.at_level(logging.INFO, logger="andy.voice"):
+        serve.our_language("Энди, go to sleep, пожалуйста", "en", "en")
+    assert [r.getMessage() for r in caplog.records] == ["voice: a turn heard as en kept its Latin words (1 left out)"]

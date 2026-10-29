@@ -20,6 +20,14 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
 
+## October 29: "go to sleep" understood again
+
+- **Seen on the robot:** four turns in a row heard as English but taken as unclear (69 characters each, the length of
+  Andy's "couldn't make out these words" note); no `go_to_sleep`, and once a `find_object` started. One word in
+  Cyrillic (Parakeet's spelling of "Andy", by every sign) sank each whole turn under the October 28 filter.
+- **Fixed:** only a turn mostly in another alphabet is unclear; "Andy" in Cyrillic reads as "Andy"; other stray words
+  are left out, and only their count is logged. Deployed 11:29.
+
 ## October 28, design review of every public page
 
 - **Seen as a judge would,** in headless Chrome (TV, desktop, phone), no script error or sideways scroll anywhere:
