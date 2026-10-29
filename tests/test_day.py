@@ -113,9 +113,75 @@ def test_no_morning_plan_before_six_or_with_nobody_around():
     ("Should I say goodnight?", None),
     ("I don't want you to be quiet", None),
     ("tell my grandson goodnight from me", None),
+    ("Okay, go to sleep now.", ("go_to_sleep", {})),
+    ("Okay Andy, time to go to sleep.", ("go_to_sleep", {})),
+    ("Andy, time for bed", ("go_to_sleep", {})),
+    ("Is it time for bed?", None),
+    ("my grandson has to go to bed", None),
 ])
 def test_exact_spoken_controls(text, command):
     assert voice_controls.parse(text) == command
+
+
+def _goodnight_handler(monkeypatch, mode="awake"):
+    """A conversation handler with the spoken controls on, where go_to_sleep is recorded, not run."""
+    from andy_companion import state
+
+    class Handler:
+        deps = None
+
+        def _emit_transcript(self, role, text, final=True):
+            pass
+
+    voice_controls.install(Handler)
+    ran = []
+
+    async def execute(handler, name, arguments):
+        ran.append(name)
+
+    monkeypatch.setattr(voice_controls, "execute", execute)
+    monkeypatch.setattr(voice_controls, "AFTER_GOODNIGHT_S", 0.0)
+    monkeypatch.setattr(state, "current", lambda: {"mode": mode, "until": None})
+    return Handler(), ran
+
+
+def _talk(handler, *turns):
+    async def run():
+        for role, text in turns:
+            handler._emit_transcript(role, text, True)
+            task = getattr(handler, "_andy_control_task", None)
+            if task is not None:
+                await task
+
+    asyncio.run(run())
+
+
+def test_a_goodnight_without_the_sleep_tool_still_puts_andy_to_sleep(monkeypatch):
+    """On the robot, 2026-10-29: asked to sleep, the model said "Good night! See you tomorrow." and called nothing."""
+    handler, ran = _goodnight_handler(monkeypatch)
+    _talk(handler, ("user", "Andy, you can sleep now, my friend"), ("assistant", "Good night! See you tomorrow."))
+    assert ran == ["go_to_sleep"]
+
+
+def test_no_sleep_from_a_goodnight_the_person_did_not_ask_for(monkeypatch):
+    handler, ran = _goodnight_handler(monkeypatch)
+    _talk(handler, ("user", "Tell me about the weather tomorrow"), ("assistant", "Sunny. Good night!"))
+    _talk(handler, ("user", "I should sleep soon"), ("assistant", "Good night! Shall I set a reminder for the morning?"))
+    _talk(handler, ("user", "Andy, you can sleep now"), ("assistant", "Of course, whenever you are ready."))
+    assert ran == []
+
+
+def test_no_second_sleep_when_the_model_called_the_tool(monkeypatch):
+    handler, ran = _goodnight_handler(monkeypatch, mode="asleep")
+    _talk(handler, ("user", "Andy, you can sleep now"), ("assistant", "Good night! See you tomorrow."))
+    assert ran == []
+
+
+def test_andys_goodnight_words():
+    assert voice_controls.says_goodnight("¡Buenas noches! Que descanses.")
+    assert voice_controls.says_goodnight("Sleep well, see you tomorrow.")
+    assert not voice_controls.says_goodnight("¿Quieres que diga buenas noches?")
+    assert not voice_controls.says_goodnight("Good night is a lovely song. " * 6)
 
 
 def test_the_plan_in_spanish_uses_fixed_spanish_words():

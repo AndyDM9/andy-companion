@@ -5,6 +5,15 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### Andy goes to sleep after its own goodnight
+
+On the robot, asked to sleep in words that were not one of the exact spoken controls, the model said "Good night!
+See you tomorrow." and called no tool, so Andy stayed awake. Now, when the person's turn asked for sleep and Andy's
+reply is a short goodnight, Andy goes to sleep two seconds later unless the model's own call already did; and "time
+to go to sleep", "time for bed" and an "okay" before a control now count as controls (`voice_controls.py`, with tests;
+[decision 0047](docs/decisions/0047-sleep-after-andys-own-goodnight.md)). Only a yes or no is kept from the person's
+turn, never the words.
+
 ### A video no longer wakes Andy in an English home
 
 While Andy slept, a video playing nearby woke it, though no one said a wake phrase. The Spanish wake listener, whose
