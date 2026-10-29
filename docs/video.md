@@ -85,7 +85,8 @@ described (3y, shot 5).
 - [ ] `uv run python scripts/prepare_demo.py check` shows no ✗ (the night clock off while filming, captions on,
       the screen's place set, the town set, English).
 - [ ] `uv run python scripts/prepare_demo.py letters`, then print the made-up prize letter and electric bill
-      (every name, number and amount invented; no real company on camera).
+      (every name, number and amount invented; no real company on camera) at 100% scale on plain paper; PDFs were made
+      on 2026-10-28 in `~/andy-demo-letters/`. Read the bill first as a warm-up: Andy explains it calmly, no warning.
 - [ ] Just before the long take: `uv run python scripts/prepare_demo.py set --reminder-in 4` (the "call Rosa"
       reminder, and yesterday's "Sofia's piano recital"); after filming: `… clean`.
 - [ ] **Wake Andy, then run `robot/.venv/bin/python scripts/doctor.py --live` and review every result.**
@@ -131,7 +132,7 @@ for the glasses search (17 to 23 s on October 28), and current measurement scope
 
 | # | Time | What we see | What is said |
 |---|---|---|---|
-| 1 | 0:00–0:24 | **Hook, live:** hold up the invented prize letter. Andy reads it; the TV shows **Be careful** and Andy glances at it. A web lookup follows only if it fits naturally. | Andy answers live. First caption: "Andy reads the letter in your hand. A home robot for older adults who live at home, and the family who help." While Andy reads: "Adults 60 and over reported losing about $3 billion to fraud in 2025 (FTC)." No title slide before the robot. |
+| 1 | 0:00–0:24 | **Hook, live:** hold up the invented prize letter and ask one question, "Andy, can you read this for me?". Andy reads it and explains it in a few sentences, not word for word (it never says a suspicious letter's numbers: code hides them); the TV shows **Be careful** and Andy glances at it. "Should I call them?" and the Tavily look-up go in a second take or an extra clip, not this 24 s. | Andy answers live. First caption: "Andy reads the letter in your hand. A home robot for older adults who live at home, and the family who help." While Andy reads: "Adults 60 and over reported losing about $3 billion to fraud in 2025 (FTC)." No title slide before the robot. |
 | 2 | 0:24–0:32 | Founder with Andy and the TV in shot. | "Andy is a home robot, built with NVIDIA Nemotron on Nebius Token Factory, and Tavily." (15 words, about 6 s; what it does is shown, not said) |
 | 3 | 0:32–1:44 | **One 72-second take, uncut.** Ask for today's plan. Walk a little while asking Andy to research whether the farmers market is on Saturday. The TV shows progress; Andy follows. Ask "Do I need an umbrella tomorrow?" and talk over the forecast with a new question ("Andy, what time is it?"): not "stop", which while the research runs can also stop the research (`look_into` stops on a request to stop). Let the research answer arrive if it finishes during the take. | Only the person's requests are planned. Keep the pauses. The live hood page can be a small inset. A reminder, wave or turn to a second voice is optional, only if already verified; none is required for this take. If research finishes later, show its actual result elsewhere without implying it happened faster. |
 | 4 | 1:44–2:12 | **Glasses, uncut:** someone else places them within the verified search area. Andy sweeps, turns, checks and points; the TV shows its views. | Caption: "Look → choose a view → turn → check → point. NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory." Use the body turn only after live-test 3t3 passes. |

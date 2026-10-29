@@ -23,6 +23,7 @@ name step), and the Reachy app page.
   two lessons (a one-line note on the turn beat three paragraphs of prompt; a model told why will say the why).
 - **The architecture diagram:** the offline eyes read "when the cloud's don't answer", not "vision fallback only";
   its text description names the voice server's checks in code.
+- **Shot 1 says what to ask and what to expect:** one question; Andy explains rather than reciting and never says a suspicious letter's numbers; "Should I call them?" and the Tavily look-up in a second take; the bill read first as a warm-up.
 - **The filming bill is due November 20, 2026,** not October 28, which would read as overdue on filming day (`scripts/prepare_demo.py letters`; print-ready PDFs made for the founder).
 - **The scenario reviewed against the research:** shot 5 gets 22 s (a photo's arrival and description cannot fit the
   old 14 s without a cut inside a robot shot), shot 2's line is 6 s ("Andy is a home robot, built with NVIDIA Nemotron
