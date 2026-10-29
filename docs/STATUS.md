@@ -27,6 +27,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
   Cyrillic (Parakeet's spelling of "Andy", by every sign) sank each whole turn under the October 28 filter.
 - **Fixed:** only a turn mostly in another alphabet is unclear; "Andy" in Cyrillic reads as "Andy"; other stray words
   are left out, and only their count is logged. Deployed 11:29.
+- **On the robot, after the fix:** the founder's "go to sleep" at 11:41 called `go_to_sleep`, which succeeded, and the
+  supervisor put Andy to sleep (that turn came through all in Latin letters; the new rule is for the next stray word).
 
 ## October 28, design review of every public page
 
