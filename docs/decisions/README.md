@@ -59,3 +59,4 @@ holds a fast model: written tool calls made, notes on a turn, words to say). Mos
 | [0043](0043-make-a-tool-call-written-as-text.md) | A tool call the model writes as text is made, when it fits a tool Andy has | 2026-10-28 | accepted |
 | [0044](0044-andys-own-note-on-a-turn.md) | Andy's own note on a turn, for a memory offer due and for the clock | 2026-10-28 | accepted |
 | [0045](0045-tool-results-give-words-not-reasons.md) | Tool results give the words to say, not the reasons | 2026-10-28 | accepted |
+| [0046](0046-spanish-wake-listener-only-for-spanish.md) | The Spanish wake listener runs only when Andy speaks Spanish | 2026-10-29 | accepted |

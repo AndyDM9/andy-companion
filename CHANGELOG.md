@@ -5,6 +5,14 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### A video no longer wakes Andy in an English home
+
+While Andy slept, a video playing nearby woke it, though no one said a wake phrase. The Spanish wake listener, whose
+model had been fetched once, ran in this English home too, and on English speech it now and then settles on a
+Spanish wake phrase: twice in 22 minutes of read English, once at full confidence, against never for the English
+listener (measured with LibriSpeech samples). It now runs only when Andy's language is Spanish
+(`supervisor.listens_in_spanish`, with a test; [decision 0046](docs/decisions/0046-spanish-wake-listener-only-for-spanish.md)).
+
 ### "Andy, go to sleep" understood again
 
 On the robot, the founder asked Andy to go to sleep four times and was told each time it couldn't make out the

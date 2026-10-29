@@ -40,7 +40,7 @@ The text diagram below shows the voice path in detail.
                             ▼ HTTPS, zero data retention
               Nebius Token Factory: NVIDIA Nemotron 3.5 Lightning
 
- Also on this computer, offline: Vosk (the wake phrase, English and Spanish), Tesseract (reading a letter; only
+ Also on this computer, offline: Vosk (the wake phrase in English, and in Spanish when Andy speaks Spanish), Tesseract (reading a letter; only
  its text leaves), YuNet on ONNX Runtime in Pollen's software (finding a face to follow, never recognising it), and
  NVIDIA Cosmos Reason 2 (local vision; conversation still requires Token Factory). The full list, with what each is for and what we
  measured: the README's "Every model, and where it runs".

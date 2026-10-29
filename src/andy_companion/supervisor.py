@@ -189,6 +189,15 @@ def run_app(should_stop: Optional[Callable[[], bool]] = None, poll_s: float = PO
         raise
 
 
+def listens_in_spanish() -> bool:
+    """The Spanish wake phrases are listened for only when Andy speaks Spanish. On English speech the small Spanish
+    model, unlike the English one, now and then settles on a wake phrase: twice in 22 minutes of read English, at full
+    confidence once (measured 2026-10-29), after a video playing near Andy woke it that day."""
+    from andy_companion import settings
+
+    return settings.get().get("language") == "es"
+
+
 def wait_asleep() -> str:
     """Listen for a wake phrase while asleep or quiet; return why Andy wakes."""
     try:
@@ -201,9 +210,7 @@ def wait_asleep() -> str:
         model = None
     model_es = None
     try:
-        # Spanish too, for a Spanish speaker (fetched then, about 40 MB) or once its model is here.
-        from andy_companion import settings
-        if settings.get().get("language") == "es" or (wake.MODEL_DIR.parent / wake.MODEL_ES).is_dir():
+        if listens_in_spanish():          # its model is fetched then, about 40 MB
             model_es = Model(str(wake.ensure_model("es")))
     except Exception as e:
         logger.info("Spanish wake phrase unavailable (%s)", type(e).__name__)

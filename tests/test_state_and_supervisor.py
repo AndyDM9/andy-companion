@@ -224,6 +224,16 @@ def test_andy_wakes_in_spanish_with_the_same_rules():
     assert got == "phrase"
 
 
+def test_the_spanish_listener_runs_only_when_andy_speaks_spanish(monkeypatch):
+    """Its model, once fetched, used to listen in an English home too, and English speech from a video woke Andy."""
+    from andy_companion import settings
+
+    monkeypatch.setattr(settings, "get", lambda: {"language": "en"})
+    assert not supervisor.listens_in_spanish()
+    monkeypatch.setattr(settings, "get", lambda: {"language": "es"})
+    assert supervisor.listens_in_spanish()
+
+
 def test_the_spanish_phrases_reach_vosk_with_their_accents():
     # json.dumps escapes "días" as "d\\u00edas", which Vosk took as an unknown word (found 2026-10-14).
     from pathlib import Path

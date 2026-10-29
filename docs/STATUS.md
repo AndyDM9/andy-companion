@@ -20,6 +20,17 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
 
+## October 29: woken by a video
+
+- **Seen on the robot:** 17 minutes after "go to sleep", with a video playing nearby, the supervisor logged "wake
+  phrase heard" and woke Andy; no one had said one.
+- **Measured, 22 minutes of read English (LibriSpeech samples, whole and cut into short phrases):** the English
+  listener chose no wake phrase; the Spanish one, running here because its model had been fetched once, chose
+  "Andy, buenos días" and "Buenos días, Andy", the second at confidence 1.0 on every word, so a confidence floor
+  would not help.
+- **Fixed:** the Spanish listener runs only when Andy's language is Spanish
+  ([decision 0046](decisions/0046-spanish-wake-listener-only-for-spanish.md)).
+
 ## October 29: "go to sleep" understood again
 
 - **Seen on the robot:** four turns in a row heard as English but taken as unclear (69 characters each, the length of
@@ -1081,6 +1092,9 @@ The founder was out; the robot was on USB with Andy running. Checked live, numbe
   failure is treated as a successful link check.
 
 - The robot is named after the person most likely to be spoken to near it in this household (the founder). While quiet, only "Andy, wake up" ends it (fixed 2026-10-13); while awake, Andy still answers anyone in the room, so a call or meeting near the robot should be held with Andy quiet or asleep.
+
+- **A Spanish home with English speech nearby** (a television) can still be woken by the Spanish wake listener,
+  which settled on a Spanish phrase twice in 22 minutes of read English (measured 2026-10-29; decision 0046).
 
 - The recorded 911 and crisis sentences (2026-10-14) have not yet been played on the robot (live test).
 - **The robot itself (2026-10-20):** Pollen's daemon reported "Motor communication error! Check connections and
