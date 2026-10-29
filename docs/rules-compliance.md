@@ -8,6 +8,8 @@ video, the Devpost form, the repository) is checked against this file first.
 
 **Status key:** ✅ met · 🔶 in progress · ⬜ to do · ➖ does not apply.
 
+October 28 Devpost source: "Challenges" gains the evening's measured catches in code (93.2 to 94.8 of 97 on average over nine Serverless Job runs each, linked to decisions 0043 to 0045) and "What we learned" two lessons from them; the architecture diagram's offline-eyes line reads "when the cloud's don't answer". No new service or claim.
+
 October 28 design review: the video plan's shot 6 now carries its three result lines word for word, as the README states them (each with its scope: 54 robot turns; written scam messages; text-only suite runs with synthetic tools), so no unmeasured or older figure reaches the video. The public demo's status tiles say "not in this demo" instead of warnings; the guided example's share question has its punctuation fixed. No new claim.
 
 October 28 night audit: the judges' guided Space's invented bill is now due December 18, 2026, after judging ends (it was due October 28 and would have read as overdue); still invented, still labelled so. The judges' guide and README gain clearer test expectations and demo commands. No new service, model, data flow or claim.

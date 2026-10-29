@@ -18,6 +18,11 @@ name step), and the Reachy app page.
 - **The public demo looked broken:** its under-the-hood page showed amber "The robot's daemon does not answer" and
   "The voice server is not running". There is no robot in the demo, which is not a fault: those two tiles are grey
   there and say "not in this demo".
+- **The Devpost text** tells the evening's story where judges read first: "Challenges" gains "a fast model drifts in
+  small ways" (each catch in code, 93.2 to 94.8 of 97 over nine runs, decisions 0043 to 0045), and "What we learned"
+  two lessons (a one-line note on the turn beat three paragraphs of prompt; a model told why will say the why).
+- **The architecture diagram:** the offline eyes read "when the cloud's don't answer", not "vision fallback only";
+  its text description names the voice server's checks in code.
 - **The video's results card, word for word:** shot 6 in `docs/video.md` now gives the three figures as the README
   states them, each with its scope, so filming tomorrow needs no looking up.
 - `consent.py` changed after the final Serverless Jobs only in that punctuation; their `confirmation` hash is of the

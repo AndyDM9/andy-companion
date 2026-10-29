@@ -146,6 +146,11 @@ that source without false alarms. About [$17 per 1,000 checks](https://github.co
   the health check reads the log itself and fails on any line that could hold what was heard.
 - **A crisis line we nearly missed:** at first "everyone would be better off without me" got no crisis line in 2 of
   3 runs, and none in Spanish. A rule and a check in code fixed it, tested not to fire on grief.
+- **A fast model drifts in small ways.** Nemotron 3.5 Lightning answers in about a second, which a conversation needs,
+  but it sometimes wrote a tool call out as text, skipped a memory offer the profile asked for three times, and said a
+  tool's own reasoning aloud. Each is now caught in code: the written call is made, a one-line note on the turn asks
+  for the offer, and tools give words to say. Over nine runs as Nebius Serverless Jobs the suite went from 93.2 to
+  94.8 of 97 on average ([decisions 0043 to 0045](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/README.md)).
 
 ### Accomplishments that we're proud of
 
@@ -162,7 +167,9 @@ that source without false alarms. About [$17 per 1,000 checks](https://github.co
 What older adults want from a home robot, across 21 studies ([a 2026 systematic review](https://pubmed.ncbi.nlm.nih.gov/41538893/)):
 voice, control over their privacy and data, companionship and help with daily tasks. Andy is built around that, and
 leaves out fall detection and health monitoring on purpose. Measure the product, not just the model: Andy's real
-profile and tools, three runs each, beside a baseline. And put hard rules in code and judgment in the model.
+profile and tools, three runs each, beside a baseline. And put hard rules in code and judgment in the model. Two
+smaller lessons: a one-line note on the turn fixed what three paragraphs of the prompt could not, and a model told why
+will say the why, so tell it what to say.
 
 ### Limitations: what doesn't work yet
 

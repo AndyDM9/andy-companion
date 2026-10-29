@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="Atkinson Hyperlegible, Verdana, sans-serif" role="img" aria-labelledby="t d">
   <title id="t">How Andy works</title>
-  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer: the voice server, where NVIDIA Parakeet hears, Silero VAD and Smart Turn tell when the person has finished, and Qwen3-TTS speaks; Andy's app with its 38 tools, body behaviours, the urgent-words net, privacy, the supervisor and the screen server; and, on this computer and offline, NVIDIA Cosmos Reason 2 for local vision (conversation still needs Token Factory), Vosk for the wake phrase, Tesseract to read letters and YuNet to find a face to follow. On Nebius: Token Factory runs NVIDIA Nemotron 3.5 Lightning for talk and tools, Nemotron 3.5 Super VL for the eyes and Nemotron 3 Ultra for hard questions; a Serverless Endpoint runs Nemotron 3.5 Content Safety as a second look (and Nano 12B v2 VL as other eyes, if chosen); Serverless Jobs run the tests and Andy's search in simulation. Tavily brings the web. A screen beside Andy and a family page on a phone show what Andy found and what was shared.</desc>
+  <desc id="d">The person talks to Andy on a Reachy Mini. On the home computer: the voice server, where NVIDIA Parakeet hears, Silero VAD and Smart Turn tell when the person has finished, and Qwen3-TTS speaks, and where code makes a tool call the model wrote as text and adds Andy's own note to a turn that needs a memory offer or the clock; Andy's app with its 38 tools, body behaviours, the urgent-words net, privacy, the supervisor and the screen server; and, on this computer and offline, NVIDIA Cosmos Reason 2 for local vision (conversation still needs Token Factory), Vosk for the wake phrase, Tesseract to read letters and YuNet to find a face to follow. On Nebius: Token Factory runs NVIDIA Nemotron 3.5 Lightning for talk and tools, Nemotron 3.5 Super VL for the eyes and Nemotron 3 Ultra for hard questions; a Serverless Endpoint runs Nemotron 3.5 Content Safety as a second look (and Nano 12B v2 VL as other eyes, if chosen); Serverless Jobs run the tests and Andy's search in simulation. Tavily brings the web. A screen beside Andy and a family page on a phone show what Andy found and what was shared.</desc>
   <rect width="1200" height="700" fill="#f7faf8"/>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4c5d4f"/></marker>
@@ -47,7 +47,7 @@
   <rect x="68" y="384" width="250" height="148" rx="8" fill="#f4f7f1" stroke="#2f6f5e" stroke-width="2"/>
   <text x="84" y="410" font-size="16" font-weight="700" fill="#1d2a1f">On this computer, offline</text>
   <text x="84" y="434" font-size="15" fill="#1d2a1f">NVIDIA Cosmos Reason 2: eyes</text>
-  <text x="84" y="456" font-size="15" fill="#1d2a1f">vision fallback only</text>
+  <text x="84" y="456" font-size="15" fill="#1d2a1f">when the cloud's don't answer</text>
   <text x="84" y="478" font-size="15" fill="#1d2a1f">Vosk: the wake phrase</text>
   <text x="84" y="500" font-size="15" fill="#1d2a1f">Tesseract: reads the letter</text>
   <text x="84" y="522" font-size="15" fill="#1d2a1f">YuNet: finds a face to follow</text>
