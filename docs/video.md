@@ -36,6 +36,18 @@ so this video is the entry. Web-only scam checkers are many; a robot in a real h
 physical moment (the letter in a hand, the head turning to the TV), keep the scam verdict one beat of three,
 and let the glasses and the family photo carry the rest.
 
+**Research, 2026-10-28** (the live rules page; the judges' October 20 session; Devpost's demo-video guidance and its
+participants' tips; robot makers' demo practice), four additions:
+- **Label every robot shot "Real robot · autonomous · 1× speed · no cuts"**, as robot makers do (1X, EngineAI, MindOn),
+  because sped-up and cut robot clips are distrusted; keep the TV's clock in the long take, its minutes show no cut.
+- **Say the problem in the first seconds:** a caption in shot 1, "Adults 60 and over reported losing about $3 billion to
+  fraud in 2025 (FTC)", the README's figure with its source.
+- **Sound judges can hear:** a second phone recording beside Andy's speaker for every take, a phone or clip mic near the
+  person; one clap at the start of each take to line the sound up.
+- **Upload the evening before the deadline:** YouTube processing can take hours (it gives the link at once).
+The rules say "at least one minute of footage showing the physical hardware/robot actually operating"; the track's
+description says "a 1-minute clip". One uncut take of 72 s meets both readings.
+
 **Optional extra clips:** a turn to a second voice, a wave, remembered keys or a taught move can be
 recorded separately after its live test passes. The October 26 shot plan does not depend on them;
 the main continuous take concentrates on the day plan, research, following and interruption.
@@ -105,6 +117,8 @@ described (3y, shot 5).
 - [ ] No music; no third-party logos in shot (cover any on mugs, books, screens); browser tabs and links
       not visible.
 - [ ] Quiet room, warm light, the camera at eye level with Andy; a second camera on the TV if possible.
+- [ ] Sound: a second phone recording beside Andy's speaker for every take, a phone or clip mic near the person; one
+      clap at the start of each take.
 - [ ] After filming: `cloud/guard-endpoint.sh stop`. If the
       settings code was filmed, "Make a new settings link". Then `python3 scripts/settings.py new-screen-link` and
       open the new screen link on the TV (the screen link appeared once in an audit session's output on 2026-10-28).
@@ -116,7 +130,7 @@ for the glasses search (17 to 23 s on October 28), and current measurement scope
 
 | # | Time | What we see | What is said |
 |---|---|---|---|
-| 1 | 0:00–0:24 | **Hook, live:** hold up the invented prize letter. Andy reads it; the TV shows **Be careful** and Andy glances at it. A web lookup follows only if it fits naturally. | Andy answers live. First caption: "Andy reads the letter in your hand. A home robot for older adults who live at home, and the family who help." No title slide before the robot. |
+| 1 | 0:00–0:24 | **Hook, live:** hold up the invented prize letter. Andy reads it; the TV shows **Be careful** and Andy glances at it. A web lookup follows only if it fits naturally. | Andy answers live. First caption: "Andy reads the letter in your hand. A home robot for older adults who live at home, and the family who help." While Andy reads: "Adults 60 and over reported losing about $3 billion to fraud in 2025 (FTC)." No title slide before the robot. |
 | 2 | 0:24–0:36 | Founder with Andy and the TV in shot. | "Andy turns toward you, reads a letter you hold up, and looks around for your glasses. Built with NVIDIA Nemotron on Nebius Token Factory, and Tavily." |
 | 3 | 0:36–1:48 | **One 72-second take, uncut.** Ask for today's plan. Walk a little while asking Andy to research whether the farmers market is on Saturday. The TV shows progress; Andy follows. Ask "Do I need an umbrella tomorrow?" and talk over the forecast with a new question ("Andy, what time is it?"): not "stop", which while the research runs can also stop the research (`look_into` stops on a request to stop). Let the research answer arrive if it finishes during the take. | Only the person's requests are planned. Keep the pauses. The live hood page can be a small inset. A reminder, wave or turn to a second voice is optional, only if already verified; none is required for this take. If research finishes later, show its actual result elsewhere without implying it happened faster. |
 | 4 | 1:48–2:18 | **Glasses, uncut:** someone else places them within the verified search area. Andy sweeps, turns, checks and points; the TV shows its views. | Caption: "Look → choose a view → turn → check → point. NVIDIA Nemotron 3.5 Super VL on Nebius Token Factory." Use the body turn only after live-test 3t3 passes. |
@@ -156,6 +170,7 @@ a social clip, with English subtitles.
       every line against the video before uploading.
 - [ ] GIFs for the README and the Devpost gallery from the robot clips:
       `scripts/make_gif.sh clip.mp4 docs/images/<name>.gif [start] [seconds] [width]`.
+- [ ] Upload by the evening of October 29 (processing can take hours; the deadline is October 30, 10:00 PT).
 - [ ] YouTube: **Public**, **"No, it's not made for kids"** (that setting makes a video hard for judges
       to reach). The title names the project and the event, like the winners' (for example "Andy: a home robot that reads your
       letters and looks for your glasses | Nebius x NVIDIA Global AI Hackathon"); the description has the repository link, and says "Built

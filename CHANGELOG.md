@@ -23,6 +23,10 @@ name step), and the Reachy app page.
   two lessons (a one-line note on the turn beat three paragraphs of prompt; a model told why will say the why).
 - **The architecture diagram:** the offline eyes read "when the cloud's don't answer", not "vision fallback only";
   its text description names the voice server's checks in code.
+- **Video research:** the live rules, the judges' October 20 session, Devpost's guidance and robot makers' practice.
+  The plan gains a "1× speed · autonomous · no cuts" label on robot shots, the FTC problem line as a caption in shot 1,
+  close-up sound for Andy's voice, and uploading the evening before; one uncut take meets both the rules' "one minute of
+  footage" and the track's "1-minute clip". A step-by-step filming guide was made for the founder's phone.
 - **The long take's interruption:** talk over a reply with a new question, not "Andy, stop": with research running,
   a request to stop can also stop the research (`look_into`), and its answer would never arrive on camera.
 - **The video's results card, word for word:** shot 6 in `docs/video.md` now gives the three figures as the README
