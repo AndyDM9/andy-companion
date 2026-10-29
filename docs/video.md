@@ -124,6 +124,15 @@ for the glasses search (17 to 23 s on October 28), and current measurement scope
 | 6 | 2:32–2:48 | Architecture, a short clearly labelled simulation clip, and the measured results. | "Parakeet hears at home. Nemotron talks and sees on Nebius Token Factory. Serverless Jobs evaluate the search and conversation. Those tests are separate from these real robot scenes." Use current scores with their dates and scope, not the older profile's score as proof of the new code. |
 | 7 | 2:48–2:56 | Andy and the TV, then repository address. | "No recordings or transcripts. Kept and shared with your permission. Open source." Caption: "Limits and every scorecard in the repository. No study with older adults yet." |
 
+**Shot 6's results, word for word** (as the README states them, 2026-10-28; each with its scope):
+- "1.06 s from your words being understood to Andy's first sound: median of 54 real turns on the robot."
+- "58 of 60 scams caught, none of 60 ordinary messages flagged: written test messages, judged by NVIDIA Nemotron 3
+  Ultra, as Nebius Serverless Jobs."
+- "94.8 of 97 spoken situations handled right, on average over nine text-only runs as Nebius Serverless Jobs,
+  judged by NVIDIA Nemotron 3 Ultra."
+- Small print: "Synthetic tool results for the suite; no study with older adults yet. Every scorecard is in the
+  repository."
+
 **At least one minute of the robot operating:** the Physical AI track asks for a clip of at least one minute.
 Our proof plan uses shot 3 on its own: 72 s, one take, never cut (if the take runs short, keep filming until it passes
 70 s). The letter, search and family-photo shots add more real operation. The technical and simulation shots do not count as hardware footage.
