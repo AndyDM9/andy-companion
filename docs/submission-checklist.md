@@ -208,8 +208,10 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       1. Under the badges, before the bold one-line description, add
          `[![Watch Andy on the real robot](https://img.youtube.com/vi/ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=ID)`
          and a line `**[Watch Andy on the real robot](https://www.youtube.com/watch?v=ID)**`, then a blank line.
-      2. Delete the paragraph starting `**Review status, October 27:**`, and in the paragraph starting
-         `**Judging it without a robot:**` delete `the real-robot video is still pending. `.
+      2. In the README's `**Status, October 28:**` paragraph, replace "The real-robot video and photographs come next"
+         with the video's link (and the photographs, once in the gallery); in `docs/judging.md`, line 5's "The real-robot
+         video and photographs are still pending" and the first item of "What is still pending"; in
+         `docs/submission.md`, "filming is planned before submission" (checked 2026-10-28 night: these four places).
       3. `grep -n -i "video" README.md docs/judging.md docs/submission.md | grep -i "pending\|not yet\|planned"`: change
          each line the public video makes untrue, and only those. Then the usual record and checks.
 
@@ -262,6 +264,9 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] Submitted before 2026-10-30, 10:00 PT (target 2026-10-27)
 - [ ] The submitted commit tagged `hackathon-submission`, and the tag linked on the form
 - [ ] **A GitHub Release from that tag** (a bare tag doesn't show in the repository's Releases box):
+      Order (the final gate compares the published app with the tagged one): the video link and README edits, the app
+      pin, records and tests, commit and push; then tag that commit and push the tag; then upload
+      `reachy_app/pyproject.toml` to the app Space; then the release; then `devpost.py --ref hackathon-submission --final`.
       `gh release create hackathon-submission --verify-tag --title "Andy, as submitted to the Nebius x NVIDIA hackathon"`
       with short notes: the video link, the Devpost link, the two public demos, the judges' guide
       (`docs/judging.md`), and that the repository stays unchanged at this tag through judging (2026-12-15)

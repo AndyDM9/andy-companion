@@ -91,18 +91,35 @@ def test_listener_stops_when_told_to():
     assert wake.heard(iter([b"x"] * 100), rec, should_stop=lambda: True, check_every=1) is None
 
 
+def _open(fd):
+    import os
+    try:
+        os.fstat(fd)
+        return True
+    except OSError:
+        return False
+
+
 def test_a_stalled_sound_server_never_stops_the_wake_checks(monkeypatch):
     """parec gives nothing (a stalled sound server): the listener still asks, about once a second, whether a reminder
     has come due, and stops parec when it has. A plain read waited forever (2026-10-28 review)."""
     import os
+    import resource
     import threading
 
-    read_end, write_end = os.pipe()            # nothing is ever written: the pipe stays open and silent
-    stopped = []
+    low_read, write_end = os.pipe()            # nothing is ever written: the pipe stays open and silent
+    # The read end at a high, unused number: another test's file object, collected late, closes its own old number,
+    # and once that number was this pipe's; the read then failed with "Bad file descriptor" (2026-10-28, 1 run in ~30).
+    top = min(resource.getrlimit(resource.RLIMIT_NOFILE)[0], 1024) - 1  # select() takes numbers below 1024 only
+    read_end = next(fd for fd in range(top, top - 200, -1) if not _open(fd))
+    os.dup2(low_read, read_end)
+    os.close(low_read)
+    stopped, files = [], []
 
     class Parec:
         def __init__(self, *args, **kwargs):
             self.stdout = os.fdopen(read_end, "rb", buffering=0)
+            files.append(self.stdout)
 
         def terminate(self):
             stopped.append(True)
@@ -127,6 +144,8 @@ def test_a_stalled_sound_server_never_stops_the_wake_checks(monkeypatch):
         assert len(asked) == 2 and stopped == [True]                     # parec is stopped too
     finally:
         os.close(write_end)                                              # lets a stuck read end, if there is one
+        for f in files:                                                  # closed here, never later by number
+            f.close()
 
 
 def test_audio_comes_in_whole_chunks_however_the_pipe_splits_it():

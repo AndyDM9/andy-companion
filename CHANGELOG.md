@@ -23,6 +23,8 @@ name step), and the Reachy app page.
   two lessons (a one-line note on the turn beat three paragraphs of prompt; a model told why will say the why).
 - **The architecture diagram:** the offline eyes read "when the cloud's don't answer", not "vision fallback only";
   its text description names the voice server's checks in code.
+- **A flaky test made steady:** about one full run in thirty, the stalled-sound-server test failed with "Bad file descriptor": its fake sound process's file was never closed, so it was closed later by number, and a file number reused across tests could be closed under a read. It now closes its own file and keeps its pipe at a high number (below select()'s 1024). A red CI badge during judging was the risk.
+- **The after-video steps checked:** the README update names the four places the video makes untrue (the checklist still pointed at an October 27 paragraph that no longer exists), and the order is written out: pin, commit, tag, publish the app's pinned file, release, final export.
 - **Shot 1 says what to ask and what to expect:** one question; Andy explains rather than reciting and never says a suspicious letter's numbers; "Should I call them?" and the Tavily look-up in a second take; the bill read first as a warm-up.
 - **The filming bill is due November 20, 2026,** not October 28, which would read as overdue on filming day (`scripts/prepare_demo.py letters`; print-ready PDFs made for the founder).
 - **The scenario reviewed against the research:** shot 5 gets 22 s (a photo's arrival and description cannot fit the
