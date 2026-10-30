@@ -95,13 +95,13 @@ in the same commit that makes it true.
 
 - [x] All 23 submission links open after moving the FTC citation to a verified official HTML release; the figure's wording matches its approximate precision
 - [x] Video metadata checker and 17 regressions available; short/silent simulation correctly rejected without claiming to inspect hardware content
-- [ ] Actual final cut/raw hardware clip pass metadata checks and manual content/rights/translation review
+- [x] Actual final cut/raw hardware clip pass metadata checks and manual content/rights/translation review (2026-10-29: `check_video.py` passes, 171.0 s with a 70.4 s uncut hardware clip; watched and approved by the founder; all speech English)
 - [ ] Saved Devpost draft reconciled with the current repository export after filming; no signed-in connected browser was available for this audit
 - [x] Rules, FAQ, deadline, judging criteria and prize-combination rule rechecked at the official sources
 - [x] Devpost export includes testing instructions distinguishing sample preview from author-funded robot access
 - [x] `--final` rejects a placeholder video, absent local release tag and app dependency on main before export
-- [ ] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually
-- [ ] Free judge testing instructions and any required hardware arrangement confirmed through December 15
+- [x] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually (https://www.youtube.com/watch?v=RcNJpHf3omY: public, oEmbed checked logged out, 2:51, English captions)
+- [ ] Free judge testing instructions and any required hardware arrangement confirmed through December 23 (judging amended to 12-09 – 12-23)
 - [ ] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass
 - [ ] Devpost entry actually submitted and its confirmation checked (a saved draft is not a submission)
 
@@ -158,7 +158,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 
 - [x] Runs on Nebius: a runtime call to the Token Factory inference API (Nemotron 3.5 Lightning)
 - [x] Uses at least one NVIDIA open model (Nemotron; also Parakeet speech-to-text)
-- [ ] A genuine Physical AI project: the hardware reacting live to the real world, shown on video
+- [x] A genuine Physical AI project: the hardware reacting live to the real world, shown on video (https://www.youtube.com/watch?v=RcNJpHf3omY)
 
 ## The repository
 
@@ -196,15 +196,15 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 
 ## The video
 
-- [ ] Under three minutes
-- [ ] Public on YouTube
-- [ ] At least one minute of the robot actually operating
-- [ ] Token Factory and the NVIDIA models named aloud
+- [x] Under three minutes (2:51)
+- [x] Public on YouTube (2026-10-29)
+- [x] At least one minute of the robot actually operating (0:41–1:51, 70.4 s, one take)
+- [x] Token Factory and the NVIDIA models named aloud (0:31, and on the closing cards)
 - [ ] No unlicensed music, third-party logos or copyrighted material (no newspaper pages on the TV; our
       own family photos with consent, not the sample landscapes)
-- [ ] English captions throughout, and English subtitles for any Spanish (draft: `scripts/draft_captions.py`)
-- [ ] After filming the settings code: "Make a new settings link"
-- [ ] **When the video is public, the README opens on it** (prepared 2026-10-28; `ID` is the YouTube video's id):
+- [x] English captions throughout, and English subtitles for any Spanish (draft: `scripts/draft_captions.py`): no Spanish in the cut; the person's questions burned in, every line uploaded as SRT, Andy's words checked against its own captions on the TV
+- [x] After filming the settings code: "Make a new settings link" (not needed: the settings code is not in the cut, and it lasts two minutes)
+- [x] **When the video is public, the README opens on it** (2026-10-29) (prepared 2026-10-28; `ID` is the YouTube video's id):
       1. Under the badges, before the bold one-line description, add
          `[![Watch Andy on the real robot](https://img.youtube.com/vi/ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=ID)`
          and a line `**[Watch Andy on the real robot](https://www.youtube.com/watch?v=ID)**`, then a blank line.
@@ -269,14 +269,14 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       `reachy_app/pyproject.toml` to the app Space; then the release; then `devpost.py --ref hackathon-submission --final`.
       `gh release create hackathon-submission --verify-tag --title "Andy, as submitted to the Nebius x NVIDIA hackathon"`
       with short notes: the video link, the Devpost link, the two public demos, the judges' guide
-      (`docs/judging.md`), and that the repository stays unchanged at this tag through judging (2026-12-15)
+      (`docs/judging.md`), and that the repository stays unchanged at this tag through judging (2026-12-23)
 - [ ] *(founder, in the browser)* **The repository's social preview image**: Settings → General → Social preview,
       upload `docs/images/social-preview.png` (1280×640, made 2026-10-28: the name, the one line, the **Be careful**
       card from the sample screen, labelled as such), so a shared link shows Andy instead of GitHub's text card.
       Swap in a robot photo later if one makes a better card
 - [ ] The live rules page re-read the day before submitting (amendments take effect when posted)
 
-## Through judging (to 2026-12-15)
+## Through judging (to 2026-12-23, as amended)
 
 - [ ] The repository public and unchanged at the tag; the robot and desktop ready if physical access is asked for
 

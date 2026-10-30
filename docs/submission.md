@@ -12,7 +12,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Tagline** (198 of 200 characters): A small robot that reads the letter in your hand and looks for your glasses: a
   companion for older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius, and Tavily.
 - **Track:** Physical AI. **Bonus prize:** Best Use of Tavily.
-- **Video:** *[the YouTube link: public, "not made for kids"]*
+- **Video:** https://www.youtube.com/watch?v=RcNJpHf3omY
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
 - **Try it:** https://huggingface.co/spaces/andydm/andy-companion-judge (guided real AI with invented inputs and simulated tools),
   https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
@@ -60,8 +60,8 @@ around stand-in tools; both evaluations ran as Nebius Serverless Jobs. Entered i
   you", and talking over Andy stops it. Installs as a
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
 - **Limits, said plainly:** in 9 scored tries at home (2026-10-20) it pointed at hidden glasses 3 times, never at the
-  wrong place; on 2026-10-28, informally, it found real glasses 3 times out of 3 (17 to 23 s) and keys once, and the
-  30-try measure is still to do. No study with older adults yet. The video uses live robot shots, with no cuts in the pauses; filming is planned before submission.
+  wrong place; informally, it found real glasses in all five searches (three on 2026-10-28, 17 to 23 s; two filmed on 2026-10-29, about 21 s) and keys once, and the
+  30-try measure is still to do. No study with older adults yet. The video shows the real robot: each robot shot is one uncut take at 1× speed, the middle one 70 seconds.
 - **Testing access:** [short testing instructions](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/judging.md):
   [guided examples with real Nemotron replies](https://andydm-andy-companion-judge.hf.space/) and the screens on sample
   data, both without keys; reproducible software checks; optional model evaluations; and a free live robot

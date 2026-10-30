@@ -3,6 +3,22 @@
 The plan for the entry's video: the rules it must meet, the checklist before filming, the shots, and what
 happens after. Last revised 2026-10-28; filming the evening of October 28.
 
+**As filmed (2026-10-29):** [the published video](https://www.youtube.com/watch?v=RcNJpHf3omY), 2:51.
+
+| Time | What it shows |
+|---|---|
+| 0:00 | The letter and **Be careful** |
+| 0:31 | The founder names the tools |
+| 0:41 | One uncut 70 s take: the research and the umbrella |
+| 1:51 | The glasses |
+| 2:28 | Three cards: the architecture, the results, the close |
+
+The family-photo shot and the voice-over were not filmed; the closing cards are text only. The cut was made with
+FFmpeg:
+- the phone's HLG HDR converted to SDR BT.709 with libplacebo;
+- a crop, plus a blurred band where the browser bar showed;
+- labels and the person's questions burned in.
+
 **Rules** (Devpost, re-read 2026-10-13; every rule and how we meet it is in
 [rules-compliance.md](rules-compliance.md)):
 - under three minutes;

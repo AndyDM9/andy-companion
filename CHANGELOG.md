@@ -5,6 +5,30 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### The video is public, and the entry readied for final submission
+
+- **The video:** [https://www.youtube.com/watch?v=RcNJpHf3omY](https://www.youtube.com/watch?v=RcNJpHf3omY), 2:51, public on YouTube with English captions. It shows:
+  - the letter and its **Be careful** card;
+  - the founder naming NVIDIA Nemotron, Nebius Token Factory and Tavily;
+  - one uncut 70-second take: Tavily research answered in about 21 s, then the umbrella forecast;
+  - the glasses found in about 21 s;
+  - cards on how Andy is built and what was measured.
+- **How it was cut:** every robot shot is one take at 1× speed, labelled so; cuts are only between shots.
+  - Two takes were left out between shots: a first letter read that saw no writing (the page held at a slant), and a misheard request.
+  - The browser's address and bookmarks bars and the desktop dock are cropped or blurred out of every frame.
+  - The phone's HDR footage was converted to standard range.
+  - `scripts/check_video.py` passes: 171.0 s, with a 70.4 s hardware clip.
+- **The README opens on the video.** The testing guide, the Devpost text and the robot test record (live-test 3e, 3l and 3t: the filmed results) are updated.
+- **The live rules, re-read tonight:** the deadline and requirements are unchanged, but **judging moved to December 9–23** and
+  winners to about January 25. Testing access and every date in the README, the testing guide, the rules record and the checklist now run to
+  December 23.
+- **The app now depends on the `hackathon-submission` tag instead of `main`**, so an install during judging gets
+  what was submitted.
+- **A repository review before submitting:**
+  - no keys, household photos or forbidden words;
+  - another project's service names removed from the record;
+  - the weather test's sample coordinates moved to Miami's public city centre.
+
 ### Andy asks once about speech in another language
 
 On the robot, over four minutes of talk nearby in another language, Andy answered 21 of 46 turns with "please say
@@ -381,7 +405,7 @@ own session on the robot. Each finding was checked against the code before it wa
 ### Audit of everything published, and the health check names who holds Andy's ports
 
 - The health check passed "Voice server" and "Screen and family page" while Andy was stopped: another project's
-  services (`heyandy-app`, `heyandy-sam`) listened on Andy's ports 8765 and 8090, and an open port read as Andy's.
+  services listened on Andy's ports 8765 and 8090, and an open port read as Andy's.
   It now names any other program listening there and fails with what to stop. **3 new cases**.
 - Verified: every test in both environments (CPU **1,899 / 17 skipped**, robot **1,945 / 2 skipped** before this
   change); an anonymous clone with no keys installs and passes; the suite's tool list matches what the robot gives
@@ -417,7 +441,7 @@ own session on the robot. Each finding was checked against the code before it wa
 
 ### A closer look without a picture is not "it wasn't them"
 
-- Checked Andy for the three faults Codex reproduced in another project this morning: an old found
+- Checked Andy for three faults found in a review this morning: an old found
   picture beside an unrelated reply (Andy already pairs views with their own search's card), an
   unavailable checking model treated as a yes (Andy stops with "my eyes did not answer"), and an
   unlocked spending count (the judge demo's daily count is taken under a lock). None applies.

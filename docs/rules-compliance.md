@@ -85,9 +85,9 @@ at the missing video, local release tag and app pin. The actual Devpost draft re
 | Advice | How the entry meets it |
 |---|---|
 | Solve a real problem for a real audience; talk to a few potential users | The problem, sourced (FTC, AARP, a 2026 systematic review of what older adults want). No study with older adults yet, said plainly in Limitations; talking with a few before submitting is on the founder's list |
-| The aha moment fast: two minutes in the project, 30 s in the demo | The video opens on the letter and **Be careful** (0:00–0:24); the README's first screen has the three moments |
+| The aha moment fast: two minutes in the project, 30 s in the demo | The video opens on the letter and **Be careful** (0:00–0:31); the README's first screen has the three moments |
 | One thing done well beats a big stack; every integration supports the main story | Every model and tool is named by the job it does for the person ("every model, and where it runs") |
-| Put the action first, a little onboarding, show which model does what | The TV suggests what to ask ("Try asking"); the hood page names the model at each step, and is in the video's long take |
+| Put the action first, a little onboarding, show which model does what | The TV suggests what to ask ("Try asking"); the hood page names the model at each step; the video's captions name the model for the glasses search and the research |
 | Publish your limitations; call out accessibility | Limitations in the Devpost text and the README, with failure cases and scorecards; accessibility named in the Design point (2026-10-25) |
 | Budget time for packaging | The draft is ready before filming; the video's shot list is written |
 
@@ -201,6 +201,14 @@ refusals pass; all three Spaces RUNNING. Fresh-clone tests, 329 relative file ta
 links and hosted CPU/wheel/SDK jobs pass. Both cloud probe timeouts are retained beside subsequent short
 successes, without an availability/voice-latency or resolved-outage claim. Final exporter still refuses
 missing video/tag/app pin. No hardware/access/submission item is completed by these software checks.
+
+## October 29: the live rules re-read before submitting
+
+The live rules page re-read 2026-10-29, 23:00 ET, and compared line by line with the copy of 2026-10-28: the deadline
+(2026-10-30 10:00 PT), the submission requirements and the video rules are unchanged. **The judging period moved to
+2026-12-09 – 2026-12-23** and winners to about 2027-01-25; testing access, the robot and the repository are kept
+through the new end of judging. The only new update is the organisers' final call (2026-10-27), its checklist met
+below. The video is public: https://www.youtube.com/watch?v=RcNJpHf3omY.
 
 ## Hardware-access clarification (October 27)
 
@@ -354,8 +362,8 @@ comparisons, not logos or copied assets. The final video and real physical trial
 | What | When | Our plan |
 |---|---|---|
 | Submission period | 2026-08-26 09:00 PT to **2026-10-30 10:00 PT** | A complete draft submitted by **2026-10-22**, so Devpost's free eligibility check (for entries in at least a week before the deadline, by 2026-10-23 10:00 PT) can flag anything missing; edits continue after, final by **2026-10-27**. The project started 2026-10-13, inside the period |
-| Judging | 2026-12-01 to 2026-12-15 | Keep the repository, the robot and the README working through 2026-12-15 |
-| Winners | About 2027-01-11 | A winner's forms are due 10 business days after they are sent (W-9 for a US resident) |
+| Judging | **2026-12-09 to 2026-12-23** (amended; it was 12-01 to 12-15 until at least 10-28) | Keep the repository, the robot and the README working through 2026-12-23 |
+| Winners | About **2027-01-25** (amended from 2027-01-11) | A winner's forms are due 10 business days after they are sent (W-9 for a US resident) |
 
 ## Eligibility and prizes
 
@@ -390,13 +398,13 @@ comparisons, not logos or copied assets. The final video and real physical trial
 | Open-source licence file, **visible in the repository's About section** | ✅ | `LICENSE` is Apache-2.0; GitHub shows it in About (checked logged out, 2026-10-25); the app's Space carries it too |
 | README with setup instructions and how to run it | ✅ | README "Setup" |
 | README highlights the NVIDIA models, **where Token Factory accelerated the workflow**, and the other Nebius services | ✅ | README "How it uses NVIDIA and Nebius" and "Where Token Factory sped us up" |
-| Video under three minutes | 🔶 | [video.md](video.md): 2:56 as planned (retimed 2026-10-26); time a rough cut |
-| Video shows the project working on its device; Physical AI: **"a 1-minute clip"** of the robot operating | 🔶 | One clip: shot 3, 72 s, one take, never cut; with shots 1, 4 and 5 the robot operates about 2:18 of 2:56 ([video.md](video.md)) |
-| Video public on YouTube, link on the form | ⬜ | Founder, 2026-10-27. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
-| The project functions as depicted in the video | 🔶 | Robot shots are long unedited takes; no pause or lag is cut ([video.md](video.md)) |
-| Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music, or only music we own or licence for it; no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
+| Video under three minutes | ✅ | [The video](https://www.youtube.com/watch?v=RcNJpHf3omY): 2:51 (171.0 s), checked with `scripts/check_video.py` 2026-10-29 |
+| Video shows the project working on its device; Physical AI: **"a 1-minute clip"** of the robot operating | ✅ | One clip: 0:41–1:51, 70.4 s, one take, never cut (the research and the umbrella question); with the letter and the glasses the robot operates 2:18 of 2:51. The checker confirms a 70.4 s hardware clip |
+| Video public on YouTube, link on the form | 🔶 | Public on YouTube 2026-10-29 (https://www.youtube.com/watch?v=RcNJpHf3omY; public oEmbed checked logged out), "not made for kids", English captions uploaded; the form link at submission. **Public**, not unlisted; **"No, it's not made for kids"** (that setting makes a video hard for judges to reach); captions uploaded as SRT ([video.md](video.md)) |
+| The project functions as depicted in the video | ✅ | Each robot shot is one unedited take at 1× speed, labelled so; no pause or lag is cut inside a shot; cuts only between shots. A failed first letter read and a misheard request were left out between shots, not hidden inside one |
+| Video has **no third-party trademarks or copyrighted music or material** without permission | 🔶 | No music. The browser's address and bookmarks bars and the desktop dock were cropped and blurred out; the monitor's small maker mark and the mouse's logo remain visible in the room shots (incidental hardware, not promoted). Previously planned: no third-party logos on screen; news and pages on the TV from public sources (the National Weather Service, the town's own site) rather than newspapers; **family photos of our own, with consent, not the sample landscapes**; Nebius, NVIDIA and Tavily are named because the rules ask for them |
 | All materials in English, or with an English translation | 🔶 | Captions throughout; any Spanish gets **English subtitles** (Spanish moved to a social clip on 2026-10-14; `scripts/draft_captions.py` drafts the SRT and marks Spanish lines) |
-| Identify the track | ✅ | Physical AI: chosen on the form, and in the Devpost text's first block, "For the judges", with a "Track fit" line naming Pollen's conversation app as the agent runtime; said on screen in the video's shot 7 |
+| Identify the track | ✅ | Physical AI: chosen on the form, and in the Devpost text's first block, "For the judges", with a "Track fit" line naming Pollen's conversation app as the agent runtime; the video names Nebius Token Factory and NVIDIA Nemotron aloud and on its closing cards |
 | Sponsor names, not logos | ✅ | Nebius allows naming its products but not implying approval; NVIDIA and Nebius logos need written consent. We name the tools in words, use no logos, and say "built with", never "powered by" or "partnered with" (checked in the README, the app page and the Devpost texts, 2026-10-13, and again 2026-10-25) |
 | Feedback on Token Factory, AI Cloud and the NVIDIA tools | ✅ | [feedback.md](feedback.md): each product's use, what worked, what needs work, the first call; final 2026-10-25 |
 | Original work, solely owned, no one else's rights infringed | ✅ | Our code; open source used under its licences and built upon (Pollen's app is extended, not copied); no material from any other project or company |
@@ -405,8 +413,8 @@ comparisons, not logos or copied assets. The final video and real physical trial
 
 | Rule | Status | Notes |
 |---|---|---|
-| Free access for testing until judging ends (2026-12-15) | 🔶 | The sample Space is free but has no live AI. Judges are offered an author-funded test of the working robot without buying credits or receiving provider keys. Confirm the final access instructions and hardware arrangement; do not treat a bring-your-own-key clone as the required free-access path |
-| Physical access to the hardware may be requested (the Reachy Mini is not a phone, tablet or computer) | 🔶 | Keep the robot and the desktop ready through 2026-12-15 |
+| Free access for testing until judging ends (2026-12-23, amended) | 🔶 | The sample Space is free but has no live AI. Judges are offered an author-funded test of the working robot without buying credits or receiving provider keys. Confirm the final access instructions and hardware arrangement; do not treat a bring-your-own-key clone as the required free-access path |
+| Physical access to the hardware may be requested (the Reachy Mini is not a phone, tablet or computer) | 🔶 | Keep the robot and the desktop ready through 2026-12-23 |
 | After the deadline the submission cannot change | ⬜ | Tag/link the submitted commit and freeze this repository, hosted demos, video and judged materials at the cutoff; later development uses a separate copy, without changing judged materials, unless explicitly allowed. October 27 organiser reminder linked above |
 
 ## Publicity, privacy and conduct
@@ -428,7 +436,7 @@ change to the rules, dates or criteria, and no update since the judges' "Will It
 Devpost text's finder limits reworded the same day for the body turn (decision 0016), saying plainly it is checked
 against Pollen's kinematics and not yet on the robot. The README's first screen and the Devpost text revised again the
 same evening after a judge's-eye read (decision-free wording changes; every claim still linked to its evidence). The Space (testing access) needs Hugging Face PRO for a Docker
-Space since this year; the founder subscribes, and it stays up through 2026-12-15 (decision 0010, amended).
+Space since this year; the founder subscribes, and it stays up through the end of judging, 2026-12-23 as amended (decision 0010, amended).
 
 
 ## 2026-10-26 review changes

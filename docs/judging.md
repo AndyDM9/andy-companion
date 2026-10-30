@@ -2,7 +2,7 @@
 
 Andy is a Reachy Mini companion robot built with NVIDIA Nemotron on Nebius and Tavily.
 Start with the guided AI examples or public screens; the commands below test the software without hardware.
-Last verified October 28, 2026. The real-robot video and photographs are still pending.
+Last verified October 29, 2026. [The video](https://www.youtube.com/watch?v=RcNJpHf3omY) shows the real robot: the letter, a minute uncut, the glasses.
 
 ## Start a review
 
@@ -37,7 +37,7 @@ judge-access path. The original screen Space previews the interfaces and is not 
 
 The [official rules](https://nebiusglobalaihackathon.devpost.com/rules), checked October 27, exempt
 Physical AI from the hosted-demo-URL requirement, require free working-project testing access through
-December 15 and allow organisers to request hardware access. Testing instructions accompany the
+the end of judging (December 23, as amended) and allow organisers to request hardware access. Testing instructions accompany the
 submission; coordinate physical-access arrangements if the organisers request them. We do not treat
 the sample screens alone as proof of unrestricted access to the working robot.
 
@@ -189,7 +189,7 @@ Submitting a GitHub issue requires GitHub sign-in. It is a public coordination r
 contact and any delivery details should be handled privately through the organisers.
 The organisers may also contact the entrant through the submission without using a public GitHub issue.
 The author provides the robot, its computer and the API access for that demonstration through judging
-(December 15, 2026). Select an organiser hardware-access request in the form when that is the purpose;
+(December 23, 2026). Select an organiser hardware-access request in the form when that is the purpose;
 the physical testing method will be agreed separately.
 
 If you have your own Reachy Mini, follow [Setup](../README.md#setup), then
@@ -200,14 +200,14 @@ also requires the local voice server; it is not a browser-only robot service.
 
 ## What is still pending
 
-The video, real robot photographs, remaining voice/revised hardware-flow checks, 30 planned physical finder attempts
+The remaining voice/revised hardware-flow checks, 30 planned physical finder attempts
 and short sessions with potential users remain pending. The submission tag and app dependency pin
 will be set after the final validation. Until then, `main` changes; use `git rev-parse HEAD` to record
 which revision you tested. The [submission checklist](submission-checklist.md) and
 [limitations](../README.md#limitations) state the current gaps.
 
 At the October 30, 10:00 PT deadline, freeze this repository, the submitted hosted demos, video and
-project materials and keep testing access available through December 15. Later work uses a separate
+project materials and keep testing access available through December 23. Later work uses a separate
 development copy unless organisers explicitly permit a change, as their
 [final reminder](https://nebiusglobalaihackathon.devpost.com/updates/46207-final-stretch-here-s-your-submission-checklist)
 requires. The tag/app pin is our reproducibility check; it does not replace that freeze.

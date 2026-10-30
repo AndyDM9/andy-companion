@@ -1,6 +1,6 @@
 # Status
 
-**Last updated 2026-10-28.** Update this file in the same commit as any change it describes.
+**Last updated 2026-10-29.** Update this file in the same commit as any change it describes.
 The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history is in [CHANGELOG.md](../CHANGELOG.md).
 
 ## At a glance
@@ -17,8 +17,27 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M7 | Andy's screen and the family page | 🔨 Built, awaiting the live test | The TV, Under the hood, the family page and the settings page, every text colour 7:1; a public read-only demo of all four on sample data (decision 0010), its Hugging Face Space public since 2026-10-25 |
 | M8 | Proof | 🔨 Built; final Serverless Job done, physical trials pending | Current text profile: **94.8 of 97 on average over nine runs as Nebius Serverless Jobs** (93 to 96; the final code of 2026-10-28, suite 2026-10-28a), real consent gate and synthetic tools; the nine runs earlier that day averaged 93.2. The scam check five ways, 54 real turns timed on the robot, finder simulation; every scope and failure below and in [evals/results/](../evals/results/) |
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
-| M10 | Video and submission | 🔨 Draft saved on Devpost | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
+| M10 | Video and submission | 🔨 [Video public](https://www.youtube.com/watch?v=RcNJpHf3omY) 2026-10-29 (2:51, a 70 s uncut take); final submission in progress | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
+
+## October 29, night: the video public
+
+- **[The video](https://www.youtube.com/watch?v=RcNJpHf3omY)** (2:51) was filmed on the robot the evening of October 29 and published that night.
+  - It shows the letter read with **Be careful** first, one uncut 70 s take (Tavily research answered in about 21 s,
+    then the umbrella forecast), and the glasses found in about 21 s.
+  - Each robot shot is one take at 1× speed; private browser bars are cropped or blurred out.
+  - `check_video.py` passes.
+- **Measured from the takes:** the glasses were found in both filmed searches (about 21 and 22 s). That makes five of
+  five searches since October 28, still informal, not the 30-try measure.
+- **The letter:** one first read failed ("I didn't find any writing on the page", the page held at a slant) and
+  worked when asked again.
+- **New open problem, hearing the founder:** in the takes, Parakeet wrote parts of the founder's English in Cyrillic
+  letters. The language filter then treated them as another language, so Andy sometimes didn't answer. In one hour
+  of filming, 113 turns were taken as unclear and 101 were heard as English; Russian spoken nearby added to it.
+  - Wanted: when a turn starts with "Andy", keep its Latin words even if most of the turn came out in Cyrillic.
+  - Not changed before submission.
+- **The live rules re-read:** judging moved to December 9–23, winners to about January 25; the deadline is
+  unchanged.
 
 ## October 29: asked once about speech in another language
 
@@ -248,9 +267,8 @@ The founder was out; the robot was on USB with Andy running. Checked live, numbe
   wording scans, both Spaces and the app against the source (screens re-uploaded; four stray `.pyc` removed from
   the guided Space).
 - **Fixed:** the health check now names a program other than Andy's on the voice or screen port (another
-  project's `heyandy-app` and `heyandy-sam` held 8765 and 8090, enabled at login). **3 new cases**; CPU **1,899 / 17**.
-- **Before filming:** those services must be stopped for Andy to start (founder's call; they belong to the other
-  project).
+  program's services held 8765 and 8090, enabled at login). **3 new cases**; CPU **1,899 / 17**.
+- **Before filming:** those services must be stopped for Andy to start (founder's call).
 
 ## October 28 final Serverless Job and tool markup
 

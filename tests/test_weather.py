@@ -23,7 +23,7 @@ class Opener:
         raise AssertionError(req.full_url)
 
 
-GEO = {"results": [{"name": "Harbor Bay", "admin1": "Florida", "latitude": 25.95065, "longitude": -80.12282},
+GEO = {"results": [{"name": "Harbor Bay", "admin1": "Florida", "latitude": 25.76168, "longitude": -80.19179},
                    {"name": "Harbor Bay", "admin1": "Georgia", "latitude": 1.0, "longitude": 2.0}]}
 POINT = {"properties": {"forecast": "https://api.weather.gov/gridpoints/MFL/112,58/forecast"}}
 FORECAST = {"properties": {"periods": [
@@ -47,7 +47,7 @@ def full():
 def test_the_town_is_found_in_its_state():
     out = weather.locate("Harbor Bay, Florida", opener=full())
     assert out["place"] == "Harbor Bay, Florida"
-    assert out["lat"] == pytest.approx(25.9507, abs=1e-3) and out["lon"] == pytest.approx(-80.1228, abs=1e-3)
+    assert out["lat"] == pytest.approx(25.7617, abs=1e-3) and out["lon"] == pytest.approx(-80.1918, abs=1e-3)
 
 
 def test_the_coordinates_are_looked_up_once_per_town():
@@ -62,7 +62,7 @@ def test_the_coordinates_are_looked_up_once_per_town():
 
 
 def test_the_forecast_names_its_periods_and_the_alert_comes_with_it():
-    out = weather.forecast(25.9507, -80.1228, opener=full())
+    out = weather.forecast(25.7617, -80.1918, opener=full())
     assert [p["name"] for p in out["periods"]] == ["Tonight", "Wednesday", "Wednesday Night"]
     assert out["alerts"] == ["Heat Advisory until 7 PM EDT"] and out["source"] == "the National Weather Service"
 

@@ -4,6 +4,10 @@
 [![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
 [![Tests](https://img.shields.io/github/actions/workflow/status/AndyDM9/andy-companion/tests.yml?branch=main&label=tests)](https://github.com/AndyDM9/andy-companion/actions/workflows/tests.yml)
 
+[![Watch Andy on the real robot](https://img.youtube.com/vi/RcNJpHf3omY/maxresdefault.jpg)](https://www.youtube.com/watch?v=RcNJpHf3omY)
+
+**[Watch Andy on the real robot](https://www.youtube.com/watch?v=RcNJpHf3omY)** (2:51: the letter, a minute uncut, the glasses)
+
 **A small home robot for older adults who live at home, and the family who help.** It reads the letter in your
 hand and looks around the room for your glasses. Built with NVIDIA Nemotron on Nebius
 Token Factory, and Tavily, on a Pollen Robotics [Reachy Mini](https://huggingface.co/blog/reachy-mini). It says it's a
@@ -17,9 +21,10 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 **[Testing instructions for judges](docs/judging.md):** a short route through the public demo,
 an anonymous fresh install, the tests and optional model evaluations, with expected results and limits.
 
-**Status, October 28:** on the robot, Andy read printed letters, found real glasses each of the three times it
-was asked (informally, not yet the planned 30 tries), ran Tavily research and stopped it on request, and remembered
-where the keys were ([robot test record](docs/live-test.md)). The real-robot video and photographs come next, and
+**Status, October 29:** on the robot, Andy read printed letters, found real glasses in each of its five searches
+(informally, not yet the planned 30 tries), ran Tavily research and stopped it on request, and remembered
+where the keys were ([robot test record](docs/live-test.md)). The [video](https://www.youtube.com/watch?v=RcNJpHf3omY) shows the letter, the research and the
+glasses on the real robot, each robot shot one uncut take at 1× speed, and
 [some physical checks](docs/judging.md#what-is-still-pending) are still to do. The images below use sample data; the
 search animation is simulation.
 
@@ -51,7 +56,7 @@ with a Token Factory key ([sim/](sim/README.md)); try [three guided AI examples]
 with real Nemotron replies (camera, search and family effects simulated; funded by the author, no visitor key); open
 the screens on sample data ([try it](#try-it-without-a-robot)); read every scorecard, failures included
 ([evals/results/](evals/results/README.md)); or [see the real robot live on a video call](https://github.com/AndyDM9/andy-companion/issues/new?template=live-demo.yml)
-until 2026-12-15. Hardware access the organisers request is arranged with them ([testing access](docs/judging.md#testing-costs-and-access)).
+until 2026-12-23. Hardware access the organisers request is arranged with them ([testing access](docs/judging.md#testing-costs-and-access)).
 
 **Contents:** [three moments](#three-moments), [what Andy does](#what-andy-does), [every model and where it runs](#every-model-and-where-it-runs), [how it uses NVIDIA and Nebius](#how-it-uses-nvidia-and-nebius), [how it uses Tavily](#how-andy-uses-tavily), [measured](#measured-reachy-mini-lite), [what runs where](#what-runs-where-and-why-that-model), [privacy](#privacy), [accessibility](#accessibility), [path to shipping](#path-to-shipping), [limitations](#limitations), [try it without a robot](#try-it-without-a-robot), [setup](#setup), [licences and credits](#licences-and-credits).
 
@@ -537,7 +542,7 @@ What doesn't work yet, and what our numbers don't show.
   Nothing moves, and finding things sees one view. On Linux, Pollen's daemon needs GStreamer with its WebRTC
   plugin ([Pollen's guide](https://huggingface.co/docs/reachy_mini/SDK/installation)). Not yet tried on a
   computer without a robot attached; the robot, on video, is the reference.
-- **The real robot, live:** ask for a video call, any time until judging ends (2026-12-15).
+- **The real robot, live:** ask for a video call, any time until judging ends (2026-12-23).
 
 ## Setup
 

@@ -14,7 +14,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "reachy-mini==1.12.0rc1",                  # the SDK Andy is tested on
     "reachy_mini_conversation_app @ git+https://github.com/pollen-robotics/reachy_mini_conversation_app@v1.0.1",
-    "andy-companion[robot] @ git+https://github.com/AndyDM9/andy-companion@main",
+    "andy-companion[robot] @ git+https://github.com/AndyDM9/andy-companion@hackathon-submission",
 ]
 keywords = ["reachy-mini-app"]
 
