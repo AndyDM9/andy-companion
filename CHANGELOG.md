@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-30
 
+### The project is called Hey Andy; the robot is still Andy
+
+The Devpost project name is now "Hey Andy", and the video's YouTube title begins "Hey Andy:". The robot keeps its
+name, so the video, the README and everything Andy says stay as they are. Devpost kept the project's public address
+(devpost.com/software/andy-b45hds), so every link to it still works; the video's link is unchanged.
+
+
 ### Claims corrected after an independent judge's-eye review
 
 A reviewer with no context read the public materials as a judge would, ran two guided examples and a fresh clone

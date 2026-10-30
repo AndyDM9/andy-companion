@@ -21,7 +21,7 @@ spec.loader.exec_module(devpost)
 
 def test_the_form_fields_come_from_the_submission_text():
     f = devpost.fields((ROOT / "docs" / "submission.md").read_text())
-    assert f["Project name"] == "Andy"
+    assert f["Project name"] == "Hey Andy"
     assert 0 < len(f["Tagline"]) <= 200 and not f["Tagline"].startswith("(")
     tags = [t for t in f["Built with"].split(",") if t.strip()]
     assert 0 < len(tags) <= 25

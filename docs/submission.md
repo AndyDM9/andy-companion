@@ -8,7 +8,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 
 ## Form fields
 
-- **Project name:** Andy
+- **Project name:** Hey Andy
 - **Tagline** (198 of 200 characters): A small robot that reads the letter in your hand and looks for your glasses: a
   companion for older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius, and Tavily.
 - **Track:** Physical AI. **Bonus prize:** Best Use of Tavily.
