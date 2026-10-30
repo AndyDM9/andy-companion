@@ -12,7 +12,7 @@ links point at the `hackathon-submission` tag on GitHub, so they work once the t
 - **Tagline** (198 of 200 characters): A small robot that reads the letter in your hand and looks for your glasses: a
   companion for older adults who live at home, and the family who help. Built with NVIDIA Nemotron on Nebius, and Tavily.
 - **Track:** Physical AI. **Bonus prize:** Best Use of Tavily.
-- **Video:** https://www.youtube.com/watch?v=RcNJpHf3omY
+- **Video:** https://www.youtube.com/watch?v=XqnBgo6RnEc
 - **Code:** *[the repository link, at the `hackathon-submission` tag]*
 - **Try it:** https://huggingface.co/spaces/andydm/andy-companion-judge (guided real AI with invented inputs and simulated tools),
   https://huggingface.co/spaces/andydm/andy-companion (Andy's screens on sample data, no keys) and
@@ -78,7 +78,7 @@ only what you ask it to keep.
 ### What it does
 
 Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three interactions bring the
-camera, moving body and TV together. [The video](https://www.youtube.com/watch?v=RcNJpHf3omY) shows all three on the real robot, each robot shot one uncut
+camera, moving body and TV together. [The video](https://www.youtube.com/watch?v=XqnBgo6RnEc) shows all three on the real robot, each robot shot one uncut
 take; each interaction's test status is in the repository's live-test checklist:
 
 - **"Can you read this for me?"** You hold up a letter. Andy reads it and the TV shows it in large print. If the

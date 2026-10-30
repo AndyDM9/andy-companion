@@ -2,7 +2,7 @@
 
 Andy is a Reachy Mini companion robot built with NVIDIA Nemotron on Nebius and Tavily.
 Start with the guided AI examples or public screens; the commands below test the software without hardware.
-Last verified October 29, 2026. [The video](https://www.youtube.com/watch?v=RcNJpHf3omY) shows the real robot: the letter, a minute uncut, the glasses.
+Last verified October 29, 2026. [The video](https://www.youtube.com/watch?v=XqnBgo6RnEc) shows the real robot: the letter, a minute uncut, the glasses.
 
 ## Start a review
 

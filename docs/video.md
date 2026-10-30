@@ -3,7 +3,7 @@
 The plan for the entry's video: the rules it must meet, the checklist before filming, the shots, and what
 happens after. Last revised 2026-10-28; filming the evening of October 28.
 
-**As filmed (2026-10-29):** [the published video](https://www.youtube.com/watch?v=RcNJpHf3omY), 2:51.
+**As filmed (2026-10-29; re-cut 2026-10-30 with every third-party mark blurred):** [the published video](https://www.youtube.com/watch?v=XqnBgo6RnEc), 2:51.
 
 | Time | What it shows |
 |---|---|

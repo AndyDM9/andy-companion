@@ -100,7 +100,7 @@ in the same commit that makes it true.
 - [x] Rules, FAQ, deadline, judging criteria and prize-combination rule rechecked at the official sources
 - [x] Devpost export includes testing instructions distinguishing sample preview from author-funded robot access
 - [x] `--final` rejects a placeholder video, absent local release tag and app dependency on main before export
-- [x] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually (https://www.youtube.com/watch?v=RcNJpHf3omY: public, oEmbed checked logged out, 2:51, English captions)
+- [x] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually (https://www.youtube.com/watch?v=XqnBgo6RnEc: public, oEmbed checked logged out, 2:51, English captions)
 - [ ] Free judge testing instructions and any required hardware arrangement confirmed through December 23 (judging amended to 12-09 – 12-23)
 - [x] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass (b4094fe; CI green; `--final` passed)
 - [x] Devpost entry actually submitted and its confirmation checked (a saved draft is not a submission) Submitted by 2026-10-29 23:15 EDT (by the founder, after Claude filled the form); the public page, logged out, shows "Submitted to Nebius x NVIDIA Global AI Hackathon".
@@ -158,7 +158,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 
 - [x] Runs on Nebius: a runtime call to the Token Factory inference API (Nemotron 3.5 Lightning)
 - [x] Uses at least one NVIDIA open model (Nemotron; also Parakeet speech-to-text)
-- [x] A genuine Physical AI project: the hardware reacting live to the real world, shown on video (https://www.youtube.com/watch?v=RcNJpHf3omY)
+- [x] A genuine Physical AI project: the hardware reacting live to the real world, shown on video (https://www.youtube.com/watch?v=XqnBgo6RnEc)
 
 ## The repository
 

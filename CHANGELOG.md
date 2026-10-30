@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### The video re-cut with every third-party mark blurred, and re-uploaded
+
+The review found brand marks in the video: the microphone's maker on Andy, the monitor's badges and the mouse logo.
+The rules forbid third-party marks without permission, so the video was cut again from the same takes:
+- **The blur:** each mark is blurred and followed frame by frame. Marks fixed in the room ride on the camera's motion,
+  matched to the shot's first frame; the microphone on Andy's turning body and the marks on the founder's shirt are
+  followed by a tracker. The captions go on top.
+- **What did not change:** the shots, timings and words are the same, and so is the 70.4 s uncut take.
+  `check_video.py` passes.
+- **The new upload:** <https://www.youtube.com/watch?v=XqnBgo6RnEc>, public, with the same title, description,
+  chapters and captions. Every link in the repository now points at it. The first upload stays public until
+  the Devpost form shows the new link, then becomes unlisted.
+
 ### Three independent reviews after submitting, and the tag moved to the corrected text
 
 Three reviews of the submitted entry were run after submitting:
@@ -37,7 +50,7 @@ Space installs the tag. Judges should use the tag; later commits on `main` only 
 
 ### The video is public, and the entry readied for final submission
 
-- **The video:** [https://www.youtube.com/watch?v=RcNJpHf3omY](https://www.youtube.com/watch?v=RcNJpHf3omY), 2:51, public on YouTube with English captions. It shows:
+- **The video:** [https://www.youtube.com/watch?v=XqnBgo6RnEc](https://www.youtube.com/watch?v=XqnBgo6RnEc), 2:51, public on YouTube with English captions. It shows:
   - the letter and its **Be careful** card;
   - the founder naming NVIDIA Nemotron, Nebius Token Factory and Tavily;
   - one uncut 70-second take: Tavily research answered in about 21 s, then the umbrella forecast;

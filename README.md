@@ -4,9 +4,9 @@
 [![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
 [![Tests](https://img.shields.io/github/actions/workflow/status/AndyDM9/andy-companion/tests.yml?branch=main&label=tests)](https://github.com/AndyDM9/andy-companion/actions/workflows/tests.yml)
 
-[![Watch Andy on the real robot](https://img.youtube.com/vi/RcNJpHf3omY/maxresdefault.jpg)](https://www.youtube.com/watch?v=RcNJpHf3omY)
+[![Watch Andy on the real robot](https://img.youtube.com/vi/XqnBgo6RnEc/maxresdefault.jpg)](https://www.youtube.com/watch?v=XqnBgo6RnEc)
 
-**[Watch Andy on the real robot](https://www.youtube.com/watch?v=RcNJpHf3omY)** (2:51: the letter, a minute uncut, the glasses)
+**[Watch Andy on the real robot](https://www.youtube.com/watch?v=XqnBgo6RnEc)** (2:51: the letter, a minute uncut, the glasses)
 
 **A small home robot for older adults who live at home, and the family who help.** It reads the letter in your
 hand and looks around the room for your glasses. Built with NVIDIA Nemotron on Nebius
@@ -23,7 +23,7 @@ an anonymous fresh install, the tests and optional model evaluations, with expec
 
 **Status, October 29:** on the robot, Andy read printed letters, found real glasses in each of its five searches
 (informally, not yet the planned 30 tries), ran Tavily research and stopped it on request, and remembered
-where the keys were ([robot test record](docs/live-test.md)). The [video](https://www.youtube.com/watch?v=RcNJpHf3omY) shows the letter, the research and the
+where the keys were ([robot test record](docs/live-test.md)). The [video](https://www.youtube.com/watch?v=XqnBgo6RnEc) shows the letter, the research and the
 glasses on the real robot, each robot shot one uncut take at 1× speed, and
 [some physical checks](docs/judging.md#what-is-still-pending) are still to do. The images below use sample data; the
 search animation is simulation.
