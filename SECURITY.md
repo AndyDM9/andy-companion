@@ -44,6 +44,10 @@ review notes, session references, credentials and household screenshots outside 
 
 ## Known advisories in dependencies
 
+Dependabot alerts were turned on on 2026-10-30. Every open alert that day (68) was in the voice server's lock file
+(`voice/uv.lock`: Pillow and nltk) or the offline eyes' (`local-eyes/uv.lock`), none in Andy's package or the robot
+app; both servers listen on this computer only. They are the findings below, left for after judging.
+
 The October 25 dependency review audited the environment lock files with `pip-audit` and updated
 packages where a fix existed and nothing pinned them. The October 27 judge-entry review does not
 rerun that dependency audit. Recorded findings still open, and why:

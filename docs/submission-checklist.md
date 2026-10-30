@@ -102,7 +102,7 @@ in the same commit that makes it true.
 - [x] `--final` rejects a placeholder video, absent local release tag and app dependency on main before export
 - [x] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually (https://www.youtube.com/watch?v=XqnBgo6RnEc: public, oEmbed checked logged out, 2:51, English captions)
 - [ ] Free judge testing instructions and any required hardware arrangement confirmed through December 23 (judging amended to 12-09 – 12-23)
-- [x] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass (b4094fe; CI green; `--final` passed)
+- [x] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass (the `hackathon-submission` tag, moved last on 2026-10-30 for the camera fix; CI green; `--final` passed, 25 of 25 links)
 - [x] Devpost entry actually submitted and its confirmation checked (a saved draft is not a submission) Submitted by 2026-10-29 23:15 EDT (by the founder, after Claude filled the form); the public page, logged out, shows "Submitted to Nebius x NVIDIA Global AI Hackathon".
 
 The 30 finder trials and brief user sessions below strengthen the evidence; their counts are our

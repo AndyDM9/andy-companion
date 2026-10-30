@@ -20,6 +20,10 @@ Finding things, the weather, reading a letter and research still used their tool
 - **Andy's own note on the turn** (`turn_notes.SEE`): a question about what Andy can see ("what do you see", "can
   you see me", "¿qué ves?"; not a photo, "see you tomorrow" or "let's see") gets a note to call `describe_view`
   first, in that request only, like the clock note. After the morning plan: 8 of 8 tries looked.
+- **Kept in step:** the judges' guided-examples Space was rebuilt from this commit (its page shows a hash of
+  `evals/tools.json`, which the new wording changed), and its letter example answered in plain words afterwards.
+  Andy and its voice server were restarted with the fix; on the robot the next "what do you see" got the note
+  and a camera call.
 - **The suite, one local run each:** 95 of 97 with the wording, 96 of 97 with the note too (chat-5 missed);
   inside the nine-run range. Scorecards in `evals/results/`.
 

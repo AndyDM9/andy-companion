@@ -25,7 +25,7 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 - **Fixed:** after the morning plan, "what do you see?" got a made-up room with no look (7 of 7 replayed). The camera
   tool now says to look first, and Andy's own note on the turn asks for `describe_view`: 8 of 8 looked. The suite
   scored 95 and 96 of 97 in two local runs. On the robot the session had made no tool call after the plan; a restart
-  cleared it, and the voice server was restarted with the fix.
+  cleared it, and the voice server was restarted with the fix; the next question about what Andy saw got the note and a camera call. The judges' Space was rebuilt to match.
 - **Open:** the morning plan's message still stays in the conversation for the rest of the session; every other tool
   tried after it (finding, weather, letters, research) still worked.
 
