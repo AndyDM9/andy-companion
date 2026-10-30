@@ -16,6 +16,12 @@ A reviewer with no context read the public materials as a judge would, ran two g
 - **93.2 to 94.8:** the batches in between averaged 94.2 and 95.1, so the last steps are within run-to-run variation;
   the README and the Devpost text now say so beside the comparison.
 - **The camera note's numbers** now have a scorecard, and say 26 of 30 over three replays, not 8 of 8 (below).
+- **Three suite runs as a Nebius Serverless Job on the code as submitted** (the Devpost answer says each change
+  gets three): 95, 96 and 94 of 97, 95.0 on average; the profile is unchanged since the nine runs of October 28
+  (94.8). The README and testing guide now give both, and no longer call the October 28 code final.
+- **A privacy line made explicit:** "no recordings" stands beside a test-only setting (`ANDY_FINDER_RECORD`) that
+  keeps the camera's pictures for scoring the finder; the README's privacy section now says so, off unless set,
+  with the health check's warning. It is not set on the robot.
 - **Super VL's 18 and 21 of 23** are different trial sets; the README says so. The testing guide's "last verified"
   is October 30, with the date of the nine-run figures. The Devpost text links the live-test checklist.
 

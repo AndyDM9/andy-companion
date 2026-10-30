@@ -24,7 +24,8 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 
 - **Fixed:** after the morning plan, "what do you see?" got a made-up room with no look (7 of 7 replayed). The camera
   tool now says to look first, and Andy's own note on the turn asks for `describe_view`: 26 of 30 looked over three replays, against 1 of 17 without it ([scorecard](../evals/results/camera-after-morning-plan-2026-10-30.json)). The suite
-  scored 95 and 96 of 97 in two local runs. On the robot the session had made no tool call after the plan; a restart
+  scored 95 and 96 of 97 in two local runs, then 95, 96 and 94 in three runs as a Nebius Serverless Job on the code
+  as submitted ([scorecard](../evals/results/2026-10-30-nebius-job-andy-suite-20261030-102005.json)). On the robot the session had made no tool call after the plan; a restart
   cleared it, and the voice server was restarted with the fix; the next question about what Andy saw got the note and a camera call. The judges' Space was rebuilt to match.
 - **Open:** the morning plan's message still stays in the conversation for the rest of the session; every other tool
   tried after it (finding, weather, letters, research) still worked.

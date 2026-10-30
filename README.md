@@ -236,7 +236,7 @@ decides; each catch came from a failure the suite showed, and was measured again
 | A joke's pacing said aloud ("**Setup:** … (a moment of silence)") | The joke comes as words to say ([fun.py](src/andy_companion/fun.py)) | 2 in 15 → 0 in 30 (1 empty reply) |
 | The crisis line left out ("everyone would be better off without me") | The urgent-words net asks for the 988 or 911 sentence, and plays it from a recording if the model can't ([urgent.py](src/andy_companion/urgent.py)) | 2 in 3 → 0 in 15 |
 
-Over the nine runs of the final code the suite averages **94.8 of 97**, against 93.2 over the nine runs earlier that
+Over nine runs of the code of 2026-10-28 the suite averaged **94.8 of 97** (three runs of the code as submitted, after the camera fix: 95, 96, 94, [scorecard](evals/results/2026-10-30-nebius-job-andy-suite-20261030-102005.json)), against 93.2 over the nine runs earlier that
 day, before these catches (the batches in between averaged 94.2 and 95.1: the last steps are within run-to-run variation); what still fails is mostly a photo story's offer, which the judge wants warmer, and single slips that vary from
 run to run ([every run](evals/results/README.md)). An independent review of these catches found five ways they
 misfired, among them crisis words that got the memory note; all were fixed before these runs (CHANGELOG, 2026-10-28).
@@ -289,7 +289,10 @@ judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools (Andy's
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
 
-- **Now: 94.8 of 97 on average** over nine runs of the final code (95, 93, 95; 95, 94, 94; 96, 95, 96: three Nebius
+- **The code as submitted, after the camera fix: 95, 96 and 94 of 97** (95.0 on average), three runs as a Nebius
+  Serverless Job on 2026-10-30 ([scorecard](evals/results/2026-10-30-nebius-job-andy-suite-20261030-102005.json)): a photo story's offer failed in all three, single
+  slips otherwise, none about the camera.
+- **94.8 of 97 on average** over nine runs of the code of 2026-10-28, the same profile (95, 93, 95; 95, 94, 94; 96, 95, 96: three Nebius
   Serverless Jobs on the evening of 2026-10-28, suite 2026-10-28a; [1](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json),
   [2](evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json)). A photo story's memory offer failed 8 of the 9 runs (the judge wants a warmer word before
   Andy reads the story back); an event's reminder offer 5 times; the rest once to three times, among them once a
@@ -376,6 +379,9 @@ model; and, for when the network is down, NVIDIA Cosmos Reason 2 2B, already mea
   health check (`scripts/doctor.py --live`) flags unexpected line formats and known transcript markers,
   and fails if it cannot read the journal (on 2026-10-25
   it found that a package update had added a print the filter didn't know, for ten days; fixed and cleared).
+- **One exception, for testing only:** with `ANDY_FINDER_RECORD` set, the glasses search and each camera look
+  keep their pictures (never the person's words) in a folder, so the tries can be scored; the at-home finder trials used it. It is off
+  unless set, and the health check (`scripts/doctor.py`) warns while it is on.
 - **What Andy keeps,** in owner-only files on its own computer: reminders, facts and moments you asked it
   to remember (moments for 7 days), notes you shared with family, messages and photos family sent
   (photos for 7 days), where you said your things are, moves taught by hand (by their names), your settings, a

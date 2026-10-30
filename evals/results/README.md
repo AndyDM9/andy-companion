@@ -46,6 +46,8 @@ says to look before speaking, and a question about what Andy can see gets Andy's
 [suite-2026-10-30-camera-wording-local.json](suite-2026-10-30-camera-wording-local.json), **95 of 97**; with the note
 too, [suite-2026-10-30-camera-note-local.json](suite-2026-10-30-camera-note-local.json), **96 of 97** (chat-5, a
 missed nudge to call the sister). One run each, inside the nine-run range (93 to 96); no improvement is claimed from it.
+Then three runs as a Nebius Serverless Job on the code as submitted: [2026-10-30-nebius-job-andy-suite-20261030-102005.json](2026-10-30-nebius-job-andy-suite-20261030-102005.json), **95, 96 and 94 of 97**
+(95.0 on average); a photo story's offer failed all three, chat-2, chat-5 and greet-1 once each, nothing about the camera.
 
 ## October 27 publication/history audit
 

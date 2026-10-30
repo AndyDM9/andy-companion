@@ -168,7 +168,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [x] README: setup instructions that work from a fresh clone (cloned from GitHub and checked 2026-10-14; again once public)
 - [x] README: how the NVIDIA models and Token Factory are used, and any other Nebius services
 - [x] Lint for errors (ruff: F, E9, B) passes and runs in CI and the pre-commit hook (2026-10-30)
-- [x] The camera looks before Andy says what it sees, after the morning plan too (26 of 30 tries looked, against 1 of 17; suite 96 of 97, local, 2026-10-30)
+- [x] The camera looks before Andy says what it sees, after the morning plan too (26 of 30 tries looked, against 1 of 17; suite 95, 96 and 94 of 97 as a Serverless Job, 2026-10-30)
 - [x] Publication-history cleanup and recorded pattern/name/media checks completed (October 25 and 27); no unexpected matches within their documented scope. Scan coverage and external-copy limits are in [SECURITY.md](../SECURITY.md); this is not a guarantee about every possible secret or identity
 
 ## Before making the repository public
