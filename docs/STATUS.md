@@ -1,6 +1,6 @@
 # Status
 
-**Last updated 2026-10-29.** Update this file in the same commit as any change it describes.
+**Last updated 2026-10-30.** Update this file in the same commit as any change it describes.
 The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history is in [CHANGELOG.md](../CHANGELOG.md).
 
 ## At a glance
@@ -19,6 +19,11 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M9 | Ship | ✅ Done 2026-10-25 | Public on GitHub (Apache-2.0 in About; secret scanning, push protection and private vulnerability reporting on) after the history rewrite and three best-practice reviews; the demo Space public; the Reachy Mini app published ([andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app)); the doctor and user services; a fresh clone installs and passes. Left for submission: the `hackathon-submission` tag, and the app pinned to it |
 | M10 | Video and submission | ✅ Submitted 2026-10-29 23:15 EDT ([video](https://www.youtube.com/watch?v=XqnBgo6RnEc), tag `hackathon-submission`, [release](https://github.com/AndyDM9/andy-companion/releases/tag/hackathon-submission)) | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
+
+## October 30: a lint check
+
+- Ruff checks every Python file for errors (not style) in its own CI job and in the pre-commit hook; the repository
+  passed as it was. Pyright and bandit over `src/` found nothing to fix.
 
 ## October 29, night: the video public
 

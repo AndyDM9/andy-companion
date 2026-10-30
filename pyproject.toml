@@ -47,6 +47,12 @@ packages = ["src/andy_companion"]
 [tool.hatch.metadata]
 allow-direct-references = true
 
+[tool.ruff.lint]
+# Errors, not style: undefined names, unused imports and variables, syntax errors, and bugbear's likely bugs.
+# zip() without strict= is allowed: its only uses are in tests, mostly pairing neighbours (zip(x, x[1:])).
+select = ["F", "E9", "B"]
+ignore = ["B905"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]

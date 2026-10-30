@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Block a commit when the tests fail, when an env file is staged, or when a key-like string is: Tavily, Nebius,
+# Block a commit when lint finds an error or the tests fail, when an env file is staged, or when a key-like string is: Tavily, Nebius,
 # OpenAI-style and Hugging Face keys, a 64-hex endpoint token after TOKEN= or KEY=, or a private key.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
@@ -11,4 +11,5 @@ if git diff --cached -U0 | grep -E '^\+' | grep -qE '(tvly-[A-Za-z0-9_-]{20,}|v1
   echo "pre-commit: a staged line looks like an API key. Keys live in ~/.config/companion-hackathon/.env." >&2
   exit 1
 fi
+uvx ruff@0.17.3 check -q . || { echo "pre-commit: lint found an error; nothing committed." >&2; exit 1; }
 uv run pytest -q || { echo "pre-commit: tests failed; nothing committed." >&2; exit 1; }

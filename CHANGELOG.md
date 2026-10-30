@@ -3,6 +3,19 @@
 Every change, newest first, grouped by date. Each entry says what changed and why. The plan is in
 [docs/PLAN.md](docs/PLAN.md) and progress in [docs/STATUS.md](docs/STATUS.md).
 
+## 2026-10-30
+
+### A lint check for errors, in CI and before every commit
+
+A last best-practice review of the code and the GitHub repository found no lint step. Ruff now checks every Python
+file for errors, not style: undefined names, unused imports and variables, syntax errors, and bugbear's likely bugs
+(`[tool.ruff.lint]` in `pyproject.toml`). The whole repository already passed, so no code changed. It runs as its own
+CI job and in the pre-commit hook, pinned to ruff 0.17.3. Style rules (formatting, import order) were left off: they
+would have rewritten 66 files on the deadline day.
+
+The same review ran pyright and bandit over `src/`. Every pyright finding read as a false positive (guarded
+`None` values, a star-argument call, missing robot-only imports) and bandit found no high-severity issue.
+
 ## 2026-10-29
 
 ### The judges' guided examples never show a tool call written as text
