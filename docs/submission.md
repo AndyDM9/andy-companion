@@ -110,7 +110,7 @@ and a move taught by hand.
   at once in about 1.8 s, then a strict yes or no about a close-up. On one room photo, zooming in took the search
   from [0 of 9 to 9 of 9](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/zoom-check-2026-10-20-1711.json) (a direction, not a rate).
 - **Seeing offline:** NVIDIA Cosmos Reason 2 8B on the home computer answers the same questions: in 30 simulated
-  searches it pointed at the hidden object [22 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1524-on-small0.35.json) (Super VL 21 on the same trials), less precisely
+  searches it pointed at the hidden object [22 of 23 times](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-25-1524-on-small0.35.json) ([Super VL 21](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-2026-10-20-1852-on-small0.35.json) on the same trials), less precisely
   (1.95° against 0.78°), and never claimed a find that wasn't there; tried on the computer, not yet on the robot.
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
   behaviours plug into it without forking it. What must always hold is enforced in code, not left to the model: the

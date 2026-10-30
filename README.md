@@ -512,7 +512,7 @@ What doesn't work yet, and what our numbers don't show.
   yet.
 - **English and Spanish only.**
 - **The offline eyes are less precise and need a GPU of their own.** In 30 simulated searches on this computer
-  (seed 11, the trials where Super VL pointed 21 of 23 times), Cosmos Reason 2 8B pointed at the duck 22 of 23 times (Super VL 21, inside the same interval), never at
+  (seed 11, the trials where [Super VL pointed 21 of 23 times](evals/results/sim-finder-2026-10-20-1852-on-small0.35.json)), Cosmos Reason 2 8B pointed at the duck [22 of 23 times](evals/results/sim-finder-2026-10-25-1524-on-small0.35.json) (Super VL 21, inside the same interval), never at
   the wrong place, with a median error of 1.95° against Super VL's 0.78°, in 4.8 s against 3.2 s; it fills a 24 GB
   GPU. The 2B model fits beside the voice but pointed 18 of 23 times, three at the wrong place, 3.06°. Neither has
   yet been tried in a spoken turn on the robot with the primary vision service blocked (one robot camera frame

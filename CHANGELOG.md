@@ -24,6 +24,9 @@ A reviewer with no context read the public materials as a judge would, ran two g
   with the health check's warning. It is not set on the robot.
 - **The architecture picture** (README and the Devpost gallery) said "38 tools" for Andy's app; it says 40, as
   the text does, and its description names the camera note. Re-rendered at the same size.
+- **Every number traced to its scorecard:** the suite averages, the robot timings, the finder's interval, the
+  simulation's seeds and wrong-place counts and the scam set's held-out 40 all recompute exactly; Super VL's 21 of 23
+  was the one figure cited without its scorecard, now linked in the README and the Devpost text.
 - **Super VL's 18 and 21 of 23** are different trial sets; the README says so. The testing guide's "last verified"
   is October 30, with the date of the nine-run figures. The Devpost text links the live-test checklist.
 
