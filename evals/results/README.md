@@ -35,6 +35,16 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 | What did the October 26 re-audit verify? | [reaudit-2026-10-26.json](reaudit-2026-10-26.json): installation, software checks, public access, scoped probes and remaining submission gaps; no new physical-accuracy rate |
 | Do saved settings and screen recovery have software checks? | [Settings integrity](settings-integrity-audit-2026-10-27.json), [setup requests](setup-input-audit-2026-10-27.json) and [screen reconnection](screen-reconnection-audit-2026-10-27.json): malformed-file/request handling and simulated browser faults, with current full-suite/publication results. No new physical success rate |
 
+## October 30: the camera after the morning plan
+
+On the robot that morning, after the morning plan, Andy made no tool call in seven turns. Replayed on Token Factory,
+"Andy, what do you see?" after the morning plan got a made-up room with no look in 7 of 7 tries. The camera tool now
+says to look before speaking, and a question about what Andy can see gets Andy's own note to look first
+(`turn_notes.py`): 8 of 8 tries looked. Two local runs of the suite, one each: the tool wording alone,
+[suite-2026-10-30-camera-wording-local.json](suite-2026-10-30-camera-wording-local.json), **95 of 97**; with the note
+too, [suite-2026-10-30-camera-note-local.json](suite-2026-10-30-camera-note-local.json), **96 of 97** (chat-5, a
+missed nudge to call the sister). One run each, inside the nine-run range (93 to 96); no improvement is claimed from it.
+
 ## October 27 publication/history audit
 
 [Publication hygiene audit](publication-hygiene-audit-2026-10-27.json): before the repository went public, links

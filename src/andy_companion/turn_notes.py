@@ -1,4 +1,5 @@
-"""Andy's own note on the person's turn, added before the model answers, for the two memory offers it kept missing.
+"""Andy's own note on the person's turn, added before the model answers, for the two memory offers it kept missing,
+the clock and the camera.
 
 The profile asks three times for a memory offer when someone mentions something coming up with its day, or tells the
 story behind a photo. Nemotron 3.5 Lightning still answered "What was the recital like?" to "Sofia has her piano
@@ -24,6 +25,8 @@ MOMENT = ("[Andy's own check, not something they said: they mentioned something 
           "other question, call remember_moment with what it is and the day, then read its question exactly and wait.]")
 TIME = ("[Andy's own check, not something they said: they asked the time or the date. Call get_today and answer from "
         "what it gives; never say a time or a date it did not give.]")
+SEE = ("[Andy's own check, not something they said: they asked what you can see. Call describe_view and answer from "
+       "what it returns; never describe a view it did not give.]")
 PHOTO = ("[Andy's own check, not something they said: they just told the photo's story. Call remember_fact now "
          "with a short line of it, as they said it, before anything else.]")
 
@@ -52,6 +55,13 @@ _TIME = re.compile(
     r"\b(?:it'?s|is it|today is) (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b(?:.*\btoday\b)?|"
     r"\bqu[eé] hora es\b|\bqu[eé] d[ií]a es(?: hoy)?\b|\ba qu[eé] (?:d[ií]a )?estamos\b|\bcu[aá]l es la fecha\b|"
     r"\bqu[eé] fecha es\b|\bhoy es (?:lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\b")
+# Asking what Andy can see: on 2026-10-30, after the morning plan, "Andy, what do you see?" got a made-up room
+# ("a table with a lamp, a chair") with no look, in every try. Not a photo (describe_photo or describe_view: the model
+# chooses), "see you tomorrow" or "let's see".
+_SEE = re.compile(
+    r"\bwhat (?:do|can|did) you see\b|\bwhat are you (?:looking at|seeing)\b|\bwhat(?:'s| is) in front of you\b|"
+    r"\b(?:can|do) you see (?:me|this|that|anything)\b|\bqu[eé] (?:ves|ve|puedes ver|puede ver)\b|"
+    r"\bqu[eé] est[aá]s? viendo\b|\bme ves\b")
 # Asked for already, or a question, or a no: the model handles these as they are.
 _ASKED = re.compile(
     r"\b(?:remember|remind|forget|note|recuerd\w*|ap[uú]nt\w*|anot\w*|olvid\w*|av[ií]s\w*)\b")
@@ -127,6 +137,8 @@ def note_for(messages: List[Dict[str, Any]]) -> Optional[str]:
         return None
     if _TIME.search(words):
         return TIME
+    if _SEE.search(words) and not _PHOTO.search(words):
+        return SEE
     if any(rule.search(words) for rule in (_ASKED, _QUESTION, _REFUSAL, _REQUEST, _QUOTED)):
         return None
     if len(words.split()) >= 5 and _after_photo(messages[:-1]):

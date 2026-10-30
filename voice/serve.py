@@ -212,7 +212,7 @@ def notes_added(handler_class) -> None:
         noted = turn_notes.with_note(messages)
         if noted is not messages:
             kinds = {turn_notes.PHOTO: "a photo's story", turn_notes.MOMENT: "something coming up",
-                     turn_notes.TIME: "the time or the date"}
+                     turn_notes.TIME: "the time or the date", turn_notes.SEE: "what Andy can see"}
             logger.info("voice: a note was added to the turn (%s)", kinds.get(turn_notes.note_for(messages), "other"))
         return noted
 

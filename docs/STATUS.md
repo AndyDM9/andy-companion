@@ -20,6 +20,15 @@ The plan and its milestones are in [PLAN.md](PLAN.md); each milestone's history 
 | M10 | Video and submission | ✅ Submitted 2026-10-29 23:15 EDT ([video](https://www.youtube.com/watch?v=XqnBgo6RnEc), tag `hackathon-submission`, [release](https://github.com/AndyDM9/andy-companion/releases/tag/hackathon-submission)) | The shot list ([video.md](video.md), 2:56 with a 72 s uncut take), the Devpost text ([submission.md](submission.md), about 2,000 words, revised after two judge's-eye reads on 2026-10-25) and the feedback ([feedback.md](feedback.md), final 2026-10-25) ready; the README's Limitations and Path to shipping, every Devpost number linked (2026-10-25); the gallery planned, its four robot photos the founder's; the Devpost draft saved 2026-10-25 (devpost.com/software/andy-b45hds: story, tags, links, every answer, thumbnail, five captioned images; not submitted: the video and the robot photos to add); filming planned by the founder for the evening of 2026-10-28 |
 
 
+## October 30: the camera after the morning plan
+
+- **Fixed:** after the morning plan, "what do you see?" got a made-up room with no look (7 of 7 replayed). The camera
+  tool now says to look first, and Andy's own note on the turn asks for `describe_view`: 8 of 8 looked. The suite
+  scored 95 and 96 of 97 in two local runs. On the robot the session had made no tool call after the plan; a restart
+  cleared it, and the voice server was restarted with the fix.
+- **Open:** the morning plan's message still stays in the conversation for the rest of the session; every other tool
+  tried after it (finding, weather, letters, research) still worked.
+
 ## October 30: a lint check
 
 - Ruff checks every Python file for errors (not style) in its own CI job and in the pre-commit hook; the repository

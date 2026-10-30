@@ -5,6 +5,25 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-30
 
+### Andy looks before it says what it sees, after the morning plan too
+
+On the robot that morning, every answer after the morning plan came back without a tool call, long, with the greeting
+again; a restart cleared it, since the plan is said once a day. The voice log showed no tool call in seven turns, and
+none of the cause was another program: only Andy's app spoke. Replayed on Token Factory with the same sequence, the
+morning plan's message ("Greet them warmly… read this plan exactly as written") stayed in the conversation, and
+"Andy, what do you see?" then got a made-up room ("a table with a lamp, a chair") with no look in 7 of 7 tries.
+Finding things, the weather, reading a letter and research still used their tools (3 of 3 each).
+
+- **The camera tool's description** now says to call it immediately, before speaking, never to describe a view
+  without it, never to ask first what to describe, and never to say there is no camera (as `find_object` and
+  `read_letter` already did). Without the morning plan: 15 of 15 tries looked, against 2 of 15 before.
+- **Andy's own note on the turn** (`turn_notes.SEE`): a question about what Andy can see ("what do you see", "can
+  you see me", "¿qué ves?"; not a photo, "see you tomorrow" or "let's see") gets a note to call `describe_view`
+  first, in that request only, like the clock note. After the morning plan: 8 of 8 tries looked.
+- **The suite, one local run each:** 95 of 97 with the wording, 96 of 97 with the note too (chat-5 missed);
+  inside the nine-run range. Scorecards in `evals/results/`.
+
+
 ### A lint check for errors, in CI and before every commit
 
 A last best-practice review of the code and the GitHub repository found no lint step. Ruff now checks every Python

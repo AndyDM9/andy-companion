@@ -115,7 +115,7 @@ def test_every_case_in_the_suites_that_gets_a_note_is_one_meant_to():
         for case in json.loads((ROOT / "evals" / name).read_text())["cases"]:
             if turn(case["say"], case.get("history", [])):
                 noted.append(case["id"])
-    assert noted == ["day-1", "day-2", "moment-1", "photo-2"]
+    assert noted == ["day-1", "day-2", "moment-1", "eyes-1", "photo-2"]
 
 
 @pytest.fixture(scope="module")
@@ -160,4 +160,19 @@ def test_asking_the_time_or_the_date_gets_the_clock_note(words):
                                    "¿Qué pasó un día como hoy?", "What day is Sofia's recital?",
                                    "What time is it? My chest hurts."])            # urgent words: the net's, no note
 def test_other_questions_about_days_get_no_clock_note(words):
+    assert turn(words) is None
+
+
+@pytest.mark.parametrize("words", ["Andy, what do you see?", "What can you see right now?", "What are you looking at?",
+                                   "What's in front of you?", "Can you see me?", "Do you see this?",
+                                   "Andy, ¿qué ves?", "¿Qué puede ver?", "¿Me ves?"])
+def test_asking_what_andy_sees_gets_the_camera_note(words):
+    # 2026-10-30: after the morning plan, "Andy, what do you see?" got a made-up room with no look, every try
+    assert turn(words) == turn_notes.SEE
+
+
+@pytest.mark.parametrize("words", ["See you tomorrow, Andy.", "Let's see what's on today.", "What do you think?",
+                                   "What do you see in this photo?", "¿Qué ves en la foto?", "I see.",
+                                   "Can you see me? I can't breathe."])                # urgent words: the net's, no note
+def test_other_seeing_words_get_no_camera_note(words):
     assert turn(words) is None
