@@ -24,7 +24,7 @@ in the same commit that makes it true.
 
 - [x] Final exporter requires exact public-tag commit and matching published app package metadata; missing/malformed/unavailable/mismatched metadata or failed links produce no final fields. 44 new cases, 65 exporter cases and full CPU suite pass; drafts unchanged
 - [x] Release-check source published and anonymously verified; fresh locked clone 1,669 / 16 skipped, hosted CPU/wheel/SDK checks pass, 247-commit source secrets scan clean and 380 file targets/34 fragments resolve
-- [ ] Actual final tag/app publication verified by the gate once video, local tag and app pin are ready; this software test does not complete release or submission
+- [x] Actual final tag/app publication verified by the gate once video, local tag and app pin are ready; this software test does not complete release or submission Done 2026-10-29: tag `hackathon-submission` = b4094fe, app Space pinned to it, `devpost.py --ref hackathon-submission --final` passed (25/25 links).
 
 - [x] Judge guide leads with actions/expected results and maps all four criteria to scoped evidence; README fixes quoted-key instructions and distinguishes pending footage/physical checks
 - [x] Anonymous repository public/Apache-2.0, ten sample-page layouts/eight guided model paths and three protocol refusals verified; all 224 tracked Python files parse and isolated wheel passes
@@ -96,14 +96,14 @@ in the same commit that makes it true.
 - [x] All 23 submission links open after moving the FTC citation to a verified official HTML release; the figure's wording matches its approximate precision
 - [x] Video metadata checker and 17 regressions available; short/silent simulation correctly rejected without claiming to inspect hardware content
 - [x] Actual final cut/raw hardware clip pass metadata checks and manual content/rights/translation review (2026-10-29: `check_video.py` passes, 171.0 s with a 70.4 s uncut hardware clip; watched and approved by the founder; all speech English)
-- [ ] Saved Devpost draft reconciled with the current repository export after filming; no signed-in connected browser was available for this audit
+- [x] Saved Devpost draft reconciled with the current repository export after filming; no signed-in connected browser was available for this audit Done 2026-10-29: the draft's story, links, video, gallery and thumbnail replaced from the final export.
 - [x] Rules, FAQ, deadline, judging criteria and prize-combination rule rechecked at the official sources
 - [x] Devpost export includes testing instructions distinguishing sample preview from author-funded robot access
 - [x] `--final` rejects a placeholder video, absent local release tag and app dependency on main before export
 - [x] Final video URL supplied, visibility/duration/hardware footage/English translation/rights verified manually (https://www.youtube.com/watch?v=RcNJpHf3omY: public, oEmbed checked logged out, 2:51, English captions)
 - [ ] Free judge testing instructions and any required hardware arrangement confirmed through December 23 (judging amended to 12-09 – 12-23)
-- [ ] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass
-- [ ] Devpost entry actually submitted and its confirmation checked (a saved draft is not a submission)
+- [x] Final tested revision committed, tagged, published and pinned in the app; `--final` and public links pass (b4094fe; CI green; `--final` passed)
+- [x] Devpost entry actually submitted and its confirmation checked (a saved draft is not a submission) Submitted by 2026-10-29 23:15 EDT (by the founder, after Claude filled the form); the public page, logged out, shows "Submitted to Nebius x NVIDIA Global AI Hackathon".
 
 The 30 finder trials and brief user sessions below strengthen the evidence; their counts are our
 plan, not explicit hackathon eligibility thresholds. An extra browser AI sandbox is optional; the
@@ -152,7 +152,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
 - [x] Current text profile evaluated locally: 93, 94 and 94 of 97, input/code hashes recorded; physical trials remain separate
 - [x] The final Serverless Jobs of the current profile: 94.8 of 97 on average over nine runs, 93 to 96 (three Jobs on the final code of 2026-10-28, suite 2026-10-28a; [1](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json), [2](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json)); earlier runs kept, that afternoon's 92, 93 and 94 among them
-- [ ] Video and real-robot photographs added after filming; no placeholder presented as completed evidence
+- [x] Video and real-robot photographs added after filming; no placeholder presented as completed evidence Video public; three real-robot stills from the footage are gallery images 1-3 and the thumbnail (Devpost only, not in the repository).
 
 ## Stage one: pass/fail
 
@@ -191,7 +191,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       logged out, writes 403
 - [x] The app published, public: [andydm/andy-companion-app](https://huggingface.co/spaces/andydm/andy-companion-app) (2026-10-25, Pollen's checks passed with a fresh install
       from GitHub; published from a clean copy of the tracked files, so no build leftovers or git history)
-- [ ] At submission: pin the app's `andy-companion` dependency to the `hackathon-submission` tag instead
+- [x] At submission: pin the app's `andy-companion` dependency to the `hackathon-submission` tag instead Done 2026-10-29, and uploaded to the app Space.
       of `main`, so an install during judging gets exactly what was submitted
 
 ## The video
@@ -217,10 +217,10 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 
 ## The Devpost form
 
-- [ ] **Before pasting the final text:** the letter (live-test 3k, 3l), the research streamed to the TV (3e) and the
+- [x] **Before pasting the final text:** the letter (live-test 3k, 3l), the research streamed to the TV (3e) and the Done 2026-10-29: 3e, 3l and 3t recorded from the footage; the photo story (3y) was not filmed and the text does not claim it on video.
       photo story (3y) each recorded as tried on the robot in `docs/live-test.md`; The draft describes planned filming (the evening of October 28); it can describe completed footage only after recording. A moment that doesn't work leaves the video and the text says "not yet tried on the
       robot".
-- [ ] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission,
+- [x] Paste from `uv run python scripts/devpost.py` (the draft: evidence links at `main`); at submission, Done 2026-10-29 with `--ref hackathon-submission --final`.
       `uv run python scripts/devpost.py --ref hackathon-submission --final` once the tag is pushed, and paste again.
       First commit the final text, feedback and app pin, validate, then tag/push that commit. Export from
       that unchanged snapshot; the command rejects files that differ from the tag.
@@ -238,7 +238,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       the video link, and the founder's robot photos as images 1 to 3 (then the thumbnail becomes photo 1).
       Devpost's template headings were found above the story and removed; the preview renders every heading, list
       and link
-- [ ] **The gallery**, at most eight images, the real robot first, every image with a one-sentence caption (judges
+- [x] **The gallery**, at most eight images, the real robot first, every image with a one-sentence caption (judges Done 2026-10-29: the letter, the glasses and the research on the real robot first, then the five screens.
       seldom look past the first three or four). The thumbnail is image 1, 3:2, at most 5 MB.
       1. *(founder)* Andy beside the TV, a letter held up: "Andy reads the letter in your hand; the TV shows it in large print."
       2. *(founder)* Andy's head turned to real glasses: "Asked where the glasses are, Andy looks around, looks closer, and points."
@@ -251,19 +251,19 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       Only if live-test 3cc passed: a grandchild moving Andy's antennas, "A move taught by hand, played back by name."
       The screens come from the demo (sample data only); the robot's photos show no one who hasn't agreed, and no
       third-party logos or screens.
-- [ ] "Built with": every sponsor tool (up to 25 tags; the list is in [submission.md](submission.md))
-- [ ] Feedback from [feedback.md](feedback.md)
+- [x] "Built with": every sponsor tool (up to 25 tags; the list is in [submission.md](submission.md))
+- [x] Feedback from [feedback.md](feedback.md) (the form's feedback questions, answered 2026-10-25)
 
-- [ ] Project description
-- [ ] Track: Physical AI
-- [ ] "Built with" lists Nebius Token Factory, Nemotron and the other tools
-- [ ] Feedback on Token Factory, AI Cloud and the NVIDIA tools (mandatory; also the Most Valuable
+- [x] Project description
+- [x] Track: Physical AI
+- [x] "Built with" lists Nebius Token Factory, Nemotron and the other tools
+- [x] Feedback on Token Factory, AI Cloud and the NVIDIA tools (mandatory; also the Most Valuable
       Feedback prize)
-- [ ] What was significantly updated during the submission period (if any prior work is used)
+- [x] What was significantly updated during the submission period (if any prior work is used)
 - [x] City Winner Awards: not applicable (Miami is not one of the 20 listed cities)
-- [ ] Submitted before 2026-10-30, 10:00 PT (target 2026-10-27)
-- [ ] The submitted commit tagged `hackathon-submission`, and the tag linked on the form
-- [ ] **A GitHub Release from that tag** (a bare tag doesn't show in the repository's Releases box):
+- [x] Submitted before 2026-10-30, 10:00 PT (target 2026-10-27) Submitted 2026-10-29 night, before the 2026-10-30 10:00 PT deadline.
+- [x] The submitted commit tagged `hackathon-submission`, and the tag linked on the form The tag is the form's code link.
+- [x] **A GitHub Release from that tag** (a bare tag doesn't show in the repository's Releases box): https://github.com/AndyDM9/andy-companion/releases/tag/hackathon-submission
       Order (the final gate compares the published app with the tagged one): the video link and README edits, the app
       pin, records and tests, commit and push; then tag that commit and push the tag; then upload
       `reachy_app/pyproject.toml` to the app Space; then the release; then `devpost.py --ref hackathon-submission --final`.
@@ -274,7 +274,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
       upload `docs/images/social-preview.png` (1280×640, made 2026-10-28: the name, the one line, the **Be careful**
       card from the sample screen, labelled as such), so a shared link shows Andy instead of GitHub's text card.
       Swap in a robot photo later if one makes a better card
-- [ ] The live rules page re-read the day before submitting (amendments take effect when posted)
+- [x] The live rules page re-read the day before submitting (amendments take effect when posted) Re-read 2026-10-29 23:00 ET: judging moved to 12-09 – 12-23 ([rules-compliance.md](rules-compliance.md)).
 
 ## Through judging (to 2026-12-23, as amended)
 

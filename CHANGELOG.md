@@ -5,6 +5,19 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### Submitted to the hackathon
+
+The entry was submitted on Devpost by 2026-10-29 23:15 EDT, before the 2026-10-30 10:00 PT deadline. The public page, checked
+logged out, shows "Submitted to Nebius x NVIDIA Global AI Hackathon" with the video.
+
+The form now carries:
+- the final text from the `hackathon-submission` tag (b4094fe), with the code link pointing at the tag;
+- the video and the guided-examples Space as the working demo;
+- three stills of the real robot from the footage as gallery images 1 to 3 and the thumbnail.
+
+The [GitHub release](https://github.com/AndyDM9/andy-companion/releases/tag/hackathon-submission) is out, and the app
+Space installs the tag. Judges should use the tag; later commits on `main` only update the record.
+
 ### The video is public, and the entry readied for final submission
 
 - **The video:** [https://www.youtube.com/watch?v=RcNJpHf3omY](https://www.youtube.com/watch?v=RcNJpHf3omY), 2:51, public on YouTube with English captions. It shows:
