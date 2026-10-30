@@ -1,4 +1,4 @@
-# Andy
+# Hey Andy
 
 [![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-1c5244)](LICENSE)
 [![Built for: the Nebius x NVIDIA hackathon, Physical AI](https://img.shields.io/badge/hackathon-Physical%20AI%20track-23324f)](https://nebiusglobalaihackathon.devpost.com/)
