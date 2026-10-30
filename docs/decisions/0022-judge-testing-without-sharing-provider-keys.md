@@ -6,7 +6,7 @@
 
 The founder asked whether judges should use the author's LLM API. The public Space is a sample
 screen preview and does not call a model. The official rules exempt Physical AI from a hosted-demo
-URL, but require free working-project testing access through December 15 and permit hardware requests.
+URL, but require free working-project testing access through December 15 (amended: December 23) and permit hardware requests.
 Requiring judges to buy their own inference credits is not our required access path.
 
 ## Options

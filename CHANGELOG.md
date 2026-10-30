@@ -5,6 +5,13 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-30
 
+### Dates follow the extended judging (to December 23)
+
+Judging was extended to December 9–23. The live-demo request form still offered demonstrations "through
+2026-12-15"; it now says 2026-12-23. The judges' guided bill was due December 18, chosen to fall after the old end of
+judging, so it would have read as overdue to a judge trying it from the 19th; it is due January 8, 2027. The plan's
+timeline and decisions 0010 (Hugging Face PRO for the judges' Space) and 0022 (testing access) say December 23.
+
 ### The project is called Hey Andy; the robot is still Andy
 
 The Devpost project name is now "Hey Andy", and the video's YouTube title begins "Hey Andy:". The robot keeps its

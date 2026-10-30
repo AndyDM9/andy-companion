@@ -274,7 +274,7 @@ No new features: reviews of how judges see the entry, and the fixes they found.
 | By 2026-10-22 | **A complete draft submitted** on Devpost (the early eligibility check). *Missed; the draft was saved on 2026-10-25 (B65), to submit with the video* | [submission.md](submission.md), [feedback.md](feedback.md) |
 | 2026-10-24 to 10-26 | Filming to the shot list; YouTube Public, "not made for kids", captions | [video.md](video.md) |
 | 2026-10-27 | The live rules page re-read; the commit tagged `hackathon-submission`; submitted; posts | [rules-compliance.md](rules-compliance.md) |
-| 2026-12-01 to 12-15 | Judging: the repository public at the tag; the robot ready if physical access is asked for | |
+| 2026-12-09 to 12-23 (amended from 12-01 to 12-15) | Judging: the repository public at the tag; the robot ready if physical access is asked for | |
 
 ### Round 12 (Codex), the October 26 project review
 

@@ -42,7 +42,7 @@ so it can't drift from it.
 ## Amended 2026-10-25: a Docker Space needs Hugging Face PRO
 
 Creating the Space was refused (402): Hugging Face now hosts Docker and Gradio Spaces on its free CPU only for PRO
-subscribers; static Spaces stay free. The founder chose PRO (about $9 a month, through judging to 2026-12-15) over a
+subscribers; static Spaces stay free. The founder chose PRO (about $9 a month, through judging to 2026-12-23, as amended) over a
 static snapshot of the pages (free, but hours of new work in the last week, and a recording instead of the real
 server) or no Space. The Space is uploaded private first, for the founder to check, and made public with the
 repository. The Reachy Mini app is a static Space, so it needs no subscription.
