@@ -1,0 +1,57 @@
+{
+ "name": "camera after the morning plan",
+ "ran": "2026-10-30T10:09:10",
+ "model": "nvidia/Nemotron-3_5-Lightning",
+ "scope": "Text replay on Nebius Token Factory of the conversation after the morning plan, with Andy's real profile and tools; counts whether the reply called describe_view. No camera, robot or replies kept.",
+ "tries_per_question": 5,
+ "results": {
+  "without the note": {
+   "looked": 1,
+   "of": 10,
+   "per_question": {
+    "Andy, what do you see?": "0 of 5",
+    "What can you see right now?": "1 of 5"
+   }
+  },
+  "with the note": {
+   "looked": 7,
+   "of": 10,
+   "per_question": {
+    "Andy, what do you see?": "2 of 5",
+    "What can you see right now?": "5 of 5"
+   }
+  }
+ },
+ "artifacts_sha256": {
+  "profile": "77c6226a2ff1a5d0a4fd344bd74e43e4e58f256a576dae5a9166c392017c5e6f",
+  "tools": "a177f0d09253beeeecc218ad52c8261ad75f6100187d4a44f6f0faa120aa4bb9",
+  "turn_notes": "432b160e2feba370d002fc5c9c5ef6c1e47798ce75509b284bda983f352a6ec3"
+ },
+ "same_day_replays_not_kept_per_try": {
+  "note": "Two earlier replays the same morning, counts only, with the same profile, tools and note (one used the morning's own plan text): the first is the 7 of 7 without a look that found the fault.",
+  "without the note": {
+   "looked": 0,
+   "of": 7
+  },
+  "with the note": [
+   {
+    "looked": 8,
+    "of": 8
+   },
+   {
+    "looked": 11,
+    "of": 12
+   }
+  ]
+ },
+ "all_replays": {
+  "without the note": {
+   "looked": 1,
+   "of": 17
+  },
+  "with the note": {
+   "looked": 26,
+   "of": 30
+  }
+ }
+}

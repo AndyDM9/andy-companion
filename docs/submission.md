@@ -79,7 +79,7 @@ only what you ask it to keep.
 
 Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three interactions bring the
 camera, moving body and TV together. [The video](https://www.youtube.com/watch?v=XqnBgo6RnEc) shows all three on the real robot, each robot shot one uncut
-take; each interaction's test status is in the repository's live-test checklist:
+take; each interaction's test status is in the repository's [live-test checklist](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/live-test.md):
 
 - **"Can you read this for me?"** You hold up a letter. Andy reads it and the TV shows it in large print. If the
   page asks for a fee or gift cards, or rushes you, code, not the model, puts **Be careful** first: "Don't call or
@@ -104,7 +104,7 @@ and a move taught by hand.
 - **At home:** NVIDIA Parakeet TDT 0.6B v3 and Qwen3-TTS on the home computer's GPU, so your voice never leaves the
   house, only words do; Silero VAD and Smart Turn v3.2, Vosk, Tesseract and YuNet on its CPU; and NVIDIA Cosmos
   Reason 2 for local vision; the conversation still calls Token Factory.
-- **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 38 of Andy's own tools, plus Pollen's two for checking or cancelling a running task; NVIDIA Nemotron 3
+- **Thinking on Nebius Token Factory:** NVIDIA Nemotron 3.5 Lightning talks and calls 34 of Andy's own tools, plus six of Pollen's (following a face, staying still, sleep, forgetting a fact, checking or cancelling a running task); NVIDIA Nemotron 3
   Ultra takes hard questions and judges the tests. Zero data retention is on.
 - **Seeing:** NVIDIA Nemotron 3.5 Super VL on Token Factory reads each of four views as six zoomed-in parts, all 24
   at once in about 1.8 s, then a strict yes or no about a close-up. On one room photo, zooming in took the search
@@ -150,7 +150,7 @@ that source without false alarms. About [$17 per 1,000 checks](https://github.co
   but it sometimes wrote a tool call out as text, skipped a memory offer the profile asked for three times, and said a
   tool's own reasoning aloud. Each is now caught in code: the written call is made, a one-line note on the turn asks
   for the offer, and tools give words to say. Over nine runs as Nebius Serverless Jobs the suite went from 93.2 to
-  94.8 of 97 on average ([decisions 0043 to 0045](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/README.md)).
+  94.8 of 97 on average, with batches of 94.2 and 95.1 in between, so the last steps are within run-to-run variation ([decisions 0043 to 0045](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/decisions/README.md)).
 
 ### Accomplishments that we're proud of
 

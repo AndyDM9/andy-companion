@@ -40,7 +40,9 @@ on 2026-10-20, as everywhere else in the repository; nothing else in any scoreca
 On the robot that morning, after the morning plan, Andy made no tool call in seven turns. Replayed on Token Factory,
 "Andy, what do you see?" after the morning plan got a made-up room with no look in 7 of 7 tries. The camera tool now
 says to look before speaking, and a question about what Andy can see gets Andy's own note to look first
-(`turn_notes.py`): 8 of 8 tries looked. Two local runs of the suite, one each: the tool wording alone,
+(`turn_notes.py`): over three replays 26 of 30 tries looked, against 1 of 17 without it
+([camera-after-morning-plan-2026-10-30.json](camera-after-morning-plan-2026-10-30.json): the saved replay, 7 of 10, with
+"Andy, what do you see?" 2 of 5, and the counts of the other two). A large help, not a guarantee. Two local runs of the suite, one each: the tool wording alone,
 [suite-2026-10-30-camera-wording-local.json](suite-2026-10-30-camera-wording-local.json), **95 of 97**; with the note
 too, [suite-2026-10-30-camera-note-local.json](suite-2026-10-30-camera-note-local.json), **96 of 97** (chat-5, a
 missed nudge to call the sister). One run each, inside the nine-run range (93 to 96); no improvement is claimed from it.

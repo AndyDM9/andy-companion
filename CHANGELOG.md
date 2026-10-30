@@ -5,6 +5,21 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-30
 
+### Claims corrected after an independent judge's-eye review
+
+A reviewer with no context read the public materials as a judge would, ran two guided examples and a fresh clone
+(2,144 passed), and found nothing broken; it found wording that said more than the evidence:
+- **Tools:** "38 of Andy's own, plus Pollen's two" is 34 of Andy's own and six of Pollen's (40 in all, as Andy's own
+  start-up log lists them); the suite's 38 are Andy's 34 and four of Pollen's. README and Devpost text corrected.
+- **The glasses' five searches** on the README's first screen now say when (October 28 and 29) and that October 25
+  missed twice first, as the Devpost text and the test record already did.
+- **93.2 to 94.8:** the batches in between averaged 94.2 and 95.1, so the last steps are within run-to-run variation;
+  the README and the Devpost text now say so beside the comparison.
+- **The camera note's numbers** now have a scorecard, and say 26 of 30 over three replays, not 8 of 8 (below).
+- **Super VL's 18 and 21 of 23** are different trial sets; the README says so. The testing guide's "last verified"
+  is October 30, with the date of the nine-run figures. The Devpost text links the live-test checklist.
+
+
 ### Andy looks before it says what it sees, after the morning plan too
 
 On the robot that morning, every answer after the morning plan came back without a tool call, long, with the greeting
@@ -19,7 +34,9 @@ Finding things, the weather, reading a letter and research still used their tool
   `read_letter` already did). Without the morning plan: 15 of 15 tries looked, against 2 of 15 before.
 - **Andy's own note on the turn** (`turn_notes.SEE`): a question about what Andy can see ("what do you see", "can
   you see me", "¿qué ves?"; not a photo, "see you tomorrow" or "let's see") gets a note to call `describe_view`
-  first, in that request only, like the clock note. After the morning plan: 8 of 8 tries looked.
+  first, in that request only, like the clock note. After the morning plan, over three replays: 26 of 30 tries
+  looked, against 1 of 17 without it (the first replay 8 of 8; the saved one 7 of 10, where "Andy, what do you
+  see?" looked 2 of 5; the third 11 of 12). It helps a great deal; it is not a guarantee.
 - **Kept in step:** the judges' guided-examples Space was rebuilt from this commit (its page shows a hash of
   `evals/tools.json`, which the new wording changed), and its letter example answered in plain words afterwards.
   Andy and its voice server were restarted with the fix; on the robot the next "what do you see" got the note

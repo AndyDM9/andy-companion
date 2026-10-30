@@ -22,7 +22,7 @@ robot, and keeps no recordings or transcripts: only what you ask it to keep.
 an anonymous fresh install, the tests and optional model evaluations, with expected results and limits.
 
 **Status, October 29:** on the robot, Andy read printed letters, found real glasses in each of its five searches
-(informally, not yet the planned 30 tries), ran Tavily research and stopped it on request, and remembered
+on October 28 and 29 (informally, not yet the planned 30 tries; on October 25 it missed twice first), ran Tavily research and stopped it on request, and remembered
 where the keys were ([robot test record](docs/live-test.md)). The [video](https://www.youtube.com/watch?v=XqnBgo6RnEc) shows the letter, the research and the
 glasses on the real robot, each robot shot one uncut take at 1× speed, and
 [some physical checks](docs/judging.md#what-is-still-pending) are still to do. The images below use sample data; the
@@ -170,7 +170,7 @@ microphones.
 
 | What it does | Model | Runs on | Measured |
 |---|---|---|---|
-| Every turn: conversation, and 40 tools: 38 of Andy's own and Pollen's two for checking or cancelling a running task | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
+| Every turn: conversation, and 40 tools: 34 of Andy's own and six of Pollen's (following a face, staying still, sleep, forgetting a fact, checking or cancelling a running task) | NVIDIA **Nemotron 3.5 Lightning** | Token Factory | first sound a median 1.06 s after your words (54 turns on the robot) |
 | Eyes: what's in view, family photos, finding things | NVIDIA **Nemotron 3.5 Super VL** | Token Factory | zoomed in, the search went from 0 of 9 to 9 of 9 at the desk |
 | Hard questions, and the judge of the tests | NVIDIA **Nemotron 3 Ultra** | Token Factory | the scam check: 58 of 60 caught, none of 60 ordinary flagged |
 | A second check of the person's words, for crisis phrasings the word list misses | NVIDIA **Nemotron 3.5 Content Safety** | Serverless Endpoint (our vLLM) | 7 of 8 held-out phrasings, no false alarm |
@@ -214,7 +214,7 @@ and Andy's search in Pollen's MuJoCo simulation. The details, and why each model
   either model.
 - **The finder tested in simulation, as Serverless Jobs** ([decision 0013](docs/decisions/0013-the-finder-tested-in-simulation.md)):
   Pollen's MuJoCo scene with things placed at random, Andy's own search on what a virtual eye sees, scored against
-  the scene's truth. Two jobs, 30 trials each, with a glasses-sized duck: zoomed in with the closer look, pointed at
+  the scene's truth. Two jobs, 30 trials each, with a glasses-sized duck (a different set of trials from the Cosmos comparison below, where Super VL pointed 21 of 23): zoomed in with the closer look, pointed at
   it 18 of 23 times with **no false find in 7** (error 0.76°); the old way 19 of 23, but **3 false finds in 7**
   (error 2.73°): the closer look costs one find in 23 and removes every false one ([on](evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json),
   [off](evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json)).
@@ -231,13 +231,13 @@ decides; each catch came from a failure the suite showed, and was measured again
 | A tool call written out as text (`<tool_call> <function=get_today>…`), so the turn did nothing | The voice server makes the call when it names a tool Andy has, with that tool's own parameters ([tool_text.py](src/andy_companion/tool_text.py)) | 4 in 9 → 0 in 36 (3 empty replies, cause not recorded) |
 | A memory offer missed: "Sofia has her recital on Thursday" answered with "What was the recital like?" | A note in code on that turn, so the offer is prepared first; nothing is kept without a yes ([turn_notes.py](src/andy_companion/turn_notes.py)) | 6 in 12 → 1 in 33 |
 | A time said without asking the clock ("The current time is 10:15 AM.") | The same note on a time or date question, so the clock is asked first ([turn_notes.py](src/andy_companion/turn_notes.py)) | 1 in 27 → 0 in 9; 20 of 20 local tries asked the clock |
-| "What do you see?" after the morning plan answered with a made-up room, with no look | The same note on a question about what Andy can see, so the camera looks first ([turn_notes.py](src/andy_companion/turn_notes.py)) | 7 of 7 tries without a look → 8 of 8 looked (Token Factory, 2026-10-30) |
+| "What do you see?" after the morning plan answered with a made-up room, with no look | The same note on a question about what Andy can see, so the camera looks first ([turn_notes.py](src/andy_companion/turn_notes.py)) | 1 of 17 tries looked → 26 of 30, three replays on Token Factory, 2026-10-30 ([scorecard](evals/results/camera-after-morning-plan-2026-10-30.json)) |
 | A tool's reasoning said aloud ("Since this is spoken content, not a held-up letter…"), and a quoted "yes please" answered with "I've noted that" | The tool gives the words to say, never its reasons ([consent.py](src/andy_companion/consent.py)) | the nine permission cases: 6, 5, 7 of 9 → 9, 9, 9 |
 | A joke's pacing said aloud ("**Setup:** … (a moment of silence)") | The joke comes as words to say ([fun.py](src/andy_companion/fun.py)) | 2 in 15 → 0 in 30 (1 empty reply) |
 | The crisis line left out ("everyone would be better off without me") | The urgent-words net asks for the 988 or 911 sentence, and plays it from a recording if the model can't ([urgent.py](src/andy_companion/urgent.py)) | 2 in 3 → 0 in 15 |
 
 Over the nine runs of the final code the suite averages **94.8 of 97**, against 93.2 over the nine runs earlier that
-day; what still fails is mostly a photo story's offer, which the judge wants warmer, and single slips that vary from
+day, before these catches (the batches in between averaged 94.2 and 95.1: the last steps are within run-to-run variation); what still fails is mostly a photo story's offer, which the judge wants warmer, and single slips that vary from
 run to run ([every run](evals/results/README.md)). An independent review of these catches found five ways they
 misfired, among them crisis words that got the memory note; all were fixed before these runs (CHANGELOG, 2026-10-28).
 
@@ -284,7 +284,7 @@ only, in memory; never the words. In English or Spanish, like the household.
 ![Under the hood (sample turns)](docs/images/hood.png)
 
 **The conversation suite** ([evals/](evals/)): 97 spoken situations in 22 areas, English and Spanish,
-judged by NVIDIA Nemotron 3 Ultra. The model gets Andy's 38 tools and their real descriptions; Pollen's two task-control tools are outside this suite
+judged by NVIDIA Nemotron 3 Ultra. The model gets the profile's 38 tools (Andy's 34 and four of Pollen's) with their real descriptions; Pollen's two task-control tools are outside this suite
 ([evals/tools.json](evals/tools.json), written from the robot's code). Where a case needs a tool, what
 Andy says with its answer is judged too; words that must never be said (a scam letter's phone number)
 are checked in code, not by the judge.
