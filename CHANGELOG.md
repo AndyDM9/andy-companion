@@ -27,6 +27,12 @@ A reviewer with no context read the public materials as a judge would, ran two g
 - **Every number traced to its scorecard:** the suite averages, the robot timings, the finder's interval, the
   simulation's seeds and wrong-place counts and the scam set's held-out 40 all recompute exactly; Super VL's 21 of 23
   was the one figure cited without its scorecard, now linked in the README and the Devpost text.
+- **"Final code"** no longer names the October 28 code where a page gives the current state (the scorecard
+  index, STATUS at a glance, the testing guide's table, the checklist); dated history keeps its words.
+- **What was tried on the robot, said exactly:** the Devpost text's "(tried on the robot)" could be read as covering
+  a daily reminder, a photo story's spoken half and sharing by voice, which the robot test record has not ticked; it
+  now lists what was tried and what was not. The record's letter row (3l) said "partial" beside its own note of the
+  filmed October 29 success; it says ✓.
 - **Super VL's 18 and 21 of 23** are different trial sets; the README says so. The testing guide's "last verified"
   is October 30, with the date of the nine-run figures. The Devpost text links the live-test checklist.
 

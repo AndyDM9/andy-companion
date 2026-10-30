@@ -94,10 +94,11 @@ take; each interaction's test status is in the repository's [live-test checklist
 
 Andy also checks a message you only mention ("a man called saying my grandson is in jail"), keeps reminders in your
 words, every day if you like ("every morning at eight, take my pills": a reminder, never a dose), turns a
-family photo into a story, speaks English and Spanish, and waves its antennas back when you wave (tried on the
-robot). Family see only what you share, and Andy tells you who looked. It remembers where you put your keys if you
-say yes (tried on the robot). New and tested in code, not yet tried on the robot: turning to a second person speaking,
-and a move taught by hand.
+family photo into a story, speaks English and Spanish, waves its antennas back when you wave, and remembers where
+you put your keys if you say yes. Family see only what you share, and Andy tells you who looked. Tried on the robot:
+the message check, reminders, waving back and the keys. Tested in code and the conversation suite, not yet tried on
+the robot: a daily reminder, the spoken half of a photo story, sharing a note by voice, turning to a second person
+speaking, and a move taught by hand.
 
 ### How we built it
 

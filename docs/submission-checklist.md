@@ -151,7 +151,7 @@ Physical AI hosted-demo exemption does not remove the working-project access req
 - [ ] On the robot: the body turn, research stopping, medicine-page referral and voice interruption
 - [ ] Two or three consenting potential users try the key tasks; retain only agreed feedback and task counts
 - [x] Current text profile evaluated locally: 93, 94 and 94 of 97, input/code hashes recorded; physical trials remain separate
-- [x] The final Serverless Jobs of the current profile: 94.8 of 97 on average over nine runs, 93 to 96 (three Jobs on the final code of 2026-10-28, suite 2026-10-28a; [1](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json), [2](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json)); earlier runs kept, that afternoon's 92, 93 and 94 among them
+- [x] The final Serverless Jobs of the current profile: 94.8 of 97 on average over nine runs, 93 to 96 (three Jobs on the code of 2026-10-28, suite 2026-10-28a; the code as submitted, 2026-10-30: 95, 96 and 94, [scorecard](../evals/results/2026-10-30-nebius-job-andy-suite-20261030-102005.json); [1](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183620.json), [2](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-183623.json), [3](../evals/results/2026-10-28-nebius-job-andy-suite-20261028-184223.json)); earlier runs kept, that afternoon's 92, 93 and 94 among them
 - [x] Video and real-robot photographs added after filming; no placeholder presented as completed evidence Video public; three real-robot stills from the footage are gallery images 1-3 and the thumbnail (Devpost only, not in the repository).
 
 ## Stage one: pass/fail
