@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### The judges' guided examples never show a tool call written as text
+
+A second review of the final state ran one guided example. It got Andy's closing reply as raw markup:
+"<tool_call><function=read_letter>…": the model had written a second tool call as text, and the page showed it.
+
+The judge page now drops written calls, as the app already does when speaking (`tool_text.unspoken`):
+- **Nothing readable left in the closing reply:** the page shows its honest fallback ("The model could not finish
+  its reply") beside the real sample result.
+- **The first reply is only a written call:** the page refuses it.
+- **No automatic retry:** every call still counts against the daily limit.
+
+Three tests come with it, and the judge Space's package now includes `tool_text.py`.
+
+The same review checked the new video frame by frame and found no legible mark. It also confirmed every headline
+number against the evidence, and that every rule passes. It found the monitor's badge partly readable in Devpost
+gallery image 2, which was made before the re-cut. All three robot stills are now taken from the blurred footage.
+
 ### The video re-cut with every third-party mark blurred, and re-uploaded
 
 The review found brand marks in the video: the microphone's maker on Andy, the monitor's badges and the mouse logo.

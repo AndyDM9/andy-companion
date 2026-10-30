@@ -16,6 +16,7 @@ import urllib.request
 
 from andy_companion.consent import Confirmation
 from andy_companion.model_reply import final_text
+from andy_companion.tool_text import unspoken
 
 MODEL = "nvidia/Nemotron-3_5-Lightning"
 ENDPOINT = "https://api.tokenfactory.nebius.com/v1/chat/completions"
@@ -212,7 +213,12 @@ class Playground:
         if not isinstance(calls, list) or len(calls) > 1:
             raise Unavailable("model_response_invalid", 502)
         if not calls:
-            return message["content"], "model", []
+            # A tool call written out as text is not a reply: the page never shows markup (the app speaks none,
+            # tool_text). On 2026-10-30 a judge's check got "<tool_call><function=read_letter>..." as the reply.
+            words = unspoken(message.get("content") or "")
+            if not words:
+                raise Unavailable("model_response_invalid", 502)
+            return words, "model", []
         try:
             call = calls[0]
             fn = call["function"]
@@ -235,9 +241,12 @@ class Playground:
             session["messages"].append({"role": "assistant", "content": result["say"]})
             return result["say"], "confirmation code", trace
         try:
-            reply = self._message(session["messages"])["content"]
+            reply = unspoken(self._message(session["messages"])["content"] or "")
         except Unavailable:
-            # Preserve the result of an already-applied synthetic action even if the closing reply fails.
+            reply = ""
+        if not reply:
+            # Preserve the result of an already-applied synthetic action even if the closing reply fails, or is only
+            # a second tool call written out as text (no automatic retry: every call counts against the daily limit).
             return ("The model could not finish its reply. Check the sample-state result below.", "code", trace)
         session["messages"].append({"role": "assistant", "content": reply})
         return reply, "model", trace

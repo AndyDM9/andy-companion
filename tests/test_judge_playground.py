@@ -192,6 +192,38 @@ def test_closing_reply_failure_preserves_truthful_sample_state():
     assert "could not finish" in result["reply"]
 
 
+def test_a_closing_reply_written_as_a_tool_call_is_never_shown():
+    """2026-10-30: the closing reply came back as "<tool_call><function=read_letter></function></tool_call>"."""
+    written = "<tool_call>\n<function=read_letter>\n</function>\n</tool_call>"
+    requests = []
+
+    def model(body):
+        requests.append(body)
+        return call("read_letter", {}) if len(requests) == 1 else {"content": written}
+
+    result = make(model).run({"challenge": "letter"})
+    assert "<" not in result["reply"] and result["reply_source"] == "code"
+    assert "could not finish" in result["reply"] and result["tools"][0]["simulated"] is True
+
+
+def test_words_around_a_written_call_are_kept_and_the_markup_dropped():
+    requests = []
+
+    def model(body):
+        requests.append(body)
+        return call("read_letter", {}) if len(requests) == 1 else {
+            "content": "The sample bill is $86.40. <tool_call><function=read_letter></function></tool_call>"}
+
+    result = make(model).run({"challenge": "letter"})
+    assert result["reply"] == "The sample bill is $86.40." and result["reply_source"] == "model"
+
+
+def test_a_first_reply_that_is_only_a_written_call_is_refused():
+    engine = make(lambda body: {"content": "<tool_call><function=read_letter></function></tool_call>"})
+    with pytest.raises(Unavailable, match="model_response_invalid"):
+        engine.run({"challenge": "letter"})
+
+
 @pytest.fixture
 def site():
     spec = importlib.util.spec_from_file_location("judge_server_for_tests", ROOT / "scripts/judge_playground.py")
