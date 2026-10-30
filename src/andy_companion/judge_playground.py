@@ -21,6 +21,7 @@ from andy_companion.tool_text import unspoken
 MODEL = "nvidia/Nemotron-3_5-Lightning"
 ENDPOINT = "https://api.tokenfactory.nebius.com/v1/chat/completions"
 NOTE = "I enjoyed the garden today."
+CLOSING = {"role": "system", "content": "Now answer the person in plain words. Do not call or write any tool."}
 CHALLENGES = {
     "letter": {"title": "Explain an invented bill", "tool": "read_letter",
                "prompt": "Can you read this letter for me? I'm holding it up.",
@@ -241,7 +242,9 @@ class Playground:
             session["messages"].append({"role": "assistant", "content": result["say"]})
             return result["say"], "confirmation code", trace
         try:
-            reply = unspoken(self._message(session["messages"])["content"] or "")
+            # Without this line Lightning wrote read_letter out again as text in 3 of 4 closing replies on 2026-10-30;
+            # with it, 6 of 6 were words. It is sent only with this request and not kept in the conversation.
+            reply = unspoken(self._message(session["messages"] + [CLOSING])["content"] or "")
         except Unavailable:
             reply = ""
         if not reply:

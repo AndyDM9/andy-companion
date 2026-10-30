@@ -16,7 +16,15 @@ The judge page now drops written calls, as the app already does when speaking (`
 - **The first reply is only a written call:** the page refuses it.
 - **No automatic retry:** every call still counts against the daily limit.
 
-Three tests come with it, and the judge Space's package now includes `tool_text.py`.
+The cause was the closing request. On the Space, the letter example then fell back in 3 of 4 runs, because
+Lightning wrote `read_letter` out again. The closing request now ends with one line, sent only with that request and
+not kept: "Now answer the person in plain words. Do not call or write any tool."
+
+**Measured on Token Factory with the real model:** the letter example answered in words in 6 of 6 runs with the line,
+against 1 of 4 without it. With the line in the code, the three examples were then run live: the letter 3 of 3, the
+absent glasses 2 of 2, and the share choice followed by Yes.
+
+Four tests come with it, and the judge Space's package now includes `tool_text.py`.
 
 The same review checked the new video frame by frame and found no legible mark. It also confirmed every headline
 number against the evidence, and that every rule passes. It found the monitor's badge partly readable in Devpost

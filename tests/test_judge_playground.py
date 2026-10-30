@@ -192,6 +192,21 @@ def test_closing_reply_failure_preserves_truthful_sample_state():
     assert "could not finish" in result["reply"]
 
 
+def test_the_closing_request_asks_for_words_without_keeping_that_line():
+    requests = []
+
+    def model(body):
+        requests.append(body)
+        return call("read_letter", {}) if len(requests) == 1 else {"content": "The sample bill is $86.40."}
+
+    engine = make(model)
+    result = engine.run({"challenge": "letter"})
+    assert requests[1]["messages"][-1]["role"] == "system" and "plain words" in requests[1]["messages"][-1]["content"]
+    assert "tools" not in requests[1]
+    kept = engine.sessions[result["session"]]["messages"]
+    assert not any(m["role"] == "system" and "plain words" in m["content"] for m in kept)
+
+
 def test_a_closing_reply_written_as_a_tool_call_is_never_shown():
     """2026-10-30: the closing reply came back as "<tool_call><function=read_letter></function></tool_call>"."""
     written = "<tool_call>\n<function=read_letter>\n</function>\n</tool_call>"
