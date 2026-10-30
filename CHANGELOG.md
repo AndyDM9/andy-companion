@@ -33,6 +33,8 @@ A reviewer with no context read the public materials as a judge would, ran two g
   a daily reminder, a photo story's spoken half and sharing by voice, which the robot test record has not ticked; it
   now lists what was tried and what was not. The record's letter row (3l) said "partial" beside its own note of the
   filmed October 29 success; it says ✓.
+- **Accessibility named:** the judges' "Will It Ship?" advice was to call accessibility out; the Devpost text
+  described the features (Atkinson Hyperlegible, 7:1 captions, pace and volume) without the word. It now says so.
 - **Super VL's 18 and 21 of 23** are different trial sets; the README says so. The testing guide's "last verified"
   is October 30, with the date of the nine-run figures. The Devpost text links the live-test checklist.
 

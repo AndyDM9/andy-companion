@@ -55,7 +55,7 @@ around stand-in tools; both evaluations ran as Nebius Serverless Jobs. Entered i
   against the scene's truth, and the tests; a **Serverless Endpoint**, started when needed, serves NVIDIA Nemotron
   3.5 Content Safety as a second check on what the person says.
 - **Design:** one household, three screens: the TV beside Andy, the family's phone page, a helper's settings page.
-  **Built to be read and heard across a room:** large type in Atkinson Hyperlegible (the Braille Institute's typeface,
+  **Built for accessibility, to be read and heard across a room:** large type in Atkinson Hyperlegible (the Braille Institute's typeface,
   every letter easy to tell apart), 17 px or larger on the phone pages, captions on by default at 7:1 contrast, a slower pace on request, louder at "I can't hear
   you", and talking over Andy stops it. Installs as a
   [Reachy Mini app](https://huggingface.co/spaces/andydm/andy-companion-app); [try the screens](https://huggingface.co/spaces/andydm/andy-companion), no keys.
