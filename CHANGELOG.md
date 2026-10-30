@@ -22,6 +22,8 @@ A reviewer with no context read the public materials as a judge would, ran two g
 - **A privacy line made explicit:** "no recordings" stands beside a test-only setting (`ANDY_FINDER_RECORD`) that
   keeps the camera's pictures for scoring the finder; the README's privacy section now says so, off unless set,
   with the health check's warning. It is not set on the robot.
+- **The architecture picture** (README and the Devpost gallery) said "38 tools" for Andy's app; it says 40, as
+  the text does, and its description names the camera note. Re-rendered at the same size.
 - **Super VL's 18 and 21 of 23** are different trial sets; the README says so. The testing guide's "last verified"
   is October 30, with the date of the nine-run figures. The Devpost text links the live-test checklist.
 
