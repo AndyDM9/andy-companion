@@ -5,6 +5,23 @@ Every change, newest first, grouped by date. Each entry says what changed and wh
 
 ## 2026-10-29
 
+### Three independent reviews after submitting, and the tag moved to the corrected text
+
+Three reviews of the submitted entry were run after submitting:
+- **The rules:** every rule and the organisers' final checklist, against the public page, the video and the tag.
+- **What a judge reads and watches:** every claim checked against its evidence, plus the wording and privacy rules.
+- **A judge's fresh machine:** an anonymous clone of the tag, 2,124 passed with the README's own commands. The judge
+  Space answered with Nemotron, all demos were up, 203 of 204 links opened, and no secrets were found.
+
+None found anything disqualifying. They found stale or overstated lines, corrected here:
+- **The Devpost story:** it still said "filming is planned", and it now links the video. It also said "three runs"
+  where the suite ran nine, and "a source for every warning" where it was 170 of 174.
+- **The README and the story:** "about as many" for the models alone, which caught 53 and 56 against Tavily's 58.
+- **The testing guide:** it still said the tag "will be set", and gave the older glasses count.
+
+The `hackathon-submission` tag was moved to this commit before the deadline, so the tag, the Devpost text and the
+guide agree. The release and the app's pin follow the tag by name.
+
 ### Submitted to the hackathon
 
 The entry was submitted on Devpost by 2026-10-29 23:15 EDT, before the 2026-10-30 10:00 PT deadline. The public page, checked

@@ -262,7 +262,7 @@ search is on for every search, every search, extract, crawl and research request
 **What Tavily adds, measured:** on 120 messages, Tavily's warnings checked by Nemotron 3 Ultra caught 58 of 60 scams,
 flagged none of 60 ordinary messages, and named the source in 170 of 174 scam verdicts
 ([the five ways](#what-andy-does), [scorecard](evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)). The models
-alone caught about as many, so what Tavily adds is the source: a warning the person and their family can read for
+alone caught slightly fewer, so what Tavily adds is the source: a warning the person and their family can read for
 themselves, about $0.017 a check.
 
 ## Measured (Reachy Mini Lite)

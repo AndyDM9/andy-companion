@@ -163,7 +163,7 @@ Serverless Jobs, simulation, desk images and physical trials. Every retained run
 | [Earlier profile, local](../evals/results/suite-2026-10-27-consent-source-local.json) | 93, 94, 94 of 97 | Real API calls, real confirmation/source checks, synthetic tool results; memory/activity offers, refusal/story wording and supportive-response failures retained; no microphone/camera/motors |
 | [Previous profile on Serverless Jobs](../evals/results/2026-10-25-nebius-job-andy-suite-20261025-193648.json) | 96, 95, 92 of 97 | Historical profile; does not validate the October 26 changes |
 | [Scam comparison](../evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json) | Andy: 58/60 scams, 0/60 ordinary flagged | Written test cases, not household messages; model baselines and errors included |
-| [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; on 2026-10-28, informally, real glasses found 3 times out of 3 and keys once ([robot test record](live-test.md), the finder rows), not a scored trial; the revised body turn still needs physical validation |
+| [Physical finder](../evals/results/finder-eval-2026-10-20-2037.json) | Pointed 3/9, wrong 0, missed 6 | Development trials in one home; informally, real glasses found in all five searches (three on 2026-10-28, two filmed on 2026-10-29) and keys once ([robot test record](live-test.md), the finder rows), not a scored trial; the revised body turn still needs physical validation |
 
 Optional evaluations need your own Token Factory key and consume credits. For a short text sample,
 enter the key at a hidden Bash prompt; it is passed through the environment, never an argument or file:
@@ -201,9 +201,9 @@ also requires the local voice server; it is not a browser-only robot service.
 ## What is still pending
 
 The remaining voice/revised hardware-flow checks, 30 planned physical finder attempts
-and short sessions with potential users remain pending. The submission tag and app dependency pin
-will be set after the final validation. Until then, `main` changes; use `git rev-parse HEAD` to record
-which revision you tested. The [submission checklist](submission-checklist.md) and
+and short sessions with potential users remain pending. The submitted revision is the tag
+`hackathon-submission`, and the dependency of the Reachy Mini app is pinned to it; test that tag, as later
+commits on `main` only update the record. The [submission checklist](submission-checklist.md) and
 [limitations](../README.md#limitations) state the current gaps.
 
 At the October 30, 10:00 PT deadline, freeze this repository, the submitted hosted demos, video and

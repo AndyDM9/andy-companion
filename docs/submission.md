@@ -78,8 +78,8 @@ only what you ask it to keep.
 ### What it does
 
 Andy is a Pollen Robotics Reachy Mini that keeps looking at you while you talk. Three interactions bring the
-camera, moving body and TV together. Filming is planned before submission; each interaction's current test status is
-recorded in the repository's live-test checklist:
+camera, moving body and TV together. [The video](https://www.youtube.com/watch?v=RcNJpHf3omY) shows all three on the real robot, each robot shot one uncut
+take; each interaction's test status is in the repository's live-test checklist:
 
 - **"Can you read this for me?"** You hold up a letter. Andy reads it and the TV shows it in large print. If the
   page asks for a fee or gift cards, or rushes you, code, not the model, puts **Be careful** first: "Don't call or
@@ -115,7 +115,7 @@ and a move taught by hand.
 - **The body:** Pollen's Reachy Mini conversation app is the agent runtime; Andy's profile, tools and body
   behaviours plug into it without forking it. What must always hold is enforced in code, not left to the model: the
   scam warning, consent before anything is kept or shared, and the 911 or 988 line when someone says urgent words.
-- **Measured as Nebius Serverless Jobs:** 97 spoken situations judged by Nemotron 3 Ultra, three runs, every failure
+- **Measured as Nebius Serverless Jobs:** 97 spoken situations judged by Nemotron 3 Ultra, nine runs, every failure
   published; and Andy's own search in Pollen's MuJoCo simulation, a glasses-sized object hidden at random: with the
   close-up check, [no false find in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-on-small0.35-nebius-job.json) searches without the object, against [3 in 7](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/sim-finder-20261020-185613-off-small0.35-nebius-job.json) without it.
 - **A second check** on the person's words, NVIDIA Nemotron 3.5 Content Safety on a Nebius Serverless Endpoint, caught
@@ -129,7 +129,7 @@ setup; and **research**, streamed step by step to the TV for "look into it for m
 
 What Tavily adds to the scam check, on 120 messages written as a person would read them to Andy, three runs as Nebius
 Serverless Jobs: Tavily's warnings, matched by Nemotron 3 Ultra, caught **[58 of 60 scams and flagged none of 60
-ordinary messages](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)**, naming a source in 170 of 174 verdicts. Each model alone caught about as many and
+ordinary messages](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/evals/results/scam-eval-2026-10-14-1200-nebius-jobs.json)**, naming a source in 170 of 174 verdicts. Each model alone caught slightly fewer and
 also flagged none, so what Tavily adds is the named source: the warning the person can check, from a site they
 trust. Matched by the smaller model, the same warnings flagged 24 ordinary messages, so only the stronger model keeps
 that source without false alarms. About [$17 per 1,000 checks](https://github.com/AndyDM9/andy-companion/blob/hackathon-submission/docs/cost.md#the-scam-check-per-check-measured-2026-10-20).
@@ -156,7 +156,7 @@ that source without false alarms. About [$17 per 1,000 checks](https://github.co
 
 - **A language model that moves a robot's head to find things,** with nothing trained: it looks around, zooms in,
   turns to look closer, checks and points, and in its scored tries at home it never pointed at the wrong place.
-- **A scam check with no false alarms and a source for every warning:** Tavily's consumer-protection warnings,
+- **A scam check with no false alarms and a source for nearly every warning:** Tavily's consumer-protection warnings,
   matched by Nemotron 3 Ultra, flagged none of 60 ordinary messages and named its source in 170 of 174 scam verdicts.
 - **Rules in code under the model:** **Be careful** first on a risky letter, a letter's numbers never reaching the
   model, one yes for one exact save or share, and the 911 or 988 line on urgent words.
